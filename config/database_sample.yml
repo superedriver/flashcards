@@ -23,8 +23,8 @@ development:
   adapter: postgresql
   host: localhost
   port: 5432
-  username: dev
-  password: 123
+  username: "username"
+  password: "user_pass"
   database: flashcards_dev
   schema_search_path: public
   encoding: utf8
@@ -44,8 +44,8 @@ test:
   adapter: postgresql
   host: localhost
   port: 5432
-  username: dev
-  password: 123
+  username: "username"
+  password: "user_pass"
   database: flashcards_test
   schema_search_path: public
   encoding: utf8
@@ -54,8 +54,8 @@ production:
   adapter: postgresql
   host: localhost
   port: 5432
-  username: dev
-  password: 123
+  username: "username"
+  password: "user_pass"
   database: flashcards_prod
   schema_search_path: public
   encoding: utf8

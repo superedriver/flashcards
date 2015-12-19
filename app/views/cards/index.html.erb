@@ -1,0 +1,25 @@
+<% count=0 %>
+<table class="table table-striped table-hover ">
+  <thead>
+  <tr>
+    <th>№</th>
+    <th>ID</th>
+    <th>original_text</th>
+    <th>translated_text</th>
+    <th>review_date</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @cards.each do  |card|%>
+  <tr>
+    <td><%= count += 1 %></td>
+    <td><%= card.id || "null" %></td>
+    <td><%= card.original_text || "null" %></td>
+    <td><%= card.translated_text || "null" %></td>
+    <td><%= card.review_date ? card.review_date.day.to_s + "/" + card.review_date.month.to_s + "/" + card.review_date.year.to_s : "null" %></td>
+  </tr>
+  <% end %>
+  </tbody>
+</table>
+
+

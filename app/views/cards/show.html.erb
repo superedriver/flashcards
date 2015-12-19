@@ -1,0 +1,10 @@
+<h1> Card ID: <%= @card.id %></h1>
+<hr>
+<div>
+  <ul class="list-group">
+    <li class="list-group-item"><b class="text-info">original_text:</b>&nbsp; <%= @card.original_text || "ДАННОЕ ПОЛЕ ПУСТОЕ!"%></li>
+    <li class="list-group-item"><b class="text-info">translated_text:</b>&nbsp; <%= @card.translated_text || "ДАННОЕ ПОЛЕ ПУСТОЕ!"%></li>
+    <li class="list-group-item"><b class="text-info">review_date:</b>&nbsp; <%= (!@card.review_date) ? "ДАННОЕ ПОЛЕ ПУСТОЕ!" : @card.review_date.day.to_s + "/" + @card.review_date.month.to_s + "/" + @card.review_date.year.to_s %></li>
+  </ul>
+</div>
+
