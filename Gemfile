@@ -45,5 +45,5 @@ group :development do
   gem 'spring'
 end
 
-gem 'pg'
+gem 'pg', '~> 0.18.4'
 

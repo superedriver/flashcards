@@ -10,13 +10,13 @@
   </tr>
   </thead>
   <tbody>
-  <% @cards.each do  |card|%>
+  <% @cards.each.with_index(1) do |card, index| %>
   <tr>
-    <td><%= count += 1 %></td>
-    <td><%= card.id || "null" %></td>
+    <td><%= index %></td>
+    <td><%= card.id %></td>
     <td><%= card.original_text || "null" %></td>
     <td><%= card.translated_text || "null" %></td>
-    <td><%= card.review_date ? card.review_date.day.to_s + "/" + card.review_date.month.to_s + "/" + card.review_date.year.to_s : "null" %></td>
+    <td><%= card.review_date.present? ? (l card.review_date, format: :default) : "null" %></td>
   </tr>
   <% end %>
   </tbody>
