@@ -1,5 +1,4 @@
 class CardsController < ApplicationController
-
   def index
     @cards = Card.all
   end
@@ -13,5 +12,4 @@ class CardsController < ApplicationController
       render text: "Page not found", status: 404
     end
   end
-
 end
