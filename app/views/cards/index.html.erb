@@ -14,9 +14,9 @@
   <tr>
     <td><%= index %></td>
     <td><%= card.id %></td>
-    <td><%= card.original_text || "null" %></td>
-    <td><%= card.translated_text || "null" %></td>
-    <td><%= card.review_date.present? ? (l card.review_date, format: :default) : "null" %></td>
+    <td><%= card.original_text.present? ? card.original_text : t('error.messages.empty_field') %></td>
+    <td><%= card.translated_text.present? ? card.translated_text : t('error.messages.empty_field')  %></td>
+    <td><%= card.review_date.present? ? (l card.review_date, format: :default) : t('error.messages.empty_field') %></td>
   </tr>
   <% end %>
   </tbody>
