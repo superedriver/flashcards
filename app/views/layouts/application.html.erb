@@ -7,16 +7,16 @@
 
 <body>
 <section id="container">
-
   <div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
-        <a href="#" class="navbar-brand">Флэшкарточкер</a>
+
+        <a href="/" class="navbar-brand">Флэшкарточкер</a>
       </div>
       <div class="navbar-collapse collapse" id="navbar-main">
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#" target="_blank">Все карточки</a></li>
-          <li><a href="#" target="_blank">Добавить карточку</a></li>
+          <li><%= link_to "Все карточки", 'cards' %></li>
+          <li><a href="#">Добавить карточку</a></li>
         </ul>
       </div>
     </div>
@@ -29,11 +29,11 @@
     <!--</ul>-->
   <!--</header>-->
 
-  <section>
+  <div id="wrapper">
 
     <%= yield %>
 
-  </section>
+  </div>
 
 </section>
 </body>

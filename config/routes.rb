@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :cards
+
   # get 'home/index'
   # get "home" => "home#index"
   # get "/" => "home#index"
