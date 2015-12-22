@@ -4,4 +4,4 @@ ru:
       default: "%d/%m/%Y"
   error:
     messages:
-      empty_field: "Значение отсутствует!"
+      empty_field: "Отсутствует!"

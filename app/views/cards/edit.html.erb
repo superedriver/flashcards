@@ -1,0 +1,7 @@
+<h1>Редактировать карту</h1>
+<%= form_for @card do |f| %>
+    <p>Текст: <br><%= f.text_field :original_text %></p>
+    <p>Перевод: <br><%= f.text_field :translated_text %></p>
+    <br>
+    <p><%= f.submit "Редактировать карту" %></p>
+<% end %>

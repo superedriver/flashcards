@@ -1,4 +1,3 @@
-<% count=0 %>
 <table class="table table-striped table-hover ">
   <thead>
   <tr>
@@ -7,16 +6,21 @@
     <th>original_text</th>
     <th>translated_text</th>
     <th>review_date</th>
+    <th>Modification</th>
   </tr>
   </thead>
   <tbody>
   <% @cards.each.with_index(1) do |card, index| %>
   <tr>
-    <td><%= index %></td>
+    <td><%= link_to index, "/cards/#{card.id}" %></td>
     <td><%= card.id %></td>
     <td><%= card.original_text.present? ? card.original_text : t('error.messages.empty_field') %></td>
     <td><%= card.translated_text.present? ? card.translated_text : t('error.messages.empty_field')  %></td>
     <td><%= card.review_date.present? ? (l card.review_date, format: :default) : t('error.messages.empty_field') %></td>
+    <td>
+      <a href="cards/<%= card.id %>/edit" class="btn btn-primary btn-sm">Edit</a>
+      <a href="cards/<%= card.id %>" method="delete" class="btn btn-danger btn-sm">Delete</a>
+    </td>
   </tr>
   <% end %>
   </tbody>
