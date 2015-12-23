@@ -1,7 +1,9 @@
-<h1>Редактировать карту</h1>
+<h1>Редактировать карту ID: <%= @card.id %></h1>
 <%= form_for @card do |f| %>
     <p>Текст: <br><%= f.text_field :original_text %></p>
     <p>Перевод: <br><%= f.text_field :translated_text %></p>
     <br>
-    <p><%= f.submit "Редактировать карту" %></p>
+    <p><%= f.submit "Edit" %></p>
+    <%= link_to "Delete", @card, method: :delete, data: { confirm: "Точно удалить?" }, class: "btn btn-danger btn-lg" %>
+    <%= link_to "Cansel", cards_path, class: "btn btn-primary btn-lg" %>
 <% end %>

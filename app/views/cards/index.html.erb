@@ -18,8 +18,8 @@
     <td><%= card.translated_text.present? ? card.translated_text : t('error.messages.empty_field')  %></td>
     <td><%= card.review_date.present? ? (l card.review_date, format: :default) : t('error.messages.empty_field') %></td>
     <td>
-      <a href="cards/<%= card.id %>/edit" class="btn btn-primary btn-sm">Edit</a>
-      <a href="cards/<%= card.id %>" method="delete" class="btn btn-danger btn-sm">Delete</a>
+      <%= link_to "Edit", edit_card_path(card), class: "btn btn-primary btn-sm" %>
+      <%= link_to "Delete", card, method: :delete, data: { confirm: "Точно удалить?" }, class: "btn btn-danger btn-sm" %>
     </td>
   </tr>
   <% end %>

@@ -1,5 +1,7 @@
 class CardsController < ApplicationController
 
+  protect_from_forgery with: :null_session
+
   def index
     @cards = Card.all
   end

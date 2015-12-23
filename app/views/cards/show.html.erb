@@ -6,7 +6,7 @@
     <li class="list-group-item"><b class="text-info">translated_text:</b>&nbsp; <%= @card.translated_text.present? ? @card.translated_text : t('error.messages.empty_field') %></li>
     <li class="list-group-item"><b class="text-info">review_date:</b>&nbsp; <%= @card.review_date.blank? ? t('error.messages.empty_field') : @card.review_date.day.to_s + "/" + @card.review_date.month.to_s + "/" + @card.review_date.year.to_s %></li>
   </ul>
-  <a href="<%= @card.id %>/edit" class="btn btn-primary btn-lg">Edit</a>
-  <a href="#" class="btn btn-danger btn-lg">Delete</a>
+  <%= link_to "Edit", edit_card_path(@card), class: "btn btn-primary btn-lg" %>
+  <%= link_to "Delete", @card, method: :delete, data: { confirm: "Точно удалить?" }, class: "btn btn-danger btn-lg" %>
 </div>
 
