@@ -5,7 +5,7 @@ class Card < ActiveRecord::Base
 
   private
     def check_difference
-      self.errors.add(:difference, "can't be greater than total value") if
+      self.errors.add(:difference, "can't have the same values") if
           self.original_text.downcase == self.translated_text.downcase
     end
 end
