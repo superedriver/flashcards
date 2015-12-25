@@ -1,9 +1,19 @@
-<h1>Редактировать карту ID: <%= @card.id %></h1>
-<%= form_for @card do |f| %>
-    <p>Текст: <br><%= f.text_field :original_text %></p>
-    <p>Перевод: <br><%= f.text_field :translated_text %></p>
-    <br>
-    <p><%= f.submit "Edit" %></p>
-    <%= link_to "Delete", @card, method: :delete, data: { confirm: "Точно удалить?" }, class: "btn btn-danger btn-lg" %>
-    <%= link_to "Cansel", cards_path, class: "btn btn-primary btn-lg" %>
-<% end %>
+<h1>Редактирование карты:</h1>
+<div class="well bs-component">
+  <%= simple_form_for @card, html: {class: "form-horizontal"} do |f| %>
+    <fieldset>
+      <legend>Card ID: <%= @card.id %></legend>
+
+      <%= render partial: 'form_for_card', locals: { f: f, property: :original_text, value: "Текст:"}  %>
+      <%= render partial: 'form_for_card', locals: { f: f, property: :translated_text, value: "Перевод:"}  %>
+
+      <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2">
+          <%= f.submit "Save", class: "btn btn-primary" %>
+          <%= link_to "Delete", @card, method: :delete, data: { confirm: "Точно удалить?" }, class: "btn btn-danger" %>
+          <%= link_to "Cansel", cards_path, class: "btn btn-default" %>
+        </div>
+      </div>
+    </fieldset>
+  <% end %>
+</div>

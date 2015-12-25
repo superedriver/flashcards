@@ -47,3 +47,4 @@ end
 
 gem 'pg', '~> 0.18.4'
 
+gem 'simple_form', '~> 3.2.1'

@@ -1,14 +1,13 @@
 class CardsController < ApplicationController
 
   protect_from_forgery with: :null_session
+  before_filter :find_card, only: [:show, :edit, :update, :destroy]
 
   def index
     @cards = Card.all
   end
 
   def show
-    @card = Card.find_by id: params[:id]
-
     unless @card
       render text: "Page not found", status: 404
     end
@@ -31,11 +30,9 @@ class CardsController < ApplicationController
   end
 
   def edit
-    @card = Card.find(params[:id])
   end
 
   def update
-    @card = Card.find(params[:id])
     @card.update_attributes(card_params)
     @card.review_date = DateTime.now.to_date + 3.days
     @card.save
@@ -48,15 +45,19 @@ class CardsController < ApplicationController
   end
 
   def destroy
-    @card = Card.find(params[:id])
     @card.destroy
     redirect_to action: "index"
   end
 
 
   private
-  def card_params
-    params.require(:card).permit(:original_text, :translated_text)
-  end
+    def card_params
+      params.require(:card).permit(:original_text, :translated_text)
+    end
+
+    def find_card
+      @card = Card.find(params[:id])
+    end
+
 
 end
