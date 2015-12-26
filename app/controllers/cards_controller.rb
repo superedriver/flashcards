@@ -1,6 +1,6 @@
 class CardsController < ApplicationController
-
   protect_from_forgery with: :null_session
+
   before_filter :find_card, only: [:show, :edit, :update, :destroy]
 
   def index

@@ -13,6 +13,6 @@ class Card < ActiveRecord::Base
   end
 
   def set_review_date
-    self.review_date = DateTime.now.to_date + 3.days
+    self.review_date = DateTime.now.utc.to_date + 3.days
   end
 end
