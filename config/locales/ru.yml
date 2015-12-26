@@ -5,6 +5,7 @@ ru:
   field:
     original_text: "Поле 'Текст'"
     translated_text: "Поле 'Перевод'"
+    empty_text: ""
   error:
     messages:
       empty_field: "Отсутствует!"

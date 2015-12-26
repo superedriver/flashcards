@@ -8,7 +8,7 @@ class Card < ActiveRecord::Base
   private
 
   def check_difference
-    errors.add( I18n.t('error.messages.error') ,I18n.t('error.validation.messages.the_same_value')) if
+    errors.add( I18n.t('field.empty_text') ,I18n.t('error.validation.messages.the_same_value')) if
         original_text.downcase.present? && translated_text.downcase.present? && original_text.downcase == translated_text.downcase
   end
 
