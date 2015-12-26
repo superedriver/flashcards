@@ -14,6 +14,14 @@
           <%= link_to "Cansel", cards_path, class: "btn btn-default" %>
         </div>
       </div>
+
+      <% if @card.errors.full_messages.any? %>
+          <% @card.errors.full_messages.each do | message |%>
+              <div class="alert alert-dismissible alert-danger">
+                <%= message %>  <br />
+              </div>
+          <% end %>
+      <% end %>
     </fieldset>
   <% end %>
 </div>

@@ -8,9 +8,6 @@ class CardsController < ApplicationController
   end
 
   def show
-    unless @card
-      render text: "Page not found", status: 404
-    end
   end
 
   def new
@@ -19,7 +16,6 @@ class CardsController < ApplicationController
 
   def create
     @card = Card.new(card_params)
-    @card.review_date = DateTime.now.to_date + 3.days
     @card.save
 
     if @card.errors.empty?
@@ -33,9 +29,7 @@ class CardsController < ApplicationController
   end
 
   def update
-    @card.update_attributes(card_params)
-    @card.review_date = DateTime.now.to_date + 3.days
-    @card.save
+    @card.update(card_params)
 
     if @card.errors.empty?
       redirect_to card_path(@card)
@@ -49,15 +43,16 @@ class CardsController < ApplicationController
     redirect_to action: "index"
   end
 
-
   private
-    def card_params
-      params.require(:card).permit(:original_text, :translated_text)
+
+  def card_params
+    params.require(:card).permit(:original_text, :translated_text)
+  end
+
+  def find_card
+    @card = Card.find(params[:id])
+    unless @card
+      render text: "Page not found", status: 404
     end
-
-    def find_card
-      @card = Card.find(params[:id])
-    end
-
-
+  end
 end

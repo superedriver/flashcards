@@ -2,6 +2,16 @@ ru:
   date:
     formats:
       default: "%d/%m/%Y"
+  field:
+    original_text: "Поле 'Текст'"
+    translated_text: "Поле 'Перевод'"
   error:
     messages:
       empty_field: "Отсутствует!"
+      error: "Ошибка!"
+    validation:
+      decsriptions:
+        the_same_value: "Одинаковые значения:"
+      messages:
+        the_same_value: "Поля 'Текст' и 'Перевод' не могут содержать одинаковые значения!"
+        cant_be_blank: "не может быть пустым!"
