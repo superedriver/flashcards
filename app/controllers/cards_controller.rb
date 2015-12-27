@@ -29,9 +29,7 @@ class CardsController < ApplicationController
   end
 
   def update
-    @card.update(card_params)
-
-    if @card.errors.empty?
+    if @card.update(card_params)
       redirect_to card_path(@card)
     else
       render "edit"
