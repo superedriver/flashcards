@@ -4,8 +4,8 @@
       <fieldset>
         <legend>Введите значения:</legend>
 
-        <%= render partial: 'form_for_card', locals: { f: f, property: :original_text, value: "Текст:"}  %>
-        <%= render partial: 'form_for_card', locals: { f: f, property: :translated_text, value: "Перевод:"}  %>
+        <%= render partial: 'form_for_card', locals: { f: f, property: :original_text, value: I18n.t("activerecord.attributes.card.original_text")}  %>
+        <%= render partial: 'form_for_card', locals: { f: f, property: :translated_text, value: I18n.t("activerecord.attributes.card.translated_text")}  %>
 
         <div class="form-group">
           <div class="col-lg-10 col-lg-offset-2">

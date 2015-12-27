@@ -2,17 +2,29 @@ ru:
   date:
     formats:
       default: "%d/%m/%Y"
-  field:
-    original_text: "Поле 'Текст'"
-    translated_text: "Поле 'Перевод'"
-    empty_text: ""
+  activerecord:
+      models:
+        card: "Карта"
+      attributes:
+        card:
+          original_text: "Текст"
+          translated_text: "Перевод"
+          review_date: "Дата просмотра"
+      errors:
+        models:
+          card:
+            attributes:
+              original_text:
+                blank: "Поле 'Текст' не может быть пустым!"
+              translated_text:
+                blank: "Поле 'Перевод' не может быть пустым!"
   error:
     messages:
       empty_field: "Отсутствует!"
-      error: "Ошибка!"
     validation:
-      decsriptions:
-        the_same_value: "Одинаковые значения:"
+      description:
+        the_same_value: "Одинаковые значения полей"
       messages:
         the_same_value: "Поля 'Текст' и 'Перевод' не могут содержать одинаковые значения!"
-        cant_be_blank: "не может быть пустым!"
+  confirm:
+    delete_card: "Точно удалить?"

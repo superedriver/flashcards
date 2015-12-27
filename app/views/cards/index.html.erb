@@ -3,9 +3,9 @@
   <tr>
     <th>№</th>
     <th>ID</th>
-    <th>original_text</th>
-    <th>translated_text</th>
-    <th>review_date</th>
+    <th><%= I18n.t("activerecord.attributes.card.original_text") %></th>
+    <th><%= I18n.t("activerecord.attributes.card.translated_text") %></th>
+    <th><%= I18n.t("activerecord.attributes.card.review_date") %></th>
     <th>Modification</th>
   </tr>
   </thead>
@@ -19,7 +19,7 @@
     <td><%= card.review_date.present? ? (l card.review_date, format: :default) : t('error.messages.empty_field') %></td>
     <td>
       <%= link_to "Edit", edit_card_path(card), class: "btn btn-primary btn-sm" %>
-      <%= link_to "Delete", card, method: :delete, data: { confirm: "Точно удалить?" }, class: "btn btn-danger btn-sm" %>
+      <%= link_to "Delete", card, method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-sm" %>
     </td>
   </tr>
   <% end %>
