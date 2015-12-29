@@ -9,7 +9,7 @@ ru:
         card:
           original_text: "Текст"
           translated_text: "Перевод"
-          review_date: "Дата просмотра"
+          review_date: "Дата"
       errors:
         models:
           card:
