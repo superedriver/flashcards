@@ -1,4 +1,32 @@
-<p class="center-block">
-  Первый в мире удобный менеджер флеш-карточек. Именно так.
-</p>
+<!--<p class="center-block">-->
+  <!--Первый в мире удобный менеджер флеш-карточек. Именно так.-->
+<!--</p>-->
 
+<h1>Введите перевод слова:</h1>
+<div class="well bs-component">
+
+  <%= simple_form_for @card, html: {class: "form-horizontal"},
+                      url: {action: "check",
+                            params: {id: @card.id,
+                                     original_text: @card.original_text,
+                                     translated_text: @card.translated_text
+                            }} do |f| %>
+      <fieldset>
+        <div class="h1 word_for_translate text-info">
+          <%= @card.translated_text.upcase %>
+        </div>
+        <div class="form-group">
+          <label for="<%= "original_text" %>" class="col-lg-2 control-label"><%= "Перевод" %>:</label>
+          <div class="col-lg-10">
+            <%= f.input :original_text, hint: false, label: false, error:false, input_html: { class: 'form-control', value: "" }  %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-lg-10 col-lg-offset-2">
+            <%= f.submit "Перевод", class: "btn btn-primary" %>
+          </div>
+        </div>
+      </fieldset>
+  <% end %>
+</div>
