@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   resources :cards
   root  "home#index"
-  match "/check",    to: "cards#check",    via: "patch"
+  # match "/check",    to: "cards#check",    via: "patch"
   # match "/cards/:id/check",    to: "cards#check",    via: "patch"
+  patch '/cards/:id/check' => 'cards#check', as: :check
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
