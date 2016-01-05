@@ -41,6 +41,17 @@ class CardsController < ApplicationController
     redirect_to action: "index"
   end
 
+  def check
+    if params[:card][:original_text].mb_chars.downcase == params[:original_text].mb_chars.downcase
+      flash[:success] = I18n.t("compare_result.right")
+      Card.find(params[:id].to_i).update({})
+    else
+      flash[:error] = I18n.t("compare_result.not_right") + "! " + params[:original_text]
+    end
+
+    redirect_to root_path
+  end
+
   private
 
   def card_params
