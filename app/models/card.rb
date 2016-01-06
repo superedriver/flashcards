@@ -8,6 +8,10 @@ class Card < ActiveRecord::Base
   scope :actual_cards, -> { where("review_date <= ?", Date.current) }
   scope :random_card, -> { order("RANDOM()").first }
 
+  def check_translation? (input_text)
+    self.original_text.mb_chars.downcase == input_text
+  end
+
   private
 
   def check_difference
@@ -19,5 +23,4 @@ class Card < ActiveRecord::Base
   def set_review_date
     self.review_date = Date.current + 3.days
   end
-
 end

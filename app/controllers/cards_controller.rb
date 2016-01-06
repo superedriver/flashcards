@@ -1,7 +1,7 @@
 class CardsController < ApplicationController
   protect_from_forgery with: :null_session
 
-  before_filter :find_card, only: [:show, :edit, :update, :destroy]
+  before_filter :find_card, only: [:show, :edit, :update, :destroy, :check]
 
   def index
     @cards = Card.all
@@ -42,9 +42,9 @@ class CardsController < ApplicationController
   end
 
   def check
-    if params[:card][:original_text].mb_chars.downcase == params[:original_text].mb_chars.downcase
+    if @card.check_translation?(params[:card][:original_text].mb_chars.downcase)
       flash[:success] = I18n.t("compare_result.right")
-      Card.find(params[:id].to_i).update({})
+      @card.update({})
     else
       flash[:error] = I18n.t("compare_result.not_right") + "! " + params[:original_text]
     end
