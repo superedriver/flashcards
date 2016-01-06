@@ -9,6 +9,7 @@
 require "open-uri"
 
 page = Nokogiri::HTML(open("http://www.lesson1.ru/vocabulary/lexicographer/food.html"))
+
 trs = page.css("table.tbl3 tr:not(.first)")
 
 trs.each do |tr|

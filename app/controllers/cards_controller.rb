@@ -1,7 +1,7 @@
 class CardsController < ApplicationController
   protect_from_forgery with: :null_session
 
-  before_filter :find_card, only: [:show, :edit, :update, :destroy, :check]
+  before_action :find_card, only: [:show, :edit, :update, :destroy, :check]
 
   def index
     @cards = Card.all
@@ -46,7 +46,8 @@ class CardsController < ApplicationController
       flash[:success] = I18n.t("compare_result.right")
       @card.update({})
     else
-      flash[:error] = I18n.t("compare_result.not_right") + "! " + params[:original_text]
+      flash[:error] = I18n.t("compare_result.not_right") +
+          "! " + params[:original_text]
     end
 
     redirect_to root_path
