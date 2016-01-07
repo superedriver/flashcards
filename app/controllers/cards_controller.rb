@@ -17,7 +17,7 @@ class CardsController < ApplicationController
   def create
     @card = Card.create(card_params)
 
-    if @card.errors.empty?
+    if @card.persisted?
       redirect_to card_path(@card)
     else
       render "new"
@@ -43,10 +43,9 @@ class CardsController < ApplicationController
   def check
     if @card.check_translation?(params[:card][:original_text].mb_chars.downcase)
       flash[:success] = I18n.t("compare_result.right")
-      @card.save
+      @card.change_review_date
     else
-      flash[:error] = I18n.t("compare_result.not_right") +
-          "! " + params[:original_text]
+      flash[:error] = I18n.t("compare_result.not_right") + "! " + params[:original_text]
     end
 
     redirect_to root_path

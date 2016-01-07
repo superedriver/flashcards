@@ -3,7 +3,9 @@ class Card < ActiveRecord::Base
 
   validate :check_difference
 
-  before_validation :set_review_date
+  before_validation(on: :create) do
+    self[:review_date] = Date.current + 3.days
+  end
 
   scope :actual_cards, -> { where("review_date <= ?", Date.current) }
   scope :random_card, -> { order("RANDOM()").first }
@@ -12,15 +14,17 @@ class Card < ActiveRecord::Base
     original_text.mb_chars.downcase == input_text
   end
 
+  def change_review_date
+    self.review_date = Date.current + 3.days
+    self.save
+  end
+
   private
 
   def check_difference
     errors.add(I18n.t("error.validation.description.the_same_value"),
                 I18n.t("error.validation.messages.the_same_value")) if
-        original_text.present? && translated_text.present? && original_text.downcase == translated_text.downcase
+        original_text.present? && translated_text.present? && (original_text.mb_chars.downcase == translated_text.mb_chars.downcase)
   end
 
-  def set_review_date
-    self.review_date = Date.current + 3.days
-  end
 end
