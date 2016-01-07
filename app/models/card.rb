@@ -17,8 +17,7 @@ class Card < ActiveRecord::Base
   def check_difference
     errors.add(I18n.t("error.validation.description.the_same_value"),
                 I18n.t("error.validation.messages.the_same_value")) if
-        original_text.present? && translated_text.present? &&
-            original_text.downcase == translated_text.downcase
+        original_text.present? && translated_text.present? && original_text.downcase == translated_text.downcase
   end
 
   def set_review_date

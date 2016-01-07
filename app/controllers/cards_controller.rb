@@ -15,8 +15,7 @@ class CardsController < ApplicationController
   end
 
   def create
-    @card = Card.new(card_params)
-    @card.save
+    @card = Card.create(card_params)
 
     if @card.errors.empty?
       redirect_to card_path(@card)
@@ -44,7 +43,7 @@ class CardsController < ApplicationController
   def check
     if @card.check_translation?(params[:card][:original_text].mb_chars.downcase)
       flash[:success] = I18n.t("compare_result.right")
-      @card.update({})
+      @card.save
     else
       flash[:error] = I18n.t("compare_result.not_right") +
           "! " + params[:original_text]
@@ -60,7 +59,7 @@ class CardsController < ApplicationController
   end
 
   def find_card
-    @card = Card.find(params[:id])
+    @card = Card.find_by(id: params[:id])
     unless @card
       render text: "Page not found", status: 404
     end
