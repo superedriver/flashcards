@@ -14,9 +14,8 @@ class Card < ActiveRecord::Base
     original_text.mb_chars.downcase == input_text
   end
 
-  def change_review_date
-    self.review_date = Date.current + 3.days
-    self.save
+  def change_review_date!
+    self.update_column(:review_date, Date.current + 3.day)
   end
 
   private

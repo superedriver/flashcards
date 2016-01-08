@@ -43,7 +43,7 @@ class CardsController < ApplicationController
   def check
     if @card.check_translation?(params[:card][:original_text].mb_chars.downcase)
       flash[:success] = I18n.t("compare_result.right")
-      @card.change_review_date
+      @card.change_review_date!
     else
       flash[:error] = I18n.t("compare_result.not_right") + "! " + params[:original_text]
     end
