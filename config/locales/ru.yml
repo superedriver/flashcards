@@ -28,3 +28,6 @@ ru:
         the_same_value: "Поля 'Текст' и 'Перевод' не могут содержать одинаковые значения!"
   confirm:
     delete_card: "Точно удалить?"
+  compare_result:
+    right: "Правильно"
+    not_right: "Неправильно"
