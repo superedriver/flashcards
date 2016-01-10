@@ -4,7 +4,7 @@ RSpec.describe Card, :type => :model do
 
   describe "check_translation? group" do
     before(:each) do
-      @card = Card.create(original_text: "мяч", translated_text: "ball")
+      @card = FactoryGirl.create(:card)
     end
 
     it "Correct translation" do
@@ -22,7 +22,7 @@ RSpec.describe Card, :type => :model do
 
   describe "review date group" do
     before(:each) do
-      @card = Card.create(original_text: "мяч", translated_text: "ball")
+      @card = FactoryGirl.create(:card)
     end
 
     it "on create" do
