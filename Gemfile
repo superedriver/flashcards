@@ -47,5 +47,8 @@ end
 
 gem 'pg', '~> 0.18.4'
 gem 'simple_form', '~> 3.2.1'
-
 gem 'nokogiri', '~> 1.6.6'
+
+group :test do
+  gem 'rspec-rails', '~> 3.0.0'
+end
