@@ -10,12 +10,12 @@ class Card < ActiveRecord::Base
   scope :actual_cards, -> { where("review_date <= ?", Date.current) }
   scope :random_card, -> { order("RANDOM()").first }
 
-  def check_translation?(input_text)
-    original_text.mb_chars.downcase == input_text
+  def check_translation?(inputed_text)
+    original_text.mb_chars.downcase == inputed_text.mb_chars.downcase
   end
 
   def change_review_date!
-    self.update_column(:review_date, Date.current + 3.day)
+    update_column(:review_date, Date.current + 3.day)
   end
 
   private
