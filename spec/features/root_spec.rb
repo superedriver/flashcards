@@ -1,16 +1,23 @@
+require "rails_helper"
+
 describe "check_root_path", type: :feature do
-  it "signs me in" do
+  before(:all) do
+    FactoryGirl.create(:card).update_column(:review_date, Date.current)
+  end
+
+  before(:each) do
     visit root_path
+  end
+
+  it "simple visit" do
     expect(page).to have_content I18n.t('activerecord.attributes.card.translated_text')
   end
 
-  # it "signs me in" do
-  #   visit root_path
-  #   within("#session") do
-  #     fill_in 'Email', :with => 'user@example.com'
-  #     fill_in 'Password', :with => 'password'
-  #   end
-  #   expect(page).to have_content I18n.t('activerecord.attributes.card.translated_text')
-  # end
-
+  it "fill the field" do
+    visit root_path
+    fill_in :original_text, with: 'qwerty'
+    click_button I18n.t('buttons.check')
+    expect(page).to have_content I18n.t('compare_result.not_right').mb_chars.upcase
+  end
 end
+

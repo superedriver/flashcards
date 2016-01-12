@@ -31,3 +31,5 @@ ru:
   compare_result:
     right: "Правильно"
     not_right: "Неправильно"
+  buttons:
+    check: "Проверить"
