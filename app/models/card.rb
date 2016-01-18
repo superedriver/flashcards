@@ -1,4 +1,6 @@
 class Card < ActiveRecord::Base
+  belongs_to :user
+
   validates :original_text, :translated_text, :review_date, presence: { message: I18n.t('error.validation.messages.cant_be_blank') }
 
   validate :check_difference
