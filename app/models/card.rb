@@ -1,6 +1,6 @@
 class Card < ActiveRecord::Base
   belongs_to :user
-  validates_associated :user
+  # validates_associated :user
 
   validates :original_text, :translated_text, :review_date, presence: { message: I18n.t('error.validation.messages.cant_be_blank') }
   validates :user_id, presence: true

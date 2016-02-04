@@ -7,15 +7,15 @@ RSpec.describe Card, type: :model do
       @card = FactoryGirl.create(:card)
     end
 
-    it "Correct translation" do
+    it "Correct" do
       expect(@card.check_translation?("мяч")).to be true
     end
 
-    it "Incorrect translation" do
+    it "Incorrect" do
       expect(@card.check_translation?("мяч1")).to be false
     end
 
-    it "Correct translation upcase" do
+    it "Correct upcase" do
       expect(@card.check_translation?("МЯЧ")).to be true
     end
   end

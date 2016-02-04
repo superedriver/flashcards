@@ -1,11 +1,9 @@
 require "rails_helper"
 
-describe "check_root_path", type: :feature do
-  before(:all) do
-    FactoryGirl.create(:card).update_column(:review_date, Date.current)
-  end
+describe "managing_cards", type: :feature do
 
   before(:each) do
+    FactoryGirl.create(:card).update_column(:review_date, Date.current)
     visit root_path
   end
 
@@ -20,6 +18,8 @@ describe "check_root_path", type: :feature do
   end
 
   it "correct value" do
+    FactoryGirl.create(:card).update_column(:review_date, Date.current)
+    visit root_path
     fill_in :original_text, with: "мяч"
     click_button I18n.t("buttons.check")
     expect(page).to have_content I18n.t("compare_result.right").mb_chars.upcase
