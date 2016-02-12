@@ -1,43 +1,46 @@
 <!--<p class="center-block">-->
   <!--Первый в мире удобный менеджер флеш-карточек. Именно так.-->
 <!--</p>-->
-<% if flash[:success] %>
-    <div class="h1 word_for_translate text-success">
-      <p><b><%=  flash[:success].mb_chars.upcase %>!</b></p>
-    </div>
-<% elsif flash[:error] %>
-    <div class="h1 word_for_translate text-danger">
-      <p><b><%=  flash[:error].mb_chars.upcase %>!</b></p>
-    </div>
-<% end %>
-<h1>Введите перевод слова:</h1>
-<div class="well bs-component">
+  <% if @card.present? %>
+    <h1>Введите перевод слова:</h1>
+    <div class="well bs-component">
+      <%= simple_form_for @card, html: {class: "form-horizontal"},
+                          url: check_path(id: @card.id) do |f| %>
+          <fieldset>
+            <%= hidden_field_tag(:id, @card.id) %>
+            <%= hidden_field_tag(:original_text, @card.original_text) %>
+            <%= hidden_field_tag(:translated_text, @card.translated_text) %>
+            <div class="h1 word_for_translate text-info">
+              <%= @card.translated_text.upcase %>
+            </div>
+            <div class="form-group">
+              <label for="<%= "original_text" %>" class="col-lg-2 control-label"><%= "Перевод" %>:</label>
+              <div class="col-lg-10">
+                <%= f.input :original_text, hint: false, label: false, error:false, input_html: {
+                    class: 'form-control',
+                    id: 'original_text',
+                    value: ""
+                }  %>
+              </div>
+            </div>
 
-  <%= simple_form_for @card, html: {class: "form-horizontal"},
-                      url: check_path(id: @card.id) do |f| %>
-      <fieldset>
-        <%= hidden_field_tag(:id, @card.id) %>
-        <%= hidden_field_tag(:original_text, @card.original_text) %>
-        <%= hidden_field_tag(:translated_text, @card.translated_text) %>
-        <div class="h1 word_for_translate text-info">
-          <%= @card.translated_text.upcase %>
+            <div class="form-group">
+              <div class="col-lg-10 col-lg-offset-2">
+                <%= f.submit I18n.t('buttons.check'), class: "btn btn-primary" %>
+              </div>
+            </div>
+          </fieldset>
         </div>
-        <div class="form-group">
-          <label for="<%= "original_text" %>" class="col-lg-2 control-label"><%= "Перевод" %>:</label>
-          <div class="col-lg-10">
-            <%= f.input :original_text, hint: false, label: false, error:false, input_html: {
-                class: 'form-control',
-                id: 'original_text',
-                value: ""
-            }  %>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="col-lg-10 col-lg-offset-2">
-            <%= f.submit I18n.t('buttons.check'), class: "btn btn-primary" %>
-          </div>
-        </div>
-      </fieldset>
+      <% end %>
+  <% else %>
+    <div class="well bs-component">
+    <fieldset>
+      <div class="h1 word_for_translate text-info">
+        Пока нет слов для изучения!
+      </div>
+    </fieldset>
+    </div>
   <% end %>
-</div>
+
+
+

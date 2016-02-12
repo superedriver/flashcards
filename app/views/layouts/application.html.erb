@@ -21,15 +21,27 @@
               <li><%= link_to I18n.t("buttons.edit_profile"), edit_user_path(current_user.id) %></li>
               <li><%= link_to I18n.t("buttons.logout"), logout_path, method: :post %></li>
           <% else %>
-              <li><%= link_to I18n.t("buttons.sign_up"), sign_up_path %></li>
+              <li><%= link_to 'VK', auth_at_provider_path(:provider => :vk) %></li>
+              <li><%= link_to 'FB', auth_at_provider_path(:provider => :facebook) %></li>
               <li><%= link_to I18n.t("buttons.login"), login_path %></li>
+              <li><%= link_to I18n.t("buttons.sign_up"), sign_up_path %></li>
           <% end %>
         </ul>
       </div>
     </div>
   </div>
 
+
   <div id="wrapper">
+    <% if flash[:success] %>
+        <div class="h1 word_for_translate text-success">
+          <p><b><%=  flash[:success].mb_chars.upcase %>!</b></p>
+        </div>
+    <% elsif flash[:error] %>
+        <div class="h1 word_for_translate text-danger">
+          <p><b><%=  flash[:error].mb_chars.upcase %>!</b></p>
+        </div>
+    <% end %>
 
     <%= yield %>
 
