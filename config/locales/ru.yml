@@ -5,11 +5,15 @@ ru:
   activerecord:
     models:
       card: "Карта"
+      user: "Пользователь"
     attributes:
       card:
         original_text: "Текст"
         translated_text: "Перевод"
         review_date: "Дата"
+      user:
+        email: "email"
+        password: "Пароль"
     errors:
       models:
         card:

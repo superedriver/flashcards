@@ -127,7 +127,8 @@ Rails.application.config.sorcery.configure do |config|
   config.vk.key = Rails.application.secrets.sorcery_vk_key
   config.vk.secret = Rails.application.secrets.sorcery_vk_secret
   config.vk.callback_url = Rails.application.secrets.sorcery_vk_callback_url
-  config.vk.user_info_mapping = {:login => "domain", :name => "full_name"}
+  config.vk.user_info_mapping = {:email => "uid"}
+  # config.vk.user_info_mapping = {:uid => "email"}
   # config.vk.user_info_mapping = {email: "login"}
   #
   # config.github.key = ""

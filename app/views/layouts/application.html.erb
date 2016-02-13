@@ -20,6 +20,10 @@
               <li><%= link_to I18n.t("buttons.add_card"), new_card_path %></li>
               <li><%= link_to I18n.t("buttons.edit_profile"), edit_user_path(current_user.id) %></li>
               <li><%= link_to I18n.t("buttons.logout"), logout_path, method: :post %></li>
+              <li><%= link_to 'VK', auth_at_provider_path(:provider => :vk) %></li>
+              <li><%= link_to 'FB', auth_at_provider_path(:provider => :facebook) %></li>
+              <li><%= link_to I18n.t("buttons.login"), login_path %></li>
+              <li><%= link_to I18n.t("buttons.sign_up"), sign_up_path %></li>
           <% else %>
               <li><%= link_to 'VK', auth_at_provider_path(:provider => :vk) %></li>
               <li><%= link_to 'FB', auth_at_provider_path(:provider => :facebook) %></li>

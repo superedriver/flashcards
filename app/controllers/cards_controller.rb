@@ -15,7 +15,10 @@ class CardsController < ApplicationController
   end
 
   def create
-    @card = Card.create(card_params)
+    @card = Card.new(card_params)
+    @card.user_id = current_user.id
+    @card.save
+    # @card = Card.create(card_params)
 
     if @card.persisted?
       redirect_to card_path(@card)
@@ -54,7 +57,7 @@ class CardsController < ApplicationController
   private
 
   def card_params
-    params.require(:card).permit(:original_text, :translated_text)
+    params.require(:card).permit(:original_text, :translated_text, :user_id)
   end
 
   def find_card

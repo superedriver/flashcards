@@ -4,9 +4,9 @@
       <%= render partial: 'shared/validation_errors', locals: { object: @card }  %>
       <fieldset>
         <legend>Введите значения:</legend>
+        <%= render partial: '/shared/form', locals: { f: f, property: :original_text, value: I18n.t("activerecord.attributes.card.original_text")}  %>
+        <%= render partial: '/shared/form', locals: { f: f, property: :translated_text, value: I18n.t("activerecord.attributes.card.translated_text")}  %>
 
-        <%= render partial: 'form_for_card', locals: { f: f, property: :original_text, value: I18n.t("activerecord.attributes.card.original_text")}  %>
-        <%= render partial: 'form_for_card', locals: { f: f, property: :translated_text, value: I18n.t("activerecord.attributes.card.translated_text")}  %>
 
         <div class="form-group">
           <div class="col-lg-10 col-lg-offset-2">

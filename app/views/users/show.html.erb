@@ -1,0 +1,10 @@
+<h1> User ID: <%= @user.id %></h1>
+<hr>
+<div>
+  <ul class="list-group">
+    <li class="list-group-item"><b class="text-info"><%= I18n.t("activerecord.attributes.user.email") %>:</b>&nbsp; <%= @user.email.present? ? @user.email : t('error.messages.empty_field') %></li>
+    <li class="list-group-item"><b class="text-info"><%= I18n.t("activerecord.attributes.user.password") %>:</b>&nbsp; <%= @user.password.present? ? @user.password : "*******" %></li>
+  </ul>
+  <%= link_to I18n.t("buttons.edit"), edit_user_path(@user), class: "btn btn-primary btn-lg" %>
+  <%= link_to I18n.t("buttons.cansel"), root_path, class: "btn btn-default btn-lg" %>
+</div>
