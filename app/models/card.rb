@@ -8,12 +8,11 @@ class Card < ActiveRecord::Base
   validate :check_difference
 
   before_validation(on: :create) do
-    # self[:review_date] = Date.current + 3.days
-    self[:review_date] = Date.current
+    self[:review_date] = Date.current + 3.days
+    # self[:review_date] = Date.current
   end
 
   scope :actual_cards, -> { where("review_date <= ?", Date.current) }
-  # scope :actual_cards, -> { where("user_id = ? AND review_date <= ?", current_user.id, Date.current) }
   scope :random_card, -> { order("RANDOM()").first }
 
   def check_translation?(inputed_text)

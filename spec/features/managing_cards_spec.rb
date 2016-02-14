@@ -3,8 +3,12 @@ require "rails_helper"
 describe "managing_cards", type: :feature do
 
   before(:each) do
-    FactoryGirl.create(:card).update_column(:review_date, Date.current)
+    @card = FactoryGirl.create(:card)
+    @card.update_column(:review_date, Date.current)
     visit root_path
+    fill_in :email, with: @card.user.email
+    fill_in :password, with: "qwerty"
+    click_button I18n.t("buttons.login")
   end
 
   it "simple visit" do

@@ -1,58 +1,103 @@
 require "rails_helper"
-require 'securerandom'
 
 describe "check_registration", type: :feature do
 
-  before(:all) do
-    @card = FactoryGirl.create(:card)
-    @card.update_column(:review_date, Date.current)
-  end
+  subject { page }
 
-  before(:each) do
-    visit root_path
-    click_link I18n.t("buttons.sign_up")
-  end
+  let(:registration_button) { I18n.t("buttons.registration") }
+  let(:email_field) { "user[email]" }
+  let(:pass_field) { "user[password]" }
+  let(:pass_conf_field) { "user[password_confirmation]" }
 
-  it "correct" do
-    fill_in "user[email]", with: "user#{SecureRandom.hex(15)}@gmail.com"
-    fill_in "user[password]", with: "qwerty"
-    fill_in "user[password_confirmation]", with: "qwerty"
-    click_button I18n.t("buttons.registration")
-    expect(page).to have_content "WELCOME"
+  let(:password) { "qwerty" }
+  let(:short_password) { "qw" }
+  let(:another_password) { "qwerty1" }
+
+  let(:email) { "user@gmail.com" }
+  let(:another_email) { "user1@gmail.com" }
+
+  before {
+    visit sign_up_path
+  }
+
+  it { should have_button( registration_button ) }
+  it { should have_field( email_field ) }
+  it { should have_field( pass_field ) }
+  it { should have_field( pass_conf_field ) }
+  it { should have_link(I18n.t("buttons.sign_up"), href: sign_up_path) }
+  it { should have_link(I18n.t("buttons.login"), href: login_path) }
+  it { should have_link( "VK", href: auth_at_provider_path("vk")) }
+  it { should have_link( "FB", href: auth_at_provider_path("facebook")) }
+  it { should have_content( "Регистрация нового пользователя" ) }
+
+  describe "with valid information" do
+    before do
+      visit sign_up_path
+      fill_in email_field, with: email
+      fill_in pass_field, with: password
+      fill_in pass_conf_field, with: password
+      click_button registration_button
+    end
+    it { should have_content "WELCOME" }
+    it { should have_content "Пока нет слов для изучения!" }
+
+    # it { should_not have_link(I18n.t("buttons.sign_up"), href: sign_up_path) }
+    # it { should_not have_link(I18n.t("buttons.login"), href: login_path) }
+    # it { should_not have_link( "VK", href: auth_at_provider_path("vk")) }
+    # it { should_not have_link( "FB", href: auth_at_provider_path("facebook")) }
+
+    it { should have_link(I18n.t("buttons.logout"), href: logout_path) }
+    it { should have_link(I18n.t("buttons.edit_profile"), href: edit_users_path) }
+    it { should have_link(I18n.t("buttons.show_profile"), href: users_path) }
+    it { should have_link(I18n.t("buttons.add_card"), href: new_card_path) }
+    it { should have_link(I18n.t("buttons.all_cards"), href: cards_path) }
   end
 
   describe "negative tests" do
 
-    before(:all) do
-      @user = FactoryGirl.create(:user, email: "user#{SecureRandom.hex(15)}@gmail.com")
-    end
+    before(:each) {
+      visit sign_up_path
+    }
 
-    it "non-unique email" do
-      fill_in "user[email]", with: @user.email
-      fill_in "user[password]", with: "qwerty"
-      fill_in "user[password_confirmation]", with: "qwerty"
-      click_button I18n.t("buttons.registration")
-      expect(page).to have_content I18n.t("activerecord.errors.models.user.attributes.email.taken")
+    describe "non-unique email" do
+      let(:user) { FactoryGirl.create(:user, email: email) }
+
+      before do
+        fill_in email_field, with: user.email
+        fill_in pass_field, with: password
+        fill_in pass_conf_field, with: password
+        click_button registration_button
+      end
+
+      it { should have_content I18n.t("activerecord.errors.models.user.attributes.email.taken") }
     end
 
     describe "password", type: :feature do
-
       before(:each) do
-        fill_in "user[email]", with: "user#{SecureRandom.hex(15)}@gmail.com"
+        visit sign_up_path
+        fill_in email_field, with: another_email
       end
 
-      it "too short" do
-        fill_in "user[password]", with: "qw"
-        fill_in "user[password_confirmation]", with: "qw"
-        click_button I18n.t("buttons.registration")
-        expect(page).to have_content I18n.t("activerecord.errors.models.user.attributes.password.too_short")
+      describe "too short" do
+        before do
+          fill_in pass_field, with: short_password
+          fill_in pass_conf_field, with: short_password
+          click_button registration_button
+        end
+
+        it { should have_content
+                I18n.t("activerecord.errors.models.user.attributes.password.too_short") }
       end
 
-      it "don't match" do
-        fill_in "user[password]", with: "qwer"
-        fill_in "user[password_confirmation]", with: "qwert"
-        click_button I18n.t("buttons.registration")
-        expect(page).to have_content I18n.t("activerecord.errors.models.user.attributes.password_confirmation.confirmation")
+      describe "don't match" do
+        before do
+          fill_in pass_field, with: password
+          fill_in pass_conf_field, with: another_password
+          click_button registration_button
+        end
+
+        it { should have_content
+                I18n.t("activerecord.errors.models.user.attributes.password_confirmation.confirmation") }
       end
     end
   end

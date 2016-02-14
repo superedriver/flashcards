@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to user_path(@user)
+      redirect_to users_path
     else
       render "edit"
     end
@@ -23,9 +23,6 @@ class UsersController < ApplicationController
   end
 
   def find_user
-    @user = User.find_by(id: params[:id])
-    unless @user
-      render text: "Page not found", status: 404
-    end
+    @user = current_user
   end
 end

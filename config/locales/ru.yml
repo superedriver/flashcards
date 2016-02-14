@@ -14,6 +14,7 @@ ru:
       user:
         email: "email"
         password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
     errors:
       models:
         card:
@@ -28,9 +29,10 @@ ru:
           invalid: "Невалидный юзер"
           attributes:
             email:
-              taken: "Пользователь с таким email уже существует"
+              blank: "Поле 'email' не заполненное!"
+              taken: "Пользователь с таким email уже существует!"
             password:
-              too_short: "Пароль должен содержать больше 2-х символов"
+              too_short: "Пароль должен содержать больше 2-х символов!"
             password_confirmation:
               confirmation: "Пароли не совпадают!"
               blank: "Подтвердите пароль!"
@@ -59,3 +61,4 @@ ru:
     login: "Войти"
     logout: "Выйти"
     edit_profile: "Редактировать профиль"
+    show_profile: "Показать профиль"
