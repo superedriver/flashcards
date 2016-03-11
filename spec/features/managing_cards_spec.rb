@@ -2,30 +2,46 @@ require "rails_helper"
 
 describe "managing_cards", type: :feature do
 
-  before(:each) do
-    @card = FactoryGirl.create(:card)
-    @card.update_column(:review_date, Date.current)
-    visit root_path
-    fill_in :email, with: @card.user.email
-    fill_in :password, with: "qwerty"
-    click_button I18n.t("buttons.login")
-  end
+  subject { page }
+  let(:card) { FactoryGirl.create(:card) }
+  let(:user) { card.user }
+  let(:check_button) { I18n.t("buttons.check") }
+  let(:login_button) { I18n.t("buttons.login") }
 
-  it "simple visit" do
-    expect(page).to have_content I18n.t("activerecord.attributes.card.translated_text")
-  end
+  describe "user has cards to learn" do
+    before do
+      card.update_column(:review_date, Date.current)
+      visit root_path
+      fill_in :email, with: card.user.email
+      fill_in :password, with: "qwerty"
+      click_button login_button
+      visit root_path
+    end
 
-  it "incorrect value" do
-    fill_in :original_text, with: "qwerty"
-    click_button I18n.t("buttons.check")
-    expect(page).to have_content I18n.t("compare_result.not_right").mb_chars.upcase
-  end
+    it { should have_content I18n.t("activerecord.attributes.card.translated_text") }
+    it { should have_content "Введите перевод слова" }
+    it { should have_content "Перевод:" }
+    it { should have_button check_button }
 
-  it "correct value" do
-    FactoryGirl.create(:card).update_column(:review_date, Date.current)
-    visit root_path
-    fill_in :original_text, with: "мяч"
-    click_button I18n.t("buttons.check")
-    expect(page).to have_content I18n.t("compare_result.right").mb_chars.upcase
+    describe "incorrect value" do
+      before do
+        fill_in :original_text, with: "qwerty"
+        click_button check_button
+      end
+
+      it { should have_content I18n.t("compare_result.not_right").mb_chars.upcase }
+      it { should have_content card.original_text.mb_chars.upcase }
+    end
+
+    describe "correct value" do
+      before do
+        FactoryGirl.create(:card).update_column(:review_date, Date.current)
+        visit root_path
+        fill_in :original_text, with: "мяч"
+        click_button check_button
+      end
+
+      it { should have_content I18n.t("compare_result.right").mb_chars.upcase }
+    end
   end
 end

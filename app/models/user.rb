@@ -1,5 +1,8 @@
 class User < ActiveRecord::Base
   has_many :cards, dependent: :destroy
+  has_many :authentications, dependent: :destroy
+
+  before_save { self.email = email.downcase }
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes["password"] }
   validates :password, confirmation: true, if: -> { new_record? || changes["password"] }
@@ -10,6 +13,5 @@ class User < ActiveRecord::Base
     config.authentications_class = Authentication
   end
 
-  has_many :authentications, dependent: :destroy
   accepts_nested_attributes_for :authentications
 end

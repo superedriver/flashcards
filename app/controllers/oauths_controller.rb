@@ -5,8 +5,8 @@ class OauthsController < ApplicationController
   # sends the user on a trip to the provider,
   # and after authorizing there back to the callback url.
   def oauth
-      session[:return_to_url] = request.referer unless request.referer =~ /oauth/
-      login_at(params[:provider])
+    session[:return_to_url] = request.referer unless request.referer =~ /oauth/
+    login_at(params[:provider])
   end
 
   def callback
@@ -19,10 +19,12 @@ class OauthsController < ApplicationController
       if @user = add_provider_to_user(provider)
         puts "111111111111111111111111111111111111111111"
         puts @user.inspect
+        puts provider.inspect
         flash[:notice] = "Logged in using #{provider.titleize}!"
         redirect_to root_path
       else
         puts "222222222222222222222222222222222222222222"
+        puts current_user.inspect
         flash[:error] = "You have already logged from #{provider.titleize}!"
         redirect_to root_path
       end
@@ -30,6 +32,7 @@ class OauthsController < ApplicationController
       puts "333333333333333333333333333333333333333333"
       if @user = login_from(provider)
         puts "4444444444444444444444444444444444444444"
+        puts provider.inspect
         flash[:notice] = "Logged in from #{provider.titleize}!"
         redirect_to root_path
       else

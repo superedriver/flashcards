@@ -2,10 +2,21 @@ require "rails_helper"
 
 RSpec.describe Card, type: :model do
 
+  before do
+    @card = FactoryGirl.create(:card)
+  end
+
+  subject { @card }
+
+  it { should respond_to(:original_text) }
+  it { should respond_to(:translated_text) }
+  it { should respond_to(:review_date) }
+  it { should respond_to(:created_at) }
+  it { should respond_to(:updated_at) }
+  it { should respond_to(:user_id) }
+  it { should respond_to(:check_translation?) }
+
   describe "#check_translation?" do
-    before(:each) do
-      @card = FactoryGirl.create(:card)
-    end
 
     it "Correct" do
       expect(@card.check_translation?("мяч")).to be true
@@ -21,9 +32,6 @@ RSpec.describe Card, type: :model do
   end
 
   describe "#review date" do
-    before(:each) do
-      @card = FactoryGirl.create(:card)
-    end
 
     it "on create" do
       expect(@card.review_date).to eq(Date.current + 3.days)

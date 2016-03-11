@@ -1,6 +1,20 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
+
+  before do
+    @user = FactoryGirl.create(:user)
+  end
+
+  subject { @user }
+
+  it { should respond_to(:email) }
+  it { should respond_to(:password) }
+  it { should respond_to(:created_at) }
+  it { should respond_to(:updated_at) }
+  it { should respond_to(:crypted_password) }
+  it { should respond_to(:salt) }
+
   describe "Correct" do
     it "new user" do
       @user = User.new(email: "qwerty", password: "123456", password_confirmation: "123456")
@@ -18,9 +32,18 @@ RSpec.describe User, type: :model do
             to eq(I18n.t("activerecord.errors.models.user.attributes.email.blank"))
       end
 
-      it "in not unique" do
+      it "not unique" do
         FactoryGirl.create(:user, email: "qwerty", password: "123456", password_confirmation: "123456")
         @user = User.new(email: "qwerty", password: "123456", password_confirmation: "123456")
+        @user.valid?
+        expect(@user.errors.messages[:email].length).to eq(1)
+        expect(@user.errors.messages[:email][0]).
+            to eq(I18n.t("activerecord.errors.models.user.attributes.email.taken"))
+      end
+
+      it "upcase" do
+        FactoryGirl.create(:user, email: "UpCaSE", password: "123456", password_confirmation: "123456")
+        @user = User.new(email: "upcase", password: "123456", password_confirmation: "123456")
         @user.valid?
         expect(@user.errors.messages[:email].length).to eq(1)
         expect(@user.errors.messages[:email][0]).

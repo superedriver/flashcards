@@ -41,10 +41,10 @@ describe "check_registration", type: :feature do
     it { should have_content "WELCOME" }
     it { should have_content "Пока нет слов для изучения!" }
 
-    # it { should_not have_link(I18n.t("buttons.sign_up"), href: sign_up_path) }
-    # it { should_not have_link(I18n.t("buttons.login"), href: login_path) }
-    # it { should_not have_link( "VK", href: auth_at_provider_path("vk")) }
-    # it { should_not have_link( "FB", href: auth_at_provider_path("facebook")) }
+    it { should_not have_link(I18n.t("buttons.sign_up"), href: sign_up_path) }
+    it { should_not have_link(I18n.t("buttons.login"), href: login_path) }
+    it { should_not have_link( "VK", href: auth_at_provider_path("vk")) }
+    it { should_not have_link( "FB", href: auth_at_provider_path("facebook")) }
 
     it { should have_link(I18n.t("buttons.logout"), href: logout_path) }
     it { should have_link(I18n.t("buttons.edit_profile"), href: edit_users_path) }
@@ -70,6 +70,35 @@ describe "check_registration", type: :feature do
       end
 
       it { should have_content I18n.t("activerecord.errors.models.user.attributes.email.taken") }
+    end
+
+    describe "upcase letters in email" do
+      let(:upcase_email) { "UpCasE@gmail.com" }
+
+      describe "registration" do
+        before do
+          fill_in email_field, with: upcase_email
+          fill_in pass_field, with: password
+          fill_in pass_conf_field, with: password
+          click_button registration_button
+        end
+
+        it { should have_content "WELCOME" }
+        it { should have_content "Пока нет слов для изучения!" }
+      end
+
+      describe "try to register with the same downcase email" do
+
+        before do
+          FactoryGirl.create(:user, email: upcase_email)
+          fill_in email_field, with: upcase_email.downcase
+          fill_in pass_field, with: password
+          fill_in pass_conf_field, with: password
+          click_button registration_button
+        end
+
+        it { should have_content I18n.t("activerecord.errors.models.user.attributes.email.taken") }
+      end
     end
 
     describe "password", type: :feature do
