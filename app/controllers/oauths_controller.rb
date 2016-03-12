@@ -6,55 +6,41 @@ class OauthsController < ApplicationController
   # and after authorizing there back to the callback url.
   def oauth
     session[:return_to_url] = request.referer unless request.referer =~ /oauth/
-    login_at(params[:provider])
+    login_at(auth_params[:provider])
   end
 
   def callback
 
-    provider = params[:provider]
+    provider = auth_params[:provider]
 
     if logged_in?
-      puts "0000000000000000000000000000000000"
-      puts current_user.inspect
       if @user = add_provider_to_user(provider)
-        puts "111111111111111111111111111111111111111111"
-        puts @user.inspect
-        puts provider.inspect
-        flash[:notice] = "Logged in using #{provider.titleize}!"
-        redirect_to root_path
+        redirect_to root_path, notice: "Logged in using #{provider.titleize}!"
       else
-        puts "222222222222222222222222222222222222222222"
-        puts current_user.inspect
-        flash[:error] = "You have already logged from #{provider.titleize}!"
-        redirect_to root_path
+        redirect_to root_path, error: "You have already logged from #{provider.titleize}!"
       end
     else
-      puts "333333333333333333333333333333333333333333"
       if @user = login_from(provider)
-        puts "4444444444444444444444444444444444444444"
-        puts provider.inspect
-        flash[:notice] = "Logged in from #{provider.titleize}!"
-        redirect_to root_path
+        redirect_to root_path, notice: "Logged in from #{provider.titleize}!"
       else
-        puts "55555555555555555555555555555555555555555555555555"
         begin
-          puts "66666666666666666666666666666666666666666666666666"
           @user = create_from(provider)
-
           # NOTE: this is the place to add '@user.activate!' if you are using user_activation submodule
 
           # reset_session clears session[:return_to_url], so calculate the redirect first
-          flash[:notice] = "Logged in from #{provider.titleize}!"
-          redirect_to root_path
 
+          redirect_to root_path, notice: "Logged in from #{provider.titleize}!"
           reset_session # protect from session fixation attack
           auto_login(@user)
         rescue
-          puts "77777777777777777777777777777777777777777777777777"
-          flash[:error] = "Failed to login from #{provider.titleize}!"
-          redirect_back_or_to root_path
+          redirect_back_or_to root_path, error: "Failed to login from #{provider.titleize}!"
         end
       end
     end
   end
+
+  private
+    def auth_params
+      params.permit(:code, :provider)
+    end
 end

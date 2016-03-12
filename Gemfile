@@ -57,3 +57,5 @@ gem 'sorcery'
 group :development, :test do
   gem 'database_cleaner'
 end
+
+gem 'pry-rails', '~> 0.3.4'

@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe "check_registration", type: :feature do
-
   subject { page }
 
   let(:registration_button) { I18n.t("buttons.registration") }
@@ -16,9 +15,7 @@ describe "check_registration", type: :feature do
   let(:email) { "user@gmail.com" }
   let(:another_email) { "user1@gmail.com" }
 
-  before {
-    visit sign_up_path
-  }
+  before { visit sign_up_path }
 
   it { should have_button( registration_button ) }
   it { should have_field( email_field ) }
@@ -54,10 +51,7 @@ describe "check_registration", type: :feature do
   end
 
   describe "negative tests" do
-
-    before(:each) {
-      visit sign_up_path
-    }
+    before(:each) { visit sign_up_path }
 
     describe "non-unique email" do
       let(:user) { FactoryGirl.create(:user, email: email) }
@@ -88,7 +82,6 @@ describe "check_registration", type: :feature do
       end
 
       describe "try to register with the same downcase email" do
-
         before do
           FactoryGirl.create(:user, email: upcase_email)
           fill_in email_field, with: upcase_email.downcase
@@ -114,8 +107,7 @@ describe "check_registration", type: :feature do
           click_button registration_button
         end
 
-        it { should have_content
-                I18n.t("activerecord.errors.models.user.attributes.password.too_short") }
+        it { should have_content I18n.t("activerecord.errors.models.user.attributes.password.too_short") }
       end
 
       describe "don't match" do
@@ -125,8 +117,7 @@ describe "check_registration", type: :feature do
           click_button registration_button
         end
 
-        it { should have_content
-                I18n.t("activerecord.errors.models.user.attributes.password_confirmation.confirmation") }
+        it { should have_content I18n.t("activerecord.errors.models.user.attributes.password_confirmation.confirmation") }
       end
     end
   end

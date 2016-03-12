@@ -9,9 +9,9 @@ Rails.application.routes.draw do
 
   resource :users, only: [:show, :edit, :update]
 
-  resources :user_sessions
-  get '/login', to: 'user_sessions#new', as: :login
-  post '/logout', to: 'user_sessions#destroy', as: :logout
+  resources :sessions
+  get '/login', to: 'sessions#new', as: :login
+  post '/logout', to: 'sessions#destroy', as: :logout
 
   post "oauth/callback" => "oauths#callback"
   get "oauth/callback" => "oauths#callback" # for use with Github, Facebook
