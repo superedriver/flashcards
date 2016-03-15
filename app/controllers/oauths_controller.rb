@@ -15,13 +15,13 @@ class OauthsController < ApplicationController
 
     if logged_in?
       if @user = add_provider_to_user(provider)
-        redirect_to root_path, notice: "Logged in using #{provider.titleize}!"
+        redirect_to root_path, notice: I18n.t('flashes.login.success_oauth') + " #{provider.titleize}!"
       else
-        redirect_to root_path, error: "You have already logged from #{provider.titleize}!"
+        redirect_to root_path, flash: { error: I18n.t('flashes.login.already_logged') + " #{provider.titleize}!" }
       end
     else
       if @user = login_from(provider)
-        redirect_to root_path, notice: "Logged in from #{provider.titleize}!"
+        redirect_to root_path, notice: I18n.t('flashes.login.success_oauth') + " #{provider.titleize}!"
       else
         begin
           @user = create_from(provider)
@@ -29,11 +29,11 @@ class OauthsController < ApplicationController
 
           # reset_session clears session[:return_to_url], so calculate the redirect first
 
-          redirect_to root_path, notice: "Logged in from #{provider.titleize}!"
+          redirect_to root_path, notice: I18n.t('flashes.login.success_oauth') + " #{provider.titleize}!"
           reset_session # protect from session fixation attack
           auto_login(@user)
         rescue
-          redirect_back_or_to root_path, error: "Failed to login from #{provider.titleize}!"
+          redirect_back_or_to root_path, flash: { error: I18n.t('flashes.login.failed_oauth') + " #{provider.titleize}!" }
         end
       end
     end

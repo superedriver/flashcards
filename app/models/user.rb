@@ -13,5 +13,9 @@ class User < ActiveRecord::Base
     config.authentications_class = Authentication
   end
 
+  def get_card
+    self.cards.actual_cards.random_card
+  end
+
   accepts_nested_attributes_for :authentications
 end

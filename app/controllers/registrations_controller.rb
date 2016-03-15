@@ -1,5 +1,5 @@
 class RegistrationsController < ApplicationController
-  skip_before_action :require_login, only: [:index, :new, :create]
+  skip_before_action :require_login, only: [:new, :create]
 
   def new
     @user = User.new
@@ -9,8 +9,7 @@ class RegistrationsController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       login(params[:user][:email].downcase, params[:user][:password])
-      flash[:success] = 'Welcome!'
-      redirect_to root_path
+      redirect_to root_path, flash: { success: I18n.t('flashes.registration.success') }
     else
       render 'new'
     end

@@ -4,7 +4,6 @@ class CardsController < ApplicationController
   before_action :find_card, only: [:show, :edit, :update, :destroy, :check]
 
   def index
-    # @cards = Card.where("user_id = ?", current_user.id)
     @cards = current_user.cards
   end
 

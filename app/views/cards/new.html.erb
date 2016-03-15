@@ -10,8 +10,8 @@
 
         <div class="form-group">
           <div class="col-lg-10 col-lg-offset-2">
-            <%= f.submit "Save", class: "btn btn-primary" %>
-            <%= link_to "Cansel", cards_path, class: "btn btn-default" %>
+            <%= f.submit I18n.t("buttons.save"), class: "btn btn-primary" %>
+            <%= link_to I18n.t("buttons.cansel"), cards_path, class: "btn btn-default" %>
           </div>
         </div>
       </fieldset>

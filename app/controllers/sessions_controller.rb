@@ -7,9 +7,9 @@ class SessionsController < ApplicationController
 
   def create
     if @user = login(params[:email].downcase, params[:password])
-      redirect_back_or_to(root_path, success: 'Glad to see you again!')
+      redirect_back_or_to root_path, success: I18n.t('flashes.login.success')
     else
-      flash[:error] = 'Incorrect login or password!'
+      flash.now[:error] = I18n.t('flashes.login.failed')
       render action: 'new'
     end
   end

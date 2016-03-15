@@ -12,14 +12,15 @@
   <tbody>
   <% @cards.each.with_index(1) do |card, index| %>
   <tr>
-    <td><%= link_to index, "/cards/#{card.id}" %></td>
+    <td><%= link_to index, card_path(card) %></td>
     <td><%= card.id %></td>
-    <td><%= card.original_text.present? ? card.original_text : t('error.messages.empty_field') %></td>
+    <!--<td><%#= card.original_text.present? ? card.original_text : t('error.messages.empty_field') %></td>-->
+    <td><%= card.get_text(:original_text) %></td>
     <td><%= card.translated_text.present? ? card.translated_text : t('error.messages.empty_field')  %></td>
     <td><%= card.review_date.present? ? (l card.review_date, format: :default) : t('error.messages.empty_field') %></td>
     <td>
-      <%= link_to "Edit", edit_card_path(card), class: "btn btn-primary btn-sm" %>
-      <%= link_to "Delete", card, method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-sm" %>
+      <%= link_to I18n.t("buttons.edit"), edit_card_path(card), class: "btn btn-primary btn-sm" %>
+      <%= link_to I18n.t("buttons.delete"), card, method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-sm" %>
     </td>
   </tr>
   <% end %>

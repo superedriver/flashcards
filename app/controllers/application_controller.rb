@@ -7,12 +7,13 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def show_errors(exception)
-    render xml: exception, status: 404
-  end
+    def show_errors(exception)
+      render exception, status: 404
+    end
 
   private
-  def not_authenticated
-    redirect_to login_path, alert: "Please login first"
-  end
+
+    def not_authenticated
+      redirect_to login_path, alert: I18n.t('flashes.login.login_first')
+    end
 end
