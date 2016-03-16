@@ -47,8 +47,8 @@ ru:
   confirm:
     delete_card: "Точно удалить?"
   compare_result:
-    right: "Правильно"
-    not_right: "Неправильно"
+    right: "Правильно!"
+    not_right: "Неправильно!"
   buttons:
     check: "Проверить"
     sign_up: "Регистрация"
@@ -65,10 +65,10 @@ ru:
     show_profile: "Показать профиль"
   flashes:
     login:
-      login_first: "Пожалуйста, войдите в систему либо зарегистрируйтесь"
+      login_first: "Пожалуйста, войдите в систему либо зарегистрируйтесь!"
       success_oauth: "Вы вошли, используя"
       success: "Рады видитеть Вас снова!"
-      failed_oauth: "Ошибка при входе в систему"
+      failed_oauth: "Ошибка при входе в систему!"
       failed: "Неправильный логин либо пароль!"
       already_logged: "Вы уже вошли в систему, используя"
     logout:

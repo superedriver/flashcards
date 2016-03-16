@@ -4,19 +4,12 @@
                       url: users_path  do |f| %>
 
       <%= render partial: 'shared/validation_errors', locals: { object: @user }  %>
-
       <fieldset>
         <legend>User ID: <%= @user.id %></legend>
-
-        <%= render partial: '/shared/form', locals: { f: f, property: :email, value: I18n.t("activerecord.attributes.user.email") }  %>
-        <%= render partial: '/shared/form', locals: { f: f, property: :password, value: I18n.t("activerecord.attributes.user.password" ) }  %>
-
-        <div class="form-group">
-          <div class="col-lg-10 col-lg-offset-2">
-            <%= f.submit I18n.t("buttons.save"), class: "btn btn-primary" %>
-            <%= link_to I18n.t("buttons.cansel"), root_path, class: "btn btn-default" %>
-          </div>
-        </div>
+        <%= f.input :email, required: true %>
+        <%= f.input :password, required: true %>
+        <%= f.submit I18n.t("buttons.save"), class: "btn btn-primary" %>
+        <%= link_to I18n.t("buttons.cansel"), root_path, class: "btn btn-default" %>
       </fieldset>
   <% end %>
 </div>

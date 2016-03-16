@@ -59,3 +59,4 @@ group :development, :test do
 end
 
 gem 'pry-rails', '~> 0.3.4'
+gem 'bootstrap-sass', '~> 3.3', '>= 3.3.6'

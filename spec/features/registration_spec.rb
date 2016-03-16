@@ -35,7 +35,7 @@ describe "check_registration", type: :feature do
       fill_in pass_conf_field, with: password
       click_button registration_button
     end
-    it { should have_content "WELCOME" }
+    it { should have_content I18n.t("flashes.registration.success") }
     it { should have_content "Пока нет слов для изучения!" }
 
     it { should_not have_link(I18n.t("buttons.sign_up"), href: sign_up_path) }
@@ -77,7 +77,7 @@ describe "check_registration", type: :feature do
           click_button registration_button
         end
 
-        it { should have_content "WELCOME" }
+        it { should have_content I18n.t("flashes.registration.success") }
         it { should have_content "Пока нет слов для изучения!" }
       end
 

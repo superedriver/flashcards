@@ -8,8 +8,8 @@ class Card < ActiveRecord::Base
   validate :check_difference
 
   before_validation(on: :create) do
-    # self[:review_date] = Date.current + 3.days
-    self[:review_date] = Date.current
+    self[:review_date] = Date.current + 3.days
+    # self[:review_date] = Date.current
   end
 
   scope :actual_cards, -> { where("review_date <= ?", Date.current) }

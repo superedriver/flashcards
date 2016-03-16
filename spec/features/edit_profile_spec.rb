@@ -52,7 +52,7 @@ describe "user edit_profile", type: :feature do
       fill_in :email, with: user.email
       fill_in :password, with: "qwerty1"
       click_button login_button
-      expect(page).to have_content "GLAD TO SEE YOU AGAIN"
+      expect(page).to have_content I18n.t("flashes.login.success")
     end
   end
 

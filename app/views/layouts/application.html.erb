@@ -32,11 +32,6 @@
                   <li><%= link_to I18n.t("buttons.show_profile"), users_path %></li>
                   <li class="divider"></li>
                   <li><%= link_to I18n.t("buttons.logout"), logout_path, method: :post %></li>
-                  <li class="divider"></li>
-                  <li><%= link_to 'VK', auth_at_provider_path(:provider => :vk) %></li>
-                  <li><%= link_to 'FB', auth_at_provider_path(:provider => :facebook) %></li>
-                  <li><%= link_to I18n.t("buttons.login"), login_path %></li>
-                  <li><%= link_to I18n.t("buttons.sign_up"), sign_up_path %></li>
                 </ul>
               </li>
           <% else %>
@@ -60,15 +55,15 @@
 
     <% if flash[:success] %>
         <div class="h1 word_for_translate text-success">
-          <p><b><%=  flash[:success].mb_chars.upcase %>!</b></p>
+          <p><b><%=  flash[:success] %></b></p>
         </div>
     <% elsif flash[:error] %>
         <div class="h1 word_for_translate text-danger">
-          <p><b><%=  flash[:error].mb_chars.upcase %>!</b></p>
+          <p><b><%=  flash[:error] %></b></p>
         </div>
     <% elsif flash[:notice] %>
         <div class="h1 word_for_translate text-info">
-          <p><b><%=  flash[:notice].mb_chars.upcase %>!</b></p>
+          <p><b><%=  flash[:notice] %></b></p>
         </div>
     <% end %>
 
