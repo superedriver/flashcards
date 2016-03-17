@@ -17,15 +17,15 @@ RSpec.describe User, type: :model do
 
   describe "Correct" do
     it "new user" do
-      @user = User.new(email: "qwerty", password: "123456", password_confirmation: "123456")
+      @user = FactoryGirl.build(:user, email: "qwerty", password: "123456", password_confirmation: "123456")
       expect(@user.save).to be true
     end
   end
 
   describe "Incorrect" do
-    describe "email" do
+    describe "#email" do
       it "email blank" do
-        @user = User.new(email: "", password: "123456", password_confirmation: "123456")
+        @user = FactoryGirl.build(:user, email: "", password: "123456", password_confirmation: "123456")
         @user.valid?
         expect(@user.errors.messages[:email].length).to eq(1)
         expect(@user.errors.messages[:email][0]).
@@ -34,7 +34,7 @@ RSpec.describe User, type: :model do
 
       it "not unique" do
         FactoryGirl.create(:user, email: "qwerty", password: "123456", password_confirmation: "123456")
-        @user = User.new(email: "qwerty", password: "123456", password_confirmation: "123456")
+        @user = FactoryGirl.build(:user, email: "qwerty", password: "123456", password_confirmation: "123456")
         @user.valid?
         expect(@user.errors.messages[:email].length).to eq(1)
         expect(@user.errors.messages[:email][0]).
@@ -43,7 +43,7 @@ RSpec.describe User, type: :model do
 
       it "upcase" do
         FactoryGirl.create(:user, email: "UpCaSE", password: "123456", password_confirmation: "123456")
-        @user = User.new(email: "upcase", password: "123456", password_confirmation: "123456")
+        @user = FactoryGirl.build(:user, email: "upcase", password: "123456", password_confirmation: "123456")
         @user.valid?
         expect(@user.errors.messages[:email].length).to eq(1)
         expect(@user.errors.messages[:email][0]).
@@ -51,9 +51,9 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe "password" do
+    describe "#password" do
       it "different passwords" do
-        @user = User.new(email: "qwerty", password: "1234567", password_confirmation: "123456")
+        @user = FactoryGirl.build(:user, email: "qwerty", password: "1234567", password_confirmation: "123456")
         @user.valid?
         expect(@user.errors.messages[:password_confirmation].length).to eq(1)
         expect(@user.errors.messages[:password_confirmation][0]).
@@ -61,7 +61,7 @@ RSpec.describe User, type: :model do
       end
 
       it "too short" do
-        @user = User.new(email: "qwerty", password: "12", password_confirmation: "12")
+        @user = FactoryGirl.build(:user, email: "qwerty", password: "12", password_confirmation: "12")
         @user.valid?
         expect(@user.errors.messages[:password].length).to eq(1)
         expect(@user.errors.messages[:password][0]).
@@ -69,7 +69,7 @@ RSpec.describe User, type: :model do
       end
 
       it "blank" do
-        @user = User.new(email: "qwerty", password: "", password_confirmation: "")
+        @user = FactoryGirl.build(:user, email: "qwerty", password: "", password_confirmation: "")
         @user.valid?
         expect(@user.errors.messages[:password].length).to eq(1)
         expect(@user.errors.messages[:password][0]).
@@ -77,7 +77,7 @@ RSpec.describe User, type: :model do
       end
 
       it "password_confirmation blank" do
-        @user = User.new(email: "qwerty", password: "123456", password_confirmation: "")
+        @user = FactoryGirl.build(:user, email: "qwerty", password: "123456", password_confirmation: "")
         @user.valid?
         expect(@user.errors.messages[:password_confirmation].length).to eq(2)
         expect(@user.errors.messages[:password_confirmation][0]).

@@ -8,7 +8,8 @@ class Card < ActiveRecord::Base
   validate :check_difference
 
   before_validation(on: :create) do
-    self[:review_date] = Date.current + 3.days
+    # self[:review_date] = Date.current + 3.days
+    self[:review_date] = 3.days.from_now.to_date
     # self[:review_date] = Date.current
   end
 
@@ -20,7 +21,8 @@ class Card < ActiveRecord::Base
   end
 
   def change_review_date!
-    update_column(:review_date, Date.current + 3.day)
+    # update_column(:review_date, Date.current + 3.day)
+    update_column(:review_date, 3.days.from_now.to_date)
   end
 
   private
