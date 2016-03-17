@@ -45,7 +45,7 @@ class CardsController < ApplicationController
       flash[:success] = I18n.t("compare_result.right")
       @card.change_review_date!
     else
-      flash[:error] = I18n.t("compare_result.not_right") + " " + params[:original_text].mb_chars.upcase
+      flash[:error] = I18n.t("compare_result.not_right", text: params[:original_text].mb_chars.upcase )
     end
 
     redirect_to root_path

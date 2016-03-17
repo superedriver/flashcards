@@ -22,9 +22,9 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "Incorrect" do
+  describe "Validations" do
     describe "#email" do
-      it "email blank" do
+      it "blank" do
         @user = FactoryGirl.build(:user, email: "", password: "123456", password_confirmation: "123456")
         @user.valid?
         expect(@user.errors.messages[:email].length).to eq(1)

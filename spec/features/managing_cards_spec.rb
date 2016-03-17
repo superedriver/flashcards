@@ -29,8 +29,7 @@ describe "managing_cards", type: :feature do
         click_button check_button
       end
 
-      it { should have_content I18n.t("compare_result.not_right") }
-      it { should have_content card.original_text.mb_chars.upcase }
+      it { should have_content I18n.t("compare_result.not_right", text: card.original_text.mb_chars.upcase) }
     end
 
     describe "correct value" do
