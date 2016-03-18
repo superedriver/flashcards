@@ -64,13 +64,15 @@ ru:
     edit_profile: "Редактировать профиль"
     show_profile: "Показать профиль"
   flashes:
+    oauth:
+      login:
+        success: "Вы вошли, используя %{provider}"
+        failed: "Ошибка при входе в систему, используя %{provider}"
+        already_logged: "Вы уже вошли в систему, используя %{provider}"
     login:
       login_first: "Пожалуйста, войдите в систему либо зарегистрируйтесь!"
-      success_oauth: "Вы вошли, используя"
       success: "Рады видитеть Вас снова!"
-      failed_oauth: "Ошибка при входе в систему!"
       failed: "Неправильный логин либо пароль!"
-      already_logged: "Вы уже вошли в систему, используя"
     logout:
       success: "Пока-пока!"
     registration:
