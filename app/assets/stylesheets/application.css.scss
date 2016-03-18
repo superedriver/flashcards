@@ -13,6 +13,13 @@
  *= require_tree .
  *= require_self
  */
+
+@mixin box_sizing {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 #container {
     margin: 48px auto;
     width: 960px;
@@ -64,3 +71,17 @@
 }
 /* MISC */
 .clearfix:after {content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0;} html[xmlns].clearfix{display:block;} * html .clearfix{height:1%;}
+
+/* miscellaneous */
+
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 45px;
+  @include box_sizing;
+}
+
+fieldset {
+  padding: 20px;
+}

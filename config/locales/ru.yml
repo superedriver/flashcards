@@ -3,21 +3,39 @@ ru:
     formats:
       default: "%d/%m/%Y"
   activerecord:
+    models:
+      card: "Карта"
+      user: "Пользователь"
+    attributes:
+      card:
+        original_text: "Текст"
+        translated_text: "Перевод"
+        review_date: "Дата"
+      user:
+        email: "email"
+        password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
+    errors:
       models:
-        card: "Карта"
-      attributes:
         card:
-          original_text: "Текст"
-          translated_text: "Перевод"
-          review_date: "Дата"
-      errors:
-        models:
-          card:
-            attributes:
-              original_text:
-                blank: "Поле 'Текст' не может быть пустым!"
-              translated_text:
-                blank: "Поле 'Перевод' не может быть пустым!"
+          attributes:
+            original_text:
+              blank: "Поле 'Текст' не может быть пустым!"
+            translated_text:
+              blank: "Поле 'Перевод' не может быть пустым!"
+            user_id:
+              blank: "Карта не привязана к юзеру! (user_id.blank)"
+        user:
+          invalid: "Невалидный юзер"
+          attributes:
+            email:
+              blank: "Поле 'email' не заполненное!"
+              taken: "Пользователь с таким email уже существует!"
+            password:
+              too_short: "Пароль должен содержать больше 2-х символов!"
+            password_confirmation:
+              confirmation: "Пароли не совпадают!"
+              blank: "Подтвердите пароль!"
   error:
     messages:
       empty_field: "Отсутствует!"
@@ -29,7 +47,33 @@ ru:
   confirm:
     delete_card: "Точно удалить?"
   compare_result:
-    right: "Правильно"
-    not_right: "Неправильно"
+    right: "Правильно!"
+    not_right: "Неправильно! %{text}!"
   buttons:
     check: "Проверить"
+    sign_up: "Регистрация"
+    all_cards: "Все карточки"
+    add_card: "Добавить карточку"
+    registration: "Зарегистрироваться"
+    save: "Сохранить"
+    cansel: "Отменить"
+    edit: "Редактировать"
+    delete: "Удалить"
+    login: "Войти"
+    logout: "Выйти"
+    edit_profile: "Редактировать профиль"
+    show_profile: "Показать профиль"
+  flashes:
+    oauth:
+      login:
+        success: "Вы вошли, используя %{provider}"
+        failed: "Ошибка при входе в систему, используя %{provider}"
+        already_logged: "Вы уже вошли в систему, используя %{provider}"
+    login:
+      login_first: "Пожалуйста, войдите в систему либо зарегистрируйтесь!"
+      success: "Рады видитеть Вас снова!"
+      failed: "Неправильный логин либо пароль!"
+    logout:
+      success: "Пока-пока!"
+    registration:
+      success: "Добро пожаловать!"

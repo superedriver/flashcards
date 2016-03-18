@@ -2,38 +2,46 @@ require "rails_helper"
 
 RSpec.describe Card, type: :model do
 
-  describe "#check_translation?" do
-    before(:each) do
-      @card = FactoryGirl.create(:card)
-    end
+  before do
+    @card = FactoryGirl.create(:card)
+  end
 
-    it "Correct translation" do
+  subject { @card }
+
+  it { should respond_to(:original_text) }
+  it { should respond_to(:translated_text) }
+  it { should respond_to(:review_date) }
+  it { should respond_to(:created_at) }
+  it { should respond_to(:updated_at) }
+  it { should respond_to(:user_id) }
+  it { should respond_to(:check_translation?) }
+
+  describe "#check_translation?" do
+
+    it "Correct" do
       expect(@card.check_translation?("мяч")).to be true
     end
 
-    it "Incorrect translation" do
+    it "Incorrect" do
       expect(@card.check_translation?("мяч1")).to be false
     end
 
-    it "Correct translation upcase" do
+    it "Correct upcase" do
       expect(@card.check_translation?("МЯЧ")).to be true
     end
   end
 
   describe "#review date" do
-    before(:each) do
-      @card = FactoryGirl.create(:card)
-    end
 
     it "on create" do
-      expect(@card.review_date).to eq(Date.current + 3.days)
+      expect(@card.review_date.to_date).to eq(3.days.from_now.to_date)
     end
 
     it "change_review_date!" do
-      @card.update_column(:review_date, Date.current - 2.day)
+      @card.update_column(:review_date, 2.days.ago.to_date)
       expect {
         @card.change_review_date!
-      }.to change { @card.review_date }.to(Date.current + 3.days)
+      }.to change { @card.review_date }.to(3.days.from_now.to_date)
     end
   end
 

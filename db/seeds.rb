@@ -14,5 +14,5 @@ trs = page.css("table.tbl3 tr:not(.first)")
 
 trs.each do |tr|
   tds = tr.css("td")
-  Card.create( original_text: tds[0].content, translated_text: tds[1].content )
+  Card.create( original_text: tds[0].content, translated_text: tds[1].content , user_id: current_user.id)
 end

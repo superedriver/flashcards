@@ -6,6 +6,7 @@
     <%%= f.<%= attribute.reference? ? :association : :input %> :<%= attribute.name %> %>
   <%- end -%>
   </div>
+
   <div class="form-actions">
     <%%= f.button :submit %>
   </div>

@@ -1,9 +1,21 @@
 Rails.application.routes.draw do
-  resources :cards
   root "home#index"
-  # match "/check",    to: "cards#check",    via: "patch"
-  # match "/cards/:id/check",    to: "cards#check",    via: "patch"
+
+  resources :cards
   patch '/cards/:id/check' => 'cards#check', as: :check
+
+  resources :registrations, only: [:new, :create]
+  get '/sign_up', to: 'registrations#new', as: :sign_up
+
+  resource :users, only: [:show, :edit, :update]
+
+  resources :sessions
+  get '/login', to: 'sessions#new', as: :login
+  post '/logout', to: 'sessions#destroy', as: :logout
+
+  post "oauth/callback" => "oauths#callback"
+  get "oauth/callback" => "oauths#callback" # for use with Github, Facebook
+  get "oauth/:provider" => "oauths#oauth", as: :auth_at_provider
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,10 +1,10 @@
 class CardsController < ApplicationController
-  protect_from_forgery with: :null_session
+  # protect_from_forgery with: :null_session
 
   before_action :find_card, only: [:show, :edit, :update, :destroy, :check]
 
   def index
-    @cards = Card.all
+    @cards = current_user.cards
   end
 
   def show
@@ -15,9 +15,9 @@ class CardsController < ApplicationController
   end
 
   def create
-    @card = Card.create(card_params)
+    @card = current_user.cards.new(card_params)
 
-    if @card.persisted?
+    if @card.save
       redirect_to card_path(@card)
     else
       render "new"
@@ -45,7 +45,7 @@ class CardsController < ApplicationController
       flash[:success] = I18n.t("compare_result.right")
       @card.change_review_date!
     else
-      flash[:error] = I18n.t("compare_result.not_right") + "! " + params[:original_text]
+      flash[:error] = I18n.t("compare_result.not_right", text: params[:original_text].mb_chars.upcase )
     end
 
     redirect_to root_path
@@ -54,11 +54,11 @@ class CardsController < ApplicationController
   private
 
   def card_params
-    params.require(:card).permit(:original_text, :translated_text)
+    params.require(:card).permit(:original_text, :translated_text, :user_id)
   end
 
   def find_card
-    @card = Card.find_by(id: params[:id])
+    @card = current_user.cards.find_by(id: params[:id])
     unless @card
       render text: "Page not found", status: 404
     end

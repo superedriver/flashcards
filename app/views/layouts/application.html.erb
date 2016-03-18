@@ -3,6 +3,7 @@
   <title>Флэшкарточкер</title>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
+  <%= csrf_meta_tags %>
 </head>
 
 <body>
@@ -14,17 +15,60 @@
       </div>
       <div class="navbar-collapse collapse" id="navbar-main">
         <ul class="nav navbar-nav navbar-right">
-          <li><%= link_to "Все карточки", cards_path %></li>
-          <li><%= link_to "Добавить карточку", new_card_path %></li>
+
+
+          <% if current_user %>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="cards">Карточки <span class="caret"></span></a>
+                <ul class="dropdown-menu" aria-labelledby="cards">
+                  <li><%= link_to I18n.t("buttons.all_cards"), cards_path %></li>
+                  <li><%= link_to I18n.t("buttons.add_card"), new_card_path %></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="profile">Профиль <span class="caret"></span></a>
+                <ul class="dropdown-menu" aria-labelledby="profile">
+                  <li><%= link_to I18n.t("buttons.edit_profile"), edit_users_path %></li>
+                  <li><%= link_to I18n.t("buttons.show_profile"), users_path %></li>
+                  <li class="divider"></li>
+                  <li><%= link_to I18n.t("buttons.logout"), logout_path, method: :post %></li>
+                </ul>
+              </li>
+          <% else %>
+              <li><%= link_to 'VK', auth_at_provider_path(:provider => :vk) %></li>
+              <li><%= link_to 'FB', auth_at_provider_path(:provider => :facebook) %></li>
+              <li><%= link_to I18n.t("buttons.login"), login_path %></li>
+              <li><%= link_to I18n.t("buttons.sign_up"), sign_up_path %></li>
+          <% end %>
         </ul>
       </div>
     </div>
   </div>
 
   <div id="wrapper">
+    <% if current_user %>
+        <div class="h4 word_for_translate text-info">
+          <p><b>User_id: </b><%=  current_user.id %></p>
+          <p><b>User_email: </b><%=  current_user.email %></p>
+        </div>
+    <% end %>
+
+    <% if flash[:success] %>
+        <div class="h1 word_for_translate text-success">
+          <p><b><%=  flash[:success] %> </b></p>
+        </div>
+    <% elsif flash[:error] %>
+        <div class="h1 word_for_translate text-danger">
+          <p><b><%=  flash[:error] %></b></p>
+        </div>
+    <% elsif flash[:notice] %>
+        <div class="h1 word_for_translate text-info">
+          <p><b><%=  flash[:notice] %></b></p>
+        </div>
+    <% end %>
 
     <%= yield %>
-
+    <%= debug(params) if Rails.env.development? %>
   </div>
 
 </section>

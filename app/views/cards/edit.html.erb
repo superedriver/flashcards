@@ -1,22 +1,2 @@
 <h1>Редактирование карты:</h1>
-<div class="well bs-component">
-  <%= simple_form_for @card, html: {class: "form-horizontal"} do |f| %>
-    <fieldset>
-      <legend>Card ID: <%= @card.id %></legend>
-
-      <%= render partial: 'form_for_card', locals: { f: f, property: :original_text, value: I18n.t("activerecord.attributes.card.original_text") }  %>
-      <%= render partial: 'form_for_card', locals: { f: f, property: :translated_text, value: I18n.t("activerecord.attributes.card.translated_text" ) }  %>
-
-      <div class="form-group">
-        <div class="col-lg-10 col-lg-offset-2">
-          <%= f.submit "Save", class: "btn btn-primary" %>
-          <%= link_to "Delete", @card, method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger" %>
-          <%= link_to "Cansel", cards_path, class: "btn btn-default" %>
-        </div>
-      </div>
-
-      <%= render partial: 'validation_errors', locals: { card: @card }  %>
-
-    </fieldset>
-  <% end %>
-</div>
+<%= render partial: 'form' %>

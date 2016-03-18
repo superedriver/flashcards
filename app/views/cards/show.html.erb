@@ -2,13 +2,13 @@
 <hr>
 <div>
   <ul class="list-group">
-    <li class="list-group-item"><b class="text-info">original_text:</b>&nbsp; <%= @card.original_text.present? ? @card.original_text : t('error.messages.empty_field') %></li>
-    <li class="list-group-item"><b class="text-info">translated_text:</b>&nbsp; <%= @card.translated_text.present? ? @card.translated_text : t('error.messages.empty_field') %></li>
-    <li class="list-group-item"><b class="text-info">review_date:</b>&nbsp; <%= @card.review_date.blank? ? t('error.messages.empty_field') : @card.review_date.day.to_s + "/" + @card.review_date.month.to_s + "/" + @card.review_date.year.to_s %></li>
+    <li class="list-group-item"><b class="text-info">original_text:</b>&nbsp; <%= get_text(@card, :original_text) %></li>
+    <li class="list-group-item"><b class="text-info">translated_text:</b>&nbsp; <%= get_text(@card, :translated_text) %></li>
+    <li class="list-group-item"><b class="text-info">review_date:</b>&nbsp; <%= get_text(@card, :review_date )%></li>
   </ul>
-  <%= link_to "Edit", edit_card_path(@card), class: "btn btn-primary btn-lg" %>
-  <%= link_to "Delete", @card, method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-lg" %>
-  <%= link_to "Cansel", cards_path, class: "btn btn-default btn-lg" %>
+  <%= link_to I18n.t("buttons.edit"), edit_card_path(@card), class: "btn btn-primary btn-lg" %>
+  <%= link_to I18n.t("buttons.delete"), @card, method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-lg" %>
+  <%= link_to I18n.t("buttons.cansel"), cards_path, class: "btn btn-default btn-lg" %>
 </div>
 
 

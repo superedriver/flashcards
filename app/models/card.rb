@@ -1,6 +1,6 @@
 class Card < ActiveRecord::Base
   belongs_to :user
-  validates_associated :user
+  # validates_associated :user
 
   validates :original_text, :translated_text, :review_date, presence: { message: I18n.t('error.validation.messages.cant_be_blank') }
   validates :user_id, presence: true
@@ -8,7 +8,9 @@ class Card < ActiveRecord::Base
   validate :check_difference
 
   before_validation(on: :create) do
-    self[:review_date] = Date.current + 3.days
+    # self[:review_date] = Date.current + 3.days
+    self[:review_date] = 3.days.from_now.to_date
+    # self[:review_date] = Date.current
   end
 
   scope :actual_cards, -> { where("review_date <= ?", Date.current) }
@@ -19,7 +21,8 @@ class Card < ActiveRecord::Base
   end
 
   def change_review_date!
-    update_column(:review_date, Date.current + 3.day)
+    # update_column(:review_date, Date.current + 3.day)
+    update_column(:review_date, 3.days.from_now.to_date)
   end
 
   private
@@ -29,5 +32,4 @@ class Card < ActiveRecord::Base
                 I18n.t("error.validation.messages.the_same_value")) if
         original_text.present? && translated_text.present? && (original_text.mb_chars.downcase == translated_text.mb_chars.downcase)
   end
-
 end

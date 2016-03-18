@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
   def index
-    @card = Card.actual_cards.random_card
+    @card = current_user.get_card
   end
 end
