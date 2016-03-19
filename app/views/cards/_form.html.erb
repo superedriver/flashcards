@@ -5,6 +5,17 @@
         <legend>Card ID: <%= @card.id %></legend>
         <%= f.input :original_text %>
         <%= f.input :translated_text %>
+        <%= f.input :image,
+                    as: :file,
+                    label: I18n.t("activerecord.attributes.card.image") + ' (jpg, jpeg, gif, png)' %>
+
+        <% if f.object.image? %>
+            <%= image_tag f.object.image.url %>
+            <br>
+            <%= f.label :remove_image %>
+            <%= f.check_box :remove_image %>
+            <br>
+        <% end %>
 
         <% if @card.new_record? %>
             <%= f.submit I18n.t("buttons.save"), class: "btn btn-primary" %>

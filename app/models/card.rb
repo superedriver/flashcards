@@ -25,11 +25,13 @@ class Card < ActiveRecord::Base
     update_column(:review_date, 3.days.from_now.to_date)
   end
 
+  mount_uploader :image, CardImageUploader
+
   private
 
   def check_difference
-    errors.add(I18n.t("error.validation.description.the_same_value"),
-                I18n.t("error.validation.messages.the_same_value")) if
+    errors.add(I18n.t("errors.validation.description.the_same_value"),
+                I18n.t("errors.validation.messages.the_same_value")) if
         original_text.present? && translated_text.present? && (original_text.mb_chars.downcase == translated_text.mb_chars.downcase)
   end
 end

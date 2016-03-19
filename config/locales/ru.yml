@@ -11,6 +11,7 @@ ru:
         original_text: "Текст"
         translated_text: "Перевод"
         review_date: "Дата"
+        image: "Картинка"
       user:
         email: "email"
         password: "Пароль"
@@ -36,8 +37,9 @@ ru:
             password_confirmation:
               confirmation: "Пароли не совпадают!"
               blank: "Подтвердите пароль!"
-  error:
+  errors:
     messages:
+      extension_white_list_error: "Неправильный формат загружаемого файла!"
       empty_field: "Отсутствует!"
     validation:
       description:

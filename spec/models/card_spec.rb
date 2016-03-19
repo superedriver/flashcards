@@ -53,19 +53,19 @@ RSpec.describe Card, type: :model do
     it "the same values" do
       @card = Card.new(original_text: "мяч", translated_text: "мяч")
       @card.valid?
-      expect(@card.errors.messages[I18n.t("error.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("error.validation.messages.the_same_value"))
+      expect(@card.errors.messages[I18n.t("errors.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("errors.validation.messages.the_same_value"))
     end
 
     it "the same values capitalize original_text" do
       @card = Card.new(original_text: "Мяч", translated_text: "мяч")
       @card.valid?
-      expect(@card.errors.messages[I18n.t("error.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("error.validation.messages.the_same_value"))
+      expect(@card.errors.messages[I18n.t("errors.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("errors.validation.messages.the_same_value"))
     end
 
     it "the same values capitalize translated_text" do
       @card = Card.new(original_text: "мяч", translated_text: "Мяч")
       @card.valid?
-      expect(@card.errors.messages[I18n.t("error.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("error.validation.messages.the_same_value"))
+      expect(@card.errors.messages[I18n.t("errors.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("errors.validation.messages.the_same_value"))
     end
   end
 end
