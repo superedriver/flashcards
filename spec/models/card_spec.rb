@@ -18,15 +18,15 @@ RSpec.describe Card, type: :model do
 
   describe "#check_translation?" do
 
-    it "Correct" do
+    it "correct case" do
       expect(@card.check_translation?("мяч")).to be true
     end
 
-    it "Incorrect" do
+    it "incorrect case" do
       expect(@card.check_translation?("мяч1")).to be false
     end
 
-    it "Correct upcase" do
+    it "correct case upcase leters" do
       expect(@card.check_translation?("МЯЧ")).to be true
     end
   end

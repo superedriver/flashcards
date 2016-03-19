@@ -55,5 +55,4 @@ describe "user edit_profile", type: :feature do
       expect(page).to have_content I18n.t("flashes.login.success")
     end
   end
-
 end

@@ -15,14 +15,14 @@ RSpec.describe User, type: :model do
   it { should respond_to(:crypted_password) }
   it { should respond_to(:salt) }
 
-  describe "Correct" do
+  describe "correct case" do
     it "new user" do
       @user = FactoryGirl.build(:user, email: "qwerty", password: "123456", password_confirmation: "123456")
       expect(@user.save).to be true
     end
   end
 
-  describe "Validations" do
+  describe "validations" do
     describe "#email" do
       it "blank" do
         @user = FactoryGirl.build(:user, email: "", password: "123456", password_confirmation: "123456")
