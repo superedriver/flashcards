@@ -27,3 +27,6 @@ config/secrets.yml
 
 # Ignore uploaded files
 public/uploads/*
+
+# Ignore environments
+config/environments/*
