@@ -30,3 +30,6 @@ public/uploads/*
 
 # Ignore environments
 config/environments/*
+
+# Ignore application configuration
+/config/application.yml
