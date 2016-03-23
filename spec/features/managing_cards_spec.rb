@@ -20,7 +20,6 @@ describe "managing_cards", type: :feature do
 
     it { should have_content I18n.t("activerecord.attributes.card.translated_text") }
     it { should have_content "Введите перевод слова" }
-    it { should have_content "Перевод:" }
     it { should have_button check_button }
 
     describe "incorrect value" do
