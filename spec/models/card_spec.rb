@@ -4,7 +4,7 @@ require "carrierwave/test/matchers"
 RSpec.describe Card, type: :model do
 
   before do
-    @card = FactoryGirl.create(:card)
+    @card = create(:card)
   end
 
   subject { @card }
@@ -52,19 +52,19 @@ RSpec.describe Card, type: :model do
     end
 
     it "the same values" do
-      @card = FactoryGirl.build(:card, original_text: "мяч", translated_text: "мяч")
+      @card = build(:card, original_text: "мяч", translated_text: "мяч")
       @card.valid?
       expect(@card.errors.messages[I18n.t("errors.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("errors.validation.messages.the_same_value"))
     end
 
     it "the same values capitalize original_text" do
-      @card = FactoryGirl.build(:card, original_text: "Мяч", translated_text: "мяч")
+      @card = build(:card, original_text: "Мяч", translated_text: "мяч")
       @card.valid?
       expect(@card.errors.messages[I18n.t("errors.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("errors.validation.messages.the_same_value"))
     end
 
     it "the same values capitalize translated_text" do
-      @card = FactoryGirl.build(:card, original_text: "мяч", translated_text: "Мяч")
+      @card = build(:card, original_text: "мяч", translated_text: "Мяч")
       @card.valid?
       expect(@card.errors.messages[I18n.t("errors.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("errors.validation.messages.the_same_value"))
     end
@@ -74,9 +74,9 @@ RSpec.describe Card, type: :model do
     include CarrierWave::Test::Matchers
 
     before do
-      @card = FactoryGirl.create(:card)
-      CardImageUploader.enable_processing = true
-      @uploader = CardImageUploader.new(@card, :image)
+      @card = create(:card)
+      ImageUploader.enable_processing = true
+      @uploader = ImageUploader.new(@card, :image)
 
       File.open("./spec/files/goose.JPG") do |f|
         @uploader.store!(f)
@@ -84,7 +84,7 @@ RSpec.describe Card, type: :model do
     end
 
     after do
-      CardImageUploader.enable_processing = false
+      ImageUploader.enable_processing = false
       @uploader.remove!
     end
 

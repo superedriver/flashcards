@@ -4,7 +4,7 @@ describe "user edit_profile", type: :feature do
 
   subject { page }
 
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { create(:user) }
   let(:login_button) { I18n.t("buttons.login") }
   let(:logout_button) { I18n.t("buttons.logout") }
   let(:edit_profile_button) { I18n.t("buttons.edit_profile") }

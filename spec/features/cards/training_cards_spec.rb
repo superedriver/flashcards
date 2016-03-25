@@ -1,9 +1,9 @@
 require "rails_helper"
 
-describe "managing_cards", type: :feature do
+describe "training_cards", type: :feature do
 
   subject { page }
-  let(:card) { FactoryGirl.create(:card) }
+  let(:card) { create(:card) }
   let(:user) { card.user }
   let(:check_button) { I18n.t("buttons.check") }
   let(:login_button) { I18n.t("buttons.login") }
@@ -33,7 +33,7 @@ describe "managing_cards", type: :feature do
 
     describe "correct value" do
       before do
-        FactoryGirl.create(:card).update_column(:review_date, Date.current)
+        create(:card).update_column(:review_date, Date.current)
         visit root_path
         fill_in :original_text, with: "мяч"
         click_button check_button

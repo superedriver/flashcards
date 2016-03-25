@@ -1,6 +1,5 @@
 class Card < ActiveRecord::Base
   belongs_to :user
-  # validates_associated :user
 
   validates :original_text, :translated_text, :review_date, presence: { message: I18n.t('error.validation.messages.cant_be_blank') }
   validates :user_id, presence: true
@@ -25,7 +24,7 @@ class Card < ActiveRecord::Base
     update_column(:review_date, 3.days.from_now.to_date)
   end
 
-  mount_uploader :image, CardImageUploader
+  mount_uploader :image, ImageUploader
 
   private
 

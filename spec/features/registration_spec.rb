@@ -54,7 +54,7 @@ describe "check_registration", type: :feature do
     before(:each) { visit sign_up_path }
 
     describe "non-unique email" do
-      let(:user) { FactoryGirl.create(:user, email: email) }
+      let(:user) { create(:user, email: email) }
 
       before do
         fill_in email_field, with: user.email
@@ -83,7 +83,7 @@ describe "check_registration", type: :feature do
 
       describe "try to register with the same downcase email" do
         before do
-          FactoryGirl.create(:user, email: upcase_email)
+          create(:user, email: upcase_email)
           fill_in email_field, with: upcase_email.downcase
           fill_in pass_field, with: password
           fill_in pass_conf_field, with: password
