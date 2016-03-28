@@ -78,7 +78,7 @@ RSpec.describe Card, type: :model do
       ImageUploader.enable_processing = true
       @uploader = ImageUploader.new(@card, :image)
 
-      File.open("./spec/files/goose.JPG") do |f|
+      File.open("./spec/files/goose.jpg") do |f|
         @uploader.store!(f)
       end
     end

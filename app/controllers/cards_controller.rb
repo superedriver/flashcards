@@ -1,6 +1,4 @@
 class CardsController < ApplicationController
-  # protect_from_forgery with: :null_session
-
   before_action :find_card, only: [:show, :edit, :update, :destroy, :check]
 
   def index
@@ -37,7 +35,7 @@ class CardsController < ApplicationController
 
   def destroy
     @card.destroy
-    redirect_to action: "index"
+    redirect_to cards_path
   end
 
   def check

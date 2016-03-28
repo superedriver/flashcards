@@ -12,6 +12,7 @@ ru:
         translated_text: "Перевод"
         review_date: "Дата"
         image: "Картинка"
+        remove_image: "Удалить картинку"
       user:
         email: "email"
         password: "Пароль"

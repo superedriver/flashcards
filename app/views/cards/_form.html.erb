@@ -10,7 +10,7 @@
                     label: I18n.t("activerecord.attributes.card.image") + ' (jpg, jpeg, gif, png)' %>
 
         <% if f.object.image? %>
-            <%= image_tag f.object.image.url %>
+            <%= image_tag(f.object.image.url, :class => "card-image") %>
             <br>
             <%= f.label :remove_image %>
             <%= f.check_box :remove_image %>
