@@ -69,4 +69,3 @@ gem 'fog', '~> 1.37'
 gem 'figaro', '~> 1.1', '>= 1.1.1'
 
 gem 'capybara-webkit', '~> 1.7', '>= 1.7.1'
-gem 'selenium-webdriver', '~> 2.48', '>= 2.48.1'

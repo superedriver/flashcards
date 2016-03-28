@@ -31,7 +31,7 @@ RSpec.configure do |config|
   end
 
   config.include FactoryGirl::Syntax::Methods
-
+  Capybara.javascript_driver = :webkit
   # config.include Capybara::Driver::Base
   # config.include ActionDispatch::TestProcess
 # config.include Rails.application.routes.url_helpers

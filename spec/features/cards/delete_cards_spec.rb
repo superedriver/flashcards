@@ -10,6 +10,7 @@ describe "delete_cards", type: :feature do
   # include Capybara::RackTest::Browser
 
   let(:delete_button) { I18n.t("buttons.delete") }
+  let(:login_button) { I18n.t("buttons.login") }
 
   let(:card1_original_text) { "card1_original_text" }
   let(:card1_translated_text) { "card1_translated_text" }
@@ -36,15 +37,23 @@ describe "delete_cards", type: :feature do
   #   Capybara.javascript_driver = :webkit
   # end
 
-  before do
-    login_user_post(user.email, "qwerty")
-  end
+  # before do
+  #   visit login_path
+  #   fill_in 'email', with: user.email
+  #   fill_in 'password', with: "qwerty"
+  #   click_button 'Войти'
+  # end
 
   describe "delete from show card path", js: true  do
   # describe "delete from show card path" do
     before do
-      visit card_path(card1)
-      click_link delete_button
+      visit login_path
+      fill_in :email, with: user.email
+      fill_in :password, with: "qwerty"
+      click_button login_button
+      # visit card_path(card1)
+
+      # click_link delete_button
       # accept_modal(:confirm)
       # page.accept_confirm
       # page.accept_confirm { click_button "Upgrade" }
@@ -52,11 +61,11 @@ describe "delete_cards", type: :feature do
       # accept_confirm do
       #   click_link('Show Confirm')
       # end
-      page.driver.browser.switch_to.confirm.accept
+      # page.driver.browser.switch_to.confirm.accept
     end
 
-    it { current_path.should == cards_path }
-    it { should have_content "sdfbsdfb" }
+    # it { current_path.should == cards_path }
+    it { should have_content "Картинка" }
   end
 
 end
