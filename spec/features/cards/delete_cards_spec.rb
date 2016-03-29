@@ -5,6 +5,7 @@ require "rails_helper"
 # require Capybara::Driver::Base
 
 describe "delete_cards", type: :feature do
+# describe "delete_cards", type: :feature do
 
   subject { page }
   # include Capybara::RackTest::Browser
@@ -37,35 +38,49 @@ describe "delete_cards", type: :feature do
   #   Capybara.javascript_driver = :webkit
   # end
 
-  # before do
-  #   visit login_path
-  #   fill_in 'email', with: user.email
-  #   fill_in 'password', with: "qwerty"
-  #   click_button 'Войти'
+
+  # it "email" do
+  #   expect(page).to have_content "Рады видитеть Вас снова!"
   # end
 
-  describe "delete from show card path", js: true  do
-  # describe "delete from show card path" do
-    before do
+  describe "delete from show card path", js: true   do
+
+    # before(:each) do
+    #   @user = create(:user)
+    #   visit login_path
+    #   fill_in :email, with: @user.email
+    #   fill_in :password, with: "qwerty"
+    #   # binding.pry
+    #   click_button login_button
+    # end
+
+    # before do
+    #   visit card_path(card1)
+    #
+    #   # click_link delete_button
+    #   # accept_modal(:confirm)
+    #   # page.accept_confirm
+    #   # page.accept_confirm { click_button "Upgrade" }
+    #
+    #   # accept_confirm do
+    #   #   click_link('Show Confirm')
+    #   # end
+    #   # page.driver.browser.switch_to.confirm.accept
+    # end
+    #
+    # # it { current_path.should == cards_path }
+    # it { should have_content "Перевод" }
+    it "email" do
+      @user = create(:user)
       visit login_path
-      fill_in :email, with: user.email
+      fill_in :email, with: @user.email
       fill_in :password, with: "qwerty"
+      # binding.pry
       click_button login_button
-      # visit card_path(card1)
-
-      # click_link delete_button
-      # accept_modal(:confirm)
-      # page.accept_confirm
-      # page.accept_confirm { click_button "Upgrade" }
-
-      # accept_confirm do
-      #   click_link('Show Confirm')
-      # end
-      # page.driver.browser.switch_to.confirm.accept
+      expect(page).to have_content "Рады видитеть Вас снова!"
     end
 
-    # it { current_path.should == cards_path }
-    it { should have_content "Картинка" }
+
   end
 
 end
