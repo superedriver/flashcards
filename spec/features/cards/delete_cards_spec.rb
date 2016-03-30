@@ -1,14 +1,9 @@
 require "rails_helper"
-# include Capybara::Driver::Base
-# include Capybara::Selenium::Driver
-# require Capybara::Driver::Base
-# require Capybara::Driver::Base
 
-describe "delete_cards", type: :feature do
+describe "delete_cards", js: true, type: :feature do
 # describe "delete_cards", type: :feature do
 
   subject { page }
-  # include Capybara::RackTest::Browser
 
   let(:delete_button) { I18n.t("buttons.delete") }
   let(:login_button) { I18n.t("buttons.login") }
@@ -34,54 +29,97 @@ describe "delete_cards", type: :feature do
                        translated_text: card3_translated_text,
                        user_id: user.id) }
 
-  # before do
-  #   Capybara.javascript_driver = :webkit
-  # end
-
-
-  # it "email" do
-  #   expect(page).to have_content "Рады видитеть Вас снова!"
-  # end
-
-  describe "delete from show card path", js: true   do
-
-    # before(:each) do
-    #   @user = create(:user)
-    #   visit login_path
-    #   fill_in :email, with: @user.email
-    #   fill_in :password, with: "qwerty"
-    #   # binding.pry
-    #   click_button login_button
-    # end
-
-    # before do
-    #   visit card_path(card1)
-    #
-    #   # click_link delete_button
-    #   # accept_modal(:confirm)
-    #   # page.accept_confirm
-    #   # page.accept_confirm { click_button "Upgrade" }
-    #
-    #   # accept_confirm do
-    #   #   click_link('Show Confirm')
-    #   # end
-    #   # page.driver.browser.switch_to.confirm.accept
-    # end
-    #
-    # # it { current_path.should == cards_path }
-    # it { should have_content "Перевод" }
-    it "email" do
-      @user = create(:user)
-      visit login_path
-      fill_in :email, with: @user.email
-      fill_in :password, with: "qwerty"
-      # binding.pry
-      click_button login_button
-      expect(page).to have_content "Рады видитеть Вас снова!"
-    end
-
-
+  before do
+    visit login_path
+    fill_in :email, with: user.email
+    fill_in :password, with: "qwerty"
+    click_button login_button
   end
 
+  describe "delete from show_card_path" do
+    describe "dismiss_confirm" do
+      before do
+        visit card_path(card1)
+        dismiss_confirm do
+          click_link delete_button
+        end
+      end
+
+      it { should have_current_path card_path(card1) }
+      it { should have_content card1_original_text }
+      it { should have_content card1_translated_text }
+    end
+
+    describe "accept_confirm" do
+      before do
+        visit card_path(card1)
+        accept_confirm do
+          click_link delete_button
+        end
+      end
+
+      it { should have_current_path cards_path }
+      it { should have_content "Modification" }
+      it { should_not have_content card1_original_text }
+      it { should_not have_content card1_translated_text }
+    end
+  end
+
+  describe "delete from edit_card_path" do
+    describe "dismiss_confirm" do
+      before do
+        visit edit_card_path(card2)
+        dismiss_confirm do
+          click_link delete_button
+        end
+      end
+
+      it { should have_current_path edit_card_path(card2) }
+      it { should have_content "Редактирование карты" }
+    end
+
+    describe "accept_confirm" do
+      before do
+        visit edit_card_path(card2)
+        accept_confirm do
+          click_link delete_button
+        end
+      end
+
+      it { should have_current_path cards_path }
+      it { should have_content "Modification" }
+      it { should_not have_content card2_original_text }
+      it { should_not have_content card2_translated_text }
+    end
+  end
+
+  describe "delete from cards_path" do
+    describe "dismiss_confirm" do
+      before do
+        visit cards_path
+        dismiss_confirm do
+          click_link delete_button
+        end
+      end
+
+      it { should have_current_path cards_path }
+      it { should have_content card3_original_text }
+      it { should have_content card3_translated_text }
+    end
+
+    describe "accept_confirm" do
+      before do
+        visit cards_path
+        accept_confirm do
+          click_link delete_button
+        end
+      end
+
+      it { should have_current_path cards_path }
+      it { should_not have_content card3_original_text }
+      it { should_not have_content card3_translated_text }
+      it { should have_content "Пока нет слов для изучения!" }
+    end
+  end
 end
 

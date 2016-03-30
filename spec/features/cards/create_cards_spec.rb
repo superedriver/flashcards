@@ -8,7 +8,7 @@ describe "create_cards", type: :feature do
   let(:original_text_field) { "card[original_text]" }
   let(:translated_text_field) { "card[translated_text]" }
   let(:image_field) { "card[image]" }
-  let(:cansel_button) { I18n.t("buttons.cansel") }
+  let(:cansel_button) { I18n.t("buttons.cancel") }
   let(:save_button) { I18n.t("buttons.save") }
   let(:edit_button) { I18n.t("buttons.edit") }
   let(:delete_button) { I18n.t("buttons.delete") }

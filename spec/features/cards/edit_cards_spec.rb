@@ -24,7 +24,7 @@ describe "create_cards", type: :feature do
     let(:image_field) { "card[image]" }
     let(:remove_checkbox) { "card[remove_image]" }
 
-    let(:cansel_button) { I18n.t("buttons.cansel") }
+    let(:cansel_button) { I18n.t("buttons.cancel") }
     let(:edit_button) { I18n.t("buttons.edit") }
     let(:delete_button) { I18n.t("buttons.delete") }
 

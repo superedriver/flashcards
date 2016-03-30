@@ -9,7 +9,7 @@ describe "user edit_profile", type: :feature do
   let(:logout_button) { I18n.t("buttons.logout") }
   let(:edit_profile_button) { I18n.t("buttons.edit_profile") }
   let(:save_button) { I18n.t("buttons.save") }
-  let(:cansel_button) { I18n.t("buttons.cansel") }
+  let(:cansel_button) { I18n.t("buttons.cancel") }
   let(:email_field) { "user[email]" }
   let(:pass_field) { "user[password]" }
 

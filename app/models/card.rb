@@ -7,24 +7,25 @@ class Card < ActiveRecord::Base
   validate :check_difference
 
   before_validation(on: :create) do
-    # self[:review_date] = Date.current + 3.days
-    self[:review_date] = 3.days.from_now.to_date
-    # self[:review_date] = Date.current
+    set_review_date!
   end
 
   scope :actual_cards, -> { where("review_date <= ?", Date.current) }
   scope :random_card, -> { order("RANDOM()").first }
+
+  mount_uploader :image, ImageUploader
 
   def check_translation?(inputed_text)
     original_text.mb_chars.downcase == inputed_text.mb_chars.downcase
   end
 
   def change_review_date!
-    # update_column(:review_date, Date.current + 3.day)
     update_column(:review_date, 3.days.from_now.to_date)
   end
 
-  mount_uploader :image, ImageUploader
+  def set_review_date!
+    self[:review_date] ||= 3.days.from_now.to_date
+  end
 
   private
 
