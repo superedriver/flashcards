@@ -11,7 +11,7 @@ describe "create_cards", type: :feature do
       visit edit_card_path(card)
     end
 
-    it { current_path.should == login_path }
+    it { should have_current_path login_path }
     it { should have_content I18n.t('flashes.login.login_first') }
   end
 
@@ -72,7 +72,7 @@ describe "create_cards", type: :feature do
         click_link cansel_button
       end
 
-      it { current_path.should == cards_path }
+      it { should have_current_path cards_path }
     end
 
     describe "edit original text" do
@@ -83,7 +83,7 @@ describe "create_cards", type: :feature do
         click_button edit_button
       end
 
-      it { current_path.should == card_path(card) }
+      it { should have_current_path card_path(card) }
       it { should have_content new_original_text_value }
     end
 
@@ -95,7 +95,7 @@ describe "create_cards", type: :feature do
         click_button edit_button
       end
 
-      it { current_path.should == card_path(card) }
+      it { should have_current_path card_path(card) }
       it { should have_content new_translated_text_value }
     end
 
@@ -106,7 +106,7 @@ describe "create_cards", type: :feature do
         click_button edit_button
       end
 
-      it { current_path.should == card_path(card) }
+      it { should have_current_path card_path(card) }
       it { should_not have_css "img[src*='goose.jpg']" }
       it { should have_css "img[src*='goose1.jpg']" }
     end
@@ -118,7 +118,7 @@ describe "create_cards", type: :feature do
         click_button edit_button
       end
 
-      it { current_path.should == card_path(card) }
+      it { should have_current_path card_path(card) }
       it { should_not have_css "img[src*='goose.jpg']" }
       it { should_not have_css "img[src*='goose1.jpg']" }
     end
@@ -134,7 +134,7 @@ describe "create_cards", type: :feature do
           click_button edit_button
         end
 
-        it { current_path.should == card_path(card)}
+        it { should have_current_path card_path(card) }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("errors.validation.messages.the_same_value") }
       end
@@ -150,7 +150,7 @@ describe "create_cards", type: :feature do
           click_button edit_button
         end
 
-        it { current_path.should == card_path(card) }
+        it { should have_current_path card_path(card) }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("errors.validation.messages.the_same_value") }
       end
@@ -163,7 +163,7 @@ describe "create_cards", type: :feature do
           click_button edit_button
         end
 
-        it { current_path.should == card_path(card) }
+        it { should have_current_path card_path(card) }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("activerecord.errors.models.card.attributes.original_text.blank") }
         it { should have_content I18n.t("activerecord.errors.models.card.attributes.translated_text.blank") }
@@ -176,7 +176,7 @@ describe "create_cards", type: :feature do
           click_button edit_button
         end
 
-        it { current_path.should == card_path(card) }
+        it { should have_current_path card_path(card) }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("activerecord.errors.models.card.attributes.original_text.blank") }
       end
@@ -188,7 +188,7 @@ describe "create_cards", type: :feature do
           click_button edit_button
         end
 
-        it { current_path.should == card_path(card) }
+        it { should have_current_path card_path(card) }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("activerecord.errors.models.card.attributes.translated_text.blank") }
       end
@@ -200,7 +200,7 @@ describe "create_cards", type: :feature do
           click_button edit_button
         end
 
-        it { current_path.should == card_path(card) }
+        it { should have_current_path card_path(card) }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("errors.messages.extension_white_list_error") }
       end

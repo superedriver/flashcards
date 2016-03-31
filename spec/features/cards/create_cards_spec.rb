@@ -24,7 +24,7 @@ describe "create_cards", type: :feature do
       visit new_card_path
     end
 
-    it { current_path.should == login_path }
+    it { should have_current_path login_path }
     it { should have_content I18n.t('flashes.login.login_first') }
   end
 
@@ -61,7 +61,7 @@ describe "create_cards", type: :feature do
         click_link cansel_button
       end
 
-      it { current_path.should == cards_path }
+      it { should have_current_path cards_path }
     end
 
     describe "valid card" do
@@ -76,7 +76,7 @@ describe "create_cards", type: :feature do
         click_button save_button
       end
 
-      it { current_path.should == card_path(Card.last) }
+      it { should have_current_path card_path(Card.last) }
       it { should have_content inputed_original_text }
       it { should have_content inputed_translated_text }
       it { should have_content I18n.l(3.days.from_now.to_date) }
@@ -95,7 +95,7 @@ describe "create_cards", type: :feature do
           click_button save_button
         end
 
-        it { current_path.should == cards_path }
+        it { should have_current_path cards_path }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("errors.validation.messages.the_same_value") }
       end
@@ -112,7 +112,7 @@ describe "create_cards", type: :feature do
           click_button save_button
         end
 
-        it { current_path.should == cards_path }
+        it { should have_current_path cards_path }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("errors.validation.messages.the_same_value") }
       end
@@ -123,7 +123,7 @@ describe "create_cards", type: :feature do
           click_button save_button
         end
 
-        it { current_path.should == cards_path }
+        it { should have_current_path cards_path }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("activerecord.errors.models.card.attributes.original_text.blank") }
         it { should have_content I18n.t("activerecord.errors.models.card.attributes.translated_text.blank") }
@@ -136,7 +136,7 @@ describe "create_cards", type: :feature do
           click_button save_button
         end
 
-        it { current_path.should == cards_path }
+        it { should have_current_path cards_path }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("activerecord.errors.models.card.attributes.original_text.blank") }
       end
@@ -149,7 +149,7 @@ describe "create_cards", type: :feature do
           click_button save_button
         end
 
-        it { current_path.should == cards_path }
+        it { should have_current_path cards_path }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("activerecord.errors.models.card.attributes.translated_text.blank") }
       end
@@ -164,7 +164,7 @@ describe "create_cards", type: :feature do
           click_button save_button
         end
 
-        it { current_path.should == cards_path }
+        it { should have_current_path cards_path }
         it { should have_content "При заполнении формы возникли такие ошибки:" }
         it { should have_content I18n.t("errors.messages.extension_white_list_error") }
       end
