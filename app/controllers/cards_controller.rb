@@ -16,7 +16,7 @@ class CardsController < ApplicationController
     @card = current_user.cards.new(card_params)
 
     if @card.save
-      redirect_to card_path(@card)
+      redirect_to card_path(@card), flash: { success: I18n.t('flashes.cards.success.created') }
     else
       render "new"
     end
@@ -27,7 +27,7 @@ class CardsController < ApplicationController
 
   def update
     if @card.update(card_params)
-      redirect_to card_path(@card)
+      redirect_to card_path(@card),  flash: { success: I18n.t('flashes.cards.success.updated') }
     else
       render "edit"
     end
@@ -35,7 +35,7 @@ class CardsController < ApplicationController
 
   def destroy
     @card.destroy
-    redirect_to cards_path
+    redirect_to cards_path, flash: { success: I18n.t('flashes.cards.success.deleted') }
   end
 
   def check

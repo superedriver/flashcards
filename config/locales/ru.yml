@@ -80,3 +80,8 @@ ru:
       success: "Пока-пока!"
     registration:
       success: "Добро пожаловать!"
+    cards:
+      success:
+        created: "Карта была успешно создана!"
+        updated: "Карта была успешно обновлена!"
+        deleted: "Карта была успешно удалена!"

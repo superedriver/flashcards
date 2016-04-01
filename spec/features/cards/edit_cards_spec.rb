@@ -32,61 +32,41 @@ describe "create_cards", type: :feature do
       visit edit_card_path(card)
     end
 
-    describe "cancel button" do
-      before do
-        visit edit_card_path(card)
-        click_link cancel_button
-      end
+    scenario "edit original_text" do
+      visit edit_card_path(card)
+      fill_in original_text_field, with: "new_original_text_value"
+      click_button edit_button
 
-      it { should have_current_path cards_path }
+      expect(page).to have_current_path card_path(card)
+      expect(page).to have_text( I18n.t("flashes.cards.success.updated") )
     end
 
-    describe "edit original text" do
-      let(:new_original_text_value) { "some_original_text" }
-      before do
-        visit edit_card_path(card)
-        fill_in original_text_field, with: new_original_text_value
-        click_button edit_button
-      end
+    scenario "edit translated_text" do
+      visit edit_card_path(card)
+      fill_in original_text_field, with: "new_original_text_value"
+      click_button edit_button
 
-      it { should have_current_path card_path(card) }
-      it { should have_content new_original_text_value }
+      expect(page).to have_current_path card_path(card)
+      expect(page).to have_text( I18n.t("flashes.cards.success.updated") )
     end
 
-    describe "edit translated text" do
-      let(:new_translated_text_value) { "some_translated_text" }
-      before do
-        visit edit_card_path(card)
-        fill_in translated_text_field, with: new_translated_text_value
-        click_button edit_button
-      end
+    scenario "edit image" do
+      visit edit_card_path(card)
+      attach_file(image_field, Rails.root + "./spec/files/goose1.jpg")
+      click_button edit_button
 
-      it { should have_current_path card_path(card) }
-      it { should have_content new_translated_text_value }
+      expect(page).to have_current_path card_path(card)
+      expect(page).to have_text( I18n.t("flashes.cards.success.updated") )
+      expect(page).to have_text( I18n.t("flashes.cards.success.updated") )
     end
 
-    describe "edit image" do
-      before do
-        visit edit_card_path(card)
-        attach_file(image_field, Rails.root + "./spec/files/goose1.jpg")
-        click_button edit_button
-      end
+    scenario "remove image" do
+      visit edit_card_path(card)
+      check remove_checkbox
+      click_button edit_button
 
-      it { should have_current_path card_path(card) }
-      it { should_not have_css "img[src*='goose.jpg']" }
-      it { should have_css "img[src*='goose1.jpg']" }
-    end
-
-    describe "remove image" do
-      before do
-        visit edit_card_path(card)
-        check remove_checkbox
-        click_button edit_button
-      end
-
-      it { should have_current_path card_path(card) }
-      it { should_not have_css "img[src*='goose.jpg']" }
-      it { should_not have_css "img[src*='goose1.jpg']" }
+      expect(page).to have_current_path card_path(card)
+      expect(page).to have_text( I18n.t("flashes.cards.success.updated") )
     end
 
     describe "errors" do
