@@ -28,7 +28,6 @@ describe "create_cards", type: :feature do
 
     describe "cancel button" do
       before do
-        visit new_card_path
         click_link cancel_button
       end
 

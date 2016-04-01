@@ -15,8 +15,6 @@ describe "check_registration", type: :feature do
   let(:email) { "user@gmail.com" }
   let(:another_email) { "user1@gmail.com" }
 
-  before { visit sign_up_path }
-
   describe "with valid information" do
     before do
       visit sign_up_path
@@ -28,16 +26,6 @@ describe "check_registration", type: :feature do
     it { should have_content I18n.t("flashes.registration.success") }
     it { should have_content "Пока нет слов для изучения!" }
 
-    it { should_not have_link(I18n.t("buttons.sign_up"), href: sign_up_path) }
-    it { should_not have_link(I18n.t("buttons.login"), href: login_path) }
-    it { should_not have_link( "VK", href: auth_at_provider_path("vk")) }
-    it { should_not have_link( "FB", href: auth_at_provider_path("facebook")) }
-
-    it { should have_link(I18n.t("buttons.logout"), href: logout_path) }
-    it { should have_link(I18n.t("buttons.edit_profile"), href: edit_users_path) }
-    it { should have_link(I18n.t("buttons.show_profile"), href: users_path) }
-    it { should have_link(I18n.t("buttons.add_card"), href: new_card_path) }
-    it { should have_link(I18n.t("buttons.all_cards"), href: cards_path) }
   end
 
   describe "negative tests" do
