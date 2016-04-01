@@ -4,19 +4,11 @@ describe "create_cards", type: :feature do
 
   subject { page }
   let(:user) { create(:user) }
-  let(:login_button) { I18n.t("buttons.login") }
   let(:original_text_field) { "card[original_text]" }
   let(:translated_text_field) { "card[translated_text]" }
   let(:image_field) { "card[image]" }
-  let(:cansel_button) { I18n.t("buttons.cancel") }
+  let(:cancel_button) { I18n.t("buttons.cancel") }
   let(:save_button) { I18n.t("buttons.save") }
-  let(:edit_button) { I18n.t("buttons.edit") }
-  let(:delete_button) { I18n.t("buttons.delete") }
-
-  let(:review_date) { I18n.t("activerecord.attributes.card.review_date") }
-  let(:original_text) { I18n.t("activerecord.attributes.card.original_text") }
-  let(:translated_text) { I18n.t("activerecord.attributes.card.translated_text") }
-  let(:image) { I18n.t("activerecord.attributes.card.image") }
 
 
   describe "non authorized user" do
@@ -34,31 +26,10 @@ describe "create_cards", type: :feature do
       visit new_card_path
     end
 
-    it { should_not have_link(I18n.t("buttons.sign_up"), href: sign_up_path) }
-    it { should_not have_link(I18n.t("buttons.login"), href: login_path) }
-    it { should_not have_link( "VK", href: auth_at_provider_path("vk")) }
-    it { should_not have_link( "FB", href: auth_at_provider_path("facebook")) }
-
-    it { should have_link(I18n.t("buttons.logout"), href: logout_path) }
-    it { should have_link(I18n.t("buttons.edit_profile"), href: edit_users_path) }
-    it { should have_link(I18n.t("buttons.show_profile"), href: users_path) }
-    it { should have_link(I18n.t("buttons.add_card"), href: new_card_path) }
-    it { should have_link(I18n.t("buttons.all_cards"), href: cards_path) }
-
-    it { should have_content "Создать новую карту:" }
-    it { should have_content original_text }
-    it { should have_content translated_text }
-    it { should have_content image + " (jpg, jpeg, gif, png)" }
-    it { should have_field(original_text_field) }
-    it { should have_field(translated_text_field) }
-    it { should have_field(image_field) }
-    it { should have_button save_button }
-    it { should have_link cansel_button }
-
-    describe "cansel button" do
+    describe "cancel button" do
       before do
         visit new_card_path
-        click_link cansel_button
+        click_link cancel_button
       end
 
       it { should have_current_path cards_path }

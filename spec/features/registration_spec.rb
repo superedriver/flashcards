@@ -17,16 +17,6 @@ describe "check_registration", type: :feature do
 
   before { visit sign_up_path }
 
-  it { should have_button( registration_button ) }
-  it { should have_field( email_field ) }
-  it { should have_field( pass_field ) }
-  it { should have_field( pass_conf_field ) }
-  it { should have_link(I18n.t("buttons.sign_up"), href: sign_up_path) }
-  it { should have_link(I18n.t("buttons.login"), href: login_path) }
-  it { should have_link( "VK", href: auth_at_provider_path("vk")) }
-  it { should have_link( "FB", href: auth_at_provider_path("facebook")) }
-  it { should have_content( "Регистрация нового пользователя" ) }
-
   describe "with valid information" do
     before do
       visit sign_up_path

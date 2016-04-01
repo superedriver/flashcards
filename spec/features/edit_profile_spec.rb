@@ -7,9 +7,7 @@ describe "user edit_profile", type: :feature do
   let(:user) { create(:user) }
   let(:login_button) { I18n.t("buttons.login") }
   let(:logout_button) { I18n.t("buttons.logout") }
-  let(:edit_profile_button) { I18n.t("buttons.edit_profile") }
   let(:save_button) { I18n.t("buttons.save") }
-  let(:cansel_button) { I18n.t("buttons.cancel") }
   let(:email_field) { "user[email]" }
   let(:pass_field) { "user[password]" }
 
@@ -21,15 +19,6 @@ describe "user edit_profile", type: :feature do
       login_user_post(user.email, "qwerty")
       visit edit_users_path
     end
-
-    it { should have_content( "Редактирование пользователя" ) }
-    it { should have_content( "User ID: " + user.id.to_s ) }
-    it { should have_content I18n.t("activerecord.attributes.user.email") }
-    it { should have_content I18n.t("activerecord.attributes.user.password") }
-    it { should have_button save_button }
-    it { should have_link cansel_button }
-    it { should have_field( email_field ) }
-    it { should have_field( pass_field ) }
   end
 
   describe "edit" do

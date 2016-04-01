@@ -24,52 +24,18 @@ describe "create_cards", type: :feature do
     let(:image_field) { "card[image]" }
     let(:remove_checkbox) { "card[remove_image]" }
 
-    let(:cansel_button) { I18n.t("buttons.cancel") }
+    let(:cancel_button) { I18n.t("buttons.cancel") }
     let(:edit_button) { I18n.t("buttons.edit") }
-    let(:delete_button) { I18n.t("buttons.delete") }
-
-    let(:review_date) { I18n.t("activerecord.attributes.card.review_date") }
-    let(:original_text) { I18n.t("activerecord.attributes.card.original_text") }
-    let(:translated_text) { I18n.t("activerecord.attributes.card.translated_text") }
-    let(:image) { I18n.t("activerecord.attributes.card.image") }
-    let(:remove_image) { I18n.t("activerecord.attributes.card.remove_image") }
 
     before do
       login_user_post(user.email, "qwerty")
       visit edit_card_path(card)
     end
 
-    it { should_not have_link(I18n.t("buttons.sign_up"), href: sign_up_path) }
-    it { should_not have_link(I18n.t("buttons.login"), href: login_path) }
-    it { should_not have_link( "VK", href: auth_at_provider_path("vk")) }
-    it { should_not have_link( "FB", href: auth_at_provider_path("facebook")) }
-
-    it { should have_link(I18n.t("buttons.logout"), href: logout_path) }
-    it { should have_link(I18n.t("buttons.edit_profile"), href: edit_users_path) }
-    it { should have_link(I18n.t("buttons.show_profile"), href: users_path) }
-    it { should have_link(I18n.t("buttons.add_card"), href: new_card_path) }
-    it { should have_link(I18n.t("buttons.all_cards"), href: cards_path) }
-
-    it { should have_content "Редактирование карты:" }
-    it { should have_content original_text }
-    it { should have_content translated_text }
-    it { should have_content image + " (jpg, jpeg, gif, png)" }
-    it { should have_field(original_text_field) }
-    it { should have_field(translated_text_field) }
-    it { should have_css "img[src*='goose.jpg']" }
-    it { should have_field(image_field) }
-    it { should have_field(remove_checkbox) }
-
-    it { should have_content remove_image}
-
-    it { should have_button edit_button }
-    it { should have_link cansel_button }
-    it { should have_link delete_button}
-
-    describe "cansel button" do
+    describe "cancel button" do
       before do
         visit edit_card_path(card)
-        click_link cansel_button
+        click_link cancel_button
       end
 
       it { should have_current_path cards_path }

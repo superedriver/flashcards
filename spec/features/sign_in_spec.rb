@@ -6,7 +6,6 @@ describe "login spec", type: :feature do
   let(:login_button) { I18n.t("buttons.login") }
 
   let(:user) { create(:user) }
-  let(:users) { User.all }
 
   describe "invaild credentials" do
     describe "email" do
