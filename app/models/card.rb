@@ -6,9 +6,7 @@ class Card < ActiveRecord::Base
 
   validate :check_difference
 
-  before_validation(on: :create) do
-    set_review_date!
-  end
+  before_validation :set_review_date!, on: :create
 
   scope :actual_cards, -> { where("review_date <= ?", Date.current) }
   scope :random_card, -> { order("RANDOM()").first }

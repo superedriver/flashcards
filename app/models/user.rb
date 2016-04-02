@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   end
 
   def get_card
-    self.cards.actual_cards.random_card
+    cards.actual_cards.random_card
   end
 
   accepts_nested_attributes_for :authentications

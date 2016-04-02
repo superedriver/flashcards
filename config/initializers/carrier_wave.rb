@@ -13,6 +13,9 @@ CarrierWave.configure do |config|
     }
     config.cache_dir = "#{Rails.root}/tmp/uploads"
     config.fog_directory = ENV['AWS_BUCKET']
+  elsif ENV['AWS_ACCESS_KEY_ID'].empty? && Rails.env.development?
+    config.storage = :file
+    config.enable_processing = true
   else
     config.storage = :file
     config.enable_processing = false
