@@ -11,6 +11,8 @@ ru:
         original_text: "Текст"
         translated_text: "Перевод"
         review_date: "Дата"
+        image: "Картинка"
+        remove_image: "Удалить картинку"
       user:
         email: "email"
         password: "Пароль"
@@ -36,8 +38,9 @@ ru:
             password_confirmation:
               confirmation: "Пароли не совпадают!"
               blank: "Подтвердите пароль!"
-  error:
+  errors:
     messages:
+      extension_white_list_error: "Неправильный формат загружаемого файла!"
       empty_field: "Отсутствует!"
     validation:
       description:
@@ -56,7 +59,7 @@ ru:
     add_card: "Добавить карточку"
     registration: "Зарегистрироваться"
     save: "Сохранить"
-    cansel: "Отменить"
+    cancel: "Отменить"
     edit: "Редактировать"
     delete: "Удалить"
     login: "Войти"
@@ -77,3 +80,11 @@ ru:
       success: "Пока-пока!"
     registration:
       success: "Добро пожаловать!"
+    cards:
+      success:
+        created: "Карта была успешно создана!"
+        updated: "Карта была успешно обновлена!"
+        deleted: "Карта была успешно удалена!"
+    users:
+      success:
+        updated: "Профиль был успешно обновлен!"

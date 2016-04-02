@@ -47,7 +47,7 @@ end
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-  gem 'rspec-rails', '~> 3.0.0'
+  gem 'rspec-rails', '~> 3.4.2'
   gem 'factory_girl_rails'
   gem 'capybara'
 end
@@ -60,3 +60,12 @@ end
 
 gem 'pry-rails', '~> 0.3.4'
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.6'
+
+gem 'carrierwave', '~> 0.10.0'
+gem 'mini_magick', '~> 4.4'
+
+gem 'fog-aws', '~> 0.9.1'
+gem 'fog', '~> 1.37'
+gem 'figaro', '~> 1.1', '>= 1.1.1'
+
+gem 'capybara-webkit', '~> 1.7', '>= 1.7.1'

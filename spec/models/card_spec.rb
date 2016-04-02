@@ -1,9 +1,10 @@
 require "rails_helper"
+require "carrierwave/test/matchers"
 
 RSpec.describe Card, type: :model do
 
   before do
-    @card = FactoryGirl.create(:card)
+    @card = create(:card)
   end
 
   subject { @card }
@@ -15,24 +16,24 @@ RSpec.describe Card, type: :model do
   it { should respond_to(:updated_at) }
   it { should respond_to(:user_id) }
   it { should respond_to(:check_translation?) }
+  it { should respond_to(:image) }
 
   describe "#check_translation?" do
 
-    it "Correct" do
+    it "correct case" do
       expect(@card.check_translation?("мяч")).to be true
     end
 
-    it "Incorrect" do
+    it "incorrect case" do
       expect(@card.check_translation?("мяч1")).to be false
     end
 
-    it "Correct upcase" do
+    it "correct case upcase leters" do
       expect(@card.check_translation?("МЯЧ")).to be true
     end
   end
 
   describe "#review date" do
-
     it "on create" do
       expect(@card.review_date.to_date).to eq(3.days.from_now.to_date)
     end
@@ -51,21 +52,52 @@ RSpec.describe Card, type: :model do
     end
 
     it "the same values" do
-      @card = Card.new(original_text: "мяч", translated_text: "мяч")
+      @card = build(:card, original_text: "мяч", translated_text: "мяч")
       @card.valid?
-      expect(@card.errors.messages[I18n.t("error.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("error.validation.messages.the_same_value"))
+      expect(@card.errors.messages[I18n.t("errors.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("errors.validation.messages.the_same_value"))
     end
 
     it "the same values capitalize original_text" do
-      @card = Card.new(original_text: "Мяч", translated_text: "мяч")
+      @card = build(:card, original_text: "Мяч", translated_text: "мяч")
       @card.valid?
-      expect(@card.errors.messages[I18n.t("error.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("error.validation.messages.the_same_value"))
+      expect(@card.errors.messages[I18n.t("errors.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("errors.validation.messages.the_same_value"))
     end
 
     it "the same values capitalize translated_text" do
-      @card = Card.new(original_text: "мяч", translated_text: "Мяч")
+      @card = build(:card, original_text: "мяч", translated_text: "Мяч")
       @card.valid?
-      expect(@card.errors.messages[I18n.t("error.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("error.validation.messages.the_same_value"))
+      expect(@card.errors.messages[I18n.t("errors.validation.description.the_same_value").to_sym][0]).to eq(I18n.t("errors.validation.messages.the_same_value"))
+    end
+  end
+
+  describe "#image" do
+    include CarrierWave::Test::Matchers
+
+    before do
+      @card = create(:card)
+      ImageUploader.enable_processing = true
+      @uploader = ImageUploader.new(@card, :image)
+
+      File.open("./spec/files/goose.jpg") do |f|
+        @uploader.store!(f)
+      end
+    end
+
+    after do
+      ImageUploader.enable_processing = false
+      @uploader.remove!
+    end
+
+    context 'the main version' do
+      it "should have dimensions not larger than 360 by 360 pixels" do
+        expect(@uploader).to be_no_larger_than(360, 360)
+      end
+    end
+
+    context 'the thumb version' do
+      it "should scale down a landscape image to be exactly 100 by 75 pixels" do
+        expect(@uploader.thumb).to have_dimensions(100, 75)
+      end
     end
   end
 end

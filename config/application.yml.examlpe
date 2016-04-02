@@ -1,0 +1,7 @@
+# Where files are storage: fog/file
+FILES_STORAGE: "fog"
+#AWS credentials
+AWS_ACCESS_KEY_ID: "YOUR AMAZON ACCESS KEY"
+AWS_SECRET_ACCESS_KEY: "YOUR AMAZON SECRET KEY"
+AWS_REGION: "us-east-1" # Change this for different AWS region. Default is 'us-east-1'
+AWS_BUCKET: "bucket-name"

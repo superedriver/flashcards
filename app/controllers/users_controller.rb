@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to users_path
+      redirect_to users_path,  flash: { success: I18n.t("flashes.users.success.updated") }
     else
       render "edit"
     end

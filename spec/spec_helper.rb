@@ -17,10 +17,12 @@ require "database_cleaner"
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+
 RSpec.configure do |config|
 
   config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean_with(:truncation)
   end
 
@@ -30,6 +32,16 @@ RSpec.configure do |config|
     end
   end
 
+  config.after do
+    DatabaseCleaner.clean
+  end
+
+
+  config.include FactoryGirl::Syntax::Methods
+  Capybara.javascript_driver = :webkit
+
+  # config.include Capybara::Driver::Base
+  # config.include ActionDispatch::TestProcess
 # config.include Rails.application.routes.url_helpers
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.

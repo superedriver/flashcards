@@ -24,3 +24,12 @@ config/database.yml
 
 # Ignore secrets file
 config/secrets.yml
+
+# Ignore uploaded files
+public/uploads/*
+
+# Ignore environments
+config/environments/*
+
+# Ignore application configuration
+/config/application.yml
