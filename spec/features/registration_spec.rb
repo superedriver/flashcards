@@ -1,102 +1,29 @@
 require "rails_helper"
 
-describe "check_registration", type: :feature do
-  subject { page }
+describe "check new user registration", type: :feature do
 
-  let(:registration_button) { I18n.t("buttons.registration") }
-  let(:email_field) { "user[email]" }
-  let(:pass_field) { "user[password]" }
-  let(:pass_conf_field) { "user[password_confirmation]" }
+  scenario "with valid information" do
+    visit sign_up_path
+    fill_in "user_email", with: "user@gmail.com"
+    fill_in "user_password", with: "password"
+    fill_in "user_password_confirmation", with: "password"
+    click_button I18n.t("buttons.registration")
 
-  let(:password) { "qwerty" }
-  let(:short_password) { "qw" }
-  let(:another_password) { "qwerty1" }
-
-  let(:email) { "user@gmail.com" }
-  let(:another_email) { "user1@gmail.com" }
-
-  describe "with valid information" do
-    before do
-      visit sign_up_path
-      fill_in email_field, with: email
-      fill_in pass_field, with: password
-      fill_in pass_conf_field, with: password
-      click_button registration_button
-    end
-    it { should have_content I18n.t("flashes.registration.success") }
-    it { should have_content "Пока нет слов для изучения!" }
-
+    expect(page).to have_current_path root_path
+    expect(page).to have_text( I18n.t("flashes.registration.success") )
   end
 
-  describe "negative tests" do
-    before(:each) { visit sign_up_path }
+  context "with invalid information" do
+    scenario "non-unique email" do
+      @user = create(:user)
+      visit sign_up_path
+      fill_in "user_email", with: @user.email
+      fill_in "user_password", with: "qwerty"
+      fill_in "user_password_confirmation", with: "qwerty"
+      click_button I18n.t("buttons.registration")
 
-    describe "non-unique email" do
-      let(:user) { create(:user, email: email) }
-
-      before do
-        fill_in email_field, with: user.email
-        fill_in pass_field, with: password
-        fill_in pass_conf_field, with: password
-        click_button registration_button
-      end
-
-      it { should have_content I18n.t("activerecord.errors.models.user.attributes.email.taken") }
-    end
-
-    describe "upcase letters in email" do
-      let(:upcase_email) { "UpCasE@gmail.com" }
-
-      describe "registration" do
-        before do
-          fill_in email_field, with: upcase_email
-          fill_in pass_field, with: password
-          fill_in pass_conf_field, with: password
-          click_button registration_button
-        end
-
-        it { should have_content I18n.t("flashes.registration.success") }
-        it { should have_content "Пока нет слов для изучения!" }
-      end
-
-      describe "try to register with the same downcase email" do
-        before do
-          create(:user, email: upcase_email)
-          fill_in email_field, with: upcase_email.downcase
-          fill_in pass_field, with: password
-          fill_in pass_conf_field, with: password
-          click_button registration_button
-        end
-
-        it { should have_content I18n.t("activerecord.errors.models.user.attributes.email.taken") }
-      end
-    end
-
-    describe "password", type: :feature do
-      before(:each) do
-        visit sign_up_path
-        fill_in email_field, with: another_email
-      end
-
-      describe "too short" do
-        before do
-          fill_in pass_field, with: short_password
-          fill_in pass_conf_field, with: short_password
-          click_button registration_button
-        end
-
-        it { should have_content I18n.t("activerecord.errors.models.user.attributes.password.too_short") }
-      end
-
-      describe "don't match" do
-        before do
-          fill_in pass_field, with: password
-          fill_in pass_conf_field, with: another_password
-          click_button registration_button
-        end
-
-        it { should have_content I18n.t("activerecord.errors.models.user.attributes.password_confirmation.confirmation") }
-      end
+      expect(page).to have_current_path registrations_path
+      expect(page).to have_text( I18n.t("activerecord.errors.models.user.attributes.email.taken") )
     end
   end
 end

@@ -2,8 +2,6 @@ require "rails_helper"
 
 describe "delete_cards", js: true, type: :feature do
 
-  let(:delete_button) { I18n.t("buttons.delete") }
-  let(:login_button) { I18n.t("buttons.login") }
   let(:user) { create(:user) }
   let(:card1) { create(:card,
                        original_text: "card1_original_text",
@@ -18,13 +16,13 @@ describe "delete_cards", js: true, type: :feature do
     visit login_path
     fill_in :email, with: user.email
     fill_in :password, with: "qwerty"
-    click_button login_button
+    click_button I18n.t("buttons.login")
   end
 
   scenario "from show_card_path" do
     visit card_path(card1)
     accept_confirm do
-      click_link delete_button
+      click_link I18n.t("buttons.delete")
     end
 
     expect(page).to have_current_path cards_path
@@ -34,7 +32,7 @@ describe "delete_cards", js: true, type: :feature do
   scenario "from edit_card_pat" do
     visit edit_card_path(card2)
     accept_confirm do
-      click_link delete_button
+      click_link I18n.t("buttons.delete")
     end
 
     expect(page).to have_current_path cards_path
@@ -47,7 +45,7 @@ describe "delete_cards", js: true, type: :feature do
                     user_id: user.id)
     visit cards_path
     accept_confirm do
-      click_link delete_button
+      click_link I18n.t("buttons.delete")
     end
 
     expect(page).to have_current_path cards_path
