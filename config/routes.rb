@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   root "home#index"
 
-  resources :cards
+  resources :decks do
+    resources :cards
+  end
+
   patch '/cards/:id/check' => 'cards#check', as: :check
 
   resources :registrations, only: [:new, :create]

@@ -1,4 +1,4 @@
-<h1> Card ID: <%= @card.id %></h1>
+<h1>Просмотр карты:</h1>
 <hr>
 <div>
   <ul class="list-group" id="one-card">
@@ -28,6 +28,3 @@
   <%= link_to I18n.t("buttons.delete"), @card, method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-lg" %>
   <%= link_to I18n.t("buttons.cancel"), cards_path, class: "btn btn-default btn-lg" %>
 </div>
-
-
-

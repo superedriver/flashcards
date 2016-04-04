@@ -17,6 +17,8 @@ ru:
         email: "email"
         password: "Пароль"
         password_confirmation: "Подтверждение пароля"
+      deck:
+        name: "Название"
     errors:
       models:
         card:
@@ -25,8 +27,8 @@ ru:
               blank: "Поле 'Текст' не может быть пустым!"
             translated_text:
               blank: "Поле 'Перевод' не может быть пустым!"
-            user_id:
-              blank: "Карта не привязана к юзеру! (user_id.blank)"
+            deck_id:
+              blank: "Карта не привязана к колоде! (deck_id.blank)"
         user:
           invalid: "Невалидный юзер"
           attributes:
@@ -38,6 +40,12 @@ ru:
             password_confirmation:
               confirmation: "Пароли не совпадают!"
               blank: "Подтвердите пароль!"
+        deck:
+          attributes:
+            name:
+              blank: "Поле 'Имя' не может быть пустым!"
+            user_id:
+              blank: "Колода не привязана к пользователю! (user_id.blank)"
   errors:
     messages:
       extension_white_list_error: "Неправильный формат загружаемого файла!"
@@ -55,6 +63,8 @@ ru:
   buttons:
     check: "Проверить"
     sign_up: "Регистрация"
+    all_decks: "Все колоды"
+    add_deck: "Добавить колоду"
     all_cards: "Все карточки"
     add_card: "Добавить карточку"
     registration: "Зарегистрироваться"
@@ -64,6 +74,7 @@ ru:
     delete: "Удалить"
     login: "Войти"
     logout: "Выйти"
+    view: "Просмотреть"
     edit_profile: "Редактировать профиль"
     show_profile: "Показать профиль"
   flashes:
@@ -85,6 +96,11 @@ ru:
         created: "Карта была успешно создана!"
         updated: "Карта была успешно обновлена!"
         deleted: "Карта была успешно удалена!"
+    decks:
+      success:
+        created: "Колода была успешно создана!"
+        updated: "Колода была успешно обновлена!"
+        deleted: "Колода была успешно удалена!"
     users:
       success:
         updated: "Профиль был успешно обновлен!"

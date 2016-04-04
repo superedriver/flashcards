@@ -6,7 +6,6 @@ class SessionsController < ApplicationController
   end
 
   def create
-    # binding.pry
     if @user = login(params[:email].downcase, params[:password])
       redirect_back_or_to root_path, success: I18n.t('flashes.login.success')
     else
