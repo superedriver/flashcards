@@ -1,4 +1,11 @@
-<h1>Просмотр карты:</h1>
+
+<div class="clear-both">
+  <h1 class="left-side">Просмотр карты:</h1>
+  <%= link_to "Просмотреть колоду",
+              deck_path(@card.deck),
+                class: "btn btn-default btn-lg deck-button-right" %>
+</div>
+
 <hr>
 <div>
   <ul class="list-group" id="one-card">
@@ -24,7 +31,13 @@
       &nbsp; <%= get_text(@card, :review_date )%>
     </li>
   </ul>
-  <%= link_to I18n.t("buttons.edit"), edit_card_path(@card), class: "btn btn-primary btn-lg" %>
-  <%= link_to I18n.t("buttons.delete"), @card, method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-lg" %>
-  <%= link_to I18n.t("buttons.cancel"), cards_path, class: "btn btn-default btn-lg" %>
+  <%= link_to I18n.t("buttons.edit"),
+              edit_deck_card_path(@card.deck,@card),
+              class: "btn btn-primary btn-lg" %>
+  <%= link_to I18n.t("buttons.delete"),
+              deck_card_path(@card.deck,@card),
+              method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-lg" %>
+  <%= link_to I18n.t("buttons.cancel"),
+              deck_path(@card.deck),
+              class: "btn btn-default btn-lg" %>
 </div>

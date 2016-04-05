@@ -2,31 +2,35 @@ class CardsController < ApplicationController
   before_action :find_card, only: [:show, :edit, :update, :destroy, :check]
 
   def index
-    @cards = current_user.cards
+    @deck = Deck.find_by(id: params["deck_id"])
+    @cards = @deck.cards
   end
 
   def show
   end
 
   def new
+    @deck = Deck.find_by(id: params["deck_id"])
     @card = Card.new
   end
 
   def create
-    @card = current_user.cards.new(card_params)
+    @deck = Deck.find_by(id: params["deck_id"])
+    @card = @deck.cards.new(card_params)
     if @card.save
-      redirect_to card_path(@card), flash: { success: I18n.t('flashes.cards.success.created') }
+      redirect_to deck_card_path(@card.deck, @card), flash: { success: I18n.t('flashes.cards.success.created') }
     else
       render "new"
     end
   end
 
   def edit
+    @deck = Deck.find_by(id: params["deck_id"])
   end
 
   def update
     if @card.update(card_params)
-      redirect_to card_path(@card),  flash: { success: I18n.t('flashes.cards.success.updated') }
+      redirect_to deck_card_path(@card.deck, @card),  flash: { success: I18n.t('flashes.cards.success.updated') }
     else
       render "edit"
     end
@@ -34,7 +38,7 @@ class CardsController < ApplicationController
 
   def destroy
     @card.destroy
-    redirect_to cards_path, flash: { success: I18n.t('flashes.cards.success.deleted') }
+    redirect_to deck_cards_path(@card.deck), flash: { success: I18n.t('flashes.cards.success.deleted') }
   end
 
   def check

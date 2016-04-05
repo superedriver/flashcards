@@ -14,9 +14,20 @@
       <td><%= deck.name %></td>
       <td><%= deck.cards.count %></td>
       <td>
-        <%= link_to I18n.t("buttons.view"), deck_path(deck), class: "btn btn-default btn-sm" %>
-        <%= link_to I18n.t("buttons.edit"), edit_deck_path(deck), class: "btn btn-primary btn-sm" %>
-        <%= link_to I18n.t("buttons.delete"), deck, method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-sm" %>
+        <%= link_to I18n.t("buttons.view"),
+                    deck_path(deck),
+                    class: "btn btn-default btn-sm" %>
+        <%= link_to I18n.t("buttons.edit"),
+                    edit_deck_path(deck),
+                    class: "btn btn-primary btn-sm" %>
+        <%= link_to I18n.t("buttons.delete"),
+                    deck,
+                    method: :delete,
+                    data: { confirm: I18n.t("confirm.delete_card") },
+                    class: "btn btn-danger btn-sm" %>
+        <%= link_to "Добавить карту",
+                    new_deck_card_path(deck),
+                    class: "btn btn-warning btn-sm deck-button-right" %>
       </td>
     </tr>
   <% end %>
