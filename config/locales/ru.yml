@@ -77,6 +77,8 @@ ru:
     view: "Просмотреть"
     edit_profile: "Редактировать профиль"
     show_profile: "Показать профиль"
+    activate: "Сделать текущей"
+    deactivate: "Сделать нетекущей"
   flashes:
     oauth:
       login:

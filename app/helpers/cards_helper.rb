@@ -4,7 +4,7 @@ module CardsHelper
     card[field].present? ? card[field] : t('errors.messages.empty_field')
   end
 
-  def get_url(card)
-    card.new_record? ? deck_cards_path(@deck) : deck_card_path(card.deck, card)
+  def get_url(card, deck)
+    card.new_record? ? deck_cards_path(deck) : deck_card_path(card.deck, card)
   end
 end

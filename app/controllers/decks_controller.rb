@@ -37,6 +37,16 @@ class DecksController < ApplicationController
     redirect_to decks_path, flash: { success: I18n.t('flashes.decks.success.deleted') }
   end
 
+  def activate
+    if @card.check_translation?(params[:card][:original_text].mb_chars.downcase)
+      flash[:success] = I18n.t("compare_result.right")
+      @card.change_review_date!
+    else
+      flash[:error] = I18n.t("compare_result.not_right", text: params[:original_text].mb_chars.upcase )
+    end
+
+    redirect_to root_path
+  end
 
   private
 

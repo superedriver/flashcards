@@ -3,7 +3,7 @@
   <tr>
     <th>№</th>
     <th><%= I18n.t("activerecord.attributes.deck.name") %></th>
-    <th>Количество слов</th>
+    <th>Слова</th>
     <th>Действия</th>
   </tr>
   </thead>
@@ -25,9 +25,12 @@
                     method: :delete,
                     data: { confirm: I18n.t("confirm.delete_card") },
                     class: "btn btn-danger btn-sm" %>
+        <%= link_to get_active_button(deck),
+                    deck,
+                    class: get_active_class(deck) %>
         <%= link_to "Добавить карту",
                     new_deck_card_path(deck),
-                    class: "btn btn-warning btn-sm deck-button-right" %>
+                    class: "btn btn-info btn-sm deck-button-right" %>
       </td>
     </tr>
   <% end %>
