@@ -26,7 +26,7 @@
                     data: { confirm: I18n.t("confirm.delete_card") },
                     class: "btn btn-danger btn-sm" %>
         <%= link_to get_active_button(deck),
-                    deck,
+                    get_active_url(deck),
                     class: get_active_class(deck) %>
         <%= link_to "Добавить карту",
                     new_deck_card_path(deck),

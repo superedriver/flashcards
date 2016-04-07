@@ -15,11 +15,16 @@ class User < ActiveRecord::Base
   end
 
   def get_card
-    cards.actual_cards.random_card
+    get_active_deck_cards.actual_cards.random_card
   end
 
   def get_decks
     decks
+  end
+
+  def get_active_deck_cards
+    deck = decks.find_by(current: true)
+    deck.present? ? deck.cards : cards
   end
 
   accepts_nested_attributes_for :authentications

@@ -17,7 +17,6 @@ class CardsController < ApplicationController
   def create
     @deck = Deck.find_by(id: params["deck_id"])
     @card = @deck.cards.new(card_params)
-    # @card = Card.new(card_params)
     if @card.save
       redirect_to deck_card_path(@card.deck, @card), flash: { success: I18n.t('flashes.cards.success.created') }
     else

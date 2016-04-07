@@ -1,32 +1,5 @@
-<div class="well bs-component">
-  <%= simple_form_for [@deck,@card], as: :card,
-                      url: get_url(@card, @deck),
-                      html: {class: "form-horizontal"} do |f| %>
-      <%= render partial: 'shared/validation_errors', locals: { object: @card }  %>
-      <fieldset>
-        <%#= hidden_field_tag(:deck_id, @deck.id) %>
-        <%= f.input :original_text %>
-        <%= f.input :translated_text %>
-        <%= f.input :image,
-                    as: :file,
-                    label: I18n.t("activerecord.attributes.card.image") + ' (jpg, jpeg, gif, png)' %>
-
-        <% if f.object.image? %>
-            <%= image_tag(f.object.image.url, :class => "card-image") %>
-            <br>
-            <%= f.label :remove_image %>
-            <%= f.check_box :remove_image %>
-            <br>
-        <% end %>
-
-        <% if @card.new_record? %>
-            <%= f.submit I18n.t("buttons.save"), class: "btn btn-primary" %>
-            <%= link_to I18n.t("buttons.cancel"), deck_cards_path, class: "btn btn-default" %>
-        <% else %>
-            <%= f.submit I18n.t("buttons.edit"), class: "btn btn-primary" %>
-            <%= link_to I18n.t("buttons.delete"), deck_card_path(@card.deck, @card), method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger" %>
-            <%= link_to I18n.t("buttons.cancel"), deck_cards_path, class: "btn btn-default" %>
-        <% end %>
-      </fieldset>
-  <% end %>
-</div>
+<%= f.input :original_text %>
+<%= f.input :translated_text %>
+<%= f.input :image,
+            as: :file,
+            label: I18n.t("activerecord.attributes.card.image") + ' (jpg, jpeg, gif, png)' %>

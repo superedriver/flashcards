@@ -5,8 +5,8 @@ Rails.application.routes.draw do
     resources :cards
   end
 
-  patch '/decs/:id/activate' => 'decks#activate', as: :activate_deck
-  patch '/decs/:id/deactivate' => 'decks#activate', as: :deactivate_deck
+  get '/decks/:id/activate' => 'decks#activate', as: :activate_deck
+  get '/decks/:id/deactivate' => 'decks#deactivate', as: :deactivate_deck
 
   patch '/cards/:id/check' => 'cards#check', as: :check
 

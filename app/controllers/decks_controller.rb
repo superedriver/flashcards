@@ -1,5 +1,5 @@
 class DecksController < ApplicationController
-  before_action :find_deck, only: [:show, :edit, :update, :destroy]
+  before_action :find_deck, only: [:show, :edit, :update, :destroy, :activate, :deactivate]
 
   def index
     @decks = current_user.decks
@@ -38,14 +38,13 @@ class DecksController < ApplicationController
   end
 
   def activate
-    if @card.check_translation?(params[:card][:original_text].mb_chars.downcase)
-      flash[:success] = I18n.t("compare_result.right")
-      @card.change_review_date!
-    else
-      flash[:error] = I18n.t("compare_result.not_right", text: params[:original_text].mb_chars.upcase )
-    end
+    @deck.set_current!
+    redirect_to decks_path, flash: { success: I18n.t('flashes.decks.success.activated') }
+  end
 
-    redirect_to root_path
+  def deactivate
+    @deck.set_not_current!
+    redirect_to decks_path, flash: { success: I18n.t('flashes.decks.success.deactivated') }
   end
 
   private
