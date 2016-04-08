@@ -18,12 +18,8 @@ class User < ActiveRecord::Base
     get_active_deck_cards.actual_cards.random_card
   end
 
-  def get_decks
-    decks
-  end
-
   def get_active_deck_cards
-    deck = decks.find_by(current: true)
+    deck = decks.actual_deck
     deck.present? ? deck.cards : cards
   end
 

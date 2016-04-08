@@ -14,6 +14,10 @@ RSpec.describe User, type: :model do
   it { should respond_to(:updated_at) }
   it { should respond_to(:crypted_password) }
   it { should respond_to(:salt) }
+  it { should respond_to(:cards) }
+  it { should respond_to(:decks) }
+  it { should respond_to(:get_card) }
+  it { should respond_to(:get_active_deck_cards) }
 
   describe "correct case" do
     it "new user" do

@@ -4,14 +4,14 @@ class Deck < ActiveRecord::Base
 
   validates :name, :user_id, presence: true
 
+  scope :actual_deck, -> { where("current = ?", true) }
+
   def set_not_current!
     self.update_column(:current, false)
   end
 
   def set_current!
-    # self.user.decks.each{ |deck| deck.current = false } if self.user.decks.any?
-    self.user.decks.each{ |deck| deck.update_column(:current, false) } if self.user.decks.any?
-    # update_column(:review_date, 3.days.from_now.to_date)
+    self.user.decks.update_all(current: false) if self.user.decks.any?
     self.update_column(:current, true)
   end
 end

@@ -1,8 +1,8 @@
 class CardsController < ApplicationController
+  before_action :find_deck, only: [:index, :new, :create, :edit]
   before_action :find_card, only: [:show, :edit, :update, :destroy, :check]
 
   def index
-    @deck = Deck.find_by(id: params["deck_id"])
     @cards = @deck.cards
   end
 
@@ -10,12 +10,10 @@ class CardsController < ApplicationController
   end
 
   def new
-    @deck = Deck.find_by(id: params["deck_id"])
     @card = Card.new
   end
 
   def create
-    @deck = Deck.find_by(id: params["deck_id"])
     @card = @deck.cards.new(card_params)
     if @card.save
       redirect_to deck_card_path(@card.deck, @card), flash: { success: I18n.t('flashes.cards.success.created') }
@@ -25,7 +23,6 @@ class CardsController < ApplicationController
   end
 
   def edit
-    @deck = Deck.find_by(id: params["deck_id"])
   end
 
   def update
@@ -59,9 +56,17 @@ class CardsController < ApplicationController
   end
 
   def find_card
-    @card = current_user.cards.find_by(id: params[:id])
+    @deck = Deck.find_by(id: params["deck_id"])
+    @card = @deck.cards.find_by(id: params[:id])
     unless @card
-      render text: "Page not found", status: 404
+      render text: "Card not found", status: 404
+    end
+  end
+
+  def find_deck
+    @deck = Deck.find_by(id: params["deck_id"])
+    unless @deck
+      render text: "Deck not found", status: 404
     end
   end
 end
