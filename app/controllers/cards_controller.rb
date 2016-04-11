@@ -57,7 +57,9 @@ class CardsController < ApplicationController
 
   def find_card
     @deck = Deck.find_by(id: params["deck_id"])
+    # binding.pry
     @card = @deck.cards.find_by(id: params[:id])
+
     unless @card
       render text: "Card not found", status: 404
     end

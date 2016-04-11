@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   end
 
   def get_active_deck_cards
-    deck = decks.actual_deck
+    deck = decks.actual_deck.first
     deck.present? ? deck.cards : cards
   end
 

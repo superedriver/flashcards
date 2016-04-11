@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   get '/decks/:id/activate' => 'decks#activate', as: :activate_deck
   get '/decks/:id/deactivate' => 'decks#deactivate', as: :deactivate_deck
 
-  patch '/cards/:id/check' => 'cards#check', as: :check
+  patch '/decks/:deck_id/cards/:id/check' => 'cards#check', as: :check_card
 
   resources :registrations, only: [:new, :create]
   get '/sign_up', to: 'registrations#new', as: :sign_up
