@@ -26,7 +26,7 @@ class DecksController < ApplicationController
 
   def update
     if @deck.update(deck_params)
-      redirect_to decks_path(@deck),  flash: { success: I18n.t('flashes.decks.success.updated') }
+      redirect_to decks_path,  flash: { success: I18n.t('flashes.decks.success.updated') }
     else
       render "edit"
     end
