@@ -14,7 +14,7 @@ RSpec.describe Card, type: :model do
   it { should respond_to(:review_date) }
   it { should respond_to(:created_at) }
   it { should respond_to(:updated_at) }
-  it { should respond_to(:user_id) }
+  it { should respond_to(:deck_id) }
   it { should respond_to(:check_translation?) }
   it { should respond_to(:image) }
 

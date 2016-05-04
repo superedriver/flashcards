@@ -1,0 +1,38 @@
+<table class="table table-striped table-hover">
+  <thead>
+  <tr>
+    <th>№</th>
+    <th><%= I18n.t("activerecord.attributes.deck.name") %></th>
+    <th>Слова</th>
+    <th>Действия</th>
+  </tr>
+  </thead>
+  <tbody id="cards">
+  <% @decks.each.with_index(1) do |deck, index| %>
+    <tr>
+      <td><%= index %></td>
+      <td><%= deck.name %></td>
+      <td><%= deck.cards.count %></td>
+      <td>
+        <%= link_to I18n.t("buttons.view"),
+                    deck_path(deck),
+                    class: "btn btn-default btn-sm" %>
+        <%= link_to I18n.t("buttons.edit"),
+                    edit_deck_path(deck),
+                    class: "btn btn-primary btn-sm" %>
+        <%= link_to I18n.t("buttons.delete"),
+                    deck,
+                    method: :delete,
+                    data: { confirm: I18n.t("confirm.delete_card") },
+                    class: "btn btn-danger btn-sm" %>
+        <%= link_to get_active_button(deck),
+                    get_active_url(deck),
+                    class: get_active_class(deck) %>
+        <%= link_to "Добавить карту",
+                    new_deck_card_path(deck),
+                    class: "btn btn-info btn-sm deck-button-right" %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

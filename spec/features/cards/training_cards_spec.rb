@@ -13,7 +13,8 @@ describe "training_cards", type: :feature do
 
   context "when user is signed" do
     let(:card) { create(:card) }
-    let(:user) { card.user }
+    let(:deck) { card.deck }
+    let(:user) { deck.user }
 
     before do
       card.update_column(:review_date, Date.current)

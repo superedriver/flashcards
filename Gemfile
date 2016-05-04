@@ -50,13 +50,10 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.4.2'
   gem 'factory_girl_rails'
   gem 'capybara'
+  gem 'database_cleaner'
 end
 
 gem 'sorcery'
-
-group :development, :test do
-  gem 'database_cleaner'
-end
 
 gem 'pry-rails', '~> 0.3.4'
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.6'

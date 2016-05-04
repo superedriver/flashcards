@@ -1,0 +1,16 @@
+// Place all the styles related to the Decks controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.deck-button-right {
+  float: right;
+}
+
+.left-side {
+  float: left;
+}
+
+.clear-both::after  {
+  content: "";
+  display: table;
+  clear: both;
+}

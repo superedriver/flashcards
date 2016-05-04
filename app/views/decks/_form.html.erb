@@ -1,0 +1,17 @@
+<div class="well bs-component">
+  <%= simple_form_for @deck, html: {class: "form-horizontal"} do |f| %>
+      <%= render partial: 'shared/validation_errors', locals: { object: @deck }  %>
+      <fieldset>
+        <%= f.input :name %>
+
+        <% if @deck.new_record? %>
+            <%= f.submit I18n.t("buttons.save"), class: "btn btn-primary" %>
+            <%= link_to I18n.t("buttons.cancel"), decks_path, class: "btn btn-default" %>
+        <% else %>
+            <%= f.submit I18n.t("buttons.edit"), class: "btn btn-primary" %>
+            <%= link_to I18n.t("buttons.delete"), @deck, method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger" %>
+            <%= link_to I18n.t("buttons.cancel"), decks_path, class: "btn btn-default" %>
+        <% end %>
+      </fieldset>
+  <% end %>
+</div>

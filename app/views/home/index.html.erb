@@ -4,8 +4,8 @@
   <% if @card.present? %>
     <h1>Введите перевод слова:</h1>
     <div class="well bs-component">
-      <%= simple_form_for @card, html: {class: "form-horizontal"},
-                          url: check_path(id: @card.id) do |f| %>
+      <%= simple_form_for [@card.deck, @card], html: {class: "form-horizontal"},
+                          url: check_card_path(@card.deck, @card) do |f| %>
           <fieldset>
             <%= hidden_field_tag(:id, @card.id) %>
             <%= hidden_field_tag(:original_text, @card.original_text) %>

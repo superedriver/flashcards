@@ -1,8 +1,8 @@
 class Card < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :deck
 
-  validates :original_text, :translated_text, :review_date, presence: { message: I18n.t('error.validation.messages.cant_be_blank') }
-  validates :user_id, presence: true
+  validates :original_text, :translated_text, :review_date, presence: true
+  validates :deck_id, presence: true
 
   validate :check_difference
 

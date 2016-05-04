@@ -6,13 +6,13 @@
     <th><%= I18n.t("activerecord.attributes.card.original_text") %></th>
     <th><%= I18n.t("activerecord.attributes.card.translated_text") %></th>
     <th><%= I18n.t("activerecord.attributes.card.review_date") %></th>
-    <th>Modification</th>
+    <th>Действия</th>
   </tr>
   </thead>
   <tbody id="cards">
   <% @cards.each.with_index(1) do |card, index| %>
     <tr>
-      <td><%= link_to index, card_path(card) %></td>
+      <td><%= link_to index, deck_card_path(card.deck, card) %></td>
       <td>
         <% if card.image.thumb.url.present? %>
           <%= image_tag card.image.thumb.url %>
@@ -24,8 +24,9 @@
       <td><%= get_text(card, :translated_text) %></td>
       <td><%= get_text(card, :review_date) %></td>
       <td>
-        <%= link_to I18n.t("buttons.edit"), edit_card_path(card), class: "btn btn-primary btn-sm" %>
-        <%= link_to I18n.t("buttons.delete"), card, method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-sm" %>
+        <%= link_to I18n.t("buttons.view"), deck_card_path(card.deck, card), class: "btn btn-default btn-sm" %>
+        <%= link_to I18n.t("buttons.edit"), edit_deck_card_path(card.deck, card), class: "btn btn-primary btn-sm" %>
+        <%= link_to I18n.t("buttons.delete"), deck_card_path(card.deck, card), method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-sm" %>
       </td>
     </tr>
   <% end %>

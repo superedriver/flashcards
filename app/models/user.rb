@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
-  has_many :cards, dependent: :destroy
+  has_many :decks, dependent: :destroy
+  has_many :cards, through: :decks
   has_many :authentications, dependent: :destroy
 
   before_save { self.email = email.downcase }
@@ -14,7 +15,12 @@ class User < ActiveRecord::Base
   end
 
   def get_card
-    cards.actual_cards.random_card
+    get_active_deck_cards.actual_cards.random_card
+  end
+
+  def get_active_deck_cards
+    deck = decks.actual_deck.first
+    deck.present? ? deck.cards : cards
   end
 
   accepts_nested_attributes_for :authentications

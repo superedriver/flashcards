@@ -1,8 +1,14 @@
 Rails.application.routes.draw do
   root "home#index"
 
-  resources :cards
-  patch '/cards/:id/check' => 'cards#check', as: :check
+  resources :decks do
+    resources :cards
+  end
+
+  get '/decks/:id/activate' => 'decks#activate', as: :activate_deck
+  get '/decks/:id/deactivate' => 'decks#deactivate', as: :deactivate_deck
+
+  patch '/decks/:deck_id/cards/:id/check' => 'cards#check', as: :check_card
 
   resources :registrations, only: [:new, :create]
   get '/sign_up', to: 'registrations#new', as: :sign_up
