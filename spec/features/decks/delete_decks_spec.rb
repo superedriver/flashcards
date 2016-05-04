@@ -1,11 +1,9 @@
 require "rails_helper"
 
 describe "delete_decks", js: true, type: :feature do
-
   let(:user) { create(:user) }
   let(:deck1) { create(:deck, user_id: user.id) }
   let(:deck2) { create(:deck, user_id: user.id) }
-
 
   before do
     visit login_path
@@ -21,7 +19,7 @@ describe "delete_decks", js: true, type: :feature do
     end
 
     expect(page).to have_current_path decks_path
-    expect(page).to have_text( I18n.t("flashes.decks.success.deleted") )
+    expect(page).to have_text(I18n.t("flashes.decks.success.deleted"))
   end
 
   scenario "from edit_deck_pat" do
@@ -31,7 +29,7 @@ describe "delete_decks", js: true, type: :feature do
     end
 
     expect(page).to have_current_path decks_path
-    expect(page).to have_text( I18n.t("flashes.decks.success.deleted") )
+    expect(page).to have_text(I18n.t("flashes.decks.success.deleted"))
   end
 
   scenario "from decks_path" do
@@ -42,6 +40,6 @@ describe "delete_decks", js: true, type: :feature do
     end
 
     expect(page).to have_current_path decks_path
-    expect(page).to have_text( I18n.t("flashes.decks.success.deleted") )
+    expect(page).to have_text(I18n.t("flashes.decks.success.deleted"))
   end
 end
