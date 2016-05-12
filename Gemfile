@@ -65,6 +65,6 @@ gem 'fog-aws', '~> 0.9.1'
 gem 'fog', '~> 1.37'
 gem 'figaro', '~> 1.1', '>= 1.1.1'
 
-gem 'capybara-webkit', '~> 1.7', '>= 1.7.1'
+gem 'capybara-webkit', '~> 1.11.1', '>= 1.11.1'
 
 gem 'rails_12factor', group: :production
