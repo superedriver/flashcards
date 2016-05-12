@@ -51,6 +51,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'capybara'
   gem 'database_cleaner'
+  gem 'capybara-webkit', '~> 1.11.1', '>= 1.11.1'
 end
 
 gem 'sorcery'
@@ -64,7 +65,5 @@ gem 'mini_magick', '~> 4.4'
 gem 'fog-aws', '~> 0.9.1'
 gem 'fog', '~> 1.37'
 gem 'figaro', '~> 1.1', '>= 1.1.1'
-
-gem 'capybara-webkit', '~> 1.11.1', '>= 1.11.1'
 
 gem 'rails_12factor', group: :production
