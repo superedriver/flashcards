@@ -1,7 +1,6 @@
 require "rails_helper"
 
 describe "activate/deactivate_deck", type: :feature do
-
   context "when user is not signed" do
     scenario "visits create_card_path" do
       visit decks_path
@@ -12,7 +11,6 @@ describe "activate/deactivate_deck", type: :feature do
   end
 
   describe "authorized user" do
-
     let(:user) { create(:user)}
 
     before do
@@ -25,7 +23,7 @@ describe "activate/deactivate_deck", type: :feature do
     scenario "deactivate deck" do
       visit activate_deck_path(@deck1)
       visit decks_path
-      click_link( I18n.t("buttons.deactivate") )
+      click_link(I18n.t("buttons.deactivate"))
 
       expect(page).not_to have_link(I18n.t("buttons.deactivate"))
       expect(page).to have_link(

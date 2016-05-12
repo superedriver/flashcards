@@ -7,11 +7,11 @@ class Deck < ActiveRecord::Base
   scope :actual_deck, -> { where("current = ?", true) }
 
   def set_not_current!
-    self.update_column(:current, false)
+    update_column(:current, false)
   end
 
   def set_current!
-    self.user.decks.update_all(current: false) if self.user.decks.any?
-    self.update_column(:current, true)
+    user.decks.update_all(current: false) if self.user.decks.any?
+    update_column(:current, true)
   end
 end

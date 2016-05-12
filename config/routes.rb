@@ -5,19 +5,19 @@ Rails.application.routes.draw do
     resources :cards
   end
 
-  get '/decks/:id/activate' => 'decks#activate', as: :activate_deck
-  get '/decks/:id/deactivate' => 'decks#deactivate', as: :deactivate_deck
+  get "/decks/:id/activate" => "decks#activate", as: :activate_deck
+  get "/decks/:id/deactivate" => "decks#deactivate", as: :deactivate_deck
 
-  patch '/decks/:deck_id/cards/:id/check' => 'cards#check', as: :check_card
+  patch "/decks/:deck_id/cards/:id/check" => "cards#check", as: :check_card
 
   resources :registrations, only: [:new, :create]
-  get '/sign_up', to: 'registrations#new', as: :sign_up
+  get "/sign_up", to: "registrations#new", as: :sign_up
 
   resource :users, only: [:show, :edit, :update]
 
   resources :sessions
-  get '/login', to: 'sessions#new', as: :login
-  post '/logout', to: 'sessions#destroy', as: :logout
+  get "/login", to: "sessions#new", as: :login
+  post "/logout", to: "sessions#destroy", as: :logout
 
   post "oauth/callback" => "oauths#callback"
   get "oauth/callback" => "oauths#callback" # for use with Github, Facebook

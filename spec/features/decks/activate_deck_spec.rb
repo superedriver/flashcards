@@ -1,12 +1,12 @@
 require "rails_helper"
 
 describe "activate/deactivate_deck", type: :feature do
-
   context "when user is not signed" do
     scenario "visits create_card_path" do
       visit decks_path
 
-      expect(page).to have_text(I18n.t("flashes.login.login_first"))
+      expect(page).to have_text(
+                          I18n.t("flashes.login.login_first"))
       expect(page).to have_current_path login_path
     end
   end

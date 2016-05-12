@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-
+ruby '2.2.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
@@ -66,3 +66,5 @@ gem 'fog', '~> 1.37'
 gem 'figaro', '~> 1.1', '>= 1.1.1'
 
 gem 'capybara-webkit', '~> 1.7', '>= 1.7.1'
+
+gem 'rails_12factor', group: :production

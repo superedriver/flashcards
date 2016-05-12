@@ -12,7 +12,8 @@ class DecksController < ApplicationController
   def create
     @deck = current_user.decks.new(deck_params)
     if @deck.save
-      redirect_to deck_path(@deck), flash: { success: I18n.t('flashes.decks.success.created') }
+      redirect_to deck_path(@deck),
+                  flash: { success: I18n.t('flashes.decks.success.created') }
     else
       render "new"
     end
@@ -26,7 +27,8 @@ class DecksController < ApplicationController
 
   def update
     if @deck.update(deck_params)
-      redirect_to decks_path,  flash: { success: I18n.t('flashes.decks.success.updated') }
+      redirect_to decks_path,
+                  flash: { success: I18n.t('flashes.decks.success.updated') }
     else
       render "edit"
     end
@@ -34,17 +36,20 @@ class DecksController < ApplicationController
 
   def destroy
     @deck.destroy
-    redirect_to decks_path, flash: { success: I18n.t('flashes.decks.success.deleted') }
+    redirect_to decks_path,
+                flash: { success: I18n.t('flashes.decks.success.deleted') }
   end
 
   def activate
     @deck.set_current!
-    redirect_to decks_path, flash: { success: I18n.t('flashes.decks.success.activated') }
+    redirect_to decks_path,
+                flash: { success: I18n.t('flashes.decks.success.activated') }
   end
 
   def deactivate
     @deck.set_not_current!
-    redirect_to decks_path, flash: { success: I18n.t('flashes.decks.success.deactivated') }
+    redirect_to decks_path,
+                flash: { success: I18n.t('flashes.decks.success.deactivated') }
   end
 
   private

@@ -1,8 +1,6 @@
-require 'rails_helper'
-
+require "rails_helper"
 
 RSpec.describe Deck, type: :model do
-
   before do
     @deck = create(:deck)
     @deck1 = create(:deck, name: "Deck1", current: nil, user_id: @deck.user_id)
