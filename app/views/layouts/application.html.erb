@@ -46,7 +46,7 @@
   </div>
 
   <div id="wrapper">
-    <% if current_user %>
+    <% if current_user && Rails.env.development? %>
         <div class="h4 word_for_translate text-info">
           <p><b>User_id: </b><%=  current_user.id %></p>
           <p><b>User_email: </b><%=  current_user.email %></p>
