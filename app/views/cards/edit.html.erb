@@ -14,6 +14,7 @@
             <br>
         <% end %>
 
+
         <%= f.submit I18n.t("buttons.edit"), class: "btn btn-primary" %>
         <%= link_to I18n.t("buttons.delete"), deck_card_path(@card.deck, @card), method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger" %>
         <%= link_to I18n.t("buttons.cancel"), deck_cards_path, class: "btn btn-default" %>

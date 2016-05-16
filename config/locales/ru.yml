@@ -10,7 +10,7 @@ ru:
       card:
         original_text: "Текст"
         translated_text: "Перевод"
-        review_date: "Дата"
+        review_date: "Дата просмотра"
         image: "Картинка"
         remove_image: "Удалить картинку"
       user:
