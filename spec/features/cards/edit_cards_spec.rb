@@ -39,15 +39,6 @@ describe "edit_cards", type: :feature do
       expect(page).to have_text( I18n.t("flashes.cards.success.updated") )
     end
 
-    scenario "edit review_date" do
-      visit edit_deck_card_path(deck, card)
-      fill_in "card_review_date", with: "2016-05-05"
-      click_button I18n.t("buttons.edit")
-
-      expect(page).to have_current_path deck_card_path(deck, card)
-      expect(page).to have_text( I18n.t("flashes.cards.success.updated") )
-    end
-
     scenario "edit image" do
       visit edit_deck_card_path(deck, card)
       attach_file("card_image", Rails.root + "./spec/files/goose1.jpg")

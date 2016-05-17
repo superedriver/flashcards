@@ -1,12 +1,5 @@
 <%= f.input :original_text %>
 <%= f.input :translated_text %>
-<%= f.input :review_date,
-            as: :string,
-            input_html: {
-                type: :date,
-                placeholder: "Формат даты: YYYY-MM-DD",
-                pattern: "[0-9]{4}-[0-9]{2}-[0-9]{2}"
-            } %>
 <%= f.input :image,
             as: :file,
             label: I18n.t("activerecord.attributes.card.image") + ' (jpg, jpeg, gif, png)' %>
