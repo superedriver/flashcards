@@ -23,7 +23,7 @@ class Card < ActiveRecord::Base
 
   def set_review_date!
     # self[:review_date] ||= 3.days.from_now.to_date
-    self[:review_date] ||= Date.current
+    self[:review_date] ||= 3.days.from_now.to_date
   end
 
   private

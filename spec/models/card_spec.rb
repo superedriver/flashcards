@@ -35,7 +35,7 @@ RSpec.describe Card, type: :model do
 
   describe "#review date" do
     it "on create" do
-      expect(@card.review_date.to_date).to eq(Date.current)
+      expect(@card.review_date.to_date).to eq(3.days.from_now.to_date)
     end
 
     it "#change_review_date!" do
