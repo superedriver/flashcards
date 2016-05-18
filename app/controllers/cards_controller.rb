@@ -41,18 +41,29 @@ class CardsController < ApplicationController
   def check
     if @card.check_translation?(params[:card][:original_text].mb_chars.downcase)
       flash[:success] = I18n.t("compare_result.right")
-      @card.change_review_date!
+      # @card.change_review_date!
+      @card.correct_answer
     else
       flash[:error] = I18n.t("compare_result.not_right", text: params[:original_text].mb_chars.upcase )
+      @card.incorrect_answer
     end
-
+    @card.save
     redirect_to root_path
   end
 
   private
 
   def card_params
-    params.require(:card).permit(:original_text, :translated_text, :review_date, :deck_id, :image, :remove_image)
+    params.require(:card).permit(
+        :original_text,
+        :translated_text,
+        :review_date,
+        :deck_id,
+        :image,
+        :current_step,
+        :remove_image,
+        :attempts_count
+    )
   end
 
   def find_card

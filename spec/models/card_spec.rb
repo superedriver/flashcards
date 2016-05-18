@@ -17,6 +17,14 @@ RSpec.describe Card, type: :model do
   it { should respond_to(:deck_id) }
   it { should respond_to(:check_translation?) }
   it { should respond_to(:image) }
+  it { should respond_to(:current_step) }
+  it { should respond_to(:attempts_count) }
+  it { should respond_to(:change_review_date!) }
+  it { should respond_to(:set_review_date!) }
+  it { should respond_to(:set_current_step!) }
+  it { should respond_to(:set_attempts_count!) }
+  it { should respond_to(:correct_answer) }
+  it { should respond_to(:incorrect_answer) }
 
   describe "#check_translation?" do
 
@@ -35,7 +43,15 @@ RSpec.describe Card, type: :model do
 
   describe "#review date" do
     it "on create" do
-      expect(@card.review_date.to_date).to eq(3.days.from_now.to_date)
+      puts "================================="
+      puts "================================="
+      puts "================================="
+      puts @card.review_date
+      puts @card.review_date.to_datetime
+      puts Time.now - 15.seconds
+      puts Time.now
+      # expect(@card.review_date).to eq(Time.now)
+      expect(@card.review_date).to be_within(Time.now - 15.seconds).of(Time.now)
     end
 
     it "#change_review_date!" do
@@ -43,6 +59,55 @@ RSpec.describe Card, type: :model do
       expect {
         @card.change_review_date!
       }.to change { @card.review_date }.to(3.days.from_now.to_date)
+    end
+  end
+
+  describe "#attempts_count" do
+    it "on create" do
+      expect(@card.attempts_count).to eq(0)
+    end
+
+    it "set_attempts_count!" do
+      @card.update_column(:attempts_count, 2)
+      @card.set_attempts_count!
+      expect(@card.attempts_count).to eq(0)
+    end
+    #
+    # it "when answer is incorrect for the first time" do
+    #   @card.incorrect_answer
+    #   expect(@card.attempts_count).to eq(1)
+    # end
+    #
+    # it "when answer is incorrect the third time" do
+    #   @card.update_column(:attempts_count, 2)
+    #   @card.incorrect_answer
+    #   expect(@card.attempts_count).to eq(1)
+    # end
+  end
+
+  describe "#current_step" do
+    it "on create" do
+      expect(@card.current_step).to eq(0)
+    end
+
+    it "#set_current_step!" do
+      @card.update_column(:current_step, 2)
+      @card.set_current_step!
+      expect(@card.current_step).to eq(0)
+    end
+  end
+
+  describe "#correct_answer" do
+    it "first time" do
+      @card.correct_answer
+      expect(@card.current_step).to eq(1)
+      expect(@card.current_step).to eq(1)
+    end
+
+    it "#set_current_step!" do
+      @card.update_column(:current_step, 2)
+      @card.set_current_step!
+      expect(@card.current_step).to eq(0)
     end
   end
 

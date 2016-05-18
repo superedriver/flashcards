@@ -54,15 +54,15 @@
     <% end %>
 
     <% if flash[:success] %>
-        <div class="h1 word_for_translate text-success">
+        <div class="h2 word_for_translate text-success">
           <p><b><%=  flash[:success] %> </b></p>
         </div>
     <% elsif flash[:error] %>
-        <div class="h1 word_for_translate text-danger">
+        <div class="h2 word_for_translate text-danger">
           <p><b><%=  flash[:error] %></b></p>
         </div>
     <% elsif flash[:notice] %>
-        <div class="h1 word_for_translate text-info">
+        <div class="h2 word_for_translate text-info">
           <p><b><%=  flash[:notice] %></b></p>
         </div>
     <% end %>

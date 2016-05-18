@@ -1,7 +1,10 @@
 ru:
   date:
     formats:
-      default: "%d/%m/%Y"
+      default: "%d-%m-%Y"
+  time:
+    formats:
+      default: "%d-%m-%Y %H:%M:%S"
   activerecord:
     models:
       card: "Карта"
@@ -59,7 +62,7 @@ ru:
     delete_card: "Точно удалить?"
   compare_result:
     right: "Правильно!"
-    not_right: "Неправильно! %{text}!"
+    not_right: "Неправильно, правильный перевод: %{text}!"
   buttons:
     check: "Проверить"
     sign_up: "Регистрация"
