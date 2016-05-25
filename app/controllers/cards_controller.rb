@@ -1,5 +1,5 @@
 class CardsController < ApplicationController
-  before_action :find_deck, only: [:index, :new, :create, :edit]
+  before_action :find_deck, only: [:index, :new, :create, :edit, :destroy]
   before_action :find_card, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -35,7 +35,7 @@ class CardsController < ApplicationController
 
   def destroy
     @card.destroy
-    redirect_to deck_cards_path(@card.deck), flash: { success: I18n.t('flashes.cards.success.deleted') }
+    redirect_to deck_path(@deck), flash: { success: I18n.t('flashes.cards.success.deleted') }
   end
 
   private

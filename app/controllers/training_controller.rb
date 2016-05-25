@@ -1,12 +1,13 @@
 class TrainingController < ApplicationController
   before_action :find_card, only: [:check]
   def check
-    if @card.check_translation?(params[:card][:original_text].mb_chars.downcase)
+    check = CheckTranslation.new(@card)
+    if check.check_translation?(params[:card][:original_text].mb_chars.downcase)
       flash[:success] = I18n.t("compare_result.right")
-      @card.correct_answer
+      @card = check.correct_answer
     else
-      flash[:error] = I18n.t("compare_result.not_right", text: params[:original_text].mb_chars.upcase )
-      @card.incorrect_answer
+      flash[:error] = I18n.t("compare_result.not_right", text: @card[:original_text].mb_chars.upcase )
+      @card = check.incorrect_answer
     end
     @card.update(card_params)
     redirect_to root_path
@@ -16,11 +17,7 @@ class TrainingController < ApplicationController
 
   def card_params
     params.require(:card).permit(
-        :original_text,
-        :translated_text,
         :review_date,
-        :deck_id,
-        :image,
         :current_step,
         :remove_image,
         :attempts_count

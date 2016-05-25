@@ -1,24 +1,34 @@
-module CheckTranslation
-  LAITHER = [0, 12.hours, 3.days, 1.week, 2.weeks, 1.month]
+class CheckTranslation
 
-  def change_review_date!
-    self.update_column(:review_date, Time.now + LAITHER[self[:current_step]])
+  def initialize(card)
+    @LAITHER = [0, 12.hours, 3.days, 1.week, 2.weeks, 1.month]
+    @card = card
+  end
+
+  def check_translation?(inputed_text)
+    @card[:original_text].mb_chars.downcase == inputed_text
+  end
+
+  def get_review_date(current_step)
+    Time.now + @LAITHER[current_step]
   end
 
   def correct_answer
-    self[:attempts_count] = 0
-    self[:current_step] += 1 if self[:current_step] < 5
-    self.change_review_date!
+    @card[:attempts_count] = 0
+    @card[:current_step] += 1 if @card[:current_step] < 5
+    @card[:review_date] = get_review_date(@card[:current_step])
+    @card
   end
 
   def incorrect_answer
-    self[:attempts_count] += 1
-    if self[:attempts_count] >= 3
-      self[:attempts_count] = 0
-      self[:current_step] -= 2
-      self[:current_step] = 0 if self[:current_step] < 0
+    @card[:attempts_count] += 1
+    if @card[:attempts_count] >= 3
+      @card[:attempts_count] = 0
+      @card[:current_step] -= 2
+      @card[:current_step] = 0 if @card[:current_step] < 0
     end
 
-    self.change_review_date!
+    @card[:review_date] = get_review_date(@card[:current_step])
+    @card
   end
 end

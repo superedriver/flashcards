@@ -1,6 +1,4 @@
 class Card < ActiveRecord::Base
-  include CheckTranslation
-
   belongs_to :deck
 
   validates :original_text, :translated_text, :review_date, presence: true
@@ -16,10 +14,6 @@ class Card < ActiveRecord::Base
   scope :random_card, -> { order("RANDOM()").first }
 
   mount_uploader :image, ImageUploader
-
-  def check_translation?(inputed_text)
-    original_text.mb_chars.downcase == inputed_text.mb_chars.downcase
-  end
 
   def set_review_date!
     self[:review_date] = Time.now
