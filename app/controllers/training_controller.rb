@@ -2,7 +2,7 @@ class TrainingController < ApplicationController
   before_action :find_card, only: [:check]
   def check
     check = CheckTranslation.new(@card)
-    if check.check_translation?(params[:card][:original_text].mb_chars.downcase)
+    if check.check_translation?(params[:card][:original_text])
       flash[:success] = I18n.t("compare_result.right")
       @card = check.correct_answer
     else

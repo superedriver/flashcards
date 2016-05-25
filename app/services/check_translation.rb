@@ -6,7 +6,7 @@ class CheckTranslation
   end
 
   def check_translation?(inputed_text)
-    @card[:original_text].mb_chars.downcase == inputed_text
+    @card[:original_text].mb_chars.downcase == inputed_text.mb_chars.downcase
   end
 
   def get_review_date(current_step)

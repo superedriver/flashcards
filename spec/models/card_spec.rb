@@ -15,31 +15,12 @@ RSpec.describe Card, type: :model do
   it { should respond_to(:created_at) }
   it { should respond_to(:updated_at) }
   it { should respond_to(:deck_id) }
-  it { should respond_to(:check_translation?) }
   it { should respond_to(:image) }
   it { should respond_to(:current_step) }
   it { should respond_to(:attempts_count) }
-  it { should respond_to(:change_review_date!) }
   it { should respond_to(:set_review_date!) }
   it { should respond_to(:set_current_step!) }
   it { should respond_to(:set_attempts_count!) }
-  it { should respond_to(:correct_answer) }
-  it { should respond_to(:incorrect_answer) }
-
-  describe "#check_translation?" do
-
-    it "correct case" do
-      expect(@card.check_translation?("мяч")).to be true
-    end
-
-    it "incorrect case" do
-      expect(@card.check_translation?("мяч1")).to be false
-    end
-
-    it "correct case upcase leters" do
-      expect(@card.check_translation?("МЯЧ")).to be true
-    end
-  end
 
   describe "#review date" do
     it "on create" do
@@ -74,88 +55,6 @@ RSpec.describe Card, type: :model do
       @card.update_column(:current_step, 2)
       @card.set_current_step!
       expect(@card.current_step).to eq(0)
-    end
-  end
-
-  describe "#correct_answer" do
-    it "first time" do
-      @card.correct_answer
-      expect(@card.current_step).to eq(1)
-      expect(@card.attempts_count).to eq(0)
-      expect(@card.review_date.to_i).to eq((Time.now + 12.hours).to_i)
-    end
-
-    it "second time" do
-      2.times { @card.correct_answer }
-      expect(@card.current_step).to eq(2)
-      expect(@card.attempts_count).to eq(0)
-      expect(@card.review_date.to_i).to eq((Time.now + 3.days).to_i)
-    end
-
-    it "third time" do
-      3.times { @card.correct_answer }
-      expect(@card.current_step).to eq(3)
-      expect(@card.attempts_count).to eq(0)
-      expect(@card.review_date.to_i).to eq((Time.now + 1.week).to_i)
-    end
-
-    it "fourth time" do
-      4.times { @card.correct_answer }
-      expect(@card.current_step).to eq(4)
-      expect(@card.attempts_count).to eq(0)
-      expect(@card.review_date.to_i).to eq((Time.now + 2.weeks).to_i)
-    end
-
-    it "fifth time" do
-      5.times { @card.correct_answer }
-      expect(@card.current_step).to eq(5)
-      expect(@card.attempts_count).to eq(0)
-      expect(@card.review_date.to_i).to eq((Time.now + 1.month).to_i)
-    end
-
-    it "after fifth time" do
-      7.times { @card.correct_answer }
-      expect(@card.current_step).to eq(5)
-      expect(@card.attempts_count).to eq(0)
-      expect(@card.review_date.to_i).to eq((Time.now + 1.month).to_i)
-    end
-  end
-
-  describe "#incorrect_answer" do
-    describe "#current_step > 0" do
-      it "first time" do
-        @card.update_column(:current_step, 2)
-        @card.incorrect_answer
-        expect(@card.current_step).to eq(2)
-        expect(@card.attempts_count).to eq(1)
-        expect(@card.review_date.to_i).to eq((Time.now + 3.days).to_i)
-      end
-
-      it "second time" do
-        @card.update_columns(current_step: 2, attempts_count: 1)
-        @card.incorrect_answer
-        expect(@card.current_step).to eq(2)
-        expect(@card.attempts_count).to eq(2)
-        expect(@card.review_date.to_i).to eq((Time.now + 3.days).to_i)
-      end
-
-      it "third time" do
-        @card.update_columns(current_step: 2, attempts_count: 2)
-        @card.incorrect_answer
-        expect(@card.current_step).to eq(0)
-        expect(@card.attempts_count).to eq(0)
-        expect(@card.review_date.to_i).to eq((Time.now).to_i)
-      end
-    end
-
-    describe "#current_step = 0" do
-      it "last attempt" do
-        @card.update_column(:attempts_count, 2)
-        @card.incorrect_answer
-        expect(@card.current_step).to eq(0)
-        expect(@card.attempts_count).to eq(0)
-        expect(@card.review_date.to_i).to eq((Time.now).to_i)
-      end
     end
   end
 
