@@ -6,7 +6,13 @@ class CheckTranslation
   end
 
   def check_translation?(inputed_text)
-    @card[:original_text].mb_chars.downcase == inputed_text.mb_chars.downcase
+    if @card[:original_text].mb_chars.downcase == inputed_text.mb_chars.downcase
+      self.correct_answer
+      true
+    else
+      self.incorrect_answer
+      false
+    end
   end
 
   def get_review_date(current_step)
@@ -17,7 +23,11 @@ class CheckTranslation
     @card[:attempts_count] = 0
     @card[:current_step] += 1 if @card[:current_step] < 5
     @card[:review_date] = get_review_date(@card[:current_step])
-    @card
+    @card.update(
+        attempts_count: @card[:attempts_count],
+        current_step: @card[:current_step],
+        review_date: @card[:review_date]
+    )
   end
 
   def incorrect_answer
@@ -29,6 +39,10 @@ class CheckTranslation
     end
 
     @card[:review_date] = get_review_date(@card[:current_step])
-    @card
+    @card.update(
+        attempts_count: @card[:attempts_count],
+        current_step: @card[:current_step],
+        review_date: @card[:review_date]
+    )
   end
 end
