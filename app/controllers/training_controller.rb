@@ -1,11 +1,11 @@
 class TrainingController < ApplicationController
   before_action :find_card, only: [:check]
   def check
-
-    if CheckTranslation.new(@card).check_translation?(params[:card][:original_text])
-      flash[:success] = I18n.t("compare_result.right")
+    result = CheckTranslation.new(@card).check_translation?(params[:card][:original_text])
+    if result.success?
+      flash[:success] = result.message
     else
-      flash[:error] = I18n.t("compare_result.not_right", text: @card[:original_text].mb_chars.upcase )
+      flash[:error]  = result.message
     end
     redirect_to root_path
   end

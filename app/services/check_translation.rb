@@ -1,5 +1,7 @@
 class CheckTranslation
 
+  Result = Struct.new(:success?, :message)
+
   def initialize(card)
     @LAITHER = [0, 12.hours, 3.days, 1.week, 2.weeks, 1.month]
     @card = card
@@ -8,11 +10,15 @@ class CheckTranslation
   def check_translation?(inputed_text)
     if @card[:original_text].mb_chars.downcase == inputed_text.mb_chars.downcase
       self.correct_answer
-      true
+      Result.new(true, I18n.t("compare_result.right"))
     else
       self.incorrect_answer
-      false
+      Result.new(false, I18n.t("compare_result.not_right", text: @card[:original_text].mb_chars.upcase ))
     end
+  end
+
+  def success?(current_step)
+    Time.now + @LAITHER[current_step]
   end
 
   def get_review_date(current_step)
