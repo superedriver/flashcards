@@ -10,6 +10,8 @@
             <%= hidden_field_tag(:id, @card.id) %>
             <%= hidden_field_tag(:original_text, @card.original_text) %>
             <%= hidden_field_tag(:translated_text, @card.translated_text) %>
+            <%= hidden_field_tag(:current_step, @card.current_step) %>
+            <%= hidden_field_tag(:attempts_count, @card.attempts_count) %>
             <div class="h1 word_for_translate text-info">
               <%= @card.translated_text.upcase %>
             </div>

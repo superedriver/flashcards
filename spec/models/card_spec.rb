@@ -15,34 +15,46 @@ RSpec.describe Card, type: :model do
   it { should respond_to(:created_at) }
   it { should respond_to(:updated_at) }
   it { should respond_to(:deck_id) }
-  it { should respond_to(:check_translation?) }
   it { should respond_to(:image) }
-
-  describe "#check_translation?" do
-
-    it "correct case" do
-      expect(@card.check_translation?("мяч")).to be true
-    end
-
-    it "incorrect case" do
-      expect(@card.check_translation?("мяч1")).to be false
-    end
-
-    it "correct case upcase leters" do
-      expect(@card.check_translation?("МЯЧ")).to be true
-    end
-  end
+  it { should respond_to(:current_step) }
+  it { should respond_to(:attempts_count) }
+  it { should respond_to(:set_review_date!) }
+  it { should respond_to(:set_current_step!) }
+  it { should respond_to(:set_attempts_count!) }
 
   describe "#review date" do
     it "on create" do
-      expect(@card.review_date.to_date).to eq(3.days.from_now.to_date)
+      expect(@card.review_date.to_i).to eq(Time.now.to_i)
     end
 
-    it "#change_review_date!" do
-      @card.update_column(:review_date, 2.days.ago.to_date)
-      expect {
-        @card.change_review_date!
-      }.to change { @card.review_date }.to(3.days.from_now.to_date)
+    it "#set_review_date!" do
+      @card.update_column(:review_date, Time.now + 3.days)
+      @card.set_review_date!
+      expect(@card.review_date.to_i).to eq(Time.now.to_i)
+    end
+  end
+
+  describe "#attempts_count" do
+    it "on create" do
+      expect(@card.attempts_count).to eq(0)
+    end
+
+    it "#set_attempts_count!" do
+      @card.update_column(:attempts_count, 2)
+      @card.set_attempts_count!
+      expect(@card.attempts_count).to eq(0)
+    end
+  end
+
+  describe "#current_step" do
+    it "on create" do
+      expect(@card.current_step).to eq(0)
+    end
+
+    it "#set_current_step!" do
+      @card.update_column(:current_step, 2)
+      @card.set_current_step!
+      expect(@card.current_step).to eq(0)
     end
   end
 

@@ -26,7 +26,7 @@ describe "delete_cards", js: true, type: :feature do
       click_link I18n.t("buttons.delete")
     end
 
-    expect(page).to have_current_path deck_cards_path(deck)
+    expect(page).to have_current_path deck_path(deck)
     expect(page).to have_text( I18n.t("flashes.cards.success.deleted") )
   end
 
@@ -36,7 +36,7 @@ describe "delete_cards", js: true, type: :feature do
       click_link I18n.t("buttons.delete")
     end
 
-    expect(page).to have_current_path deck_cards_path(deck)
+    expect(page).to have_current_path deck_path(deck)
     expect(page).to have_text( I18n.t("flashes.cards.success.deleted") )
   end
 
@@ -49,7 +49,7 @@ describe "delete_cards", js: true, type: :feature do
       click_link I18n.t("buttons.delete")
     end
 
-    expect(page).to have_current_path deck_cards_path(deck)
+    expect(page).to have_current_path deck_path(deck)
     expect(page).to have_text( I18n.t("flashes.cards.success.deleted") )
   end
 end

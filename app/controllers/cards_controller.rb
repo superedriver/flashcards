@@ -1,6 +1,6 @@
 class CardsController < ApplicationController
-  before_action :find_deck, only: [:index, :new, :create, :edit]
-  before_action :find_card, only: [:show, :edit, :update, :destroy, :check]
+  before_action :find_deck, only: [:index, :new, :create, :edit, :destroy]
+  before_action :find_card, only: [:show, :edit, :update, :destroy]
 
   def index
     @cards = @deck.cards
@@ -35,24 +35,22 @@ class CardsController < ApplicationController
 
   def destroy
     @card.destroy
-    redirect_to deck_cards_path(@card.deck), flash: { success: I18n.t('flashes.cards.success.deleted') }
-  end
-
-  def check
-    if @card.check_translation?(params[:card][:original_text].mb_chars.downcase)
-      flash[:success] = I18n.t("compare_result.right")
-      @card.change_review_date!
-    else
-      flash[:error] = I18n.t("compare_result.not_right", text: params[:original_text].mb_chars.upcase )
-    end
-
-    redirect_to root_path
+    redirect_to deck_path(@deck), flash: { success: I18n.t('flashes.cards.success.deleted') }
   end
 
   private
 
   def card_params
-    params.require(:card).permit(:original_text, :translated_text, :review_date, :deck_id, :image, :remove_image)
+    params.require(:card).permit(
+        :original_text,
+        :translated_text,
+        :review_date,
+        :deck_id,
+        :image,
+        :current_step,
+        :remove_image,
+        :attempts_count
+    )
   end
 
   def find_card
