@@ -21,18 +21,24 @@ describe "check_translation service" do
   describe "#check_translation?" do
 
     it "correct case" do
-      expect(@checkTranslation.check_translation?("мяч")).to be true
+      result = @checkTranslation.check_translation?("мяч")
+      expect(result.success?).to eq(true)
+      expect(result.message).to eq(I18n.t("compare_result.right"))
     end
 
     it "incorrect case" do
-      expect(@checkTranslation.check_translation?("мяч1")).to be false
+      result = @checkTranslation.check_translation?("мяч1")
+      expect(result.success?).to eq(false)
+      expect(result.message)
+          .to eq(I18n.t("compare_result.not_right", text: @card[:original_text].mb_chars.upcase ))
     end
 
     it "correct case upcase leters" do
-      expect(@checkTranslation.check_translation?("МЯЧ")).to be true
+      result = @checkTranslation.check_translation?("МЯЧ")
+      expect(result.success?).to eq(true)
+      expect(result.message).to eq(I18n.t("compare_result.right"))
     end
   end
-
 
   describe "#correct_answer" do
     it "first time" do
