@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/superedriver/flashcards.svg?branch=seventh-task)](https://travis-ci.org/superedriver/flashcards)
 
+[![Code Climate](https://codeclimate.com/github/superedriver/flashcards/badges/gpa.svg)](https://codeclimate.com/github/superedriver/flashcards)
+
 # Flashcards 
 An application for learning foreign words
 
