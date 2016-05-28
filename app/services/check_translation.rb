@@ -1,3 +1,5 @@
+require 'levenshtein'
+
 class CheckTranslation
   LAITNER = [0, 12.hours, 3.days, 1.week, 2.weeks, 1.month]
 
@@ -12,9 +14,18 @@ class CheckTranslation
   end
 
   def check_translation?(inputed_text)
-    if @card[:original_text].mb_chars.downcase == inputed_text.mb_chars.downcase
+    result = Levenshtein.distance(@card[:original_text].mb_chars.downcase,
+                                  inputed_text.mb_chars.downcase)
+    if result <= 1
+    # if @card[:original_text].mb_chars.downcase == inputed_text.mb_chars.downcase
       self.correct_answer
-      Result.new(:ok, I18n.t("compare_result.right"))
+      if result == 0
+        Result.new(:ok, I18n.t("compare_result.right"))
+      else
+        Result.new(:ok, I18n.t("compare_result.misprint",
+                               text: "#{@card[:original_text].mb_chars.upcase}, но у Вас опечатка, вы ввели #{inputed_text.mb_chars.upcase}" ))
+      end
+
     else
       self.incorrect_answer
       Result.new(:error, I18n.t("compare_result.not_right", text: @card[:original_text].mb_chars.upcase ))

@@ -62,6 +62,7 @@ ru:
     delete_card: "Точно удалить?"
   compare_result:
     right: "Правильно!"
+    misprint: "Правильно, %{text}!"
     not_right: "Неправильно, правильный перевод: %{text}!"
   buttons:
     check: "Проверить"
