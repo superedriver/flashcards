@@ -14,10 +14,9 @@ class CheckTranslation
   end
 
   def check_translation?(inputed_text)
-    result = Levenshtein.distance(@card[:original_text].mb_chars.downcase,
-                                  inputed_text.mb_chars.downcase)
+    result = Levenshtein.distance(@card[:original_text].mb_chars.downcase.to_s,
+                                  inputed_text.mb_chars.downcase.to_s)
     if result <= 1
-    # if @card[:original_text].mb_chars.downcase == inputed_text.mb_chars.downcase
       self.correct_answer
       if result == 0
         Result.new(:ok, I18n.t("compare_result.right"))
