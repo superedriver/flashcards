@@ -26,9 +26,11 @@ describe "training_cards", type: :feature do
       fill_in :original_text, with: "qwerty"
       click_button I18n.t("buttons.check")
 
-      expect(page).to have_text(
-                          I18n.t("compare_result.not_right",
-                                 text: card.original_text.mb_chars.upcase) )
+      expect(page).to have_text(I18n.t(
+        "compare_result.not_right",
+        text: card.original_text.mb_chars.upcase
+        )
+      )
       expect(page).to have_current_path root_path
     end
 
@@ -40,12 +42,12 @@ describe "training_cards", type: :feature do
       click_button I18n.t("buttons.check")
 
       expect(page).to have_text(
-                          I18n.t(
-                              "compare_result.misprint",
-                              correct_text: card.original_text.mb_chars.upcase,
-                              users_text: inputed_word.mb_chars.upcase
-                          )
-                      )
+        I18n.t(
+            "compare_result.misprint",
+            correct_text: card.original_text.mb_chars.upcase,
+            users_text: inputed_word.mb_chars.upcase
+        )
+    )
       expect(page).to have_current_path root_path
     end
 
@@ -55,7 +57,7 @@ describe "training_cards", type: :feature do
       fill_in :original_text, with: "мяч"
       click_button I18n.t("buttons.check")
 
-      expect(page).to have_text(I18n.t("compare_result.right") )
+      expect(page).to have_text(I18n.t("compare_result.right"))
       expect(page).to have_current_path root_path
     end
   end
