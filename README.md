@@ -2,6 +2,7 @@
 
 [![Code Climate](https://codeclimate.com/github/superedriver/flashcards/badges/gpa.svg)](https://codeclimate.com/github/superedriver/flashcards)
 
+[![Test Coverage](https://codeclimate.com/github/superedriver/flashcards/badges/coverage.svg)](https://codeclimate.com/github/superedriver/flashcards/coverage)
 # Flashcards 
 An application for learning foreign words
 

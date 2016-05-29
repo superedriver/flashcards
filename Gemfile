@@ -69,3 +69,5 @@ gem 'figaro', '~> 1.1', '>= 1.1.1'
 gem 'rails_12factor', group: :production
 
 gem 'levenshtein-ffi', '~> 1.1'
+
+gem 'codeclimate-test-reporter', group: :test, require: nil
