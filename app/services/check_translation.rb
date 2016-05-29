@@ -14,21 +14,52 @@ class CheckTranslation
   end
 
   def check_translation?(inputed_text)
-    result = Levenshtein.distance(@card[:original_text].mb_chars.downcase.to_s,
-                                  inputed_text.mb_chars.downcase.to_s)
-    if result <= 1
-      self.correct_answer
-      if result == 0
-        Result.new(:ok, I18n.t("compare_result.right"))
-      else
-        Result.new(:ok, I18n.t("compare_result.misprint",
-                               text: "#{@card[:original_text].mb_chars.upcase}, но у Вас опечатка, вы ввели #{inputed_text.mb_chars.upcase}" ))
-      end
+    distance = Levenshtein.distance(
+        @card[:original_text].mb_chars.downcase.to_s,
+        inputed_text.mb_chars.downcase.to_s
+    )
 
-    else
-      self.incorrect_answer
-      Result.new(:error, I18n.t("compare_result.not_right", text: @card[:original_text].mb_chars.upcase ))
+    case distance
+      when 0
+        # correct_case
+        self.correct_answer
+        Result.new(:ok, I18n.t("compare_result.right"))
+      when 1
+        # misprint_case
+        self.incorrect_answer
+        Result.new(
+            :error,
+            I18n.t(
+                "compare_result.misprint",
+                correct_text: @card[:original_text].mb_chars.upcase,
+                users_text: inputed_text.mb_chars.upcase
+            )
+        )
+      else
+        # incorrect_case
+        self.incorrect_answer
+        Result.new(
+            :error,
+            I18n.t("compare_result.not_right",
+                   text: @card[:original_text].mb_chars.upcase)
+        )
     end
+
+
+
+    #
+    # if distance <= 1
+    #   self.correct_answer
+    #   if distance == 0
+    #     Result.new(:ok, I18n.t("compare_result.right"))
+    #   else
+    #     Result.new(:ok, I18n.t("compare_result.misprint",
+    #                            text: "#{@card[:original_text].mb_chars.upcase}, но у Вас опечатка, вы ввели #{inputed_text.mb_chars.upcase}" ))
+    #   end
+    #
+    # else
+    #
+    # end
   end
 
   def get_review_date(current_step)

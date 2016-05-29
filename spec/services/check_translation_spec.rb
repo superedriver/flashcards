@@ -5,7 +5,6 @@ describe "check_translation service" do
   let(:user) { create(:user) }
   let(:deck) { create(:deck, user_id: user.id) }
 
-
   before do
     @card = create(:card)
     @checkTranslation = CheckTranslation.new(@card)
@@ -26,8 +25,20 @@ describe "check_translation service" do
       expect(result.message).to eq(I18n.t("compare_result.right"))
     end
 
+    it "misprint case" do
+      inputed_word = "мяя"
+      result = @checkTranslation.check_translation?(inputed_word)
+      expect(result.success?).to eq(false)
+      expect(result.message)
+          .to eq(I18n.t(
+              "compare_result.misprint",
+              correct_text: @card[:original_text].mb_chars.upcase,
+              users_text: inputed_word.mb_chars.upcase
+          ))
+    end
+
     it "incorrect case" do
-      result = @checkTranslation.check_translation?("мяч1")
+      result = @checkTranslation.check_translation?("мяч11")
       expect(result.success?).to eq(false)
       expect(result.message)
           .to eq(I18n.t("compare_result.not_right", text: @card[:original_text].mb_chars.upcase ))
