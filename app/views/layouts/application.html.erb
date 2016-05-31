@@ -35,9 +35,14 @@
                 </ul>
               </li>
           <% else %>
-              <li><%= link_to 'VK', auth_at_provider_path(:provider => :vk) %></li>
-              <li><%= link_to 'FB', auth_at_provider_path(:provider => :facebook) %></li>
-              <li><%= link_to I18n.t("buttons.login"), login_path %></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="profile"><%=I18n.t("buttons.login")%><span class="caret"></span></a>
+                <ul class="dropdown-menu" aria-labelledby="profile">
+                  <li><%= link_to 'VK', auth_at_provider_path(:provider => :vk) %></li>
+                  <li><%= link_to 'FB', auth_at_provider_path(:provider => :facebook) %></li>
+                  <li><%= link_to 'E-MAIL', login_path %></li>
+                </ul>
+              </li>
               <li><%= link_to I18n.t("buttons.sign_up"), sign_up_path %></li>
           <% end %>
         </ul>
