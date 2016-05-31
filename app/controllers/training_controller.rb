@@ -9,15 +9,4 @@ class TrainingController < ApplicationController
     end
     redirect_to root_path
   end
-
-  private
-
-  def find_card
-    @deck = Deck.find_by(id: params["deck_id"])
-    @card = @deck.cards.find_by(id: params[:id])
-
-    unless @card
-      render text: "Card not found", status: 404
-    end
-  end
 end

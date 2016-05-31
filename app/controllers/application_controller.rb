@@ -16,4 +16,13 @@ class ApplicationController < ActionController::Base
     def not_authenticated
       redirect_to login_path, notice: I18n.t('flashes.login.login_first')
     end
+
+    def find_card
+      @deck = Deck.find_by(id: params["deck_id"])
+      @card = @deck.cards.find_by(id: params[:id])
+
+      unless @card
+        render text: "Card not found", status: 404
+      end
+    end
 end
