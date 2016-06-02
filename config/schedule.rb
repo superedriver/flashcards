@@ -23,7 +23,6 @@
 #   runner "User.notify_active_cards"
 # end
 
-every 1.minutes do
-  puts "======================="
+every 2.minutes do
   runner "User.notify_active_cards"
 end
