@@ -18,11 +18,10 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-# every 1.day, at: '00:41 am' do
-#   puts "======================="
+every 1.day, at: '11:12 am' do
+  runner "User.notify_active_cards", environment: 'development'
+end
+
+# every 2.minutes do
 #   runner "User.notify_active_cards"
 # end
-
-every 2.minutes do
-  runner "User.notify_active_cards"
-end

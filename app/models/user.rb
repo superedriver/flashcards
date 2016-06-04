@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
     deck.present? ? deck.cards : cards
   end
 
-  def notify_active_cards
+  def self.notify_active_cards
     User.joins(:cards).merge(Card.actual_cards).uniq.each do |user|
       CardsMailer.pending_cards(user).deliver_now
     end
