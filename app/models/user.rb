@@ -5,14 +5,14 @@ class User < ActiveRecord::Base
 
   before_save { self.email = email.downcase }
 
-  email_regex = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
+  email_regexp = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes["password"] }
   validates :password, confirmation: true, if: -> { new_record? || changes["password"] }
   validates :password_confirmation, presence: true, if: -> { new_record? || changes["password"] }
   validates :email, presence: true,
                     uniqueness: { case_sensitive: false },
-                    format: { with: email_regex }
+                    format: { with: email_regexp }
 
   authenticates_with_sorcery! do |config|
     config.authentications_class = Authentication
