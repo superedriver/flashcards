@@ -73,3 +73,4 @@ gem 'levenshtein-ffi', '~> 1.1'
 gem 'codeclimate-test-reporter', group: :test, require: nil
 
 gem 'whenever', require: false
+gem 'letter_opener', :group => :development

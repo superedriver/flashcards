@@ -44,15 +44,18 @@ Rails.application.configure do
   # AWS_REGION="us-west-2"
   # AWS_BUCKET="flashcardssms"
 
-  config.action_mailer.delivery_method = :smtp
-  # SMTP settings for gmail
-  config.action_mailer.smtp_settings = {
-      :address              => "smtp.gmail.com",
-      :port                 => 587,
-      :user_name            => ENV['GMAIL_USERNAME'],
-      :password             => ENV['GMAIL_PASSWORD'],
-      :authentication       => "plain",
-      :enable_starttls_auto => true
-  }
+  #MAIL
+  config.action_mailer.delivery_method = :letter_opener
+  #to use GMAIL comment above line and uncomment
+  # config.action_mailer.delivery_method = :smtp
+  # # SMTP settings for gmail
+  # config.action_mailer.smtp_settings = {
+  #     :address              => "smtp.gmail.com",
+  #     :port                 => 587,
+  #     :user_name            => ENV['GMAIL_USERNAME'],
+  #     :password             => ENV['GMAIL_PASSWORD'],
+  #     :authentication       => "plain",
+  #     :enable_starttls_auto => true
+  # }
 
 end
