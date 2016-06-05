@@ -76,3 +76,4 @@ gem 'whenever', require: false
 gem 'letter_opener', group: :development
 
 gem 'timecop', '~> 0.8.1', group: :test
+gem 'email_spec', '~> 2.0', group: :test
