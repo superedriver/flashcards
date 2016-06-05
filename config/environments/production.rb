@@ -77,8 +77,4 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # AWS_ACCESS_KEY_ID="AKIAIJCQ7XINKR2JZYFQ"
-  # AWS_SECRET_ACCESS_KEY="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"
-  # AWS_REGION="us-west-2"
-  # AWS_BUCKET="flashcardssms"
 end
