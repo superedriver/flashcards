@@ -10,4 +10,166 @@ Script started on нд, 05-чер-2016 17:34:38 +0300
 [1A[64C[38;5;104m⣽[0m[1B[1000D[2K[1A[64C[38;5;104m⣻[0m[1B[1000D[2K[1A[64C[38;5;104m⢿[0m[1B[1000D[2K[1A[64C[38;5;104m⡿[0m[1B[1000D[2K[1A[64C[38;5;104m⣟[0m[1B[1000D[2K[1A[64C[38;5;104m⣯[0m[1B[1000D[2K[1A[64C[38;5;104m⣷[0m[1B[1000D[2K[1A[64C[38;5;104m⣾[0m[1B[1000D[2K[1A[64C[38;5;104m⣽[0m[1B[1000D[2K[1A[64C[38;5;104m⣻[0m[1B[1000D[2K[1A[64C[38;5;104m⢿[0m[1B[1000D[2K[1A[64C[38;5;104m⡿[0m[1B[1000D[2K[1A[64C[38;5;104m⣟[0m[1B[1000D[2K[1A[64C[38;5;104m⣯[0m[1B[1000D[2K[1A[64C[38;5;104m⣷[0m[1B[1000D[2K[1A[64C[38;5;104m⣾[0m[1B[1000D[2K[1A[64C[38;5;104m⣽[0m[1B[1000D[2K[1A[JSetting [32mGMAIL_SMTP_PASSWORD[39m and restarting [38;5;104m⬢ polar-sea-72744[0m... done, [34m[1mv24[22m[39m
 [?25h[32mGMAIL_SMTP_PASSWORD[39m: PasholNahuiPidor
 [?25h]0;sms@toshiba: ~/projects/rails/flashcards[01;32msms@toshiba[00m:[01;34m~/projects/rails/flashcards[00m$ git add --all
-]0;sms@toshiba: ~/projects/rails/flashcards[01;32msms@toshiba[00m:[01;34m~/projects/rails/flashcards[00m$ git add --allheroku config:add GMAIL_SMTP_PASSWORD=PasholNahuiPidorUSER=noreply.flashcards@gmail.com[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[19Pexport GMAIL_SMTP_PASSWORD=PasholNahuiPidorUSER=noreply.flashcards@gmail.com[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccd tempforme/[Kirb[Kcrontab -lEDITOR=subl crontab -esudo apt-get remove postfix[3@uninstall[C[C[C[C[C[C[C[C[4Pservice postfix startapt-get install postfix[15Ppoweroffirb[Kheroku logincd[Knpm iember scd projects/frontend/tunes-client/ember s[Kcd projects/frontend/tunes-client/ember s[Kcd projects/frontend/tunes-client/
+]0;sms@toshiba: ~/projects/rails/flashcards[01;32msms@toshiba[00m:[01;34m~/projects/rails/flashcards[00m$ git add --allheroku config:add GMAIL_SMTP_PASSWORD=PasholNahuiPidorUSER=noreply.flashcards@gmail.com[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[19Pexport GMAIL_SMTP_PASSWORD=PasholNahuiPidorUSER=noreply.flashcards@gmail.com[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccd tempforme/[Kirb[Kcrontab -lEDITOR=subl crontab -esudo apt-get remove postfix[3@uninstall[C[C[C[C[C[C[C[C[4Pservice postfix startapt-get install postfix[15Ppoweroffirb[Kheroku logincd[Knpm iember scd projects/frontend/tunes-client/ember s[Kcd projects/frontend/tunes-client/ember s[Kcd projects/frontend/tunes-client/ember s[Kcd projects/frontend/tunes-client/ember s[Kcd projects/frontend/tunes-client/ember s[Kcd projects/frontend/tunes-client/ember s[Kcd projects/frontend/tunes-client/ember s[Kcd projects/frontend/tunes-client/ember s[K[2Pnpm i[3Pcdheroku loginirb[Ksudo poweroffapt-get install postfix[2Pservice postfix startapt-get uninstall postfix[3Premove[C[C[C[C[C[C[C[C[5PEDITOR=subl crontab -e[12Pcrontab -lirb[Kcd tempforme/export GMAIL_SMTP_USER=noreply.flashcards@gmail.com[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kcd tempforme/irb[Kcrontab -lEDITOR=subl crontab -esudo apt-get remove postfix[3@uninstall[C[C[C[C[C[C[C[C[4Pservice postfix startapt-get install postfix[15Ppoweroffirb[Ksudo poweroffapt-get install postfix[2Pservice postfix startapt-get uninstall postfix[3Premove[C[C[C[C[C[C[C[C[5PEDITOR=subl crontab -e[12Pcrontab -lirb[Kcd tempforme/[Kexport GMAIL_SMTP_PASSWORD=PasholNahuiPidor[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cheroku config:add GMAIL_SMTP_USER=noreply.flashcards@gmail.com[8PPASSWORD=PasholNahuiPidor[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cgit add --all[K[Krake flashcards:emails:cards
+]0;sms@toshiba: ~/projects/rails/flashcards[01;32msms@toshiba[00m:[01;34m~/projects/rails/flashcards[00m$ git push heroku fifteenth-task:master
+Counting objects: 29, done.
+Delta compression using up to 4 threads.
+Compressing objects:   6% (1/16)   Compressing objects:  12% (2/16)   Compressing objects:  18% (3/16)   Compressing objects:  25% (4/16)   Compressing objects:  31% (5/16)   Compressing objects:  37% (6/16)   Compressing objects:  43% (7/16)   Compressing objects:  50% (8/16)   Compressing objects:  56% (9/16)   Compressing objects:  62% (10/16)   Compressing objects:  68% (11/16)   Compressing objects:  75% (12/16)   Compressing objects:  81% (13/16)   Compressing objects:  87% (14/16)   Compressing objects:  93% (15/16)   Compressing objects: 100% (16/16)   Compressing objects: 100% (16/16), done.
+Writing objects:   6% (1/16)   Writing objects:  12% (2/16)   Writing objects:  18% (3/16)   Writing objects:  25% (4/16)   Writing objects:  31% (5/16)   Writing objects:  37% (6/16)   Writing objects:  43% (7/16)   Writing objects:  50% (8/16)   Writing objects:  56% (9/16)   Writing objects:  62% (10/16)   Writing objects:  68% (11/16)   Writing objects:  75% (12/16)   Writing objects:  81% (13/16)   Writing objects:  87% (14/16)   Writing objects:  93% (15/16)   Writing objects: 100% (16/16)   Writing objects: 100% (16/16), 1.88 KiB | 0 bytes/s, done.
+Total 16 (delta 10), reused 0 (delta 0)
+remote: Compressing source files... done.[K
+remote: Building source:[K
+remote: 
+remote: -----> Using set buildpack heroku/ruby[K
+remote: -----> Ruby app detected[K
+remote: -----> Compiling Ruby/Rails[K
+remote: -----> Using Ruby version: ruby-2.2.3[K
+remote: -----> Installing dependencies using bundler 1.11.2[K
+remote:        Running: bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin -j4 --deployment[K
+remote:        Using rake 11.1.2[K
+remote:        Using CFPropertyList 2.3.2[K
+remote:        Using i18n 0.7.0[K
+remote:        Using json 1.8.3[K
+remote:        Using minitest 5.8.4[K
+remote:        Using thread_safe 0.3.5[K
+remote:        Using builder 3.2.2[K
+remote:        Using erubis 2.7.0[K
+remote:        Using mini_portile2 2.0.0[K
+remote:        Using rack 1.6.4[K
+remote:        Using mime-types-data 3.2016.0221[K
+remote:        Using arel 6.0.3[K
+remote:        Using execjs 2.6.0[K
+remote:        Using bcrypt 3.1.11[K
+remote:        Using sass 3.4.22[K
+remote:        Using chronic 0.10.2[K
+remote:        Using coderay 1.1.1[K
+remote:        Using coffee-script-source 1.10.0[K
+remote:        Using thor 0.19.1[K
+remote:        Using concurrent-ruby 1.0.2[K
+remote:        Using excon 0.49.0[K
+remote:        Using multipart-post 2.0.0[K
+remote:        Using ffi 1.9.10[K
+remote:        Using formatador 0.2.5[K
+remote:        Using multi_json 1.12.0[K
+remote:        Using ipaddress 0.8.3[K
+remote:        Using xml-simple 1.1.5[K
+remote:        Using inflecto 0.0.2[K
+remote:        Using trollop 2.1.2[K
+remote:        Using jwt 1.5.1[K
+remote:        Using method_source 0.8.2[K
+remote:        Using mini_magick 4.5.1[K
+remote:        Using multi_xml 0.5.5[K
+remote:        Using oauth 0.5.1[K
+remote:        Using pg 0.18.4[K
+remote:        Using slop 3.6.0[K
+remote:        Using bundler 1.11.2[K
+remote:        Using rails_serve_static_assets 0.0.5[K
+remote:        Using rails_stdout_logging 0.0.5[K
+remote:        Using tilt 2.0.3[K
+remote:        Using fission 0.5.0[K
+remote:        Using rdoc 4.2.2[K
+remote:        Using tzinfo 1.2.2[K
+remote:        Using nokogiri 1.6.7.2[K
+remote:        Using mime-types 3.0[K
+remote:        Using autoprefixer-rails 6.3.6[K
+remote:        Using uglifier 3.0.0[K
+remote:        Using rack-test 0.6.3[K
+remote:        Using whenever 0.9.4[K
+remote:        Using coffee-script 2.4.1[K
+remote:        Using sprockets 3.6.0[K
+remote:        Using figaro 1.1.1[K
+remote:        Using faraday 0.9.2[K
+remote:        Using fog-core 1.39.0[K
+remote:        Using levenshtein-ffi 1.1.0[K
+remote:        Using pry 0.10.3[K
+remote:        Using rails_12factor 0.0.3[K
+remote:        Using activesupport 4.2.6[K
+remote:        Using mail 2.6.4[K
+remote:        Using bootstrap-sass 3.3.6[K
+remote:        Using loofah 2.0.3[K
+remote:        Using rbvmomi 1.8.2[K
+remote:        Using oauth2 1.1.0[K
+remote:        Using fog-json 1.0.2[K
+remote:        Using fog-xml 0.1.2[K
+remote:        Using fog-local 0.3.0[K
+remote:        Using fog-vmfusion 0.1.0[K
+remote:        Using sdoc 0.4.1[K
+remote:        Using pry-rails 0.3.4[K
+remote:        Using rails-deprecated_sanitizer 1.0.3[K
+remote:        Using globalid 0.3.6[K
+remote:        Using activemodel 4.2.6[K
+remote:        Using jbuilder 2.4.1[K
+remote:        Using rails-html-sanitizer 1.0.3[K
+remote:        Using sorcery 0.9.1[K
+remote:        Using fog-aliyun 0.1.0[K
+remote:        Using fog-brightbox 0.10.1[K
+remote:        Using fog-sakuracloud 1.7.5[K
+remote:        Using fog-serverlove 0.1.2[K
+remote:        Using fog-softlayer 1.1.1[K
+remote:        Using fog-storm_on_demand 0.1.1[K
+remote:        Using fog-atmos 0.1.0[K
+remote:        Using fog-aws 0.9.2[K
+remote:        Using fog-cloudatcost 0.1.2[K
+remote:        Using fog-dynect 0.0.3[K
+remote:        Using fog-ecloud 0.3.0[K
+remote:        Using fog-google 0.1.0[K
+remote:        Using fog-openstack 0.1.5[K
+remote:        Using fog-powerdns 0.1.1[K
+remote:        Using fog-profitbricks 0.0.5[K
+remote:        Using fog-rackspace 0.1.1[K
+remote:        Using fog-radosgw 0.0.5[K
+remote:        Using fog-riakcs 0.1.0[K
+remote:        Using fog-terremark 0.1.0[K
+remote:        Using fog-voxel 0.1.0[K
+remote:        Using fog-xenserver 0.2.3[K
+remote:        Using fog-vsphere 0.6.4[K
+remote:        Using rails-dom-testing 1.0.7[K
+remote:        Using activejob 4.2.6[K
+remote:        Using activerecord 4.2.6[K
+remote:        Using carrierwave 0.10.0[K
+remote:        Using fog 1.38.0[K
+remote:        Using actionview 4.2.6[K
+remote:        Using actionpack 4.2.6[K
+remote:        Using actionmailer 4.2.6[K
+remote:        Using railties 4.2.6[K
+remote:        Using sprockets-rails 3.0.4[K
+remote:        Using simple_form 3.2.1[K
+remote:        Using coffee-rails 4.1.1[K
+remote:        Using jquery-rails 4.1.1[K
+remote:        Using rails 4.2.6[K
+remote:        Using sass-rails 5.0.4[K
+remote:        Using turbolinks 2.5.3[K
+remote:        Bundle complete! 32 Gemfile dependencies, 113 gems now installed.[K
+remote:        Gems in the groups development and test were not installed.[K
+remote:        Bundled gems are installed into ./vendor/bundle.[K
+remote:        Bundle completed (0.62s)[K
+remote:        Cleaning up the bundler cache.[K
+remote:        Detected manifest file, assuming assets were compiled locally[K
+remote: 
+remote: ###### WARNING:[K
+remote:        No Procfile detected, using the default web server.[K
+remote:        We recommend explicitly declaring how to boot your server process via a Procfile.[K
+remote:        https://devcenter.heroku.com/articles/ruby-default-web-server[K
+remote: 
+remote: 
+remote: -----> Discovering process types[K
+remote:        Procfile declares types     -> (none)[K
+remote:        Default types for buildpack -> console, rake, web, worker[K
+remote: 
+remote: -----> Compressing...[K
+remote:        Done: 38.1M[K
+remote: -----> Launching...[K
+remote:        Released v25[K
+remote:        https://polar-sea-72744.herokuapp.com/ deployed to Heroku[K
+remote: 
+remote: Verifying deploy... done.[K
+To https://git.heroku.com/polar-sea-72744.git
+   c493b75..0c666a3  fifteenth-task -> master
+]0;sms@toshiba: ~/projects/rails/flashcards[01;32msms@toshiba[00m:[01;34m~/projects/rails/flashcards[00m$ heroku restert
+ !    `restert` is not a heroku command.
+ !    Perhaps you meant `restart`.
+ !    See `heroku help` for a list of available commands.
+]0;sms@toshiba: ~/projects/rails/flashcards[01;32msms@toshiba[00m:[01;34m~/projects/rails/flashcards[00m$ heroku restert[1Prtart
+[?25lRestarting dynos on [38;5;104m⬢ polar-sea-72744[0m... [38;5;104m⣾[0m 
+[1A[41C[38;5;104m⣽[0m[1B[1000D[2K[1A[41C[38;5;104m⣻[0m[1B[1000D[2K[1A[41C[38;5;104m⢿[0m[1B[1000D[2K[1A[41C[38;5;104m⡿[0m[1B[1000D[2K[1A[41C[38;5;104m⣟[0m[1B[1000D[2K[1A[41C[38;5;104m⣯[0m[1B[1000D[2K[1A[41C[38;5;104m⣷[0m[1B[1000D[2K[1A[41C[38;5;104m⣾[0m[1B[1000D[2K[1A[41C[38;5;104m⣽[0m[1B[1000D[2K[1A[41C[38;5;104m⣻[0m[1B[1000D[2K[1A[41C[38;5;104m⢿[0m[1B[1000D[2K[1A[41C[38;5;104m⡿[0m[1B[1000D[2K[1A[41C[38;5;104m⣟[0m[1B[1000D[2K[1A[41C[38;5;104m⣯[0m[1B[1000D[2K[1A[JRestarting dynos on [38;5;104m⬢ polar-sea-72744[0m... done
+[?25h[?25h]0;sms@toshiba: ~/projects/rails/flashcards[01;32msms@toshiba[00m:[01;34m~/projects/rails/flashcards[00m$ heroku restartertgit push heroku fifteenth-task:master[9Prake flashcards:emails:cards[15Pgit add --allheroku config:add GMAIL_SMTP_PASSWORD=PasholNahuiPidorUSER=noreply.flashcards@gmail.com[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[19Pexport GMAIL_SMTP_PASSWORD=PasholNahuiPidor[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Kcd tempforme/irb[Kcrontab -lEDITOR=subl crontab -esudo apt-get remove postfix[3@uninstall[C[C[C[C[C[C[C[C[4Pservice pos
