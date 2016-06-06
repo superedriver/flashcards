@@ -2,7 +2,6 @@ require "rails_helper"
 
 RSpec.describe CardsMailer, type: :mailer do
   describe ".pending_cards" do
-
     before do
       @user = create(:user)
       @mail = CardsMailer.pending_cards(@user)

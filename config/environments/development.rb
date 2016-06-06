@@ -40,9 +40,9 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
 
-  #MAIL
+  # MAIL
   config.action_mailer.delivery_method = :letter_opener
-  #to use GMAIL comment above line and uncomment
+  # to use GMAIL comment above line and uncomment
   # config.action_mailer.delivery_method = :smtp
   # # SMTP settings for gmail
   # config.action_mailer.smtp_settings = {
