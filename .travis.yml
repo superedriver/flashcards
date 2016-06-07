@@ -1,18 +1,14 @@
 addons:
     code_climate:
         repo_token: 82995aa9ad9deef4427585bcafd193e1329a03a7913860d9f5d03d401a2b1117
-
 language: ruby
-
+sudo: required
 rvm:
   - 2.2.3
-
 services:
   - postgresql
-
 before_script:
   - cp config/database.yml.travis config/database.yml
   - psql -c 'create database travis_ci_test;' -U postgres
-
 script: xvfb-run bundle exec rake
 
