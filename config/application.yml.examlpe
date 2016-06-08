@@ -16,3 +16,7 @@ SORCERY_VK_CALLBACK_URL: "http://localhost:3000/oauth/callback?provider=vk"
 SORCERY_FB_KEY: "YOUR FB APP KEY"
 SORCERY_FB_SECRET: "YOUR FB APP SECRET"
 SORCERY_FB_CALLBACK_URL: "http://localhost:3000/oauth/callback?provider=facebook"
+
+#gmail credentials for sending emails
+GMAIL_USERNAME: 'your Gmail username'
+GMAIL_PASSWORD: 'your Gmail password'

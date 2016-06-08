@@ -10,7 +10,7 @@ class Card < ActiveRecord::Base
   before_validation :set_current_step!, on: :create
   before_validation :set_attempts_count!, on: :create
 
-  scope :actual_cards, -> { where("review_date <= ?", Time.now) }
+  scope :actual_cards, -> { where("review_date <= ?", Time.current) }
   scope :random_card, -> { order("RANDOM()").first }
 
   mount_uploader :image, ImageUploader

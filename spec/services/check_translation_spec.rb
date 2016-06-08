@@ -10,6 +10,14 @@ describe "check_translation service" do
     @checkTranslation = CheckTranslation.new(@card)
   end
 
+  before do
+    Timecop.freeze(Time.now)
+  end
+
+  after do
+    Timecop.return
+  end
+
   subject { @checkTranslation }
 
   it { should respond_to(:check_translation?) }

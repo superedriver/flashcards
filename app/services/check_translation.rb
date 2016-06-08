@@ -44,22 +44,6 @@ class CheckTranslation
                    text: @card[:original_text].mb_chars.upcase)
         )
     end
-
-
-
-    #
-    # if distance <= 1
-    #   self.correct_answer
-    #   if distance == 0
-    #     Result.new(:ok, I18n.t("compare_result.right"))
-    #   else
-    #     Result.new(:ok, I18n.t("compare_result.misprint",
-    #                            text: "#{@card[:original_text].mb_chars.upcase}, но у Вас опечатка, вы ввели #{inputed_text.mb_chars.upcase}" ))
-    #   end
-    #
-    # else
-    #
-    # end
   end
 
   def get_review_date(current_step)

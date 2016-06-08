@@ -21,7 +21,12 @@ RSpec.describe User, type: :model do
 
   describe "correct case" do
     it "new user" do
-      @user = build(:user, email: "qwerty", password: "123456", password_confirmation: "123456")
+      @user = build(
+        :user,
+        email: "qwerty@gmail.com",
+        password: "123456",
+        password_confirmation: "123456"
+      )
       expect(@user.save).to be true
     end
   end
@@ -29,16 +34,59 @@ RSpec.describe User, type: :model do
   describe "validations" do
     describe "#email" do
       it "blank" do
-        @user = build(:user, email: "", password: "123456", password_confirmation: "123456")
+        @user = build(
+          :user,
+          email: "",
+          password: "123456",
+          password_confirmation: "123456"
+        )
+        @user.valid?
+        expect(@user.errors.messages[:email].length).to eq(2)
+        expect(@user.errors.messages[:email][0]).
+            to eq(I18n.t("activerecord.errors.models.user.attributes.email.blank"))
+        expect(@user.errors.messages[:email][1]).
+            to eq(I18n.t("activerecord.errors.models.user.attributes.email.invalid"))
+      end
+
+      it "without @" do
+        @user = build(
+          :user,
+          email: "cvsdfv",
+          password: "123456",
+          password_confirmation: "123456"
+        )
         @user.valid?
         expect(@user.errors.messages[:email].length).to eq(1)
         expect(@user.errors.messages[:email][0]).
-            to eq(I18n.t("activerecord.errors.models.user.attributes.email.blank"))
+            to eq(I18n.t("activerecord.errors.models.user.attributes.email.invalid"))
+      end
+
+      it "with @ but without '.' " do
+        @user = build(
+          :user,
+          email: "cvsdfv@sdfv",
+          password: "123456",
+          password_confirmation: "123456"
+        )
+        @user.valid?
+        expect(@user.errors.messages[:email].length).to eq(1)
+        expect(@user.errors.messages[:email][0]).
+            to eq(I18n.t("activerecord.errors.models.user.attributes.email.invalid"))
       end
 
       it "not unique" do
-        create(:user, email: "qwerty", password: "123456", password_confirmation: "123456")
-        @user = build(:user, email: "qwerty", password: "123456", password_confirmation: "123456")
+        create(
+          :user,
+          email: "qwerty@gmail.com",
+          password: "123456",
+          password_confirmation: "123456"
+        )
+        @user = build(
+          :user,
+          email: "qwerty@gmail.com",
+          password: "123456",
+          password_confirmation: "123456"
+        )
         @user.valid?
         expect(@user.errors.messages[:email].length).to eq(1)
         expect(@user.errors.messages[:email][0]).
@@ -46,8 +94,18 @@ RSpec.describe User, type: :model do
       end
 
       it "upcase" do
-        create(:user, email: "UpCaSE", password: "123456", password_confirmation: "123456")
-        @user = build(:user, email: "upcase", password: "123456", password_confirmation: "123456")
+        create(
+          :user,
+          email: "UpCaSE@gmail.com",
+          password: "123456",
+          password_confirmation: "123456"
+        )
+        @user = build(
+          :user,
+          email: "upcase@gmail.com",
+          password: "123456",
+          password_confirmation: "123456"
+        )
         @user.valid?
         expect(@user.errors.messages[:email].length).to eq(1)
         expect(@user.errors.messages[:email][0]).
@@ -57,7 +115,12 @@ RSpec.describe User, type: :model do
 
     describe "#password" do
       it "different passwords" do
-        @user = build(:user, email: "qwerty", password: "1234567", password_confirmation: "123456")
+        @user = build(
+          :user,
+          email: "qwerty",
+          password: "1234567",
+          password_confirmation: "123456"
+        )
         @user.valid?
         expect(@user.errors.messages[:password_confirmation].length).to eq(1)
         expect(@user.errors.messages[:password_confirmation][0]).
@@ -65,7 +128,12 @@ RSpec.describe User, type: :model do
       end
 
       it "too short" do
-        @user = build(:user, email: "qwerty", password: "12", password_confirmation: "12")
+        @user = build(
+          :user,
+          email: "qwerty",
+          password: "12",
+          password_confirmation: "12"
+        )
         @user.valid?
         expect(@user.errors.messages[:password].length).to eq(1)
         expect(@user.errors.messages[:password][0]).
@@ -77,17 +145,22 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.messages[:password].length).to eq(1)
         expect(@user.errors.messages[:password][0]).
-            to eq(I18n.t("activerecord.errors.models.user.attributes.password.too_short"))
+          to eq(I18n.t("activerecord.errors.models.user.attributes.password.too_short"))
       end
 
       it "password_confirmation blank" do
-        @user = build(:user, email: "qwerty", password: "123456", password_confirmation: "")
+        @user = build(
+            :user,
+            email: "qwerty",
+            password: "123456",
+            password_confirmation: ""
+        )
         @user.valid?
         expect(@user.errors.messages[:password_confirmation].length).to eq(2)
         expect(@user.errors.messages[:password_confirmation][0]).
-            to eq(I18n.t("activerecord.errors.models.user.attributes.password_confirmation.confirmation"))
+          to eq(I18n.t("activerecord.errors.models.user.attributes.password_confirmation.confirmation"))
         expect(@user.errors.messages[:password_confirmation][1]).
-            to eq(I18n.t("activerecord.errors.models.user.attributes.password_confirmation.blank"))
+          to eq(I18n.t("activerecord.errors.models.user.attributes.password_confirmation.blank"))
       end
     end
   end

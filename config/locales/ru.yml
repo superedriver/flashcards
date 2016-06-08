@@ -33,9 +33,9 @@ ru:
             deck_id:
               blank: "Карта не привязана к колоде! (deck_id.blank)"
         user:
-          invalid: "Невалидный юзер"
           attributes:
             email:
+              invalid: "Неверный формат email"
               blank: "Поле 'email' не заполненное!"
               taken: "Пользователь с таким email уже существует!"
             password:
