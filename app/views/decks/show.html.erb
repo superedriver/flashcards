@@ -1,4 +1,4 @@
-<h1>Просмотр колоды: <%= @deck.name %></h1>
+<h1><%= I18n.t("views.decks.show") %>: <%= @deck.name %></h1>
 <div>
   <%= link_to I18n.t("buttons.edit"),
               edit_deck_path(@deck),

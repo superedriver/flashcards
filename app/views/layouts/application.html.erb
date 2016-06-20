@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-  <title>Флэшкарточкер</title>
+  <title>Flashcards</title>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
@@ -16,17 +16,16 @@
       <div class="navbar-collapse collapse" id="navbar-main">
         <ul class="nav navbar-nav navbar-right">
 
-
           <% if current_user %>
               <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="cards">Колоды <span class="caret"></span></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="cards"><%= I18n.t("views.application.decks") %> <span class="caret"></span></a>
                 <ul class="dropdown-menu" aria-labelledby="cards">
                   <li><%= link_to I18n.t("buttons.all_decks"), decks_path %></li>
                   <li><%= link_to I18n.t("buttons.add_deck"), new_deck_path %></li>
                 </ul>
               </li>
               <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="profile">Профиль <span class="caret"></span></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="profile"><%= I18n.t("views.application.profile") %>  <span class="caret"></span></a>
                 <ul class="dropdown-menu" aria-labelledby="profile">
                   <li><%= link_to I18n.t("buttons.edit_profile"), edit_users_path %></li>
                   <li><%= link_to I18n.t("buttons.show_profile"), users_path %></li>

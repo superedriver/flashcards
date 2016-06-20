@@ -2,7 +2,7 @@
   <!--Первый в мире удобный менеджер флеш-карточек. Именно так.-->
 <!--</p>-->
   <% if @card.present? %>
-    <h1>Введите перевод слова:</h1>
+    <h1><%= I18n.t("views.home.index.enter_translation") %>:</h1>
     <div class="well bs-component">
       <%= simple_form_for [@card.deck, @card], html: {class: "form-horizontal"},
                           url: check_card_path(@card.deck, @card) do |f| %>
@@ -38,7 +38,7 @@
     <div class="well bs-component">
     <fieldset>
       <div class="h1 word_for_translate text-info">
-        Пока нет слов для изучения!
+        <%= I18n.t("views.home.index.no_words") %>!
       </div>
     </fieldset>
     </div>

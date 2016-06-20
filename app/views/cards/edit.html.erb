@@ -1,4 +1,4 @@
-<h1>Редактирование карты:</h1>
+<h1><%= I18n.t("views.cards.edit") %>:</h1>
 <div class="well bs-component">
   <%= simple_form_for [@deck,@card], as: :card,
                       html: {class: "form-horizontal"} do |f| %>
@@ -13,7 +13,6 @@
             <%= f.check_box :remove_image %>
             <br>
         <% end %>
-
 
         <%= f.submit I18n.t("buttons.edit"), class: "btn btn-primary" %>
         <%= link_to I18n.t("buttons.delete"), deck_card_path(@card.deck, @card), method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger" %>

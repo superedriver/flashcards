@@ -3,8 +3,8 @@
   <tr>
     <th>№</th>
     <th><%= I18n.t("activerecord.attributes.deck.name") %></th>
-    <th>Слова</th>
-    <th>Действия</th>
+    <th><%= I18n.t("views.decks.index.words") %></th>
+    <th><%= I18n.t("views.decks.index.actions") %></th>
   </tr>
   </thead>
   <tbody id="cards">
@@ -28,7 +28,7 @@
         <%= link_to get_active_button(deck),
                     get_active_url(deck),
                     class: get_active_class(deck) %>
-        <%= link_to "Добавить карту",
+        <%= link_to I18n.t("buttons.add_card"),
                     new_deck_card_path(deck),
                     class: "btn btn-info btn-sm deck-button-right" %>
       </td>

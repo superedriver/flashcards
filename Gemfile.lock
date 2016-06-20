@@ -230,6 +230,7 @@ GEM
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     htmlentities (4.3.4)
+    http_accept_language (2.0.5)
     i18n (0.7.0)
     inflecto (0.0.2)
     ipaddress (0.8.3)
@@ -403,6 +404,7 @@ DEPENDENCIES
   figaro (~> 1.1, >= 1.1.1)
   fog (~> 1.37)
   fog-aws (~> 0.9.1)
+  http_accept_language (~> 2.0, >= 2.0.5)
   jbuilder (~> 2.0)
   jquery-rails
   letter_opener
@@ -424,5 +426,8 @@ DEPENDENCIES
   web-console (~> 2.0)
   whenever
 
+RUBY VERSION
+   ruby 2.2.3p173
+
 BUNDLED WITH
-   1.11.2
+   1.12.5
