@@ -1,48 +1,58 @@
-<!--<p class="center-block">-->
-  <!--Первый в мире удобный менеджер флеш-карточек. Именно так.-->
-<!--</p>-->
-  <% if @card.present? %>
-    <h1><%= I18n.t("views.home.index.enter_translation") %>:</h1>
-    <div class="well bs-component">
-      <%= simple_form_for [@card.deck, @card], html: {class: "form-horizontal"},
-                          url: check_card_path(@card.deck, @card) do |f| %>
-          <fieldset>
-            <%= hidden_field_tag(:id, @card.id) %>
-            <%= hidden_field_tag(:original_text, @card.original_text) %>
-            <%= hidden_field_tag(:translated_text, @card.translated_text) %>
-            <%= hidden_field_tag(:current_step, @card.current_step) %>
-            <%= hidden_field_tag(:attempts_count, @card.attempts_count) %>
-            <div class="h1 word_for_translate text-info">
-              <%= @card.translated_text.upcase %>
-            </div>
-            <div class="form-group">
-              <label for="<%= "original_text" %>" class="col-lg-2 control-label"><%= "Перевод" %>:</label>
-              <div class="col-lg-10">
-                <%= f.input :original_text, hint: false, label: false, error:false, input_html: {
-                    class: 'form-control',
-                    id: 'original_text',
-                    value: ""
-                }  %>
-              </div>
-            </div>
+<% if current_user.present? %>
+    <% if @card.present? %>
+        <h1><%= I18n.t("views.home.index.enter_translation") %>:</h1>
+        <div class="well bs-component">
+          <%= simple_form_for [@card.deck, @card], html: {class: "form-horizontal"},
+                              url: check_card_path(@card.deck, @card) do |f| %>
+              <fieldset>
+                <%= hidden_field_tag(:id, @card.id) %>
+                <%= hidden_field_tag(:original_text, @card.original_text) %>
+                <%= hidden_field_tag(:translated_text, @card.translated_text) %>
+                <%= hidden_field_tag(:current_step, @card.current_step) %>
+                <%= hidden_field_tag(:attempts_count, @card.attempts_count) %>
+                <div class="h1 word_for_translate text-info">
+                  <%= @card.translated_text.upcase %>
+                </div>
+                <div class="form-group">
+                  <label for="<%= "original_text" %>" class="col-lg-2 control-label"><%= "Перевод" %>:</label>
+                  <div class="col-lg-10">
+                    <%= f.input :original_text, hint: false, label: false, error:false, input_html: {
+                        class: 'form-control',
+                        id: 'original_text',
+                        value: ""
+                    }  %>
+                  </div>
+                </div>
 
-            <div class="form-group">
-              <div class="col-lg-10 col-lg-offset-2">
-                <%= f.submit I18n.t('buttons.check'), class: "btn btn-primary" %>
+                <div class="form-group">
+                  <div class="col-lg-10 col-lg-offset-2">
+                    <%= f.submit I18n.t('buttons.check'), class: "btn btn-primary" %>
+                  </div>
+                </div>
+              </fieldset>
               </div>
+          <% end %>
+    <% else %>
+        <div class="well bs-component">
+          <fieldset>
+            <div class="h1 word_for_translate text-info">
+              <%= I18n.t("views.home.index.no_words") %>!
             </div>
           </fieldset>
         </div>
-      <% end %>
-  <% else %>
-    <div class="well bs-component">
-    <fieldset>
-      <div class="h1 word_for_translate text-info">
-        <%= I18n.t("views.home.index.no_words") %>!
+    <% end %>
+<% else %>
+      <div>
+        <p class="center-block">
+          <%= I18n.t("description") %>
+        </p><br>
+        <%= link_to image_tag("en.png"), change_locale_path(locale: "en") %>
+        <%= link_to image_tag("ru.png"), change_locale_path(locale: "ru") %>
+        <%= link_to image_tag("ua.png"), change_locale_path(locale: "ua") %>
       </div>
-    </fieldset>
-    </div>
-  <% end %>
+<% end %>
+
+
 
 
 

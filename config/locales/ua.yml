@@ -1,4 +1,4 @@
-ru:
+ua:
   date:
     formats:
       default: "%d-%m-%Y"
@@ -142,3 +142,5 @@ ru:
     application:
       decks: "Колоди"
       profile: "Профіль"
+  description: "Менеджер флеш-карт. Найкращий спосіб вивчення іноземних слів."
+  language: "Українська"

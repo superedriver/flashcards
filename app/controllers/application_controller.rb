@@ -19,7 +19,6 @@ class ApplicationController < ActionController::Base
 
     if locale && I18n.available_locales.include?(locale.to_sym)
       session[:locale] = I18n.locale = locale.to_sym
-      # binding.pry
     end
   end
 

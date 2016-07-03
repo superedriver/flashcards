@@ -2,10 +2,10 @@
 <hr>
 <div>
   <ul class="list-group">
-    <li class="list-group-item"><b class="text-info"><%= I18n.t("activerecord.attributes.user.email") %>:</b>&nbsp; <%= @user.email.present? ? @user.email : t('errors.messages.empty_field') %></li>
+    <li class="list-group-item"><b class="text-info"><%= I18n.t("activerecord.attributes.user.email") %>:</b>&nbsp; <%= @user.email.present? ? @user.email : t("errors.messages.empty_field") %></li>
     <li class="list-group-item"><b class="text-info"><%= I18n.t("activerecord.attributes.user.password") %>:</b>&nbsp; <%= @user.password.present? ? @user.password : "*******" %></li>
     <li class="list-group-item">
-      <b class="text-info"><%= I18n.t("activerecord.attributes.user.language") %>:</b>&nbsp;
+      <b class="text-info"><%= I18n.t("activerecord.attributes.user.language") %>:</b>&nbsp; <%= @user.locale.present? ? t("language") : t("errors.messages.empty_field") %>
 
     </li>
   </ul>
