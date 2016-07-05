@@ -3,7 +3,6 @@
   <%= simple_form_for @user, url: registrations_path do |f| %>
     <%= render partial: 'shared/validation_errors', locals: { object: @user }  %>
     <fieldset>
-      <%= hidden_field_tag(:locale, I18n.locale) %>
       <%= f.input :email, class: 'form-group', required: true %>
       <%= f.input :password, class: 'form-group', required: true %>
       <%= f.input :password_confirmation, class: 'form-group', required: true %>

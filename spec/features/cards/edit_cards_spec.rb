@@ -66,7 +66,7 @@ describe "edit_cards", type: :feature do
         click_button I18n.t("buttons.edit")
 
         expect(page).to have_current_path deck_card_path(deck, card)
-        expect(page).to have_text("При заполнении формы возникли такие ошибки:")
+        expect(page).to have_text(I18n.t("views.shared.validation_errs"))
         expect(page).to have_text(I18n.t("errors.validation.messages.the_same_value"))
       end
     end

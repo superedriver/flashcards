@@ -9,6 +9,6 @@ class HomeController < ApplicationController
 
   def change_locale
     I18n.locale = params[:locale]
-    redirect_to root_path
+    redirect_to(:back)
   end
 end

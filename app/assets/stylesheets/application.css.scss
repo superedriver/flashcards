@@ -89,3 +89,25 @@
 fieldset {
   padding: 20px;
 }
+
+.flags {
+  text-align: center;
+}
+
+.flag {
+  display: inline-block;
+  margin-right: 10px;
+
+  img {
+    width: 90px;
+    border-radius: 10px;
+  }
+}
+
+.flag:last-child {
+  margin-right: 0;
+}
+
+.description {
+  text-align: center;
+}

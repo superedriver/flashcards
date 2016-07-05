@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
   validates :email, presence: true,
                     uniqueness: { case_sensitive: false },
                     format: { with: email_regexp }
+  validates :locale,
+            inclusion: { in: I18n.available_locales }
 
   authenticates_with_sorcery! do |config|
     config.authentications_class = Authentication

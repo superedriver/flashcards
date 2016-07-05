@@ -72,6 +72,13 @@
     <% end %>
 
     <%= yield %>
+    <% unless current_user.present? %>
+        <div class="flags">
+          <%= link_to image_tag("en.png"), change_locale_path(locale: "en"), class: "flag flag-en" %>
+          <%= link_to image_tag("ru.png"), change_locale_path(locale: "ru"), class: "flag flag-ru" %>
+          <%= link_to image_tag("ua.png"), change_locale_path(locale: "ua"), class: "flag flag-ua" %>
+        </div>
+    <% end %>
     <%= debug(params) if Rails.env.development? %>
   </div>
 

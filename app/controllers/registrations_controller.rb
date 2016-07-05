@@ -6,12 +6,10 @@ class RegistrationsController < ApplicationController
   end
 
   def create
-    # binding.pry
-    @user = User.new(user_params)
-    @user[:locale] = params[:locale]
+    @user = User.new(user_params.merge(locale: I18n.locale))
     if @user.save
       login(params[:user][:email].downcase, params[:user][:password])
-      redirect_to root_path, flash: { success: I18n.t('flashes.registration.success') }
+      redirect_to root_path, flash: { success: I18n.t("flashes.registration.success") }
     else
       render 'new'
     end

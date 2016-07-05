@@ -42,16 +42,10 @@
         </div>
     <% end %>
 <% else %>
-      <div>
-        <p class="center-block">
-          <%= I18n.t("description") %>
-        </p><br>
-        <%= link_to image_tag("en.png"), change_locale_path(locale: "en") %>
-        <%= link_to image_tag("ru.png"), change_locale_path(locale: "ru") %>
-        <%= link_to image_tag("ua.png"), change_locale_path(locale: "ua") %>
-      </div>
+      <p class="description">
+        <%= I18n.t("description") %>
+      </p><br>
 <% end %>
-
 
 
 
