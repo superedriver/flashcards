@@ -16,7 +16,8 @@ class CardsController < ApplicationController
   def create
     @card = @deck.cards.new(card_params)
     if @card.save
-      redirect_to deck_card_path(@card.deck, @card), flash: { success: I18n.t('flashes.cards.success.created') }
+      redirect_to deck_card_path(@card.deck, @card),
+                  flash: { success: I18n.t('flashes.cards.success.created') }
     else
       render "new"
     end
@@ -41,14 +42,14 @@ class CardsController < ApplicationController
   private
     def card_params
       params.require(:card).permit(
-          :original_text,
-          :translated_text,
-          :review_date,
-          :deck_id,
-          :image,
-          :current_step,
-          :remove_image,
-          :attempts_count
+        :original_text,
+        :translated_text,
+        :review_date,
+        :deck_id,
+        :image,
+        :current_step,
+        :remove_image,
+        :attempts_count
       )
     end
 
