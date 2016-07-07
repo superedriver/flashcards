@@ -39,24 +39,23 @@ class CardsController < ApplicationController
   end
 
   private
-
-  def card_params
-    params.require(:card).permit(
-        :original_text,
-        :translated_text,
-        :review_date,
-        :deck_id,
-        :image,
-        :current_step,
-        :remove_image,
-        :attempts_count
-    )
-  end
-
-  def find_deck
-    @deck = Deck.find_by(id: params["deck_id"])
-    unless @deck
-      render text: "Deck not found", status: 404
+    def card_params
+      params.require(:card).permit(
+          :original_text,
+          :translated_text,
+          :review_date,
+          :deck_id,
+          :image,
+          :current_step,
+          :remove_image,
+          :attempts_count
+      )
     end
-  end
+
+    def find_deck
+      @deck = Deck.find_by(id: params["deck_id"])
+      unless @deck
+        render text: "Deck not found", status: 404
+      end
+    end
 end

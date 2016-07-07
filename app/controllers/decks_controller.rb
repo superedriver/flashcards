@@ -53,15 +53,14 @@ class DecksController < ApplicationController
   end
 
   private
-
-  def deck_params
-    params.require(:deck).permit(:name, :user_id)
-  end
-
-  def find_deck
-    @deck = current_user.decks.find_by(id: params[:id])
-    unless @deck
-      render text: "Page not found", status: 404
+    def deck_params
+      params.require(:deck).permit(:name, :user_id)
     end
+
+    def find_deck
+      @deck = current_user.decks.find_by(id: params[:id])
+      unless @deck
+        render text: "Page not found", status: 404
+      end
   end
 end

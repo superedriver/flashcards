@@ -27,8 +27,6 @@ class ApplicationController < ActionController::Base
       render exception, status: 404
     end
 
-
-
     def not_authenticated
       redirect_to login_path, notice: I18n.t('flashes.login.login_first')
     end

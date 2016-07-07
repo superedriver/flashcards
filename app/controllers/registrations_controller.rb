@@ -6,8 +6,7 @@ class RegistrationsController < ApplicationController
   end
 
   def create
-    locale = I18n.available_locales.include?(I18n.locale) ? I18n.locale : :en
-    @user = User.new(user_params.merge(locale: locale))
+    @user = User.new(user_params)
     if @user.save
       login(params[:user][:email].downcase, params[:user][:password])
       redirect_to root_path, flash: { success: I18n.t("flashes.registration.success") }
@@ -17,8 +16,7 @@ class RegistrationsController < ApplicationController
   end
 
   private
-
-  def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :locale)
-  end
+    def user_params
+      params.require(:user).permit(:email, :password, :password_confirmation, :locale)
+    end
 end

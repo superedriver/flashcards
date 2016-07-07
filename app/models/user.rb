@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
   has_many :authentications, dependent: :destroy
 
   before_save { self.email = email.downcase }
+  before_validation do
+    self.locale = I18n.available_locales.include?(I18n.locale) ? I18n.locale : :en
+  end
 
   email_regexp = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
@@ -13,6 +16,8 @@ class User < ActiveRecord::Base
   validates :email, presence: true,
                     uniqueness: { case_sensitive: false },
                     format: { with: email_regexp }
+  validates :locale,
+            inclusion: { in: I18n.available_locales.map{ |elem| elem.to_s } }
 
   authenticates_with_sorcery! do |config|
     config.authentications_class = Authentication

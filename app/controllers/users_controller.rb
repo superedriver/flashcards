@@ -17,12 +17,11 @@ class UsersController < ApplicationController
   end
 
   private
+    def user_params
+      params.require(:user).permit(:email, :password, :locale)
+    end
 
-  def user_params
-    params.require(:user).permit(:email, :password, :locale)
-  end
-
-  def find_user
-    @user = current_user
-  end
+    def find_user
+      @user = current_user
+    end
 end
