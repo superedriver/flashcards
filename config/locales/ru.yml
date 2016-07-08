@@ -44,6 +44,8 @@ ru:
             password_confirmation:
               confirmation: "Пароли не совпадают!"
               blank: "Подтвердите пароль!"
+            locale:
+              inclusion: "Локаль не входит в список разрешенных."
         deck:
           attributes:
             name:

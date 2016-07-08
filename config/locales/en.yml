@@ -44,6 +44,8 @@ en:
             password_confirmation:
               confirmation: "Passwords do not match!"
               blank: "Confirm the password!"
+            locale:
+              inclusion: "Locale is not included into available locales list!"
         deck:
           attributes:
             name:

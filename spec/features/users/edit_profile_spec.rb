@@ -25,4 +25,13 @@ describe "user edit_profile", type: :feature do
     expect(page).to have_text( I18n.t("flashes.users.success.updated") )
     expect(page).to have_current_path users_path
   end
+
+  scenario "locale" do
+    visit edit_users_path
+    find("#user_locale").find(:xpath, "option[2]").select_option
+    click_button I18n.t("buttons.save")
+
+    expect(page).to have_text( I18n.t("flashes.users.success.updated") )
+    expect(page).to have_current_path users_path
+  end
 end

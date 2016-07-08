@@ -44,6 +44,8 @@ ua:
             password_confirmation:
               confirmation: "Паролі не співпадають!"
               blank: "Підтвердіть пароль!"
+            locale:
+              inclusion: "Локаль не входить в перелік дозволених!"
         deck:
           attributes:
             name:
