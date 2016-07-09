@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   patch "/decks/:deck_id/cards/:id/check" => "training#check", as: :check_card
 
+  get "/change_locale" => "home#change_locale", as: :change_locale
+
   resources :registrations, only: [:new, :create]
   get "/sign_up", to: "registrations#new", as: :sign_up
 

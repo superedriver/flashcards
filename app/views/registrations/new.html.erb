@@ -1,4 +1,4 @@
-<h1>Регистрация нового пользователя:</h1>
+<h1><%= I18n.t("views.registrations.new") %>:</h1>
 <div class="well bs-component">
   <%= simple_form_for @user, url: registrations_path do |f| %>
     <%= render partial: 'shared/validation_errors', locals: { object: @user }  %>

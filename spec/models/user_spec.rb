@@ -8,24 +8,25 @@ RSpec.describe User, type: :model do
 
   subject { @user }
 
-  it { should respond_to(:email) }
-  it { should respond_to(:password) }
-  it { should respond_to(:created_at) }
-  it { should respond_to(:updated_at) }
-  it { should respond_to(:crypted_password) }
-  it { should respond_to(:salt) }
-  it { should respond_to(:cards) }
-  it { should respond_to(:decks) }
-  it { should respond_to(:get_card) }
-  it { should respond_to(:get_active_deck_cards) }
+  it { expect respond_to(:email) }
+  it { expect respond_to(:password) }
+  it { expect respond_to(:created_at) }
+  it { expect respond_to(:updated_at) }
+  it { expect respond_to(:crypted_password) }
+  it { expect respond_to(:salt) }
+  it { expect respond_to(:cards) }
+  it { expect respond_to(:decks) }
+  it { expect respond_to(:locale) }
+  it { expect respond_to(:get_card) }
+  it { expect respond_to(:get_active_deck_cards) }
 
   describe "correct case" do
     it "new user" do
       @user = build(
-        :user,
-        email: "qwerty@gmail.com",
-        password: "123456",
-        password_confirmation: "123456"
+          :user,
+          email: "qwerty@gmail.com",
+          password: "123456",
+          password_confirmation: "123456"
       )
       expect(@user.save).to be true
     end
@@ -161,6 +162,22 @@ RSpec.describe User, type: :model do
           to eq(I18n.t("activerecord.errors.models.user.attributes.password_confirmation.confirmation"))
         expect(@user.errors.messages[:password_confirmation][1]).
           to eq(I18n.t("activerecord.errors.models.user.attributes.password_confirmation.blank"))
+      end
+    end
+
+    describe "#locale" do
+      it "is not from the available list" do
+        @user = build(
+            :user,
+            email: "qwerty@ukr.net",
+            password: "123456",
+            password_confirmation: "123456",
+            locale: "qw"
+        )
+        @user.valid?
+        expect(@user.errors.messages[:locale].length).to eq(1)
+        expect(@user.errors.messages[:locale][0]).
+            to eq(I18n.t("activerecord.errors.models.user.attributes.locale.inclusion"))
       end
     end
   end

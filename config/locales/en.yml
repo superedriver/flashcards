@@ -1,23 +1,148 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
 en:
-  hello: "Hello world"
+  date:
+    formats:
+      default: "%d-%m-%Y"
+  time:
+    formats:
+      default: "%d-%m-%Y %H:%M:%S"
+  activerecord:
+    models:
+      card: "Card"
+      user: "User"
+    attributes:
+      card:
+        original_text: "Text"
+        translated_text: "Translated text"
+        review_date: "Review date"
+        image: "Image"
+        remove_image: "Remove image"
+      user:
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+        language: "Language"
+      deck:
+        name: "Name"
+    errors:
+      models:
+        card:
+          attributes:
+            original_text:
+              blank: "The 'Text' field can't be blank!"
+            translated_text:
+              blank: "The 'Translated text' field can't be blank!"
+            deck_id:
+              blank: "The Card is not linked to Deck! (deck_id.blank)"
+        user:
+          attributes:
+            email:
+              invalid: "Invalid Email format!"
+              blank: "'Email' field is blank!"
+              taken: "User with this email already exists!"
+            password:
+              too_short: "The password must contain more than 2 characters!"
+            password_confirmation:
+              confirmation: "Passwords do not match!"
+              blank: "Confirm the password!"
+            locale:
+              inclusion: "Locale is not included into available locales list!"
+        deck:
+          attributes:
+            name:
+              blank: "The 'Name' field can't be blank!"
+            user_id:
+              blank: "The Deck is not linked to User! (user_id.blank)"
+  errors:
+    messages:
+      extension_white_list_error: "Incorrect format of the uploaded file!"
+      empty_field: "Empty!"
+    validation:
+      description:
+        the_same_value: "The same field values!"
+      messages:
+        the_same_value: "The fields 'Text' and 'Translated text' may not contain the same value!"
+  confirm:
+    delete_card: "Are you sure?"
+  compare_result:
+    right: "Correct!"
+    misprint: "Incorrect, %{correct_text}! Misprint detected, you entered: %{users_text}!"
+    not_right: "Incorrect, the correct translation is: %{text}!"
+  buttons:
+    check: "Check"
+    sign_up: "Sign Up"
+    all_decks: "All decks"
+    add_deck: "Add deck"
+    show_deck: "Show deck"
+    all_cards: "All cards"
+    add_card: "Add card"
+    registration: "Registration"
+    save: "Save"
+    cancel: "Cancel"
+    edit: "Edit"
+    delete: "Delete"
+    login: "Login"
+    logout: "Logout"
+    view: "View"
+    edit_profile: "Edit profile"
+    show_profile: "Show profile"
+    activate: "Make current"
+    deactivate: "Make not current"
+  flashes:
+    oauth:
+      login:
+        success: "You entered using %{provider}"
+        failed: "Error while login using %{provider}"
+        already_logged: "You are already logged in using %{provider}"
+    login:
+      login_first: "Please log in or register!"
+      success: "Glad to see you again!"
+      failed: "Incorrect login or password!"
+    logout:
+      success: "Bye Bye!"
+    registration:
+      success: "Welcome!"
+    cards:
+      success:
+        created: "Card created successfully!"
+        updated: "Card updated successfully!"
+        deleted: "Card deleted successfully!"
+    decks:
+      success:
+        created: "Deck created successfully!"
+        updated: "Deck updated successfully!"
+        deleted: "Deck deleted successfully!"
+        activated: "Deck became current!"
+        deactivated: "Deck became not current!"
+    users:
+      success:
+        updated: "Profile successfully updated!"
+  views:
+    cards:
+      edit: "Edit card"
+      new: "Create card"
+      show: "View card"
+    decks:
+      edit: "Edit deck"
+      new: "Create deck"
+      show: "View deck"
+      index:
+        words: "Words"
+        actions: "Actions"
+    users:
+      edit: "Edit profile"
+      show: "Show profile"
+    home:
+      index:
+        enter_translation: "Enter translation"
+        no_words: "You have not words for learning"
+    registrations:
+      new: "New user registration"
+    sessions:
+      already_logged: "You have already logged in"
+    shared:
+      validation_errs: "Validation errors"
+    application:
+      decks: "Decks"
+      profile: "Profile"
+  description: "Flashcards manager. The best way of learning foreign words."
+  language: "English"

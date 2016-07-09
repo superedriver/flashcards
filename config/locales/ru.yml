@@ -17,9 +17,10 @@ ru:
         image: "Картинка"
         remove_image: "Удалить картинку"
       user:
-        email: "email"
+        email: "Email"
         password: "Пароль"
         password_confirmation: "Подтверждение пароля"
+        language: "Язык"
       deck:
         name: "Название"
     errors:
@@ -35,14 +36,16 @@ ru:
         user:
           attributes:
             email:
-              invalid: "Неверный формат email"
-              blank: "Поле 'email' не заполненное!"
+              invalid: "Неверный формат email!"
+              blank: "Поле 'Email' не заполненное!"
               taken: "Пользователь с таким email уже существует!"
             password:
               too_short: "Пароль должен содержать больше 2-х символов!"
             password_confirmation:
               confirmation: "Пароли не совпадают!"
               blank: "Подтвердите пароль!"
+            locale:
+              inclusion: "Локаль не входит в список разрешенных."
         deck:
           attributes:
             name:
@@ -62,15 +65,16 @@ ru:
     delete_card: "Точно удалить?"
   compare_result:
     right: "Правильно!"
-    misprint: "Неправильно, %{correct_text}! У Вас опечатка, Вы ввели: %{users_text}!"
+    misprint: "Неправильно, %{correct_text}! Упс! У Вас опечатка: %{users_text}!"
     not_right: "Неправильно, правильный перевод: %{text}!"
   buttons:
     check: "Проверить"
     sign_up: "Регистрация"
     all_decks: "Все колоды"
     add_deck: "Добавить колоду"
+    show_deck: "Просмотреть колоду"
     all_cards: "Все карточки"
-    add_card: "Добавить карточку"
+    add_card: "Добавить карту"
     registration: "Зарегистрироваться"
     save: "Сохранить"
     cancel: "Отменить"
@@ -112,3 +116,33 @@ ru:
     users:
       success:
         updated: "Профиль успешно обновлен!"
+  views:
+    cards:
+      edit: "Редактирование карты"
+      new: "Создание карты"
+      show: "Просмотр карты"
+    decks:
+      edit: "Редактирование колоды"
+      new: "Создание колоды"
+      show: "Просмотр колоды"
+      index:
+        words: "Cлова"
+        actions: "Действия"
+    users:
+      edit: "Редактирование профиля"
+      show: "Просмотр профиля"
+    home:
+      index:
+        enter_translation: "Введите перевод слова"
+        no_words: "У Вас нету слов для изучения"
+    registrations:
+      new: "Регистрация нового пользователя"
+    sessions:
+      already_logged: "Вы уже вошли систему"
+    shared:
+      validation_errs: "При заполнении формы возникли такие ошибки"
+    application:
+      decks: "Колоды"
+      profile: "Профиль"
+  description: "Менеджер флеш-карт. Самый лучший способ изучения иностранных слов."
+  language: "Русский"

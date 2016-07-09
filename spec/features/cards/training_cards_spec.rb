@@ -6,8 +6,8 @@ describe "training_cards", type: :feature do
     scenario "visits root_path" do
       visit root_path
 
-      expect(page).to have_text(I18n.t("flashes.login.login_first"))
-      expect(page).to have_current_path login_path
+      expect(page).to have_text(I18n.t("description"))
+      expect(page).to have_current_path root_path
     end
   end
 

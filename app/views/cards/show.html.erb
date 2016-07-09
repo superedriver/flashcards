@@ -1,7 +1,7 @@
 
 <div class="clear-both">
-  <h1 class="left-side">Просмотр карты:</h1>
-  <%= link_to "Просмотреть колоду",
+  <h1 class="left-side"><%= I18n.t("views.cards.show") %>:</h1>
+  <%= link_to I18n.t("buttons.show_deck"),
               deck_path(@card.deck),
                 class: "btn btn-default btn-lg deck-button-right" %>
 </div>

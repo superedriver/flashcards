@@ -9,14 +9,14 @@ RSpec.describe Deck, type: :model do
 
   subject { @deck }
 
-  it { should respond_to(:name) }
-  it { should respond_to(:created_at) }
-  it { should respond_to(:updated_at) }
-  it { should respond_to(:user_id) }
-  it { should respond_to(:cards) }
-  it { should respond_to(:set_not_current!) }
-  it { should respond_to(:set_current!) }
-  it { should respond_to(:user) }
+  it { expect respond_to(:name) }
+  it { expect respond_to(:created_at) }
+  it { expect respond_to(:updated_at) }
+  it { expect respond_to(:user_id) }
+  it { expect respond_to(:cards) }
+  it { expect respond_to(:set_not_current!) }
+  it { expect respond_to(:set_current!) }
+  it { expect respond_to(:user) }
 
   it "#set_not_current!" do
     @deck.set_not_current!

@@ -1,7 +1,7 @@
 <% unless logged_in? %>
     <h1>Login</h1>
     <div class="well bs-component">
-      <%= form_tag sessions_path, :method => :post do %>
+      <%= form_tag sessions_path, method: :post do %>
         <fieldset>
           <div class="form-group">
             <%= label_tag :email %><br />
@@ -18,7 +18,7 @@
       <% end %>
     </div>
 <% else %>
-    <h1>Вы уже вошли систему!</h1>
+    <h1><%= I18n.t("views.sessions.already_logged") %>!</h1>
     <h2>ID: <%= current_user.id %></h2>
     <h2>email: <%= current_user.email %></h2>
     <%= link_to I18n.t("buttons.logout"), logout_path, method: :post , class: "btn btn-primary btn-lg" %>

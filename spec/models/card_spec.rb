@@ -9,18 +9,18 @@ RSpec.describe Card, type: :model do
 
   subject { @card }
 
-  it { should respond_to(:original_text) }
-  it { should respond_to(:translated_text) }
-  it { should respond_to(:review_date) }
-  it { should respond_to(:created_at) }
-  it { should respond_to(:updated_at) }
-  it { should respond_to(:deck_id) }
-  it { should respond_to(:image) }
-  it { should respond_to(:current_step) }
-  it { should respond_to(:attempts_count) }
-  it { should respond_to(:set_review_date!) }
-  it { should respond_to(:set_current_step!) }
-  it { should respond_to(:set_attempts_count!) }
+  it { expect respond_to(:original_text) }
+  it { expect respond_to(:translated_text) }
+  it { expect respond_to(:review_date) }
+  it { expect respond_to(:created_at) }
+  it { expect respond_to(:updated_at) }
+  it { expect respond_to(:deck_id) }
+  it { expect respond_to(:image) }
+  it { expect respond_to(:current_step) }
+  it { expect respond_to(:attempts_count) }
+  it { expect respond_to(:set_review_date!) }
+  it { expect respond_to(:set_current_step!) }
+  it { expect respond_to(:set_attempts_count!) }
 
   describe "#review date" do
     it "on create" do
