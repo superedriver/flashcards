@@ -79,3 +79,5 @@ gem 'timecop', '~> 0.8.1', group: :test
 gem 'email_spec', '~> 2.0', group: :test
 
 gem 'http_accept_language', '~> 2.0', '>= 2.0.5'
+
+gem 'haml', '~> 4.0', '>= 4.0.7'
