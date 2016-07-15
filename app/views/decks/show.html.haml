@@ -1,0 +1,51 @@
+%h1
+  = I18n.t("views.decks.show")
+  \: #{@deck.name}
+%div
+  = link_to I18n.t("buttons.edit"),
+    edit_deck_path(@deck),
+    class: "btn btn-primary"
+  = link_to I18n.t("buttons.delete"),
+    @deck, method: :delete,
+    data: { confirm: I18n.t("confirm.delete_card") },
+    class: "btn btn-danger"
+  = link_to I18n.t("buttons.add_card"),
+    new_deck_card_path(@deck),
+    class: "btn btn-info btn-lg deck-button-right"
+  = link_to "Перейти к колодам",
+    decks_path,
+    class: "btn btn-default btn-lg deck-button-right"
+%hr/
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th №
+      %th= I18n.t("activerecord.attributes.card.image")
+      %th= I18n.t("activerecord.attributes.card.original_text")
+      %th= I18n.t("activerecord.attributes.card.translated_text")
+      %th= I18n.t("activerecord.attributes.card.review_date")
+      %th Действия
+  %tbody#cards
+    - @deck.cards.each.with_index(1) do |card, index|
+      %tr
+        %td= link_to index, deck_card_path(card.deck, card)
+        %td
+          - if card.image.thumb.url.present?
+            = image_tag card.image.thumb.url
+          - else
+            \...
+        %td= get_text(card, :original_text)
+        %td= get_text(card, :translated_text)
+        %td= get_text(card, :review_date)
+        %td
+          = link_to I18n.t("buttons.view"),
+            deck_card_path(card.deck, card),
+            class: "btn btn-default btn-sm"
+          = link_to I18n.t("buttons.edit"),
+            edit_deck_card_path(card.deck, card),
+            class: "btn btn-primary btn-sm"
+          = link_to I18n.t("buttons.delete"),
+            deck_card_path(card.deck, card),
+            method: :delete,
+            data: { confirm: I18n.t("confirm.delete_card") },
+            class: "btn btn-danger btn-sm"

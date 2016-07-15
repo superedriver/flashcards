@@ -81,3 +81,5 @@ gem 'email_spec', '~> 2.0', group: :test
 gem 'http_accept_language', '~> 2.0', '>= 2.0.5'
 
 gem 'haml', '~> 4.0', '>= 4.0.7'
+
+gem "erb2haml", group: :development
