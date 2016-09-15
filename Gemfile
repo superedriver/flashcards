@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.2.3'
+ruby '2.3.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
@@ -82,4 +82,4 @@ gem 'http_accept_language', '~> 2.0', '>= 2.0.5'
 
 gem 'haml', '~> 4.0', '>= 4.0.7'
 
-gem "erb2haml", group: :development
+gem 'erb2haml', group: :development

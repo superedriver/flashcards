@@ -33,6 +33,7 @@ ua:
               blank: "Поле 'Переклад' не може бути порожнім!"
             deck_id:
               blank: "Карта не прив'язана до колоди! (deck_id.blank)"
+          not_found: "Карту не знайдено!"
         user:
           attributes:
             email:

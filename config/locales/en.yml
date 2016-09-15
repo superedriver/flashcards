@@ -33,6 +33,7 @@ en:
               blank: "The 'Translated text' field can't be blank!"
             deck_id:
               blank: "The Card is not linked to Deck! (deck_id.blank)"
+          not_found: "Card not found!"
         user:
           attributes:
             email:

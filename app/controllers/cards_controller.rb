@@ -2,13 +2,16 @@ class CardsController < ApplicationController
   before_action :find_deck, only: [:index, :new, :create, :edit, :destroy]
   before_action :find_card, only: [:show, :edit, :update, :destroy]
 
+  # GET /decks/:deck_id/cards
   def index
     @cards = @deck.cards
   end
 
+  # GET /decks/:deck_id/cards/:id
   def show
   end
 
+  # GET /decks/:deck_id/cards/new
   def new
     @card = Card.new
   end
