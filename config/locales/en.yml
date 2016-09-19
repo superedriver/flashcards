@@ -53,6 +53,7 @@ en:
               blank: "The 'Name' field can't be blank!"
             user_id:
               blank: "The Deck is not linked to User! (user_id.blank)"
+          not_found: "Deck not found!"
   errors:
     messages:
       extension_white_list_error: "Incorrect format of the uploaded file!"

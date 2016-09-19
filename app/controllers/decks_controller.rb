@@ -1,14 +1,17 @@
 class DecksController < ApplicationController
   before_action :find_deck, only: [:show, :edit, :update, :destroy, :activate, :deactivate]
 
+  # GET /decks
   def index
     @decks = current_user.decks
   end
 
+  # GET /decks/new
   def new
     @deck = Deck.new
   end
 
+  # POST /decks
   def create
     @deck = current_user.decks.new(deck_params)
     if @deck.save
@@ -19,12 +22,15 @@ class DecksController < ApplicationController
     end
   end
 
+  # GET /decks/:id
   def show
   end
 
+  # GET /decks/:id/edit
   def edit
   end
 
+  # PATCH/PUT  /decks/:id
   def update
     if @deck.update(deck_params)
       redirect_to decks_path,
@@ -34,18 +40,21 @@ class DecksController < ApplicationController
     end
   end
 
+  # DELETE /decks/:id
   def destroy
     @deck.destroy
     redirect_to decks_path,
                 flash: { success: I18n.t('flashes.decks.success.deleted') }
   end
 
+  # GET /decks/:id/activate
   def activate
     @deck.set_current!
     redirect_to decks_path,
                 flash: { success: I18n.t('flashes.decks.success.activated') }
   end
 
+  # GET /decks/:id/deactivate
   def deactivate
     @deck.set_not_current!
     redirect_to decks_path,
@@ -60,7 +69,7 @@ class DecksController < ApplicationController
     def find_deck
       @deck = current_user.decks.find_by(id: params[:id])
       unless @deck
-        render text: "Page not found", status: 404
+        render text: I18n.t("activerecord.errors.models.deck.not_found"), status: 404
       end
     end
 end

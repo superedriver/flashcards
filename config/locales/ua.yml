@@ -53,6 +53,7 @@ ua:
               blank: "Поле 'Назва' не може бути порожнім!"
             user_id:
               blank: "Колода не прив'язана до користувача! (user_id.blank)"
+          not_found: "Колоду не знайдено!"
   errors:
     messages:
       extension_white_list_error: "Неправильний формат файлу!"

@@ -53,6 +53,7 @@ ru:
               blank: "Поле 'Название' не может быть пустым!"
             user_id:
               blank: "Колода не привязана к пользователю! (user_id.blank)"
+          not_found: "Колода не найдена!"
   errors:
     messages:
       extension_white_list_error: "Неправильный формат загружаемого файла!"
