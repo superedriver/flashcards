@@ -1,6 +1,30 @@
 require 'rails_helper'
 
 RSpec.describe CardsController, type: :controller do
+
+  def self.redirects_to_login_path_when_not_authorized(*actions)
+    actions.each do |action|
+      it "#{action} returns 401 when not authorized" do
+        deck = create(:deck)
+        card = create(:card, deck_id: deck.id)
+        verb = if action == :update
+                 "PATCH"
+               elsif action == :destroy
+                 "DELETE"
+               elsif action == :create
+                 "POST"
+               else
+                 "GET"
+               end
+
+        process action, verb, deck_id: deck.id, id: card.id
+        expect(response).to have_http_status(302)
+        expect(response).to redirect_to(login_path)
+      end
+    end
+  end
+  redirects_to_login_path_when_not_authorized :index, :show, :new, :edit, :update, :destroy, :create
+
   describe "GET #index" do
     before do
       @deck = create(:deck)
@@ -78,257 +102,119 @@ RSpec.describe CardsController, type: :controller do
       expect(assigns(:card).new_record?).to be true
     end
   end
-  # def self.returns_401_when_not_authorized(*actions)
-  #   actions.each do |action|
-  #     it "#{action} returns 401 when not authorized" do
-  #       event = create(:event)
-  #       verb = if action == :update
-  #                "PATCH"
-  #              elsif action == :destroy
-  #                "DELETE"
-  #              elsif action == :create
-  #                "POST"
-  #              else
-  #                "GET"
-  #              end
-  #
-  #       process action, verb, id: event.id
-  #       expect(response).to have_http_status(401)
-  #       expect(response.body).to eq(I18n.t("errors.user.non_authorized"))
-  #     end
-  #   end
-  # end
-  # returns_401_when_not_authorized :index, :show, :update, :destroy, :create
 
-    # describe "GET #index" do
-    #   it "responds successfully with an HTTP 200 status code" do
-    #     get :index
-    #     expect(response).to be_success
-    #     expect(response).to have_http_status(200)
-    #   end
-    #
-    #   it "renders the index template" do
-    #     get :index
-    #     expect(response).to render_template("index")
-    #   end
-    #
-    #   it "loads all of the posts into @posts" do
-    #     post1, post2 = Post.create!, Post.create!
-    #     get :index
-    #
-    #     expect(assigns(:posts)).to match_array([post1, post2])
-    #   end
-    # end
+  describe "POST #create" do
+    before do
+      @deck = create(:deck)
+      login_user(@deck.user)
+    end
 
+    it "redirects to card's_path" do
+      post :create, deck_id: @deck.id, card: {
+          original_text: "ball",
+          translated_text: "ball1"
+      }
+      expect(response).to redirect_to(deck_card_path(@deck,assigns(:card)))
+    end
 
-  #
-  # describe "GET #show" do
-  #   it "return event if event exist" do
-  #     user = create(:user)
-  #     event = create(:event,
-  #                    name: "Event1",
-  #                    user_id: user.id
-  #     )
-  #
-  #     get :show, params: {
-  #         id: event.id,
-  #         token: user.token
-  #     }
-  #
-  #     body = JSON.parse(response.body)
-  #
-  #     expect(response).to have_http_status(200)
-  #     expect(body["name"]).to eq(event.name)
-  #   end
-  #
-  #   it "return 404 if event not exist" do
-  #     user = create(:user)
-  #
-  #     get :show, params: {
-  #         id: 0,
-  #         token: user.token
-  #     }
-  #
-  #     expect(response).to have_http_status(404)
-  #     expect(response.body).to eq(I18n.t("errors.event.not_found"))
-  #   end
-  # end
-  #
-  # describe "POST #create" do
-  #   context "with valid params" do
-  #     it "creates a new Event" do
-  #       user = create(:user)
-  #       event = build(:event)
-  #
-  #       expect {
-  #         post :create, params: {
-  #             date_start: event.date_start,
-  #             date_finish: event.date_finish,
-  #             token: user.token
-  #         }
-  #       }.to change(Event, :count).by(1)
-  #     end
-  #
-  #     it "returns created event after creation" do
-  #       name = "Event1"
-  #       description = "Description1"
-  #
-  #       user = create(:user)
-  #       event = build(:event,
-  #                     name: name,
-  #                     description: description
-  #       )
-  #
-  #       post :create, params: {
-  #           name: event.name,
-  #           description: event.description,
-  #           date_start: event.date_start,
-  #           date_finish: event.date_finish,
-  #           token: user.token
-  #       }
-  #
-  #       body = JSON.parse(response.body)
-  #
-  #       expect(body["name"]).to eq(name)
-  #       expect(body["description"]).to eq(description)
-  #     end
-  #   end
-  #
-  #   context "with invalid params" do
-  #     it "blank date_start" do
-  #       user = create(:user)
-  #       event = build(:event)
-  #
-  #       post :create, params: {
-  #           date_start: nil,
-  #           date_finish: event.date_finish,
-  #           token: user.token
-  #       }
-  #
-  #       body = JSON.parse(response.body)
-  #
-  #       expect(body["date_start"][0]).to eq(
-  #                                            I18n.t("activerecord.errors.models.event.attributes.date_start.blank")
-  #                                        )
-  #     end
-  #
-  #     it "blank date_finish" do
-  #       user = create(:user)
-  #       event = build(:event)
-  #
-  #       post :create, params: {
-  #           date_start: event.date_start,
-  #           date_finish: nil,
-  #           token: user.token
-  #       }
-  #
-  #       body = JSON.parse(response.body)
-  #
-  #       expect(body["date_finish"][0]).to eq(
-  #                                             I18n.t("activerecord.errors.models.event.attributes.date_finish.blank")
-  #                                         )
-  #     end
-  #   end
-  # end
-  #
-  # describe "PUT #update" do
-  #   context "with valid params" do
-  #     it "updates the requested event" do
-  #       new_name = "New Name"
-  #       user = create(:user)
-  #       event = create(:event, user_id: user.id)
-  #
-  #       put :update, params: {
-  #           id: event.id,
-  #           name: new_name,
-  #           token: user.token
-  #       }
-  #       event.reload
-  #
-  #       expect(event.name).to eq(new_name)
-  #     end
-  #   end
-  #
-  #   it "redirects to the event" do
-  #     new_name = "New Name"
-  #     new_description = "new Description"
-  #     user = create(:user)
-  #     event = create(:event, user_id: user.id)
-  #
-  #     put :update, params: {
-  #         id: event.id,
-  #         name: new_name,
-  #         description: new_description,
-  #         token: user.token
-  #     }
-  #     body = JSON.parse(response.body)
-  #
-  #     expect(body["id"]).to eq(event.id)
-  #     expect(body["name"]).to eq(new_name)
-  #     expect(body["description"]).to eq(new_description)
-  #   end
-  #
-  #   context "with invalid params" do
-  #     it "blank date_start" do
-  #       user = create(:user)
-  #       event = create(:event, user_id: user.id)
-  #
-  #       put :update, params: {
-  #           id: event.id,
-  #           date_start: nil,
-  #           token: user.token
-  #       }
-  #
-  #       body = JSON.parse(response.body)
-  #
-  #       expect(body["date_start"][0]).to eq(
-  #                                            I18n.t("activerecord.errors.models.event.attributes.date_start.blank")
-  #                                        )
-  #     end
-  #
-  #     it "blank date_finish" do
-  #       user = create(:user)
-  #       event = create(:event, user_id: user.id)
-  #
-  #       put :update, params: {
-  #           id: event.id,
-  #           date_finish: nil,
-  #           token: user.token
-  #       }
-  #
-  #       body = JSON.parse(response.body)
-  #
-  #       expect(body["date_finish"][0]).to eq(
-  #                                             I18n.t("activerecord.errors.models.event.attributes.date_finish.blank")
-  #                                         )
-  #     end
-  #   end
-  # end
-  #
-  # describe "DELETE #destroy" do
-  #   it "destroys the requested user" do
-  #     user = create(:user)
-  #     event = create(:event, user_id: user.id)
-  #
-  #     expect {
-  #       delete :destroy, params: {
-  #           id: event.id,
-  #           token: user.token
-  #       }
-  #     }.to change(Event, :count).by(-1)
-  #   end
-  #
-  #   it "returnes 200 status with message" do
-  #     user = create(:user)
-  #     event = create(:event, user_id: user.id)
-  #
-  #     delete :destroy, params: {
-  #         id: event.id,
-  #         token: user.token
-  #     }
-  #
-  #     expect(response.status).to eq(200)
-  #     expect(response.body).to eq(I18n.t("confirms.event.success_destroyed"))
-  #   end
-  # end
+    it "changes Cards count" do
+      expect {
+        post :create, deck_id: @deck.id, card: {
+            original_text: "ball",
+            translated_text: "ball1"
+        }
+      }.to change{Card.count}.by(1)
+    end
+
+    it "renders 'new' template if invalid params" do
+      text = "ball"
+      post :create, deck_id: @deck.id, card: {
+          original_text: text,
+          translated_text: text
+      }
+      expect(response).to render_template("new")
+    end
+  end
+
+  describe "GET #edit" do
+    before do
+      @deck = create(:deck)
+      @card = create(:card, deck_id: @deck.id)
+      login_user(@deck.user)
+    end
+
+    it "responds successfully with an HTTP 200 status code" do
+      get :edit, deck_id: @deck.id, id: @card.id
+      expect(response).to be_success
+      expect(response).to have_http_status(200)
+    end
+
+    it "renders the edit template with @card" do
+      get :edit, deck_id: @deck.id, id: @card.id
+      expect(response).to render_template("edit")
+      expect(assigns(:card)).to eq(@card)
+    end
+  end
+
+  describe "PATCH/PUT #update" do
+    before do
+      @deck = create(:deck)
+      @card = create(:card, deck_id: @deck.id)
+      login_user(@deck.user)
+    end
+
+    it "redirects to card's_path" do
+      put :update, deck_id: @deck.id, id: @card.id, card: {
+          original_text: "qwert",
+          translated_text: "qaz"
+      }
+      expect(response).to redirect_to(deck_card_path(@deck,assigns(:card)))
+    end
+
+    it "card with valid params was updated" do
+      new_original_text = "qwert"
+      new_translated_text = "qaz"
+      put :update, deck_id: @deck.id, id: @card.id, card: {
+          original_text: new_original_text,
+          translated_text: new_translated_text
+      }
+      @card.reload
+      expect(@card.original_text).to eq(new_original_text)
+      expect(@card.translated_text).to eq(new_translated_text)
+    end
+
+    it "renders 'edit' template if invalid params" do
+      new_text = "qwert"
+      put :update, deck_id: @deck.id, id: @card.id, card: {
+          original_text: new_text,
+          translated_text: new_text
+      }
+      expect(response).to render_template("edit")
+    end
+  end
+
+  describe "DELETE #destroy" do
+    before do
+      @deck = create(:deck)
+      @card = create(:card, deck_id: @deck.id)
+      login_user(@deck.user)
+    end
+
+    it "redirects to deck's_path" do
+      delete :destroy, deck_id: @deck.id, id: @card.id
+      expect(response).to redirect_to(deck_path(@deck))
+    end
+
+    it "changes Cards count" do
+      expect {
+        delete :destroy, deck_id: @deck.id, id: @card.id
+      }.to change{Card.count}.by(-1)
+    end
+
+    it "return 404 if card does not exist" do
+      delete :destroy, deck_id: @deck.id, id: 0
+      expect(response).to have_http_status(404)
+      expect(response.body).to eq(I18n.t("activerecord.errors.models.card.not_found"))
+    end
+  end
 end

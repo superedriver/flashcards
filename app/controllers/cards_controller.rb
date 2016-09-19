@@ -16,6 +16,7 @@ class CardsController < ApplicationController
     @card = Card.new
   end
 
+  # POST /decks/:deck_id/cards
   def create
     @card = @deck.cards.new(card_params)
     if @card.save
@@ -26,9 +27,12 @@ class CardsController < ApplicationController
     end
   end
 
+  # GET /decks/:deck_id/cards/:id/edit
   def edit
   end
 
+  # PATCH /decks/:deck_id/cards/:id/edit
+  # PUT /decks/:deck_id/cards/:id/edit
   def update
     if @card.update(card_params)
       redirect_to deck_card_path(@card.deck, @card),  flash: { success: I18n.t('flashes.cards.success.updated') }
@@ -37,6 +41,7 @@ class CardsController < ApplicationController
     end
   end
 
+  # DELETE /decks/:deck_id/cards/:id
   def destroy
     @card.destroy
     redirect_to deck_path(@deck), flash: { success: I18n.t('flashes.cards.success.deleted') }
