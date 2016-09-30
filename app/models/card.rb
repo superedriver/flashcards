@@ -8,7 +8,7 @@ class Card < ActiveRecord::Base
 
   before_validation :set_review_date!, on: :create
   before_validation :set_current_step!, on: :create
-  before_validation :set_attempts_count!, on: :create
+  before_validation :set_e_factor!, on: :create
 
   scope :actual_cards, -> { where("review_date <= ?", Time.current) }
   scope :random_card, -> { order("RANDOM()").first }
@@ -23,8 +23,8 @@ class Card < ActiveRecord::Base
     self[:current_step] = 0
   end
 
-  def set_attempts_count!
-    self[:attempts_count] = 0
+  def set_e_factor!
+    self[:e_factor] = 2.5
   end
 
   private

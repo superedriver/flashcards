@@ -89,6 +89,7 @@ en:
     show_profile: "Show profile"
     activate: "Make current"
     deactivate: "Make not current"
+    go_to_decks: "Go to decks"
   flashes:
     oauth:
       login:

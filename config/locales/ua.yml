@@ -89,6 +89,7 @@ ua:
     show_profile: "Показати профіль"
     activate: "Зробити поточною"
     deactivate: "Зробити непоточною"
+    go_to_decks: "Перейти до колод"
   flashes:
     oauth:
       login:

@@ -11,7 +11,9 @@
           = hidden_field_tag(:original_text, @card.original_text)
           = hidden_field_tag(:translated_text, @card.translated_text)
           = hidden_field_tag(:current_step, @card.current_step)
-          = hidden_field_tag(:attempts_count, @card.attempts_count)
+          = hidden_field_tag(:e_factor, @card.e_factor)
+          = hidden_field_tag(:last_interval, @card.last_interval)
+          = hidden_field_tag(:quality_response, 0)
           .h1.word_for_translate.text-info
             = @card.translated_text.upcase
           .form-group

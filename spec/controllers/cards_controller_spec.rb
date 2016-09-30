@@ -99,19 +99,15 @@ RSpec.describe CardsController, type: :controller do
 
     describe "POST #create" do
       it "redirects to card's_path" do
-        post :create, deck_id: @deck.id, card: {
-            original_text: "ball",
-            translated_text: "ball1"
-        }
+        card = attributes_for(:card)
+        post :create, deck_id: @deck.id, card: card
         expect(response).to redirect_to(deck_card_path(@deck,assigns(:card)))
       end
 
       it "changes Cards count" do
+        card = attributes_for(:card)
         expect {
-          post :create, deck_id: @deck.id, card: {
-              original_text: "ball",
-              translated_text: "ball1"
-          }
+          post :create, deck_id: @deck.id, card: card
         }.to change{Card.count}.by(1)
       end
 
@@ -200,8 +196,5 @@ RSpec.describe CardsController, type: :controller do
         expect(response.body).to eq(I18n.t("activerecord.errors.models.card.not_found"))
       end
     end
-
   end
-
-
 end
