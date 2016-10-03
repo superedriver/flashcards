@@ -41,6 +41,9 @@ class SuperMemo2
 #    scored below four in the quality assessment. Continue the repetitions until
 #    all of these items score at least fou
 
+  HESITATION_START = 15
+  DIFFICULTY_START = 30
+
   Result = Struct.new(:status, :message) do
     def success?
       status == :ok
@@ -52,7 +55,7 @@ class SuperMemo2
     @quality_response = quality_response.to_i
   end
 
-  def check_translation?(inputed_text)
+  def check_translation(inputed_text)
     distance = Levenshtein.distance(
         @card[:original_text].mb_chars.downcase.to_s,
         inputed_text.mb_chars.downcase.to_s
@@ -65,9 +68,9 @@ class SuperMemo2
         # 4 - correct response after a hesitation
         # 3 - correct response recalled with serious difficulty
 
-        quality = if @quality_response <= 15
+        quality = if @quality_response < HESITATION_START
             5
-          elsif @quality_response > 15 && @quality_response <= 30
+          elsif @quality_response >= HESITATION_START && @quality_response <= DIFFICULTY_START
             4
           else
             3
@@ -78,23 +81,22 @@ class SuperMemo2
         # misprint_case
         # 2 - incorrect response; where the correct one seemed easy to recall
         quality = 2
-        reset_current_state
         update_card(quality)
         Result.new(
           :error,
           I18n.t(
-              "compare_result.misprint",
-              correct_text: @card[:original_text].mb_chars.upcase,
-              users_text: inputed_text.mb_chars.upcase
+            "compare_result.misprint",
+            correct_text: @card[:original_text].mb_chars.upcase,
+            users_text: inputed_text.mb_chars.upcase
           )
         )
       when 2
-        # incorrect_case
+        # incorrect_case, the correct one remembered
         # 1 - incorrect response; the correct one remembered
         quality = 1
         incorrect_answer(quality)
       else
-        # incorrect_case
+        # incorrect_case, complete blackout
         # 0 - complete blackout.
         quality = 0
         incorrect_answer(quality)
@@ -105,6 +107,7 @@ class SuperMemo2
 
   def update_card(quality)
     @card[:current_step] += 1
+    @card[:current_step] = 1 if quality < 3
     @card[:e_factor] = get_e_factor(@card[:e_factor], quality)
     @card[:review_date] = get_review_date(@card[:current_step], @card[:e_factor])
     @card.save
@@ -125,22 +128,17 @@ class SuperMemo2
   end
 
   def get_e_factor(card_e_factor, card_quality)
-    e_factor = card_e_factor+(0.1-(5-card_quality)*(0.08+(5-card_quality)*0.02))
+    e_factor = (card_e_factor+(0.1-(5-card_quality)*(0.08+(5-card_quality)*0.02))).round(5)
     e_factor = 1.3 if e_factor < 1.3
     e_factor
   end
 
-  def reset_current_state
-    @card[:current_step] = 0
-  end
-
   def incorrect_answer(quality)
-    reset_current_state
     update_card(quality)
     Result.new(
-        :error,
-        I18n.t("compare_result.not_right",
-               text: @card[:original_text].mb_chars.upcase)
+      :error,
+      I18n.t("compare_result.not_right",
+             text: @card[:original_text].mb_chars.upcase)
     )
   end
 end

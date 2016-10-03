@@ -17,10 +17,11 @@ RSpec.describe Card, type: :model do
   it { expect respond_to(:deck_id) }
   it { expect respond_to(:image) }
   it { expect respond_to(:current_step) }
-  it { expect respond_to(:attempts_count) }
+  it { expect respond_to(:e_factor) }
+  it { expect respond_to(:last_interval) }
   it { expect respond_to(:set_review_date!) }
   it { expect respond_to(:set_current_step!) }
-  it { expect respond_to(:set_attempts_count!) }
+  it { expect respond_to(:set_e_factor!) }
 
   describe "#review date" do
     it "on create" do
@@ -34,15 +35,15 @@ RSpec.describe Card, type: :model do
     end
   end
 
-  describe "#attempts_count" do
+  describe "#e_factor" do
     it "on create" do
-      expect(@card.attempts_count).to eq(0)
+      expect(@card.e_factor).to eq(2.5)
     end
 
-    it "#set_attempts_count!" do
-      @card.update_column(:attempts_count, 2)
-      @card.set_attempts_count!
-      expect(@card.attempts_count).to eq(0)
+    it "#set_e_factor!" do
+      @card.update_column(:e_factor, 2)
+      @card.set_e_factor!
+      expect(@card.e_factor).to eq(2.5)
     end
   end
 

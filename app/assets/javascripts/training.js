@@ -1,8 +1,8 @@
 $(document).ready(function(){
-    var qualityResponse = document.getElementById("quality_response");
-    if (qualityResponse) {
+    var qualityResponse = $("#quality_response");
+    if (qualityResponse.length) {
         setInterval(function() {
-            qualityResponse.value = +qualityResponse.value + 1;
+            qualityResponse.val( +qualityResponse.val() + 1);
         }, 1000);
     }
 });
