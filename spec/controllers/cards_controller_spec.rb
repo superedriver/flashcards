@@ -1,21 +1,20 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe CardsController, type: :controller do
-
   def self.redirects_to_login_path_when_not_authorized(*actions)
     actions.each do |action|
       it "#{action} returns 401 when not authorized" do
         deck = create(:deck)
         card = create(:card, deck_id: deck.id)
         verb = if action == :update
-                 "PATCH"
-               elsif action == :destroy
-                 "DELETE"
-               elsif action == :create
-                 "POST"
-               else
-                 "GET"
-               end
+            "PATCH"
+          elsif action == :destroy
+            "DELETE"
+          elsif action == :create
+            "POST"
+          else
+            "GET"
+          end
 
         process action, verb, deck_id: deck.id, id: card.id
         expect(response).to have_http_status(302)
@@ -101,21 +100,21 @@ RSpec.describe CardsController, type: :controller do
       it "redirects to card's_path" do
         card = attributes_for(:card)
         post :create, deck_id: @deck.id, card: card
-        expect(response).to redirect_to(deck_card_path(@deck,assigns(:card)))
+        expect(response).to redirect_to(deck_card_path(@deck, assigns(:card)))
       end
 
       it "changes Cards count" do
         card = attributes_for(:card)
         expect {
           post :create, deck_id: @deck.id, card: card
-        }.to change{Card.count}.by(1)
+        }.to change{ Card.count }.by(1)
       end
 
       it "renders 'new' template if invalid params" do
         text = "ball"
         post :create, deck_id: @deck.id, card: {
-            original_text: text,
-            translated_text: text
+          original_text: text,
+          translated_text: text
         }
         expect(response).to render_template("new")
       end
@@ -146,18 +145,18 @@ RSpec.describe CardsController, type: :controller do
 
       it "redirects to card's_path" do
         put :update, deck_id: @deck.id, id: @card.id, card: {
-            original_text: "qwert",
-            translated_text: "qaz"
+          original_text: "qwert",
+          translated_text: "qaz"
         }
-        expect(response).to redirect_to(deck_card_path(@deck,assigns(:card)))
+        expect(response).to redirect_to(deck_card_path(@deck, assigns(:card)))
       end
 
       it "card with valid params was updated" do
         new_original_text = "qwert"
         new_translated_text = "qaz"
         put :update, deck_id: @deck.id, id: @card.id, card: {
-            original_text: new_original_text,
-            translated_text: new_translated_text
+          original_text: new_original_text,
+          translated_text: new_translated_text
         }
         @card.reload
         expect(@card.original_text).to eq(new_original_text)
@@ -167,8 +166,8 @@ RSpec.describe CardsController, type: :controller do
       it "renders 'edit' template if invalid params" do
         new_text = "qwert"
         put :update, deck_id: @deck.id, id: @card.id, card: {
-            original_text: new_text,
-            translated_text: new_text
+          original_text: new_text,
+          translated_text: new_text
         }
         expect(response).to render_template("edit")
       end
@@ -187,7 +186,7 @@ RSpec.describe CardsController, type: :controller do
       it "changes Cards count" do
         expect {
           delete :destroy, deck_id: @deck.id, id: @card.id
-        }.to change{Card.count}.by(-1)
+        }.to change{ Card.count }.by(-1)
       end
 
       it "return 404 if card does not exist" do

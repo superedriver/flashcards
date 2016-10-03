@@ -53,7 +53,7 @@ describe "SuperMemo2 service" do
           4.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мяч") }
           expect(card[:current_step]).to eq(4)
           expect(card[:e_factor]).to eq(2.9)
-          expect(card[:review_date].to_i).to eq((Time.current + (48.72).days).to_i)
+          expect(card[:review_date].to_i).to eq((Time.now + (48.72).days).to_i)
         end
       end
 
@@ -91,7 +91,7 @@ describe "SuperMemo2 service" do
           4.times{ SuperMemo2.new(card, @HESITATION).check_translation("мяч") }
           expect(card[:current_step]).to eq(4)
           expect(card[:e_factor]).to eq(2.5)
-          expect(card[:review_date].to_i).to eq((Time.current + (37.5).days).to_i)
+          expect(card[:review_date].to_i).to eq((Time.now + (37.5).days).to_i)
         end
       end
 
@@ -129,7 +129,7 @@ describe "SuperMemo2 service" do
           4.times{ SuperMemo2.new(card, @DIFFICULTY).check_translation("мяч") }
           expect(card[:current_step]).to eq(4)
           expect(card[:e_factor]).to eq(1.94)
-          expect(card[:review_date].to_i).to eq((Time.current + (24.2112).days).to_i)
+          expect(card[:review_date].to_i).to eq((Time.now + (24.2112).days).to_i)
         end
       end
     end
