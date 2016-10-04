@@ -68,13 +68,9 @@ class SuperMemo2
         # 4 - correct response after a hesitation
         # 3 - correct response recalled with serious difficulty
 
-        quality = if @quality_response < HESITATION_START
-            5
-          elsif @quality_response >= HESITATION_START && @quality_response <= DIFFICULTY_START
-            4
-          else
-            3
-          end
+        quality = 3
+        quality = 5 if @quality_response < HESITATION_START
+        quality = 4 if @quality_response >= HESITATION_START && @quality_response <= DIFFICULTY_START
         update_card(quality)
         Result.new(:ok, I18n.t("compare_result.right"))
       when 1
@@ -116,14 +112,14 @@ class SuperMemo2
   def get_review_date(current_step, e_factor)
     case current_step
       when 1
-        Time.now + 1.day
+        1.day.from_now
       when 2
         @card[:last_interval] = 6.0
-        Time.now + 6.days
+        6.days.from_now
       else
         new_interval = @card[:last_interval] * e_factor
         @card[:last_interval] = new_interval
-        Time.now + new_interval.days
+        new_interval.days.from_now
     end
   end
 
