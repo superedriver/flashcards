@@ -271,6 +271,7 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    newrelic_rpm (3.16.3.323)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
@@ -425,6 +426,7 @@ DEPENDENCIES
   letter_opener
   levenshtein-ffi (~> 1.1)
   mini_magick (~> 4.4)
+  newrelic_rpm
   nokogiri (~> 1.6.6)
   pg (~> 0.18.4)
   pry-rails (~> 0.3.4)

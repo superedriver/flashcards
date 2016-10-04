@@ -57,3 +57,4 @@ gem 'haml', '~> 4.0', '>= 4.0.7'
 gem 'erb2haml', group: :development
 
 gem 'rollbar'
+gem 'newrelic_rpm'
