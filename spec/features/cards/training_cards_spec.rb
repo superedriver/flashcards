@@ -17,7 +17,6 @@ describe "training_cards", type: :feature do
     let(:user) { deck.user }
 
     before do
-      card.update_column(:review_date, Time.current)
       login_user_post(user.email, "qwerty")
     end
 
@@ -35,7 +34,7 @@ describe "training_cards", type: :feature do
     end
 
     scenario "misprint value" do
-      create(:card).update_column(:review_date, Time.current)
+      create(:card, deck_id: deck.id)
       inputed_word = "мяя"
       visit root_path
       fill_in :original_text, with: inputed_word
@@ -47,12 +46,12 @@ describe "training_cards", type: :feature do
             correct_text: card.original_text.mb_chars.upcase,
             users_text: inputed_word.mb_chars.upcase
         )
-    )
+      )
       expect(page).to have_current_path root_path
     end
 
     scenario "correct value" do
-      create(:card).update_column(:review_date, Time.current)
+      create(:card, deck_id: deck.id)
       visit root_path
       fill_in :original_text, with: "мяч"
       click_button I18n.t("buttons.check")

@@ -1,7 +1,7 @@
 class TrainingController < ApplicationController
   before_action :find_card, only: [:check]
   def check
-    result = CheckTranslation.new(@card).check_translation?(params[:card][:original_text])
+    result = SuperMemo2.new(@card, params[:quality_response]).check_translation(params[:card][:original_text])
     if result.success?
       flash[:success] = result.message
     else

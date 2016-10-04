@@ -33,6 +33,7 @@ ua:
               blank: "Поле 'Переклад' не може бути порожнім!"
             deck_id:
               blank: "Карта не прив'язана до колоди! (deck_id.blank)"
+          not_found: "Карту не знайдено!"
         user:
           attributes:
             email:
@@ -52,6 +53,7 @@ ua:
               blank: "Поле 'Назва' не може бути порожнім!"
             user_id:
               blank: "Колода не прив'язана до користувача! (user_id.blank)"
+          not_found: "Колоду не знайдено!"
   errors:
     messages:
       extension_white_list_error: "Неправильний формат файлу!"
@@ -87,6 +89,7 @@ ua:
     show_profile: "Показати профіль"
     activate: "Зробити поточною"
     deactivate: "Зробити непоточною"
+    go_to_decks: "Перейти до колод"
   flashes:
     oauth:
       login:

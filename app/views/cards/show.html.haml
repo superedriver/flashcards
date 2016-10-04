@@ -1,0 +1,45 @@
+.clear-both
+  %h1.left-side
+    = I18n.t("views.cards.show")
+    \:
+  = link_to I18n.t("buttons.show_deck"),
+    deck_path(@card.deck),
+    class: "btn btn-default btn-lg deck-button-right"
+%hr/
+%div
+  %ul#one-card.list-group
+    %li.list-group-item
+      %b.text-info
+        = I18n.t("activerecord.attributes.card.image")
+        \:
+      \
+      - if @card.image.url.present?
+        = image_tag @card.image.url
+      - else
+        \...
+    %li.list-group-item
+      %b.text-info
+        = I18n.t("activerecord.attributes.card.original_text")
+        \:
+      \  #{get_text(@card, :original_text)}
+    %li.list-group-item
+      %b.text-info
+        = I18n.t("activerecord.attributes.card.translated_text")
+        \:
+      \  #{get_text(@card, :translated_text)}
+    %li.list-group-item
+      %b.text-info
+        = I18n.t("activerecord.attributes.card.review_date")
+        \:
+      \  #{get_text(@card, :review_date )}
+  = link_to I18n.t("buttons.edit"),
+    edit_deck_card_path(@card.deck,@card),
+    class: "btn btn-primary btn-lg"
+  -#
+  = link_to I18n.t("buttons.delete"),
+    deck_card_path(@card.deck,@card),
+    method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-lg"
+  -#
+  = link_to I18n.t("buttons.cancel"),
+    deck_path(@card.deck),
+    class: "btn btn-default btn-lg"

@@ -33,6 +33,7 @@ ru:
               blank: "Поле 'Перевод' не может быть пустым!"
             deck_id:
               blank: "Карта не привязана к колоде! (deck_id.blank)"
+          not_found: "Карта не найдена!"
         user:
           attributes:
             email:
@@ -52,6 +53,7 @@ ru:
               blank: "Поле 'Название' не может быть пустым!"
             user_id:
               blank: "Колода не привязана к пользователю! (user_id.blank)"
+          not_found: "Колода не найдена!"
   errors:
     messages:
       extension_white_list_error: "Неправильный формат загружаемого файла!"
@@ -87,6 +89,7 @@ ru:
     show_profile: "Показать профиль"
     activate: "Сделать текущей"
     deactivate: "Сделать нетекущей"
+    go_to_decks: "Перейти к колодам"
   flashes:
     oauth:
       login:

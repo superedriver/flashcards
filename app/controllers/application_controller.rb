@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
       @card = @deck.cards.find_by(id: params[:id])
 
       unless @card
-        render text: "Card not found", status: 404
+        render text: I18n.t("activerecord.errors.models.card.not_found"), status: 404
       end
     end
 end

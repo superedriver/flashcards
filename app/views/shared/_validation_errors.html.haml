@@ -1,0 +1,11 @@
+- if object.errors.any?
+  .panel.panel-danger
+    .panel-heading
+      %h3.panel-title
+        = I18n.t("views.shared.validation_errs")
+        \:
+    .panel-body
+      %ul
+        - object.errors.messages.each do | key, message |
+          - message.each do | err_message |
+            %li= err_message
