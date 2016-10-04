@@ -28,7 +28,7 @@ describe "SuperMemo2 service" do
           SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мяч")
           expect(card[:current_step]).to eq(1)
           expect(card[:e_factor]).to eq(2.6)
-          expect(card[:review_date]).to eq(Time.now + 1.day)
+          expect(card[:review_date]).to eq(1.day.from_now)
         end
 
         it "the second attempt" do
@@ -36,7 +36,7 @@ describe "SuperMemo2 service" do
           2.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мяч") }
           expect(card[:current_step]).to eq(2)
           expect(card[:e_factor]).to eq(2.7)
-          expect(card[:review_date]).to eq(Time.now + 6.day)
+          expect(card[:review_date]).to eq(6.day.from_now)
         end
 
         it "the third attempt" do
@@ -44,8 +44,7 @@ describe "SuperMemo2 service" do
           3.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мяч") }
           expect(card[:current_step]).to eq(3)
           expect(card[:e_factor]).to eq(2.8)
-          # because the difference is 10^(-6) seconds
-          expect(card[:review_date].to_i).to eq((Time.now + (16.8).days).to_i)
+          expect(card[:review_date].to_i).to eq(((16.8).days.from_now).to_i)
         end
 
         it "the fourth attempt" do
@@ -53,7 +52,7 @@ describe "SuperMemo2 service" do
           4.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мяч") }
           expect(card[:current_step]).to eq(4)
           expect(card[:e_factor]).to eq(2.9)
-          expect(card[:review_date].to_i).to eq((Time.now + (48.72).days).to_i)
+          expect(card[:review_date].to_i).to eq(((48.72).days.from_now).to_i)
         end
       end
 
@@ -67,7 +66,7 @@ describe "SuperMemo2 service" do
           SuperMemo2.new(card, @HESITATION).check_translation("мяч")
           expect(card[:current_step]).to eq(1)
           expect(card[:e_factor]).to eq(2.5)
-          expect(card[:review_date]).to eq(Time.now + 1.day)
+          expect(card[:review_date]).to eq(1.day.from_now)
         end
 
         it "the second attempt" do
@@ -75,7 +74,7 @@ describe "SuperMemo2 service" do
           2.times{ SuperMemo2.new(card, @HESITATION).check_translation("мяч") }
           expect(card[:current_step]).to eq(2)
           expect(card[:e_factor]).to eq(2.5)
-          expect(card[:review_date]).to eq(Time.now + 6.day)
+          expect(card[:review_date]).to eq(6.day.from_now)
         end
 
         it "the third attempt" do
@@ -83,7 +82,7 @@ describe "SuperMemo2 service" do
           3.times{ SuperMemo2.new(card, @HESITATION).check_translation("мяч") }
           expect(card[:current_step]).to eq(3)
           expect(card[:e_factor]).to eq(2.5)
-          expect(card[:review_date].to_i).to eq((Time.now + 15.days).to_i)
+          expect(card[:review_date].to_i).to eq((15.days.from_now).to_i)
         end
 
         it "the fourth attempt" do
@@ -91,7 +90,7 @@ describe "SuperMemo2 service" do
           4.times{ SuperMemo2.new(card, @HESITATION).check_translation("мяч") }
           expect(card[:current_step]).to eq(4)
           expect(card[:e_factor]).to eq(2.5)
-          expect(card[:review_date].to_i).to eq((Time.now + (37.5).days).to_i)
+          expect(card[:review_date].to_i).to eq(((37.5).days.from_now).to_i)
         end
       end
 
@@ -105,7 +104,7 @@ describe "SuperMemo2 service" do
           SuperMemo2.new(card, @DIFFICULTY).check_translation("мяч")
           expect(card[:current_step]).to eq(1)
           expect(card[:e_factor]).to eq(2.36)
-          expect(card[:review_date]).to eq(Time.now + 1.day)
+          expect(card[:review_date]).to eq(1.day.from_now)
         end
 
         it "the second attempt" do
@@ -113,7 +112,7 @@ describe "SuperMemo2 service" do
           2.times{ SuperMemo2.new(card, @DIFFICULTY).check_translation("мяч") }
           expect(card[:current_step]).to eq(2)
           expect(card[:e_factor]).to eq(2.22)
-          expect(card[:review_date]).to eq(Time.now + 6.day)
+          expect(card[:review_date]).to eq(6.day.from_now)
         end
 
         it "the third attempt" do
@@ -121,7 +120,7 @@ describe "SuperMemo2 service" do
           3.times{ SuperMemo2.new(card, @DIFFICULTY).check_translation("мяч") }
           expect(card[:current_step]).to eq(3)
           expect(card[:e_factor]).to eq(2.08)
-          expect(card[:review_date].to_i).to eq((Time.now + (12.48).days).to_i)
+          expect(card[:review_date].to_i).to eq(((12.48).days.from_now).to_i)
         end
 
         it "the fourth attempt" do
@@ -129,7 +128,7 @@ describe "SuperMemo2 service" do
           4.times{ SuperMemo2.new(card, @DIFFICULTY).check_translation("мяч") }
           expect(card[:current_step]).to eq(4)
           expect(card[:e_factor]).to eq(1.94)
-          expect(card[:review_date].to_i).to eq((Time.now + (24.2112).days).to_i)
+          expect(card[:review_date].to_i).to eq(((24.2112).days.from_now).to_i)
         end
       end
     end
@@ -154,7 +153,7 @@ describe "SuperMemo2 service" do
         SuperMemo2.new(card, 0).check_translation("мяф")
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(2.18)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
 
       it "the second attempt" do
@@ -162,7 +161,7 @@ describe "SuperMemo2 service" do
         2.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мяф") }
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(1.86)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
 
       it "the third attempt" do
@@ -170,7 +169,7 @@ describe "SuperMemo2 service" do
         3.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мяф") }
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(1.54)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
 
       it "the fourth attempt" do
@@ -178,7 +177,7 @@ describe "SuperMemo2 service" do
         4.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мяф") }
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(1.3)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
 
       it "the fifth attempt" do
@@ -186,7 +185,7 @@ describe "SuperMemo2 service" do
         5.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мяф") }
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(1.3)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
     end
 
@@ -207,7 +206,7 @@ describe "SuperMemo2 service" do
         SuperMemo2.new(card, 0).check_translation("мя")
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(1.96)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
 
       it "the second attempt" do
@@ -215,7 +214,7 @@ describe "SuperMemo2 service" do
         2.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мя") }
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(1.42)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
 
       it "the third attempt" do
@@ -223,7 +222,7 @@ describe "SuperMemo2 service" do
         3.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мя") }
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(1.3)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
 
       it "the fourth attempt" do
@@ -231,7 +230,7 @@ describe "SuperMemo2 service" do
         4.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("мя") }
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(1.3)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
     end
 
@@ -252,7 +251,7 @@ describe "SuperMemo2 service" do
         SuperMemo2.new(card, 0).check_translation("м")
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(1.7)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
 
       it "the second attempt" do
@@ -260,7 +259,7 @@ describe "SuperMemo2 service" do
         2.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("м") }
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(1.3)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
 
       it "the third attempt" do
@@ -268,7 +267,7 @@ describe "SuperMemo2 service" do
         3.times{ SuperMemo2.new(card, @BEFORE_HESITATION).check_translation("м") }
         expect(card[:current_step]).to eq(1)
         expect(card[:e_factor]).to eq(1.3)
-        expect(card[:review_date]).to eq(Time.now + 1.day)
+        expect(card[:review_date]).to eq(1.day.from_now)
       end
     end
   end
