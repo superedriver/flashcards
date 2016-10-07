@@ -16,11 +16,12 @@
         .h1.word_for_translate.text-info
           = card.translated_text.upcase
         .form-group
-          %label.col-lg-2.control-label{:for => "original_text"}
+          %label.col-lg-2.control-label{ for: "original_text" }
             = I18n.t("activerecord.attributes.card.translated_text")
             \:
           .col-lg-10
-            = f.input :original_text, hint: false, label: false, error:false, input_html: {class: 'form-control', id: 'original_text',  value: ""}
+            = f.input :original_text, hint: false, label: false, error:false,
+            input_html: {class: 'form-control', id: 'original_text',  value: ""}
         .form-group
           .col-lg-10.col-lg-offset-2
             = f.submit I18n.t('buttons.check'), class: "btn btn-primary"
