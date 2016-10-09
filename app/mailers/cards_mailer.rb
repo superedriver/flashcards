@@ -3,6 +3,6 @@ class CardsMailer < ApplicationMailer
 
   def pending_cards(user)
     @user = user
-    mail(to: @user.email, subject: "Hi! You have active cards.")
+    mail to: @user.email, subject: "Hi! You have active cards."
   end
 end

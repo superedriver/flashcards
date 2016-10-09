@@ -49,19 +49,8 @@
             %p
               %b User_email:
               = current_user.email
-        - if flash[:success]
-          .h2.word_for_translate.text-success
-            %p
-              %b
-                = flash[:success]
-        - elsif flash[:error]
-          .h2.word_for_translate.text-danger
-            %p
-              %b= flash[:error]
-        - elsif flash[:notice]
-          .h2.word_for_translate.text-info
-            %p
-              %b= flash[:notice]
+        #flasher
+          = render 'shared/flasher'
         = yield
         - unless current_user.present?
           .flags

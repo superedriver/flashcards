@@ -41,7 +41,9 @@ Rails.application.configure do
 
 
   # MAIL
-  config.action_mailer.delivery_method = :letter_opener
+  # to use Letter Opener
+  # config.action_mailer.delivery_method = :letter_opener
+
   # # to use GMAIL comment above line and uncomment
   # config.action_mailer.delivery_method = :smtp
   # # SMTP settings for gmail
@@ -53,4 +55,15 @@ Rails.application.configure do
   #    authentication:       "plain",
   #    enable_starttls_auto: true
   # }
+
+  # Mailgun
+  config.action_mailer.smtp_settings = {
+    port:            587,
+    address:         "smtp.mailgun.org",
+    user_name:       ENV["MAILGUN_USERNAME"],
+    password:        ENV["MAILGUN_PASSWORD"],
+    domain:          ENV["MAILGUN_DOMAIN"],
+    authentication:  :plain
+  }
+  config.action_mailer.delivery_method = :smtp
 end

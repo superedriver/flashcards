@@ -271,6 +271,7 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    newrelic_rpm (3.16.3.323)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
@@ -328,6 +329,8 @@ GEM
       trollop
     rdoc (4.2.2)
       json (~> 1.4)
+    rollbar (2.13.2)
+      multi_json
     rspec-core (3.4.4)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
@@ -423,11 +426,13 @@ DEPENDENCIES
   letter_opener
   levenshtein-ffi (~> 1.1)
   mini_magick (~> 4.4)
+  newrelic_rpm
   nokogiri (~> 1.6.6)
   pg (~> 0.18.4)
   pry-rails (~> 0.3.4)
   rails (= 4.2.6)
   rails_12factor
+  rollbar
   rspec-rails (~> 3.4.2)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

@@ -1,0 +1,27 @@
+- if card.present?
+  %h1
+    = I18n.t("views.home.index.enter_translation")
+    \:
+  .well.bs-component
+    = simple_form_for [card.deck, card], remote: true, html: {class: "form-horizontal", id: "check-form"},
+      url: check_card_path(card.deck, card) do |f|
+      %fieldset
+        = hidden_field_tag(:quality_response, 0)
+        .h1.word_for_translate.text-info
+          = card.translated_text.upcase
+        .form-group
+          %label.col-lg-2.control-label{ for: "original_text" }
+            = I18n.t("activerecord.attributes.card.translated_text")
+            \:
+          .col-lg-10
+            = f.input :original_text, hint: false, label: false, error:false,
+            input_html: {class: 'form-control', id: 'original_text',  value: ""}
+        .form-group
+          .col-lg-10.col-lg-offset-2
+            = f.submit I18n.t('buttons.check'), class: "btn btn-primary"
+- else
+  .well.bs-component
+    %fieldset
+      .h1.word_for_translate.text-info
+        = I18n.t("views.home.index.no_words")
+        \!

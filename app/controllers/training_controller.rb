@@ -7,6 +7,10 @@ class TrainingController < ApplicationController
     else
       flash[:error]  = result.message
     end
-    redirect_to root_path
+
+    respond_to do |format|
+      format.html { redirect_to root_path }
+      format.js
+    end
   end
 end
