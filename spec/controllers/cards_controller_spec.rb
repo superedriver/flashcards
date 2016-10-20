@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe CardsController, type: :controller do
+RSpec.describe Dashboard::CardsController, type: :controller do
   def self.redirects_to_login_path_when_not_authorized(*actions)
     actions.each do |action|
       it "#{action} returns 401 when not authorized" do

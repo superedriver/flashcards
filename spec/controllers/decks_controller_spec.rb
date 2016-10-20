@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe DecksController, type: :controller do
+RSpec.describe Dashboard::DecksController, type: :controller do
 
   def self.redirects_to_login_path_when_not_authorized(*actions)
     actions.each do |action|

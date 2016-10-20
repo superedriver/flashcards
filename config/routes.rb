@@ -1,29 +1,52 @@
 Rails.application.routes.draw do
 
-  root "home#index"
+  root 'dashboard/home#index'
 
-  resources :decks do
-    resources :cards
+  scope module: 'home' do
+    resources :registrations, only: [:new, :create]
+    get "/sign_up", to: "registrations#new", as: :sign_up
+
+    resources :sessions
+
+    get "/login", to: "sessions#new", as: :login
+    post "/logout", to: "sessions#destroy", as: :logout
+
+    post "oauth/callback" => "oauths#callback"
+    get "oauth/callback" => "oauths#callback" # for use with Github, Facebook
+    get "oauth/:provider" => "oauths#oauth", as: :auth_at_provider
   end
 
-  get "/decks/:id/activate" => "decks#activate", as: :activate_deck
-  get "/decks/:id/deactivate" => "decks#deactivate", as: :deactivate_deck
+  scope module: 'dashboard' do
+    resources :decks do
+      resources :cards
+    end
 
-  patch "/decks/:deck_id/cards/:id/check" => "training#check", as: :check_card
+    get "/decks/:id/activate" => "decks#activate", as: :activate_deck
+    get "/decks/:id/deactivate" => "decks#deactivate", as: :deactivate_deck
 
-  get "/change_locale" => "home#change_locale", as: :change_locale
+    patch "/decks/:deck_id/cards/:id/check" => "training#check", as: :check_card
 
-  resources :registrations, only: [:new, :create]
-  get "/sign_up", to: "registrations#new", as: :sign_up
+    get "/change_locale" => "home#change_locale", as: :change_locale
 
-  resource :users, only: [:show, :edit, :update]
+    resource :users, only: [:show, :edit, :update]
+  end
 
-  resources :sessions
-  get "/login", to: "sessions#new", as: :login
-  post "/logout", to: "sessions#destroy", as: :logout
 
-  post "oauth/callback" => "oauths#callback"
-  get "oauth/callback" => "oauths#callback" # for use with Github, Facebook
-  get "oauth/:provider" => "oauths#oauth", as: :auth_at_provider
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 end
