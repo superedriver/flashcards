@@ -22,9 +22,9 @@ module Dashboard
       @card = @deck.cards.new(card_params)
       if @card.save
         redirect_to deck_card_path(@card.deck, @card),
-                    flash: { success: I18n.t('flashes.cards.success.created') }
+                    flash: { success: t('flashes.cards.success.created') }
       else
-        render "new"
+        render 'new'
       end
     end
 
@@ -36,16 +36,16 @@ module Dashboard
     # PUT /decks/:deck_id/cards/:id/edit
     def update
       if @card.update(card_params)
-        redirect_to deck_card_path(@card.deck, @card),  flash: { success: I18n.t('flashes.cards.success.updated') }
+        redirect_to deck_card_path(@card.deck, @card),  flash: { success: t('flashes.cards.success.updated') }
       else
-        render "edit"
+        render 'edit'
       end
     end
 
     # DELETE /decks/:deck_id/cards/:id
     def destroy
       @card.destroy
-      redirect_to deck_path(@deck), flash: { success: I18n.t('flashes.cards.success.deleted') }
+      redirect_to deck_path(@deck), flash: { success: t('flashes.cards.success.deleted') }
     end
 
     private
@@ -63,9 +63,9 @@ module Dashboard
       end
 
       def find_deck
-        @deck = Deck.find_by(id: params["deck_id"])
+        @deck = Deck.find_by(id: params['deck_id'])
         unless @deck
-          render text: "Deck not found", status: 404
+          render text: t('activerecord.errors.models.deck.not_found'), status: 404
         end
       end
   end

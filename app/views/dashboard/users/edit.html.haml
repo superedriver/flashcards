@@ -1,13 +1,13 @@
 %h1
-  = I18n.t("views.users.edit")
+  = t('views.users.edit')
   \:
 .well.bs-component
-  = simple_form_for @user, html: {class: "form-horizontal"},
+  = simple_form_for @user, html: {class: 'form-horizontal'},
     url: users_path  do |f|
     = render partial: 'shared/validation_errors', locals: { object: @user }
     %fieldset
       = f.input :email, required: true
       = f.input :password, required: true
       = f.input :locale, :collection => [ %w(English en), %w(Русский ru), %w(Українська ua) ]
-      = f.submit I18n.t("buttons.save"), class: "btn btn-primary"
-      = link_to I18n.t("buttons.cancel"), root_path, class: "btn btn-default"
+      = f.submit t('buttons.save'), class: 'btn btn-primary'
+      = link_to t('buttons.cancel'), root_path, class: 'btn btn-default'

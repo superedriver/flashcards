@@ -1,18 +1,18 @@
 %h1
-  = I18n.t("views.cards.edit")
+  = t('views.cards.edit')
   \:
 .well.bs-component
   = simple_form_for [@deck,@card], as: :card,
-    html: {class: "form-horizontal"} do |f|
+    html: {class: 'form-horizontal'} do |f|
     = render partial: 'shared/validation_errors', locals: { object: @card }
     %fieldset
       = render partial: 'form', locals: { f: f }
       - if f.object.image?
-        = image_tag(f.object.image.url, :class => "card-image")
+        = image_tag(f.object.image.url, class: 'card-image')
         %br/
         = f.label :remove_image
         = f.check_box :remove_image
         %br/
-      = f.submit I18n.t("buttons.edit"), class: "btn btn-primary"
-      = link_to I18n.t("buttons.delete"), deck_card_path(@card.deck, @card), method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger"
-      = link_to I18n.t("buttons.cancel"), deck_cards_path, class: "btn btn-default"
+      = f.submit t('buttons.edit'), class: 'btn btn-primary'
+      = link_to t('buttons.delete'), deck_card_path(@card.deck, @card), method: :delete, data: { confirm: t('confirm.delete_card') }, class: 'btn btn-danger'
+      = link_to t('buttons.cancel'), deck_cards_path, class: 'btn btn-default'

@@ -1,6 +1,6 @@
 module DecksHelper
   def get_active_button(deck)
-    deck.current ? I18n.t("buttons.deactivate") : I18n.t("buttons.activate")
+    deck.current ? t("buttons.deactivate") : t("buttons.activate")
   end
 
   def get_active_class(deck)

@@ -2,10 +2,10 @@
   %thead
     %tr
       %th №
-      %th= I18n.t("activerecord.attributes.card.image")
-      %th= I18n.t("activerecord.attributes.card.original_text")
-      %th= I18n.t("activerecord.attributes.card.translated_text")
-      %th= I18n.t("activerecord.attributes.card.review_date")
+      %th= t('activerecord.attributes.card.image')
+      %th= t('activerecord.attributes.card.original_text')
+      %th= t('activerecord.attributes.card.translated_text')
+      %th= t('activerecord.attributes.card.review_date')
       %th Действия
   %tbody#cards
     - @cards.each.with_index(1) do |card, index|
@@ -20,6 +20,6 @@
         %td= get_text(card, :translated_text)
         %td= get_text(card, :review_date)
         %td
-          = link_to I18n.t("buttons.view"), deck_card_path(card.deck, card), class: "btn btn-default btn-sm"
-          = link_to I18n.t("buttons.edit"), edit_deck_card_path(card.deck, card), class: "btn btn-primary btn-sm"
-          = link_to I18n.t("buttons.delete"), deck_card_path(card.deck, card), method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-sm"
+          = link_to t('buttons.view'), deck_card_path(card.deck, card), class: 'btn btn-default btn-sm'
+          = link_to t('buttons.edit'), edit_deck_card_path(card.deck, card), class: 'btn btn-primary btn-sm'
+          = link_to t('buttons.delete'), deck_card_path(card.deck, card), method: :delete, data: { confirm: t('confirm.delete_card') }, class: 'btn btn-danger btn-sm'

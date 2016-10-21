@@ -2,9 +2,9 @@
   %thead
     %tr
       %th №
-      %th= I18n.t("activerecord.attributes.deck.name")
-      %th= I18n.t("views.decks.index.words")
-      %th= I18n.t("views.decks.index.actions")
+      %th= t('activerecord.attributes.deck.name')
+      %th= t('views.decks.index.words')
+      %th= t('views.decks.index.actions')
   %tbody#cards
     - @decks.each.with_index(1) do |deck, index|
       %tr
@@ -12,20 +12,20 @@
         %td= deck.name
         %td= deck.cards.count
         %td
-          = link_to I18n.t("buttons.view"),
+          = link_to t('buttons.view'),
             deck_path(deck),
-            class: "btn btn-default btn-sm"
-          = link_to I18n.t("buttons.edit"),
+            class: 'btn btn-default btn-sm'
+          = link_to t('buttons.edit'),
             edit_deck_path(deck),
-            class: "btn btn-primary btn-sm"
-          = link_to I18n.t("buttons.delete"),
+            class: 'btn btn-primary btn-sm'
+          = link_to t('buttons.delete'),
             deck,
             method: :delete,
-            data: { confirm: I18n.t("confirm.delete_card") },
-            class: "btn btn-danger btn-sm"
+            data: { confirm: t('confirm.delete_card') },
+            class: 'btn btn-danger btn-sm'
           = link_to get_active_button(deck),
             get_active_url(deck),
             class: get_active_class(deck)
-          = link_to I18n.t("buttons.add_card"),
+          = link_to t('buttons.add_card'),
             new_deck_card_path(deck),
-            class: "btn btn-info btn-sm deck-button-right"
+            class: 'btn btn-info btn-sm deck-button-right'

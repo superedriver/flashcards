@@ -1,16 +1,16 @@
 .clear-both
   %h1.left-side
-    = I18n.t("views.cards.show")
+    = t('views.cards.show')
     \:
-  = link_to I18n.t("buttons.show_deck"),
+  = link_to t('buttons.show_deck'),
     deck_path(@card.deck),
-    class: "btn btn-default btn-lg deck-button-right"
+    class: 'btn btn-default btn-lg deck-button-right'
 %hr/
 %div
   %ul#one-card.list-group
     %li.list-group-item
       %b.text-info
-        = I18n.t("activerecord.attributes.card.image")
+        = t('activerecord.attributes.card.image')
         \:
       \
       - if @card.image.url.present?
@@ -19,27 +19,27 @@
         \...
     %li.list-group-item
       %b.text-info
-        = I18n.t("activerecord.attributes.card.original_text")
+        = t('activerecord.attributes.card.original_text')
         \:
       \  #{get_text(@card, :original_text)}
     %li.list-group-item
       %b.text-info
-        = I18n.t("activerecord.attributes.card.translated_text")
+        = t('activerecord.attributes.card.translated_text')
         \:
       \  #{get_text(@card, :translated_text)}
     %li.list-group-item
       %b.text-info
-        = I18n.t("activerecord.attributes.card.review_date")
+        = t('activerecord.attributes.card.review_date')
         \:
       \  #{get_text(@card, :review_date )}
-  = link_to I18n.t("buttons.edit"),
+  = link_to t('buttons.edit'),
     edit_deck_card_path(@card.deck,@card),
-    class: "btn btn-primary btn-lg"
+    class: 'btn btn-primary btn-lg'
   -#
-  = link_to I18n.t("buttons.delete"),
+  = link_to t('buttons.delete'),
     deck_card_path(@card.deck,@card),
-    method: :delete, data: { confirm: I18n.t("confirm.delete_card") }, class: "btn btn-danger btn-lg"
+    method: :delete, data: { confirm: t('confirm.delete_card') }, class: 'btn btn-danger btn-lg'
   -#
-  = link_to I18n.t("buttons.cancel"),
+  = link_to t('buttons.cancel'),
     deck_path(@card.deck),
-    class: "btn btn-default btn-lg"
+    class: 'btn btn-default btn-lg'

@@ -12,13 +12,13 @@
           %br/
           = password_field_tag :password
         .form-group
-          = submit_tag I18n.t("buttons.login") , class: 'btn btn-primary btn-lg'
+          = submit_tag t('buttons.login') , class: 'btn btn-primary btn-lg'
 - else
   %h1
-    = I18n.t("views.sessions.already_logged")
+    = t('views.sessions.already_logged')
     \!
   %h2
     ID: #{current_user.id}
   %h2
     email: #{current_user.email}
-  = link_to I18n.t("buttons.logout"), logout_path, method: :post , class: "btn btn-primary btn-lg"
+  = link_to t('buttons.logout'), logout_path, method: :post , class: 'btn btn-primary btn-lg'

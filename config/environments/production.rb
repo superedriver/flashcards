@@ -22,7 +22,7 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.serve_static_files = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -81,21 +81,21 @@ Rails.application.configure do
   # config.action_mailer.delivery_method = :smtp
   # # SMTP settings for gmail
   # config.action_mailer.smtp_settings = {
-  #     address:              "smtp.gmail.com",
+  #     address:              'smtp.gmail.com',
   #     port:                 587,
   #     user_name:            ENV['GMAIL_USERNAME'],
   #     password:             ENV['GMAIL_PASSWORD'],
-  #     authentication:       "plain",
+  #     authentication:       'plain',
   #     enable_starttls_auto: true
   # }
 
   # Mailgun
   config.action_mailer.smtp_settings = {
       port:            587,
-      address:         "smtp.mailgun.org",
-      user_name:       ENV["MAILGUN_USERNAME"],
-      password:        ENV["MAILGUN_PASSWORD"],
-      domain:          ENV["MAILGUN_DOMAIN"],
+      address:         'smtp.mailgun.org',
+      user_name:       ENV['MAILGUN_USERNAME'],
+      password:        ENV['MAILGUN_PASSWORD'],
+      domain:          ENV['MAILGUN_DOMAIN'],
       authentication:  :plain
   }
   config.action_mailer.delivery_method = :smtp

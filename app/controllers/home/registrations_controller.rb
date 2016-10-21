@@ -1,7 +1,5 @@
 module Home
   class RegistrationsController < MainController
-    skip_before_action :require_login, only: [:new, :create]
-
     def new
       @user = User.new
     end
@@ -11,7 +9,7 @@ module Home
       @user = User.new(user_params.merge(locale: locale))
       if @user.save
         login(params[:user][:email].downcase, params[:user][:password])
-        redirect_to root_path, flash: { success: I18n.t("flashes.registration.success") }
+        redirect_to root_path, flash: { success: t('flashes.registration.success') }
       else
         render 'new'
       end

@@ -10,9 +10,9 @@ module Dashboard
 
     def update
       if @user.update(user_params)
-        redirect_to users_path,  flash: { success: I18n.t("flashes.users.success.updated") }
+        redirect_to users_path,  flash: { success: t('flashes.users.success.updated') }
       else
-        render "edit"
+        render 'edit'
       end
     end
 

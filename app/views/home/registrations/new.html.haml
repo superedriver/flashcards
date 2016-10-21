@@ -1,5 +1,5 @@
 %h1
-  = I18n.t("views.registrations.new")
+  = t('views.registrations.new')
   \:
 .well.bs-component
   = simple_form_for @user, url: registrations_path do |f|
@@ -8,4 +8,4 @@
       = f.input :email, class: 'form-group', required: true
       = f.input :password, class: 'form-group', required: true
       = f.input :password_confirmation, class: 'form-group', required: true
-      = f.submit I18n.t("buttons.registration"), class: 'btn btn-primary btn-lg'
+      = f.submit t('buttons.registration'), class: 'btn btn-primary btn-lg'

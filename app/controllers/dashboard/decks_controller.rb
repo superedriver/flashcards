@@ -17,9 +17,9 @@ module Dashboard
       @deck = current_user.decks.new(deck_params)
       if @deck.save
         redirect_to deck_path(@deck),
-                    flash: { success: I18n.t('flashes.decks.success.created') }
+          flash: { success: t('flashes.decks.success.created') }
       else
-        render "new"
+        render 'new'
       end
     end
 
@@ -35,9 +35,9 @@ module Dashboard
     def update
       if @deck.update(deck_params)
         redirect_to decks_path,
-                    flash: { success: I18n.t('flashes.decks.success.updated') }
+          flash: { success: t('flashes.decks.success.updated') }
       else
-        render "edit"
+        render 'edit'
       end
     end
 
@@ -45,21 +45,21 @@ module Dashboard
     def destroy
       @deck.destroy
       redirect_to decks_path,
-                  flash: { success: I18n.t('flashes.decks.success.deleted') }
+        flash: { success: t('flashes.decks.success.deleted') }
     end
 
     # GET /decks/:id/activate
     def activate
       @deck.set_current!
       redirect_to decks_path,
-                  flash: { success: I18n.t('flashes.decks.success.activated') }
+        flash: { success: t('flashes.decks.success.activated') }
     end
 
     # GET /decks/:id/deactivate
     def deactivate
       @deck.set_not_current!
       redirect_to decks_path,
-                  flash: { success: I18n.t('flashes.decks.success.deactivated') }
+        flash: { success: t('flashes.decks.success.deactivated') }
     end
 
     private
@@ -70,7 +70,7 @@ module Dashboard
       def find_deck
         @deck = current_user.decks.find_by(id: params[:id])
         unless @deck
-          render text: I18n.t("activerecord.errors.models.deck.not_found"), status: 404
+          render plain: t('activerecord.errors.models.deck.not_found'), status: 404
         end
       end
   end

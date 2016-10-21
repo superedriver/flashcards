@@ -1,4 +1,4 @@
-require "levenshtein"
+require 'levenshtein'
 
 class SuperMemo2
 # This class implement a _SuperMemo2_ algorithm.
@@ -72,7 +72,7 @@ class SuperMemo2
         quality = 5 if @quality_response < HESITATION_START
         quality = 4 if @quality_response >= HESITATION_START && @quality_response <= DIFFICULTY_START
         update_card(quality)
-        Result.new(:ok, I18n.t("compare_result.right"))
+        Result.new(:ok, I18n.t('compare_result.right'))
       when 1
         # misprint_case
         # 2 - incorrect response; where the correct one seemed easy to recall
@@ -81,7 +81,7 @@ class SuperMemo2
         Result.new(
           :error,
           I18n.t(
-            "compare_result.misprint",
+            'compare_result.misprint',
             correct_text: @card[:original_text].mb_chars.upcase,
             users_text: inputed_text.mb_chars.upcase
           )
@@ -133,7 +133,7 @@ class SuperMemo2
     update_card(quality)
     Result.new(
       :error,
-      I18n.t("compare_result.not_right",
+      I18n.t('compare_result.not_right',
              text: @card[:original_text].mb_chars.upcase)
     )
   end

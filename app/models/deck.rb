@@ -1,10 +1,10 @@
-class Deck < ActiveRecord::Base
+class Deck < ApplicationRecord
   has_many :cards, dependent: :destroy
   belongs_to :user
 
   validates :name, :user_id, presence: true
 
-  scope :actual_deck, -> { where("current = ?", true) }
+  scope :actual_deck, -> { where('current = ?', true) }
 
   def set_not_current!
     update_column(:current, false)

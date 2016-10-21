@@ -1,28 +1,28 @@
 ua:
   date:
     formats:
-      default: "%d-%m-%Y"
+      default: '%d-%m-%Y'
   time:
     formats:
-      default: "%d-%m-%Y %H:%M:%S"
+      default: '%d-%m-%Y %H:%M:%S'
   activerecord:
     models:
-      card: "Карта"
-      user: "Користувач"
+      card: 'Карта'
+      user: 'Користувач'
     attributes:
       card:
-        original_text: "Текст"
-        translated_text: "Переклад"
-        review_date: "Дата перегляду"
-        image: "Зображення"
-        remove_image: "Видалити зображення"
+        original_text: 'Текст'
+        translated_text: 'Переклад'
+        review_date: 'Дата перегляду'
+        image: 'Зображення'
+        remove_image: 'Видалити зображення'
       user:
-        email: "Email"
-        password: "Пароль"
-        password_confirmation: "Підтвердження пароля"
-        language: "Мова"
+        email: 'Email'
+        password: 'Пароль'
+        password_confirmation: 'Підтвердження пароля'
+        language: 'Мова'
       deck:
-        name: "Назва"
+        name: 'Назва'
     errors:
       models:
         card:
@@ -33,119 +33,119 @@ ua:
               blank: "Поле 'Переклад' не може бути порожнім!"
             deck_id:
               blank: "Карта не прив'язана до колоди! (deck_id.blank)"
-          not_found: "Карту не знайдено!"
+          not_found: 'Карту не знайдено!'
         user:
           attributes:
             email:
-              invalid: "Невірний формат email!"
+              invalid: 'Невірний формат email!'
               blank: "Поле 'Email' не заповнене!"
-              taken: "Користувач з таким email вже існує!"
+              taken: 'Користувач з таким email вже існує!'
             password:
-              too_short: "Пароль повинен бути більше 2-х символів!"
+              too_short: 'Пароль повинен бути більше 2-х символів!'
             password_confirmation:
-              confirmation: "Паролі не співпадають!"
-              blank: "Підтвердіть пароль!"
+              confirmation: 'Паролі не співпадають!'
+              blank: 'Підтвердіть пароль!'
             locale:
-              inclusion: "Локаль не входить в перелік дозволених!"
+              inclusion: 'Локаль не входить в перелік дозволених!'
         deck:
           attributes:
             name:
-              blank: "Поле 'Назва' не може бути порожнім!"
+              blank: "Поле 'Назва' не може бути порожнім!?"
             user_id:
               blank: "Колода не прив'язана до користувача! (user_id.blank)"
-          not_found: "Колоду не знайдено!"
+          not_found: 'Колоду не знайдено!'
   errors:
     messages:
-      extension_white_list_error: "Неправильний формат файлу!"
-      empty_field: "Відсутнє!"
+      extension_white_list_error: 'Неправильний формат файлу!'
+      empty_field: 'Відсутнє!'
     validation:
       description:
-        the_same_value: "Одинаковые значения полів!"
+        the_same_value: 'Одинаковые значения полів!'
       messages:
         the_same_value: "Поля 'Текст' та 'Переклад' не можуть бути однаковими!"
   confirm:
-    delete_card: "Точно видалити?"
+    delete_card: 'Точно видалити?'
   compare_result:
-    right: "Правильно!"
-    misprint: "Неправильно, %{correct_text}! Упс, Ви помилились: %{users_text}!"
-    not_right: "Неправильно, правильний переклад: %{text}!"
+    right: 'Правильно!'
+    misprint: 'Неправильно, %{correct_text}! Упс, Ви помилились: %{users_text}!'
+    not_right: 'Неправильно, правильний переклад: %{text}!'
   buttons:
-    check: "Перевірити"
-    sign_up: "Реєстрація"
-    all_decks: "Всі колоди"
-    add_deck: "Додати колоду"
-    show_deck: "Продивитись колоду"
-    all_cards: "Всі карточки"
-    add_card: "Додати карточку"
-    registration: "Зареєструватися"
-    save: "Зберегти"
-    cancel: "Відмінити"
-    edit: "Редагувати"
-    delete: "Видалити"
-    login: "Увійти"
-    logout: "Вийти"
-    view: "Продивитись"
-    edit_profile: "Редагувати профіль"
-    show_profile: "Показати профіль"
-    activate: "Зробити поточною"
-    deactivate: "Зробити непоточною"
-    go_to_decks: "Перейти до колод"
+    check: 'Перевірити'
+    sign_up: 'Реєстрація'
+    all_decks: 'Всі колоди'
+    add_deck: 'Додати колоду'
+    show_deck: 'Продивитись колоду'
+    all_cards: 'Всі карточки'
+    add_card: 'Додати карточку'
+    registration: 'Зареєструватися'
+    save: 'Зберегти'
+    cancel: 'Відмінити'
+    edit: 'Редагувати'
+    delete: 'Видалити'
+    login: 'Увійти'
+    logout: 'Вийти'
+    view: 'Продивитись'
+    edit_profile: 'Редагувати профіль'
+    show_profile: 'Показати профіль'
+    activate: 'Зробити поточною'
+    deactivate: 'Зробити непоточною'
+    go_to_decks: 'Перейти до колод'
   flashes:
     oauth:
       login:
-        success: "Ви увійшли, використовуючи %{provider}"
-        failed: "Помилка при вході в систему, використовуючи %{provider}"
-        already_logged: "Ви вже увійшли в систему, використовуючи %{provider}"
+        success: 'Ви увійшли, використовуючи %{provider}'
+        failed: 'Помилка при вході в систему, використовуючи %{provider}'
+        already_logged: 'Ви вже увійшли в систему, використовуючи %{provider}'
     login:
-      login_first: "Будь ласка, увійдіть в систему, або зареєструйтесь!"
-      success: "Раді бачити Вас знову!"
-      failed: "Неправильний логін або пароль!"
+      login_first: 'Будь ласка, увійдіть в систему, або зареєструйтесь!'
+      success: 'Раді бачити Вас знову!'
+      failed: 'Неправильний логін або пароль!'
     logout:
-      success: "Пока-пока!"
+      success: 'Пока-пока!'
     registration:
-      success: "Ласкаво просимо!"
+      success: 'Ласкаво просимо!'
     cards:
       success:
-        created: "Карта успішно створена!"
-        updated: "Карта успішно оновлена!"
-        deleted: "Карта успішно видалена!"
+        created: 'Карта успішно створена!'
+        updated: 'Карта успішно оновлена!'
+        deleted: 'Карта успішно видалена!'
     decks:
       success:
-        created: "Колода успішно створена!"
-        updated: "Колода успішно оновлена!"
-        deleted: "Колода успішно видалена!"
-        activated: "Колода стала поточною!"
-        deactivated: "Колода стала непоточною!"
+        created: 'Колода успішно створена!'
+        updated: 'Колода успішно оновлена!'
+        deleted: 'Колода успішно видалена!'
+        activated: 'Колода стала поточною!'
+        deactivated: 'Колода стала непоточною!'
     users:
       success:
-        updated: "Профіль успішно оновлений!"
+        updated: 'Профіль успішно оновлений!'
   views:
     cards:
-      edit: "Редагування карти"
-      new: "Створення карти"
-      show: "Перегляд карти"
+      edit: 'Редагування карти'
+      new: 'Створення карти'
+      show: 'Перегляд карти'
     decks:
-      edit: "Редагування колоди"
-      new: "Створення колоди"
-      show: "Перегляд колоди"
+      edit: 'Редагування колоди'
+      new: 'Створення колоди'
+      show: 'Перегляд колоди'
       index:
-        words: "Cлова"
-        actions: "Дії"
+        words: 'Cлова'
+        actions: 'Дії'
     users:
-      edit: "Редагування профіля"
-      show: "Перегляд профіля"
+      edit: 'Редагування профіля'
+      show: 'Перегляд профіля'
     home:
       index:
-        enter_translation: "Введіть переклад слова"
-        no_words: "У Вас немає слів для вивчення"
+        enter_translation: 'Введіть переклад слова'
+        no_words: 'У Вас немає слів для вивчення'
     registrations:
-      new: "Реєстрація нового користувача"
+      new: 'Реєстрація нового користувача'
     sessions:
-      already_logged: "Ви вже увійшли в систему"
+      already_logged: 'Ви вже увійшли в систему'
     shared:
-      validation_errs: "При заповненні форми виникли такі помилки"
+      validation_errs: 'При заповненні форми виникли такі помилки'
     application:
-      decks: "Колоди"
-      profile: "Профіль"
-  description: "Менеджер флеш-карт. Найкращий спосіб вивчення іноземних слів."
-  language: "Українська"
+      decks: 'Колоди'
+      profile: 'Профіль'
+  description: 'Менеджер флеш-карт. Найкращий спосіб вивчення іноземних слів.'
+  language: 'Українська'
