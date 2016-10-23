@@ -1,5 +1,5 @@
 RSpec.shared_examples 'user is not authorized' do |verb, action|
-  it "#{action} returns 401 when user is not authorized" do
+  it "#{action} redirects to login path when user is not authorized" do
     card = create(:card)
 
     send(verb, action, params: {deck_id: card.deck.id, id: card.id})
