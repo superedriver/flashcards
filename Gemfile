@@ -21,10 +21,10 @@ group :development, :test do
   gem 'byebug', '~> 9.0', '>= 9.0.6'
   gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
   gem 'factory_girl_rails', '~> 4.7'
-  gem 'capybara', '~> 2.7.1', '>= 2.3.0'
+  gem 'capybara', '~> 2.10.0', '>= 2.10.0'
   gem 'database_cleaner', '~> 1.5', '>= 1.5.3'
-  gem 'capybara-webkit', '~> 1.11', '>= 1.11.1'
-  gem 'selenium-webdriver', '~> 3.0'
+  # gem 'capybara-webkit', '~> 1.11', '>= 1.11.1'
+  # gem 'selenium-webdriver', '~> 3.0'
   gem 'poltergeist', '~> 1.10'
 end
 

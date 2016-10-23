@@ -1,28 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Dashboard::CardsController, type: :controller do
-  def self.redirects_to_login_path_when_not_authorized(*actions)
-    actions.each do |action|
-      it "#{action} returns 401 when not authorized" do
-        deck = create(:deck)
-        card = create(:card, deck_id: deck.id)
-        verb = if action == :update
-            'PATCH'
-          elsif action == :destroy
-            'DELETE'
-          elsif action == :create
-            'POST'
-          else
-            'GET'
-          end
-
-        process action, verb, deck_id: deck.id, id: card.id
-        expect(response).to have_http_status(302)
-        expect(response).to redirect_to(login_path)
-      end
-    end
+  describe 'user is not authorized' do
+    it_behaves_like 'user is not authorized', :get, :index
+    it_behaves_like 'user is not authorized', :get, :show
+    it_behaves_like 'user is not authorized', :get, :new
+    it_behaves_like 'user is not authorized', :get, :edit
+    it_behaves_like 'user is not authorized', :post, :create
+    it_behaves_like 'user is not authorized', :patch, :update
+    it_behaves_like 'user is not authorized', :delete, :destroy
   end
-  redirects_to_login_path_when_not_authorized :index, :show, :new, :edit, :update, :destroy, :create
 
   describe 'user is authorized' do
     before do
@@ -31,6 +18,8 @@ RSpec.describe Dashboard::CardsController, type: :controller do
     end
 
     describe 'GET #index' do
+
+
       it 'responds successfully with an HTTP 200 status code' do
         get :index, params: { deck_id: @deck.id }
         expect(response).to be_success
