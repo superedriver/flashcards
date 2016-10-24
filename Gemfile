@@ -23,8 +23,6 @@ group :development, :test do
   gem 'factory_girl_rails', '~> 4.7'
   gem 'capybara', '~> 2.10.0', '>= 2.10.0'
   gem 'database_cleaner', '~> 1.5', '>= 1.5.3'
-  # gem 'capybara-webkit', '~> 1.11', '>= 1.11.1'
-  # gem 'selenium-webdriver', '~> 3.0'
   gem 'poltergeist', '~> 1.10'
   gem 'phantomjs', '~> 2.1', '>= 2.1.1.0', require: 'phantomjs/poltergeist'
 end
@@ -34,7 +32,6 @@ gem 'sorcery', '~> 0.9.1'
 gem 'pry-rails', '~> 0.3.4'
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.7'
 
-# gem 'carrierwave', '~> 0.11.2'
 gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
 
 gem 'mini_magick', '~> 4.5', '>= 4.5.1'
