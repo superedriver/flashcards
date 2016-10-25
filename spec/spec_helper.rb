@@ -13,15 +13,15 @@ require 'email_spec/rspec'
 require 'capybara/poltergeist'
 Capybara.register_driver :poltergeist do |app|
   options = {
-      :js_errors => false ,
-      :debug => true,
-      :inspector => true,
-      :window_size => [1280, 1024],
-      :logger => false,
-      :visible => false,
+      # :js_errors => false ,
+      # :debug => true,
+      # :inspector => true,
+      # :window_size => [1280, 1024],
+      # :logger => false,
+      # :visible => false,
       :js => true,
-      :timeout => 10000,
-      :phantomjs_options => %w[--load-images=yes]
+      # :timeout => 10000,
+      # :phantomjs_options => %w[--load-images=yes]
 
   }
   Capybara::Poltergeist::Driver.new(app, options)

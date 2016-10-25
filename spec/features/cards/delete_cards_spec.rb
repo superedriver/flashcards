@@ -22,7 +22,7 @@ describe 'delete_cards', js: true, type: :feature do
 
   scenario 'from show_card_path' do
     visit deck_card_path(deck, card1)
-    accept_confirm I18n.t('confirm.delete_card') do
+    accept_confirm  do
       click_link I18n.t('buttons.delete')
     end
 
