@@ -31,13 +31,12 @@ gem 'sorcery', '~> 0.9.1'
 
 gem 'pry-rails', '~> 0.3.4'
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.7'
-
-gem 'carrierwave', github: 'carrierwaveuploader/carrierwave'
+gem 'fog-aws', '~> 0.12.0'
+gem 'fog', '~> 1.38'
+gem 'carrierwave', '>= 1.0.0.beta', '< 2.0'
 
 gem 'mini_magick', '~> 4.5', '>= 4.5.1'
 
-gem 'fog-aws', '~> 0.12.0'
-gem 'fog', '~> 1.38'
 gem 'figaro', '~> 1.1', '>= 1.1.1'
 
 gem 'rails_12factor', '~> 0.0.3', group: :production
