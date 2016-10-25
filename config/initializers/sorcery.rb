@@ -123,7 +123,7 @@ Rails.application.config.sorcery.configure do |config|
   config.facebook.key = ENV['SORCERY_FB_KEY']
   config.facebook.secret = ENV['SORCERY_FB_SECRET']
   config.facebook.callback_url = ENV['SORCERY_FB_CALLBACK_URL']
-  config.facebook.user_info_mapping = {email: 'id'}
+  config.facebook.user_info_mapping = { email: 'id' }
   config.facebook.access_permissions = ['email', 'publish_actions']
   config.facebook.display = 'page'
   config.facebook.api_version = 'v2.5'
@@ -131,7 +131,7 @@ Rails.application.config.sorcery.configure do |config|
   config.vk.key = ENV['SORCERY_VK_KEY']
   config.vk.secret = ENV['SORCERY_VK_SECRET']
   config.vk.callback_url = ENV['SORCERY_VK_CALLBACK_URL']
-  config.vk.user_info_mapping = {email: 'uid'}
+  config.vk.user_info_mapping = { email: 'uid' }
   #
   # config.github.key = ''
   # config.github.secret = ''

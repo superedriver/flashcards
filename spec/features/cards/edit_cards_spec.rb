@@ -27,7 +27,7 @@ describe 'edit_cards', type: :feature do
       click_button I18n.t('buttons.edit')
 
       expect(page).to have_current_path deck_card_path(deck, card)
-      expect(page).to have_text( I18n.t('flashes.cards.success.updated') )
+      expect(page).to have_text(I18n.t('flashes.cards.success.updated'))
     end
 
     scenario 'edit translated_text' do
@@ -36,7 +36,7 @@ describe 'edit_cards', type: :feature do
       click_button I18n.t('buttons.edit')
 
       expect(page).to have_current_path deck_card_path(deck, card)
-      expect(page).to have_text( I18n.t('flashes.cards.success.updated') )
+      expect(page).to have_text(I18n.t('flashes.cards.success.updated'))
     end
 
     scenario 'edit image' do
@@ -45,7 +45,7 @@ describe 'edit_cards', type: :feature do
       click_button I18n.t('buttons.edit')
 
       expect(page).to have_current_path deck_card_path(deck, card)
-      expect(page).to have_text( I18n.t('flashes.cards.success.updated') )
+      expect(page).to have_text(I18n.t('flashes.cards.success.updated'))
     end
 
     scenario 'remove image' do
@@ -54,7 +54,7 @@ describe 'edit_cards', type: :feature do
       click_button I18n.t('buttons.edit')
 
       expect(page).to have_current_path deck_card_path(deck, card)
-      expect(page).to have_text( I18n.t('flashes.cards.success.updated') )
+      expect(page).to have_text(I18n.t('flashes.cards.success.updated'))
     end
 
     context 'errors' do
