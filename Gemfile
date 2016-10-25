@@ -59,3 +59,6 @@ gem 'haml', '~> 4.0', '>= 4.0.7'
 gem 'rollbar', '~> 2.13', '>= 2.13.3'
 gem 'newrelic_rpm', '~> 3.17', '>= 3.17.0.325'
 gem 'rails-controller-testing', '~> 0.0.3'
+
+gem 'puma', '~> 3.6.0'
+gem 'foreman', '~> 0.82.0'
