@@ -1,4 +1,4 @@
-class Card < ActiveRecord::Base
+class Card < ApplicationRecord
   belongs_to :deck
 
   validates :original_text, :translated_text, :review_date, presence: true
@@ -10,8 +10,8 @@ class Card < ActiveRecord::Base
   before_validation :set_current_step!, on: :create
   before_validation :set_e_factor!, on: :create
 
-  scope :actual_cards, -> { where("review_date <= ?", Time.current) }
-  scope :random_card, -> { order("RANDOM()").first }
+  scope :actual_cards, -> { where('review_date <= ?', Time.current) }
+  scope :random_card, -> { order('RANDOM()').first }
 
   mount_uploader :image, ImageUploader
 
@@ -30,8 +30,8 @@ class Card < ActiveRecord::Base
   private
 
   def check_difference
-    errors.add(I18n.t("errors.validation.description.the_same_value"),
-                I18n.t("errors.validation.messages.the_same_value")) if
-        original_text.present? && translated_text.present? && (original_text.mb_chars.downcase == translated_text.mb_chars.downcase)
+    errors.add(I18n.t('errors.validation.description.the_same_value'),
+      I18n.t('errors.validation.messages.the_same_value')) if
+      original_text.present? && translated_text.present? && (original_text.mb_chars.downcase == translated_text.mb_chars.downcase)
   end
 end

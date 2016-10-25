@@ -1,28 +1,28 @@
 en:
   date:
     formats:
-      default: "%d-%m-%Y"
+      default: '%d-%m-%Y'
   time:
     formats:
-      default: "%d-%m-%Y %H:%M:%S"
+      default: '%d-%m-%Y %H:%M:%S'
   activerecord:
     models:
-      card: "Card"
-      user: "User"
+      card: 'Card'
+      user: 'User'
     attributes:
       card:
-        original_text: "Text"
-        translated_text: "Translated text"
-        review_date: "Review date"
-        image: "Image"
-        remove_image: "Remove image"
+        original_text: 'Text'
+        translated_text: 'Translated text'
+        review_date: 'Review date'
+        image: 'Image'
+        remove_image: 'Remove image'
       user:
-        email: "Email"
-        password: "Password"
-        password_confirmation: "Password confirmation"
-        language: "Language"
+        email: 'Email'
+        password: 'Password'
+        password_confirmation: 'Password confirmation'
+        language: 'Language'
       deck:
-        name: "Name"
+        name: 'Name'
     errors:
       models:
         card:
@@ -32,120 +32,120 @@ en:
             translated_text:
               blank: "The 'Translated text' field can't be blank!"
             deck_id:
-              blank: "The Card is not linked to Deck! (deck_id.blank)"
-          not_found: "Card not found!"
+              blank: 'The Card is not linked to Deck! (deck_id.blank)'
+          not_found: 'Card not found!'
         user:
           attributes:
             email:
-              invalid: "Invalid Email format!"
+              invalid: 'Invalid Email format!'
               blank: "'Email' field is blank!"
-              taken: "User with this email already exists!"
+              taken: 'User with this email already exists!'
             password:
-              too_short: "The password must contain more than 2 characters!"
+              too_short: 'The password must contain more than 2 characters!'
             password_confirmation:
-              confirmation: "Passwords do not match!"
-              blank: "Confirm the password!"
+              confirmation: 'Passwords do not match!'
+              blank: 'Confirm the password!'
             locale:
-              inclusion: "Locale is not included into available locales list!"
+              inclusion: 'Locale is not included into available locales list!'
         deck:
           attributes:
             name:
               blank: "The 'Name' field can't be blank!"
             user_id:
-              blank: "The Deck is not linked to User! (user_id.blank)"
-          not_found: "Deck not found!"
+              blank: 'The Deck is not linked to User! (user_id.blank)'
+          not_found: 'Deck not found!'
   errors:
     messages:
-      extension_white_list_error: "Incorrect format of the uploaded file!"
-      empty_field: "Empty!"
+      extension_white_list_error: 'Incorrect format of the uploaded file!'
+      empty_field: 'Empty!'
     validation:
       description:
-        the_same_value: "The same field values!"
+        the_same_value: 'The same field values!'
       messages:
         the_same_value: "The fields 'Text' and 'Translated text' may not contain the same value!"
   confirm:
-    delete_card: "Are you sure?"
+    delete_card: 'Are you sure?'
   compare_result:
-    right: "Correct!"
-    misprint: "Incorrect, %{correct_text}! Misprint detected, you entered: %{users_text}!"
-    not_right: "Incorrect, the correct translation is: %{text}!"
+    right: 'Correct!'
+    misprint: 'Incorrect, %{correct_text}! Misprint detected, you entered: %{users_text}!'
+    not_right: 'Incorrect, the correct translation is: %{text}!'
   buttons:
-    check: "Check"
-    sign_up: "Sign Up"
-    all_decks: "All decks"
-    add_deck: "Add deck"
-    show_deck: "Show deck"
-    all_cards: "All cards"
-    add_card: "Add card"
-    registration: "Registration"
-    save: "Save"
-    cancel: "Cancel"
-    edit: "Edit"
-    delete: "Delete"
-    login: "Login"
-    logout: "Logout"
-    view: "View"
-    edit_profile: "Edit profile"
-    show_profile: "Show profile"
-    activate: "Make current"
-    deactivate: "Make not current"
-    go_to_decks: "Go to decks"
+    check: 'Check'
+    sign_up: 'Sign Up'
+    all_decks: 'All decks'
+    add_deck: 'Add deck'
+    show_deck: 'Show deck'
+    all_cards: 'All cards'
+    add_card: 'Add card'
+    registration: 'Registration'
+    save: 'Save'
+    cancel: 'Cancel'
+    edit: 'Edit'
+    delete: 'Delete'
+    login: 'Login'
+    logout: 'Logout'
+    view: 'View'
+    edit_profile: 'Edit profile'
+    show_profile: 'Show profile'
+    activate: 'Make current'
+    deactivate: 'Make not current'
+    go_to_decks: 'Go to decks'
   flashes:
     oauth:
       login:
-        success: "You entered using %{provider}"
-        failed: "Error while login using %{provider}"
-        already_logged: "You are already logged in using %{provider}"
+        success: 'You entered using %{provider}'
+        failed: 'Error while login using %{provider}'
+        already_logged: 'You are already logged in using %{provider}'
     login:
-      login_first: "Please log in or register!"
-      success: "Glad to see you again!"
-      failed: "Incorrect login or password!"
+      login_first: 'Please log in or register!'
+      success: 'Glad to see you again!'
+      failed: 'Incorrect login or password!'
     logout:
-      success: "Bye Bye!"
+      success: 'Bye Bye!'
     registration:
-      success: "Welcome!"
+      success: 'Welcome!'
     cards:
       success:
-        created: "Card created successfully!"
-        updated: "Card updated successfully!"
-        deleted: "Card deleted successfully!"
+        created: 'Card created successfully!'
+        updated: 'Card updated successfully!'
+        deleted: 'Card deleted successfully!'
     decks:
       success:
-        created: "Deck created successfully!"
-        updated: "Deck updated successfully!"
-        deleted: "Deck deleted successfully!"
-        activated: "Deck became current!"
-        deactivated: "Deck became not current!"
+        created: 'Deck created successfully!'
+        updated: 'Deck updated successfully!'
+        deleted: 'Deck deleted successfully!'
+        activated: 'Deck became current!'
+        deactivated: 'Deck became not current!'
     users:
       success:
-        updated: "Profile successfully updated!"
+        updated: 'Profile successfully updated!'
   views:
     cards:
-      edit: "Edit card"
-      new: "Create card"
-      show: "View card"
+      edit: 'Edit card'
+      new: 'Create card'
+      show: 'View card'
     decks:
-      edit: "Edit deck"
-      new: "Create deck"
-      show: "View deck"
+      edit: 'Edit deck'
+      new: 'Create deck'
+      show: 'View deck'
       index:
-        words: "Words"
-        actions: "Actions"
+        words: 'Words'
+        actions: 'Actions'
     users:
-      edit: "Edit profile"
-      show: "Show profile"
+      edit: 'Edit profile'
+      show: 'Show profile'
     home:
       index:
-        enter_translation: "Enter translation"
-        no_words: "You have not words for learning"
+        enter_translation: 'Enter translation'
+        no_words: 'You have not words for learning'
     registrations:
-      new: "New user registration"
+      new: 'New user registration'
     sessions:
-      already_logged: "You have already logged in"
+      already_logged: 'You have already logged in'
     shared:
-      validation_errs: "Validation errors"
+      validation_errs: 'Validation errors'
     application:
-      decks: "Decks"
-      profile: "Profile"
-  description: "Flashcards manager. The best way of learning foreign words."
-  language: "English"
+      decks: 'Decks'
+      profile: 'Profile'
+  description: 'Flashcards manager. The best way of learning foreign words.'
+  language: 'English'

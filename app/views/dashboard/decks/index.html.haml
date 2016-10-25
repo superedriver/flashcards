@@ -1,0 +1,31 @@
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th №
+      %th= t('activerecord.attributes.deck.name')
+      %th= t('views.decks.index.words')
+      %th= t('views.decks.index.actions')
+  %tbody#cards
+    - @decks.each.with_index(1) do |deck, index|
+      %tr
+        %td= index
+        %td= deck.name
+        %td= deck.cards.count
+        %td
+          = link_to t('buttons.view'),
+            deck_path(deck),
+            class: 'btn btn-default btn-sm'
+          = link_to t('buttons.edit'),
+            edit_deck_path(deck),
+            class: 'btn btn-primary btn-sm'
+          = link_to t('buttons.delete'),
+            deck,
+            method: :delete,
+            data: { confirm: t('confirm.delete_card') },
+            class: 'btn btn-danger btn-sm'
+          = link_to get_active_button(deck),
+            get_active_url(deck),
+            class: get_active_class(deck)
+          = link_to t('buttons.add_card'),
+            new_deck_card_path(deck),
+            class: 'btn btn-info btn-sm deck-button-right'

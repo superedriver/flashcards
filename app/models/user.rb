@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   has_many :decks, dependent: :destroy
   has_many :cards, through: :decks
   has_many :authentications, dependent: :destroy
@@ -7,9 +7,9 @@ class User < ActiveRecord::Base
 
   EMAIL_REGEXP = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
 
-  validates :password, length: { minimum: 3 }, if: -> { new_record? || changes["password"] }
-  validates :password, confirmation: true, if: -> { new_record? || changes["password"] }
-  validates :password_confirmation, presence: true, if: -> { new_record? || changes["password"] }
+  validates :password, length: { minimum: 3 }, if: -> { new_record? || changes['password'] }
+  validates :password, confirmation: true, if: -> { new_record? || changes['password'] }
+  validates :password_confirmation, presence: true, if: -> { new_record? || changes['password'] }
   validates :email, presence: true,
                     uniqueness: { case_sensitive: false },
                     format: { with: EMAIL_REGEXP }

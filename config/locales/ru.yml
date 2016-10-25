@@ -1,28 +1,28 @@
 ru:
   date:
     formats:
-      default: "%d-%m-%Y"
+      default: '%d-%m-%Y'
   time:
     formats:
-      default: "%d-%m-%Y %H:%M:%S"
+      default: '%d-%m-%Y %H:%M:%S'
   activerecord:
     models:
-      card: "Карта"
-      user: "Пользователь"
+      card: 'Карта'
+      user: 'Пользователь'
     attributes:
       card:
-        original_text: "Текст"
-        translated_text: "Перевод"
-        review_date: "Дата просмотра"
-        image: "Картинка"
-        remove_image: "Удалить картинку"
+        original_text: 'Текст'
+        translated_text: 'Перевод'
+        review_date: 'Дата просмотра'
+        image: 'Картинка'
+        remove_image: 'Удалить картинку'
       user:
-        email: "Email"
-        password: "Пароль"
-        password_confirmation: "Подтверждение пароля"
-        language: "Язык"
+        email: 'Email'
+        password: 'Пароль'
+        password_confirmation: 'Подтверждение пароля'
+        language: 'Язык'
       deck:
-        name: "Название"
+        name: 'Название'
     errors:
       models:
         card:
@@ -32,120 +32,120 @@ ru:
             translated_text:
               blank: "Поле 'Перевод' не может быть пустым!"
             deck_id:
-              blank: "Карта не привязана к колоде! (deck_id.blank)"
-          not_found: "Карта не найдена!"
+              blank: 'Карта не привязана к колоде! (deck_id.blank)'
+          not_found: 'Карта не найдена!'
         user:
           attributes:
             email:
-              invalid: "Неверный формат email!"
+              invalid: 'Неверный формат email!'
               blank: "Поле 'Email' не заполненное!"
-              taken: "Пользователь с таким email уже существует!"
+              taken: 'Пользователь с таким email уже существует!'
             password:
-              too_short: "Пароль должен содержать больше 2-х символов!"
+              too_short: 'Пароль должен содержать больше 2-х символов!'
             password_confirmation:
-              confirmation: "Пароли не совпадают!"
-              blank: "Подтвердите пароль!"
+              confirmation: 'Пароли не совпадают!'
+              blank: 'Подтвердите пароль!'
             locale:
-              inclusion: "Локаль не входит в список разрешенных."
+              inclusion: 'Локаль не входит в список разрешенных.'
         deck:
           attributes:
             name:
               blank: "Поле 'Название' не может быть пустым!"
             user_id:
-              blank: "Колода не привязана к пользователю! (user_id.blank)"
-          not_found: "Колода не найдена!"
+              blank: 'Колода не привязана к пользователю! (user_id.blank)'
+          not_found: 'Колода не найдена!'
   errors:
     messages:
-      extension_white_list_error: "Неправильный формат загружаемого файла!"
-      empty_field: "Отсутствует!"
+      extension_white_list_error: 'Неправильный формат загружаемого файла!'
+      empty_field: 'Отсутствует!'
     validation:
       description:
-        the_same_value: "Одинаковые значения полей"
+        the_same_value: 'Одинаковые значения полей'
       messages:
         the_same_value: "Поля 'Текст' и 'Перевод' не могут содержать одинаковые значения!"
   confirm:
-    delete_card: "Точно удалить?"
+    delete_card: 'Точно удалить?'
   compare_result:
-    right: "Правильно!"
-    misprint: "Неправильно, %{correct_text}! Упс! У Вас опечатка: %{users_text}!"
-    not_right: "Неправильно, правильный перевод: %{text}!"
+    right: 'Правильно!'
+    misprint: 'Неправильно, %{correct_text}! Упс! У Вас опечатка: %{users_text}!'
+    not_right: 'Неправильно, правильный перевод: %{text}!'
   buttons:
-    check: "Проверить"
-    sign_up: "Регистрация"
-    all_decks: "Все колоды"
-    add_deck: "Добавить колоду"
-    show_deck: "Просмотреть колоду"
-    all_cards: "Все карточки"
-    add_card: "Добавить карту"
-    registration: "Зарегистрироваться"
-    save: "Сохранить"
-    cancel: "Отменить"
-    edit: "Редактировать"
-    delete: "Удалить"
-    login: "Войти"
-    logout: "Выйти"
-    view: "Просмотреть"
-    edit_profile: "Редактировать профиль"
-    show_profile: "Показать профиль"
-    activate: "Сделать текущей"
-    deactivate: "Сделать нетекущей"
-    go_to_decks: "Перейти к колодам"
+    check: 'Проверить'
+    sign_up: 'Регистрация'
+    all_decks: 'Все колоды'
+    add_deck: 'Добавить колоду'
+    show_deck: 'Просмотреть колоду'
+    all_cards: 'Все карточки'
+    add_card: 'Добавить карту'
+    registration: 'Зарегистрироваться'
+    save: 'Сохранить'
+    cancel: 'Отменить'
+    edit: 'Редактировать'
+    delete: 'Удалить'
+    login: 'Войти'
+    logout: 'Выйти'
+    view: 'Просмотреть'
+    edit_profile: 'Редактировать профиль'
+    show_profile: 'Показать профиль'
+    activate: 'Сделать текущей'
+    deactivate: 'Сделать нетекущей'
+    go_to_decks: 'Перейти к колодам'
   flashes:
     oauth:
       login:
-        success: "Вы вошли, используя %{provider}"
-        failed: "Ошибка при входе в систему, используя %{provider}"
-        already_logged: "Вы уже вошли в систему, используя %{provider}"
+        success: 'Вы вошли, используя %{provider}'
+        failed: 'Ошибка при входе в систему, используя %{provider}'
+        already_logged: 'Вы уже вошли в систему, используя %{provider}'
     login:
-      login_first: "Пожалуйста, войдите в систему либо зарегистрируйтесь!"
-      success: "Рады видитеть Вас снова!"
-      failed: "Неправильный логин либо пароль!"
+      login_first: 'Пожалуйста, войдите в систему либо зарегистрируйтесь!'
+      success: 'Рады видитеть Вас снова!'
+      failed: 'Неправильный логин либо пароль!'
     logout:
-      success: "Пока-пока!"
+      success: 'Пока-пока!'
     registration:
-      success: "Добро пожаловать!"
+      success: 'Добро пожаловать!'
     cards:
       success:
-        created: "Карта успешно создана!"
-        updated: "Карта успешно обновлена!"
-        deleted: "Карта успешно удалена!"
+        created: 'Карта успешно создана!'
+        updated: 'Карта успешно обновлена!'
+        deleted: 'Карта успешно удалена!'
     decks:
       success:
-        created: "Колода успешно создана!"
-        updated: "Колода успешно обновлена!"
-        deleted: "Колода успешно удалена!"
-        activated: "Колода стала текущей!"
-        deactivated: "Колода стала нетекущей!"
+        created: 'Колода успешно создана!'
+        updated: 'Колода успешно обновлена!'
+        deleted: 'Колода успешно удалена!'
+        activated: 'Колода стала текущей!'
+        deactivated: 'Колода стала нетекущей!'
     users:
       success:
-        updated: "Профиль успешно обновлен!"
+        updated: 'Профиль успешно обновлен!'
   views:
     cards:
-      edit: "Редактирование карты"
-      new: "Создание карты"
-      show: "Просмотр карты"
+      edit: 'Редактирование карты'
+      new: 'Создание карты'
+      show: 'Просмотр карты'
     decks:
-      edit: "Редактирование колоды"
-      new: "Создание колоды"
-      show: "Просмотр колоды"
+      edit: 'Редактирование колоды'
+      new: 'Создание колоды'
+      show: 'Просмотр колоды'
       index:
-        words: "Cлова"
-        actions: "Действия"
+        words: 'Cлова'
+        actions: 'Действия'
     users:
-      edit: "Редактирование профиля"
-      show: "Просмотр профиля"
+      edit: 'Редактирование профиля'
+      show: 'Просмотр профиля'
     home:
       index:
-        enter_translation: "Введите перевод слова"
-        no_words: "У Вас нету слов для изучения"
+        enter_translation: 'Введите перевод слова'
+        no_words: 'У Вас нету слов для изучения'
     registrations:
-      new: "Регистрация нового пользователя"
+      new: 'Регистрация нового пользователя'
     sessions:
-      already_logged: "Вы уже вошли систему"
+      already_logged: 'Вы уже вошли систему'
     shared:
-      validation_errs: "При заполнении формы возникли такие ошибки"
+      validation_errs: 'При заполнении формы возникли такие ошибки'
     application:
-      decks: "Колоды"
-      profile: "Профиль"
-  description: "Менеджер флеш-карт. Самый лучший способ изучения иностранных слов."
-  language: "Русский"
+      decks: 'Колоды'
+      profile: 'Профиль'
+  description: 'Менеджер флеш-карт. Самый лучший способ изучения иностранных слов.'
+  language: 'Русский'
