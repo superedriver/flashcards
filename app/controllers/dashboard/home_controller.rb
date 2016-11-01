@@ -10,7 +10,7 @@ module Dashboard
 
     def change_locale
       I18n.locale = params[:locale]
-      redirect_to(:back)
+      redirect_back(fallback_location: root_path)
     end
   end
 end

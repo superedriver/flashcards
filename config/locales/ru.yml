@@ -59,6 +59,7 @@ ru:
     messages:
       extension_white_list_error: 'Неправильный формат загружаемого файла!'
       empty_field: 'Отсутствует!'
+      mini_magick_processing_error: 'Ошибка во время загрузки картинки!'
     validation:
       description:
         the_same_value: 'Одинаковые значения полей'

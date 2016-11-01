@@ -59,6 +59,7 @@ en:
     messages:
       extension_white_list_error: 'Incorrect format of the uploaded file!'
       empty_field: 'Empty!'
+      mini_magick_processing_error: 'Error while downloading the image!'
     validation:
       description:
         the_same_value: 'The same field values!'

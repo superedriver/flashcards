@@ -59,6 +59,7 @@ ua:
     messages:
       extension_white_list_error: 'Неправильний формат файлу!'
       empty_field: 'Відсутнє!'
+      mini_magick_processing_error: 'Помилка під час завантаження зображення!'
     validation:
       description:
         the_same_value: 'Одинаковые значения полів!'
