@@ -6,7 +6,7 @@ module Home
 
     def create
       locale = I18n.available_locales.include?(I18n.locale) ? I18n.locale : :en
-      @user = User.new(user_params.merge(locale: locale))
+      @user = User.new(user_params.merge(locale: locale, remind_email: true))
       if @user.save
         login(params[:user][:email].downcase, params[:user][:password])
         redirect_to root_path, flash: { success: t('flashes.registration.success') }

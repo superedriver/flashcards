@@ -18,7 +18,7 @@ module Dashboard
 
     private
     def user_params
-      params.require(:user).permit(:email, :password, :locale)
+      params.require(:user).permit(:email, :password, :locale, :remind_email)
     end
 
     def find_user

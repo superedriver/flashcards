@@ -21,6 +21,7 @@ en:
         password: 'Password'
         password_confirmation: 'Password confirmation'
         language: 'Language'
+        remind_email: 'Remind by email about active cards'
       deck:
         name: 'Name'
     errors:

@@ -19,14 +19,15 @@ RSpec.describe User, type: :model do
   it { expect respond_to(:locale) }
   it { expect respond_to(:get_card) }
   it { expect respond_to(:get_active_deck_cards) }
+  it { expect respond_to(:remind_email) }
 
   describe 'correct case' do
     it 'new user' do
       @user = build(
-          :user,
-          email: 'qwerty@gmail.com',
-          password: '123456',
-          password_confirmation: '123456'
+        :user,
+        email: 'qwerty@gmail.com',
+        password: '123456',
+        password_confirmation: '123456'
       )
       expect(@user.save).to be true
     end
@@ -151,10 +152,10 @@ RSpec.describe User, type: :model do
 
       it 'password_confirmation blank' do
         @user = build(
-            :user,
-            email: 'qwerty',
-            password: '123456',
-            password_confirmation: ''
+          :user,
+          email: 'qwerty',
+          password: '123456',
+          password_confirmation: ''
         )
         @user.valid?
         expect(@user.errors.messages[:password_confirmation].length).to eq(2)
@@ -168,11 +169,11 @@ RSpec.describe User, type: :model do
     describe '#locale' do
       it 'is not from the available list' do
         @user = build(
-            :user,
-            email: 'qwerty@ukr.net',
-            password: '123456',
-            password_confirmation: '123456',
-            locale: 'qw'
+          :user,
+          email: 'qwerty@ukr.net',
+          password: '123456',
+          password_confirmation: '123456',
+          locale: 'qw'
         )
         @user.valid?
         expect(@user.errors.messages[:locale].length).to eq(1)
