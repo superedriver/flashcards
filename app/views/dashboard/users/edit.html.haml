@@ -8,6 +8,7 @@
     %fieldset
       = f.input :email, required: true
       = f.input :password, required: true
-      = f.input :locale, :collection => [ %w(English en), %w(Русский ru), %w(Українська ua) ]
+      = f.input :locale, collection: [ %w(English en), %w(Русский ru), %w(Українська ua) ]
+      = f.input :remind_email, as: :boolean, checked_value: true, unchecked_value: false
       = f.submit t('buttons.save'), class: 'btn btn-primary'
       = link_to t('buttons.cancel'), root_path, class: 'btn btn-default'

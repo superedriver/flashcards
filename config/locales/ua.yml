@@ -21,6 +21,7 @@ ua:
         password: 'Пароль'
         password_confirmation: 'Підтвердження пароля'
         language: 'Мова'
+        remind_email: 'Нагадувати по email про активні карти'
       deck:
         name: 'Назва'
     errors:

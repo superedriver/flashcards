@@ -21,6 +21,7 @@ ru:
         password: 'Пароль'
         password_confirmation: 'Подтверждение пароля'
         language: 'Язык'
+        remind_email: 'Напиминать по email об активных картах'
       deck:
         name: 'Название'
     errors:
