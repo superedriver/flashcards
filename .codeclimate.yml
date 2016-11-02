@@ -23,7 +23,9 @@ exclude_paths:
 - "app/assets/javascripts/bootstrap.js"
 - "app/assets/stylesheets/bootstrap.css"
 - "config/initializers/simple_form_bootstrap.rb"
+- "app/uploaders/image_uploader.rb"
+- "config/initializers/action_mailer.rb"
+- "config/initializers/carrier_wave.rb"
 - spec/**/*
 - public/**/*
 - config/initializers/**/*
-- app/uploaders/**/*
