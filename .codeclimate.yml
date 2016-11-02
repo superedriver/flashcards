@@ -25,3 +25,5 @@ exclude_paths:
 - "config/initializers/simple_form_bootstrap.rb"
 - spec/**/*
 - public/**/*
+- config/initializers/**/*
+- app/uploaders/**/*
