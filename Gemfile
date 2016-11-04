@@ -69,4 +69,5 @@ group :development do
   gem 'capistrano-rails',   require: false
   gem 'capistrano-bundler', require: false
   gem 'capistrano3-puma',   require: false
+  gem 'net-ssh', '~> 3.2'
 end
