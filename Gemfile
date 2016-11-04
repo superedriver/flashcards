@@ -62,3 +62,11 @@ gem 'rails-controller-testing', '~> 0.0.3'
 
 gem 'puma', '~> 3.6.0'
 gem 'foreman', '~> 0.82.0'
+
+group :development do
+  gem 'capistrano',         require: false
+  gem 'capistrano-rvm',     require: false
+  gem 'capistrano-rails',   require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano3-puma',   require: false
+end
