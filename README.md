@@ -10,9 +10,11 @@ An application for learning foreign words
 User has decks and cards in these decks.
 Every card has word and translation of this word. 
 User has to write the translation of the random active card.
-If translation correct, next time the card will be active after 3 days.
+
+The frequency of occurrence of cards is regulated by the SuperMemo2 algorithm.
+
 Each user has his/her set of decks and cards.
-User can create/edit/delete decks and cards
+User can create/edit/delete decks and cards.
 
 ## Dependecies
  * [PostgreSQL](http://www.postgresql.org) 
