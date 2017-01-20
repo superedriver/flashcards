@@ -13,6 +13,10 @@ User has to write the translation of the random active card.
 
 The frequency of occurrence of cards is regulated by the SuperMemo2 algorithm.
 
+On the training page user sees random card from Actual cards.
+
+Every deck can have "Current" status. In this case, on the training page random card is selected from Actual cards of "Current" deck.
+
 Each user has his/her set of decks and cards.
 User can create/edit/delete decks and cards.
 
