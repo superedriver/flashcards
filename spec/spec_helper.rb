@@ -1,6 +1,3 @@
-require 'codeclimate-test-reporter'
-CodeClimate::TestReporter.start
-
 require 'capybara/rspec'
 require 'factory_girl'
 require 'database_cleaner'

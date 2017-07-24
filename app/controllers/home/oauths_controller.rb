@@ -8,7 +8,6 @@ module Home
     end
 
     def callback
-
       provider = auth_params[:provider]
 
       if logged_in?

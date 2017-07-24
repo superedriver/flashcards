@@ -139,7 +139,7 @@ ru:
     home:
       index:
         enter_translation: 'Введите перевод слова'
-        no_words: 'У Вас нету слов для изучения'
+        no_words: 'У Вас нет слов для изучения'
     registrations:
       new: 'Регистрация нового пользователя'
     sessions:

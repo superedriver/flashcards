@@ -1,42 +1,42 @@
 source 'https://rubygems.org'
-ruby '2.3.1'
-gem 'rails', '5.0.0.1'
-gem 'sass-rails', '~> 5.0', '>= 5.0.4'
-gem 'uglifier', '~> 2.7', '>= 2.7.2'
-gem 'coffee-rails', '~> 4.2', '>= 4.2.1'
+ruby '2.4.0'
+gem 'rails', '5.1.2'
+gem 'sass-rails', '~> 5.0', '>= 5.0.6'
+gem 'uglifier', '~> 3.2'
+gem 'coffee-rails', '~> 4.2', '>= 4.2.2'
 
-gem 'jquery-rails'
-gem 'jbuilder', '~> 2.6'
+gem 'jquery-rails', '~> 4.3', '>= 4.3.1'
+gem 'jbuilder', '~> 2.7'
 gem 'sdoc', '~> 0.4.2', group: :doc
 
-gem 'pg', '~> 0.19.0'
-gem 'simple_form', '~> 3.3', '>= 3.3.1'
-gem 'nokogiri', '~> 1.6', '>= 1.6.8.1'
+gem 'pg', '~> 0.21.0'
+gem 'simple_form', '~> 3.5'
+gem 'nokogiri', '~> 1.8'
 
 group :development do
-  gem 'web-console', '~> 3.3', '>= 3.3.1'
+  gem 'web-console', '~> 3.5', '>= 3.5.1'
 end
 
 group :development, :test do
   gem 'byebug', '~> 9.0', '>= 9.0.6'
-  gem 'rspec-rails', '~> 3.5', '>= 3.5.2'
-  gem 'factory_girl_rails', '~> 4.7'
-  gem 'capybara', '~> 2.10.0', '>= 2.10.0'
-  gem 'database_cleaner', '~> 1.5', '>= 1.5.3'
+  gem 'rspec-rails', '~> 3.6'
+  gem 'factory_girl_rails', '~> 4.8'
+  gem 'capybara', '~> 2.14', '>= 2.14.4'
+  gem 'database_cleaner', '~> 1.6', '>= 1.6.1'
   gem 'phantomjs', '~> 2.1', '>= 2.1.1.0', require: 'phantomjs/poltergeist'
-  gem 'poltergeist', '~> 1.10'
+  gem 'poltergeist', '~> 1.15'
 
 end
 
-gem 'sorcery', '~> 0.9.1'
+gem 'sorcery', '~> 0.11.0'
 
-gem 'pry-rails', '~> 0.3.4'
+gem 'pry-rails', '~> 0.3.6'
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.7'
-gem 'fog-aws', '~> 0.12.0'
-gem 'fog', '~> 1.38'
-gem 'carrierwave', '>= 1.0.0.beta', '< 2.0'
+gem 'fog-aws', '~> 1.4'
+gem 'fog', '~> 1.40'
+gem 'carrierwave', '~> 1.1'
 
-gem 'mini_magick', '~> 4.5', '>= 4.5.1'
+gem 'mini_magick', '~> 4.8'
 
 gem 'figaro', '~> 1.1', '>= 1.1.1'
 
@@ -46,22 +46,22 @@ gem 'levenshtein-ffi', '~> 1.1'
 
 gem 'codeclimate-test-reporter', group: :test, require: nil
 
-gem 'whenever', require: false
-gem 'letter_opener', group: :development
+gem 'whenever', '~> 0.9.7', require: false
+gem 'letter_opener', '~> 1.4', '>= 1.4.1', group: :development
 
-gem 'timecop', '~> 0.8.1', group: :test
-gem 'email_spec', '~> 2.1', group: :test
+gem 'timecop', '~> 0.9.1', group: :test
+gem 'email_spec', '~> 2.1', '>= 2.1.1', group: :test
 
-gem 'http_accept_language', '~> 2.0', '>= 2.0.5'
+gem 'http_accept_language', '~> 2.1', '>= 2.1.1'
 
-gem 'haml', '~> 4.0', '>= 4.0.7'
+gem 'haml', '~> 5.0', '>= 5.0.1'
 
-gem 'rollbar', '~> 2.13', '>= 2.13.3'
-gem 'newrelic_rpm', '~> 3.17', '>= 3.17.0.325'
-gem 'rails-controller-testing', '~> 0.0.3'
+gem 'rollbar', '~> 2.15'
+gem 'newrelic_rpm', '~> 4.3', '>= 4.3.0.335'
+gem 'rails-controller-testing', '~> 1.0', '>= 1.0.2'
 
-gem 'puma', '~> 3.6.0'
-gem 'foreman', '~> 0.82.0'
+gem 'puma', '~> 3.9', '>= 3.9.1'
+gem 'foreman', '~> 0.84.0'
 
 group :development do
   gem 'capistrano',         require: false
@@ -69,5 +69,7 @@ group :development do
   gem 'capistrano-rails',   require: false
   gem 'capistrano-bundler', require: false
   gem 'capistrano3-puma',   require: false
-  gem 'net-ssh', '~> 3.2'
+  gem 'net-ssh', '~> 4.1'
 end
+
+gem 'erubis', '~> 2.7'

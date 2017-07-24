@@ -22,7 +22,7 @@ module Dashboard
       @card = @deck.cards.new(card_params)
       if @card.save
         redirect_to deck_card_path(@card.deck, @card),
-                    flash: { success: t('flashes.cards.success.created') }
+          flash: { success: t('flashes.cards.success.created') }
       else
         render 'new'
       end
