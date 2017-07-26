@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'capybara/rspec'
 require 'factory_girl'
 require 'database_cleaner'
