@@ -13,4 +13,3 @@ before_script:
 script: bundle exec rake
 after_success:
   - bundle exec codeclimate-test-reporter
-  
