@@ -44,7 +44,7 @@ gem 'rails_12factor', '~> 0.0.3', group: :production
 
 gem 'levenshtein-ffi', '~> 1.1'
 
-gem 'codeclimate-test-reporter', group: :test, require: nil
+gem 'codeclimate-test-reporter', '~> 1.0', '>= 1.0.8', group: :test, require: nil
 
 gem 'whenever', '~> 0.9.7', require: false
 gem 'letter_opener', '~> 1.4', '>= 1.4.1', group: :development
