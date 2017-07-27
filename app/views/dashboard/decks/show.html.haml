@@ -24,14 +24,14 @@
       %th= t('activerecord.attributes.card.original_text')
       %th= t('activerecord.attributes.card.translated_text')
       %th= t('activerecord.attributes.card.review_date')
-      %th Действия
+      %th= t('views.decks.index.actions')
   %tbody#cards
     - @deck.cards.each.with_index(1) do |card, index|
       %tr
         %td= link_to index, deck_card_path(card.deck, card)
         %td
           - if card.image.thumb.url.present?
-            = image_tag card.image.thumb.url
+            = image_tag card.image.thumb.url, class: 'card-image'
           - else
             \...
         %td= get_text(card, :original_text)

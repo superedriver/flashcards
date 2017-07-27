@@ -6,6 +6,9 @@
 # Flashcards 
 An application for learning foreign words
 
+You can try it on:
+ * [Heroku](https://flashcardssms.herokuapp.com/) 
+
 ## Description
 User has decks and cards in these decks.
 Every card has word and translation of this word. 

@@ -34,5 +34,8 @@ config/environments/*
 # Ignore application configuration
 /config/application.yml
 
+# Ignore coverage
+coverage/*
+
 .ruby-version
 .ruby-gemset

@@ -14,7 +14,7 @@
         \:
       \
       - if @card.image.url.present?
-        = image_tag @card.image.url
+        = image_tag @card.image.url, class: 'card-image'
       - else
         \...
     %li.list-group-item

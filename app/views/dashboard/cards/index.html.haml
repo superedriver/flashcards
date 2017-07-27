@@ -13,7 +13,7 @@
         %td= link_to index, deck_card_path(card.deck, card)
         %td
           - if card.image.thumb.url.present?
-            = image_tag card.image.thumb.url
+            = image_tag card.image.thumb.url, class: 'card-image'
           - else
             \...
         %td= get_text(card, :original_text)

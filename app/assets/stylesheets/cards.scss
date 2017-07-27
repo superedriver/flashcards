@@ -1,10 +1,12 @@
 // Place all the styles related to the Cards controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-#cards td{
+#cards td {
   vertical-align: middle;
 }
 
-#one-card li img, table tr td img, .card-image{
+.card-image {
   border-radius: 10px;
+  max-height: 200px;
+  max-width: 200px;
 }
