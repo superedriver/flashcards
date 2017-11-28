@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
-ruby '2.4.0'
-gem 'rails', '5.1.2'
+ruby '2.4.2'
+gem 'rails', '5.1.4'
 gem 'sass-rails', '~> 5.0', '>= 5.0.6'
 gem 'uglifier', '~> 3.2'
 gem 'coffee-rails', '~> 4.2', '>= 4.2.2'
@@ -20,7 +20,7 @@ end
 group :development, :test do
   gem 'byebug', '~> 9.0', '>= 9.0.6'
   gem 'rspec-rails', '~> 3.6'
-  gem 'factory_girl_rails', '~> 4.8'
+  gem 'factory_bot_rails', '~> 4.8.2'
   gem 'capybara', '~> 2.14', '>= 2.14.4'
   gem 'database_cleaner', '~> 1.6', '>= 1.6.1'
   gem 'phantomjs', '~> 2.1', '>= 2.1.1.0', require: 'phantomjs/poltergeist'

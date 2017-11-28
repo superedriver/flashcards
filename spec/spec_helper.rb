@@ -2,7 +2,7 @@ require 'simplecov'
 SimpleCov.start
 
 require 'capybara/rspec'
-require 'factory_girl'
+require 'factory_bot'
 require 'database_cleaner'
 require 'active_support'
 require 'active_support/all'
@@ -48,7 +48,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
 
   Capybara.javascript_driver = :poltergeist
 

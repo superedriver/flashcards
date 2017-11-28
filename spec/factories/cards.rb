@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :card do
     original_text 'мяч'
     translated_text 'ball'
