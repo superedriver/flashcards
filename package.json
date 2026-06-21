@@ -7,7 +7,7 @@
     "dev:api": "pnpm --filter @flashcards/api start:dev",
     "build:api": "pnpm --filter @flashcards/api build",
     "dev:app": "pnpm --filter @flashcards/app start",
-    "lint": "eslint .",
+    "lint": "eslint \"apps/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/node_modules/**\"",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
