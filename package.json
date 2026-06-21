@@ -1,0 +1,14 @@
+{
+  "name": "flashcards",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Mobile-first flashcards app for language learning with spaced repetition.",
+  "scripts": {
+    "dev:api": "pnpm --filter @flashcards/api start:dev",
+    "build:api": "pnpm --filter @flashcards/api build",
+    "dev:app": "pnpm --filter @flashcards/app start",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test"
+  },
+  "packageManager": "pnpm@9.0.0"
+}
