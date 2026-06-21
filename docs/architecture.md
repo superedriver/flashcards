@@ -6,9 +6,9 @@ Flashcards is a mobile-first language learning application for studying vocabula
 
 The MVP focuses on learning English words from Ukrainian:
 
-* Source language: Ukrainian (`uk`)
-* Target language: English (`en`)
-* Interface languages: English (`en`) and Ukrainian (`uk`)
+- Source language: Ukrainian (`uk`)
+- Target language: English (`en`)
+- Interface languages: English (`en`) and Ukrainian (`uk`)
 
 The core product flow is:
 
@@ -20,8 +20,9 @@ The core product flow is:
 6. The user taps to reveal the Ukrainian translation.
 7. The user answers with:
 
-    * Know
-    * Don't know
+   - Know
+   - Don't know
+
 8. The backend updates the card review state using an adapted SM-2 spaced repetition algorithm.
 
 The backend is the source of truth for all learning progress and scheduling.

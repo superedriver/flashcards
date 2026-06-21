@@ -602,22 +602,14 @@ export class CopyDeckUseCase {
   ) {}
 
   async execute(command: CopyDeckCommand): Promise<Deck> {
-    await this.permissionService.assertCanViewDeck(
-      command.userId,
-      command.sourceDeckId,
-    )
+    await this.permissionService.assertCanViewDeck(command.userId, command.sourceDeckId)
 
     return this.transactionManager.run(async () => {
-      const sourceDeck = await this.deckRepository.findByIdOrThrow(
-        command.sourceDeckId,
-      )
+      const sourceDeck = await this.deckRepository.findByIdOrThrow(command.sourceDeckId)
 
       const sourceCards = await this.cardRepository.findByDeckId(sourceDeck.id)
 
-      const copiedDeck = sourceDeck.copyForUser(
-        command.newDeckId,
-        command.userId,
-      )
+      const copiedDeck = sourceDeck.copyForUser(command.newDeckId, command.userId)
 
       const savedDeck = await this.deckRepository.save(copiedDeck)
 
@@ -764,11 +756,10 @@ export class DeckPermissionService {
       return
     }
 
-    const isSharedWithUserGroup =
-      await this.groupRepository.userHasAccessToDeckThroughGroup(
-        user.id,
-        deckId,
-      )
+    const isSharedWithUserGroup = await this.groupRepository.userHasAccessToDeckThroughGroup(
+      user.id,
+      deckId,
+    )
 
     if (isSharedWithUserGroup) {
       return
