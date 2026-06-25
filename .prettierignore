@@ -6,3 +6,8 @@ coverage
 .expo
 .turbo
 pnpm-lock.yaml
+.vercel
+.tamagui
+apps/mobile/web-build
+apps/mobile/dist
+apps/api/generated
