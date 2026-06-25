@@ -114,7 +114,7 @@ apps/api/src/modules/<feature>/
 - [x] TASK-01.03 Clean up default NestJS boilerplate
 - [x] TASK-01.04 Add health endpoint
 - [x] TASK-01.05 Align API TypeScript config with root config
-- [ ] TASK-01.06 Add GraphQL foundation
+- [x] TASK-01.06 Add GraphQL foundation
 - [ ] TASK-01.07 Add common error foundation
 - [ ] TASK-01.08 Add backend config foundation
 - [ ] TASK-01.09 Add Prisma infrastructure
@@ -624,7 +624,7 @@ chore(api): align TypeScript config
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
