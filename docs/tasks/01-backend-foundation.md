@@ -109,10 +109,10 @@ apps/api/src/modules/<feature>/
 ## Epic Summary
 
 ```md
-- [ ] TASK-01.01 Create NestJS API app
-- [ ] TASK-01.02 Rename API package and connect it to workspace
-- [ ] TASK-01.03 Clean up default NestJS boilerplate
-- [ ] TASK-01.04 Add health endpoint
+- [x] TASK-01.01 Create NestJS API app
+- [x] TASK-01.02 Rename API package and connect it to workspace
+- [x] TASK-01.03 Clean up default NestJS boilerplate
+- [x] TASK-01.04 Add health endpoint
 - [ ] TASK-01.05 Align API TypeScript config with root config
 - [ ] TASK-01.06 Add GraphQL foundation
 - [ ] TASK-01.07 Add common error foundation
@@ -130,7 +130,7 @@ apps/api/src/modules/<feature>/
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -246,7 +246,7 @@ chore(api): create NestJS API app
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -318,7 +318,7 @@ chore(api): rename API workspace package
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -409,7 +409,7 @@ chore(api): remove default NestJS boilerplate
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
