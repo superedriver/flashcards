@@ -102,7 +102,7 @@ docs/
 - [x] TASK-00.04 Add ESLint config
 - [x] TASK-00.05 Add Git ignore and line ending config
 - [x] TASK-00.06 Create base repository folders
-- [ ] TASK-00.07 Add required documentation folders
+- [x] TASK-00.07 Add required documentation folders
 - [ ] TASK-00.08 Add root scripts
 - [ ] TASK-00.09 Run repository foundation checks
 ```
@@ -711,7 +711,7 @@ chore(repo): create base workspace folders
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
