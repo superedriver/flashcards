@@ -96,8 +96,8 @@ docs/
 ## Epic Summary
 
 ```md
-- [ ] TASK-00.01 Initialize pnpm monorepo
-- [ ] TASK-00.02 Add root TypeScript config
+- [x] TASK-00.01 Initialize pnpm monorepo
+- [x] TASK-00.02 Add root TypeScript config
 - [ ] TASK-00.03 Add Prettier config
 - [ ] TASK-00.04 Add ESLint config
 - [ ] TASK-00.05 Add Git ignore and line ending config
@@ -113,7 +113,7 @@ docs/
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -199,7 +199,7 @@ chore(repo): initialize pnpm workspace
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
