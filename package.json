@@ -7,6 +7,8 @@
     "docs:lint": "markdownlint \"docs/**/*.md\"",
     "api:dev": "pnpm --filter @flashcards/api start:dev",
     "api:build": "pnpm --filter @flashcards/api build",
+    "api:prisma:validate": "pnpm --filter @flashcards/api exec prisma validate",
+    "api:prisma:generate": "pnpm --filter @flashcards/api exec prisma generate",
     "lint": "eslint \"apps/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/node_modules/**\"",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
