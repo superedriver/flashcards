@@ -368,8 +368,7 @@ export function calculateNextReview(input: Sm2Input): Sm2Result {
 function calculateEaseFactor(previousEaseFactor: number, quality: number): number {
   const qualityDelta = 5 - quality
 
-  const nextEaseFactor =
-    previousEaseFactor + (0.1 - qualityDelta * (0.08 + qualityDelta * 0.02))
+  const nextEaseFactor = previousEaseFactor + (0.1 - qualityDelta * (0.08 + qualityDelta * 0.02))
 
   return Math.max(MIN_EASE_FACTOR, roundToTwoDecimals(nextEaseFactor))
 }

@@ -149,8 +149,8 @@ Create `pnpm-workspace.yaml`:
 
 ```yaml
 packages:
-  - "apps/*"
-  - "packages/*"
+  - 'apps/*'
+  - 'packages/*'
 ```
 
 ## Architecture Constraints
@@ -441,7 +441,7 @@ export default [
       '**/.expo/**',
       '**/.next/**',
       '**/.turbo/**',
-      '**/generated/**'
+      '**/generated/**',
     ],
   },
   js.configs.recommended,
@@ -454,11 +454,11 @@ export default [
         'warn',
         {
           argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_'
-        }
-      ]
-    }
-  }
+          varsIgnorePattern: '^_',
+        },
+      ],
+    },
+  },
 ]
 ```
 

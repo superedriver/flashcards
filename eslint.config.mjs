@@ -1,8 +1,5 @@
 import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactNative from 'eslint-plugin-react-native'
 
 export default [
   {
@@ -10,7 +7,7 @@ export default [
       'node_modules/**',
       'dist/**',
       'build/**',
-      'coverage/**',
+      '**/coverage/**',
       '.expo/**',
       '.next/**',
       '.vercel/**',
@@ -29,28 +26,15 @@ export default [
         project: false,
       },
     },
-    plugins: {
-      react,
-      'react-hooks': reactHooks,
-      'react-native': reactNative,
-    },
     rules: {
-      'react/react-in-jsx-scope': 'off',
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
-        }
+        },
       ],
-    },
-    settings: {
-      react: {
-        version: 'detect',
-      },
     },
   },
 ]

@@ -980,7 +980,7 @@ Workflow should run hourly:
 ```yaml
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: '0 * * * *'
   workflow_dispatch:
 ```
 
