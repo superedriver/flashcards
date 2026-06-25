@@ -98,10 +98,10 @@ docs/
 ```md
 - [x] TASK-00.01 Initialize pnpm monorepo
 - [x] TASK-00.02 Add root TypeScript config
-- [ ] TASK-00.03 Add Prettier config
-- [ ] TASK-00.04 Add ESLint config
-- [ ] TASK-00.05 Add Git ignore and line ending config
-- [ ] TASK-00.06 Create base repository folders
+- [x] TASK-00.03 Add Prettier config
+- [x] TASK-00.04 Add ESLint config
+- [x] TASK-00.05 Add Git ignore and line ending config
+- [x] TASK-00.06 Create base repository folders
 - [ ] TASK-00.07 Add required documentation folders
 - [ ] TASK-00.08 Add root scripts
 - [ ] TASK-00.09 Run repository foundation checks
@@ -290,7 +290,7 @@ chore(repo): add root TypeScript config
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -393,7 +393,7 @@ chore(repo): add Prettier config
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -517,7 +517,7 @@ chore(repo): add ESLint config
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -623,7 +623,7 @@ chore(repo): add git ignore and attributes
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
