@@ -10,7 +10,7 @@ It prepares the workspace so future backend/frontend/domain work can be implemen
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -104,7 +104,7 @@ docs/
 - [x] TASK-00.06 Create base repository folders
 - [x] TASK-00.07 Add required documentation folders
 - [x] TASK-00.08 Add root scripts
-- [ ] TASK-00.09 Run repository foundation checks
+- [x] TASK-00.09 Run repository foundation checks
 ```
 
 ---
@@ -909,7 +909,7 @@ chore(repo): add root workspace scripts
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
