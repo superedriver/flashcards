@@ -15,7 +15,8 @@
     "format:check": "prettier . --check",
     "typecheck": "pnpm api:build",
     "test": "pnpm -r test",
-    "test:coverage": "pnpm --filter @flashcards/api test:cov"
+    "test:coverage": "pnpm --filter @flashcards/api test:cov",
+    "secrets:scan": "gitleaks detect --source . -v"
   },
   "packageManager": "pnpm@9.0.0",
   "devDependencies": {
