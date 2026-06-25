@@ -430,27 +430,16 @@ Backend:
   Logout revokes the current refresh token.
 ```
 
-Email verification is required before accessing product functionality.
-
-Before email verification, the user may only:
+For MVP, unverified users may log in.
 
 ```txt
-Read current user session
-Resend verification email
-Logout
+The API returns user.emailVerifiedAt.
+The frontend may show a verification reminder.
 ```
 
-The user may not:
+Source of truth: `docs/domain/auth-token-strategy.md`.
 
-```txt
-Create decks
-Create cards
-Start lessons
-Use AI features
-Import CSV files
-Create groups
-Copy public decks
-```
+A stricter verification gate for product features may be added later; if enabled, that policy must be explicit in backend code and tests.
 
 Google login should mark the user as verified only if Google returns `email_verified = true`.
 
@@ -511,15 +500,26 @@ PUBLIC
 UNLISTED - reserved for future use
 ```
 
-Public decks appear in search immediately after publication.
-
-Moderation happens after publication:
+Deck moderation status values:
 
 ```txt
-ACTIVE
-HIDDEN
+NONE
+PENDING
+APPROVED
 REJECTED
+HIDDEN
 ```
+
+MVP publish behavior:
+
+```txt
+publishDeck sets visibility = PUBLIC and moderationStatus = APPROVED.
+Public approved decks appear in search immediately after publication.
+```
+
+Post-MVP moderation may set `moderationStatus = PENDING` on publish instead.
+
+Source of truth: `docs/domain/permissions.md`.
 
 Cards belong to exactly one deck.
 
@@ -562,7 +562,7 @@ A user can view a deck if:
 
 ```txt
 1. The user owns the deck.
-2. The deck is public and active.
+2. The deck is public and approved.
 3. The deck is shared with a group where the user is an active member.
 4. The user is an admin.
 ```
@@ -607,9 +607,11 @@ Don't know
 Mapping:
 
 ```txt
-Know       -> quality = 5
-Don't know -> quality = 2
+Know       -> quality = 4
+Don't know -> quality = 1
 ```
+
+Source of truth: `docs/algorithms/sm-2.md`.
 
 Per-user per-card review state:
 
@@ -682,10 +684,12 @@ Flow:
 If the user answers Don't know:
 
 ```txt
-The card appears once more later in the same lesson.
-The card is not repeated infinitely.
-After the lesson, its due date is tomorrow.
+DONT_KNOW updates SRS state immediately.
+Failed cards are not automatically repeated in the same lesson (MVP).
+After the review, the card due date is set by the SM-2 algorithm (typically tomorrow for a failed review).
 ```
+
+Source of truth: `docs/domain/lesson-flow.md`.
 
 ---
 
@@ -783,8 +787,11 @@ Group roles in MVP:
 
 ```txt
 OWNER
+ADMIN
 MEMBER
 ```
+
+Source of truth: `docs/domain/permissions.md`.
 
 Invite flow:
 
@@ -794,16 +801,22 @@ Invite flow:
 3. Backend hashes the invitation token.
 4. Backend sends an invitation email.
 5. Existing user can accept the invitation in the app.
-6. New user registers with the invited email and verifies it.
+6. New user may register with the invited email.
 7. User accepts invitation.
 8. Backend creates group membership.
 ```
 
-Important rule:
+Accept rules (MVP):
 
 ```txt
-A group invitation can only be accepted by a verified user whose email matches the invited email.
+- user is authenticated
+- invitation email matches user's email
+- user is not blocked
 ```
+
+Accept does not require `emailVerifiedAt`.
+
+Source of truth: `docs/domain/permissions.md`.
 
 Deck sharing:
 
