@@ -391,9 +391,7 @@ apps/api/src/modules/auth/application/ports/password-reset-token-repository.port
 Create `EmailVerificationTokenRepositoryPort`:
 
 ```ts
-export const EMAIL_VERIFICATION_TOKEN_REPOSITORY = Symbol(
-  'EMAIL_VERIFICATION_TOKEN_REPOSITORY',
-)
+export const EMAIL_VERIFICATION_TOKEN_REPOSITORY = Symbol('EMAIL_VERIFICATION_TOKEN_REPOSITORY')
 
 export type CreateEmailVerificationTokenInput = {
   userId: string
@@ -719,19 +717,13 @@ apps/api/src/modules/auth/application/email/email-templates.ts
 Create functions:
 
 ```ts
-export function buildVerificationEmail(input: {
-  appWebUrl: string
-  token: string
-}): {
+export function buildVerificationEmail(input: { appWebUrl: string; token: string }): {
   subject: string
   text: string
   html: string
 }
 
-export function buildPasswordResetEmail(input: {
-  appWebUrl: string
-  token: string
-}): {
+export function buildPasswordResetEmail(input: { appWebUrl: string; token: string }): {
   subject: string
   text: string
   html: string

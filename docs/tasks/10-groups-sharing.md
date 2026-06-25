@@ -499,12 +499,7 @@ Create role/status types:
 ```ts
 export type GroupRole = 'OWNER' | 'ADMIN' | 'MEMBER'
 
-export type GroupInvitationStatus =
-  | 'PENDING'
-  | 'ACCEPTED'
-  | 'DECLINED'
-  | 'CANCELLED'
-  | 'EXPIRED'
+export type GroupInvitationStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED' | 'CANCELLED' | 'EXPIRED'
 
 export type DeckGroupSharePermission = 'VIEW'
 ```

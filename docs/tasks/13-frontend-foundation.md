@@ -289,12 +289,7 @@ pnpm-workspace.yaml
       "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "app",
-    "src",
-    "index.ts",
-    "expo-env.d.ts"
-  ]
+  "include": ["app", "src", "index.ts", "expo-env.d.ts"]
 }
 ```
 
@@ -314,8 +309,8 @@ Ensure workspace includes:
 
 ```yaml
 packages:
-  - "apps/*"
-  - "packages/*"
+  - 'apps/*'
+  - 'packages/*'
 ```
 
 ## Do Not Do
