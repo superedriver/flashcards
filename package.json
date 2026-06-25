@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "description": "Mobile-first flashcards app for language learning with spaced repetition.",
   "scripts": {
+    "docs:lint": "markdownlint \"docs/**/*.md\"",
     "dev:api": "pnpm --filter @flashcards/api start:dev",
     "build:api": "pnpm --filter @flashcards/api build",
     "dev:app": "pnpm --filter @flashcards/app start",
@@ -18,6 +19,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "eslint": "^10.5.0",
+    "markdownlint-cli": "^0.49.0",
     "prettier": "^3.8.4",
     "typescript-eslint": "^8.61.1"
   }
