@@ -358,7 +358,7 @@ The domain layer must not import:
 
 ```txt
 @nestjs/*
-@prisma/client
+generated/prisma
 GraphQL decorators
 HTTP exceptions
 External SDKs
