@@ -22,9 +22,9 @@
     "test": "pnpm -r test",
     "test:coverage": "pnpm --filter @flashcards/api test:cov",
     "secrets:scan": "gitleaks detect --source . -v",
-    "db:validate": "pnpm --filter @flashcards/api exec prisma validate",
-    "db:generate": "pnpm --filter @flashcards/api exec prisma generate",
-    "db:migrate:deploy": "pnpm --filter @flashcards/api exec prisma migrate deploy"
+    "db:validate": "pnpm --filter @flashcards/api prisma:validate",
+    "db:generate": "pnpm --filter @flashcards/api prisma:generate",
+    "db:migrate:deploy": "pnpm --filter @flashcards/api prisma:migrate:deploy"
   },
   "packageManager": "pnpm@9.0.0",
   "lint-staged": {
