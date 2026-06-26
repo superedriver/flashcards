@@ -116,7 +116,7 @@ apps/api/src/modules/<feature>/
 - [x] TASK-01.05 Align API TypeScript config with root config
 - [x] TASK-01.06 Add GraphQL foundation
 - [x] TASK-01.07 Add common error foundation
-- [ ] TASK-01.08 Add backend config foundation
+- [x] TASK-01.08 Add backend config foundation
 - [ ] TASK-01.09 Add Prisma infrastructure
 - [ ] TASK-01.10 Add initial Prisma schema foundation
 - [ ] TASK-01.11 Add backend environment examples
@@ -879,7 +879,7 @@ chore(api): add common error foundation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
