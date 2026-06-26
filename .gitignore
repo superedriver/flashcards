@@ -19,4 +19,5 @@ Thumbs.db
 
 apps/*/dist/
 apps/*/build/
+apps/*/src/generated/
 packages/*/dist/

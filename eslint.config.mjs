@@ -14,7 +14,7 @@ export default [
       '.tamagui/**',
       'apps/mobile/web-build/**',
       'apps/mobile/dist/**',
-      'apps/api/generated/**',
+      'apps/api/src/generated/**',
     ],
   },
   js.configs.recommended,

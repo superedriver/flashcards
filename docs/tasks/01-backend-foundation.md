@@ -85,14 +85,20 @@ apps/api
 Target structure:
 
 ```txt
-apps/api/src/
-  common/
-    errors/
-  config/
-  infrastructure/
-    prisma/
-  modules/
-    health/
+apps/api/
+  prisma/
+    schema.prisma
+  prisma.config.ts
+  src/
+    common/
+      errors/
+    config/
+    generated/
+      prisma/
+    infrastructure/
+      prisma/
+    modules/
+      health/
 ```
 
 Future feature module structure:
@@ -117,7 +123,7 @@ apps/api/src/modules/<feature>/
 - [x] TASK-01.06 Add GraphQL foundation
 - [x] TASK-01.07 Add common error foundation
 - [x] TASK-01.08 Add backend config foundation
-- [ ] TASK-01.09 Add Prisma infrastructure
+- [x] TASK-01.09 Add Prisma infrastructure
 - [ ] TASK-01.10 Add initial Prisma schema foundation
 - [ ] TASK-01.11 Add backend environment examples
 - [ ] TASK-01.12 Add backend project scripts
@@ -1017,13 +1023,21 @@ chore(api): add backend config foundation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
-Flashcards uses Prisma with PostgreSQL.
+Flashcards uses Prisma 7 with PostgreSQL.
 
 Prisma access must live in infrastructure, not resolvers.
+
+In Prisma 7:
+
+```txt
+- DATABASE_URL is configured in prisma.config.ts (not in schema.prisma).
+- Prisma Client is generated to a custom output path.
+- PrismaClient requires a driver adapter (@prisma/adapter-pg for PostgreSQL).
+```
 
 ## Goal
 
@@ -1033,6 +1047,7 @@ Add Prisma dependencies and infrastructure service.
 
 ```txt
 apps/api/prisma/schema.prisma
+apps/api/prisma.config.ts
 apps/api/src/infrastructure/prisma/prisma.module.ts
 apps/api/src/infrastructure/prisma/prisma.service.ts
 apps/api/src/infrastructure/prisma/index.ts
@@ -1043,6 +1058,8 @@ apps/api/src/infrastructure/prisma/index.ts
 ```txt
 apps/api/src/app.module.ts
 apps/api/package.json
+.gitignore
+.prettierignore
 ```
 
 ## Requirements
@@ -1050,26 +1067,73 @@ apps/api/package.json
 Install dependencies:
 
 ```bash
-pnpm --filter @flashcards/api add @prisma/client
-pnpm --filter @flashcards/api add -D prisma
+pnpm --filter @flashcards/api add @prisma/client @prisma/adapter-pg pg
+pnpm --filter @flashcards/api add -D prisma dotenv @types/pg
 ```
 
-Initialize Prisma manually by creating `apps/api/prisma/schema.prisma`.
+Create `apps/api/prisma/schema.prisma`:
+
+```prisma
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+```
+
+Create `apps/api/prisma.config.ts`:
+
+```ts
+import 'dotenv/config'
+import { defineConfig } from 'prisma/config'
+import { resolveEnv } from './src/config/env'
+
+export default defineConfig({
+  schema: 'prisma/schema.prisma',
+  migrations: {
+    path: 'prisma/migrations',
+  },
+  datasource: {
+    url: resolveEnv(
+      'DATABASE_URL',
+      'postgresql://user:password@localhost:5432/flashcards?schema=public',
+    ),
+  },
+})
+```
 
 Create `PrismaService`:
 
 ```ts
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common'
-import { PrismaClient } from '@prisma/client'
+import { ConfigService } from '@nestjs/config'
+import { PrismaPg } from '@prisma/adapter-pg'
+import { Pool } from 'pg'
+import { PrismaClient } from '../../generated/prisma/client'
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+  private readonly pool: Pool
+
+  constructor(config: ConfigService) {
+    const connectionString = config.getOrThrow<string>('database.url')
+    const pool = new Pool({ connectionString })
+    const adapter = new PrismaPg(pool)
+
+    super({ adapter })
+    this.pool = pool
+  }
+
   async onModuleInit() {
     await this.$connect()
   }
 
   async onModuleDestroy() {
     await this.$disconnect()
+    await this.pool.end()
   }
 }
 ```
@@ -1090,6 +1154,14 @@ export class PrismaModule {}
 
 Import `PrismaModule` in `AppModule`.
 
+Ensure `build` runs `prisma generate` before `nest build`.
+
+Ignore generated client output:
+
+```txt
+apps/api/src/generated/
+```
+
 ## Architecture Constraints
 
 ```txt
@@ -1097,6 +1169,7 @@ Import `PrismaModule` in `AppModule`.
 - Resolvers must not access PrismaService directly.
 - Use cases should depend on repository ports, not Prisma.
 - Prisma repositories will be added inside feature modules later.
+- Import PrismaClient from generated output, not from @prisma/client.
 ```
 
 ## Security Requirements
@@ -1104,6 +1177,7 @@ Import `PrismaModule` in `AppModule`.
 ```txt
 - Do not log DATABASE_URL.
 - Do not commit real DATABASE_URL.
+- Do not commit generated Prisma client output.
 ```
 
 ## Do Not Do
@@ -1117,9 +1191,10 @@ Import `PrismaModule` in `AppModule`.
 ## Acceptance Criteria
 
 ```txt
-- Prisma dependencies are installed.
+- Prisma 7 dependencies are installed.
+- prisma.config.ts exists.
 - schema.prisma exists.
-- PrismaService exists.
+- PrismaService uses PostgreSQL driver adapter.
 - PrismaModule exists.
 - API builds.
 ```
@@ -1127,7 +1202,8 @@ Import `PrismaModule` in `AppModule`.
 ## Commands to Run
 
 ```bash
-pnpm --filter @flashcards/api exec prisma validate
+pnpm --filter @flashcards/api prisma:generate
+pnpm --filter @flashcards/api prisma:validate
 pnpm --filter @flashcards/api build
 pnpm format:check
 pnpm lint
@@ -1174,18 +1250,22 @@ apps/api/prisma/schema.prisma
 
 ## Requirements
 
-Schema must use PostgreSQL:
+Schema must use PostgreSQL.
+
+Datasource and generator foundation (Prisma 7):
 
 ```prisma
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 ```
+
+`DATABASE_URL` is configured in `apps/api/prisma.config.ts`, not in `schema.prisma`.
 
 Add enums:
 
@@ -1522,7 +1602,7 @@ Add or ensure API scripts:
 ```json
 {
   "scripts": {
-    "build": "nest build",
+    "build": "prisma generate && nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main.js",

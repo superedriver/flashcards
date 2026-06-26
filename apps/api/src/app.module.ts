@@ -11,6 +11,7 @@ import {
 } from './config';
 import { RootResolver } from './presentation/graphql/root.resolver';
 import { HealthModule } from './modules/health/health.module';
+import { PrismaModule } from './infrastructure/prisma';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { HealthModule } from './modules/health/health.module';
       isGlobal: true,
       load: [appConfig, authConfig, databaseConfig, emailConfig, aiConfig],
     }),
+    PrismaModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
