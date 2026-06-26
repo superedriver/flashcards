@@ -22,7 +22,7 @@ This epic should not implement product features yet.
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -126,8 +126,8 @@ apps/api/src/modules/<feature>/
 - [x] TASK-01.09 Add Prisma infrastructure
 - [x] TASK-01.10 Add initial Prisma schema foundation
 - [x] TASK-01.11 Add backend environment examples
-- [ ] TASK-01.12 Add backend project scripts
-- [ ] TASK-01.13 Run backend foundation checks
+- [x] TASK-01.12 Add backend project scripts
+- [x] TASK-01.13 Run backend foundation checks
 ```
 
 ---
@@ -1578,7 +1578,7 @@ chore(api): add backend env example
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1675,7 +1675,7 @@ chore(api): add backend project scripts
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
