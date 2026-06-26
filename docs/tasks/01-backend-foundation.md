@@ -125,7 +125,7 @@ apps/api/src/modules/<feature>/
 - [x] TASK-01.08 Add backend config foundation
 - [x] TASK-01.09 Add Prisma infrastructure
 - [x] TASK-01.10 Add initial Prisma schema foundation
-- [ ] TASK-01.11 Add backend environment examples
+- [x] TASK-01.11 Add backend environment examples
 - [ ] TASK-01.12 Add backend project scripts
 - [ ] TASK-01.13 Run backend foundation checks
 ```
@@ -1469,7 +1469,7 @@ chore(db): add initial auth schema foundation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
