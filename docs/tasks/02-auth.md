@@ -150,7 +150,7 @@ apps/api/src/modules/auth/
 - [x] TASK-02.04 Add token generator and token hasher ports
 - [x] TASK-02.05 Add access token service
 - [x] TASK-02.06 Add auth repository ports
-- [ ] TASK-02.07 Add Prisma user repository
+- [x] TASK-02.07 Add Prisma user repository
 - [ ] TASK-02.08 Add Prisma refresh token repository
 - [ ] TASK-02.09 Add auth mappers
 - [ ] TASK-02.10 Add RegisterUserUseCase
@@ -911,7 +911,7 @@ chore(auth): add auth repository ports
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
