@@ -152,7 +152,7 @@ apps/api/src/modules/auth/
 - [x] TASK-02.06 Add auth repository ports
 - [x] TASK-02.07 Add Prisma user repository
 - [x] TASK-02.08 Add Prisma refresh token repository
-- [ ] TASK-02.09 Add auth mappers
+- [x] TASK-02.09 Add auth mappers
 - [ ] TASK-02.10 Add RegisterUserUseCase
 - [ ] TASK-02.11 Add auth GraphQL types and inputs
 - [ ] TASK-02.12 Add register mutation
@@ -1120,7 +1120,7 @@ chore(auth): add Prisma refresh token repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
