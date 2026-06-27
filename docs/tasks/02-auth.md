@@ -149,7 +149,7 @@ apps/api/src/modules/auth/
 - [x] TASK-02.03 Add password hasher port and Argon2 implementation
 - [x] TASK-02.04 Add token generator and token hasher ports
 - [x] TASK-02.05 Add access token service
-- [ ] TASK-02.06 Add auth repository ports
+- [x] TASK-02.06 Add auth repository ports
 - [ ] TASK-02.07 Add Prisma user repository
 - [ ] TASK-02.08 Add Prisma refresh token repository
 - [ ] TASK-02.09 Add auth mappers
@@ -785,7 +785,7 @@ chore(auth): add JWT access token service
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
