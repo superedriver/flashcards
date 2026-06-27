@@ -145,7 +145,7 @@ apps/api/src/modules/auth/
 
 ```md
 - [x] TASK-02.01 Add auth module skeleton
-- [ ] TASK-02.02 Add auth domain types and safe user model
+- [x] TASK-02.02 Add auth domain types and safe user model
 - [ ] TASK-02.03 Add password hasher port and Argon2 implementation
 - [ ] TASK-02.04 Add token generator and token hasher ports
 - [ ] TASK-02.05 Add access token service
@@ -277,7 +277,7 @@ chore(auth): add auth module skeleton
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
