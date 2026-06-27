@@ -5,12 +5,14 @@ import { ACCESS_TOKEN_SERVICE } from './application/ports/access-token-service.p
 import { PASSWORD_HASHER } from './application/ports/password-hasher.port';
 import { TOKEN_GENERATOR } from './application/ports/token-generator.port';
 import { TOKEN_HASHER } from './application/ports/token-hasher.port';
+import { REFRESH_TOKEN_REPOSITORY } from './application/ports/refresh-token-repository.port';
 import { USER_REPOSITORY } from './application/ports/user-repository.port';
 import { Argon2PasswordHasher } from './infrastructure/crypto/argon2-password-hasher';
 import { NodeTokenGenerator } from './infrastructure/crypto/node-token-generator';
 import { Sha256TokenHasher } from './infrastructure/crypto/sha256-token-hasher';
 import { JwtAccessTokenService } from './infrastructure/jwt/jwt-access-token.service';
 import { PrismaUserRepository } from './infrastructure/persistence/prisma-user.repository';
+import { PrismaRefreshTokenRepository } from './infrastructure/persistence/prisma-refresh-token.repository';
 
 @Module({
   imports: [
@@ -43,6 +45,10 @@ import { PrismaUserRepository } from './infrastructure/persistence/prisma-user.r
       provide: USER_REPOSITORY,
       useClass: PrismaUserRepository,
     },
+    {
+      provide: REFRESH_TOKEN_REPOSITORY,
+      useClass: PrismaRefreshTokenRepository,
+    },
   ],
   exports: [
     PASSWORD_HASHER,
@@ -50,6 +56,7 @@ import { PrismaUserRepository } from './infrastructure/persistence/prisma-user.r
     TOKEN_HASHER,
     ACCESS_TOKEN_SERVICE,
     USER_REPOSITORY,
+    REFRESH_TOKEN_REPOSITORY,
   ],
 })
 export class AuthModule {}
