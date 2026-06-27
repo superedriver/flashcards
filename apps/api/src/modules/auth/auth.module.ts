@@ -5,10 +5,12 @@ import { ACCESS_TOKEN_SERVICE } from './application/ports/access-token-service.p
 import { PASSWORD_HASHER } from './application/ports/password-hasher.port';
 import { TOKEN_GENERATOR } from './application/ports/token-generator.port';
 import { TOKEN_HASHER } from './application/ports/token-hasher.port';
+import { USER_REPOSITORY } from './application/ports/user-repository.port';
 import { Argon2PasswordHasher } from './infrastructure/crypto/argon2-password-hasher';
 import { NodeTokenGenerator } from './infrastructure/crypto/node-token-generator';
 import { Sha256TokenHasher } from './infrastructure/crypto/sha256-token-hasher';
 import { JwtAccessTokenService } from './infrastructure/jwt/jwt-access-token.service';
+import { PrismaUserRepository } from './infrastructure/persistence/prisma-user.repository';
 
 @Module({
   imports: [
@@ -37,12 +39,17 @@ import { JwtAccessTokenService } from './infrastructure/jwt/jwt-access-token.ser
       provide: ACCESS_TOKEN_SERVICE,
       useClass: JwtAccessTokenService,
     },
+    {
+      provide: USER_REPOSITORY,
+      useClass: PrismaUserRepository,
+    },
   ],
   exports: [
     PASSWORD_HASHER,
     TOKEN_GENERATOR,
     TOKEN_HASHER,
     ACCESS_TOKEN_SERVICE,
+    USER_REPOSITORY,
   ],
 })
 export class AuthModule {}
