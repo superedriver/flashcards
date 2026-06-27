@@ -1,12 +1,25 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { ACCESS_TOKEN_SERVICE } from './application/ports/access-token-service.port';
 import { PASSWORD_HASHER } from './application/ports/password-hasher.port';
 import { TOKEN_GENERATOR } from './application/ports/token-generator.port';
 import { TOKEN_HASHER } from './application/ports/token-hasher.port';
 import { Argon2PasswordHasher } from './infrastructure/crypto/argon2-password-hasher';
 import { NodeTokenGenerator } from './infrastructure/crypto/node-token-generator';
 import { Sha256TokenHasher } from './infrastructure/crypto/sha256-token-hasher';
+import { JwtAccessTokenService } from './infrastructure/jwt/jwt-access-token.service';
 
 @Module({
+  imports: [
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.getOrThrow<string>('auth.jwtAccessSecret'),
+        signOptions: { expiresIn: '15m' },
+      }),
+    }),
+  ],
   providers: [
     {
       provide: PASSWORD_HASHER,
@@ -20,7 +33,16 @@ import { Sha256TokenHasher } from './infrastructure/crypto/sha256-token-hasher';
       provide: TOKEN_HASHER,
       useClass: Sha256TokenHasher,
     },
+    {
+      provide: ACCESS_TOKEN_SERVICE,
+      useClass: JwtAccessTokenService,
+    },
   ],
-  exports: [PASSWORD_HASHER, TOKEN_GENERATOR, TOKEN_HASHER],
+  exports: [
+    PASSWORD_HASHER,
+    TOKEN_GENERATOR,
+    TOKEN_HASHER,
+    ACCESS_TOKEN_SERVICE,
+  ],
 })
 export class AuthModule {}
