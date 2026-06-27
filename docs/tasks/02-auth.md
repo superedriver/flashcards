@@ -147,8 +147,8 @@ apps/api/src/modules/auth/
 - [x] TASK-02.01 Add auth module skeleton
 - [x] TASK-02.02 Add auth domain types and safe user model
 - [x] TASK-02.03 Add password hasher port and Argon2 implementation
-- [ ] TASK-02.04 Add token generator and token hasher ports
-- [ ] TASK-02.05 Add access token service
+- [x] TASK-02.04 Add token generator and token hasher ports
+- [x] TASK-02.05 Add access token service
 - [ ] TASK-02.06 Add auth repository ports
 - [ ] TASK-02.07 Add Prisma user repository
 - [ ] TASK-02.08 Add Prisma refresh token repository
@@ -517,7 +517,7 @@ chore(auth): add Argon2 password hasher
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -651,7 +651,7 @@ chore(auth): add refresh token crypto services
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
