@@ -11,6 +11,7 @@ import {
 } from './config';
 import { RootResolver } from './presentation/graphql/root.resolver';
 import { HealthModule } from './modules/health/health.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { PrismaModule } from './infrastructure/prisma';
 
 @Module({
@@ -27,6 +28,7 @@ import { PrismaModule } from './infrastructure/prisma';
       playground: process.env.NODE_ENV !== 'production',
     }),
     HealthModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [RootResolver],

@@ -144,7 +144,7 @@ apps/api/src/modules/auth/
 ## Epic Summary
 
 ```md
-- [ ] TASK-02.01 Add auth module skeleton
+- [x] TASK-02.01 Add auth module skeleton
 - [ ] TASK-02.02 Add auth domain types and safe user model
 - [ ] TASK-02.03 Add password hasher port and Argon2 implementation
 - [ ] TASK-02.04 Add token generator and token hasher ports
@@ -173,7 +173,7 @@ apps/api/src/modules/auth/
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
