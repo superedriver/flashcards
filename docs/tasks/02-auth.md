@@ -155,7 +155,7 @@ apps/api/src/modules/auth/
 - [x] TASK-02.09 Add auth mappers
 - [x] TASK-02.10 Add RegisterUserUseCase
 - [x] TASK-02.11 Add auth GraphQL types and inputs
-- [ ] TASK-02.12 Add register mutation
+- [x] TASK-02.12 Add register mutation
 - [ ] TASK-02.13 Add LoginUseCase
 - [ ] TASK-02.14 Add login mutation
 - [ ] TASK-02.15 Add CurrentUser decorator and GraphQL auth guard
@@ -165,6 +165,7 @@ apps/api/src/modules/auth/
 - [ ] TASK-02.19 Add LogoutUseCase
 - [ ] TASK-02.20 Add logout mutation
 - [ ] TASK-02.21 Add auth final checks
+- [ ] TASK-02.22 Add auth use case unit tests
 ```
 
 ---
@@ -1459,7 +1460,7 @@ chore(auth): add GraphQL auth types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2382,6 +2383,7 @@ pnpm --filter @flashcards/api start:dev
 
 ```txt
 - Do not continue to email verification until auth checks pass.
+- Do not add automated tests in this task (see TASK-02.22).
 - Do not ignore token reuse bugs.
 - Do not expose sensitive fields for convenience.
 ```
@@ -2403,6 +2405,175 @@ pnpm --filter @flashcards/api start:dev
 
 ```txt
 chore(auth): finalize backend auth
+```
+
+---
+
+# TASK-02.22 Add auth use case unit tests
+
+## Status
+
+TODO
+
+## Context
+
+Auth is security-sensitive. Manual GraphQL checks in TASK-02.21 are not enough to prevent regressions in validation, token handling, and error behavior.
+
+Use cases depend on ports, so they can be tested quickly without database or GraphQL.
+
+## Goal
+
+Add unit tests for auth use cases and mappers.
+
+## Related Documents
+
+```txt
+docs/domain/auth-token-strategy.md
+docs/security/security-checklist.md
+docs/backend-clean-architecture.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/auth/application/use-cases/register-user.use-case.spec.ts
+apps/api/src/modules/auth/application/use-cases/login.use-case.spec.ts
+apps/api/src/modules/auth/application/use-cases/refresh-token.use-case.spec.ts
+apps/api/src/modules/auth/application/use-cases/logout.use-case.spec.ts
+apps/api/src/modules/auth/infrastructure/mappers/user.mapper.spec.ts
+apps/api/src/modules/auth/infrastructure/mappers/refresh-token.mapper.spec.ts
+```
+
+## Files to Modify
+
+```txt
+None
+```
+
+## Requirements
+
+Use Jest and co-located `*.spec.ts` files.
+
+Mock all ports. Do not use Prisma, database, or running GraphQL server.
+
+### RegisterUserUseCase
+
+Cover:
+
+```txt
+- normalizes email (trim + lowercase)
+- rejects invalid email format with VALIDATION_ERROR
+- rejects password shorter than 8 or longer than 128 with VALIDATION_ERROR
+- rejects existing email with USER_ALREADY_EXISTS
+- hashes password through PasswordHasherPort
+- creates user through UserRepositoryPort
+- stores refresh token hash, not raw refresh token
+- returns SafeUser, accessToken, and raw refreshToken
+```
+
+### LoginUseCase
+
+Cover:
+
+```txt
+- normalizes email
+- rejects missing user with INVALID_CREDENTIALS
+- rejects missing passwordHash with INVALID_CREDENTIALS
+- rejects blocked user with USER_BLOCKED
+- rejects invalid password with INVALID_CREDENTIALS
+- stores refresh token hash, not raw refresh token
+- returns SafeUser, accessToken, and raw refreshToken
+```
+
+### RefreshTokenUseCase
+
+Cover:
+
+```txt
+- hashes incoming raw refresh token before lookup
+- rejects unknown or inactive token
+- rejects blocked user
+- revokes old refresh token
+- stores new refresh token hash with rotation metadata when applicable
+- returns SafeUser, new accessToken, and new raw refreshToken
+- old refresh token cannot succeed after rotation
+```
+
+### LogoutUseCase
+
+Cover:
+
+```txt
+- hashes incoming raw refresh token before lookup
+- revokes active refresh token
+- returns success when token is missing or already revoked (idempotent)
+```
+
+### Mappers
+
+Cover:
+
+```txt
+- toSafeUser excludes passwordHash
+- toUserWithPassword includes passwordHash
+- toRefreshTokenRecord maps refresh token fields correctly
+```
+
+## Security Requirements
+
+```txt
+- Tests must not use real passwords from production.
+- Tests must not log tokens or password hashes.
+- Tests must assert SafeUser output never includes passwordHash.
+- Tests must assert raw refresh tokens are passed to repository only as hashes.
+```
+
+## Architecture Constraints
+
+```txt
+- Unit tests only in this task.
+- Mock ports; do not import Prisma.
+- Do not test GraphQL resolvers in this task.
+- Do not test Prisma repositories in this task.
+- Do not add e2e tests in this task.
+- Keep tests focused on business rules, not NestJS wiring.
+```
+
+## Do Not Do
+
+```txt
+- Do not add integration tests with database.
+- Do not add GraphQL e2e tests.
+- Do not refactor use cases unless required to make them testable.
+- Do not continue to EPIC-03 until this task passes.
+```
+
+## Acceptance Criteria
+
+```txt
+- RegisterUserUseCase tests exist and pass.
+- LoginUseCase tests exist and pass.
+- RefreshTokenUseCase tests exist and pass.
+- LogoutUseCase tests exist and pass.
+- Mapper tests exist and pass.
+- Tests run without database.
+- pnpm --filter @flashcards/api test passes.
+- API builds.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/api test
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+test(auth): add auth use case unit tests
 ```
 
 ---
@@ -2435,6 +2606,7 @@ EPIC-02 is complete when:
 - refresh token rotation works.
 - LogoutUseCase exists.
 - logout mutation works.
+- auth use case unit tests pass.
 - passwords are hashed.
 - refresh tokens are stored only as hashes.
 - sensitive fields are not exposed.
