@@ -15,6 +15,7 @@ import { PrismaUserRepository } from './infrastructure/persistence/prisma-user.r
 import { PrismaRefreshTokenRepository } from './infrastructure/persistence/prisma-refresh-token.repository';
 import { RegisterUserUseCase } from './application/use-cases/register-user.use-case';
 import { LoginUseCase } from './application/use-cases/login.use-case';
+import { GetMeUseCase } from './application/use-cases/get-me.use-case';
 import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
 import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
 
@@ -55,6 +56,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     },
     RegisterUserUseCase,
     LoginUseCase,
+    GetMeUseCase,
     AuthResolver,
     GqlAuthGuard,
   ],
@@ -67,6 +69,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     REFRESH_TOKEN_REPOSITORY,
     RegisterUserUseCase,
     LoginUseCase,
+    GetMeUseCase,
     GqlAuthGuard,
   ],
 })

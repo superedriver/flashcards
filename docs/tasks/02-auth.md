@@ -159,7 +159,7 @@ apps/api/src/modules/auth/
 - [x] TASK-02.13 Add LoginUseCase
 - [x] TASK-02.14 Add login mutation
 - [x] TASK-02.15 Add CurrentUser decorator and GraphQL auth guard
-- [ ] TASK-02.16 Add me query
+- [x] TASK-02.16 Add me query
 - [ ] TASK-02.17 Add RefreshTokenUseCase
 - [ ] TASK-02.18 Add refreshToken mutation
 - [ ] TASK-02.19 Add LogoutUseCase
@@ -1855,7 +1855,7 @@ chore(auth): add GraphQL auth guard
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
