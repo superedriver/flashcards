@@ -161,7 +161,7 @@ apps/api/src/modules/auth/
 - [x] TASK-02.15 Add CurrentUser decorator and GraphQL auth guard
 - [x] TASK-02.16 Add me query
 - [x] TASK-02.17 Add RefreshTokenUseCase
-- [ ] TASK-02.18 Add refreshToken mutation
+- [x] TASK-02.18 Add refreshToken mutation
 - [ ] TASK-02.19 Add LogoutUseCase
 - [ ] TASK-02.20 Add logout mutation
 - [ ] TASK-02.21 Add auth final checks
@@ -2062,7 +2062,7 @@ feat(auth): add refresh token use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
