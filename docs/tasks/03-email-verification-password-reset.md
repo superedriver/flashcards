@@ -26,7 +26,7 @@ docs/tasks/02-auth.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -141,7 +141,7 @@ Production behavior:
 - [x] TASK-03.15 Add ResetPasswordUseCase
 - [x] TASK-03.16 Add resetPassword mutation
 - [x] TASK-03.17 Add email verification and password reset final checks
-- [ ] TASK-03.18 Add email verification and password reset unit tests
+- [x] TASK-03.18 Add email verification and password reset unit tests
 ```
 
 ---
@@ -1910,7 +1910,7 @@ chore(auth): finalize email verification and password reset
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
