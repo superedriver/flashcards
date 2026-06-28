@@ -163,7 +163,7 @@ apps/api/src/modules/auth/
 - [x] TASK-02.17 Add RefreshTokenUseCase
 - [x] TASK-02.18 Add refreshToken mutation
 - [x] TASK-02.19 Add LogoutUseCase
-- [ ] TASK-02.20 Add logout mutation
+- [x] TASK-02.20 Add logout mutation
 - [ ] TASK-02.21 Add auth final checks
 - [ ] TASK-02.22 Add auth use case unit tests
 ```
@@ -2251,7 +2251,7 @@ feat(auth): add logout use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
