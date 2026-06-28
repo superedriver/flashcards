@@ -140,7 +140,8 @@ Production behavior:
 - [x] TASK-03.14 Add requestPasswordReset mutation
 - [x] TASK-03.15 Add ResetPasswordUseCase
 - [x] TASK-03.16 Add resetPassword mutation
-- [ ] TASK-03.17 Add email verification and password reset final checks
+- [x] TASK-03.17 Add email verification and password reset final checks
+- [ ] TASK-03.18 Add email verification and password reset unit tests
 ```
 
 ---
@@ -1820,7 +1821,7 @@ feat(auth): add reset password mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1877,6 +1878,7 @@ pnpm --filter @flashcards/api start:dev
 
 ```txt
 - Do not move to profile/settings until checks pass.
+- Do not add automated tests in this task (see TASK-03.18).
 - Do not expose tokens for frontend convenience.
 - Do not skip refresh token revocation after reset.
 ```
@@ -1900,6 +1902,194 @@ pnpm --filter @flashcards/api start:dev
 
 ```txt
 chore(auth): finalize email verification and password reset
+```
+
+---
+
+# TASK-03.18 Add email verification and password reset unit tests
+
+## Status
+
+TODO
+
+## Context
+
+Email verification and password reset are security-sensitive. Manual GraphQL checks in TASK-03.17 are not enough to prevent regressions in token handling, email enumeration behavior, and refresh token revocation.
+
+Use cases depend on ports, so they can be tested quickly without database, email provider, or GraphQL.
+
+## Goal
+
+Add unit tests for EPIC-03 use cases and email template helpers.
+
+## Related Documents
+
+```txt
+docs/domain/auth-token-strategy.md
+docs/security/security-checklist.md
+docs/backend-clean-architecture.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/auth/application/use-cases/create-email-verification-token.use-case.spec.ts
+apps/api/src/modules/auth/application/use-cases/verify-email.use-case.spec.ts
+apps/api/src/modules/auth/application/use-cases/resend-verification-email.use-case.spec.ts
+apps/api/src/modules/auth/application/use-cases/request-password-reset.use-case.spec.ts
+apps/api/src/modules/auth/application/use-cases/reset-password.use-case.spec.ts
+apps/api/src/modules/auth/application/email/email-templates.spec.ts
+```
+
+## Files to Modify
+
+```txt
+apps/api/src/modules/auth/application/use-cases/register-user.use-case.spec.ts
+```
+
+Extend existing RegisterUserUseCase tests if needed to cover verification email trigger behavior added in TASK-03.08.
+
+## Requirements
+
+Use Jest and co-located `*.spec.ts` files.
+
+Mock all ports and nested use cases. Do not use Prisma, database, running GraphQL server, or real email provider.
+
+### CreateEmailVerificationTokenUseCase
+
+Cover:
+
+```txt
+- revokes active verification tokens for user
+- generates raw token and stores only token hash with 24h expiry
+- sends verification email through EmailProviderPort
+- builds email with APP_WEB_URL verify link
+- returns success
+```
+
+### VerifyEmailUseCase
+
+Cover:
+
+```txt
+- hashes raw token before lookup
+- rejects missing, expired, or used token with VALIDATION_ERROR
+- marks user email as verified
+- marks verification token as used
+- returns SafeUser
+```
+
+### ResendVerificationEmailUseCase
+
+Cover:
+
+```txt
+- rejects missing user with UNAUTHORIZED
+- rejects blocked user with USER_BLOCKED
+- already verified user returns success without creating new token or sending email
+- unverified user triggers CreateEmailVerificationTokenUseCase
+- returns success
+```
+
+### RequestPasswordResetUseCase
+
+Cover:
+
+```txt
+- normalizes email (trim + lowercase)
+- missing user returns success without sending email
+- blocked user returns success without sending email
+- existing user revokes active reset tokens
+- stores only reset token hash with 1h expiry
+- sends password reset email through EmailProviderPort
+- always returns success
+```
+
+### ResetPasswordUseCase
+
+Cover:
+
+```txt
+- rejects password shorter than 8 or longer than 128 with VALIDATION_ERROR
+- hashes raw reset token before lookup
+- rejects missing, expired, or used token with VALIDATION_ERROR
+- hashes new password through PasswordHasherPort
+- updates user passwordHash
+- marks reset token as used
+- revokes all active refresh tokens for user
+- returns success
+```
+
+### Email template helpers
+
+Cover:
+
+```txt
+- buildVerificationEmail returns subject, text, and html
+- buildVerificationEmail uses /verify-email?token= link with APP_WEB_URL
+- buildPasswordResetEmail returns subject, text, and html
+- buildPasswordResetEmail uses /reset-password?token= link with APP_WEB_URL
+- token is URL-encoded in links when needed
+- copy mentions expiration and ignore-if-not-requested
+```
+
+## Security Requirements
+
+```txt
+- Tests must not use real passwords from production.
+- Tests must not log raw verification or reset tokens.
+- Tests must assert only token hashes are passed to repositories.
+- Tests must assert requestPasswordReset does not reveal whether email exists.
+- Tests must assert resetPassword revokes all refresh tokens.
+```
+
+## Architecture Constraints
+
+```txt
+- Unit tests only in this task.
+- Mock ports; do not import Prisma.
+- Do not test GraphQL resolvers in this task.
+- Do not test Prisma repositories in this task.
+- Do not add e2e tests in this task.
+- Keep tests focused on business rules, not NestJS wiring.
+```
+
+## Do Not Do
+
+```txt
+- Do not add integration tests with database.
+- Do not add GraphQL e2e tests.
+- Do not refactor use cases unless required to make them testable.
+- Do not continue to EPIC-04 until this task passes.
+```
+
+## Acceptance Criteria
+
+```txt
+- CreateEmailVerificationTokenUseCase tests exist and pass.
+- VerifyEmailUseCase tests exist and pass.
+- ResendVerificationEmailUseCase tests exist and pass.
+- RequestPasswordResetUseCase tests exist and pass.
+- ResetPasswordUseCase tests exist and pass.
+- Email template helper tests exist and pass.
+- Tests run without database.
+- pnpm --filter @flashcards/api test passes.
+- API builds.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/api test
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+test(auth): add email verification and password reset unit tests
 ```
 
 ---
@@ -1930,6 +2120,7 @@ EPIC-03 is complete when:
 - password reset revokes all refresh tokens.
 - token hashes only are stored.
 - sensitive fields are not exposed.
+- email verification and password reset unit tests pass.
 - implementation follows docs/domain/auth-token-strategy.md.
 - implementation follows docs/security/security-checklist.md.
 ```
