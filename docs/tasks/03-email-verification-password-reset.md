@@ -128,7 +128,7 @@ Production behavior:
 - [x] TASK-03.02 Add development email provider
 - [x] TASK-03.03 Add email token repository ports
 - [x] TASK-03.04 Add Prisma email verification token repository
-- [ ] TASK-03.05 Add Prisma password reset token repository
+- [x] TASK-03.05 Add Prisma password reset token repository
 - [ ] TASK-03.06 Add email template helpers
 - [ ] TASK-03.07 Add CreateEmailVerificationTokenUseCase
 - [ ] TASK-03.08 Send verification email after registration
@@ -596,7 +596,7 @@ chore(auth): add Prisma email verification token repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

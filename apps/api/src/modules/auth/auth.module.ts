@@ -7,6 +7,7 @@ import { TOKEN_GENERATOR } from './application/ports/token-generator.port';
 import { TOKEN_HASHER } from './application/ports/token-hasher.port';
 import { REFRESH_TOKEN_REPOSITORY } from './application/ports/refresh-token-repository.port';
 import { EMAIL_VERIFICATION_TOKEN_REPOSITORY } from './application/ports/email-verification-token-repository.port';
+import { PASSWORD_RESET_TOKEN_REPOSITORY } from './application/ports/password-reset-token-repository.port';
 import { USER_REPOSITORY } from './application/ports/user-repository.port';
 import { Argon2PasswordHasher } from './infrastructure/crypto/argon2-password-hasher';
 import { NodeTokenGenerator } from './infrastructure/crypto/node-token-generator';
@@ -15,6 +16,7 @@ import { JwtAccessTokenService } from './infrastructure/jwt/jwt-access-token.ser
 import { PrismaUserRepository } from './infrastructure/persistence/prisma-user.repository';
 import { PrismaRefreshTokenRepository } from './infrastructure/persistence/prisma-refresh-token.repository';
 import { PrismaEmailVerificationTokenRepository } from './infrastructure/persistence/prisma-email-verification-token.repository';
+import { PrismaPasswordResetTokenRepository } from './infrastructure/persistence/prisma-password-reset-token.repository';
 import { RegisterUserUseCase } from './application/use-cases/register-user.use-case';
 import { LoginUseCase } from './application/use-cases/login.use-case';
 import { GetMeUseCase } from './application/use-cases/get-me.use-case';
@@ -62,6 +64,10 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
       provide: EMAIL_VERIFICATION_TOKEN_REPOSITORY,
       useClass: PrismaEmailVerificationTokenRepository,
     },
+    {
+      provide: PASSWORD_RESET_TOKEN_REPOSITORY,
+      useClass: PrismaPasswordResetTokenRepository,
+    },
     RegisterUserUseCase,
     LoginUseCase,
     GetMeUseCase,
@@ -78,6 +84,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     USER_REPOSITORY,
     REFRESH_TOKEN_REPOSITORY,
     EMAIL_VERIFICATION_TOKEN_REPOSITORY,
+    PASSWORD_RESET_TOKEN_REPOSITORY,
     RegisterUserUseCase,
     LoginUseCase,
     GetMeUseCase,
