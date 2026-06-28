@@ -14,6 +14,7 @@ import { JwtAccessTokenService } from './infrastructure/jwt/jwt-access-token.ser
 import { PrismaUserRepository } from './infrastructure/persistence/prisma-user.repository';
 import { PrismaRefreshTokenRepository } from './infrastructure/persistence/prisma-refresh-token.repository';
 import { RegisterUserUseCase } from './application/use-cases/register-user.use-case';
+import { LoginUseCase } from './application/use-cases/login.use-case';
 import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
 
 @Module({
@@ -52,6 +53,7 @@ import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
       useClass: PrismaRefreshTokenRepository,
     },
     RegisterUserUseCase,
+    LoginUseCase,
     AuthResolver,
   ],
   exports: [
@@ -62,6 +64,7 @@ import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
     USER_REPOSITORY,
     REFRESH_TOKEN_REPOSITORY,
     RegisterUserUseCase,
+    LoginUseCase,
   ],
 })
 export class AuthModule {}
