@@ -27,7 +27,7 @@ docs/tasks/03-email-verification-password-reset.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -165,7 +165,7 @@ apps/api/src/modules/auth/
 - [x] TASK-02.19 Add LogoutUseCase
 - [x] TASK-02.20 Add logout mutation
 - [x] TASK-02.21 Add auth final checks
-- [ ] TASK-02.22 Add auth use case unit tests
+- [x] TASK-02.22 Add auth use case unit tests
 ```
 
 ---
@@ -2413,7 +2413,7 @@ chore(auth): finalize backend auth
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
