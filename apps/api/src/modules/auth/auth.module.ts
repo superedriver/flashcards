@@ -17,6 +17,7 @@ import { RegisterUserUseCase } from './application/use-cases/register-user.use-c
 import { LoginUseCase } from './application/use-cases/login.use-case';
 import { GetMeUseCase } from './application/use-cases/get-me.use-case';
 import { RefreshTokenUseCase } from './application/use-cases/refresh-token.use-case';
+import { LogoutUseCase } from './application/use-cases/logout.use-case';
 import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
 import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
 
@@ -59,6 +60,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     LoginUseCase,
     GetMeUseCase,
     RefreshTokenUseCase,
+    LogoutUseCase,
     AuthResolver,
     GqlAuthGuard,
   ],
@@ -73,6 +75,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     LoginUseCase,
     GetMeUseCase,
     RefreshTokenUseCase,
+    LogoutUseCase,
     GqlAuthGuard,
   ],
 })
