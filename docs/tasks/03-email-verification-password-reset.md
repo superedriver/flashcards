@@ -135,7 +135,7 @@ Production behavior:
 - [x] TASK-03.09 Add VerifyEmailUseCase
 - [x] TASK-03.10 Add verifyEmail mutation
 - [x] TASK-03.11 Add ResendVerificationEmailUseCase
-- [ ] TASK-03.12 Add resendVerificationEmail mutation
+- [x] TASK-03.12 Add resendVerificationEmail mutation
 - [ ] TASK-03.13 Add RequestPasswordResetUseCase
 - [ ] TASK-03.14 Add requestPasswordReset mutation
 - [ ] TASK-03.15 Add ResetPasswordUseCase
@@ -1309,7 +1309,7 @@ feat(auth): add resend verification use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
