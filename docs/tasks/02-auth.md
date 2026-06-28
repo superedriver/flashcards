@@ -154,7 +154,7 @@ apps/api/src/modules/auth/
 - [x] TASK-02.08 Add Prisma refresh token repository
 - [x] TASK-02.09 Add auth mappers
 - [x] TASK-02.10 Add RegisterUserUseCase
-- [ ] TASK-02.11 Add auth GraphQL types and inputs
+- [x] TASK-02.11 Add auth GraphQL types and inputs
 - [ ] TASK-02.12 Add register mutation
 - [ ] TASK-02.13 Add LoginUseCase
 - [ ] TASK-02.14 Add login mutation
@@ -1338,7 +1338,7 @@ feat(auth): add register user use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
