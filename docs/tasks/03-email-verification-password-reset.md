@@ -124,7 +124,7 @@ Production behavior:
 ## Epic Summary
 
 ```md
-- [ ] TASK-03.01 Add email module and email provider port
+- [x] TASK-03.01 Add email module and email provider port
 - [ ] TASK-03.02 Add development email provider
 - [ ] TASK-03.03 Add email token repository ports
 - [ ] TASK-03.04 Add Prisma email verification token repository
@@ -149,7 +149,7 @@ Production behavior:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
