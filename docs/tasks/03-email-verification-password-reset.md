@@ -132,7 +132,7 @@ Production behavior:
 - [x] TASK-03.06 Add email template helpers
 - [x] TASK-03.07 Add CreateEmailVerificationTokenUseCase
 - [x] TASK-03.08 Send verification email after registration
-- [ ] TASK-03.09 Add VerifyEmailUseCase
+- [x] TASK-03.09 Add VerifyEmailUseCase
 - [ ] TASK-03.10 Add verifyEmail mutation
 - [ ] TASK-03.11 Add ResendVerificationEmailUseCase
 - [ ] TASK-03.12 Add resendVerificationEmail mutation
@@ -1009,7 +1009,7 @@ feat(auth): send verification email after registration
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

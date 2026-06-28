@@ -15,4 +15,5 @@ export type UserRepositoryPort = {
   findById(id: string): Promise<SafeUser | null>;
   findByEmail(email: string): Promise<UserWithPassword | null>;
   create(input: CreateUserInput): Promise<SafeUser>;
+  markEmailVerified(userId: string, verifiedAt: Date): Promise<SafeUser>;
 };
