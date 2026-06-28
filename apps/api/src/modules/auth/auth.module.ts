@@ -6,6 +6,7 @@ import { PASSWORD_HASHER } from './application/ports/password-hasher.port';
 import { TOKEN_GENERATOR } from './application/ports/token-generator.port';
 import { TOKEN_HASHER } from './application/ports/token-hasher.port';
 import { REFRESH_TOKEN_REPOSITORY } from './application/ports/refresh-token-repository.port';
+import { EMAIL_VERIFICATION_TOKEN_REPOSITORY } from './application/ports/email-verification-token-repository.port';
 import { USER_REPOSITORY } from './application/ports/user-repository.port';
 import { Argon2PasswordHasher } from './infrastructure/crypto/argon2-password-hasher';
 import { NodeTokenGenerator } from './infrastructure/crypto/node-token-generator';
@@ -13,6 +14,7 @@ import { Sha256TokenHasher } from './infrastructure/crypto/sha256-token-hasher';
 import { JwtAccessTokenService } from './infrastructure/jwt/jwt-access-token.service';
 import { PrismaUserRepository } from './infrastructure/persistence/prisma-user.repository';
 import { PrismaRefreshTokenRepository } from './infrastructure/persistence/prisma-refresh-token.repository';
+import { PrismaEmailVerificationTokenRepository } from './infrastructure/persistence/prisma-email-verification-token.repository';
 import { RegisterUserUseCase } from './application/use-cases/register-user.use-case';
 import { LoginUseCase } from './application/use-cases/login.use-case';
 import { GetMeUseCase } from './application/use-cases/get-me.use-case';
@@ -56,6 +58,10 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
       provide: REFRESH_TOKEN_REPOSITORY,
       useClass: PrismaRefreshTokenRepository,
     },
+    {
+      provide: EMAIL_VERIFICATION_TOKEN_REPOSITORY,
+      useClass: PrismaEmailVerificationTokenRepository,
+    },
     RegisterUserUseCase,
     LoginUseCase,
     GetMeUseCase,
@@ -71,6 +77,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     ACCESS_TOKEN_SERVICE,
     USER_REPOSITORY,
     REFRESH_TOKEN_REPOSITORY,
+    EMAIL_VERIFICATION_TOKEN_REPOSITORY,
     RegisterUserUseCase,
     LoginUseCase,
     GetMeUseCase,
