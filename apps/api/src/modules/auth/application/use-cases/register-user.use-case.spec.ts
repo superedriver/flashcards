@@ -1,5 +1,6 @@
 import { ErrorCodes } from '../../../../common/errors';
 import { SafeUser } from '../../domain/types';
+import { CreateEmailVerificationTokenUseCase } from './create-email-verification-token.use-case';
 import { RegisterUserUseCase } from './register-user.use-case';
 
 const safeUser: SafeUser = {
@@ -15,6 +16,7 @@ const safeUser: SafeUser = {
 function createUseCase(options?: {
   existingUser?: boolean;
   createdUser?: SafeUser;
+  verificationEmailError?: Error;
 }) {
   const findByEmail = jest
     .fn()
@@ -36,6 +38,13 @@ function createUseCase(options?: {
     createdAt: new Date(),
   });
   const sign = jest.fn().mockResolvedValue('access-token');
+  const createEmailVerificationToken = jest.fn().mockImplementation(() => {
+    if (options?.verificationEmailError) {
+      return Promise.reject(options.verificationEmailError);
+    }
+
+    return Promise.resolve({ success: true });
+  });
 
   const useCase = new RegisterUserUseCase(
     { findById: jest.fn(), findByEmail, create },
@@ -49,6 +58,9 @@ function createUseCase(options?: {
       revokeAllForUser: jest.fn(),
     },
     { sign, verify: jest.fn() },
+    {
+      execute: createEmailVerificationToken,
+    } as unknown as CreateEmailVerificationTokenUseCase,
   );
 
   return {
@@ -58,6 +70,7 @@ function createUseCase(options?: {
     hash,
     hashToken,
     createRefreshToken,
+    createEmailVerificationToken,
   };
 }
 
@@ -122,7 +135,12 @@ describe('RegisterUserUseCase', () => {
   });
 
   it('stores refresh token hash and returns safe auth payload', async () => {
-    const { useCase, hashToken, createRefreshToken } = createUseCase();
+    const {
+      useCase,
+      hashToken,
+      createRefreshToken,
+      createEmailVerificationToken,
+    } = createUseCase();
 
     const result = await useCase.execute({
       email: 'test@example.com',
@@ -141,11 +159,36 @@ describe('RegisterUserUseCase', () => {
         tokenHash: 'raw-refresh-token',
       }),
     );
+    expect(createEmailVerificationToken).toHaveBeenCalledWith({
+      userId: safeUser.id,
+      email: safeUser.email,
+    });
     expect(result).toEqual({
       user: safeUser,
       accessToken: 'access-token',
       refreshToken: 'raw-refresh-token',
     });
     expect(result.user).not.toHaveProperty('passwordHash');
+  });
+
+  it('still returns auth payload when verification email fails', async () => {
+    const { useCase, createEmailVerificationToken } = createUseCase({
+      verificationEmailError: new Error('email provider unavailable'),
+    });
+
+    const result = await useCase.execute({
+      email: 'test@example.com',
+      password: 'password123',
+    });
+
+    expect(createEmailVerificationToken).toHaveBeenCalledWith({
+      userId: safeUser.id,
+      email: safeUser.email,
+    });
+    expect(result).toEqual({
+      user: safeUser,
+      accessToken: 'access-token',
+      refreshToken: 'raw-refresh-token',
+    });
   });
 });

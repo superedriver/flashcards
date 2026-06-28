@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import { SafeUser } from '../../domain/types';
 import {
@@ -22,6 +22,7 @@ import {
   USER_REPOSITORY,
   UserRepositoryPort,
 } from '../ports/user-repository.port';
+import { CreateEmailVerificationTokenUseCase } from './create-email-verification-token.use-case';
 
 export type RegisterUserInput = {
   email: string;
@@ -43,6 +44,8 @@ const REFRESH_TOKEN_EXPIRY_DAYS = 30;
 
 @Injectable()
 export class RegisterUserUseCase {
+  private readonly logger = new Logger(RegisterUserUseCase.name);
+
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: UserRepositoryPort,
@@ -56,6 +59,7 @@ export class RegisterUserUseCase {
     private readonly refreshTokenRepository: RefreshTokenRepositoryPort,
     @Inject(ACCESS_TOKEN_SERVICE)
     private readonly accessTokenService: AccessTokenServicePort,
+    private readonly createEmailVerificationTokenUseCase: CreateEmailVerificationTokenUseCase,
   ) {}
 
   async execute(input: RegisterUserInput): Promise<RegisterUserResult> {
@@ -108,6 +112,18 @@ export class RegisterUserUseCase {
       email: user.email,
       role: user.role,
     });
+
+    try {
+      await this.createEmailVerificationTokenUseCase.execute({
+        userId: user.id,
+        email: user.email,
+      });
+    } catch (error) {
+      this.logger.error(
+        'Failed to send verification email after registration',
+        error instanceof Error ? error.stack : String(error),
+      );
+    }
 
     return {
       user,
