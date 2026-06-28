@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { EmailModule } from '../email/email.module';
 import { ACCESS_TOKEN_SERVICE } from './application/ports/access-token-service.port';
 import { PASSWORD_HASHER } from './application/ports/password-hasher.port';
 import { TOKEN_GENERATOR } from './application/ports/token-generator.port';
@@ -22,11 +23,13 @@ import { LoginUseCase } from './application/use-cases/login.use-case';
 import { GetMeUseCase } from './application/use-cases/get-me.use-case';
 import { RefreshTokenUseCase } from './application/use-cases/refresh-token.use-case';
 import { LogoutUseCase } from './application/use-cases/logout.use-case';
+import { CreateEmailVerificationTokenUseCase } from './application/use-cases/create-email-verification-token.use-case';
 import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
 import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
 
 @Module({
   imports: [
+    EmailModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -73,6 +76,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     GetMeUseCase,
     RefreshTokenUseCase,
     LogoutUseCase,
+    CreateEmailVerificationTokenUseCase,
     AuthResolver,
     GqlAuthGuard,
   ],
@@ -90,6 +94,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     GetMeUseCase,
     RefreshTokenUseCase,
     LogoutUseCase,
+    CreateEmailVerificationTokenUseCase,
     GqlAuthGuard,
   ],
 })
