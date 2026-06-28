@@ -6,6 +6,7 @@ import { LogoutUseCase } from '../../../application/use-cases/logout.use-case';
 import { RefreshTokenUseCase } from '../../../application/use-cases/refresh-token.use-case';
 import { RegisterUserUseCase } from '../../../application/use-cases/register-user.use-case';
 import { VerifyEmailUseCase } from '../../../application/use-cases/verify-email.use-case';
+import { ResendVerificationEmailUseCase } from '../../../application/use-cases/resend-verification-email.use-case';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { GqlAuthGuard } from '../guards/gql-auth.guard';
 import { LoginInput } from '../inputs/login.input';
@@ -27,6 +28,7 @@ export class AuthResolver {
     private readonly logoutUseCase: LogoutUseCase,
     private readonly getMeUseCase: GetMeUseCase,
     private readonly verifyEmailUseCase: VerifyEmailUseCase,
+    private readonly resendVerificationEmailUseCase: ResendVerificationEmailUseCase,
   ) {}
 
   @Mutation(() => AuthPayloadType)
@@ -91,6 +93,18 @@ export class AuthResolver {
       ...user,
       role: user.role as UserRole,
     };
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async resendVerificationEmail(
+    @CurrentUser() user: AuthUser,
+  ): Promise<boolean> {
+    const result = await this.resendVerificationEmailUseCase.execute({
+      userId: user.id,
+    });
+
+    return result.success;
   }
 
   @Query(() => SafeUserType)
