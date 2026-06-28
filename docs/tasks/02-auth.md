@@ -158,7 +158,7 @@ apps/api/src/modules/auth/
 - [x] TASK-02.12 Add register mutation
 - [x] TASK-02.13 Add LoginUseCase
 - [x] TASK-02.14 Add login mutation
-- [ ] TASK-02.15 Add CurrentUser decorator and GraphQL auth guard
+- [x] TASK-02.15 Add CurrentUser decorator and GraphQL auth guard
 - [ ] TASK-02.16 Add me query
 - [ ] TASK-02.17 Add RefreshTokenUseCase
 - [ ] TASK-02.18 Add refreshToken mutation
@@ -1764,7 +1764,7 @@ feat(auth): add login mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
