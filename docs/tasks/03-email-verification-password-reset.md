@@ -126,7 +126,7 @@ Production behavior:
 ```md
 - [x] TASK-03.01 Add email module and email provider port
 - [x] TASK-03.02 Add development email provider
-- [ ] TASK-03.03 Add email token repository ports
+- [x] TASK-03.03 Add email token repository ports
 - [ ] TASK-03.04 Add Prisma email verification token repository
 - [ ] TASK-03.05 Add Prisma password reset token repository
 - [ ] TASK-03.06 Add email template helpers
@@ -367,7 +367,7 @@ chore(email): add development email provider
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
