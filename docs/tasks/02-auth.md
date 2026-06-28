@@ -157,7 +157,7 @@ apps/api/src/modules/auth/
 - [x] TASK-02.11 Add auth GraphQL types and inputs
 - [x] TASK-02.12 Add register mutation
 - [x] TASK-02.13 Add LoginUseCase
-- [ ] TASK-02.14 Add login mutation
+- [x] TASK-02.14 Add login mutation
 - [ ] TASK-02.15 Add CurrentUser decorator and GraphQL auth guard
 - [ ] TASK-02.16 Add me query
 - [ ] TASK-02.17 Add RefreshTokenUseCase
@@ -1682,7 +1682,7 @@ feat(auth): add login use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
