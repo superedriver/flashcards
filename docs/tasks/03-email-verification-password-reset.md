@@ -131,7 +131,7 @@ Production behavior:
 - [x] TASK-03.05 Add Prisma password reset token repository
 - [x] TASK-03.06 Add email template helpers
 - [x] TASK-03.07 Add CreateEmailVerificationTokenUseCase
-- [ ] TASK-03.08 Send verification email after registration
+- [x] TASK-03.08 Send verification email after registration
 - [ ] TASK-03.09 Add VerifyEmailUseCase
 - [ ] TASK-03.10 Add verifyEmail mutation
 - [ ] TASK-03.11 Add ResendVerificationEmailUseCase
@@ -915,7 +915,7 @@ feat(auth): add email verification token use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
