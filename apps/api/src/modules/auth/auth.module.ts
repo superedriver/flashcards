@@ -16,6 +16,7 @@ import { PrismaRefreshTokenRepository } from './infrastructure/persistence/prism
 import { RegisterUserUseCase } from './application/use-cases/register-user.use-case';
 import { LoginUseCase } from './application/use-cases/login.use-case';
 import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
+import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
     RegisterUserUseCase,
     LoginUseCase,
     AuthResolver,
+    GqlAuthGuard,
   ],
   exports: [
     PASSWORD_HASHER,
@@ -65,6 +67,7 @@ import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
     REFRESH_TOKEN_REPOSITORY,
     RegisterUserUseCase,
     LoginUseCase,
+    GqlAuthGuard,
   ],
 })
 export class AuthModule {}
