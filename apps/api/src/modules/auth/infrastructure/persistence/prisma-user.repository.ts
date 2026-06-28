@@ -36,4 +36,13 @@ export class PrismaUserRepository implements UserRepositoryPort {
 
     return toSafeUser(user);
   }
+
+  async markEmailVerified(userId: string, verifiedAt: Date): Promise<SafeUser> {
+    const user = await this.prisma.user.update({
+      where: { id: userId },
+      data: { emailVerifiedAt: verifiedAt },
+    });
+
+    return toSafeUser(user);
+  }
 }

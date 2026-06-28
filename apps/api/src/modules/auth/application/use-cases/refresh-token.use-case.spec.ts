@@ -57,7 +57,12 @@ function createUseCase(options?: {
   const sign = jest.fn().mockResolvedValue('new-access-token');
 
   const useCase = new RefreshTokenUseCase(
-    { findById, findByEmail: jest.fn(), create: jest.fn() },
+    {
+      findById,
+      findByEmail: jest.fn(),
+      create: jest.fn(),
+      markEmailVerified: jest.fn(),
+    },
     { generateRefreshToken },
     { hash: hashToken },
     {
