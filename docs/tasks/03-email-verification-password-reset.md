@@ -134,7 +134,7 @@ Production behavior:
 - [x] TASK-03.08 Send verification email after registration
 - [x] TASK-03.09 Add VerifyEmailUseCase
 - [x] TASK-03.10 Add verifyEmail mutation
-- [ ] TASK-03.11 Add ResendVerificationEmailUseCase
+- [x] TASK-03.11 Add ResendVerificationEmailUseCase
 - [ ] TASK-03.12 Add resendVerificationEmail mutation
 - [ ] TASK-03.13 Add RequestPasswordResetUseCase
 - [ ] TASK-03.14 Add requestPasswordReset mutation
@@ -1206,7 +1206,7 @@ feat(auth): add verify email mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
