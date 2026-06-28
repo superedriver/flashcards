@@ -5,12 +5,14 @@ import { LoginUseCase } from '../../../application/use-cases/login.use-case';
 import { LogoutUseCase } from '../../../application/use-cases/logout.use-case';
 import { RefreshTokenUseCase } from '../../../application/use-cases/refresh-token.use-case';
 import { RegisterUserUseCase } from '../../../application/use-cases/register-user.use-case';
+import { VerifyEmailUseCase } from '../../../application/use-cases/verify-email.use-case';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { GqlAuthGuard } from '../guards/gql-auth.guard';
 import { LoginInput } from '../inputs/login.input';
 import { LogoutInput } from '../inputs/logout.input';
 import { RefreshTokenInput } from '../inputs/refresh-token.input';
 import { RegisterInput } from '../inputs/register.input';
+import { VerifyEmailInput } from '../inputs/verify-email.input';
 import { AuthPayloadType } from '../types/auth-payload.type';
 import { SafeUserType } from '../types/safe-user.type';
 import { UserRole } from '../types/user-role.type';
@@ -24,6 +26,7 @@ export class AuthResolver {
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
     private readonly logoutUseCase: LogoutUseCase,
     private readonly getMeUseCase: GetMeUseCase,
+    private readonly verifyEmailUseCase: VerifyEmailUseCase,
   ) {}
 
   @Mutation(() => AuthPayloadType)
@@ -76,6 +79,18 @@ export class AuthResolver {
   async logout(@Args('input') input: LogoutInput): Promise<boolean> {
     const result = await this.logoutUseCase.execute(input);
     return result.success;
+  }
+
+  @Mutation(() => SafeUserType)
+  async verifyEmail(
+    @Args('input') input: VerifyEmailInput,
+  ): Promise<SafeUserType> {
+    const user = await this.verifyEmailUseCase.execute(input);
+
+    return {
+      ...user,
+      role: user.role as UserRole,
+    };
   }
 
   @Query(() => SafeUserType)
