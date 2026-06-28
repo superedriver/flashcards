@@ -8,6 +8,7 @@ import { RegisterUserUseCase } from '../../../application/use-cases/register-use
 import { VerifyEmailUseCase } from '../../../application/use-cases/verify-email.use-case';
 import { ResendVerificationEmailUseCase } from '../../../application/use-cases/resend-verification-email.use-case';
 import { RequestPasswordResetUseCase } from '../../../application/use-cases/request-password-reset.use-case';
+import { ResetPasswordUseCase } from '../../../application/use-cases/reset-password.use-case';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { GqlAuthGuard } from '../guards/gql-auth.guard';
 import { LoginInput } from '../inputs/login.input';
@@ -15,6 +16,7 @@ import { LogoutInput } from '../inputs/logout.input';
 import { RefreshTokenInput } from '../inputs/refresh-token.input';
 import { RegisterInput } from '../inputs/register.input';
 import { RequestPasswordResetInput } from '../inputs/request-password-reset.input';
+import { ResetPasswordInput } from '../inputs/reset-password.input';
 import { VerifyEmailInput } from '../inputs/verify-email.input';
 import { AuthPayloadType } from '../types/auth-payload.type';
 import { SafeUserType } from '../types/safe-user.type';
@@ -32,6 +34,7 @@ export class AuthResolver {
     private readonly verifyEmailUseCase: VerifyEmailUseCase,
     private readonly resendVerificationEmailUseCase: ResendVerificationEmailUseCase,
     private readonly requestPasswordResetUseCase: RequestPasswordResetUseCase,
+    private readonly resetPasswordUseCase: ResetPasswordUseCase,
   ) {}
 
   @Mutation(() => AuthPayloadType)
@@ -103,6 +106,15 @@ export class AuthResolver {
     @Args('input') input: RequestPasswordResetInput,
   ): Promise<boolean> {
     const result = await this.requestPasswordResetUseCase.execute(input);
+
+    return result.success;
+  }
+
+  @Mutation(() => Boolean)
+  async resetPassword(
+    @Args('input') input: ResetPasswordInput,
+  ): Promise<boolean> {
+    const result = await this.resetPasswordUseCase.execute(input);
 
     return result.success;
   }
