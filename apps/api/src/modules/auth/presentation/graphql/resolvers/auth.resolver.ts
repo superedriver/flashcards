@@ -2,11 +2,13 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GetMeUseCase } from '../../../application/use-cases/get-me.use-case';
 import { LoginUseCase } from '../../../application/use-cases/login.use-case';
+import { LogoutUseCase } from '../../../application/use-cases/logout.use-case';
 import { RefreshTokenUseCase } from '../../../application/use-cases/refresh-token.use-case';
 import { RegisterUserUseCase } from '../../../application/use-cases/register-user.use-case';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { GqlAuthGuard } from '../guards/gql-auth.guard';
 import { LoginInput } from '../inputs/login.input';
+import { LogoutInput } from '../inputs/logout.input';
 import { RefreshTokenInput } from '../inputs/refresh-token.input';
 import { RegisterInput } from '../inputs/register.input';
 import { AuthPayloadType } from '../types/auth-payload.type';
@@ -20,6 +22,7 @@ export class AuthResolver {
     private readonly registerUserUseCase: RegisterUserUseCase,
     private readonly loginUseCase: LoginUseCase,
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
+    private readonly logoutUseCase: LogoutUseCase,
     private readonly getMeUseCase: GetMeUseCase,
   ) {}
 
@@ -67,6 +70,12 @@ export class AuthResolver {
         role: result.user.role as UserRole,
       },
     };
+  }
+
+  @Mutation(() => Boolean)
+  async logout(@Args('input') input: LogoutInput): Promise<boolean> {
+    const result = await this.logoutUseCase.execute(input);
+    return result.success;
   }
 
   @Query(() => SafeUserType)
