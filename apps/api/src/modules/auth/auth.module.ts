@@ -26,6 +26,7 @@ import { LogoutUseCase } from './application/use-cases/logout.use-case';
 import { CreateEmailVerificationTokenUseCase } from './application/use-cases/create-email-verification-token.use-case';
 import { VerifyEmailUseCase } from './application/use-cases/verify-email.use-case';
 import { ResendVerificationEmailUseCase } from './application/use-cases/resend-verification-email.use-case';
+import { RequestPasswordResetUseCase } from './application/use-cases/request-password-reset.use-case';
 import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
 import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
 
@@ -81,6 +82,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     CreateEmailVerificationTokenUseCase,
     VerifyEmailUseCase,
     ResendVerificationEmailUseCase,
+    RequestPasswordResetUseCase,
     AuthResolver,
     GqlAuthGuard,
   ],
@@ -101,6 +103,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     CreateEmailVerificationTokenUseCase,
     VerifyEmailUseCase,
     ResendVerificationEmailUseCase,
+    RequestPasswordResetUseCase,
     GqlAuthGuard,
   ],
 })
