@@ -47,7 +47,13 @@ function createUseCase(options?: {
   });
 
   const useCase = new RegisterUserUseCase(
-    { findById: jest.fn(), findByEmail, create, markEmailVerified: jest.fn() },
+    {
+      findById: jest.fn(),
+      findByEmail,
+      create,
+      markEmailVerified: jest.fn(),
+      updatePasswordHash: jest.fn(),
+    },
     { hash, verify: jest.fn() },
     { generateRefreshToken },
     { hash: hashToken },

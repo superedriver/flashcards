@@ -49,6 +49,7 @@ function createUseCase(options?: {
       findByEmail,
       create: jest.fn(),
       markEmailVerified: jest.fn(),
+      updatePasswordHash: jest.fn(),
     },
     { hash: jest.fn(), verify },
     { generateRefreshToken },
