@@ -5,6 +5,7 @@ import { USER_SETTINGS_REPOSITORY } from './application/ports/user-settings-repo
 import { GetMyAccountUseCase } from './application/use-cases/get-my-account.use-case';
 import { PrismaUserProfileRepository } from './infrastructure/persistence/prisma-user-profile.repository';
 import { PrismaUserSettingsRepository } from './infrastructure/persistence/prisma-user-settings.repository';
+import { AccountResolver } from './presentation/graphql/resolvers/account.resolver';
 
 @Module({
   imports: [AuthModule],
@@ -18,6 +19,7 @@ import { PrismaUserSettingsRepository } from './infrastructure/persistence/prism
       useClass: PrismaUserSettingsRepository,
     },
     GetMyAccountUseCase,
+    AccountResolver,
   ],
   exports: [
     USER_PROFILE_REPOSITORY,
