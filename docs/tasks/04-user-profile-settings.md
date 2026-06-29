@@ -140,7 +140,7 @@ lessonSize:
 ## Epic Summary
 
 ```md
-- [ ] TASK-04.01 Add account module skeleton
+- [x] TASK-04.01 Add account module skeleton
 - [ ] TASK-04.02 Add profile and settings domain types
 - [ ] TASK-04.03 Add profile and settings repository ports
 - [ ] TASK-04.04 Add Prisma profile repository
@@ -161,7 +161,7 @@ lessonSize:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
