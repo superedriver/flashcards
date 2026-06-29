@@ -145,7 +145,7 @@ lessonSize:
 - [x] TASK-04.03 Add profile and settings repository ports
 - [x] TASK-04.04 Add Prisma profile repository
 - [x] TASK-04.05 Add Prisma settings repository
-- [ ] TASK-04.06 Add GetMyAccountUseCase
+- [x] TASK-04.06 Add GetMyAccountUseCase
 - [ ] TASK-04.07 Add account GraphQL types and inputs
 - [ ] TASK-04.08 Extend me query or add myAccount query
 - [ ] TASK-04.09 Add UpdateProfileUseCase
@@ -707,7 +707,7 @@ chore(account): add Prisma settings repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
