@@ -148,7 +148,7 @@ lessonSize:
 - [x] TASK-04.06 Add GetMyAccountUseCase
 - [x] TASK-04.07 Add account GraphQL types and inputs
 - [x] TASK-04.08 Extend me query or add myAccount query
-- [ ] TASK-04.09 Add UpdateProfileUseCase
+- [x] TASK-04.09 Add UpdateProfileUseCase
 - [ ] TASK-04.10 Add updateProfile mutation
 - [ ] TASK-04.11 Add UpdateSettingsUseCase
 - [ ] TASK-04.12 Add updateSettings mutation
@@ -1034,7 +1034,7 @@ feat(account): add my account query
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
