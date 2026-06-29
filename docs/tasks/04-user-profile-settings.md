@@ -153,6 +153,7 @@ lessonSize:
 - [x] TASK-04.11 Add UpdateSettingsUseCase
 - [x] TASK-04.12 Add updateSettings mutation
 - [x] TASK-04.13 Add user profile and settings final checks
+- [x] TASK-04.14 Add account use case unit tests
 ```
 
 ---
@@ -1513,6 +1514,7 @@ pnpm --filter @flashcards/api start:dev
 
 ```txt
 - Do not move to deck/card implementation until checks pass.
+- Do not add automated tests in this task (see TASK-04.14).
 - Do not expose sensitive fields for frontend convenience.
 ```
 
@@ -1539,6 +1541,167 @@ chore(account): finalize profile and settings
 
 ---
 
+# TASK-04.14 Add account use case unit tests
+
+## Status
+
+DONE
+
+## Context
+
+Profile and settings are part of authenticated account management. Manual GraphQL checks in TASK-04.13 are not enough to prevent regressions in validation, blocked-user handling, and create-if-missing behavior.
+
+Use cases depend on ports, so they can be tested quickly without database or GraphQL.
+
+## Goal
+
+Add unit tests for EPIC-04 account use cases and mappers.
+
+## Related Documents
+
+```txt
+docs/domain/permissions.md
+docs/security/security-checklist.md
+docs/backend-clean-architecture.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/account/application/use-cases/get-my-account.use-case.spec.ts
+apps/api/src/modules/account/application/use-cases/update-profile.use-case.spec.ts
+apps/api/src/modules/account/application/use-cases/update-settings.use-case.spec.ts
+apps/api/src/modules/account/infrastructure/mappers/user-profile.mapper.spec.ts
+apps/api/src/modules/account/infrastructure/mappers/user-settings.mapper.spec.ts
+```
+
+## Requirements
+
+Use Jest and co-located `*.spec.ts` files.
+
+Mock all ports. Do not use Prisma, database, or running GraphQL server.
+
+### GetMyAccountUseCase
+
+Cover:
+
+```txt
+- rejects missing user with UNAUTHORIZED
+- rejects blocked user with USER_BLOCKED
+- creates profile when missing
+- creates settings when missing
+- returns MyAccount with user, profile, and settings when both already exist
+- does not create profile/settings when they already exist
+```
+
+### UpdateProfileUseCase
+
+Cover:
+
+```txt
+- rejects missing user with UNAUTHORIZED
+- rejects blocked user with USER_BLOCKED
+- trims displayName and updates profile
+- empty displayName after trim becomes null
+- rejects displayName longer than 80 with VALIDATION_ERROR
+- updates avatarUrl with valid http/https URL
+- rejects invalid avatarUrl with VALIDATION_ERROR
+- rejects avatarUrl longer than 500 with VALIDATION_ERROR
+- creates profile when missing, then updates
+- returns updated profile
+- updates only provided fields
+```
+
+### UpdateSettingsUseCase
+
+Cover:
+
+```txt
+- rejects missing user with UNAUTHORIZED
+- rejects blocked user with USER_BLOCKED
+- accepts supported interfaceLocale values en and uk
+- rejects unsupported interfaceLocale with VALIDATION_ERROR
+- accepts themePreference SYSTEM, LIGHT, DARK
+- rejects invalid reminderTime with VALIDATION_ERROR
+- accepts valid reminderTime in HH:mm format
+- rejects empty timezone with VALIDATION_ERROR
+- rejects timezone longer than 100 with VALIDATION_ERROR
+- rejects lessonSize below 5 or above 100 with VALIDATION_ERROR
+- rejects non-integer lessonSize with VALIDATION_ERROR
+- updates notificationsEnabled and audioAutoplayEnabled booleans
+- creates settings when missing, then updates
+- returns updated settings
+- updates only provided fields
+```
+
+### Mappers
+
+Cover:
+
+```txt
+- toUserProfile maps all fields from Prisma record
+- toUserSettings maps all fields from Prisma record
+- toUserSettings casts themePreference to ThemePreference
+```
+
+## Security Requirements
+
+```txt
+- Tests must not use real production credentials.
+- Tests must assert blocked users cannot update profile or settings.
+- Tests must assert userId comes from use case input only (resolver responsibility stays outside tests).
+- Tests must not expose passwordHash or token hashes.
+```
+
+## Architecture Constraints
+
+```txt
+- Unit tests only in this task.
+- Mock ports; do not import Prisma client in use case tests.
+- Do not test GraphQL resolvers in this task.
+- Do not test Prisma repositories in this task.
+- Do not add e2e tests in this task.
+- Keep tests focused on business rules, not NestJS wiring.
+```
+
+## Do Not Do
+
+```txt
+- Do not add integration tests with database.
+- Do not add GraphQL e2e tests.
+- Do not refactor use cases unless required to make them testable.
+- Do not continue to EPIC-05 until this task passes.
+```
+
+## Acceptance Criteria
+
+```txt
+- GetMyAccountUseCase tests exist and pass.
+- UpdateProfileUseCase tests exist and pass.
+- UpdateSettingsUseCase tests exist and pass.
+- Mapper tests exist and pass.
+- Tests run without database.
+- pnpm --filter @flashcards/api test passes.
+- API builds.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/api test
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+test(account): add profile and settings unit tests
+```
+
+---
+
 ## Epic Completion Criteria
 
 EPIC-04 is complete when:
@@ -1559,6 +1722,7 @@ EPIC-04 is complete when:
 - updateSettings mutation works.
 - User can update only own profile/settings.
 - Sensitive fields are not exposed.
+- Account use case unit tests exist and pass.
 - implementation follows docs/domain/permissions.md.
 - implementation follows docs/security/security-checklist.md.
 ```
