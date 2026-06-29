@@ -141,7 +141,7 @@ lessonSize:
 
 ```md
 - [x] TASK-04.01 Add account module skeleton
-- [ ] TASK-04.02 Add profile and settings domain types
+- [x] TASK-04.02 Add profile and settings domain types
 - [ ] TASK-04.03 Add profile and settings repository ports
 - [ ] TASK-04.04 Add Prisma profile repository
 - [ ] TASK-04.05 Add Prisma settings repository
@@ -262,7 +262,7 @@ chore(account): add account module skeleton
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
