@@ -151,7 +151,7 @@ lessonSize:
 - [x] TASK-04.09 Add UpdateProfileUseCase
 - [x] TASK-04.10 Add updateProfile mutation
 - [x] TASK-04.11 Add UpdateSettingsUseCase
-- [ ] TASK-04.12 Add updateSettings mutation
+- [x] TASK-04.12 Add updateSettings mutation
 - [ ] TASK-04.13 Add user profile and settings final checks
 ```
 
@@ -1373,7 +1373,7 @@ feat(account): add update settings use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

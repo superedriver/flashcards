@@ -6,16 +6,20 @@ import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-a
 import { UserRole } from '../../../../auth/presentation/graphql/types/user-role.type';
 import { GetMyAccountUseCase } from '../../../application/use-cases/get-my-account.use-case';
 import { UpdateProfileUseCase } from '../../../application/use-cases/update-profile.use-case';
+import { UpdateSettingsUseCase } from '../../../application/use-cases/update-settings.use-case';
 import { UpdateProfileInput } from '../inputs/update-profile.input';
+import { UpdateSettingsInput } from '../inputs/update-settings.input';
 import { MyAccountType } from '../types/my-account.type';
 import { ThemePreference } from '../types/theme-preference.type';
 import { UserProfileType } from '../types/user-profile.type';
+import { UserSettingsType } from '../types/user-settings.type';
 
 @Resolver()
 export class AccountResolver {
   constructor(
     private readonly getMyAccountUseCase: GetMyAccountUseCase,
     private readonly updateProfileUseCase: UpdateProfileUseCase,
+    private readonly updateSettingsUseCase: UpdateSettingsUseCase,
   ) {}
 
   @Query(() => MyAccountType)
@@ -47,5 +51,28 @@ export class AccountResolver {
       displayName: input.displayName,
       avatarUrl: input.avatarUrl,
     });
+  }
+
+  @Mutation(() => UserSettingsType)
+  @UseGuards(GqlAuthGuard)
+  async updateSettings(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: UpdateSettingsInput,
+  ): Promise<UserSettingsType> {
+    const settings = await this.updateSettingsUseCase.execute({
+      userId: user.id,
+      interfaceLocale: input.interfaceLocale,
+      themePreference: input.themePreference,
+      notificationsEnabled: input.notificationsEnabled,
+      reminderTime: input.reminderTime,
+      timezone: input.timezone,
+      audioAutoplayEnabled: input.audioAutoplayEnabled,
+      lessonSize: input.lessonSize,
+    });
+
+    return {
+      ...settings,
+      themePreference: settings.themePreference as ThemePreference,
+    };
   }
 }
