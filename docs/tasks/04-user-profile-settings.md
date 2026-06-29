@@ -150,7 +150,7 @@ lessonSize:
 - [x] TASK-04.08 Extend me query or add myAccount query
 - [x] TASK-04.09 Add UpdateProfileUseCase
 - [x] TASK-04.10 Add updateProfile mutation
-- [ ] TASK-04.11 Add UpdateSettingsUseCase
+- [x] TASK-04.11 Add UpdateSettingsUseCase
 - [ ] TASK-04.12 Add updateSettings mutation
 - [ ] TASK-04.13 Add user profile and settings final checks
 ```
@@ -1240,7 +1240,7 @@ feat(account): add update profile mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

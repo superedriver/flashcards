@@ -4,6 +4,7 @@ import { USER_PROFILE_REPOSITORY } from './application/ports/user-profile-reposi
 import { USER_SETTINGS_REPOSITORY } from './application/ports/user-settings-repository.port';
 import { GetMyAccountUseCase } from './application/use-cases/get-my-account.use-case';
 import { UpdateProfileUseCase } from './application/use-cases/update-profile.use-case';
+import { UpdateSettingsUseCase } from './application/use-cases/update-settings.use-case';
 import { PrismaUserProfileRepository } from './infrastructure/persistence/prisma-user-profile.repository';
 import { PrismaUserSettingsRepository } from './infrastructure/persistence/prisma-user-settings.repository';
 import { AccountResolver } from './presentation/graphql/resolvers/account.resolver';
@@ -21,6 +22,7 @@ import { AccountResolver } from './presentation/graphql/resolvers/account.resolv
     },
     GetMyAccountUseCase,
     UpdateProfileUseCase,
+    UpdateSettingsUseCase,
     AccountResolver,
   ],
   exports: [
@@ -28,6 +30,7 @@ import { AccountResolver } from './presentation/graphql/resolvers/account.resolv
     USER_SETTINGS_REPOSITORY,
     GetMyAccountUseCase,
     UpdateProfileUseCase,
+    UpdateSettingsUseCase,
   ],
 })
 export class AccountModule {}
