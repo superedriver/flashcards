@@ -13,6 +13,7 @@ import { RootResolver } from './presentation/graphql/root.resolver';
 import { HealthModule } from './modules/health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AccountModule } from './modules/account/account.module';
+import { DecksModule } from './modules/decks/decks.module';
 import { EmailModule } from './modules/email/email.module';
 import { PrismaModule } from './infrastructure/prisma';
 
@@ -32,6 +33,7 @@ import { PrismaModule } from './infrastructure/prisma';
     HealthModule,
     AuthModule,
     AccountModule,
+    DecksModule,
     EmailModule,
   ],
   controllers: [],
