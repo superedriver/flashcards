@@ -180,7 +180,7 @@ position:
 - [x] TASK-05.02 Add decks module skeleton
 - [x] TASK-05.03 Add deck/card domain types
 - [x] TASK-05.04 Add deck/card repository ports
-- [ ] TASK-05.05 Add DeckPermissionService
+- [x] TASK-05.05 Add DeckPermissionService
 - [ ] TASK-05.06 Add Prisma deck repository
 - [ ] TASK-05.07 Add Prisma card repository
 - [ ] TASK-05.08 Add deck/card GraphQL types and inputs
@@ -717,7 +717,7 @@ chore(decks): add deck and card repository ports
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
