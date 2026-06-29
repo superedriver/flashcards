@@ -176,7 +176,7 @@ position:
 ## Epic Summary
 
 ```md
-- [ ] TASK-05.01 Add deck/card Prisma schema
+- [x] TASK-05.01 Add deck/card Prisma schema
 - [ ] TASK-05.02 Add decks module skeleton
 - [ ] TASK-05.03 Add deck/card domain types
 - [ ] TASK-05.04 Add deck/card repository ports
@@ -211,7 +211,7 @@ position:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

@@ -19,6 +19,19 @@ enum ThemePreference {
   DARK
 }
 
+enum DeckVisibility {
+  PRIVATE
+  PUBLIC
+}
+
+enum DeckModerationStatus {
+  NONE
+  PENDING
+  APPROVED
+  REJECTED
+  HIDDEN
+}
+
 model User {
   id                String    @id @default(uuid())
   email             String    @unique
@@ -39,6 +52,7 @@ model User {
   refreshTokens           RefreshToken[]
   emailVerificationTokens EmailVerificationToken[]
   passwordResetTokens     PasswordResetToken[]
+  decks                   Deck[]
 
   @@index([email])
   @@index([role])
@@ -122,4 +136,48 @@ model PasswordResetToken {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+model Deck {
+  id               String               @id @default(uuid())
+  ownerId          String
+  title            String
+  description      String?
+  visibility       DeckVisibility       @default(PRIVATE)
+  moderationStatus DeckModerationStatus @default(NONE)
+  isOfficial       Boolean              @default(false)
+  sourceDeckId     String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  owner User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  cards Card[]
+
+  @@index([ownerId])
+  @@index([visibility])
+  @@index([moderationStatus])
+  @@index([isOfficial])
+  @@index([deletedAt])
+}
+
+model Card {
+  id       String  @id @default(uuid())
+  deckId   String
+  front    String
+  back     String
+  example  String?
+  notes    String?
+  position Int     @default(0)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  @@index([deckId])
+  @@index([position])
+  @@index([deletedAt])
 }
