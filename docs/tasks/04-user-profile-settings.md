@@ -23,7 +23,7 @@ docs/tasks/03-email-verification-password-reset.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -152,7 +152,7 @@ lessonSize:
 - [x] TASK-04.10 Add updateProfile mutation
 - [x] TASK-04.11 Add UpdateSettingsUseCase
 - [x] TASK-04.12 Add updateSettings mutation
-- [ ] TASK-04.13 Add user profile and settings final checks
+- [x] TASK-04.13 Add user profile and settings final checks
 ```
 
 ---
@@ -1459,7 +1459,7 @@ feat(account): add update settings mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
