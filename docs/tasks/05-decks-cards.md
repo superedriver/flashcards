@@ -33,7 +33,7 @@ docs/tasks/07-srs-lessons.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -203,7 +203,7 @@ position:
 - [x] TASK-05.25 Add DeleteCardUseCase
 - [x] TASK-05.26 Add deleteCard mutation
 - [x] TASK-05.27 Add decks/cards final checks
-- [ ] TASK-05.28 Add decks/cards unit tests
+- [x] TASK-05.28 Add decks/cards unit tests
 ```
 
 ---
@@ -2949,7 +2949,7 @@ chore(decks): finalize deck and card management
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
