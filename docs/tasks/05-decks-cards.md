@@ -184,7 +184,7 @@ position:
 - [x] TASK-05.06 Add Prisma deck repository
 - [x] TASK-05.07 Add Prisma card repository
 - [x] TASK-05.08 Add deck/card GraphQL types and inputs
-- [ ] TASK-05.09 Add CreateDeckUseCase
+- [x] TASK-05.09 Add CreateDeckUseCase
 - [ ] TASK-05.10 Add createDeck mutation
 - [ ] TASK-05.11 Add MyDecksUseCase
 - [ ] TASK-05.12 Add myDecks query
@@ -1203,7 +1203,7 @@ chore(decks): add deck and card GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
