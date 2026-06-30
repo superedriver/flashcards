@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../infrastructure/prisma';
 import {
+  CardRepositoryPort,
   CreateCardInput,
+  CreateManyCardsInput,
   UpdateCardInput,
 } from '../../application/ports/card-repository.port';
 import { Card } from '../../domain/types';
 import { toCard } from '../mappers/card.mapper';
 
 @Injectable()
-export class PrismaCardRepository {
+export class PrismaCardRepository implements CardRepositoryPort {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(input: CreateCardInput): Promise<Card> {
@@ -113,5 +115,24 @@ export class PrismaCardRepository {
         deletedAt: null,
       },
     });
+  }
+
+  async createMany(input: CreateManyCardsInput): Promise<Card[]> {
+    if (input.cards.length === 0) {
+      return [];
+    }
+
+    const cards = await this.prisma.card.createManyAndReturn({
+      data: input.cards.map((card) => ({
+        deckId: card.deckId,
+        front: card.front,
+        back: card.back,
+        example: card.example ?? null,
+        notes: card.notes ?? null,
+        position: card.position,
+      })),
+    });
+
+    return cards.map(toCard);
   }
 }
