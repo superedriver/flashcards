@@ -9,6 +9,7 @@ import { DeleteDeckUseCase } from './application/use-cases/delete-deck.use-case'
 import { DeleteCardUseCase } from './application/use-cases/delete-card.use-case';
 import { GetDeckUseCase } from './application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from './application/use-cases/my-decks.use-case';
+import { PublishDeckUseCase } from './application/use-cases/publish-deck.use-case';
 import { UpdateDeckUseCase } from './application/use-cases/update-deck.use-case';
 import { UpdateCardUseCase } from './application/use-cases/update-card.use-case';
 import { PrismaCardRepository } from './infrastructure/persistence/prisma-card.repository';
@@ -35,6 +36,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     DeckCardsUseCase,
     UpdateCardUseCase,
     DeleteCardUseCase,
+    PublishDeckUseCase,
     DecksResolver,
   ],
   exports: [
@@ -49,6 +51,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     DeckCardsUseCase,
     UpdateCardUseCase,
     DeleteCardUseCase,
+    PublishDeckUseCase,
   ],
 })
 export class DecksModule {}

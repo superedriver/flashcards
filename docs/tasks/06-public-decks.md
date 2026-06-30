@@ -138,7 +138,7 @@ Public search must not return:
 ```md
 - [x] TASK-06.01 Extend deck repository port for public deck operations
 - [x] TASK-06.02 Extend Prisma deck repository for public deck operations
-- [ ] TASK-06.03 Add PublishDeckUseCase
+- [x] TASK-06.03 Add PublishDeckUseCase
 - [ ] TASK-06.04 Add publishDeck mutation
 - [ ] TASK-06.05 Add UnpublishDeckUseCase
 - [ ] TASK-06.06 Add unpublishDeck mutation
@@ -462,7 +462,7 @@ chore(public-decks): add Prisma public deck repository methods
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
