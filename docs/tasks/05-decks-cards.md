@@ -1767,7 +1767,7 @@ feat(decks): add deck query
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
