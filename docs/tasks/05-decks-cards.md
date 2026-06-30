@@ -186,7 +186,7 @@ position:
 - [x] TASK-05.08 Add deck/card GraphQL types and inputs
 - [x] TASK-05.09 Add CreateDeckUseCase
 - [x] TASK-05.10 Add createDeck mutation
-- [ ] TASK-05.11 Add MyDecksUseCase
+- [x] TASK-05.11 Add MyDecksUseCase
 - [ ] TASK-05.12 Add myDecks query
 - [ ] TASK-05.13 Add GetDeckUseCase
 - [ ] TASK-05.14 Add deck query
@@ -1400,7 +1400,7 @@ feat(decks): add create deck mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
