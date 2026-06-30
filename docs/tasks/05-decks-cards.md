@@ -33,7 +33,7 @@ docs/tasks/07-srs-lessons.md
 
 ## Epic Status
 
-DONE
+TODO
 
 ## Related Documents
 
@@ -203,6 +203,7 @@ position:
 - [x] TASK-05.25 Add DeleteCardUseCase
 - [x] TASK-05.26 Add deleteCard mutation
 - [x] TASK-05.27 Add decks/cards final checks
+- [ ] TASK-05.28 Add decks/cards unit tests
 ```
 
 ---
@@ -2919,6 +2920,7 @@ pnpm --filter @flashcards/api start:dev
 ```txt
 - Do not move to public decks until owner permissions pass.
 - Do not expose private decks for frontend convenience.
+- Do not add automated tests in this task (see TASK-05.28).
 ```
 
 ## Acceptance Criteria
@@ -2939,6 +2941,258 @@ pnpm --filter @flashcards/api start:dev
 
 ```txt
 chore(decks): finalize deck and card management
+```
+
+---
+
+# TASK-05.28 Add decks/cards unit tests
+
+## Status
+
+TODO
+
+## Context
+
+Deck and card permissions are security-sensitive. Manual GraphQL checks in TASK-05.27 are not enough to prevent regressions in validation, owner-only permissions, soft delete behavior, and position append logic.
+
+Use cases depend on ports, so they can be tested quickly without database or GraphQL.
+
+## Goal
+
+Add unit tests for EPIC-05 deck/card use cases, `DeckPermissionService`, and mappers.
+
+## Related Documents
+
+```txt
+docs/domain/permissions.md
+docs/security/security-checklist.md
+docs/backend-clean-architecture.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/decks/domain/services/deck-permission.service.spec.ts
+
+apps/api/src/modules/decks/application/use-cases/create-deck.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/my-decks.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/get-deck.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/update-deck.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/delete-deck.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/create-card.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/deck-cards.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/update-card.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/delete-card.use-case.spec.ts
+
+apps/api/src/modules/decks/infrastructure/mappers/deck.mapper.spec.ts
+apps/api/src/modules/decks/infrastructure/mappers/card.mapper.spec.ts
+```
+
+## Requirements
+
+Use Jest and co-located `*.spec.ts` files.
+
+Mock all ports. Do not use Prisma, database, or running GraphQL server.
+
+### DeckPermissionService
+
+Cover:
+
+```txt
+- owner can view own private deck
+- owner can manage own active deck
+- anonymous user cannot view private deck
+- anonymous user cannot manage private deck
+- non-owner cannot view private deck
+- non-owner cannot manage private deck
+- anonymous user can view public approved deck
+- authenticated non-owner can view public approved deck
+- user cannot view deleted deck
+- owner cannot manage deleted deck
+- user cannot view public deck with moderationStatus != APPROVED
+- canCreateCard follows canManageDeck
+- canManageCard follows canManageDeck
+```
+
+### CreateDeckUseCase
+
+Cover:
+
+```txt
+- rejects missing user with UNAUTHORIZED
+- rejects blocked user with USER_BLOCKED
+- trims title and creates deck for owner
+- rejects empty title after trim with VALIDATION_ERROR
+- rejects title longer than 120 with VALIDATION_ERROR
+- trims description and passes null when empty
+- rejects description longer than 1000 with VALIDATION_ERROR
+- creates deck with ownerId = currentUserId
+```
+
+### MyDecksUseCase
+
+Cover:
+
+```txt
+- rejects missing user with UNAUTHORIZED
+- rejects blocked user with USER_BLOCKED
+- returns decks from findByOwner for current user
+```
+
+### GetDeckUseCase
+
+Cover:
+
+```txt
+- throws DECK_NOT_FOUND when deck is missing
+- owner can view own private deck
+- anonymous user cannot view private deck (DECK_NOT_FOUND)
+- non-owner cannot view private deck (DECK_NOT_FOUND)
+- anonymous user can view public approved deck
+- throws DECK_NOT_FOUND for deleted deck
+```
+
+### UpdateDeckUseCase
+
+Cover:
+
+```txt
+- throws DECK_NOT_FOUND when deck is missing
+- throws DECK_FORBIDDEN for non-owner
+- owner can update title
+- owner can update description
+- rejects empty title with VALIDATION_ERROR
+- rejects title longer than 120 with VALIDATION_ERROR
+- rejects description longer than 1000 with VALIDATION_ERROR
+- updates only provided fields
+```
+
+### DeleteDeckUseCase
+
+Cover:
+
+```txt
+- throws DECK_NOT_FOUND when deck is missing
+- throws DECK_FORBIDDEN for non-owner
+- owner soft-deletes cards then deck
+- returns success true
+```
+
+### CreateCardUseCase
+
+Cover:
+
+```txt
+- throws DECK_NOT_FOUND when deck is missing
+- throws DECK_FORBIDDEN for non-owner
+- validates front and back required/trim/max length
+- validates example and notes max length
+- rejects invalid position with VALIDATION_ERROR
+- appends to end when position is omitted (uses countByDeckId)
+- creates card with validated fields
+```
+
+### DeckCardsUseCase
+
+Cover:
+
+```txt
+- throws DECK_NOT_FOUND when deck is missing
+- owner can list own deck cards
+- anonymous user cannot list private deck cards (DECK_NOT_FOUND)
+- non-owner cannot list private deck cards (DECK_NOT_FOUND)
+- returns cards from findByDeckId when allowed
+```
+
+### UpdateCardUseCase
+
+Cover:
+
+```txt
+- throws CARD_NOT_FOUND when card is missing
+- throws DECK_NOT_FOUND when deck is missing
+- throws CARD_FORBIDDEN for non-owner
+- owner can update front/back/example/notes/position
+- validates provided fields
+- updates only provided fields
+- does not allow deckId change
+```
+
+### DeleteCardUseCase
+
+Cover:
+
+```txt
+- throws CARD_NOT_FOUND when card is missing
+- throws DECK_NOT_FOUND when deck is missing
+- throws CARD_FORBIDDEN for non-owner
+- owner soft-deletes card
+- returns success true
+```
+
+### Mappers
+
+Cover:
+
+```txt
+- toDeck maps all fields from Prisma record
+- toDeck casts visibility and moderationStatus to domain enums
+- toCard maps all fields from Prisma record
+```
+
+## Security Requirements
+
+```txt
+- Tests must not use real production credentials.
+- Tests must assert non-owners cannot manage decks/cards.
+- Tests must assert private deck existence is not leaked via CARD_FORBIDDEN vs DECK_NOT_FOUND where applicable.
+- Tests must assert deleted decks/cards are not returned by view/list use cases.
+```
+
+## Architecture Constraints
+
+```txt
+- Unit tests only in this task.
+- Mock ports; do not import Prisma client in use case tests.
+- Do not test GraphQL resolvers in this task.
+- Do not test Prisma repositories in this task.
+- Do not add e2e tests in this task.
+- Keep tests focused on business rules, not NestJS wiring.
+```
+
+## Do Not Do
+
+```txt
+- Do not add integration tests with database.
+- Do not add GraphQL e2e tests.
+- Do not refactor use cases unless required to make them testable.
+- Do not continue to EPIC-06 until this task passes.
+```
+
+## Acceptance Criteria
+
+```txt
+- DeckPermissionService tests exist and pass.
+- All deck/card use case tests exist and pass.
+- Mapper tests exist and pass.
+- Tests run without database.
+- pnpm --filter @flashcards/api test passes.
+- API builds.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/api test
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+test(decks): add deck and card unit tests
 ```
 
 ---
@@ -2979,6 +3233,7 @@ EPIC-05 is complete when:
 - Owner-only permissions are enforced.
 - Private decks do not leak.
 - Deleted decks/cards are excluded.
+- Deck/card use case unit tests exist and pass (TASK-05.28).
 - implementation follows docs/domain/permissions.md.
 - implementation follows docs/security/security-checklist.md.
 ```
