@@ -6,6 +6,7 @@ import { CreateCardUseCase } from './application/use-cases/create-card.use-case'
 import { CreateDeckUseCase } from './application/use-cases/create-deck.use-case';
 import { DeckCardsUseCase } from './application/use-cases/deck-cards.use-case';
 import { DeleteDeckUseCase } from './application/use-cases/delete-deck.use-case';
+import { DeleteCardUseCase } from './application/use-cases/delete-card.use-case';
 import { GetDeckUseCase } from './application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from './application/use-cases/my-decks.use-case';
 import { UpdateDeckUseCase } from './application/use-cases/update-deck.use-case';
@@ -33,6 +34,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     CreateCardUseCase,
     DeckCardsUseCase,
     UpdateCardUseCase,
+    DeleteCardUseCase,
     DecksResolver,
   ],
   exports: [
@@ -46,6 +48,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     CreateCardUseCase,
     DeckCardsUseCase,
     UpdateCardUseCase,
+    DeleteCardUseCase,
   ],
 })
 export class DecksModule {}
