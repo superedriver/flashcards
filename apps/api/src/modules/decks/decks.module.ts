@@ -3,6 +3,7 @@ import { AuthModule } from '../auth/auth.module';
 import { CARD_REPOSITORY } from './application/ports/card-repository.port';
 import { DECK_REPOSITORY } from './application/ports/deck-repository.port';
 import { CreateDeckUseCase } from './application/use-cases/create-deck.use-case';
+import { GetDeckUseCase } from './application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from './application/use-cases/my-decks.use-case';
 import { PrismaCardRepository } from './infrastructure/persistence/prisma-card.repository';
 import { PrismaDeckRepository } from './infrastructure/persistence/prisma-deck.repository';
@@ -21,6 +22,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     },
     CreateDeckUseCase,
     MyDecksUseCase,
+    GetDeckUseCase,
     DecksResolver,
   ],
   exports: [
@@ -28,6 +30,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     CARD_REPOSITORY,
     CreateDeckUseCase,
     MyDecksUseCase,
+    GetDeckUseCase,
   ],
 })
 export class DecksModule {}
