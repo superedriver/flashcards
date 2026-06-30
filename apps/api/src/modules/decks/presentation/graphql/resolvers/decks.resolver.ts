@@ -5,6 +5,7 @@ import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/cu
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
 import { OptionalGqlAuthGuard } from '../../../../auth/presentation/graphql/guards/optional-gql-auth.guard';
 import { CreateDeckUseCase } from '../../../application/use-cases/create-deck.use-case';
+import { DeleteDeckUseCase } from '../../../application/use-cases/delete-deck.use-case';
 import { GetDeckUseCase } from '../../../application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from '../../../application/use-cases/my-decks.use-case';
 import { UpdateDeckUseCase } from '../../../application/use-cases/update-deck.use-case';
@@ -25,6 +26,7 @@ export class DecksResolver {
     private readonly myDecksUseCase: MyDecksUseCase,
     private readonly getDeckUseCase: GetDeckUseCase,
     private readonly updateDeckUseCase: UpdateDeckUseCase,
+    private readonly deleteDeckUseCase: DeleteDeckUseCase,
   ) {}
 
   @Query(() => DeckType)
@@ -96,5 +98,19 @@ export class DecksResolver {
       visibility: deck.visibility as DeckVisibility,
       moderationStatus: deck.moderationStatus as DeckModerationStatus,
     };
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async deleteDeck(
+    @CurrentUser() user: AuthUser,
+    @Args('deckId') deckId: string,
+  ): Promise<boolean> {
+    const result = await this.deleteDeckUseCase.execute({
+      currentUser: user,
+      deckId,
+    });
+
+    return result.success;
   }
 }
