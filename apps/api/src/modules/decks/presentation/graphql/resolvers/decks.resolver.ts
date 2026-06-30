@@ -7,7 +7,9 @@ import { OptionalGqlAuthGuard } from '../../../../auth/presentation/graphql/guar
 import { CreateDeckUseCase } from '../../../application/use-cases/create-deck.use-case';
 import { GetDeckUseCase } from '../../../application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from '../../../application/use-cases/my-decks.use-case';
+import { UpdateDeckUseCase } from '../../../application/use-cases/update-deck.use-case';
 import { CreateDeckInput } from '../inputs/create-deck.input';
+import { UpdateDeckInput } from '../inputs/update-deck.input';
 import { DeckModerationStatus } from '../types/deck-moderation-status.type';
 import { DeckVisibility } from '../types/deck-visibility.type';
 import { DeckType } from '../types/deck.type';
@@ -22,6 +24,7 @@ export class DecksResolver {
     private readonly createDeckUseCase: CreateDeckUseCase,
     private readonly myDecksUseCase: MyDecksUseCase,
     private readonly getDeckUseCase: GetDeckUseCase,
+    private readonly updateDeckUseCase: UpdateDeckUseCase,
   ) {}
 
   @Query(() => DeckType)
@@ -64,6 +67,26 @@ export class DecksResolver {
   ): Promise<DeckType> {
     const deck = await this.createDeckUseCase.execute({
       currentUserId: user.id,
+      title: input.title,
+      description: input.description,
+    });
+
+    return {
+      ...deck,
+      visibility: deck.visibility as DeckVisibility,
+      moderationStatus: deck.moderationStatus as DeckModerationStatus,
+    };
+  }
+
+  @Mutation(() => DeckType)
+  @UseGuards(GqlAuthGuard)
+  async updateDeck(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: UpdateDeckInput,
+  ): Promise<DeckType> {
+    const deck = await this.updateDeckUseCase.execute({
+      currentUser: user,
+      deckId: input.deckId,
       title: input.title,
       description: input.description,
     });
