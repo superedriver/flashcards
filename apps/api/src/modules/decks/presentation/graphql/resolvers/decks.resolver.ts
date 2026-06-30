@@ -1,9 +1,10 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthUser } from '../../../../auth/domain/types';
 import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/current-user.decorator';
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
 import { CreateDeckUseCase } from '../../../application/use-cases/create-deck.use-case';
+import { MyDecksUseCase } from '../../../application/use-cases/my-decks.use-case';
 import { CreateDeckInput } from '../inputs/create-deck.input';
 import { DeckModerationStatus } from '../types/deck-moderation-status.type';
 import { DeckVisibility } from '../types/deck-visibility.type';
@@ -11,7 +12,24 @@ import { DeckType } from '../types/deck.type';
 
 @Resolver()
 export class DecksResolver {
-  constructor(private readonly createDeckUseCase: CreateDeckUseCase) {}
+  constructor(
+    private readonly createDeckUseCase: CreateDeckUseCase,
+    private readonly myDecksUseCase: MyDecksUseCase,
+  ) {}
+
+  @Query(() => [DeckType])
+  @UseGuards(GqlAuthGuard)
+  async myDecks(@CurrentUser() user: AuthUser): Promise<DeckType[]> {
+    const decks = await this.myDecksUseCase.execute({
+      currentUserId: user.id,
+    });
+
+    return decks.map((deck) => ({
+      ...deck,
+      visibility: deck.visibility as DeckVisibility,
+      moderationStatus: deck.moderationStatus as DeckModerationStatus,
+    }));
+  }
 
   @Mutation(() => DeckType)
   @UseGuards(GqlAuthGuard)
