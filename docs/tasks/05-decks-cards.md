@@ -188,7 +188,7 @@ position:
 - [x] TASK-05.10 Add createDeck mutation
 - [x] TASK-05.11 Add MyDecksUseCase
 - [x] TASK-05.12 Add myDecks query
-- [ ] TASK-05.13 Add GetDeckUseCase
+- [x] TASK-05.13 Add GetDeckUseCase
 - [ ] TASK-05.14 Add deck query
 - [ ] TASK-05.15 Add UpdateDeckUseCase
 - [ ] TASK-05.16 Add updateDeck mutation
@@ -1576,7 +1576,7 @@ feat(decks): add my decks query
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
