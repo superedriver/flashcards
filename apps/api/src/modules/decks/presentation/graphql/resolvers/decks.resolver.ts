@@ -4,13 +4,16 @@ import { AuthUser } from '../../../../auth/domain/types';
 import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/current-user.decorator';
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
 import { OptionalGqlAuthGuard } from '../../../../auth/presentation/graphql/guards/optional-gql-auth.guard';
+import { CreateCardUseCase } from '../../../application/use-cases/create-card.use-case';
 import { CreateDeckUseCase } from '../../../application/use-cases/create-deck.use-case';
 import { DeleteDeckUseCase } from '../../../application/use-cases/delete-deck.use-case';
 import { GetDeckUseCase } from '../../../application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from '../../../application/use-cases/my-decks.use-case';
 import { UpdateDeckUseCase } from '../../../application/use-cases/update-deck.use-case';
 import { CreateDeckInput } from '../inputs/create-deck.input';
+import { CreateCardInput } from '../inputs/create-card.input';
 import { UpdateDeckInput } from '../inputs/update-deck.input';
+import { CardType } from '../types/card.type';
 import { DeckModerationStatus } from '../types/deck-moderation-status.type';
 import { DeckVisibility } from '../types/deck-visibility.type';
 import { DeckType } from '../types/deck.type';
@@ -27,6 +30,7 @@ export class DecksResolver {
     private readonly getDeckUseCase: GetDeckUseCase,
     private readonly updateDeckUseCase: UpdateDeckUseCase,
     private readonly deleteDeckUseCase: DeleteDeckUseCase,
+    private readonly createCardUseCase: CreateCardUseCase,
   ) {}
 
   @Query(() => DeckType)
@@ -112,5 +116,22 @@ export class DecksResolver {
     });
 
     return result.success;
+  }
+
+  @Mutation(() => CardType)
+  @UseGuards(GqlAuthGuard)
+  async createCard(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: CreateCardInput,
+  ): Promise<CardType> {
+    return this.createCardUseCase.execute({
+      currentUser: user,
+      deckId: input.deckId,
+      front: input.front,
+      back: input.back,
+      example: input.example,
+      notes: input.notes,
+      position: input.position,
+    });
   }
 }
