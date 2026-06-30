@@ -11,6 +11,7 @@ import { DeleteDeckUseCase } from '../../../application/use-cases/delete-deck.us
 import { DeleteCardUseCase } from '../../../application/use-cases/delete-card.use-case';
 import { GetDeckUseCase } from '../../../application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from '../../../application/use-cases/my-decks.use-case';
+import { PublishDeckUseCase } from '../../../application/use-cases/publish-deck.use-case';
 import { UpdateDeckUseCase } from '../../../application/use-cases/update-deck.use-case';
 import { UpdateCardUseCase } from '../../../application/use-cases/update-card.use-case';
 import { CreateDeckInput } from '../inputs/create-deck.input';
@@ -38,6 +39,7 @@ export class DecksResolver {
     private readonly deckCardsUseCase: DeckCardsUseCase,
     private readonly updateCardUseCase: UpdateCardUseCase,
     private readonly deleteCardUseCase: DeleteCardUseCase,
+    private readonly publishDeckUseCase: PublishDeckUseCase,
   ) {}
 
   @Query(() => DeckType)
@@ -183,5 +185,23 @@ export class DecksResolver {
     });
 
     return result.success;
+  }
+
+  @Mutation(() => DeckType)
+  @UseGuards(GqlAuthGuard)
+  async publishDeck(
+    @CurrentUser() user: AuthUser,
+    @Args('deckId') deckId: string,
+  ): Promise<DeckType> {
+    const deck = await this.publishDeckUseCase.execute({
+      currentUser: user,
+      deckId,
+    });
+
+    return {
+      ...deck,
+      visibility: deck.visibility as DeckVisibility,
+      moderationStatus: deck.moderationStatus as DeckModerationStatus,
+    };
   }
 }
