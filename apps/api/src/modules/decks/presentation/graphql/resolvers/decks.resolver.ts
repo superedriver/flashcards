@@ -8,6 +8,7 @@ import { CreateCardUseCase } from '../../../application/use-cases/create-card.us
 import { CreateDeckUseCase } from '../../../application/use-cases/create-deck.use-case';
 import { DeckCardsUseCase } from '../../../application/use-cases/deck-cards.use-case';
 import { DeleteDeckUseCase } from '../../../application/use-cases/delete-deck.use-case';
+import { DeleteCardUseCase } from '../../../application/use-cases/delete-card.use-case';
 import { GetDeckUseCase } from '../../../application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from '../../../application/use-cases/my-decks.use-case';
 import { UpdateDeckUseCase } from '../../../application/use-cases/update-deck.use-case';
@@ -36,6 +37,7 @@ export class DecksResolver {
     private readonly createCardUseCase: CreateCardUseCase,
     private readonly deckCardsUseCase: DeckCardsUseCase,
     private readonly updateCardUseCase: UpdateCardUseCase,
+    private readonly deleteCardUseCase: DeleteCardUseCase,
   ) {}
 
   @Query(() => DeckType)
@@ -167,5 +169,19 @@ export class DecksResolver {
       notes: input.notes,
       position: input.position,
     });
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async deleteCard(
+    @CurrentUser() user: AuthUser,
+    @Args('cardId') cardId: string,
+  ): Promise<boolean> {
+    const result = await this.deleteCardUseCase.execute({
+      currentUser: user,
+      cardId,
+    });
+
+    return result.success;
   }
 }

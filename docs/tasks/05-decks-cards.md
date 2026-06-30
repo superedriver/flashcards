@@ -201,7 +201,7 @@ position:
 - [x] TASK-05.23 Add UpdateCardUseCase
 - [x] TASK-05.24 Add updateCard mutation
 - [x] TASK-05.25 Add DeleteCardUseCase
-- [ ] TASK-05.26 Add deleteCard mutation
+- [x] TASK-05.26 Add deleteCard mutation
 - [ ] TASK-05.27 Add decks/cards final checks
 ```
 
@@ -2780,7 +2780,7 @@ feat(decks): add delete card use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
