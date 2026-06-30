@@ -197,7 +197,7 @@ position:
 - [x] TASK-05.19 Add CreateCardUseCase
 - [x] TASK-05.20 Add createCard mutation
 - [x] TASK-05.21 Add DeckCardsUseCase
-- [ ] TASK-05.22 Add deckCards query
+- [x] TASK-05.22 Add deckCards query
 - [ ] TASK-05.23 Add UpdateCardUseCase
 - [ ] TASK-05.24 Add updateCard mutation
 - [ ] TASK-05.25 Add DeleteCardUseCase
@@ -2410,7 +2410,7 @@ feat(decks): add deck cards use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

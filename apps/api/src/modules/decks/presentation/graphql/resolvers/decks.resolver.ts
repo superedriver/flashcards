@@ -6,6 +6,7 @@ import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-a
 import { OptionalGqlAuthGuard } from '../../../../auth/presentation/graphql/guards/optional-gql-auth.guard';
 import { CreateCardUseCase } from '../../../application/use-cases/create-card.use-case';
 import { CreateDeckUseCase } from '../../../application/use-cases/create-deck.use-case';
+import { DeckCardsUseCase } from '../../../application/use-cases/deck-cards.use-case';
 import { DeleteDeckUseCase } from '../../../application/use-cases/delete-deck.use-case';
 import { GetDeckUseCase } from '../../../application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from '../../../application/use-cases/my-decks.use-case';
@@ -31,6 +32,7 @@ export class DecksResolver {
     private readonly updateDeckUseCase: UpdateDeckUseCase,
     private readonly deleteDeckUseCase: DeleteDeckUseCase,
     private readonly createCardUseCase: CreateCardUseCase,
+    private readonly deckCardsUseCase: DeckCardsUseCase,
   ) {}
 
   @Query(() => DeckType)
@@ -63,6 +65,18 @@ export class DecksResolver {
       visibility: deck.visibility as DeckVisibility,
       moderationStatus: deck.moderationStatus as DeckModerationStatus,
     }));
+  }
+
+  @Query(() => [CardType])
+  @UseGuards(OptionalGqlAuthGuard)
+  async deckCards(
+    @Args('deckId') deckId: string,
+    @Context() context: { req: GraphqlRequest },
+  ): Promise<CardType[]> {
+    return this.deckCardsUseCase.execute({
+      currentUser: context.req.authUser ?? null,
+      deckId,
+    });
   }
 
   @Mutation(() => DeckType)
