@@ -11,9 +11,11 @@ import { DeleteDeckUseCase } from '../../../application/use-cases/delete-deck.us
 import { GetDeckUseCase } from '../../../application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from '../../../application/use-cases/my-decks.use-case';
 import { UpdateDeckUseCase } from '../../../application/use-cases/update-deck.use-case';
+import { UpdateCardUseCase } from '../../../application/use-cases/update-card.use-case';
 import { CreateDeckInput } from '../inputs/create-deck.input';
 import { CreateCardInput } from '../inputs/create-card.input';
 import { UpdateDeckInput } from '../inputs/update-deck.input';
+import { UpdateCardInput } from '../inputs/update-card.input';
 import { CardType } from '../types/card.type';
 import { DeckModerationStatus } from '../types/deck-moderation-status.type';
 import { DeckVisibility } from '../types/deck-visibility.type';
@@ -33,6 +35,7 @@ export class DecksResolver {
     private readonly deleteDeckUseCase: DeleteDeckUseCase,
     private readonly createCardUseCase: CreateCardUseCase,
     private readonly deckCardsUseCase: DeckCardsUseCase,
+    private readonly updateCardUseCase: UpdateCardUseCase,
   ) {}
 
   @Query(() => DeckType)
@@ -141,6 +144,23 @@ export class DecksResolver {
     return this.createCardUseCase.execute({
       currentUser: user,
       deckId: input.deckId,
+      front: input.front,
+      back: input.back,
+      example: input.example,
+      notes: input.notes,
+      position: input.position,
+    });
+  }
+
+  @Mutation(() => CardType)
+  @UseGuards(GqlAuthGuard)
+  async updateCard(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: UpdateCardInput,
+  ): Promise<CardType> {
+    return this.updateCardUseCase.execute({
+      currentUser: user,
+      cardId: input.cardId,
       front: input.front,
       back: input.back,
       example: input.example,
