@@ -1,21 +1,46 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthUser } from '../../../../auth/domain/types';
 import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/current-user.decorator';
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
+import { OptionalGqlAuthGuard } from '../../../../auth/presentation/graphql/guards/optional-gql-auth.guard';
 import { CreateDeckUseCase } from '../../../application/use-cases/create-deck.use-case';
+import { GetDeckUseCase } from '../../../application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from '../../../application/use-cases/my-decks.use-case';
 import { CreateDeckInput } from '../inputs/create-deck.input';
 import { DeckModerationStatus } from '../types/deck-moderation-status.type';
 import { DeckVisibility } from '../types/deck-visibility.type';
 import { DeckType } from '../types/deck.type';
 
+type GraphqlRequest = {
+  authUser?: AuthUser;
+};
+
 @Resolver()
 export class DecksResolver {
   constructor(
     private readonly createDeckUseCase: CreateDeckUseCase,
     private readonly myDecksUseCase: MyDecksUseCase,
+    private readonly getDeckUseCase: GetDeckUseCase,
   ) {}
+
+  @Query(() => DeckType)
+  @UseGuards(OptionalGqlAuthGuard)
+  async deck(
+    @Args('id') id: string,
+    @Context() context: { req: GraphqlRequest },
+  ): Promise<DeckType> {
+    const deck = await this.getDeckUseCase.execute({
+      currentUser: context.req.authUser ?? null,
+      deckId: id,
+    });
+
+    return {
+      ...deck,
+      visibility: deck.visibility as DeckVisibility,
+      moderationStatus: deck.moderationStatus as DeckModerationStatus,
+    };
+  }
 
   @Query(() => [DeckType])
   @UseGuards(GqlAuthGuard)

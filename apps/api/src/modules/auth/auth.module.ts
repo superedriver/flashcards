@@ -30,6 +30,7 @@ import { RequestPasswordResetUseCase } from './application/use-cases/request-pas
 import { ResetPasswordUseCase } from './application/use-cases/reset-password.use-case';
 import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
 import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
+import { OptionalGqlAuthGuard } from './presentation/graphql/guards/optional-gql-auth.guard';
 
 @Module({
   imports: [
@@ -87,6 +88,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     ResetPasswordUseCase,
     AuthResolver,
     GqlAuthGuard,
+    OptionalGqlAuthGuard,
   ],
   exports: [
     PASSWORD_HASHER,
@@ -108,6 +110,7 @@ import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
     RequestPasswordResetUseCase,
     ResetPasswordUseCase,
     GqlAuthGuard,
+    OptionalGqlAuthGuard,
   ],
 })
 export class AuthModule {}
