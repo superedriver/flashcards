@@ -2,14 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../infrastructure/prisma';
 import {
   CreateDeckInput,
-  DeckRepositoryPort,
   UpdateDeckInput,
 } from '../../application/ports/deck-repository.port';
 import { Deck } from '../../domain/types';
 import { toDeck } from '../mappers/deck.mapper';
 
 @Injectable()
-export class PrismaDeckRepository implements DeckRepositoryPort {
+export class PrismaDeckRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(input: CreateDeckInput): Promise<Deck> {

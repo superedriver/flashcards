@@ -40,6 +40,11 @@ function createUseCase(deck: Deck | null) {
     findByOwner: jest.fn(),
     update: jest.fn(),
     softDelete: jest.fn(),
+    publish: jest.fn(),
+    unpublish: jest.fn(),
+    findPublicApprovedById: jest.fn(),
+    searchPublicApproved: jest.fn(),
+    createCopiedDeck: jest.fn(),
   });
 
   return { useCase, findById };

@@ -20,6 +20,17 @@ export type UpdateCardInput = {
   position?: number;
 };
 
+export type CreateManyCardsInput = {
+  cards: Array<{
+    deckId: string;
+    front: string;
+    back: string;
+    example?: string | null;
+    notes?: string | null;
+    position: number;
+  }>;
+};
+
 export type CardRepositoryPort = {
   create(input: CreateCardInput): Promise<Card>;
   findById(cardId: string): Promise<Card | null>;
@@ -28,4 +39,5 @@ export type CardRepositoryPort = {
   softDelete(cardId: string): Promise<void>;
   softDeleteByDeckId(deckId: string): Promise<void>;
   countByDeckId(deckId: string): Promise<number>;
+  createMany(input: CreateManyCardsInput): Promise<Card[]>;
 };

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../infrastructure/prisma';
 import {
-  CardRepositoryPort,
   CreateCardInput,
   UpdateCardInput,
 } from '../../application/ports/card-repository.port';
@@ -9,7 +8,7 @@ import { Card } from '../../domain/types';
 import { toCard } from '../mappers/card.mapper';
 
 @Injectable()
-export class PrismaCardRepository implements CardRepositoryPort {
+export class PrismaCardRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(input: CreateCardInput): Promise<Card> {
