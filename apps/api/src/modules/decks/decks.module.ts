@@ -3,6 +3,7 @@ import { AuthModule } from '../auth/auth.module';
 import { CARD_REPOSITORY } from './application/ports/card-repository.port';
 import { DECK_REPOSITORY } from './application/ports/deck-repository.port';
 import { CreateDeckUseCase } from './application/use-cases/create-deck.use-case';
+import { DeleteDeckUseCase } from './application/use-cases/delete-deck.use-case';
 import { GetDeckUseCase } from './application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from './application/use-cases/my-decks.use-case';
 import { UpdateDeckUseCase } from './application/use-cases/update-deck.use-case';
@@ -25,6 +26,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     MyDecksUseCase,
     GetDeckUseCase,
     UpdateDeckUseCase,
+    DeleteDeckUseCase,
     DecksResolver,
   ],
   exports: [
@@ -34,6 +36,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     MyDecksUseCase,
     GetDeckUseCase,
     UpdateDeckUseCase,
+    DeleteDeckUseCase,
   ],
 })
 export class DecksModule {}
