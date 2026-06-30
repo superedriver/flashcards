@@ -182,7 +182,7 @@ position:
 - [x] TASK-05.04 Add deck/card repository ports
 - [x] TASK-05.05 Add DeckPermissionService
 - [x] TASK-05.06 Add Prisma deck repository
-- [ ] TASK-05.07 Add Prisma card repository
+- [x] TASK-05.07 Add Prisma card repository
 - [ ] TASK-05.08 Add deck/card GraphQL types and inputs
 - [ ] TASK-05.09 Add CreateDeckUseCase
 - [ ] TASK-05.10 Add createDeck mutation
@@ -948,7 +948,7 @@ chore(decks): add Prisma deck repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
