@@ -49,6 +49,11 @@ function createUseCase(options?: { user?: SafeUser | null }) {
       findByOwner,
       update: jest.fn(),
       softDelete: jest.fn(),
+      publish: jest.fn(),
+      unpublish: jest.fn(),
+      findPublicApprovedById: jest.fn(),
+      searchPublicApproved: jest.fn(),
+      createCopiedDeck: jest.fn(),
     },
   );
 

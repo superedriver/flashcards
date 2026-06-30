@@ -76,6 +76,7 @@ function createUseCase(options?: { card?: Card | null; deck?: Deck | null }) {
       softDelete: jest.fn(),
       softDeleteByDeckId: jest.fn(),
       countByDeckId: jest.fn(),
+      createMany: jest.fn(),
     },
     {
       create: jest.fn(),
@@ -83,6 +84,11 @@ function createUseCase(options?: { card?: Card | null; deck?: Deck | null }) {
       findByOwner: jest.fn(),
       update: jest.fn(),
       softDelete: jest.fn(),
+      publish: jest.fn(),
+      unpublish: jest.fn(),
+      findPublicApprovedById: jest.fn(),
+      searchPublicApproved: jest.fn(),
+      createCopiedDeck: jest.fn(),
     },
   );
 
