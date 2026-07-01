@@ -140,7 +140,7 @@ Public search must not return:
 - [x] TASK-06.02 Extend Prisma deck repository for public deck operations
 - [x] TASK-06.03 Add PublishDeckUseCase
 - [x] TASK-06.04 Add publishDeck mutation
-- [ ] TASK-06.05 Add UnpublishDeckUseCase
+- [x] TASK-06.05 Add UnpublishDeckUseCase
 - [ ] TASK-06.06 Add unpublishDeck mutation
 - [ ] TASK-06.07 Add PublicDecksUseCase
 - [ ] TASK-06.08 Add publicDecks query
@@ -659,7 +659,7 @@ feat(public-decks): add publish deck mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
