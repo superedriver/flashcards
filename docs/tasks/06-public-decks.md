@@ -36,7 +36,7 @@ docs/tasks/12-admin-analytics.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -150,7 +150,7 @@ Public search must not return:
 - [x] TASK-06.12 Add publicDeckCards query
 - [x] TASK-06.13 Add CopyPublicDeckUseCase
 - [x] TASK-06.14 Add copyPublicDeck mutation
-- [ ] TASK-06.15 Add public decks final checks
+- [x] TASK-06.15 Add public decks final checks
 ```
 
 ---
@@ -1678,7 +1678,7 @@ feat(public-decks): add copy public deck mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
