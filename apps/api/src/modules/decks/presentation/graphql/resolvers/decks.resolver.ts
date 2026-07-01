@@ -12,17 +12,20 @@ import { DeleteCardUseCase } from '../../../application/use-cases/delete-card.us
 import { GetDeckUseCase } from '../../../application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from '../../../application/use-cases/my-decks.use-case';
 import { PublishDeckUseCase } from '../../../application/use-cases/publish-deck.use-case';
+import { PublicDecksUseCase } from '../../../application/use-cases/public-decks.use-case';
 import { UnpublishDeckUseCase } from '../../../application/use-cases/unpublish-deck.use-case';
 import { UpdateDeckUseCase } from '../../../application/use-cases/update-deck.use-case';
 import { UpdateCardUseCase } from '../../../application/use-cases/update-card.use-case';
 import { CreateDeckInput } from '../inputs/create-deck.input';
 import { CreateCardInput } from '../inputs/create-card.input';
+import { PublicDecksInput } from '../inputs/public-decks.input';
 import { UpdateDeckInput } from '../inputs/update-deck.input';
 import { UpdateCardInput } from '../inputs/update-card.input';
 import { CardType } from '../types/card.type';
 import { DeckModerationStatus } from '../types/deck-moderation-status.type';
 import { DeckVisibility } from '../types/deck-visibility.type';
 import { DeckType } from '../types/deck.type';
+import { PublicDeckSearchResultType } from '../types/public-deck-search-result.type';
 
 type GraphqlRequest = {
   authUser?: AuthUser;
@@ -41,6 +44,7 @@ export class DecksResolver {
     private readonly updateCardUseCase: UpdateCardUseCase,
     private readonly deleteCardUseCase: DeleteCardUseCase,
     private readonly publishDeckUseCase: PublishDeckUseCase,
+    private readonly publicDecksUseCase: PublicDecksUseCase,
     private readonly unpublishDeckUseCase: UnpublishDeckUseCase,
   ) {}
 
@@ -74,6 +78,26 @@ export class DecksResolver {
       visibility: deck.visibility as DeckVisibility,
       moderationStatus: deck.moderationStatus as DeckModerationStatus,
     }));
+  }
+
+  @Query(() => PublicDeckSearchResultType)
+  async publicDecks(
+    @Args('input', { nullable: true }) input?: PublicDecksInput | null,
+  ): Promise<PublicDeckSearchResultType> {
+    const result = await this.publicDecksUseCase.execute({
+      query: input?.query,
+      limit: input?.limit,
+      offset: input?.offset,
+    });
+
+    return {
+      items: result.items.map((deck) => ({
+        ...deck,
+        visibility: deck.visibility as DeckVisibility,
+        moderationStatus: deck.moderationStatus as DeckModerationStatus,
+      })),
+      total: result.total,
+    };
   }
 
   @Query(() => [CardType])
