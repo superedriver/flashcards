@@ -144,7 +144,7 @@ Public search must not return:
 - [x] TASK-06.06 Add unpublishDeck mutation
 - [x] TASK-06.07 Add PublicDecksUseCase
 - [x] TASK-06.08 Add publicDecks query
-- [ ] TASK-06.09 Add PublicDeckUseCase
+- [x] TASK-06.09 Add PublicDeckUseCase
 - [ ] TASK-06.10 Add publicDeck query
 - [ ] TASK-06.11 Add PublicDeckCardsUseCase
 - [ ] TASK-06.12 Add publicDeckCards query
@@ -1075,7 +1075,7 @@ feat(public-decks): add public decks query
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
