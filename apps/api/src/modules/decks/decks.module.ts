@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
 import { CARD_REPOSITORY } from './application/ports/card-repository.port';
 import { DECK_REPOSITORY } from './application/ports/deck-repository.port';
+import { CopyPublicDeckUseCase } from './application/use-cases/copy-public-deck.use-case';
 import { CreateCardUseCase } from './application/use-cases/create-card.use-case';
 import { CreateDeckUseCase } from './application/use-cases/create-deck.use-case';
 import { DeckCardsUseCase } from './application/use-cases/deck-cards.use-case';
@@ -37,6 +38,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     UpdateDeckUseCase,
     DeleteDeckUseCase,
     CreateCardUseCase,
+    CopyPublicDeckUseCase,
     DeckCardsUseCase,
     UpdateCardUseCase,
     DeleteCardUseCase,
@@ -56,6 +58,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     UpdateDeckUseCase,
     DeleteDeckUseCase,
     CreateCardUseCase,
+    CopyPublicDeckUseCase,
     DeckCardsUseCase,
     UpdateCardUseCase,
     DeleteCardUseCase,
