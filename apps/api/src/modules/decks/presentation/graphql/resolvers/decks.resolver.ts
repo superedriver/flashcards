@@ -4,6 +4,7 @@ import { AuthUser } from '../../../../auth/domain/types';
 import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/current-user.decorator';
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
 import { OptionalGqlAuthGuard } from '../../../../auth/presentation/graphql/guards/optional-gql-auth.guard';
+import { CopyPublicDeckUseCase } from '../../../application/use-cases/copy-public-deck.use-case';
 import { CreateCardUseCase } from '../../../application/use-cases/create-card.use-case';
 import { CreateDeckUseCase } from '../../../application/use-cases/create-deck.use-case';
 import { DeckCardsUseCase } from '../../../application/use-cases/deck-cards.use-case';
@@ -24,6 +25,7 @@ import { PublicDecksInput } from '../inputs/public-decks.input';
 import { UpdateDeckInput } from '../inputs/update-deck.input';
 import { UpdateCardInput } from '../inputs/update-card.input';
 import { CardType } from '../types/card.type';
+import { CopyPublicDeckPayloadType } from '../types/copy-public-deck-payload.type';
 import { DeckModerationStatus } from '../types/deck-moderation-status.type';
 import { DeckVisibility } from '../types/deck-visibility.type';
 import { DeckType } from '../types/deck.type';
@@ -42,6 +44,7 @@ export class DecksResolver {
     private readonly updateDeckUseCase: UpdateDeckUseCase,
     private readonly deleteDeckUseCase: DeleteDeckUseCase,
     private readonly createCardUseCase: CreateCardUseCase,
+    private readonly copyPublicDeckUseCase: CopyPublicDeckUseCase,
     private readonly deckCardsUseCase: DeckCardsUseCase,
     private readonly updateCardUseCase: UpdateCardUseCase,
     private readonly deleteCardUseCase: DeleteCardUseCase,
@@ -266,6 +269,27 @@ export class DecksResolver {
       ...deck,
       visibility: deck.visibility as DeckVisibility,
       moderationStatus: deck.moderationStatus as DeckModerationStatus,
+    };
+  }
+
+  @Mutation(() => CopyPublicDeckPayloadType)
+  @UseGuards(GqlAuthGuard)
+  async copyPublicDeck(
+    @CurrentUser() user: AuthUser,
+    @Args('sourceDeckId') sourceDeckId: string,
+  ): Promise<CopyPublicDeckPayloadType> {
+    const result = await this.copyPublicDeckUseCase.execute({
+      currentUser: user,
+      sourceDeckId,
+    });
+
+    return {
+      deck: {
+        ...result.deck,
+        visibility: result.deck.visibility as DeckVisibility,
+        moderationStatus: result.deck.moderationStatus as DeckModerationStatus,
+      },
+      cards: result.cards,
     };
   }
 }

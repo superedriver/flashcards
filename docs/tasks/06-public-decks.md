@@ -149,7 +149,7 @@ Public search must not return:
 - [x] TASK-06.11 Add PublicDeckCardsUseCase
 - [x] TASK-06.12 Add publicDeckCards query
 - [x] TASK-06.13 Add CopyPublicDeckUseCase
-- [ ] TASK-06.14 Add copyPublicDeck mutation
+- [x] TASK-06.14 Add copyPublicDeck mutation
 - [ ] TASK-06.15 Add public decks final checks
 ```
 
@@ -1582,7 +1582,7 @@ feat(public-decks): add copy public deck use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
