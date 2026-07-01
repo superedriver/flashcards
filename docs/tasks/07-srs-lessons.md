@@ -118,7 +118,7 @@ MVP does not support:
 ## Epic Summary
 
 ```md
-- [ ] TASK-07.01 Add SRS package skeleton
+- [x] TASK-07.01 Add SRS package skeleton
 - [ ] TASK-07.02 Implement SM-2 types
 - [ ] TASK-07.03 Implement SM-2 algorithm
 - [ ] TASK-07.04 Add SM-2 tests
@@ -146,7 +146,7 @@ MVP does not support:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
