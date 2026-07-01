@@ -10,6 +10,7 @@ import { DeleteCardUseCase } from './application/use-cases/delete-card.use-case'
 import { GetDeckUseCase } from './application/use-cases/get-deck.use-case';
 import { MyDecksUseCase } from './application/use-cases/my-decks.use-case';
 import { PublishDeckUseCase } from './application/use-cases/publish-deck.use-case';
+import { PublicDecksUseCase } from './application/use-cases/public-decks.use-case';
 import { UnpublishDeckUseCase } from './application/use-cases/unpublish-deck.use-case';
 import { UpdateDeckUseCase } from './application/use-cases/update-deck.use-case';
 import { UpdateCardUseCase } from './application/use-cases/update-card.use-case';
@@ -38,6 +39,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     UpdateCardUseCase,
     DeleteCardUseCase,
     PublishDeckUseCase,
+    PublicDecksUseCase,
     UnpublishDeckUseCase,
     DecksResolver,
   ],
@@ -54,6 +56,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     UpdateCardUseCase,
     DeleteCardUseCase,
     PublishDeckUseCase,
+    PublicDecksUseCase,
     UnpublishDeckUseCase,
   ],
 })
