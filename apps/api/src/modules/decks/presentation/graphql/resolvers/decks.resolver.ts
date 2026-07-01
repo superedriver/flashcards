@@ -89,7 +89,8 @@ export class DecksResolver {
 
   @Query(() => PublicDeckSearchResultType)
   async publicDecks(
-    @Args('input', { nullable: true }) input?: PublicDecksInput | null,
+    @Args('input', { type: () => PublicDecksInput, nullable: true })
+    input?: PublicDecksInput | null,
   ): Promise<PublicDeckSearchResultType> {
     const result = await this.publicDecksUseCase.execute({
       query: input?.query,

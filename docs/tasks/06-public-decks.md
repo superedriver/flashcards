@@ -151,6 +151,7 @@ Public search must not return:
 - [x] TASK-06.13 Add CopyPublicDeckUseCase
 - [x] TASK-06.14 Add copyPublicDeck mutation
 - [x] TASK-06.15 Add public decks final checks
+- [x] TASK-06.16 Add public decks unit tests
 ```
 
 ---
@@ -1741,6 +1742,7 @@ pnpm --filter @flashcards/api start:dev
 ```txt
 - Do not move to lessons until public/private visibility checks pass.
 - Do not expose private decks for frontend convenience.
+- Do not add automated tests in this task (see TASK-06.16).
 ```
 
 ## Acceptance Criteria
@@ -1769,6 +1771,182 @@ chore(public-decks): finalize public decks
 
 ---
 
+# TASK-06.16 Add public decks unit tests
+
+## Status
+
+DONE
+
+## Context
+
+Public deck visibility and copy behavior are security-sensitive. Manual GraphQL checks in TASK-06.15 are not enough to prevent regressions in publish/unpublish rules, public search filtering, private deck non-leakage, and copy behavior.
+
+Use cases depend on ports, so they can be tested quickly without database or GraphQL.
+
+## Goal
+
+Add unit tests for EPIC-06 public deck use cases.
+
+## Related Documents
+
+```txt
+docs/domain/permissions.md
+docs/security/security-checklist.md
+docs/backend-clean-architecture.md
+docs/tasks/06-public-decks.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/decks/application/use-cases/publish-deck.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/unpublish-deck.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/public-decks.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/public-deck.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/public-deck-cards.use-case.spec.ts
+apps/api/src/modules/decks/application/use-cases/copy-public-deck.use-case.spec.ts
+```
+
+## Requirements
+
+Use Jest and co-located `*.spec.ts` files.
+
+Mock all ports. Do not use Prisma, database, or running GraphQL server.
+
+Follow existing EPIC-05 deck use case test style (`createDeck` helpers, mocked `DeckRepositoryPort` / `CardRepositoryPort`).
+
+### PublishDeckUseCase
+
+Cover:
+
+```txt
+- throws DECK_NOT_FOUND when deck is missing
+- throws DECK_FORBIDDEN for non-owner
+- throws VALIDATION_ERROR when deck has zero cards
+- owner can publish non-empty deck
+- calls deckRepository.publish with deckId
+- does not call publish when validation fails
+```
+
+### UnpublishDeckUseCase
+
+Cover:
+
+```txt
+- throws DECK_NOT_FOUND when deck is missing
+- throws DECK_FORBIDDEN for non-owner
+- owner can unpublish deck
+- calls deckRepository.unpublish with deckId
+```
+
+### PublicDecksUseCase
+
+Cover:
+
+```txt
+- default limit is 20 when limit is omitted
+- default offset is 0 when offset is omitted
+- clamps limit to minimum 1
+- clamps limit to maximum 50
+- normalizes negative offset to 0
+- trims query and passes null when query is empty/whitespace
+- passes normalized query/limit/offset to searchPublicApproved
+- returns items and total from repository
+```
+
+### PublicDeckUseCase
+
+Cover:
+
+```txt
+- throws DECK_NOT_FOUND when findPublicApprovedById returns null
+- returns public approved deck when found
+- does not call findById (only public approved lookup)
+```
+
+### PublicDeckCardsUseCase
+
+Cover:
+
+```txt
+- throws DECK_NOT_FOUND when findPublicApprovedById returns null
+- returns cards from findByDeckId for public approved deck
+- does not return cards when public deck is not found
+```
+
+### CopyPublicDeckUseCase
+
+Cover:
+
+```txt
+- throws UNAUTHORIZED when user is missing
+- throws USER_BLOCKED when user is blocked
+- throws DECK_NOT_FOUND when source deck is not public approved
+- copies deck with source title and description
+- calls createCopiedDeck with ownerId = current user and sourceDeckId
+- copies all source cards with front/back/example/notes/position preserved
+- preserves card order via createMany input
+- returns empty cards array when source deck has no cards
+- does not call createMany when source deck has no cards
+- does not copy SRS state (only deck + card content ports are used)
+```
+
+## Security Requirements
+
+```txt
+- Tests must not use real production credentials.
+- Tests must assert non-owners cannot publish or unpublish decks.
+- Tests must assert private/non-approved decks are not returned by public use cases (DECK_NOT_FOUND).
+- Tests must assert copy fails for non-public-approved source decks.
+- Tests must assert copied deck is created for current user only.
+```
+
+## Architecture Constraints
+
+```txt
+- Unit tests only in this task.
+- Mock ports; do not import Prisma client in use case tests.
+- Do not test GraphQL resolvers in this task.
+- Do not test Prisma repositories in this task.
+- Do not add e2e tests in this task.
+- Keep tests focused on business rules, not NestJS wiring.
+```
+
+## Do Not Do
+
+```txt
+- Do not add integration tests with database.
+- Do not add GraphQL e2e tests.
+- Do not refactor use cases unless required to make them testable.
+- Do not continue to EPIC-07 until this task passes.
+```
+
+## Acceptance Criteria
+
+```txt
+- All EPIC-06 public deck use case tests exist and pass.
+- Tests run without database.
+- pnpm --filter @flashcards/api test passes.
+- API builds.
+```
+
+## Commands to Run
+
+```bash
+CI=true pnpm --filter @flashcards/api test -- --watchman=false
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+test(public-decks): add public deck unit tests
+```
+
+---
+
 ## Epic Completion Criteria
 
 EPIC-06 is complete when:
@@ -1792,6 +1970,7 @@ EPIC-06 is complete when:
 - Private decks do not leak.
 - Copied decks are private.
 - SRS state is not copied.
+- Public deck use case unit tests exist and pass (TASK-06.16).
 - implementation follows docs/domain/permissions.md.
 - implementation follows docs/security/security-checklist.md.
 ```
