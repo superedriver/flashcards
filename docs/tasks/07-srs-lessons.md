@@ -122,7 +122,7 @@ MVP does not support:
 - [x] TASK-07.02 Implement SM-2 types
 - [x] TASK-07.03 Implement SM-2 algorithm
 - [x] TASK-07.04 Add SM-2 tests
-- [ ] TASK-07.05 Add SRS Prisma schema
+- [x] TASK-07.05 Add SRS Prisma schema
 - [ ] TASK-07.06 Add lessons module skeleton
 - [ ] TASK-07.07 Add lesson domain types
 - [ ] TASK-07.08 Add review state and session repository ports
@@ -565,7 +565,7 @@ test(srs): add SM-2 unit tests
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

@@ -32,6 +32,17 @@ enum DeckModerationStatus {
   HIDDEN
 }
 
+enum StudySessionStatus {
+  ACTIVE
+  COMPLETED
+  ABANDONED
+}
+
+enum ReviewAnswer {
+  KNOW
+  DONT_KNOW
+}
+
 model User {
   id                String    @id @default(uuid())
   email             String    @unique
@@ -53,6 +64,9 @@ model User {
   emailVerificationTokens EmailVerificationToken[]
   passwordResetTokens     PasswordResetToken[]
   decks                   Deck[]
+  cardReviewStates        CardReviewState[]
+  studySessions           StudySession[]
+  studySessionReviews     StudySessionReview[]
 
   @@index([email])
   @@index([role])
@@ -154,6 +168,8 @@ model Deck {
 
   owner User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   cards Card[]
+  studySessions      StudySession[]
+  studySessionReviews StudySessionReview[]
 
   @@index([ownerId])
   @@index([visibility])
@@ -176,8 +192,85 @@ model Card {
   deletedAt DateTime?
 
   deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  reviewStates   CardReviewState[]
+  sessionReviews StudySessionReview[]
 
   @@index([deckId])
   @@index([position])
   @@index([deletedAt])
+}
+
+model CardReviewState {
+  id             String    @id @default(uuid())
+  userId         String
+  cardId         String
+  easeFactor     Float     @default(2.5)
+  intervalDays   Int       @default(0)
+  repetitions    Int       @default(0)
+  dueAt          DateTime
+  lastReviewedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, cardId])
+  @@index([userId])
+  @@index([cardId])
+  @@index([dueAt])
+}
+
+model StudySession {
+  id          String             @id @default(uuid())
+  userId      String
+  deckId      String
+  status      StudySessionStatus @default(ACTIVE)
+  lessonSize  Int
+  startedAt   DateTime           @default(now())
+  completedAt DateTime?
+  abandonedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deck    Deck                 @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  reviews StudySessionReview[]
+
+  @@index([userId])
+  @@index([deckId])
+  @@index([status])
+}
+
+model StudySessionReview {
+  id                   String       @id @default(uuid())
+  sessionId            String
+  userId               String
+  deckId               String
+  cardId               String
+  answer               ReviewAnswer
+  quality              Int
+  reviewedAt           DateTime
+  previousEaseFactor   Float?
+  previousIntervalDays Int?
+  previousRepetitions  Int?
+  nextEaseFactor       Float
+  nextIntervalDays     Int
+  nextRepetitions      Int
+  nextDueAt            DateTime
+
+  createdAt DateTime @default(now())
+
+  session StudySession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deck    Deck         @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  card    Card         @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, cardId])
+  @@index([userId])
+  @@index([deckId])
+  @@index([cardId])
+  @@index([reviewedAt])
 }
