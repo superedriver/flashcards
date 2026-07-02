@@ -6,4 +6,5 @@ export const appConfig = registerAs('app', () => ({
   port: Number(process.env.PORT ?? '3000'),
   webUrl: resolveEnv('APP_WEB_URL', 'http://localhost:8081'),
   corsOrigin: resolveEnv('CORS_ORIGIN', 'http://localhost:8081'),
+  internalJobSecret: process.env.INTERNAL_JOB_SECRET ?? '',
 }));
