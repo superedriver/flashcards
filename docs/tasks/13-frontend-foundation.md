@@ -128,7 +128,7 @@ EMAIL_PROVIDER_SECRET
 - [x] TASK-13.03 Configure Expo Router
 - [x] TASK-13.04 Configure Tamagui
 - [x] TASK-13.05 Add frontend environment config
-- [ ] TASK-13.06 Add Apollo Client foundation
+- [x] TASK-13.06 Add Apollo Client foundation
 - [ ] TASK-13.07 Add GraphQL codegen foundation
 - [ ] TASK-13.08 Add app providers
 - [ ] TASK-13.09 Add app layout shell
@@ -604,7 +604,7 @@ TASK-13.05 Add frontend environment config
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
