@@ -210,7 +210,7 @@ mutation ResetPassword($input: ResetPasswordInput!) {
 ## Epic Summary
 
 ```md
-- [ ] TASK-14.01 Add frontend auth package dependencies
+- [x] TASK-14.01 Add frontend auth package dependencies
 - [ ] TASK-14.02 Add auth GraphQL documents
 - [ ] TASK-14.03 Generate auth GraphQL types
 - [ ] TASK-14.04 Add token storage services
@@ -233,7 +233,7 @@ mutation ResetPassword($input: ResetPasswordInput!) {
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
