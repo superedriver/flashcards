@@ -23,7 +23,7 @@ Frontend must never call AI providers directly.
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -190,7 +190,7 @@ outputPreview max = 1000 characters
 - [x] TASK-09.12 Add generateCardExamples mutation
 - [x] TASK-09.13 Add SaveGeneratedCardExampleUseCase
 - [x] TASK-09.14 Add saveGeneratedCardExample mutation
-- [ ] TASK-09.15 Add AI examples final checks
+- [x] TASK-09.15 Add AI examples final checks
 ```
 
 ---
@@ -1623,7 +1623,7 @@ feat(ai): add save generated card example mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
