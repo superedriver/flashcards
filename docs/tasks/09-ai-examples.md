@@ -189,7 +189,7 @@ outputPreview max = 1000 characters
 - [x] TASK-09.11 Add GenerateCardExamplesUseCase
 - [x] TASK-09.12 Add generateCardExamples mutation
 - [x] TASK-09.13 Add SaveGeneratedCardExampleUseCase
-- [ ] TASK-09.14 Add saveGeneratedCardExample mutation
+- [x] TASK-09.14 Add saveGeneratedCardExample mutation
 - [ ] TASK-09.15 Add AI examples final checks
 ```
 
@@ -1543,7 +1543,7 @@ feat(ai): add save generated card example use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
