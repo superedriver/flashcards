@@ -139,6 +139,7 @@ MVP does not support:
 - [x] TASK-07.19 Add deckLearningStats query
 - [x] TASK-07.20 Add abandonLesson mutation
 - [x] TASK-07.21 Add SRS and lessons final checks
+- [x] TASK-07.22 Add lessons unit tests
 ```
 
 ---
@@ -2567,6 +2568,206 @@ TASK-07.21 Add SRS and lessons final checks
 
 ---
 
+# TASK-07.22 Add lessons unit tests
+
+## Status
+
+DONE
+
+## Context
+
+Lesson flow, SRS updates, and session permissions are security-sensitive. Manual GraphQL checks in TASK-07.21 are not enough to prevent regressions in due/new card selection, SM-2 integration, session ownership, idempotent abandon, and deck learning stats.
+
+Use cases depend on ports, so they can be tested quickly without database or GraphQL.
+
+## Goal
+
+Add unit tests for EPIC-07 lesson use cases and lesson mappers.
+
+## Related Documents
+
+```txt
+docs/algorithms/sm-2.md
+docs/domain/lesson-flow.md
+docs/domain/permissions.md
+docs/security/security-checklist.md
+docs/backend-clean-architecture.md
+docs/tasks/07-srs-lessons.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/lessons/application/use-cases/start-lesson.use-case.spec.ts
+apps/api/src/modules/lessons/application/use-cases/submit-review.use-case.spec.ts
+apps/api/src/modules/lessons/application/use-cases/complete-lesson.use-case.spec.ts
+apps/api/src/modules/lessons/application/use-cases/abandon-lesson.use-case.spec.ts
+apps/api/src/modules/lessons/application/use-cases/deck-learning-stats.use-case.spec.ts
+
+apps/api/src/modules/lessons/infrastructure/mappers/card-review-state.mapper.spec.ts
+apps/api/src/modules/lessons/infrastructure/mappers/study-session.mapper.spec.ts
+apps/api/src/modules/lessons/infrastructure/mappers/study-session-review.mapper.spec.ts
+```
+
+## Requirements
+
+Use Jest and co-located `*.spec.ts` files.
+
+Mock all ports. Do not use Prisma, database, or running GraphQL server.
+
+Follow existing EPIC-05/06 use case test style (`createDeck` / `createCard` helpers, mocked repository ports, `jest.fn()`).
+
+Mock `@flashcards/srs` in `SubmitReviewUseCase` tests. Assert `calculateNextReview` is called with mapped quality; do not re-test SM-2 formula (covered in `packages/srs`).
+
+### StartLessonUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws DECK_NOT_FOUND when deck is missing
+- throws DECK_NOT_FOUND for non-owned deck (canManageDeck)
+- resolves lessonSize from user settings when omitted
+- clamps lessonSize to min 5 and max 100
+- selects due cards before new cards
+- returns empty payload with sessionId null when no cards available
+- does not create session when no cards available
+- abandons existing ACTIVE session for user/deck before creating new session
+- creates session and returns selected cards when cards exist
+- includes reviewState on due cards and null reviewState on new cards
+```
+
+### SubmitReviewUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws LESSON_NOT_FOUND when session is missing
+- throws LESSON_NOT_FOUND when session belongs to another user
+- throws LESSON_NOT_ACTIVE when session is not ACTIVE
+- throws CARD_NOT_FOUND when card is missing
+- throws CARD_NOT_FOUND when card does not belong to session deck
+- throws LESSON_CARD_ALREADY_REVIEWED on duplicate session/card review
+- throws INVALID_REVIEW_ANSWER for invalid answer value
+- KNOW maps to quality 4 and calls calculateNextReview
+- DONT_KNOW maps to quality 1 and calls calculateNextReview
+- upserts CardReviewState with calculateNextReview result
+- creates StudySessionReview with before/after SRS fields
+- returns updated reviewState and reviewedCards count
+```
+
+### CompleteLessonUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws LESSON_NOT_FOUND when session is missing
+- throws LESSON_NOT_FOUND when session belongs to another user
+- throws LESSON_NOT_ACTIVE when session is not ACTIVE
+- completes own ACTIVE session and returns summary
+- returns knownCount and dontKnowCount from repository counts
+- returns totalCards from card repository countByDeckId
+```
+
+### AbandonLessonUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws LESSON_NOT_FOUND when session is missing
+- throws LESSON_NOT_FOUND when session belongs to another user
+- abandons own ACTIVE session (calls repository abandon)
+- returns success true for own already ABANDONED session (idempotent)
+- returns success true for own already COMPLETED session (idempotent)
+- does not call abandon when session is already ABANDONED or COMPLETED
+```
+
+### DeckLearningStatsUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws DECK_NOT_FOUND when deck is missing
+- throws DECK_NOT_FOUND when deck is not viewable (canViewDeck)
+- returns per-user stats for viewable deck
+- calculates newCards as totalCards - reviewedCards
+- passes userId and deckId to review-state repository count methods
+```
+
+### Mappers
+
+Cover:
+
+```txt
+- card-review-state.mapper maps all fields
+- study-session.mapper maps status and timestamps
+- study-session-review.mapper maps answer and SRS before/after fields
+```
+
+## Security Requirements
+
+```txt
+- Tests must not use real production credentials.
+- Tests must assert non-owners cannot start lessons on foreign decks.
+- Tests must assert non-owners cannot submit/complete/abandon foreign sessions.
+- Tests must assert inaccessible private decks return DECK_NOT_FOUND for stats.
+- Tests must assert duplicate review is rejected.
+```
+
+## Architecture Constraints
+
+```txt
+- Unit tests only in this task.
+- Mock ports; do not import Prisma client in use case tests.
+- Do not test GraphQL resolvers in this task.
+- Do not test Prisma repositories in this task.
+- Do not add e2e tests in this task.
+- Do not duplicate SM-2 formula tests (use mocked calculateNextReview).
+- Keep tests focused on business rules, not NestJS wiring.
+```
+
+## Do Not Do
+
+```txt
+- Do not add integration tests with database.
+- Do not add GraphQL e2e tests.
+- Do not refactor use cases unless required to make them testable.
+- Do not continue to EPIC-08 until this task passes.
+```
+
+## Acceptance Criteria
+
+```txt
+- All EPIC-07 lesson use case tests exist and pass.
+- Lesson mapper tests exist and pass.
+- Tests run without database.
+- pnpm --filter @flashcards/api test passes.
+- pnpm --filter @flashcards/srs test passes.
+- API builds.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/srs test
+CI=true pnpm --filter @flashcards/api test -- --watchman=false
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-07.22 Add lessons unit tests
+```
+
+---
+
 ## Epic Completion Criteria
 
 EPIC-07 is complete when:
@@ -2600,9 +2801,10 @@ EPIC-07 is complete when:
 - SM-2 follows docs/algorithms/sm-2.md.
 - lesson flow follows docs/domain/lesson-flow.md.
 - permissions follow docs/domain/permissions.md.
+- Lesson use case unit tests exist and pass (TASK-07.22).
 ```
 
-After this epic is complete, move to:
+After EPIC-07 is complete (including TASK-07.22), move to:
 
 ```txt
 docs/tasks/08-csv-import.md
