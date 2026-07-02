@@ -8,6 +8,7 @@ import { GenerateCardExamplesUseCase } from './application/use-cases/generate-ca
 import { PrismaAiRequestLogRepository } from './infrastructure/persistence/prisma-ai-request-log.repository';
 import { GeminiAiProvider } from './infrastructure/providers/gemini-ai.provider';
 import { MockAiProvider } from './infrastructure/providers/mock-ai.provider';
+import { AiResolver } from './presentation/graphql/resolvers/ai.resolver';
 
 @Module({
   imports: [ConfigModule, AuthModule, DecksModule],
@@ -36,6 +37,7 @@ import { MockAiProvider } from './infrastructure/providers/mock-ai.provider';
       useClass: PrismaAiRequestLogRepository,
     },
     GenerateCardExamplesUseCase,
+    AiResolver,
   ],
   exports: [
     AI_PROVIDER,

@@ -187,7 +187,7 @@ outputPreview max = 1000 characters
 - [x] TASK-09.09 Add AI prompt builder
 - [x] TASK-09.10 Add AI GraphQL types and inputs
 - [x] TASK-09.11 Add GenerateCardExamplesUseCase
-- [ ] TASK-09.12 Add generateCardExamples mutation
+- [x] TASK-09.12 Add generateCardExamples mutation
 - [ ] TASK-09.13 Add SaveGeneratedCardExampleUseCase
 - [ ] TASK-09.14 Add saveGeneratedCardExample mutation
 - [ ] TASK-09.15 Add AI examples final checks
@@ -1339,7 +1339,7 @@ feat(ai): add generate card examples use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
