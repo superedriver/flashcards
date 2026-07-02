@@ -126,7 +126,7 @@ MVP does not support:
 - [x] TASK-07.06 Add lessons module skeleton
 - [x] TASK-07.07 Add lesson domain types
 - [x] TASK-07.08 Add review state and session repository ports
-- [ ] TASK-07.09 Add Prisma review state repository
+- [x] TASK-07.09 Add Prisma review state repository
 - [ ] TASK-07.10 Add Prisma study session repository
 - [ ] TASK-07.11 Add lesson GraphQL types and inputs
 - [ ] TASK-07.12 Add StartLessonUseCase
@@ -1131,7 +1131,7 @@ chore(lessons): add lesson repository ports
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
