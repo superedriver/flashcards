@@ -137,8 +137,8 @@ MVP does not support:
 - [x] TASK-07.17 Add completeLesson mutation
 - [x] TASK-07.18 Add DeckLearningStatsUseCase
 - [x] TASK-07.19 Add deckLearningStats query
-- [ ] TASK-07.20 Add SRS and lessons final checks
-- [ ] TASK-07.21 Add abandonLesson mutation
+- [ ] TASK-07.20 Add abandonLesson mutation
+- [ ] TASK-07.21 Add SRS and lessons final checks
 ```
 
 ---
@@ -2294,7 +2294,171 @@ feat(lessons): add deck learning stats query
 
 ---
 
-# TASK-07.20 Add SRS and lessons final checks
+# TASK-07.20 Add abandonLesson mutation
+
+## Status
+
+TODO
+
+## Context
+
+Frontend must abandon the current lesson when the user leaves the lesson screen.
+
+This follows:
+
+```txt
+docs/domain/lesson-flow.md
+```
+
+Run this task before TASK-07.21 final checks.
+
+## Goal
+
+Add `AbandonLessonUseCase`, repository support, GraphQL types, and protected `abandonLesson` mutation.
+
+## Files to Create
+
+```txt
+apps/api/src/modules/lessons/application/use-cases/abandon-lesson.use-case.ts
+apps/api/src/modules/lessons/presentation/graphql/inputs/abandon-lesson.input.ts
+apps/api/src/modules/lessons/presentation/graphql/types/abandon-lesson-payload.type.ts
+```
+
+## Files to Modify
+
+```txt
+apps/api/src/modules/lessons/application/ports/study-session-repository.port.ts
+apps/api/src/modules/lessons/infrastructure/persistence/prisma-study-session.repository.ts
+apps/api/src/modules/lessons/presentation/graphql/resolvers/lessons.resolver.ts
+apps/api/src/modules/lessons/lessons.module.ts
+```
+
+## Requirements
+
+Add repository method:
+
+```ts
+abandon(sessionId: string, abandonedAt: Date): Promise<StudySession>
+```
+
+`abandon` must:
+
+```txt
+- set status = ABANDONED
+- set abandonedAt = provided date
+```
+
+Input:
+
+```ts
+export type AbandonLessonUseCaseInput = {
+  currentUser: AuthUser
+  sessionId: string
+}
+```
+
+Output:
+
+```ts
+export type AbandonLessonUseCaseResult = {
+  success: boolean
+}
+```
+
+Use case must:
+
+```txt
+1. Validate authenticated user exists.
+2. Reject blocked user.
+3. Load session.
+4. Check session belongs to current user.
+5. If session is missing or belongs to another user, reject with LESSON_NOT_FOUND.
+6. If session is already ABANDONED or COMPLETED, return success: true (idempotent).
+7. If session is ACTIVE, mark it ABANDONED and set abandonedAt.
+8. Return success: true.
+```
+
+GraphQL:
+
+```graphql
+abandonLesson(input: AbandonLessonInput!): AbandonLessonPayloadType!
+```
+
+`AbandonLessonInput`:
+
+```txt
+- sessionId
+```
+
+`AbandonLessonPayloadType`:
+
+```txt
+- success
+```
+
+Mutation must:
+
+```txt
+- require GqlAuthGuard
+- use CurrentUser
+- call AbandonLessonUseCase
+- return payload
+```
+
+Resolver must not:
+
+```txt
+- query Prisma
+- update session directly
+```
+
+## Security Requirements
+
+```txt
+- User can abandon only own session.
+- Missing or foreign session must reject with LESSON_NOT_FOUND.
+- Do not leak whether another user's session exists.
+```
+
+## Architecture Constraints
+
+```txt
+- Use case depends on ports.
+- Use case must not import Prisma.
+- Use case must not import GraphQL decorators.
+- Resolver must not access Prisma directly.
+```
+
+## Acceptance Criteria
+
+```txt
+- AbandonLessonUseCase exists.
+- Study session repository supports abandon by sessionId.
+- abandonLesson mutation exists.
+- Mutation requires auth.
+- Own ACTIVE session is abandoned.
+- Own already ABANDONED/COMPLETED session returns success (idempotent).
+- Missing or foreign session rejects with LESSON_NOT_FOUND.
+- API builds.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-07.20 Add abandonLesson mutation
+```
+
+---
+
+# TASK-07.21 Add SRS and lessons final checks
 
 ## Status
 
@@ -2303,6 +2467,10 @@ TODO
 ## Context
 
 Lessons are core product logic and must be checked carefully.
+
+This is the final gate for EPIC-07.
+
+Run this task only after TASK-07.20 is complete.
 
 ## Goal
 
@@ -2394,7 +2562,7 @@ pnpm --filter @flashcards/api start:dev
 ## Expected Commit Message
 
 ```txt
-chore(lessons): finalize SRS and lessons
+TASK-07.21 Add SRS and lessons final checks
 ```
 
 ---
@@ -2423,6 +2591,8 @@ EPIC-07 is complete when:
 - submitReview mutation works.
 - CompleteLessonUseCase exists.
 - completeLesson mutation works.
+- AbandonLessonUseCase exists.
+- abandonLesson mutation works.
 - DeckLearningStatsUseCase exists.
 - deckLearningStats query works.
 - due cards are selected before new cards.
