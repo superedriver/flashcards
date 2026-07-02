@@ -160,7 +160,7 @@ No external analytics provider is required in this epic.
 - [x] TASK-12.14 Add blockUser mutation
 - [x] TASK-12.15 Add UnblockUserUseCase
 - [x] TASK-12.16 Add unblockUser mutation
-- [ ] TASK-12.17 Add ModerationQueueUseCase
+- [x] TASK-12.17 Add ModerationQueueUseCase
 - [ ] TASK-12.18 Add moderationQueue query
 - [ ] TASK-12.19 Add ModerateDeckUseCase
 - [ ] TASK-12.20 Add approve/reject/hide deck mutations
@@ -1725,7 +1725,7 @@ feat(admin): add unblock user mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
