@@ -179,6 +179,7 @@ Group-shared deck restrictions:
 - [x] TASK-10.27 Add groupSharedDecks query
 - [x] TASK-10.28 Extend deck permissions for group shared decks
 - [x] TASK-10.29 Add groups and sharing final checks
+- [x] TASK-10.30 Add groups unit tests
 ```
 
 ---
@@ -2972,6 +2973,304 @@ chore(groups): finalize groups and sharing
 
 ---
 
+# TASK-10.30 Add groups unit tests
+
+## Status
+
+DONE
+
+## Context
+
+Groups, invitations, and deck sharing are permission-sensitive. Manual GraphQL checks in TASK-10.29 are not enough to prevent regressions in role rules (OWNER/ADMIN/MEMBER), invitation ownership, share permissions, and group-shared deck view access.
+
+`GroupPermissionService`, invitation use cases, share use cases, mappers, and `canViewDeck` group-access helper can be tested quickly without database, GraphQL, or Prisma.
+
+Some deck/lesson use cases already include basic group-access coverage from TASK-10.28; this task completes EPIC-10 test coverage for groups and related view-access rules.
+
+## Goal
+
+Add unit tests for EPIC-10 group permission service, use cases, mappers, email normalization, and group-shared deck view access.
+
+## Related Documents
+
+```txt
+docs/domain/permissions.md
+docs/security/security-checklist.md
+docs/backend-clean-architecture.md
+docs/tasks/10-groups-sharing.md
+docs/tasks/05-decks-cards.md
+docs/tasks/07-srs-lessons.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/groups/domain/services/group-permission.service.spec.ts
+apps/api/src/modules/groups/domain/utils/normalize-group-email.spec.ts
+apps/api/src/modules/groups/application/use-cases/create-group.use-case.spec.ts
+apps/api/src/modules/groups/application/use-cases/my-groups.use-case.spec.ts
+apps/api/src/modules/groups/application/use-cases/group-detail.use-case.spec.ts
+apps/api/src/modules/groups/application/use-cases/invite-user-to-group.use-case.spec.ts
+apps/api/src/modules/groups/application/use-cases/my-group-invitations.use-case.spec.ts
+apps/api/src/modules/groups/application/use-cases/accept-group-invitation.use-case.spec.ts
+apps/api/src/modules/groups/application/use-cases/decline-group-invitation.use-case.spec.ts
+apps/api/src/modules/groups/application/use-cases/share-deck-with-group.use-case.spec.ts
+apps/api/src/modules/groups/application/use-cases/group-shared-decks.use-case.spec.ts
+apps/api/src/modules/groups/infrastructure/mappers/group.mapper.spec.ts
+apps/api/src/modules/groups/infrastructure/mappers/group-member.mapper.spec.ts
+apps/api/src/modules/groups/infrastructure/mappers/group-invitation.mapper.spec.ts
+apps/api/src/modules/groups/infrastructure/mappers/deck-group-share.mapper.spec.ts
+apps/api/src/modules/decks/application/services/deck-view-access.service.spec.ts
+```
+
+## Files to Modify
+
+```txt
+apps/api/src/modules/decks/application/use-cases/deck-cards.use-case.spec.ts
+apps/api/src/modules/lessons/application/use-cases/deck-learning-stats.use-case.spec.ts
+```
+
+Extend existing deck/lesson specs from TASK-10.28 with group-shared access cases where missing.
+
+## Requirements
+
+Use Jest and co-located `*.spec.ts` files.
+
+Mock all ports in use case tests. Do not use Prisma, database, or running GraphQL server.
+
+Follow existing EPIC-05/07/09 use case test style (mocked repository ports, `jest.fn()`, helper factories for domain objects).
+
+Do not test GraphQL resolvers in this task.
+
+Do not test Prisma repositories in this task.
+
+### GroupPermissionService
+
+Cover:
+
+```txt
+- canViewGroup returns true for any member
+- canViewGroup returns false for null member
+- canInviteToGroup returns true for OWNER
+- canInviteToGroup returns true for ADMIN
+- canInviteToGroup returns false for MEMBER
+- canInviteToGroup returns false for null member
+- canShareDeckWithGroup returns true for OWNER
+- canShareDeckWithGroup returns true for ADMIN
+- canShareDeckWithGroup returns false for MEMBER
+- canShareDeckWithGroup returns false for null member
+```
+
+### normalizeGroupEmail
+
+Cover:
+
+```txt
+- trims whitespace
+- lowercases email
+```
+
+### CreateGroupUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws VALIDATION_ERROR when name is empty/whitespace
+- throws VALIDATION_ERROR when name exceeds 120 characters
+- throws VALIDATION_ERROR when description exceeds 1000 characters
+- creates group and adds creator as OWNER member
+- trims name and optional description
+```
+
+### MyGroupsUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- returns groups from repository for current user
+```
+
+### GroupDetailUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws GROUP_NOT_FOUND when group is missing
+- throws GROUP_FORBIDDEN for non-member
+- returns group, myMember, and members for member
+```
+
+### InviteUserToGroupUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws GROUP_NOT_FOUND when group is missing
+- throws GROUP_FORBIDDEN for MEMBER
+- throws VALIDATION_ERROR for invalid email
+- throws GROUP_INVITATION_INVALID when pending invitation already exists
+- creates invitation with normalized email and expiry for OWNER/ADMIN
+```
+
+### MyGroupInvitationsUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- returns pending invitations for normalized current user email
+```
+
+### AcceptGroupInvitationUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws GROUP_INVITATION_NOT_FOUND when invitation is missing
+- throws GROUP_INVITATION_INVALID when invitation is not PENDING
+- throws GROUP_INVITATION_INVALID when invitation is expired
+- throws GROUP_INVITATION_INVALID when invitation email does not match current user
+- throws GROUP_NOT_FOUND when group is missing
+- adds MEMBER when user is not yet a member
+- reuses existing member when user is already a member
+- marks invitation accepted and returns invitation + member
+```
+
+### DeclineGroupInvitationUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws GROUP_INVITATION_NOT_FOUND when invitation is missing
+- throws GROUP_INVITATION_INVALID when invitation is not PENDING
+- throws GROUP_INVITATION_INVALID when invitation email does not match current user
+- marks invitation declined and returns updated invitation
+```
+
+### ShareDeckWithGroupUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws DECK_NOT_FOUND when deck is missing
+- throws DECK_FORBIDDEN for non-owner deck
+- throws GROUP_NOT_FOUND when group is missing
+- throws GROUP_FORBIDDEN for MEMBER
+- throws VALIDATION_ERROR when deck is already shared with group
+- creates deck group share for deck owner who is OWNER/ADMIN in group
+```
+
+### GroupSharedDecksUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws GROUP_NOT_FOUND when group is missing
+- throws GROUP_FORBIDDEN for non-member
+- returns shared decks from repository for member
+```
+
+### canViewDeck (deck-view-access.service)
+
+Cover:
+
+```txt
+- returns true when DeckPermissionService.canViewDeck is true
+- returns false for anonymous user when permission check fails
+- returns true for authenticated user when deckGroupShareRepository.userHasAccessToDeck is true
+- returns false for authenticated user when neither permission nor group share grants access
+- does not call userHasAccessToDeck when permission check already passes
+```
+
+### DeckCardsUseCase / DeckLearningStatsUseCase (group access extensions)
+
+Cover:
+
+```txt
+- group member can list cards from deck shared via group
+- group member can read learning stats for deck shared via group
+```
+
+### Mappers
+
+Cover:
+
+```txt
+- group.mapper maps all fields and myRole
+- group-member.mapper maps role and timestamps
+- group-invitation.mapper maps status, email, expiry, and timestamps
+- deck-group-share.mapper maps permission and soft-delete fields
+```
+
+## Security Requirements
+
+```txt
+- Tests must assert MEMBER cannot invite users.
+- Tests must assert MEMBER cannot share decks with group.
+- Tests must assert non-owner cannot share deck with group.
+- Tests must assert user cannot accept/decline another user's invitation.
+- Tests must assert non-members cannot view group details or shared decks.
+- Tests must assert group share grants view access only (no edit paths in use cases under test).
+```
+
+## Architecture Constraints
+
+```txt
+- Unit tests only in this task.
+- Mock ports; do not import Prisma client in use case tests.
+- Do not test GraphQL resolvers in this task.
+- Do not test Prisma repositories in this task.
+- Do not add e2e tests in this task.
+- Keep tests focused on business rules, not NestJS wiring.
+```
+
+## Do Not Do
+
+```txt
+- Do not add integration tests with database.
+- Do not add GraphQL e2e tests.
+- Do not refactor use cases unless required to make them testable.
+- Do not continue to EPIC-11 until this task passes.
+```
+
+## Acceptance Criteria
+
+```txt
+- GroupPermissionService unit tests exist and pass.
+- All EPIC-10 group use case unit tests exist and pass.
+- Group mapper unit tests exist and pass.
+- Group-shared deck view access unit tests exist and pass.
+- Tests run without database.
+- pnpm --filter @flashcards/api test passes.
+- API builds.
+- format check and lint pass.
+```
+
+## Commands to Run
+
+```bash
+CI=true pnpm --filter @flashcards/api test -- --watchman=false
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-10.30 Add groups unit tests
+```
+
+---
+
 ## Epic Completion Criteria
 
 EPIC-10 is complete when:
@@ -3008,9 +3307,10 @@ EPIC-10 is complete when:
 - Group members cannot edit shared decks.
 - implementation follows docs/domain/permissions.md.
 - implementation follows docs/security/security-checklist.md.
+- Groups unit tests exist and pass (TASK-10.30).
 ```
 
-After this epic is complete, move to:
+After EPIC-10 is complete (including TASK-10.30), move to:
 
 ```txt
 docs/tasks/11-notifications.md
