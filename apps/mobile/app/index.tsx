@@ -1,11 +1,12 @@
 import { Redirect } from 'expo-router'
-import { Text, View } from 'react-native'
+
+import { PageTitle, Screen } from '@/ui/components'
 
 export default function IndexScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Flashcards</Text>
+    <Screen>
+      <PageTitle title="Flashcards" />
       <Redirect href="/(tabs)" />
-    </View>
+    </Screen>
   )
 }

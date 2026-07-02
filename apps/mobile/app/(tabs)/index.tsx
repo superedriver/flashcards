@@ -1,10 +1,9 @@
-import { View } from 'react-native'
-import { Text } from 'tamagui'
+import { PageTitle, Screen } from '@/ui/components'
 
 export default function HomeScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home (placeholder)</Text>
-    </View>
+    <Screen>
+      <PageTitle title="Home" />
+    </Screen>
   )
 }

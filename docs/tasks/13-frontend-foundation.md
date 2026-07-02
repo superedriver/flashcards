@@ -131,7 +131,7 @@ EMAIL_PROVIDER_SECRET
 - [x] TASK-13.06 Add Apollo Client foundation
 - [x] TASK-13.07 Add GraphQL codegen foundation
 - [x] TASK-13.08 Add app providers
-- [ ] TASK-13.09 Add app layout shell
+- [x] TASK-13.09 Add app layout shell
 - [ ] TASK-13.10 Add shared UI primitives
 - [ ] TASK-13.11 Add frontend foundation checks
 ```
@@ -873,7 +873,7 @@ TASK-13.08 Add app providers
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
