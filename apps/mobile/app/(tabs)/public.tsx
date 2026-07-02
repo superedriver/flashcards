@@ -1,9 +1,9 @@
-import { Text, View } from 'react-native'
+import { PageTitle, Screen } from '@/ui/components'
 
 export default function PublicScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Public (placeholder)</Text>
-    </View>
+    <Screen>
+      <PageTitle title="Public" />
+    </Screen>
   )
 }

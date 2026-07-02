@@ -1,9 +1,9 @@
-import { Text, View } from 'react-native'
+import { PageTitle, Screen } from '@/ui/components'
 
 export default function SignInScreen() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Sign In (placeholder)</Text>
-    </View>
+    <Screen>
+      <PageTitle title="Sign In" />
+    </Screen>
   )
 }
