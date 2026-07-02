@@ -30,7 +30,7 @@ docs/tasks/20-deployment-mvp.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -140,7 +140,7 @@ For MVP cron simplicity:
 - [x] TASK-11.13 Add removePushToken mutation
 - [x] TASK-11.14 Add SendDueCardRemindersUseCase
 - [x] TASK-11.15 Add internal reminder job endpoint
-- [ ] TASK-11.16 Add notifications final checks
+- [x] TASK-11.16 Add notifications final checks
 ```
 
 ---
@@ -1606,7 +1606,7 @@ feat(notifications): add internal reminder job endpoint
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

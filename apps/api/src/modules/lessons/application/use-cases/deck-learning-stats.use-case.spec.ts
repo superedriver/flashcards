@@ -114,6 +114,7 @@ function createUseCase(options?: {
       findDueCardIdsForDeck: jest.fn(),
       countReviewedForDeck,
       countDueForDeck,
+      countDueForUser: jest.fn(),
       findNextDueAtForDeck,
       upsert: jest.fn(),
     },
