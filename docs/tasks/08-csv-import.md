@@ -141,7 +141,7 @@ max notes length = 4000
 - [x] TASK-08.01 Add CSV import Prisma schema
 - [x] TASK-08.02 Add CSV import module skeleton
 - [x] TASK-08.03 Add CSV import domain types
-- [ ] TASK-08.04 Add CSV parser service
+- [x] TASK-08.04 Add CSV parser service
 - [ ] TASK-08.05 Add CSV import repository port
 - [ ] TASK-08.06 Add Prisma CSV import repository
 - [ ] TASK-08.07 Add CSV import GraphQL types and inputs
@@ -496,7 +496,7 @@ chore(csv): add CSV import domain types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
