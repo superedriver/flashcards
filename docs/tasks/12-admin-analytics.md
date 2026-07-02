@@ -155,7 +155,7 @@ No external analytics provider is required in this epic.
 - [x] TASK-12.09 Add AdminDashboardStatsUseCase
 - [x] TASK-12.10 Add adminDashboardStats query
 - [x] TASK-12.11 Add AdminSearchUsersUseCase
-- [ ] TASK-12.12 Add adminSearchUsers query
+- [x] TASK-12.12 Add adminSearchUsers query
 - [ ] TASK-12.13 Add BlockUserUseCase
 - [ ] TASK-12.14 Add blockUser mutation
 - [ ] TASK-12.15 Add UnblockUserUseCase
@@ -1313,7 +1313,7 @@ feat(admin): add user search use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
