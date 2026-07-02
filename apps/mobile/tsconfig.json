@@ -10,5 +10,5 @@
     },
     "types": ["react", "react-native"]
   },
-  "include": ["app", "src", "index.ts", "expo-env.d.ts", "tamagui.config.ts"]
+  "include": ["app", "src", "index.ts", "expo-env.d.ts", "tamagui.config.ts", "codegen.ts"]
 }

@@ -9,7 +9,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
@@ -33,6 +34,10 @@
     "tamagui": "^2.4.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.7",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-operations": "^4.6.1",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.3",
     "@types/react": "~19.0.14",
     "babel-preset-expo": "~13.2.4",
     "typescript": "~5.8.3"
