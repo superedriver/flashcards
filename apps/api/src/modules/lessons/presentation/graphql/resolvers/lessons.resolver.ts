@@ -3,12 +3,15 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthUser } from '../../../../auth/domain/types';
 import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/current-user.decorator';
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
+import { CompleteLessonUseCase } from '../../../application/use-cases/complete-lesson.use-case';
 import { StartLessonUseCase } from '../../../application/use-cases/start-lesson.use-case';
 import { SubmitReviewUseCase } from '../../../application/use-cases/submit-review.use-case';
 import { CardReviewState } from '../../../domain/types';
+import { CompleteLessonInput } from '../inputs/complete-lesson.input';
 import { StartLessonInput } from '../inputs/start-lesson.input';
 import { SubmitReviewInput } from '../inputs/submit-review.input';
 import { CardReviewStateType } from '../types/card-review-state.type';
+import { CompleteLessonPayloadType } from '../types/complete-lesson-payload.type';
 import { StartLessonPayloadType } from '../types/start-lesson-payload.type';
 import { SubmitReviewPayloadType } from '../types/submit-review-payload.type';
 
@@ -17,6 +20,7 @@ export class LessonsResolver {
   constructor(
     private readonly startLessonUseCase: StartLessonUseCase,
     private readonly submitReviewUseCase: SubmitReviewUseCase,
+    private readonly completeLessonUseCase: CompleteLessonUseCase,
   ) {}
 
   @Mutation(() => StartLessonPayloadType)
@@ -69,6 +73,18 @@ export class LessonsResolver {
       reviewState: toCardReviewStateType(result.reviewState),
       reviewedCards: result.reviewedCards,
     };
+  }
+
+  @Mutation(() => CompleteLessonPayloadType)
+  @UseGuards(GqlAuthGuard)
+  async completeLesson(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: CompleteLessonInput,
+  ): Promise<CompleteLessonPayloadType> {
+    return this.completeLessonUseCase.execute({
+      currentUser: user,
+      sessionId: input.sessionId,
+    });
   }
 }
 
