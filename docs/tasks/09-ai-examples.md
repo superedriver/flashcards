@@ -177,7 +177,7 @@ outputPreview max = 1000 characters
 
 ```md
 - [x] TASK-09.01 Add AI Prisma schema
-- [ ] TASK-09.02 Add AI module skeleton
+- [x] TASK-09.02 Add AI module skeleton
 - [ ] TASK-09.03 Add AI domain types
 - [ ] TASK-09.04 Add AI provider port
 - [ ] TASK-09.05 Add mock AI provider
@@ -334,7 +334,7 @@ chore(db): add AI request log schema
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
