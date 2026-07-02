@@ -129,7 +129,7 @@ For MVP cron simplicity:
 - [x] TASK-11.02 Add notifications module skeleton
 - [x] TASK-11.03 Add notification domain types
 - [x] TASK-11.04 Add push token repository port
-- [ ] TASK-11.05 Add Prisma push token repository
+- [x] TASK-11.05 Add Prisma push token repository
 - [ ] TASK-11.06 Add notification provider port
 - [ ] TASK-11.07 Add mock notification provider
 - [ ] TASK-11.08 Add Expo notification provider
@@ -526,7 +526,7 @@ chore(notifications): add push token repository port
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
