@@ -123,7 +123,7 @@ MVP does not support:
 - [x] TASK-07.03 Implement SM-2 algorithm
 - [x] TASK-07.04 Add SM-2 tests
 - [x] TASK-07.05 Add SRS Prisma schema
-- [ ] TASK-07.06 Add lessons module skeleton
+- [x] TASK-07.06 Add lessons module skeleton
 - [ ] TASK-07.07 Add lesson domain types
 - [ ] TASK-07.08 Add review state and session repository ports
 - [ ] TASK-07.09 Add Prisma review state repository
@@ -772,7 +772,7 @@ chore(db): add SRS and lesson schema
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
