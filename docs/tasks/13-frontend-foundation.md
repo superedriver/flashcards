@@ -41,7 +41,7 @@ docs/tasks/16-frontend-lessons.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -133,7 +133,7 @@ EMAIL_PROVIDER_SECRET
 - [x] TASK-13.08 Add app providers
 - [x] TASK-13.09 Add app layout shell
 - [x] TASK-13.10 Add shared UI primitives
-- [ ] TASK-13.11 Add frontend foundation checks
+- [x] TASK-13.11 Add frontend foundation checks
 ```
 
 ---
@@ -1023,7 +1023,7 @@ TASK-13.10 Add shared UI primitives
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
