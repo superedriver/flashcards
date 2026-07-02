@@ -55,7 +55,7 @@ Expected state:
 - Deck/Card schema exists.
 - DeckPermissionService exists.
 - Deck/card owner permissions work.
-- Lessons can start from viewable decks.
+- Lessons can start only from owned decks (shared/public decks must be copied first).
 - Public deck visibility works.
 ```
 
@@ -66,7 +66,7 @@ Expected state:
 2. Follow docs/security/security-checklist.md exactly.
 3. Backend is the source of truth for group permissions.
 4. Frontend role visibility is UX only.
-5. Group members get view/study access to shared decks.
+5. Group members get view access to shared decks.
 6. Group members do not get edit access to shared decks.
 7. Only deck owner can edit deck/card content.
 8. Only group OWNER or ADMIN can invite users.
@@ -132,7 +132,7 @@ Group-shared deck access:
 ```txt
 - group members can view deck
 - group members can view deck cards
-- group members can start lessons from shared deck
+- group members can copy shared deck into private owned deck for study
 - group members get their own CardReviewState
 ```
 
@@ -2853,7 +2853,7 @@ AI example generation/save
 ```txt
 - Group member can view shared deck.
 - Group member can view shared deck cards.
-- Group member can start lesson from shared deck.
+- Group member can copy shared deck into own private deck for study.
 - Group member gets own review state.
 - Group member cannot edit shared deck.
 - Group member cannot edit shared cards.
@@ -2913,7 +2913,7 @@ Verify:
 - non-owner cannot share deck with group
 - group member can view shared deck
 - group member can view shared deck cards
-- group member can start lesson from shared deck
+- group member can copy shared deck into own private deck for study
 - group member cannot update shared deck
 - group member cannot create/update/delete cards in shared deck
 ```

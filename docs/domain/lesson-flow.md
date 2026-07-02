@@ -241,15 +241,15 @@ This behavior must be consistent between backend and frontend.
 MVP rule:
 
 ```txt
-A user may have one ACTIVE session per deck.
+A user may have one ACTIVE session.
 ```
 
-When starting a new lesson for the same deck:
+When starting a new lesson:
 
 Recommended behavior:
 
 ```txt
-- abandon existing ACTIVE session for this user and deck
+- abandon existing ACTIVE session for this user
 - create a new ACTIVE session
 ```
 
@@ -488,9 +488,11 @@ completedAt
 
 MVP may not expose a separate abandon mutation.
 
-Backend may abandon previous active sessions when starting a new lesson for same deck.
+Backend should expose an abandon mutation so frontend can abandon a lesson when the user leaves the lesson screen.
 
-If implemented later, `AbandonLessonUseCase` should:
+Backend may abandon previous active sessions when starting a new lesson.
+
+`AbandonLessonUseCase` should:
 
 ```txt
 - authenticate user
@@ -552,16 +554,8 @@ User can start lesson if:
 
 ```txt
 - user is authenticated
-- deck is visible to user
-- deck is not deleted
-```
-
-Deck is visible if:
-
-```txt
 - user owns deck
-- deck is public and approved
-- deck is shared with a group where user is a member
+- deck is not deleted
 ```
 
 User can submit review if:
@@ -695,8 +689,7 @@ Backend tests should cover:
 - lesson size limit is respected
 - cannot start lesson for inaccessible private deck
 - can start lesson for own deck
-- can start lesson for public approved deck
-- can start lesson for group-shared deck
+- cannot start lesson for non-owned deck
 - submit KNOW updates CardReviewState
 - submit DONT_KNOW updates CardReviewState
 - duplicate submitReview is rejected
