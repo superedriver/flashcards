@@ -149,7 +149,7 @@ No external analytics provider is required in this epic.
 - [x] TASK-12.03 Add admin permission service
 - [x] TASK-12.04 Add admin repository ports
 - [x] TASK-12.05 Add Prisma admin user repository
-- [ ] TASK-12.06 Add Prisma admin deck repository
+- [x] TASK-12.06 Add Prisma admin deck repository
 - [ ] TASK-12.07 Add Prisma analytics repository
 - [ ] TASK-12.08 Add admin GraphQL types and inputs
 - [ ] TASK-12.09 Add AdminDashboardStatsUseCase
@@ -699,7 +699,7 @@ chore(admin): add Prisma admin user repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
