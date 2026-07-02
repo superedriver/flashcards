@@ -134,7 +134,7 @@ For MVP cron simplicity:
 - [x] TASK-11.07 Add mock notification provider
 - [x] TASK-11.08 Add Expo notification provider
 - [x] TASK-11.09 Add notification GraphQL types and inputs
-- [ ] TASK-11.10 Add RegisterPushTokenUseCase
+- [x] TASK-11.10 Add RegisterPushTokenUseCase
 - [ ] TASK-11.11 Add registerPushToken mutation
 - [ ] TASK-11.12 Add RemovePushTokenUseCase
 - [ ] TASK-11.13 Add removePushToken mutation
@@ -963,7 +963,7 @@ chore(notifications): add notification GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
