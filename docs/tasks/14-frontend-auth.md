@@ -214,7 +214,7 @@ mutation ResetPassword($input: ResetPasswordInput!) {
 - [x] TASK-14.02 Add auth GraphQL documents
 - [x] TASK-14.03 Generate auth GraphQL types
 - [x] TASK-14.04 Add token storage services
-- [ ] TASK-14.05 Add auth state store
+- [x] TASK-14.05 Add auth state store
 - [ ] TASK-14.06 Add Apollo auth link
 - [ ] TASK-14.07 Add auth provider and bootstrap
 - [ ] TASK-14.08 Add protected route gating
@@ -615,7 +615,7 @@ TASK-14.04 Add token storage services
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
