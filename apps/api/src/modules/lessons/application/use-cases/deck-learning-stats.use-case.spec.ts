@@ -33,6 +33,16 @@ const deck: Deck = {
   deletedAt: null,
 };
 
+function createDeckGroupShareRepository(userHasAccess = false) {
+  return {
+    create: jest.fn(),
+    findByDeckAndGroup: jest.fn(),
+    findActiveGroupsForDeck: jest.fn(),
+    findSharedDecksForGroup: jest.fn(),
+    userHasAccessToDeck: jest.fn().mockResolvedValue(userHasAccess),
+  };
+}
+
 function createUseCase(options?: {
   user?: SafeUser | null;
   deck?: Deck | null;
@@ -40,6 +50,7 @@ function createUseCase(options?: {
   reviewedCards?: number;
   dueCards?: number;
   nextDueAt?: Date | null;
+  userHasGroupAccess?: boolean;
 }) {
   const findByIdUser = jest
     .fn()
@@ -100,6 +111,7 @@ function createUseCase(options?: {
       findNextDueAtForDeck,
       upsert: jest.fn(),
     },
+    createDeckGroupShareRepository(options?.userHasGroupAccess ?? false),
   );
 
   return {

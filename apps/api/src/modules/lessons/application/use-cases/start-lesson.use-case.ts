@@ -17,8 +17,13 @@ import {
   DECK_REPOSITORY,
   DeckRepositoryPort,
 } from '../../../decks/application/ports/deck-repository.port';
+import { canViewDeck } from '../../../decks/application/services/deck-view-access.service';
 import { DeckPermissionService } from '../../../decks/domain/services/deck-permission.service';
 import { Card } from '../../../decks/domain/types';
+import {
+  DECK_GROUP_SHARE_REPOSITORY,
+  DeckGroupShareRepositoryPort,
+} from '../../../groups/application/ports/deck-group-share-repository.port';
 import { CardReviewState } from '../../domain/types';
 import {
   CARD_REVIEW_STATE_REPOSITORY,
@@ -74,6 +79,8 @@ export class StartLessonUseCase {
     private readonly studySessionRepository: StudySessionRepositoryPort,
     @Inject(USER_SETTINGS_REPOSITORY)
     private readonly userSettingsRepository: UserSettingsRepositoryPort,
+    @Inject(DECK_GROUP_SHARE_REPOSITORY)
+    private readonly deckGroupShareRepository: DeckGroupShareRepositoryPort,
   ) {}
 
   async execute(
@@ -95,9 +102,11 @@ export class StartLessonUseCase {
       throw new ApplicationError(ErrorCodes.DECK_NOT_FOUND, 'Deck not found');
     }
 
-    const canStudy = this.deckPermissionService.canManageDeck({
+    const canStudy = await canViewDeck({
       user: input.currentUser,
       deck,
+      deckPermissionService: this.deckPermissionService,
+      deckGroupShareRepository: this.deckGroupShareRepository,
     });
 
     if (!canStudy) {

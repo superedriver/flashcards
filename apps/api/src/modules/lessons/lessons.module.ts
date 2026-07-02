@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AccountModule } from '../account/account.module';
 import { AuthModule } from '../auth/auth.module';
 import { DecksModule } from '../decks/decks.module';
+import { GroupsModule } from '../groups/groups.module';
 import { AbandonLessonUseCase } from './application/use-cases/abandon-lesson.use-case';
 import { CompleteLessonUseCase } from './application/use-cases/complete-lesson.use-case';
 import { DeckLearningStatsUseCase } from './application/use-cases/deck-learning-stats.use-case';
@@ -14,7 +15,12 @@ import { PrismaStudySessionRepository } from './infrastructure/persistence/prism
 import { LessonsResolver } from './presentation/graphql/resolvers/lessons.resolver';
 
 @Module({
-  imports: [AuthModule, DecksModule, AccountModule],
+  imports: [
+    AuthModule,
+    DecksModule,
+    AccountModule,
+    forwardRef(() => GroupsModule),
+  ],
   providers: [
     {
       provide: CARD_REVIEW_STATE_REPOSITORY,

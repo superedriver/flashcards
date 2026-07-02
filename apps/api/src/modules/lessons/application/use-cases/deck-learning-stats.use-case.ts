@@ -13,7 +13,12 @@ import {
   DECK_REPOSITORY,
   DeckRepositoryPort,
 } from '../../../decks/application/ports/deck-repository.port';
+import { canViewDeck } from '../../../decks/application/services/deck-view-access.service';
 import { DeckPermissionService } from '../../../decks/domain/services/deck-permission.service';
+import {
+  DECK_GROUP_SHARE_REPOSITORY,
+  DeckGroupShareRepositoryPort,
+} from '../../../groups/application/ports/deck-group-share-repository.port';
 import { DeckLearningStats } from '../../domain/types';
 import {
   CARD_REVIEW_STATE_REPOSITORY,
@@ -40,6 +45,8 @@ export class DeckLearningStatsUseCase {
     private readonly cardRepository: CardRepositoryPort,
     @Inject(CARD_REVIEW_STATE_REPOSITORY)
     private readonly cardReviewStateRepository: CardReviewStateRepositoryPort,
+    @Inject(DECK_GROUP_SHARE_REPOSITORY)
+    private readonly deckGroupShareRepository: DeckGroupShareRepositoryPort,
   ) {}
 
   async execute(
@@ -61,9 +68,11 @@ export class DeckLearningStatsUseCase {
       throw new ApplicationError(ErrorCodes.DECK_NOT_FOUND, 'Deck not found');
     }
 
-    const canView = this.deckPermissionService.canViewDeck({
+    const canView = await canViewDeck({
       user: input.currentUser,
       deck,
+      deckPermissionService: this.deckPermissionService,
+      deckGroupShareRepository: this.deckGroupShareRepository,
     });
 
     if (!canView) {

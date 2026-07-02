@@ -32,22 +32,41 @@ function createDeck(overrides: Partial<Deck> = {}): Deck {
   };
 }
 
-function createUseCase(deck: Deck | null) {
-  const findById = jest.fn().mockResolvedValue(deck);
-  const useCase = new GetDeckUseCase({
+function createDeckGroupShareRepository(userHasAccess = false) {
+  return {
     create: jest.fn(),
-    findById,
-    findByOwner: jest.fn(),
-    update: jest.fn(),
-    softDelete: jest.fn(),
-    publish: jest.fn(),
-    unpublish: jest.fn(),
-    findPublicApprovedById: jest.fn(),
-    searchPublicApproved: jest.fn(),
-    createCopiedDeck: jest.fn(),
-  });
+    findByDeckAndGroup: jest.fn(),
+    findActiveGroupsForDeck: jest.fn(),
+    findSharedDecksForGroup: jest.fn(),
+    userHasAccessToDeck: jest.fn().mockResolvedValue(userHasAccess),
+  };
+}
 
-  return { useCase, findById };
+function createUseCase(
+  deck: Deck | null,
+  options?: { userHasGroupAccess?: boolean },
+) {
+  const findById = jest.fn().mockResolvedValue(deck);
+  const deckGroupShareRepository = createDeckGroupShareRepository(
+    options?.userHasGroupAccess ?? false,
+  );
+  const useCase = new GetDeckUseCase(
+    {
+      create: jest.fn(),
+      findById,
+      findByOwner: jest.fn(),
+      update: jest.fn(),
+      softDelete: jest.fn(),
+      publish: jest.fn(),
+      unpublish: jest.fn(),
+      findPublicApprovedById: jest.fn(),
+      searchPublicApproved: jest.fn(),
+      createCopiedDeck: jest.fn(),
+    },
+    deckGroupShareRepository,
+  );
+
+  return { useCase, findById, deckGroupShareRepository };
 }
 
 describe('GetDeckUseCase', () => {
@@ -104,5 +123,21 @@ describe('GetDeckUseCase', () => {
     await expect(
       useCase.execute({ currentUser: owner, deckId: 'deck-1' }),
     ).rejects.toMatchObject({ code: ErrorCodes.DECK_NOT_FOUND });
+  });
+
+  it('group member can view deck shared via group', async () => {
+    const deck = createDeck();
+    const { useCase, deckGroupShareRepository } = createUseCase(deck, {
+      userHasGroupAccess: true,
+    });
+
+    await expect(
+      useCase.execute({ currentUser: otherUser, deckId: 'deck-1' }),
+    ).resolves.toEqual(deck);
+
+    expect(deckGroupShareRepository.userHasAccessToDeck).toHaveBeenCalledWith({
+      userId: 'other-1',
+      deckId: 'deck-1',
+    });
   });
 });

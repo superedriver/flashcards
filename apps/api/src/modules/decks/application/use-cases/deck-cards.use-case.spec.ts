@@ -47,7 +47,20 @@ const cards: Card[] = [
   },
 ];
 
-function createUseCase(deck: Deck | null) {
+function createDeckGroupShareRepository(userHasAccess = false) {
+  return {
+    create: jest.fn(),
+    findByDeckAndGroup: jest.fn(),
+    findActiveGroupsForDeck: jest.fn(),
+    findSharedDecksForGroup: jest.fn(),
+    userHasAccessToDeck: jest.fn().mockResolvedValue(userHasAccess),
+  };
+}
+
+function createUseCase(
+  deck: Deck | null,
+  options?: { userHasGroupAccess?: boolean },
+) {
   const findByDeckId = jest.fn().mockResolvedValue(cards);
 
   const useCase = new DeckCardsUseCase(
@@ -73,6 +86,7 @@ function createUseCase(deck: Deck | null) {
       countByDeckId: jest.fn(),
       createMany: jest.fn(),
     },
+    createDeckGroupShareRepository(options?.userHasGroupAccess ?? false),
   );
 
   return { useCase, findByDeckId };
