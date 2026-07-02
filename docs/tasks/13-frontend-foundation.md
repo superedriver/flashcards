@@ -127,7 +127,7 @@ EMAIL_PROVIDER_SECRET
 - [x] TASK-13.02 Configure TypeScript and app package scripts
 - [x] TASK-13.03 Configure Expo Router
 - [x] TASK-13.04 Configure Tamagui
-- [ ] TASK-13.05 Add frontend environment config
+- [x] TASK-13.05 Add frontend environment config
 - [ ] TASK-13.06 Add Apollo Client foundation
 - [ ] TASK-13.07 Add GraphQL codegen foundation
 - [ ] TASK-13.08 Add app providers
@@ -527,7 +527,7 @@ TASK-13.04 Configure Tamagui
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
