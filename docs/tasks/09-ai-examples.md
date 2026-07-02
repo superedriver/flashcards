@@ -184,8 +184,8 @@ outputPreview max = 1000 characters
 - [x] TASK-09.06 Add Gemini AI provider
 - [x] TASK-09.07 Add AI log repository port
 - [x] TASK-09.08 Add Prisma AI log repository
-- [ ] TASK-09.09 Add AI prompt builder
-- [ ] TASK-09.10 Add AI GraphQL types and inputs
+- [x] TASK-09.09 Add AI prompt builder
+- [x] TASK-09.10 Add AI GraphQL types and inputs
 - [ ] TASK-09.11 Add GenerateCardExamplesUseCase
 - [ ] TASK-09.12 Add generateCardExamples mutation
 - [ ] TASK-09.13 Add SaveGeneratedCardExampleUseCase
@@ -1021,7 +1021,7 @@ chore(ai): add Prisma AI request log repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1126,7 +1126,7 @@ chore(ai): add card example prompt builder
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
