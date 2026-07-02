@@ -28,7 +28,7 @@ docs/security/security-checklist.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -138,7 +138,7 @@ MVP does not support:
 - [x] TASK-07.18 Add DeckLearningStatsUseCase
 - [x] TASK-07.19 Add deckLearningStats query
 - [x] TASK-07.20 Add abandonLesson mutation
-- [ ] TASK-07.21 Add SRS and lessons final checks
+- [x] TASK-07.21 Add SRS and lessons final checks
 ```
 
 ---
@@ -2462,7 +2462,7 @@ TASK-07.20 Add abandonLesson mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
