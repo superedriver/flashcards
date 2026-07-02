@@ -138,6 +138,7 @@ MVP does not support:
 - [ ] TASK-07.18 Add DeckLearningStatsUseCase
 - [ ] TASK-07.19 Add deckLearningStats query
 - [ ] TASK-07.20 Add SRS and lessons final checks
+- [ ] TASK-07.21 Add abandonLesson mutation
 ```
 
 ---
@@ -1377,6 +1378,9 @@ SubmitReviewInput:
 
 CompleteLessonInput:
 - sessionId
+
+AbandonLessonInput:
+- sessionId
 ```
 
 `LessonCardType`:
@@ -1420,6 +1424,12 @@ reviewedCards
 knownCount
 dontKnowCount
 completedAt
+```
+
+`AbandonLessonPayloadType`:
+
+```txt
+success
 ```
 
 `DeckLearningStatsType`:
@@ -2305,7 +2315,7 @@ Verify:
 ```txt
 - startLesson requires auth
 - startLesson works for own deck
-- startLesson works for public approved deck
+- startLesson rejects non-owned deck (DECK_NOT_FOUND)
 - startLesson rejects inaccessible private deck
 - startLesson selects due cards first
 - startLesson selects new cards after due cards
@@ -2317,6 +2327,8 @@ Verify:
 - completeLesson completes own session
 - completeLesson rejects another user's session
 - completed session cannot accept submitReview
+- abandonLesson abandons own session (idempotent)
+- abandonLesson rejects missing/other user's session with LESSON_NOT_FOUND
 - deckLearningStats returns user-specific stats
 ```
 

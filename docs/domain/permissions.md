@@ -56,8 +56,8 @@ Can:
 - manage own decks
 - manage own cards
 - study own decks
-- study public approved decks
-- study group-shared decks where user is a member
+- browse public approved decks (copy required to study)
+- browse group-shared decks (copy required to study)
 - create groups
 - accept/decline own group invitations
 ```
@@ -376,17 +376,9 @@ User can start a lesson if:
 
 ```txt
 - user is authenticated
-- deck is visible to user
+- user owns deck
 - deck is not deleted
 - deck has available cards
-```
-
-Deck is visible to user if:
-
-```txt
-- user owns deck
-- deck is public and approved
-- deck is shared with a group where user is a member
 ```
 
 User can submit review if:
@@ -499,7 +491,7 @@ Group member can:
 ```txt
 - view group
 - view group shared decks
-- study group shared decks
+- copy group shared decks into owned decks for study
 ```
 
 Group member cannot:
