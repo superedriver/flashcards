@@ -141,6 +141,7 @@ For MVP cron simplicity:
 - [x] TASK-11.14 Add SendDueCardRemindersUseCase
 - [x] TASK-11.15 Add internal reminder job endpoint
 - [x] TASK-11.16 Add notifications final checks
+- [x] TASK-11.17 Add notifications unit tests
 ```
 
 ---
@@ -1697,6 +1698,219 @@ chore(notifications): finalize notifications
 
 ---
 
+# TASK-11.17 Add notifications unit tests
+
+## Status
+
+DONE
+
+## Context
+
+Push tokens and due-card reminders are security-sensitive. Manual GraphQL and internal job checks in TASK-11.16 are not enough to prevent regressions in token ownership, validation rules, reminder eligibility (timezone/hour/due count), invalid token cleanup, and internal job secret protection.
+
+Use cases, providers, mapper, and `InternalJobGuard` can be tested quickly without database, GraphQL, Prisma, or real Expo push API calls.
+
+## Goal
+
+Add unit tests for EPIC-11 notification use cases, push providers, mapper, and internal job guard.
+
+## Related Documents
+
+```txt
+docs/security/security-checklist.md
+docs/backend-clean-architecture.md
+docs/tasks/11-notifications.md
+docs/tasks/04-user-profile-settings.md
+docs/tasks/07-srs-lessons.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/notifications/application/use-cases/register-push-token.use-case.spec.ts
+apps/api/src/modules/notifications/application/use-cases/remove-push-token.use-case.spec.ts
+apps/api/src/modules/notifications/application/use-cases/send-due-card-reminders.use-case.spec.ts
+apps/api/src/modules/notifications/infrastructure/providers/mock-push-notification.provider.spec.ts
+apps/api/src/modules/notifications/infrastructure/providers/expo-push-notification.provider.spec.ts
+apps/api/src/modules/notifications/infrastructure/mappers/push-token.mapper.spec.ts
+apps/api/src/common/guards/internal-job.guard.spec.ts
+```
+
+## Requirements
+
+Use Jest and co-located `*.spec.ts` files.
+
+Mock all ports in use case tests. Do not use Prisma, database, running GraphQL server, or real Expo push API.
+
+Follow existing EPIC-05/07/09/10 use case test style (mocked repository ports, `jest.fn()`, helper factories for domain objects).
+
+Do not test GraphQL resolvers in this task.
+
+Do not test Prisma repositories in this task.
+
+Do not test `InternalNotificationsController` HTTP wiring in this task.
+
+### RegisterPushTokenUseCase
+
+Cover:
+
+```txt
+- throws UNAUTHORIZED when user is missing
+- throws USER_BLOCKED when user is blocked
+- throws VALIDATION_ERROR when token is empty/whitespace
+- throws VALIDATION_ERROR when token exceeds 500 characters
+- throws VALIDATION_ERROR when deviceId exceeds 200 characters
+- throws VALIDATION_ERROR when platform exceeds 50 characters
+- trims token, deviceId, and platform
+- converts blank deviceId/platform to null
+- registers token for current user via PushTokenRepositoryPort.register
+- returns success true
+```
+
+### RemovePushTokenUseCase
+
+Cover:
+
+```txt
+- throws UNAUTHORIZED when user is missing
+- throws USER_BLOCKED when user is blocked
+- throws VALIDATION_ERROR when token is empty/whitespace
+- trims token before disable
+- disables token for current user only via PushTokenRepositoryPort.disable
+- returns success true
+```
+
+### SendDueCardRemindersUseCase
+
+Cover:
+
+```txt
+- returns zero notified/sent counts when no users match reminder hour
+- skips users whose local hour does not match reminderTime/timezone
+- includes users whose local hour matches reminderTime/timezone
+- skips users with zero due cards
+- notifies users with due cards and active push tokens
+- skips users with due cards but no active push tokens
+- builds push messages with DUE_CARDS_REMINDER data type only
+- does not include auth tokens or secrets in push message data
+- sends messages through PushNotificationProviderPort
+- disables invalid tokens returned by provider
+- marks sent tokens as used via PushTokenRepositoryPort.markUsed
+- aggregates checkedUsers, notifiedUsers, sentMessages, failedMessages correctly
+- handles provider failures without throwing when send returns failures
+```
+
+Use fixed `Date` inputs and explicit timezone/reminderTime settings in test fixtures.
+
+### MockPushNotificationProvider
+
+Cover:
+
+```txt
+- returns successCount equal to message count
+- returns zero failureCount and empty invalidTokens
+- handles empty message array
+```
+
+### ExpoPushNotificationProvider
+
+Cover:
+
+```txt
+- treats non-Expo tokens as invalid without calling Expo send API
+- returns invalidTokens for malformed token values
+- maps valid Expo tokens and aggregates ticket success/failure counts
+- collects DeviceNotRegistered tokens as invalidTokens
+- handles Expo chunk send errors by counting failures without throwing
+```
+
+Mock `expo-server-sdk` (`Expo.isExpoPushToken`, `chunkPushNotifications`, `sendPushNotificationsAsync`). Do not call real Expo API.
+
+### push-token.mapper
+
+Cover:
+
+```txt
+- toPushToken maps all fields from Prisma record
+- toPushToken casts provider to PushProvider enum
+```
+
+### InternalJobGuard
+
+Cover:
+
+```txt
+- throws UnauthorizedException when header is missing
+- throws UnauthorizedException when configured secret is empty
+- throws UnauthorizedException when header does not match configured secret
+- allows request when header matches configured secret
+```
+
+Mock `ConfigService` and HTTP request context. Do not accept secret via query string in tests.
+
+## Security Requirements
+
+```txt
+- Tests must assert users can register/disable only their own tokens (repository called with currentUser.id).
+- Tests must assert push message data does not include auth tokens or INTERNAL_JOB_SECRET.
+- Tests must assert invalid Expo tokens are not sent to provider.
+- Tests must assert InternalJobGuard rejects missing/invalid secrets.
+- Tests must not log or assert raw push token values beyond what use cases require for repository calls.
+```
+
+## Architecture Constraints
+
+```txt
+- Unit tests only in this task.
+- Mock ports; do not import Prisma client in use case tests.
+- Do not test GraphQL resolvers in this task.
+- Do not test Prisma repositories in this task.
+- Do not add e2e tests in this task.
+- Keep tests focused on business rules, not NestJS module wiring.
+```
+
+## Do Not Do
+
+```txt
+- Do not add integration tests with database.
+- Do not add GraphQL e2e tests.
+- Do not call real Expo push API.
+- Do not refactor use cases unless required to make them testable.
+- Do not continue to EPIC-12 until this task passes.
+```
+
+## Acceptance Criteria
+
+```txt
+- RegisterPushTokenUseCase unit tests exist and pass.
+- RemovePushTokenUseCase unit tests exist and pass.
+- SendDueCardRemindersUseCase unit tests exist and pass.
+- Mock and Expo push provider unit tests exist and pass.
+- push-token.mapper unit tests exist and pass.
+- InternalJobGuard unit tests exist and pass.
+- Tests run without database.
+- pnpm --filter @flashcards/api test passes.
+- API builds.
+- format check and lint pass.
+```
+
+## Commands to Run
+
+```bash
+CI=true pnpm --filter @flashcards/api test -- --watchman=false
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-11.17 Add notifications unit tests
+```
+
+---
+
 ## Epic Completion Criteria
 
 EPIC-11 is complete when:
@@ -1721,9 +1935,10 @@ EPIC-11 is complete when:
 - Due-card reminders respect user settings.
 - Push tokens are not exposed.
 - implementation follows docs/security/security-checklist.md.
+- Notifications unit tests exist and pass (TASK-11.17).
 ```
 
-After this epic is complete, move to:
+After EPIC-11 is complete (including TASK-11.17), move to:
 
 ```txt
 docs/tasks/12-admin-analytics.md
