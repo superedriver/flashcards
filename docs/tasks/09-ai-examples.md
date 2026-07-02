@@ -191,6 +191,7 @@ outputPreview max = 1000 characters
 - [x] TASK-09.13 Add SaveGeneratedCardExampleUseCase
 - [x] TASK-09.14 Add saveGeneratedCardExample mutation
 - [x] TASK-09.15 Add AI examples final checks
+- [x] TASK-09.16 Add AI examples unit tests
 ```
 
 ---
@@ -1706,6 +1707,185 @@ chore(ai): finalize AI examples
 
 ---
 
+# TASK-09.16 Add AI examples unit tests
+
+## Status
+
+DONE
+
+## Context
+
+AI examples touch user content, permissions, and safe logging rules. Manual GraphQL checks in TASK-09.15 are not enough to prevent regressions in owner-only access, preview/save separation, prompt building, mock provider behavior, and AI request log preview truncation.
+
+The prompt builder, mock provider, use cases, and mapper can be tested quickly without database, GraphQL, or a real AI provider API key.
+
+## Goal
+
+Add unit tests for EPIC-09 AI prompt builder, mock provider, use cases, and mapper.
+
+## Related Documents
+
+```txt
+docs/domain/permissions.md
+docs/security/security-checklist.md
+docs/backend-clean-architecture.md
+docs/tasks/09-ai-examples.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/ai/domain/services/card-example-prompt.service.spec.ts
+apps/api/src/modules/ai/infrastructure/providers/mock-ai.provider.spec.ts
+apps/api/src/modules/ai/application/use-cases/generate-card-examples.use-case.spec.ts
+apps/api/src/modules/ai/application/use-cases/save-generated-card-example.use-case.spec.ts
+apps/api/src/modules/ai/infrastructure/mappers/ai-request-log.mapper.spec.ts
+```
+
+## Requirements
+
+Use Jest and co-located `*.spec.ts` files.
+
+Mock all ports in use case tests. Do not use Prisma, database, running GraphQL server, or real `AI_API_KEY`.
+
+Follow existing EPIC-05/07/08 use case test style (mocked repository ports, `jest.fn()`).
+
+Do not test GraphQL resolvers in this task.
+
+Do not call Gemini or other external AI APIs in this task. Use `MockAiProvider` or a mocked `AiProviderPort`.
+
+### CardExamplePromptService
+
+Cover:
+
+```txt
+- includes front and back in prompt
+- includes existing example when provided
+- includes notes when provided
+- includes locale when provided
+- omits optional sections when empty/null
+- bounds prompt to max length 4000
+```
+
+### MockAiProvider
+
+Cover:
+
+```txt
+- providerName is MOCK
+- returns exactly 3 examples
+- uses trimmed front/back in example text
+- returns rawOutputPreview
+- does not require API key or external services
+```
+
+### GenerateCardExamplesUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws CARD_NOT_FOUND when card is missing
+- throws DECK_NOT_FOUND when deck is missing
+- throws CARD_FORBIDDEN for non-owner (canManageCard)
+- calls AiProviderPort.generateCardExamples with card context
+- logs SUCCESS AI request with safe previews
+- returns cardId and examples
+- does not update card.example (no card save during generation)
+- logs FAILED AI request when provider throws
+- rethrows ApplicationError from provider without exposing secrets
+```
+
+### SaveGeneratedCardExampleUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws CARD_NOT_FOUND when card is missing
+- throws DECK_NOT_FOUND when deck is missing
+- throws CARD_FORBIDDEN for non-owner (canManageCard)
+- throws VALIDATION_ERROR when exampleText is empty/whitespace
+- throws VALIDATION_ERROR when exampleText exceeds 4000 characters
+- updates card.example via CardRepositoryPort.update
+- returns updated card
+- does not call AiProviderPort
+```
+
+### ai-request-log.mapper
+
+Cover:
+
+```txt
+- toAiRequestLog maps all fields from Prisma record
+- toAiRequestLog casts provider/status to domain enums
+- truncateLogText returns null for null/undefined/whitespace-only input
+- truncateLogText returns original text when within limit
+- truncateLogText truncates text exceeding limit
+- preview max length constants are defined (500/1000)
+```
+
+## Security Requirements
+
+```txt
+- Tests must not use real production AI_API_KEY.
+- Tests must not log or assert API keys in error messages.
+- Tests must assert non-owners cannot generate or save examples.
+- Tests must assert generation does not auto-save card.example.
+- Tests must assert save use case does not call AI provider.
+```
+
+## Architecture Constraints
+
+```txt
+- Unit tests only in this task.
+- Mock ports in use case tests; do not import Prisma client.
+- Do not test GraphQL resolvers in this task.
+- Do not test Prisma repositories in this task.
+- Do not test GeminiAiProvider against live Gemini API in this task.
+- Do not add e2e tests in this task.
+- Keep tests focused on business rules, not NestJS wiring.
+```
+
+## Do Not Do
+
+```txt
+- Do not add integration tests with database.
+- Do not add GraphQL e2e tests.
+- Do not call real Gemini API.
+- Do not refactor use cases unless required to make them testable.
+- Do not continue to EPIC-10 until this task passes.
+```
+
+## Acceptance Criteria
+
+```txt
+- Card example prompt builder unit tests exist and pass.
+- Mock AI provider unit tests exist and pass.
+- Generate and save use case unit tests exist and pass.
+- AI request log mapper tests exist and pass.
+- Tests run without database and without real AI provider.
+- pnpm --filter @flashcards/api test passes.
+- API builds.
+```
+
+## Commands to Run
+
+```bash
+CI=true pnpm --filter @flashcards/api test -- --watchman=false
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-09.16 Add AI examples unit tests
+```
+
+---
+
 ## Epic Completion Criteria
 
 EPIC-09 is complete when:
@@ -1731,9 +1911,10 @@ EPIC-09 is complete when:
 - AI logs are safe.
 - implementation follows docs/domain/permissions.md.
 - implementation follows docs/security/security-checklist.md.
+- AI examples unit tests exist and pass (TASK-09.16).
 ```
 
-After this epic is complete, move to:
+After EPIC-09 is complete (including TASK-09.16), move to:
 
 ```txt
 docs/tasks/10-groups-sharing.md
