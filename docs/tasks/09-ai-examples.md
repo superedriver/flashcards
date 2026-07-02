@@ -183,7 +183,7 @@ outputPreview max = 1000 characters
 - [x] TASK-09.05 Add mock AI provider
 - [x] TASK-09.06 Add Gemini AI provider
 - [x] TASK-09.07 Add AI log repository port
-- [ ] TASK-09.08 Add Prisma AI log repository
+- [x] TASK-09.08 Add Prisma AI log repository
 - [ ] TASK-09.09 Add AI prompt builder
 - [ ] TASK-09.10 Add AI GraphQL types and inputs
 - [ ] TASK-09.11 Add GenerateCardExamplesUseCase
@@ -929,7 +929,7 @@ chore(ai): add AI request log repository port
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
