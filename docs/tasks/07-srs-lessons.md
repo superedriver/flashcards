@@ -119,7 +119,7 @@ MVP does not support:
 
 ```md
 - [x] TASK-07.01 Add SRS package skeleton
-- [ ] TASK-07.02 Implement SM-2 types
+- [x] TASK-07.02 Implement SM-2 types
 - [ ] TASK-07.03 Implement SM-2 algorithm
 - [ ] TASK-07.04 Add SM-2 tests
 - [ ] TASK-07.05 Add SRS Prisma schema
@@ -252,7 +252,7 @@ chore(srs): add SRS package skeleton
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
