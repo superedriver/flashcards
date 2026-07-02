@@ -148,7 +148,7 @@ max notes length = 4000
 - [x] TASK-08.08 Add PreviewCsvImportUseCase
 - [x] TASK-08.09 Add previewCsvImport mutation
 - [x] TASK-08.10 Add ConfirmCsvImportUseCase
-- [ ] TASK-08.11 Add confirmCsvImport mutation
+- [x] TASK-08.11 Add confirmCsvImport mutation
 - [ ] TASK-08.12 Add CSV import final checks
 ```
 
@@ -1284,7 +1284,7 @@ feat(csv): add CSV import confirm use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
