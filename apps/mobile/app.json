@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "Flashcards",
+    "slug": "flashcards",
+    "scheme": "flashcards",
+    "platforms": ["ios", "android", "web"],
+    "orientation": "portrait",
+    "newArchEnabled": true,
+    "jsEngine": "hermes",
+    "plugins": ["expo-router"]
+  }
+}
