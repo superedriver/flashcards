@@ -217,7 +217,7 @@ mutation ResetPassword($input: ResetPasswordInput!) {
 - [x] TASK-14.05 Add auth state store
 - [x] TASK-14.06 Add Apollo auth link
 - [x] TASK-14.07 Add auth provider and bootstrap
-- [ ] TASK-14.08 Add protected route gating
+- [x] TASK-14.08 Add protected route gating
 - [ ] TASK-14.09 Add sign in screen
 - [ ] TASK-14.10 Add sign up screen
 - [ ] TASK-14.11 Add logout flow
@@ -886,7 +886,7 @@ TASK-14.07 Add auth provider and bootstrap
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
