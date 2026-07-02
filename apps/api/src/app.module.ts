@@ -8,6 +8,7 @@ import {
   authConfig,
   databaseConfig,
   emailConfig,
+  pushConfig,
 } from './config';
 import { RootResolver } from './presentation/graphql/root.resolver';
 import { HealthModule } from './modules/health/health.module';
@@ -26,7 +27,14 @@ import { PrismaModule } from './infrastructure/prisma';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [appConfig, authConfig, databaseConfig, emailConfig, aiConfig],
+      load: [
+        appConfig,
+        authConfig,
+        databaseConfig,
+        emailConfig,
+        aiConfig,
+        pushConfig,
+      ],
     }),
     PrismaModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({

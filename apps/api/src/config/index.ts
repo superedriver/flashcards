@@ -4,3 +4,4 @@ export { authConfig } from './auth.config';
 export { databaseConfig } from './database.config';
 export { emailConfig } from './email.config';
 export { aiConfig } from './ai.config';
+export { pushConfig } from './push.config';
