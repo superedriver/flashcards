@@ -73,4 +73,18 @@ export class PrismaUserSettingsRepository implements UserSettingsRepositoryPort 
 
     return toUserSettings(settings);
   }
+
+  async findWithNotificationsEnabled(): Promise<UserSettings[]> {
+    const settings = await this.prisma.userSettings.findMany({
+      where: {
+        notificationsEnabled: true,
+        user: {
+          blockedAt: null,
+          deletedAt: null,
+        },
+      },
+    });
+
+    return settings.map(toUserSettings);
+  }
 }

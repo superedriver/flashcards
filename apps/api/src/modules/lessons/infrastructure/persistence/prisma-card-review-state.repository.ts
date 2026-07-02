@@ -95,6 +95,18 @@ export class PrismaCardReviewStateRepository implements CardReviewStateRepositor
     });
   }
 
+  async countDueForUser(input: { userId: string; now: Date }): Promise<number> {
+    return this.prisma.cardReviewState.count({
+      where: {
+        userId: input.userId,
+        dueAt: {
+          lte: input.now,
+        },
+        card: activeCardWhere,
+      },
+    });
+  }
+
   async findNextDueAtForDeck(input: {
     userId: string;
     deckId: string;

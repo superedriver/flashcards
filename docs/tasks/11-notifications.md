@@ -138,7 +138,7 @@ For MVP cron simplicity:
 - [x] TASK-11.11 Add registerPushToken mutation
 - [x] TASK-11.12 Add RemovePushTokenUseCase
 - [x] TASK-11.13 Add removePushToken mutation
-- [ ] TASK-11.14 Add SendDueCardRemindersUseCase
+- [x] TASK-11.14 Add SendDueCardRemindersUseCase
 - [ ] TASK-11.15 Add internal reminder job endpoint
 - [ ] TASK-11.16 Add notifications final checks
 ```
@@ -1349,7 +1349,7 @@ feat(notifications): add remove push token mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

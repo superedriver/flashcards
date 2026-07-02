@@ -34,6 +34,7 @@ export type CardReviewStateRepositoryPort = {
     deckId: string;
     now: Date;
   }): Promise<number>;
+  countDueForUser(input: { userId: string; now: Date }): Promise<number>;
   findNextDueAtForDeck(input: {
     userId: string;
     deckId: string;
