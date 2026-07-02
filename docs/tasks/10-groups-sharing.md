@@ -24,7 +24,7 @@ Groups allow users to share decks with selected people without making those deck
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -155,30 +155,30 @@ Group-shared deck restrictions:
 - [x] TASK-10.03 Add group domain types
 - [x] TASK-10.04 Add group repository ports
 - [x] TASK-10.05 Add GroupPermissionService
-- [ ] TASK-10.06 Add Prisma group repository
-- [ ] TASK-10.07 Add Prisma group invitation repository
-- [ ] TASK-10.08 Add Prisma deck group share repository
-- [ ] TASK-10.09 Add group GraphQL types and inputs
-- [ ] TASK-10.10 Add CreateGroupUseCase
-- [ ] TASK-10.11 Add createGroup mutation
-- [ ] TASK-10.12 Add MyGroupsUseCase
-- [ ] TASK-10.13 Add myGroups query
-- [ ] TASK-10.14 Add GroupDetailUseCase
-- [ ] TASK-10.15 Add group query
-- [ ] TASK-10.16 Add InviteUserToGroupUseCase
-- [ ] TASK-10.17 Add inviteUserToGroup mutation
-- [ ] TASK-10.18 Add MyGroupInvitationsUseCase
-- [ ] TASK-10.19 Add myGroupInvitations query
-- [ ] TASK-10.20 Add AcceptGroupInvitationUseCase
-- [ ] TASK-10.21 Add acceptGroupInvitation mutation
-- [ ] TASK-10.22 Add DeclineGroupInvitationUseCase
-- [ ] TASK-10.23 Add declineGroupInvitation mutation
-- [ ] TASK-10.24 Add ShareDeckWithGroupUseCase
-- [ ] TASK-10.25 Add shareDeckWithGroup mutation
-- [ ] TASK-10.26 Add GroupSharedDecksUseCase
-- [ ] TASK-10.27 Add groupSharedDecks query
-- [ ] TASK-10.28 Extend deck permissions for group shared decks
-- [ ] TASK-10.29 Add groups and sharing final checks
+- [x] TASK-10.06 Add Prisma group repository
+- [x] TASK-10.07 Add Prisma group invitation repository
+- [x] TASK-10.08 Add Prisma deck group share repository
+- [x] TASK-10.09 Add group GraphQL types and inputs
+- [x] TASK-10.10 Add CreateGroupUseCase
+- [x] TASK-10.11 Add createGroup mutation
+- [x] TASK-10.12 Add MyGroupsUseCase
+- [x] TASK-10.13 Add myGroups query
+- [x] TASK-10.14 Add GroupDetailUseCase
+- [x] TASK-10.15 Add group query
+- [x] TASK-10.16 Add InviteUserToGroupUseCase
+- [x] TASK-10.17 Add inviteUserToGroup mutation
+- [x] TASK-10.18 Add MyGroupInvitationsUseCase
+- [x] TASK-10.19 Add myGroupInvitations query
+- [x] TASK-10.20 Add AcceptGroupInvitationUseCase
+- [x] TASK-10.21 Add acceptGroupInvitation mutation
+- [x] TASK-10.22 Add DeclineGroupInvitationUseCase
+- [x] TASK-10.23 Add declineGroupInvitation mutation
+- [x] TASK-10.24 Add ShareDeckWithGroupUseCase
+- [x] TASK-10.25 Add shareDeckWithGroup mutation
+- [x] TASK-10.26 Add GroupSharedDecksUseCase
+- [x] TASK-10.27 Add groupSharedDecks query
+- [x] TASK-10.28 Extend deck permissions for group shared decks
+- [x] TASK-10.29 Add groups and sharing final checks
 ```
 
 ---
@@ -841,7 +841,7 @@ chore(groups): add group permission service
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -935,7 +935,7 @@ chore(groups): add Prisma group repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1024,7 +1024,7 @@ chore(groups): add Prisma group invitation repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1121,7 +1121,7 @@ chore(groups): add Prisma deck group share repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1249,7 +1249,7 @@ chore(groups): add group GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1361,7 +1361,7 @@ feat(groups): add create group use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1437,7 +1437,7 @@ feat(groups): add create group mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1526,7 +1526,7 @@ feat(groups): add my groups use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1597,7 +1597,7 @@ feat(groups): add my groups query
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1690,7 +1690,7 @@ feat(groups): add group detail use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1762,7 +1762,7 @@ feat(groups): add group query
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1871,7 +1871,7 @@ feat(groups): add invite user use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1943,7 +1943,7 @@ feat(groups): add invite user mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2026,7 +2026,7 @@ feat(groups): add my group invitations use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2097,7 +2097,7 @@ feat(groups): add my group invitations query
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2195,7 +2195,7 @@ feat(groups): add accept invitation use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2280,7 +2280,7 @@ feat(groups): add accept invitation mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2368,7 +2368,7 @@ feat(groups): add decline invitation use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2439,7 +2439,7 @@ feat(groups): add decline invitation mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2542,7 +2542,7 @@ feat(groups): add share deck with group use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2616,7 +2616,7 @@ feat(groups): add share deck with group mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2706,7 +2706,7 @@ feat(groups): add group shared decks use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2778,7 +2778,7 @@ feat(groups): add group shared decks query
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2880,7 +2880,7 @@ feat(groups): allow viewing and studying group shared decks
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
