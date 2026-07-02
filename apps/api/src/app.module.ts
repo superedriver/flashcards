@@ -15,6 +15,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AccountModule } from './modules/account/account.module';
 import { DecksModule } from './modules/decks/decks.module';
 import { LessonsModule } from './modules/lessons/lessons.module';
+import { CsvImportModule } from './modules/csv-import/csv-import.module';
 import { EmailModule } from './modules/email/email.module';
 import { PrismaModule } from './infrastructure/prisma';
 
@@ -36,6 +37,7 @@ import { PrismaModule } from './infrastructure/prisma';
     AccountModule,
     DecksModule,
     LessonsModule,
+    CsvImportModule,
     EmailModule,
   ],
   controllers: [],
