@@ -167,6 +167,7 @@ No external analytics provider is required in this epic.
 - [x] TASK-12.21 Add SetOfficialDeckUseCase
 - [x] TASK-12.22 Add setOfficialDeck mutation
 - [x] TASK-12.23 Add admin and analytics final checks
+- [x] TASK-12.24 Add admin unit tests
 ```
 
 ---
@@ -2343,6 +2344,274 @@ chore(admin): finalize admin and analytics
 
 ---
 
+# TASK-12.24 Add admin unit tests
+
+## Status
+
+DONE
+
+## Context
+
+Admin, moderation, and analytics features are role-sensitive and security-critical. Manual GraphQL checks in TASK-12.23 are not enough to prevent regressions in ADMIN/MODERATOR/USER permission boundaries, user blocking rules, refresh token revocation, moderation actions, and safe admin output mapping.
+
+`AdminPermissionService`, admin use cases, and mappers can be tested quickly without database, GraphQL, or Prisma.
+
+## Goal
+
+Add unit tests for EPIC-12 admin permission service, use cases, and mappers.
+
+## Related Documents
+
+```txt
+docs/domain/permissions.md
+docs/security/security-checklist.md
+docs/backend-clean-architecture.md
+docs/tasks/12-admin-analytics.md
+docs/tasks/02-auth.md
+docs/tasks/06-public-decks.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/admin/domain/services/admin-permission.service.spec.ts
+apps/api/src/modules/admin/application/use-cases/admin-dashboard-stats.use-case.spec.ts
+apps/api/src/modules/admin/application/use-cases/admin-search-users.use-case.spec.ts
+apps/api/src/modules/admin/application/use-cases/block-user.use-case.spec.ts
+apps/api/src/modules/admin/application/use-cases/unblock-user.use-case.spec.ts
+apps/api/src/modules/admin/application/use-cases/moderation-queue.use-case.spec.ts
+apps/api/src/modules/admin/application/use-cases/moderate-deck.use-case.spec.ts
+apps/api/src/modules/admin/application/use-cases/set-official-deck.use-case.spec.ts
+apps/api/src/modules/admin/infrastructure/mappers/admin-user.mapper.spec.ts
+apps/api/src/modules/admin/infrastructure/mappers/moderation-deck.mapper.spec.ts
+```
+
+## Requirements
+
+Use Jest and co-located `*.spec.ts` files.
+
+Mock all ports in use case tests. Do not use Prisma, database, or running GraphQL server.
+
+Follow existing EPIC-05/07/10/11 use case test style (mocked repository ports, `jest.fn()`, helper factories for domain objects).
+
+Do not test GraphQL resolvers in this task.
+
+Do not test Prisma repositories in this task.
+
+### AdminPermissionService
+
+Cover:
+
+```txt
+- canAccessAdmin returns true for ADMIN
+- canAccessAdmin returns false for MODERATOR
+- canAccessAdmin returns false for USER
+- canAccessAdmin returns false for null user
+- canModerateDecks returns true for ADMIN
+- canModerateDecks returns true for MODERATOR
+- canModerateDecks returns false for USER
+- canModerateDecks returns false for null user
+- canManageUsers returns true for ADMIN
+- canManageUsers returns false for MODERATOR
+- canManageUsers returns false for USER
+- canManageUsers returns false for null user
+- canSetOfficialDeck returns true for ADMIN
+- canSetOfficialDeck returns false for MODERATOR
+- canSetOfficialDeck returns false for USER
+- canSetOfficialDeck returns false for null user
+```
+
+### AdminDashboardStatsUseCase
+
+Cover:
+
+```txt
+- throws UNAUTHORIZED when user is missing
+- throws USER_BLOCKED when user is blocked
+- throws FORBIDDEN for MODERATOR
+- throws FORBIDDEN for USER
+- loads dashboard stats for ADMIN via AdminAnalyticsRepositoryPort
+- returns stats from repository
+```
+
+### AdminSearchUsersUseCase
+
+Cover:
+
+```txt
+- throws UNAUTHORIZED when user is missing
+- throws USER_BLOCKED when user is blocked
+- throws FORBIDDEN for MODERATOR
+- throws FORBIDDEN for USER
+- normalizes blank query to null
+- clamps limit (default 20, min 1, max 50)
+- normalizes offset (default 0, min 0)
+- searches users via AdminUserRepositoryPort.searchUsers
+- returns safe user summaries without sensitive fields
+```
+
+### BlockUserUseCase
+
+Cover:
+
+```txt
+- throws UNAUTHORIZED when user is missing
+- throws USER_BLOCKED when user is blocked
+- throws FORBIDDEN for MODERATOR
+- throws FORBIDDEN for USER
+- throws VALIDATION_ERROR when admin blocks self
+- throws NOT_FOUND when target user is missing
+- blocks target user via AdminUserRepositoryPort.blockUser
+- revokes all refresh tokens for target user
+- returns safe AdminUserSummary
+```
+
+### UnblockUserUseCase
+
+Cover:
+
+```txt
+- throws UNAUTHORIZED when user is missing
+- throws USER_BLOCKED when user is blocked
+- throws FORBIDDEN for MODERATOR
+- throws FORBIDDEN for USER
+- throws NOT_FOUND when target user is missing
+- unblocks target user via AdminUserRepositoryPort.unblockUser
+- returns safe AdminUserSummary
+- does not call RefreshTokenRepositoryPort
+```
+
+### ModerationQueueUseCase
+
+Cover:
+
+```txt
+- throws UNAUTHORIZED when user is missing
+- throws USER_BLOCKED when user is blocked
+- throws FORBIDDEN for USER
+- allows ADMIN access
+- allows MODERATOR access
+- normalizes invalid status filter to null
+- clamps limit (default 20, min 1, max 50)
+- normalizes offset (default 0, min 0)
+- loads queue via AdminDeckRepositoryPort.moderationQueue
+- returns moderation decks with ownerEmail and cardCount
+```
+
+### ModerateDeckUseCase
+
+Cover:
+
+```txt
+- throws UNAUTHORIZED when user is missing
+- throws USER_BLOCKED when user is blocked
+- throws FORBIDDEN for USER
+- allows ADMIN to approve/reject/hide
+- allows MODERATOR to approve/reject/hide
+- maps APPROVE to APPROVED status
+- maps REJECT to REJECTED status
+- maps HIDE to HIDDEN status
+- throws DECK_NOT_FOUND when repository update fails
+- returns ModerationDeck from repository
+```
+
+### SetOfficialDeckUseCase
+
+Cover:
+
+```txt
+- throws UNAUTHORIZED when user is missing
+- throws USER_BLOCKED when user is blocked
+- throws FORBIDDEN for MODERATOR
+- throws FORBIDDEN for USER
+- sets isOfficial true for ADMIN
+- sets isOfficial false for ADMIN
+- throws DECK_NOT_FOUND when repository update fails
+- returns ModerationDeck from repository
+```
+
+### admin-user.mapper
+
+Cover:
+
+```txt
+- toAdminUserSummary maps all safe fields from Prisma record
+- toAdminUserSummary casts role to UserRole enum
+- mapper output does not include passwordHash or token fields
+```
+
+### moderation-deck.mapper
+
+Cover:
+
+```txt
+- toModerationDeck maps deck fields from Prisma record
+- toModerationDeck maps ownerEmail from joined owner
+- toModerationDeck maps cardCount from _count.cards
+- toModerationDeck casts visibility and moderationStatus enums
+```
+
+## Security Requirements
+
+```txt
+- Tests must assert MODERATOR cannot access dashboard stats.
+- Tests must assert MODERATOR cannot search/block/unblock users.
+- Tests must assert MODERATOR cannot set official decks.
+- Tests must assert USER cannot access any admin use case.
+- Tests must assert blockUser revokes refresh tokens for target user only.
+- Tests must assert admin outputs do not include passwordHash or token hashes.
+- Tests must assert unblockUser does not revoke refresh tokens.
+```
+
+## Architecture Constraints
+
+```txt
+- Unit tests only in this task.
+- Mock ports; do not import Prisma client in use case tests.
+- Do not test GraphQL resolvers in this task.
+- Do not test Prisma repositories in this task.
+- Do not add e2e tests in this task.
+- Keep tests focused on business rules, not NestJS module wiring.
+```
+
+## Do Not Do
+
+```txt
+- Do not add integration tests with database.
+- Do not add GraphQL e2e tests.
+- Do not refactor use cases unless required to make them testable.
+- Do not continue to EPIC-13 until this task passes.
+```
+
+## Acceptance Criteria
+
+```txt
+- AdminPermissionService unit tests exist and pass.
+- All EPIC-12 admin use case unit tests exist and pass.
+- Admin mapper unit tests exist and pass.
+- Tests run without database.
+- pnpm --filter @flashcards/api test passes.
+- API builds.
+- format check and lint pass.
+```
+
+## Commands to Run
+
+```bash
+CI=true pnpm --filter @flashcards/api test -- --watchman=false
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-12.24 Add admin unit tests
+```
+
+---
+
 ## Epic Completion Criteria
 
 EPIC-12 is complete when:
@@ -2375,9 +2644,10 @@ EPIC-12 is complete when:
 - sensitive fields are not exposed.
 - implementation follows docs/domain/permissions.md.
 - implementation follows docs/security/security-checklist.md.
+- Admin unit tests exist and pass (TASK-12.24).
 ```
 
-After this epic is complete, move to:
+After EPIC-12 is complete (including TASK-12.24), move to:
 
 ```txt
 docs/tasks/13-frontend-foundation.md
