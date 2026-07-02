@@ -145,7 +145,7 @@ No external analytics provider is required in this epic.
 
 ```md
 - [x] TASK-12.01 Add admin module skeleton
-- [ ] TASK-12.02 Add admin domain types
+- [x] TASK-12.02 Add admin domain types
 - [ ] TASK-12.03 Add admin permission service
 - [ ] TASK-12.04 Add admin repository ports
 - [ ] TASK-12.05 Add Prisma admin user repository
@@ -257,7 +257,7 @@ chore(admin): add admin module skeleton
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
