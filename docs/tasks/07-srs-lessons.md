@@ -121,7 +121,7 @@ MVP does not support:
 - [x] TASK-07.01 Add SRS package skeleton
 - [x] TASK-07.02 Implement SM-2 types
 - [x] TASK-07.03 Implement SM-2 algorithm
-- [ ] TASK-07.04 Add SM-2 tests
+- [x] TASK-07.04 Add SM-2 tests
 - [ ] TASK-07.05 Add SRS Prisma schema
 - [ ] TASK-07.06 Add lessons module skeleton
 - [ ] TASK-07.07 Add lesson domain types
@@ -456,7 +456,7 @@ feat(srs): implement SM-2 calculation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
