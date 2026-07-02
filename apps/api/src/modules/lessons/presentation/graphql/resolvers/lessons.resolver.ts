@@ -1,9 +1,10 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthUser } from '../../../../auth/domain/types';
 import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/current-user.decorator';
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
 import { CompleteLessonUseCase } from '../../../application/use-cases/complete-lesson.use-case';
+import { DeckLearningStatsUseCase } from '../../../application/use-cases/deck-learning-stats.use-case';
 import { StartLessonUseCase } from '../../../application/use-cases/start-lesson.use-case';
 import { SubmitReviewUseCase } from '../../../application/use-cases/submit-review.use-case';
 import { CardReviewState } from '../../../domain/types';
@@ -12,6 +13,7 @@ import { StartLessonInput } from '../inputs/start-lesson.input';
 import { SubmitReviewInput } from '../inputs/submit-review.input';
 import { CardReviewStateType } from '../types/card-review-state.type';
 import { CompleteLessonPayloadType } from '../types/complete-lesson-payload.type';
+import { DeckLearningStatsType } from '../types/deck-learning-stats.type';
 import { StartLessonPayloadType } from '../types/start-lesson-payload.type';
 import { SubmitReviewPayloadType } from '../types/submit-review-payload.type';
 
@@ -21,7 +23,20 @@ export class LessonsResolver {
     private readonly startLessonUseCase: StartLessonUseCase,
     private readonly submitReviewUseCase: SubmitReviewUseCase,
     private readonly completeLessonUseCase: CompleteLessonUseCase,
+    private readonly deckLearningStatsUseCase: DeckLearningStatsUseCase,
   ) {}
+
+  @Query(() => DeckLearningStatsType)
+  @UseGuards(GqlAuthGuard)
+  async deckLearningStats(
+    @CurrentUser() user: AuthUser,
+    @Args('deckId') deckId: string,
+  ): Promise<DeckLearningStatsType> {
+    return this.deckLearningStatsUseCase.execute({
+      currentUser: user,
+      deckId,
+    });
+  }
 
   @Mutation(() => StartLessonPayloadType)
   @UseGuards(GqlAuthGuard)
