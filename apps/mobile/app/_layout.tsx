@@ -2,16 +2,16 @@ import 'react-native-reanimated'
 
 import { Stack } from 'expo-router'
 
-import { TamaguiAppProvider } from '@/ui/tamagui-provider'
+import { AppProviders } from '@/app/app-providers'
 
 export default function RootLayout() {
   return (
-    <TamaguiAppProvider>
+    <AppProviders>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
       </Stack>
-    </TamaguiAppProvider>
+    </AppProviders>
   )
 }
