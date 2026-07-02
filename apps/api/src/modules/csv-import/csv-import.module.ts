@@ -4,6 +4,7 @@ import { DecksModule } from '../decks/decks.module';
 import { CSV_IMPORT_REPOSITORY } from './application/ports/csv-import-repository.port';
 import { PreviewCsvImportUseCase } from './application/use-cases/preview-csv-import.use-case';
 import { PrismaCsvImportRepository } from './infrastructure/persistence/prisma-csv-import.repository';
+import { CsvImportResolver } from './presentation/graphql/resolvers/csv-import.resolver';
 
 @Module({
   imports: [AuthModule, DecksModule],
@@ -13,6 +14,7 @@ import { PrismaCsvImportRepository } from './infrastructure/persistence/prisma-c
       useClass: PrismaCsvImportRepository,
     },
     PreviewCsvImportUseCase,
+    CsvImportResolver,
   ],
   exports: [CSV_IMPORT_REPOSITORY, PreviewCsvImportUseCase],
 })
