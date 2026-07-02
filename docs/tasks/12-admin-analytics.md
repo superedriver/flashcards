@@ -165,7 +165,7 @@ No external analytics provider is required in this epic.
 - [x] TASK-12.19 Add ModerateDeckUseCase
 - [x] TASK-12.20 Add approve/reject/hide deck mutations
 - [x] TASK-12.21 Add SetOfficialDeckUseCase
-- [ ] TASK-12.22 Add setOfficialDeck mutation
+- [x] TASK-12.22 Add setOfficialDeck mutation
 - [ ] TASK-12.23 Add admin and analytics final checks
 ```
 
@@ -2173,7 +2173,7 @@ feat(admin): add official deck use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
