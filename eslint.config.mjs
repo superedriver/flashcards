@@ -37,4 +37,20 @@ export default [
       ],
     },
   },
+  {
+    files: ['**/babel.config.js', '**/metro.config.js'],
+    languageOptions: {
+      sourceType: 'commonjs',
+      globals: {
+        module: 'writable',
+        require: 'readonly',
+        __dirname: 'readonly',
+        exports: 'writable',
+        process: 'readonly',
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
 ]

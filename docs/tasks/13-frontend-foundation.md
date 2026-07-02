@@ -123,7 +123,7 @@ EMAIL_PROVIDER_SECRET
 ## Epic Summary
 
 ```md
-- [ ] TASK-13.01 Create Expo app
+- [x] TASK-13.01 Create Expo app
 - [ ] TASK-13.02 Configure TypeScript and app package scripts
 - [ ] TASK-13.03 Configure Expo Router
 - [ ] TASK-13.04 Configure Tamagui
@@ -142,7 +142,7 @@ EMAIL_PROVIDER_SECRET
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
