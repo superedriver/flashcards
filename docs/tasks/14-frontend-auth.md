@@ -222,7 +222,7 @@ mutation ResetPassword($input: ResetPasswordInput!) {
 - [x] TASK-14.10 Add sign up screen
 - [x] TASK-14.11 Add logout flow
 - [x] TASK-14.12 Add email verification screens
-- [ ] TASK-14.13 Add password reset screens
+- [x] TASK-14.13 Add password reset screens
 - [ ] TASK-14.14 Add Google login foundation
 - [ ] TASK-14.15 Add frontend auth final checks
 ```
@@ -1334,7 +1334,7 @@ TASK-14.12 Add email verification screens
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
