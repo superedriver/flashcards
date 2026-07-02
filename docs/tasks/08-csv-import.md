@@ -150,6 +150,7 @@ max notes length = 4000
 - [x] TASK-08.10 Add ConfirmCsvImportUseCase
 - [x] TASK-08.11 Add confirmCsvImport mutation
 - [x] TASK-08.12 Add CSV import final checks
+- [x] TASK-08.13 Add CSV import unit tests
 ```
 
 ---
@@ -1464,6 +1465,180 @@ chore(csv): finalize CSV import
 
 ---
 
+# TASK-08.13 Add CSV import unit tests
+
+## Status
+
+DONE
+
+## Context
+
+CSV import touches user content and permissions. Manual GraphQL checks in TASK-08.12 are not enough to prevent regressions in CSV validation, row limits, preview/confirm separation, owner-only access, and card position append logic.
+
+The parser and use cases can be tested quickly without database or GraphQL.
+
+## Goal
+
+Add unit tests for EPIC-08 CSV parser, use cases, and mapper.
+
+## Related Documents
+
+```txt
+docs/domain/permissions.md
+docs/security/security-checklist.md
+docs/backend-clean-architecture.md
+docs/tasks/08-csv-import.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/csv-import/domain/services/csv-parser.service.spec.ts
+apps/api/src/modules/csv-import/application/use-cases/preview-csv-import.use-case.spec.ts
+apps/api/src/modules/csv-import/application/use-cases/confirm-csv-import.use-case.spec.ts
+apps/api/src/modules/csv-import/infrastructure/mappers/csv-import.mapper.spec.ts
+```
+
+## Requirements
+
+Use Jest and co-located `*.spec.ts` files.
+
+Mock all ports in use case tests. Do not use Prisma, database, or running GraphQL server.
+
+Follow existing EPIC-05/07 use case test style (mocked repository ports, `jest.fn()`).
+
+Do not test GraphQL resolvers in this task.
+
+### CsvParserService
+
+Cover:
+
+```txt
+- parses valid CSV with required front/back columns
+- trims text fields
+- supports optional example and notes columns
+- ignores empty trailing lines
+- handles quoted CSV values
+- returns empty result for header-only or empty data rows
+- reports missing required header columns (front/back)
+- reports unsupported header columns
+- marks rows invalid when front is missing or empty
+- marks rows invalid when back is missing or empty
+- validates front max length 2000
+- validates back max length 4000
+- validates example/notes max length 4000
+- throws VALIDATION_ERROR when csvText exceeds 1 MB
+- throws VALIDATION_ERROR when row count exceeds 1000
+- throws VALIDATION_ERROR when column count exceeds 20
+- throws VALIDATION_ERROR for invalid CSV syntax
+- returns validRows and invalidRows counts correctly
+```
+
+### PreviewCsvImportUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws DECK_NOT_FOUND when deck is missing
+- throws DECK_FORBIDDEN for non-owner (canManageDeck)
+- parses CSV and stores pending CsvImport via repository
+- does not create cards during preview
+- passes previewRows and errors to repository create
+- sets expiresAt approximately 24 hours from now
+- returns created CsvImport from repository
+```
+
+### ConfirmCsvImportUseCase
+
+Cover:
+
+```txt
+- throws USER_BLOCKED when user is blocked
+- throws NOT_FOUND when import is missing
+- throws FORBIDDEN when import belongs to another user
+- throws VALIDATION_ERROR when import is not PENDING
+- throws VALIDATION_ERROR and calls markExpired when import is expired
+- throws DECK_NOT_FOUND when deck is missing
+- throws DECK_FORBIDDEN for non-owner deck
+- throws VALIDATION_ERROR when no valid rows to import
+- creates cards only from valid preview rows via createMany
+- skips invalid preview rows
+- appends card positions after existing deck card count
+- preserves CSV row order in created card positions
+- calls markConfirmed and returns createdCardsCount
+- does not call createMany when confirmation fails
+```
+
+### csv-import.mapper
+
+Cover:
+
+```txt
+- toCsvImport maps all fields from Prisma record
+- toCsvImport casts status to domain enum
+- toCsvImport maps previewRows JSON safely
+- toCsvImport maps errors JSON safely (null/empty to [])
+```
+
+## Security Requirements
+
+```txt
+- Tests must not use real production credentials.
+- Tests must assert non-owners cannot preview or confirm imports.
+- Tests must assert preview does not create cards.
+- Tests must assert foreign imports cannot be confirmed.
+- Tests must not log or assert full CSV text in error messages beyond parser behavior.
+```
+
+## Architecture Constraints
+
+```txt
+- Unit tests only in this task.
+- Mock ports in use case tests; do not import Prisma client.
+- Do not test GraphQL resolvers in this task.
+- Do not test Prisma repositories in this task.
+- Do not add e2e tests in this task.
+- Keep tests focused on business rules, not NestJS wiring.
+```
+
+## Do Not Do
+
+```txt
+- Do not add integration tests with database.
+- Do not add GraphQL e2e tests.
+- Do not refactor use cases unless required to make them testable.
+- Do not continue to EPIC-09 until this task passes.
+```
+
+## Acceptance Criteria
+
+```txt
+- CSV parser unit tests exist and pass.
+- Preview and confirm use case unit tests exist and pass.
+- CSV import mapper tests exist and pass.
+- Tests run without database.
+- pnpm --filter @flashcards/api test passes.
+- API builds.
+```
+
+## Commands to Run
+
+```bash
+CI=true pnpm --filter @flashcards/api test -- --watchman=false
+pnpm --filter @flashcards/api build
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-08.13 Add CSV import unit tests
+```
+
+---
+
 ## Epic Completion Criteria
 
 EPIC-08 is complete when:
@@ -1486,9 +1661,10 @@ EPIC-08 is complete when:
 - CSV limits are enforced.
 - implementation follows docs/domain/permissions.md.
 - implementation follows docs/security/security-checklist.md.
+- CSV import unit tests exist and pass (TASK-08.13).
 ```
 
-After this epic is complete, move to:
+After EPIC-08 is complete (including TASK-08.13), move to:
 
 ```txt
 docs/tasks/09-ai-examples.md
