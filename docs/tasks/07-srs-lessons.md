@@ -128,7 +128,7 @@ MVP does not support:
 - [x] TASK-07.08 Add review state and session repository ports
 - [x] TASK-07.09 Add Prisma review state repository
 - [x] TASK-07.10 Add Prisma study session repository
-- [ ] TASK-07.11 Add lesson GraphQL types and inputs
+- [x] TASK-07.11 Add lesson GraphQL types and inputs
 - [ ] TASK-07.12 Add StartLessonUseCase
 - [ ] TASK-07.13 Add startLesson mutation
 - [ ] TASK-07.14 Add SubmitReviewUseCase
@@ -1335,7 +1335,7 @@ chore(lessons): add Prisma study session repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
