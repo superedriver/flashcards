@@ -7,6 +7,7 @@ import { CARD_REVIEW_STATE_REPOSITORY } from './application/ports/card-review-st
 import { STUDY_SESSION_REPOSITORY } from './application/ports/study-session-repository.port';
 import { PrismaCardReviewStateRepository } from './infrastructure/persistence/prisma-card-review-state.repository';
 import { PrismaStudySessionRepository } from './infrastructure/persistence/prisma-study-session.repository';
+import { LessonsResolver } from './presentation/graphql/resolvers/lessons.resolver';
 
 @Module({
   imports: [AuthModule, DecksModule, AccountModule],
@@ -20,6 +21,7 @@ import { PrismaStudySessionRepository } from './infrastructure/persistence/prism
       useClass: PrismaStudySessionRepository,
     },
     StartLessonUseCase,
+    LessonsResolver,
   ],
   exports: [
     CARD_REVIEW_STATE_REPOSITORY,

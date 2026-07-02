@@ -130,7 +130,7 @@ MVP does not support:
 - [x] TASK-07.10 Add Prisma study session repository
 - [x] TASK-07.11 Add lesson GraphQL types and inputs
 - [x] TASK-07.12 Add StartLessonUseCase
-- [ ] TASK-07.13 Add startLesson mutation
+- [x] TASK-07.13 Add startLesson mutation
 - [ ] TASK-07.14 Add SubmitReviewUseCase
 - [ ] TASK-07.15 Add submitReview mutation
 - [ ] TASK-07.16 Add CompleteLessonUseCase
@@ -1623,7 +1623,7 @@ feat(lessons): add start lesson use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
