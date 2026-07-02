@@ -43,6 +43,13 @@ enum ReviewAnswer {
   DONT_KNOW
 }
 
+enum CsvImportStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  EXPIRED
+}
+
 model User {
   id                String    @id @default(uuid())
   email             String    @unique
@@ -67,6 +74,7 @@ model User {
   cardReviewStates        CardReviewState[]
   studySessions           StudySession[]
   studySessionReviews     StudySessionReview[]
+  csvImports              CsvImport[]
 
   @@index([email])
   @@index([role])
@@ -170,6 +178,7 @@ model Deck {
   cards Card[]
   studySessions      StudySession[]
   studySessionReviews StudySessionReview[]
+  csvImports         CsvImport[]
 
   @@index([ownerId])
   @@index([visibility])
@@ -273,4 +282,29 @@ model StudySessionReview {
   @@index([deckId])
   @@index([cardId])
   @@index([reviewedAt])
+}
+
+model CsvImport {
+  id          String          @id @default(uuid())
+  userId      String
+  deckId      String
+  status      CsvImportStatus @default(PENDING)
+  totalRows   Int
+  validRows   Int
+  invalidRows Int
+  previewRows Json
+  errors      Json?
+
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  confirmedAt DateTime?
+  expiresAt   DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([deckId])
+  @@index([status])
+  @@index([expiresAt])
 }

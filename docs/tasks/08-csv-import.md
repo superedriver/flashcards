@@ -138,7 +138,7 @@ max notes length = 4000
 ## Epic Summary
 
 ```md
-- [ ] TASK-08.01 Add CSV import Prisma schema
+- [x] TASK-08.01 Add CSV import Prisma schema
 - [ ] TASK-08.02 Add CSV import module skeleton
 - [ ] TASK-08.03 Add CSV import domain types
 - [ ] TASK-08.04 Add CSV parser service
@@ -158,7 +158,7 @@ max notes length = 4000
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
