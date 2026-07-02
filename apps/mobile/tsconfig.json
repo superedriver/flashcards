@@ -8,7 +8,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["react", "react-native"]
+    "types": ["react", "react-native", "node"]
   },
   "include": ["app", "src", "index.ts", "expo-env.d.ts", "tamagui.config.ts", "codegen.ts"]
 }
