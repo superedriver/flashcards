@@ -124,7 +124,7 @@ MVP does not support:
 - [x] TASK-07.04 Add SM-2 tests
 - [x] TASK-07.05 Add SRS Prisma schema
 - [x] TASK-07.06 Add lessons module skeleton
-- [ ] TASK-07.07 Add lesson domain types
+- [x] TASK-07.07 Add lesson domain types
 - [ ] TASK-07.08 Add review state and session repository ports
 - [ ] TASK-07.09 Add Prisma review state repository
 - [ ] TASK-07.10 Add Prisma study session repository
@@ -861,7 +861,7 @@ chore(lessons): add lessons module skeleton
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
