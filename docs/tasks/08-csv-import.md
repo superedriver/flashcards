@@ -29,7 +29,7 @@ No file storage is used in MVP.
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -149,7 +149,7 @@ max notes length = 4000
 - [x] TASK-08.09 Add previewCsvImport mutation
 - [x] TASK-08.10 Add ConfirmCsvImportUseCase
 - [x] TASK-08.11 Add confirmCsvImport mutation
-- [ ] TASK-08.12 Add CSV import final checks
+- [x] TASK-08.12 Add CSV import final checks
 ```
 
 ---
@@ -1378,7 +1378,7 @@ feat(csv): add CSV import confirm mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
