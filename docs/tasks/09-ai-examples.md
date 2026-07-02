@@ -186,7 +186,7 @@ outputPreview max = 1000 characters
 - [x] TASK-09.08 Add Prisma AI log repository
 - [x] TASK-09.09 Add AI prompt builder
 - [x] TASK-09.10 Add AI GraphQL types and inputs
-- [ ] TASK-09.11 Add GenerateCardExamplesUseCase
+- [x] TASK-09.11 Add GenerateCardExamplesUseCase
 - [ ] TASK-09.12 Add generateCardExamples mutation
 - [ ] TASK-09.13 Add SaveGeneratedCardExampleUseCase
 - [ ] TASK-09.14 Add saveGeneratedCardExample mutation
@@ -1219,7 +1219,7 @@ chore(ai): add AI GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
