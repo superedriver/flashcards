@@ -152,7 +152,7 @@ No external analytics provider is required in this epic.
 - [x] TASK-12.06 Add Prisma admin deck repository
 - [x] TASK-12.07 Add Prisma analytics repository
 - [x] TASK-12.08 Add admin GraphQL types and inputs
-- [ ] TASK-12.09 Add AdminDashboardStatsUseCase
+- [x] TASK-12.09 Add AdminDashboardStatsUseCase
 - [ ] TASK-12.10 Add adminDashboardStats query
 - [ ] TASK-12.11 Add AdminSearchUsersUseCase
 - [ ] TASK-12.12 Add adminSearchUsers query
@@ -1037,7 +1037,7 @@ chore(admin): add admin GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
