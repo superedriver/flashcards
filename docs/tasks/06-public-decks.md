@@ -295,7 +295,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(public-decks): extend deck repository ports
+TASK-06.01 Extend deck repository port for public deck operations
 ```
 
 ---
@@ -454,7 +454,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(public-decks): add Prisma public deck repository methods
+TASK-06.02 Extend Prisma deck repository for public deck operations
 ```
 
 ---
@@ -570,7 +570,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add publish deck use case
+TASK-06.03 Add PublishDeckUseCase
 ```
 
 ---
@@ -651,7 +651,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add publish deck mutation
+TASK-06.04 Add publishDeck mutation
 ```
 
 ---
@@ -759,7 +759,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add unpublish deck use case
+TASK-06.05 Add UnpublishDeckUseCase
 ```
 
 ---
@@ -838,7 +838,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add unpublish deck mutation
+TASK-06.06 Add unpublishDeck mutation
 ```
 
 ---
@@ -959,7 +959,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add public decks search use case
+TASK-06.07 Add PublicDecksUseCase
 ```
 
 ---
@@ -1067,7 +1067,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add public decks query
+TASK-06.08 Add publicDecks query
 ```
 
 ---
@@ -1159,7 +1159,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add public deck use case
+TASK-06.09 Add PublicDeckUseCase
 ```
 
 ---
@@ -1238,7 +1238,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add public deck query
+TASK-06.10 Add publicDeck query
 ```
 
 ---
@@ -1332,7 +1332,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add public deck cards use case
+TASK-06.11 Add PublicDeckCardsUseCase
 ```
 
 ---
@@ -1411,7 +1411,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add public deck cards query
+TASK-06.12 Add publicDeckCards query
 ```
 
 ---
@@ -1574,7 +1574,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add copy public deck use case
+TASK-06.13 Add CopyPublicDeckUseCase
 ```
 
 ---
@@ -1670,7 +1670,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(public-decks): add copy public deck mutation
+TASK-06.14 Add copyPublicDeck mutation
 ```
 
 ---
@@ -1766,7 +1766,7 @@ pnpm --filter @flashcards/api start:dev
 ## Expected Commit Message
 
 ```txt
-chore(public-decks): finalize public decks
+TASK-06.15 Add public decks final checks
 ```
 
 ---
@@ -1942,7 +1942,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-test(public-decks): add public deck unit tests
+TASK-06.16 Add public decks unit tests
 ```
 
 ---

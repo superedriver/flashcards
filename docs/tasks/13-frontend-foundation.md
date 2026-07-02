@@ -246,7 +246,7 @@ pnpm --filter @flashcards/mobile web
 ## Expected Commit Message
 
 ```txt
-chore(frontend): create Expo app
+TASK-13.01 Create Expo app
 ```
 
 ---
@@ -340,7 +340,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend): configure mobile TypeScript scripts
+TASK-13.02 Configure TypeScript and app package scripts
 ```
 
 ---
@@ -435,7 +435,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend): configure Expo Router
+TASK-13.03 Configure Expo Router
 ```
 
 ---
@@ -518,7 +518,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend): configure Tamagui
+TASK-13.04 Configure Tamagui
 ```
 
 ---
@@ -595,7 +595,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend): add frontend environment config
+TASK-13.05 Add frontend environment config
 ```
 
 ---
@@ -685,7 +685,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend): add Apollo Client foundation
+TASK-13.06 Add Apollo Client foundation
 ```
 
 ---
@@ -782,7 +782,7 @@ pnpm --filter @flashcards/mobile codegen
 ## Expected Commit Message
 
 ```txt
-chore(frontend): add GraphQL codegen foundation
+TASK-13.07 Add GraphQL codegen foundation
 ```
 
 ---
@@ -864,7 +864,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend): add app providers
+TASK-13.08 Add app providers
 ```
 
 ---
@@ -937,7 +937,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend): add app shell components
+TASK-13.09 Add app layout shell
 ```
 
 ---
@@ -1014,7 +1014,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend): add shared UI primitives
+TASK-13.10 Add shared UI primitives
 ```
 
 ---
@@ -1098,7 +1098,7 @@ grep -R "JWT_ACCESS_SECRET\|JWT_REFRESH_SECRET\|DATABASE_URL\|AI_API_KEY\|INTERN
 ## Expected Commit Message
 
 ```txt
-chore(frontend): finalize frontend foundation
+TASK-13.11 Add frontend foundation checks
 ```
 
 ---

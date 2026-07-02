@@ -244,7 +244,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(srs): add SRS package skeleton
+TASK-07.01 Add SRS package skeleton
 ```
 
 ---
@@ -327,7 +327,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(srs): add SM-2 types
+TASK-07.02 Implement SM-2 types
 ```
 
 ---
@@ -448,7 +448,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(srs): implement SM-2 calculation
+TASK-07.03 Implement SM-2 algorithm
 ```
 
 ---
@@ -557,7 +557,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-test(srs): add SM-2 unit tests
+TASK-07.04 Add SM-2 tests
 ```
 
 ---
@@ -764,7 +764,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(db): add SRS and lesson schema
+TASK-07.05 Add SRS Prisma schema
 ```
 
 ---
@@ -853,7 +853,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(lessons): add lessons module skeleton
+TASK-07.06 Add lessons module skeleton
 ```
 
 ---
@@ -993,7 +993,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(lessons): add lesson domain types
+TASK-07.07 Add lesson domain types
 ```
 
 ---
@@ -1123,7 +1123,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(lessons): add lesson repository ports
+TASK-07.08 Add review state and session repository ports
 ```
 
 ---
@@ -1221,7 +1221,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(lessons): add Prisma review state repository
+TASK-07.09 Add Prisma review state repository
 ```
 
 ---
@@ -1327,7 +1327,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(lessons): add Prisma study session repository
+TASK-07.10 Add Prisma study session repository
 ```
 
 ---
@@ -1477,7 +1477,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(lessons): add lesson GraphQL types
+TASK-07.11 Add lesson GraphQL types and inputs
 ```
 
 ---
@@ -1615,7 +1615,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(lessons): add start lesson use case
+TASK-07.12 Add StartLessonUseCase
 ```
 
 ---
@@ -1699,7 +1699,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(lessons): add start lesson mutation
+TASK-07.13 Add startLesson mutation
 ```
 
 ---
@@ -1838,7 +1838,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(lessons): add submit review use case
+TASK-07.14 Add SubmitReviewUseCase
 ```
 
 ---
@@ -1917,7 +1917,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(lessons): add submit review mutation
+TASK-07.15 Add submitReview mutation
 ```
 
 ---
@@ -2036,7 +2036,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(lessons): add complete lesson use case
+TASK-07.16 Add CompleteLessonUseCase
 ```
 
 ---
@@ -2114,7 +2114,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(lessons): add complete lesson mutation
+TASK-07.17 Add completeLesson mutation
 ```
 
 ---
@@ -2212,7 +2212,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(lessons): add deck learning stats use case
+TASK-07.18 Add DeckLearningStatsUseCase
 ```
 
 ---
@@ -2290,7 +2290,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(lessons): add deck learning stats query
+TASK-07.19 Add deckLearningStats query
 ```
 
 ---

@@ -294,7 +294,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-auth): add auth dependencies
+TASK-14.01 Add frontend auth package dependencies
 ```
 
 ---
@@ -440,7 +440,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-auth): add auth GraphQL documents
+TASK-14.02 Add auth GraphQL documents
 ```
 
 ---
@@ -515,7 +515,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-auth): generate auth GraphQL types
+TASK-14.03 Generate auth GraphQL types
 ```
 
 ---
@@ -606,7 +606,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-auth): add token storage services
+TASK-14.04 Add token storage services
 ```
 
 ---
@@ -697,7 +697,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-auth): add auth state store
+TASK-14.05 Add auth state store
 ```
 
 ---
@@ -787,7 +787,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-auth): add Apollo auth refresh link
+TASK-14.06 Add Apollo auth link
 ```
 
 ---
@@ -877,7 +877,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-auth): add auth provider bootstrap
+TASK-14.07 Add auth provider and bootstrap
 ```
 
 ---
@@ -952,7 +952,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-auth): add protected route gating
+TASK-14.08 Add protected route gating
 ```
 
 ---
@@ -1053,7 +1053,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-auth): add sign in screen
+TASK-14.09 Add sign in screen
 ```
 
 ---
@@ -1159,7 +1159,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-auth): add sign up screen
+TASK-14.10 Add sign up screen
 ```
 
 ---
@@ -1240,7 +1240,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-auth): add logout flow
+TASK-14.11 Add logout flow
 ```
 
 ---
@@ -1325,7 +1325,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-auth): add email verification screens
+TASK-14.12 Add email verification screens
 ```
 
 ---
@@ -1428,7 +1428,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-auth): add password reset screens
+TASK-14.13 Add password reset screens
 ```
 
 ---
@@ -1525,7 +1525,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-auth): add Google login foundation
+TASK-14.14 Add Google login foundation
 ```
 
 ---
@@ -1628,7 +1628,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-auth): finalize frontend auth
+TASK-14.15 Add frontend auth final checks
 ```
 
 ---

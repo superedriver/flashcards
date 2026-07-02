@@ -269,7 +269,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add auth module skeleton
+TASK-02.01 Add auth module skeleton
 ```
 
 ---
@@ -392,7 +392,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add auth domain types
+TASK-02.02 Add auth domain types and safe user model
 ```
 
 ---
@@ -509,7 +509,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add Argon2 password hasher
+TASK-02.03 Add password hasher port and Argon2 implementation
 ```
 
 ---
@@ -643,7 +643,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add refresh token crypto services
+TASK-02.04 Add token generator and token hasher ports
 ```
 
 ---
@@ -777,7 +777,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add JWT access token service
+TASK-02.05 Add access token service
 ```
 
 ---
@@ -903,7 +903,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add auth repository ports
+TASK-02.06 Add auth repository ports
 ```
 
 ---
@@ -1012,7 +1012,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add Prisma user repository
+TASK-02.07 Add Prisma user repository
 ```
 
 ---
@@ -1112,7 +1112,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add Prisma refresh token repository
+TASK-02.08 Add Prisma refresh token repository
 ```
 
 ---
@@ -1195,7 +1195,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add auth mappers
+TASK-02.09 Add auth mappers
 ```
 
 ---
@@ -1330,7 +1330,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add register user use case
+TASK-02.10 Add RegisterUserUseCase
 ```
 
 ---
@@ -1451,7 +1451,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add GraphQL auth types
+TASK-02.11 Add auth GraphQL types and inputs
 ```
 
 ---
@@ -1546,7 +1546,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add register mutation
+TASK-02.12 Add register mutation
 ```
 
 ---
@@ -1673,7 +1673,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add login use case
+TASK-02.13 Add LoginUseCase
 ```
 
 ---
@@ -1755,7 +1755,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add login mutation
+TASK-02.14 Add login mutation
 ```
 
 ---
@@ -1846,7 +1846,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add GraphQL auth guard
+TASK-02.15 Add CurrentUser decorator and GraphQL auth guard
 ```
 
 ---
@@ -1933,7 +1933,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add me query
+TASK-02.16 Add me query
 ```
 
 ---
@@ -2053,7 +2053,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add refresh token use case
+TASK-02.17 Add RefreshTokenUseCase
 ```
 
 ---
@@ -2132,7 +2132,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add refresh token mutation
+TASK-02.18 Add refreshToken mutation
 ```
 
 ---
@@ -2242,7 +2242,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add logout use case
+TASK-02.19 Add LogoutUseCase
 ```
 
 ---
@@ -2318,7 +2318,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add logout mutation
+TASK-02.20 Add logout mutation
 ```
 
 ---
@@ -2404,7 +2404,7 @@ pnpm --filter @flashcards/api start:dev
 ## Expected Commit Message
 
 ```txt
-chore(auth): finalize backend auth
+TASK-02.21 Add auth final checks
 ```
 
 ---
@@ -2573,7 +2573,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-test(auth): add auth use case unit tests
+TASK-02.22 Add auth use case unit tests
 ```
 
 ---

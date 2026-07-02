@@ -354,7 +354,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(db): add deck and card schema
+TASK-05.01 Add deck/card Prisma schema
 ```
 
 ---
@@ -451,7 +451,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(decks): add decks module skeleton
+TASK-05.02 Add decks module skeleton
 ```
 
 ---
@@ -575,7 +575,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(decks): add deck and card domain types
+TASK-05.03 Add deck/card domain types
 ```
 
 ---
@@ -709,7 +709,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(decks): add deck and card repository ports
+TASK-05.04 Add deck/card repository ports
 ```
 
 ---
@@ -834,7 +834,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(decks): add deck permission service
+TASK-05.05 Add DeckPermissionService
 ```
 
 ---
@@ -940,7 +940,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(decks): add Prisma deck repository
+TASK-05.06 Add Prisma deck repository
 ```
 
 ---
@@ -1056,7 +1056,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(decks): add Prisma card repository
+TASK-05.07 Add Prisma card repository
 ```
 
 ---
@@ -1195,7 +1195,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(decks): add deck and card GraphQL types
+TASK-05.08 Add deck/card GraphQL types and inputs
 ```
 
 ---
@@ -1308,7 +1308,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add create deck use case
+TASK-05.09 Add CreateDeckUseCase
 ```
 
 ---
@@ -1392,7 +1392,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add create deck mutation
+TASK-05.10 Add createDeck mutation
 ```
 
 ---
@@ -1490,7 +1490,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add my decks use case
+TASK-05.11 Add MyDecksUseCase
 ```
 
 ---
@@ -1568,7 +1568,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add my decks query
+TASK-05.12 Add myDecks query
 ```
 
 ---
@@ -1673,7 +1673,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add get deck use case
+TASK-05.13 Add GetDeckUseCase
 ```
 
 ---
@@ -1759,7 +1759,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add deck query
+TASK-05.14 Add deck query
 ```
 
 ---
@@ -1860,7 +1860,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add update deck use case
+TASK-05.15 Add UpdateDeckUseCase
 ```
 
 ---
@@ -1940,7 +1940,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add update deck mutation
+TASK-05.16 Add updateDeck mutation
 ```
 
 ---
@@ -2041,7 +2041,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add delete deck use case
+TASK-05.17 Add DeleteDeckUseCase
 ```
 
 ---
@@ -2120,7 +2120,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add delete deck mutation
+TASK-05.18 Add deleteDeck mutation
 ```
 
 ---
@@ -2228,7 +2228,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add create card use case
+TASK-05.19 Add CreateCardUseCase
 ```
 
 ---
@@ -2306,7 +2306,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add create card mutation
+TASK-05.20 Add createCard mutation
 ```
 
 ---
@@ -2402,7 +2402,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add deck cards use case
+TASK-05.21 Add DeckCardsUseCase
 ```
 
 ---
@@ -2488,7 +2488,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add deck cards query
+TASK-05.22 Add deckCards query
 ```
 
 ---
@@ -2591,7 +2591,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add update card use case
+TASK-05.23 Add UpdateCardUseCase
 ```
 
 ---
@@ -2670,7 +2670,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add update card mutation
+TASK-05.24 Add updateCard mutation
 ```
 
 ---
@@ -2772,7 +2772,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add delete card use case
+TASK-05.25 Add DeleteCardUseCase
 ```
 
 ---
@@ -2850,7 +2850,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(decks): add delete card mutation
+TASK-05.26 Add deleteCard mutation
 ```
 
 ---
@@ -2940,7 +2940,7 @@ pnpm --filter @flashcards/api start:dev
 ## Expected Commit Message
 
 ```txt
-chore(decks): finalize deck and card management
+TASK-05.27 Add decks/cards final checks
 ```
 
 ---
@@ -3192,7 +3192,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-test(decks): add deck and card unit tests
+TASK-05.28 Add decks/cards unit tests
 ```
 
 ---

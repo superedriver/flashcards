@@ -379,7 +379,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(db): add groups and sharing schema
+TASK-10.01 Add groups Prisma schema
 ```
 
 ---
@@ -461,7 +461,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(groups): add groups module skeleton
+TASK-10.02 Add groups module skeleton
 ```
 
 ---
@@ -603,7 +603,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(groups): add group domain types
+TASK-10.03 Add group domain types
 ```
 
 ---
@@ -734,7 +734,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(groups): add group repository ports
+TASK-10.04 Add group repository ports
 ```
 
 ---
@@ -833,7 +833,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(groups): add group permission service
+TASK-10.05 Add GroupPermissionService
 ```
 
 ---
@@ -927,7 +927,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(groups): add Prisma group repository
+TASK-10.06 Add Prisma group repository
 ```
 
 ---
@@ -1016,7 +1016,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(groups): add Prisma group invitation repository
+TASK-10.07 Add Prisma group invitation repository
 ```
 
 ---
@@ -1113,7 +1113,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(groups): add Prisma deck group share repository
+TASK-10.08 Add Prisma deck group share repository
 ```
 
 ---
@@ -1241,7 +1241,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(groups): add group GraphQL types
+TASK-10.09 Add group GraphQL types and inputs
 ```
 
 ---
@@ -1353,7 +1353,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add create group use case
+TASK-10.10 Add CreateGroupUseCase
 ```
 
 ---
@@ -1429,7 +1429,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add create group mutation
+TASK-10.11 Add createGroup mutation
 ```
 
 ---
@@ -1518,7 +1518,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add my groups use case
+TASK-10.12 Add MyGroupsUseCase
 ```
 
 ---
@@ -1589,7 +1589,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add my groups query
+TASK-10.13 Add myGroups query
 ```
 
 ---
@@ -1682,7 +1682,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add group detail use case
+TASK-10.14 Add GroupDetailUseCase
 ```
 
 ---
@@ -1754,7 +1754,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add group query
+TASK-10.15 Add group query
 ```
 
 ---
@@ -1863,7 +1863,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add invite user use case
+TASK-10.16 Add InviteUserToGroupUseCase
 ```
 
 ---
@@ -1935,7 +1935,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add invite user mutation
+TASK-10.17 Add inviteUserToGroup mutation
 ```
 
 ---
@@ -2018,7 +2018,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add my group invitations use case
+TASK-10.18 Add MyGroupInvitationsUseCase
 ```
 
 ---
@@ -2089,7 +2089,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add my group invitations query
+TASK-10.19 Add myGroupInvitations query
 ```
 
 ---
@@ -2187,7 +2187,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add accept invitation use case
+TASK-10.20 Add AcceptGroupInvitationUseCase
 ```
 
 ---
@@ -2272,7 +2272,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add accept invitation mutation
+TASK-10.21 Add acceptGroupInvitation mutation
 ```
 
 ---
@@ -2360,7 +2360,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add decline invitation use case
+TASK-10.22 Add DeclineGroupInvitationUseCase
 ```
 
 ---
@@ -2431,7 +2431,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add decline invitation mutation
+TASK-10.23 Add declineGroupInvitation mutation
 ```
 
 ---
@@ -2534,7 +2534,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add share deck with group use case
+TASK-10.24 Add ShareDeckWithGroupUseCase
 ```
 
 ---
@@ -2608,7 +2608,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add share deck with group mutation
+TASK-10.25 Add shareDeckWithGroup mutation
 ```
 
 ---
@@ -2698,7 +2698,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add group shared decks use case
+TASK-10.26 Add GroupSharedDecksUseCase
 ```
 
 ---
@@ -2770,7 +2770,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): add group shared decks query
+TASK-10.27 Add groupSharedDecks query
 ```
 
 ---
@@ -2872,7 +2872,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(groups): allow viewing and studying group shared decks
+TASK-10.28 Extend deck permissions for group shared decks
 ```
 
 ---
@@ -2968,7 +2968,7 @@ pnpm --filter @flashcards/api start:dev
 ## Expected Commit Message
 
 ```txt
-chore(groups): finalize groups and sharing
+TASK-10.29 Add groups and sharing final checks
 ```
 
 ---

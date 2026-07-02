@@ -288,7 +288,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(db): add CSV import schema
+TASK-08.01 Add CSV import Prisma schema
 ```
 
 ---
@@ -377,7 +377,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(csv): add CSV import module skeleton
+TASK-08.02 Add CSV import module skeleton
 ```
 
 ---
@@ -488,7 +488,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(csv): add CSV import domain types
+TASK-08.03 Add CSV import domain types
 ```
 
 ---
@@ -641,7 +641,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(csv): add CSV parser service
+TASK-08.04 Add CSV parser service
 ```
 
 ---
@@ -727,7 +727,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(csv): add CSV import repository port
+TASK-08.05 Add CSV import repository port
 ```
 
 ---
@@ -833,7 +833,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(csv): add Prisma CSV import repository
+TASK-08.06 Add Prisma CSV import repository
 ```
 
 ---
@@ -951,7 +951,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(csv): add CSV import GraphQL types
+TASK-08.07 Add CSV import GraphQL types and inputs
 ```
 
 ---
@@ -1066,7 +1066,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(csv): add CSV import preview use case
+TASK-08.08 Add PreviewCsvImportUseCase
 ```
 
 ---
@@ -1152,7 +1152,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(csv): add CSV import preview mutation
+TASK-08.09 Add previewCsvImport mutation
 ```
 
 ---
@@ -1276,7 +1276,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(csv): add CSV import confirm use case
+TASK-08.10 Add ConfirmCsvImportUseCase
 ```
 
 ---
@@ -1370,7 +1370,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(csv): add CSV import confirm mutation
+TASK-08.11 Add confirmCsvImport mutation
 ```
 
 ---
@@ -1460,7 +1460,7 @@ pnpm --filter @flashcards/api start:dev
 ## Expected Commit Message
 
 ```txt
-chore(csv): finalize CSV import
+TASK-08.12 Add CSV import final checks
 ```
 
 ---

@@ -248,7 +248,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(db): add push token schema
+TASK-11.01 Add notification Prisma schema
 ```
 
 ---
@@ -332,7 +332,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(notifications): add notifications module skeleton
+TASK-11.02 Add notifications module skeleton
 ```
 
 ---
@@ -435,7 +435,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(notifications): add notification domain types
+TASK-11.03 Add notification domain types
 ```
 
 ---
@@ -518,7 +518,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(notifications): add push token repository port
+TASK-11.04 Add push token repository port
 ```
 
 ---
@@ -621,7 +621,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(notifications): add Prisma push token repository
+TASK-11.05 Add Prisma push token repository
 ```
 
 ---
@@ -701,7 +701,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(notifications): add push provider port
+TASK-11.06 Add notification provider port
 ```
 
 ---
@@ -781,7 +781,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(notifications): add mock push provider
+TASK-11.07 Add mock notification provider
 ```
 
 ---
@@ -877,7 +877,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(notifications): add Expo push provider
+TASK-11.08 Add Expo notification provider
 ```
 
 ---
@@ -955,7 +955,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(notifications): add notification GraphQL types
+TASK-11.09 Add notification GraphQL types and inputs
 ```
 
 ---
@@ -1072,7 +1072,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(notifications): add register push token use case
+TASK-11.10 Add RegisterPushTokenUseCase
 ```
 
 ---
@@ -1157,7 +1157,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(notifications): add register push token mutation
+TASK-11.11 Add registerPushToken mutation
 ```
 
 ---
@@ -1262,7 +1262,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(notifications): add remove push token use case
+TASK-11.12 Add RemovePushTokenUseCase
 ```
 
 ---
@@ -1341,7 +1341,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(notifications): add remove push token mutation
+TASK-11.13 Add removePushToken mutation
 ```
 
 ---
@@ -1485,7 +1485,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(notifications): add due card reminder use case
+TASK-11.14 Add SendDueCardRemindersUseCase
 ```
 
 ---
@@ -1598,7 +1598,7 @@ curl -X POST http://localhost:3000/internal/jobs/due-card-reminders \
 ## Expected Commit Message
 
 ```txt
-feat(notifications): add internal reminder job endpoint
+TASK-11.15 Add internal reminder job endpoint
 ```
 
 ---
@@ -1693,7 +1693,7 @@ pnpm --filter @flashcards/api start:dev
 ## Expected Commit Message
 
 ```txt
-chore(notifications): finalize notifications
+TASK-11.16 Add notifications final checks
 ```
 
 ---

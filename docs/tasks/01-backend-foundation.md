@@ -243,7 +243,7 @@ git status
 ## Expected Commit Message
 
 ```txt
-chore(api): create NestJS API app
+TASK-01.01 Create NestJS API app
 ```
 
 ---
@@ -315,7 +315,7 @@ pnpm install
 ## Expected Commit Message
 
 ```txt
-chore(api): rename API workspace package
+TASK-01.02 Rename API package and connect it to workspace
 ```
 
 ---
@@ -406,7 +406,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(api): remove default NestJS boilerplate
+TASK-01.03 Clean up default NestJS boilerplate
 ```
 
 ---
@@ -531,7 +531,7 @@ curl.exe http://localhost:3000/health
 ## Expected Commit Message
 
 ```txt
-feat(api): add health endpoint
+TASK-01.04 Add health endpoint
 ```
 
 ---
@@ -621,7 +621,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(api): align TypeScript config
+TASK-01.05 Align API TypeScript config with root config
 ```
 
 ---
@@ -731,7 +731,7 @@ http://localhost:3000/graphql
 ## Expected Commit Message
 
 ```txt
-chore(api): add GraphQL foundation
+TASK-01.06 Add GraphQL foundation
 ```
 
 ---
@@ -876,7 +876,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(api): add common error foundation
+TASK-01.07 Add common error foundation
 ```
 
 ---
@@ -1014,7 +1014,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(api): add backend config foundation
+TASK-01.08 Add backend config foundation
 ```
 
 ---
@@ -1212,7 +1212,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(api): add Prisma infrastructure
+TASK-01.09 Add Prisma infrastructure
 ```
 
 ---
@@ -1460,7 +1460,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(db): add initial auth schema foundation
+TASK-01.10 Add initial Prisma schema foundation
 ```
 
 ---
@@ -1569,7 +1569,7 @@ git status
 ## Expected Commit Message
 
 ```txt
-chore(api): add backend env example
+TASK-01.11 Add backend environment examples
 ```
 
 ---
@@ -1666,7 +1666,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(api): add backend project scripts
+TASK-01.12 Add backend project scripts
 ```
 
 ---
@@ -1756,7 +1756,7 @@ git status
 ## Expected Commit Message
 
 ```txt
-chore(api): finalize backend foundation
+TASK-01.13 Run backend foundation checks
 ```
 
 ---
