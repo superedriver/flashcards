@@ -213,7 +213,7 @@ mutation ResetPassword($input: ResetPasswordInput!) {
 - [x] TASK-14.01 Add frontend auth package dependencies
 - [x] TASK-14.02 Add auth GraphQL documents
 - [x] TASK-14.03 Generate auth GraphQL types
-- [ ] TASK-14.04 Add token storage services
+- [x] TASK-14.04 Add token storage services
 - [ ] TASK-14.05 Add auth state store
 - [ ] TASK-14.06 Add Apollo auth link
 - [ ] TASK-14.07 Add auth provider and bootstrap
@@ -524,7 +524,7 @@ TASK-14.03 Generate auth GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
