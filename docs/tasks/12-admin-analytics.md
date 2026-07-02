@@ -148,7 +148,7 @@ No external analytics provider is required in this epic.
 - [x] TASK-12.02 Add admin domain types
 - [x] TASK-12.03 Add admin permission service
 - [x] TASK-12.04 Add admin repository ports
-- [ ] TASK-12.05 Add Prisma admin user repository
+- [x] TASK-12.05 Add Prisma admin user repository
 - [ ] TASK-12.06 Add Prisma admin deck repository
 - [ ] TASK-12.07 Add Prisma analytics repository
 - [ ] TASK-12.08 Add admin GraphQL types and inputs
@@ -596,7 +596,7 @@ chore(admin): add admin repository ports
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
