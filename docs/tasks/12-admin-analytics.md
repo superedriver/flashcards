@@ -153,7 +153,7 @@ No external analytics provider is required in this epic.
 - [x] TASK-12.07 Add Prisma analytics repository
 - [x] TASK-12.08 Add admin GraphQL types and inputs
 - [x] TASK-12.09 Add AdminDashboardStatsUseCase
-- [ ] TASK-12.10 Add adminDashboardStats query
+- [x] TASK-12.10 Add adminDashboardStats query
 - [ ] TASK-12.11 Add AdminSearchUsersUseCase
 - [ ] TASK-12.12 Add adminSearchUsers query
 - [ ] TASK-12.13 Add BlockUserUseCase
@@ -1131,7 +1131,7 @@ feat(admin): add dashboard stats use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
