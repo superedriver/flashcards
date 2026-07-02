@@ -128,4 +128,18 @@ export class PrismaStudySessionRepository implements StudySessionRepositoryPort 
 
     return toStudySession(record);
   }
+
+  async abandon(sessionId: string, abandonedAt: Date): Promise<StudySession> {
+    const record = await this.prisma.studySession.update({
+      where: {
+        id: sessionId,
+      },
+      data: {
+        status: 'ABANDONED',
+        abandonedAt,
+      },
+    });
+
+    return toStudySession(record);
+  }
 }

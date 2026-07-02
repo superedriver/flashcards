@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AccountModule } from '../account/account.module';
 import { AuthModule } from '../auth/auth.module';
 import { DecksModule } from '../decks/decks.module';
+import { AbandonLessonUseCase } from './application/use-cases/abandon-lesson.use-case';
 import { CompleteLessonUseCase } from './application/use-cases/complete-lesson.use-case';
 import { DeckLearningStatsUseCase } from './application/use-cases/deck-learning-stats.use-case';
 import { StartLessonUseCase } from './application/use-cases/start-lesson.use-case';
@@ -26,6 +27,7 @@ import { LessonsResolver } from './presentation/graphql/resolvers/lessons.resolv
     StartLessonUseCase,
     SubmitReviewUseCase,
     CompleteLessonUseCase,
+    AbandonLessonUseCase,
     DeckLearningStatsUseCase,
     LessonsResolver,
   ],
@@ -35,6 +37,7 @@ import { LessonsResolver } from './presentation/graphql/resolvers/lessons.resolv
     StartLessonUseCase,
     SubmitReviewUseCase,
     CompleteLessonUseCase,
+    AbandonLessonUseCase,
     DeckLearningStatsUseCase,
   ],
 })
