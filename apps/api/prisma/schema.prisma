@@ -60,6 +60,24 @@ enum AiRequestStatus {
   FAILED
 }
 
+enum GroupRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum GroupInvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  CANCELLED
+  EXPIRED
+}
+
+enum DeckGroupSharePermission {
+  VIEW
+}
+
 model User {
   id                String    @id @default(uuid())
   email             String    @unique
@@ -86,6 +104,10 @@ model User {
   studySessionReviews     StudySessionReview[]
   csvImports              CsvImport[]
   aiRequestLogs           AiRequestLog[]
+  groupMemberships        GroupMember[]
+  createdGroups           Group[]            @relation("GroupCreatedBy")
+  groupInvitationsSent    GroupInvitation[]  @relation("GroupInvitationInvitedBy")
+  deckGroupSharesCreated  DeckGroupShare[]   @relation("DeckGroupShareCreatedBy")
 
   @@index([email])
   @@index([role])
@@ -191,6 +213,7 @@ model Deck {
   studySessionReviews StudySessionReview[]
   csvImports         CsvImport[]
   aiRequestLogs      AiRequestLog[]
+  groupShares        DeckGroupShare[]
 
   @@index([ownerId])
   @@index([visibility])
@@ -346,4 +369,84 @@ model AiRequestLog {
   @@index([provider])
   @@index([status])
   @@index([createdAt])
+}
+
+model Group {
+  id          String    @id @default(uuid())
+  name        String
+  description String?
+  createdById String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  createdBy   User              @relation("GroupCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+  members     GroupMember[]
+  invitations GroupInvitation[]
+  deckShares  DeckGroupShare[]
+
+  @@index([createdById])
+  @@index([deletedAt])
+}
+
+model GroupMember {
+  id      String    @id @default(uuid())
+  groupId String
+  userId  String
+  role    GroupRole @default(MEMBER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@index([groupId])
+  @@index([userId])
+  @@index([role])
+}
+
+model GroupInvitation {
+  id          String                @id @default(uuid())
+  groupId     String
+  email       String
+  invitedById String
+  status      GroupInvitationStatus @default(PENDING)
+  expiresAt   DateTime
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  acceptedAt DateTime?
+  declinedAt DateTime?
+
+  group     Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  invitedBy User  @relation("GroupInvitationInvitedBy", fields: [invitedById], references: [id], onDelete: Cascade)
+
+  @@index([groupId])
+  @@index([email])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+model DeckGroupShare {
+  id          String                   @id @default(uuid())
+  deckId      String
+  groupId     String
+  permission  DeckGroupSharePermission @default(VIEW)
+  createdById String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  deck      Deck  @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  group     Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  createdBy User  @relation("DeckGroupShareCreatedBy", fields: [createdById], references: [id], onDelete: Cascade)
+
+  @@unique([deckId, groupId])
+  @@index([deckId])
+  @@index([groupId])
+  @@index([createdById])
+  @@index([deletedAt])
 }
