@@ -17,4 +17,5 @@ export type UserSettingsRepositoryPort = {
   findByUserId(userId: string): Promise<UserSettings | null>;
   createForUser(userId: string): Promise<UserSettings>;
   update(input: UpdateUserSettingsInput): Promise<UserSettings>;
+  findWithNotificationsEnabled(): Promise<UserSettings[]>;
 };
