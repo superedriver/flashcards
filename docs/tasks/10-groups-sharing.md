@@ -150,7 +150,7 @@ Group-shared deck restrictions:
 ## Epic Summary
 
 ```md
-- [ ] TASK-10.01 Add groups Prisma schema
+- [x] TASK-10.01 Add groups Prisma schema
 - [ ] TASK-10.02 Add groups module skeleton
 - [ ] TASK-10.03 Add group domain types
 - [ ] TASK-10.04 Add group repository ports
@@ -187,7 +187,7 @@ Group-shared deck restrictions:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
