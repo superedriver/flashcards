@@ -136,7 +136,7 @@ For MVP cron simplicity:
 - [x] TASK-11.09 Add notification GraphQL types and inputs
 - [x] TASK-11.10 Add RegisterPushTokenUseCase
 - [ ] TASK-11.11 Add registerPushToken mutation
-- [ ] TASK-11.12 Add RemovePushTokenUseCase
+- [x] TASK-11.12 Add RemovePushTokenUseCase
 - [ ] TASK-11.13 Add removePushToken mutation
 - [ ] TASK-11.14 Add SendDueCardRemindersUseCase
 - [ ] TASK-11.15 Add internal reminder job endpoint
@@ -1165,7 +1165,7 @@ feat(notifications): add register push token mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
