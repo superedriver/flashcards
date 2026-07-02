@@ -132,7 +132,7 @@ For MVP cron simplicity:
 - [x] TASK-11.05 Add Prisma push token repository
 - [x] TASK-11.06 Add notification provider port
 - [x] TASK-11.07 Add mock notification provider
-- [ ] TASK-11.08 Add Expo notification provider
+- [x] TASK-11.08 Add Expo notification provider
 - [ ] TASK-11.09 Add notification GraphQL types and inputs
 - [ ] TASK-11.10 Add RegisterPushTokenUseCase
 - [ ] TASK-11.11 Add registerPushToken mutation
@@ -789,7 +789,7 @@ chore(notifications): add mock push provider
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
