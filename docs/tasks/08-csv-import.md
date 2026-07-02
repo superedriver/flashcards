@@ -145,7 +145,7 @@ max notes length = 4000
 - [x] TASK-08.05 Add CSV import repository port
 - [x] TASK-08.06 Add Prisma CSV import repository
 - [x] TASK-08.07 Add CSV import GraphQL types and inputs
-- [ ] TASK-08.08 Add PreviewCsvImportUseCase
+- [x] TASK-08.08 Add PreviewCsvImportUseCase
 - [ ] TASK-08.09 Add previewCsvImport mutation
 - [ ] TASK-08.10 Add ConfirmCsvImportUseCase
 - [ ] TASK-08.11 Add confirmCsvImport mutation
@@ -959,7 +959,7 @@ chore(csv): add CSV import GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
