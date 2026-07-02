@@ -138,4 +138,18 @@ describe('DeckCardsUseCase', () => {
       useCase.execute({ currentUser: null, deckId: 'deck-1' }),
     ).resolves.toEqual(cards);
   });
+
+  it('group member can list cards from deck shared via group', async () => {
+    const { useCase, findByDeckId } = createUseCase(createDeck(), {
+      userHasGroupAccess: true,
+    });
+
+    const result = await useCase.execute({
+      currentUser: otherUser,
+      deckId: 'deck-1',
+    });
+
+    expect(findByDeckId).toHaveBeenCalledWith('deck-1');
+    expect(result).toEqual(cards);
+  });
 });

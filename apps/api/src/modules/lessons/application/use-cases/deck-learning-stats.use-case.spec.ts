@@ -19,6 +19,12 @@ const safeUser: SafeUser = {
   updatedAt: new Date('2026-01-01T00:00:00.000Z'),
 };
 
+const otherUser: AuthUser = {
+  id: 'other-1',
+  email: 'other@example.com',
+  role: 'USER',
+};
+
 const deck: Deck = {
   id: 'deck-1',
   ownerId: 'owner-1',
@@ -217,5 +223,20 @@ describe('DeckLearningStatsUseCase', () => {
     expect(nextDueInput.userId).toBe('owner-1');
     expect(nextDueInput.deckId).toBe('deck-1');
     expect(nextDueInput.now).toBeInstanceOf(Date);
+  });
+
+  it('group member can read learning stats for deck shared via group', async () => {
+    const { useCase } = createUseCase({
+      deck: { ...deck, ownerId: 'other-user' },
+      userHasGroupAccess: true,
+    });
+
+    const result = await useCase.execute({
+      currentUser: otherUser,
+      deckId: 'deck-1',
+    });
+
+    expect(result.deckId).toBe('deck-1');
+    expect(result.totalCards).toBe(20);
   });
 });
