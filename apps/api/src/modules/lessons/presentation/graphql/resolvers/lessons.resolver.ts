@@ -4,14 +4,20 @@ import { AuthUser } from '../../../../auth/domain/types';
 import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/current-user.decorator';
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
 import { StartLessonUseCase } from '../../../application/use-cases/start-lesson.use-case';
+import { SubmitReviewUseCase } from '../../../application/use-cases/submit-review.use-case';
 import { CardReviewState } from '../../../domain/types';
 import { StartLessonInput } from '../inputs/start-lesson.input';
+import { SubmitReviewInput } from '../inputs/submit-review.input';
 import { CardReviewStateType } from '../types/card-review-state.type';
 import { StartLessonPayloadType } from '../types/start-lesson-payload.type';
+import { SubmitReviewPayloadType } from '../types/submit-review-payload.type';
 
 @Resolver()
 export class LessonsResolver {
-  constructor(private readonly startLessonUseCase: StartLessonUseCase) {}
+  constructor(
+    private readonly startLessonUseCase: StartLessonUseCase,
+    private readonly submitReviewUseCase: SubmitReviewUseCase,
+  ) {}
 
   @Mutation(() => StartLessonPayloadType)
   @UseGuards(GqlAuthGuard)
@@ -41,6 +47,27 @@ export class LessonsResolver {
       })),
       lessonSize: result.lessonSize,
       totalCards: result.totalCards,
+    };
+  }
+
+  @Mutation(() => SubmitReviewPayloadType)
+  @UseGuards(GqlAuthGuard)
+  async submitReview(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: SubmitReviewInput,
+  ): Promise<SubmitReviewPayloadType> {
+    const result = await this.submitReviewUseCase.execute({
+      currentUser: user,
+      sessionId: input.sessionId,
+      cardId: input.cardId,
+      answer: input.answer,
+    });
+
+    return {
+      sessionId: result.sessionId,
+      cardId: result.cardId,
+      reviewState: toCardReviewStateType(result.reviewState),
+      reviewedCards: result.reviewedCards,
     };
   }
 }
