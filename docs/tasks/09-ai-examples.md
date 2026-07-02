@@ -181,7 +181,7 @@ outputPreview max = 1000 characters
 - [x] TASK-09.03 Add AI domain types
 - [x] TASK-09.04 Add AI provider port
 - [x] TASK-09.05 Add mock AI provider
-- [ ] TASK-09.06 Add Gemini AI provider
+- [x] TASK-09.06 Add Gemini AI provider
 - [ ] TASK-09.07 Add AI log repository port
 - [ ] TASK-09.08 Add Prisma AI log repository
 - [ ] TASK-09.09 Add AI prompt builder
@@ -722,7 +722,7 @@ chore(ai): add mock AI provider
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
