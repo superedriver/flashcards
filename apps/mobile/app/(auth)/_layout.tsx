@@ -1,4 +1,4 @@
-import { Redirect, Stack } from 'expo-router'
+import { Stack } from 'expo-router'
 
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import { LoadingState, Screen } from '@/ui/components'

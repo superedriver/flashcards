@@ -10,6 +10,8 @@ import { useRegisterMutation } from '@/graphql/generated'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
 import { ErrorState } from '@/ui/components'
 
+import { GoogleLoginButton } from './google-login-button'
+
 export function SignUpForm() {
   const router = useRouter()
   const { setError, setLoading, isLoading } = useAuth()
@@ -109,6 +111,8 @@ export function SignUpForm() {
       <AppButton disabled={isLoading} onPress={() => void onSubmit()}>
         Sign Up
       </AppButton>
+
+      <GoogleLoginButton />
 
       <Link href="/(auth)/sign-in">
         <AppText>Already have an account? Sign in</AppText>
