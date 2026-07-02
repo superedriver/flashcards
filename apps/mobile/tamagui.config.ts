@@ -1,31 +1,7 @@
-import { createAnimations } from '@tamagui/animations-react-native'
 import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui } from 'tamagui'
 
-const animations = createAnimations({
-  fast: {
-    damping: 20,
-    mass: 1.2,
-    stiffness: 250,
-    type: 'spring',
-  },
-  medium: {
-    damping: 10,
-    mass: 0.9,
-    stiffness: 100,
-    type: 'spring',
-  },
-  slow: {
-    damping: 20,
-    stiffness: 60,
-    type: 'spring',
-  },
-})
-
-const tamaguiConfig = createTamagui({
-  ...defaultConfig,
-  animations,
-})
+const tamaguiConfig = createTamagui(defaultConfig)
 
 export type AppConfig = typeof tamaguiConfig
 

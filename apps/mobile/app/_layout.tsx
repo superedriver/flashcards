@@ -1,8 +1,8 @@
-import 'react-native-reanimated'
+import '@/providers/load-reanimated'
 
 import { Stack } from 'expo-router'
 
-import { AppProviders } from '@/app/app-providers'
+import { AppProviders } from '@/providers/app-providers'
 
 export default function RootLayout() {
   return (
