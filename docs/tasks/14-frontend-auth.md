@@ -211,7 +211,7 @@ mutation ResetPassword($input: ResetPasswordInput!) {
 
 ```md
 - [x] TASK-14.01 Add frontend auth package dependencies
-- [ ] TASK-14.02 Add auth GraphQL documents
+- [x] TASK-14.02 Add auth GraphQL documents
 - [ ] TASK-14.03 Generate auth GraphQL types
 - [ ] TASK-14.04 Add token storage services
 - [ ] TASK-14.05 Add auth state store
@@ -303,7 +303,7 @@ TASK-14.01 Add frontend auth package dependencies
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
