@@ -164,7 +164,7 @@ No external analytics provider is required in this epic.
 - [x] TASK-12.18 Add moderationQueue query
 - [x] TASK-12.19 Add ModerateDeckUseCase
 - [x] TASK-12.20 Add approve/reject/hide deck mutations
-- [ ] TASK-12.21 Add SetOfficialDeckUseCase
+- [x] TASK-12.21 Add SetOfficialDeckUseCase
 - [ ] TASK-12.22 Add setOfficialDeck mutation
 - [ ] TASK-12.23 Add admin and analytics final checks
 ```
@@ -2083,7 +2083,7 @@ feat(admin): add deck moderation mutations
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
