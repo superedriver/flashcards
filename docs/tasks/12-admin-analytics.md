@@ -158,7 +158,7 @@ No external analytics provider is required in this epic.
 - [x] TASK-12.12 Add adminSearchUsers query
 - [x] TASK-12.13 Add BlockUserUseCase
 - [x] TASK-12.14 Add blockUser mutation
-- [ ] TASK-12.15 Add UnblockUserUseCase
+- [x] TASK-12.15 Add UnblockUserUseCase
 - [ ] TASK-12.16 Add unblockUser mutation
 - [ ] TASK-12.17 Add ModerationQueueUseCase
 - [ ] TASK-12.18 Add moderationQueue query
@@ -1564,7 +1564,7 @@ feat(admin): add block user mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
