@@ -30,7 +30,7 @@ docs/security/security-checklist.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -224,7 +224,7 @@ mutation ResetPassword($input: ResetPasswordInput!) {
 - [x] TASK-14.12 Add email verification screens
 - [x] TASK-14.13 Add password reset screens
 - [x] TASK-14.14 Add Google login foundation
-- [ ] TASK-14.15 Add frontend auth final checks
+- [x] TASK-14.15 Add frontend auth final checks
 ```
 
 ---
@@ -1534,7 +1534,7 @@ TASK-14.14 Add Google login foundation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
