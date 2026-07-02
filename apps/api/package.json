@@ -25,6 +25,7 @@
     "prisma:studio": "prisma studio"
   },
   "dependencies": {
+    "@flashcards/srs": "workspace:*",
     "@apollo/server": "^5.5.1",
     "@as-integrations/express5": "^1.1.2",
     "@nestjs/apollo": "^13.4.2",
