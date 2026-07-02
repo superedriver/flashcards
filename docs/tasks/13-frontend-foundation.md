@@ -124,7 +124,7 @@ EMAIL_PROVIDER_SECRET
 
 ```md
 - [x] TASK-13.01 Create Expo app
-- [ ] TASK-13.02 Configure TypeScript and app package scripts
+- [x] TASK-13.02 Configure TypeScript and app package scripts
 - [ ] TASK-13.03 Configure Expo Router
 - [ ] TASK-13.04 Configure Tamagui
 - [ ] TASK-13.05 Add frontend environment config
@@ -255,7 +255,7 @@ TASK-13.01 Create Expo app
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
