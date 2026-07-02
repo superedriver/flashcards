@@ -171,6 +171,7 @@ function createUseCase(options?: {
       findDueCardIdsForDeck,
       countReviewedForDeck: jest.fn(),
       countDueForDeck: jest.fn(),
+      countDueForUser: jest.fn(),
       findNextDueAtForDeck: jest.fn(),
       upsert: jest.fn(),
     },
@@ -189,6 +190,7 @@ function createUseCase(options?: {
       findByUserId: findSettingsByUserId,
       createForUser,
       update: jest.fn(),
+      findWithNotificationsEnabled: jest.fn(),
     },
     createDeckGroupShareRepository(options?.userHasGroupAccess ?? false),
   );

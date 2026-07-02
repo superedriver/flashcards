@@ -74,6 +74,7 @@ function createUseCase(options?: {
       findByUserId: findSettingsByUserId,
       createForUser: createSettingsForUser,
       update: jest.fn(),
+      findWithNotificationsEnabled: jest.fn(),
     },
   );
 
