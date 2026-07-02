@@ -511,7 +511,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-public): add public CSV AI GraphQL documents
+TASK-17.01 Add public/CSV/AI GraphQL documents
 ```
 
 ---
@@ -585,7 +585,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-public): generate public CSV AI GraphQL types
+TASK-17.02 Generate public/CSV/AI GraphQL types
 ```
 
 ---
@@ -660,7 +660,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-public): add public decks feature structure
+TASK-17.03 Add public decks feature structure
 ```
 
 ---
@@ -751,7 +751,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-public): add public decks screen
+TASK-17.04 Add public decks screen
 ```
 
 ---
@@ -829,7 +829,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-public): add public deck detail screen
+TASK-17.05 Add public deck detail screen
 ```
 
 ---
@@ -904,7 +904,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-public): add copy public deck action
+TASK-17.06 Add copy public deck action
 ```
 
 ---
@@ -979,7 +979,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-csv): add CSV import feature structure
+TASK-17.07 Add CSV import feature structure
 ```
 
 ---
@@ -1076,7 +1076,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-csv): add CSV import screen
+TASK-17.08 Add CSV import screen
 ```
 
 ---
@@ -1166,7 +1166,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-csv): add CSV preview UI
+TASK-17.09 Add CSV preview UI
 ```
 
 ---
@@ -1246,7 +1246,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-csv): add CSV import confirm flow
+TASK-17.10 Add CSV confirm flow
 ```
 
 ---
@@ -1320,7 +1320,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-ai): add AI examples feature structure
+TASK-17.11 Add AI examples feature structure
 ```
 
 ---
@@ -1409,7 +1409,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-ai): add AI example generator
+TASK-17.12 Add AI example generator component
 ```
 
 ---
@@ -1492,7 +1492,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-ai): integrate AI examples into card forms
+TASK-17.13 Integrate AI examples into card forms
 ```
 
 ---
@@ -1607,7 +1607,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-public): finalize public CSV AI flows
+TASK-17.14 Add public/CSV/AI frontend final checks
 ```
 
 ---

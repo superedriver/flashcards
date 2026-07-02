@@ -320,7 +320,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-profile): add profile settings notification GraphQL documents
+TASK-18.01 Add profile/settings/notification GraphQL documents
 ```
 
 ---
@@ -391,7 +391,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-profile): generate profile settings notification GraphQL types
+TASK-18.02 Generate profile/settings/notification GraphQL types
 ```
 
 ---
@@ -466,7 +466,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-profile): add profile feature structure
+TASK-18.03 Add profile feature structure
 ```
 
 ---
@@ -541,7 +541,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-settings): add settings feature structure
+TASK-18.04 Add settings feature structure
 ```
 
 ---
@@ -616,7 +616,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-notifications): add notifications feature structure
+TASK-18.05 Add notifications feature structure
 ```
 
 ---
@@ -708,7 +708,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-profile): add profile screen
+TASK-18.06 Add profile screen
 ```
 
 ---
@@ -795,7 +795,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-settings): add settings form validation
+TASK-18.07 Add settings form validation
 ```
 
 ---
@@ -891,7 +891,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-settings): add user settings form
+TASK-18.08 Add user settings screen section
 ```
 
 ---
@@ -985,7 +985,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-notifications): add notification permission service
+TASK-18.09 Add notification permission service
 ```
 
 ---
@@ -1078,7 +1078,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-notifications): add push token registration hook
+TASK-18.10 Add push token service
 ```
 
 ---
@@ -1174,7 +1174,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-notifications): add notification settings UI
+TASK-18.11 Add notification settings UI
 ```
 
 ---
@@ -1249,7 +1249,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-notifications): remove push token on logout
+TASK-18.12 Integrate push token removal with logout
 ```
 
 ---
@@ -1359,7 +1359,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-profile): finalize profile settings notifications
+TASK-18.13 Add profile/settings/notifications final checks
 ```
 
 ---

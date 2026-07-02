@@ -249,7 +249,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(admin): add admin module skeleton
+TASK-12.01 Add admin module skeleton
 ```
 
 ---
@@ -360,7 +360,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(admin): add admin domain types
+TASK-12.02 Add admin domain types
 ```
 
 ---
@@ -456,7 +456,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(admin): add admin permission service
+TASK-12.03 Add admin permission service
 ```
 
 ---
@@ -588,7 +588,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(admin): add admin repository ports
+TASK-12.04 Add admin repository ports
 ```
 
 ---
@@ -691,7 +691,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(admin): add Prisma admin user repository
+TASK-12.05 Add Prisma admin user repository
 ```
 
 ---
@@ -797,7 +797,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(admin): add Prisma admin deck repository
+TASK-12.06 Add Prisma admin deck repository
 ```
 
 ---
@@ -894,7 +894,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(admin): add Prisma analytics repository
+TASK-12.07 Add Prisma analytics repository
 ```
 
 ---
@@ -1029,7 +1029,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(admin): add admin GraphQL types
+TASK-12.08 Add admin GraphQL types and inputs
 ```
 
 ---
@@ -1123,7 +1123,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add dashboard stats use case
+TASK-12.09 Add AdminDashboardStatsUseCase
 ```
 
 ---
@@ -1201,7 +1201,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add dashboard stats query
+TASK-12.10 Add adminDashboardStats query
 ```
 
 ---
@@ -1305,7 +1305,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add user search use case
+TASK-12.11 Add AdminSearchUsersUseCase
 ```
 
 ---
@@ -1378,7 +1378,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add user search query
+TASK-12.12 Add adminSearchUsers query
 ```
 
 ---
@@ -1483,7 +1483,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add block user use case
+TASK-12.13 Add BlockUserUseCase
 ```
 
 ---
@@ -1556,7 +1556,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add block user mutation
+TASK-12.14 Add blockUser mutation
 ```
 
 ---
@@ -1645,7 +1645,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add unblock user use case
+TASK-12.15 Add UnblockUserUseCase
 ```
 
 ---
@@ -1717,7 +1717,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add unblock user mutation
+TASK-12.16 Add unblockUser mutation
 ```
 
 ---
@@ -1828,7 +1828,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add moderation queue use case
+TASK-12.17 Add ModerationQueueUseCase
 ```
 
 ---
@@ -1900,7 +1900,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add moderation queue query
+TASK-12.18 Add moderationQueue query
 ```
 
 ---
@@ -1999,7 +1999,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add deck moderation use case
+TASK-12.19 Add ModerateDeckUseCase
 ```
 
 ---
@@ -2075,7 +2075,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add deck moderation mutations
+TASK-12.20 Add approve/reject/hide deck mutations
 ```
 
 ---
@@ -2165,7 +2165,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add official deck use case
+TASK-12.21 Add SetOfficialDeckUseCase
 ```
 
 ---
@@ -2238,7 +2238,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(admin): add official deck mutation
+TASK-12.22 Add setOfficialDeck mutation
 ```
 
 ---
@@ -2339,7 +2339,7 @@ pnpm --filter @flashcards/api start:dev
 ## Expected Commit Message
 
 ```txt
-chore(admin): finalize admin and analytics
+TASK-12.23 Add admin and analytics final checks
 ```
 
 ---

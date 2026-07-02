@@ -273,17 +273,18 @@ Example:
 ## Expected Commit Message
 
 ```txt
-type(scope): concise task summary
+TASK-XX.YY <task title from this document>
 ```
 
 Examples:
 
 ```txt
-feat(auth): add login use case
-feat(decks): add create deck mutation
-chore(frontend): configure Apollo Client
-docs(tasks): update cursor task template
+TASK-12.01 Add admin module skeleton
+TASK-11.10 Add RegisterPushTokenUseCase
+TASK-05.28 Add decks/cards unit tests
 ```
+
+Use the exact task id and title from the `# TASK-XX.YY` heading of this task.
 
 ---
 

@@ -326,7 +326,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(db): add AI request log schema
+TASK-09.01 Add AI Prisma schema
 ```
 
 ---
@@ -416,7 +416,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(ai): add AI module skeleton
+TASK-09.02 Add AI module skeleton
 ```
 
 ---
@@ -526,7 +526,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(ai): add AI domain types
+TASK-09.03 Add AI domain types
 ```
 
 ---
@@ -615,7 +615,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(ai): add AI provider port
+TASK-09.04 Add AI provider port
 ```
 
 ---
@@ -714,7 +714,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(ai): add mock AI provider
+TASK-09.05 Add mock AI provider
 ```
 
 ---
@@ -832,7 +832,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(ai): add Gemini provider
+TASK-09.06 Add Gemini AI provider
 ```
 
 ---
@@ -921,7 +921,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(ai): add AI request log repository port
+TASK-09.07 Add AI log repository port
 ```
 
 ---
@@ -1013,7 +1013,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(ai): add Prisma AI request log repository
+TASK-09.08 Add Prisma AI log repository
 ```
 
 ---
@@ -1118,7 +1118,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(ai): add card example prompt builder
+TASK-09.09 Add AI prompt builder
 ```
 
 ---
@@ -1211,7 +1211,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(ai): add AI GraphQL types
+TASK-09.10 Add AI GraphQL types and inputs
 ```
 
 ---
@@ -1331,7 +1331,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(ai): add generate card examples use case
+TASK-09.11 Add GenerateCardExamplesUseCase
 ```
 
 ---
@@ -1419,7 +1419,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(ai): add generate card examples mutation
+TASK-09.12 Add generateCardExamples mutation
 ```
 
 ---
@@ -1535,7 +1535,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(ai): add save generated card example use case
+TASK-09.13 Add SaveGeneratedCardExampleUseCase
 ```
 
 ---
@@ -1615,7 +1615,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(ai): add save generated card example mutation
+TASK-09.14 Add saveGeneratedCardExample mutation
 ```
 
 ---
@@ -1702,7 +1702,7 @@ pnpm --filter @flashcards/api start:dev
 ## Expected Commit Message
 
 ```txt
-chore(ai): finalize AI examples
+TASK-09.15 Add AI examples final checks
 ```
 
 ---

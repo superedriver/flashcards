@@ -254,7 +254,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(account): add account module skeleton
+TASK-04.01 Add account module skeleton
 ```
 
 ---
@@ -383,7 +383,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(account): add profile and settings domain types
+TASK-04.02 Add profile and settings domain types
 ```
 
 ---
@@ -498,7 +498,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(account): add profile and settings repository ports
+TASK-04.03 Add profile and settings repository ports
 ```
 
 ---
@@ -596,7 +596,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(account): add Prisma profile repository
+TASK-04.04 Add Prisma profile repository
 ```
 
 ---
@@ -699,7 +699,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(account): add Prisma settings repository
+TASK-04.05 Add Prisma settings repository
 ```
 
 ---
@@ -803,7 +803,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(account): add get my account use case
+TASK-04.06 Add GetMyAccountUseCase
 ```
 
 ---
@@ -928,7 +928,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(account): add account GraphQL types
+TASK-04.07 Add account GraphQL types and inputs
 ```
 
 ---
@@ -1026,7 +1026,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(account): add my account query
+TASK-04.08 Extend me query or add myAccount query
 ```
 
 ---
@@ -1146,7 +1146,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(account): add update profile use case
+TASK-04.09 Add UpdateProfileUseCase
 ```
 
 ---
@@ -1232,7 +1232,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(account): add update profile mutation
+TASK-04.10 Add updateProfile mutation
 ```
 
 ---
@@ -1365,7 +1365,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(account): add update settings use case
+TASK-04.11 Add UpdateSettingsUseCase
 ```
 
 ---
@@ -1451,7 +1451,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(account): add update settings mutation
+TASK-04.12 Add updateSettings mutation
 ```
 
 ---
@@ -1536,7 +1536,7 @@ pnpm --filter @flashcards/api start:dev
 ## Expected Commit Message
 
 ```txt
-chore(account): finalize profile and settings
+TASK-04.13 Add user profile and settings final checks
 ```
 
 ---
@@ -1697,7 +1697,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-test(account): add profile and settings unit tests
+TASK-04.14 Add account use case unit tests
 ```
 
 ---

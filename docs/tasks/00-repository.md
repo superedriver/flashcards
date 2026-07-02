@@ -190,7 +190,7 @@ pnpm --version
 ## Expected Commit Message
 
 ```txt
-chore(repo): initialize pnpm workspace
+TASK-00.01 Initialize pnpm monorepo
 ```
 
 ---
@@ -281,7 +281,7 @@ If `format:check` does not exist yet, run it after TASK-00.03.
 ## Expected Commit Message
 
 ```txt
-chore(repo): add root TypeScript config
+TASK-00.02 Add root TypeScript config
 ```
 
 ---
@@ -384,7 +384,7 @@ pnpm format:check
 ## Expected Commit Message
 
 ```txt
-chore(repo): add Prettier config
+TASK-00.03 Add Prettier config
 ```
 
 ---
@@ -508,7 +508,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(repo): add ESLint config
+TASK-00.04 Add ESLint config
 ```
 
 ---
@@ -614,7 +614,7 @@ git status
 ## Expected Commit Message
 
 ```txt
-chore(repo): add git ignore and attributes
+TASK-00.05 Add Git ignore and line ending config
 ```
 
 ---
@@ -702,7 +702,7 @@ git status
 ## Expected Commit Message
 
 ```txt
-chore(repo): create base workspace folders
+TASK-00.06 Create base repository folders
 ```
 
 ---
@@ -803,7 +803,7 @@ git status
 ## Expected Commit Message
 
 ```txt
-chore(docs): create documentation folders
+TASK-00.07 Add required documentation folders
 ```
 
 ---
@@ -900,7 +900,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(repo): add root workspace scripts
+TASK-00.08 Add root scripts
 ```
 
 ---
@@ -971,7 +971,7 @@ git commit -m "chore(repo): initialize repository foundation"
 ## Expected Commit Message
 
 ```txt
-chore(repo): initialize repository foundation
+TASK-00.09 Run repository foundation checks
 ```
 
 ---

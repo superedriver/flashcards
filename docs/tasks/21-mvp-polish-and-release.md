@@ -252,7 +252,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-docs(release): add MVP smoke test checklist
+TASK-21.01 Add MVP smoke test checklist
 ```
 
 ---
@@ -354,7 +354,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(release): add local demo seed data
+TASK-21.02 Add seed/demo data script
 ```
 
 ---
@@ -445,7 +445,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(release): polish loading error empty states
+TASK-21.03 Polish loading/error/empty states
 ```
 
 ---
@@ -529,7 +529,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(release): polish auth UX
+TASK-21.04 Polish auth UX
 ```
 
 ---
@@ -614,7 +614,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(release): polish deck card UX
+TASK-21.05 Polish deck/card UX
 ```
 
 ---
@@ -698,7 +698,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(release): polish lesson UX
+TASK-21.06 Polish lesson UX
 ```
 
 ---
@@ -789,7 +789,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(release): polish public CSV AI UX
+TASK-21.07 Polish public/CSV/AI UX
 ```
 
 ---
@@ -871,7 +871,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(release): polish profile settings notifications UX
+TASK-21.08 Polish profile/settings/notifications UX
 ```
 
 ---
@@ -957,7 +957,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(release): polish groups admin UX
+TASK-21.09 Polish groups/admin UX
 ```
 
 ---
@@ -1029,7 +1029,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(release): improve accessibility basics
+TASK-21.10 Add accessibility basics pass
 ```
 
 ---
@@ -1110,7 +1110,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(release): polish responsive web layout
+TASK-21.11 Add responsive web pass
 ```
 
 ---
@@ -1198,7 +1198,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(release): add safe observability basics
+TASK-21.12 Add production observability basics
 ```
 
 ---
@@ -1272,7 +1272,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-docs(release): add MVP release notes
+TASK-21.13 Add release notes
 ```
 
 ---
@@ -1366,7 +1366,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-docs(release): add MVP release checklist
+TASK-21.14 Add MVP release checklist
 ```
 
 ---
@@ -1497,7 +1497,7 @@ clean working tree after final commit
 ## Expected Commit Message
 
 ```txt
-chore(release): complete MVP release checks
+TASK-21.15 Run final release checks
 ```
 
 ---

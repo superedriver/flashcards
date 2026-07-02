@@ -451,7 +451,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-decks): add deck card GraphQL documents
+TASK-15.01 Add deck/card GraphQL documents
 ```
 
 ---
@@ -528,7 +528,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-decks): generate deck card GraphQL types
+TASK-15.02 Generate deck/card GraphQL types
 ```
 
 ---
@@ -604,7 +604,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-decks): add deck feature structure
+TASK-15.03 Add deck/card feature structure
 ```
 
 ---
@@ -678,7 +678,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-decks): add deck form validation
+TASK-15.04 Add deck form validation
 ```
 
 ---
@@ -765,7 +765,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-decks): add card form validation
+TASK-15.05 Add card form validation
 ```
 
 ---
@@ -854,7 +854,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-decks): add my decks screen
+TASK-15.06 Add my decks screen
 ```
 
 ---
@@ -939,7 +939,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-decks): add create deck screen
+TASK-15.07 Add create deck screen
 ```
 
 ---
@@ -1023,7 +1023,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-decks): add deck detail screen
+TASK-15.08 Add deck detail screen
 ```
 
 ---
@@ -1107,7 +1107,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-decks): add edit deck screen
+TASK-15.09 Add edit deck screen
 ```
 
 ---
@@ -1181,7 +1181,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-decks): add delete deck action
+TASK-15.10 Add delete deck action
 ```
 
 ---
@@ -1253,7 +1253,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-decks): add card list UI
+TASK-15.11 Add card list UI
 ```
 
 ---
@@ -1340,7 +1340,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-decks): add create card screen
+TASK-15.12 Add create card screen
 ```
 
 ---
@@ -1422,7 +1422,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-decks): add edit card screen
+TASK-15.13 Add edit card screen
 ```
 
 ---
@@ -1497,7 +1497,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-decks): add delete card action
+TASK-15.14 Add delete card action
 ```
 
 ---
@@ -1583,7 +1583,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-decks): add publish unpublish actions
+TASK-15.15 Add publish/unpublish deck actions
 ```
 
 ---
@@ -1681,7 +1681,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-decks): finalize deck card screens
+TASK-15.16 Add deck/card frontend final checks
 ```
 
 ---

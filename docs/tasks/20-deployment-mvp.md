@@ -245,7 +245,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(deploy): add backend health endpoint
+TASK-20.01 Add backend health endpoint
 ```
 
 ---
@@ -342,7 +342,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(deploy): harden production config validation
+TASK-20.02 Harden backend production config
 ```
 
 ---
@@ -425,7 +425,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(deploy): configure production CORS
+TASK-20.03 Add production CORS configuration
 ```
 
 ---
@@ -501,7 +501,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(deploy): harden production GraphQL errors
+TASK-20.04 Add production-safe GraphQL error handling
 ```
 
 ---
@@ -599,7 +599,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(deploy): add database migration scripts
+TASK-20.05 Add database migration scripts
 ```
 
 ---
@@ -692,7 +692,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(deploy): add Render deployment config
+TASK-20.06 Add Render deployment config
 ```
 
 ---
@@ -775,7 +775,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(deploy): add Expo web build script
+TASK-20.07 Add frontend web build config
 ```
 
 ---
@@ -865,7 +865,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(deploy): add web deployment config
+TASK-20.08 Add Vercel or Netlify deployment config
 ```
 
 ---
@@ -948,7 +948,7 @@ pnpm --filter @flashcards/mobile typecheck
 ## Expected Commit Message
 
 ```txt
-ci: add monorepo CI workflow
+TASK-20.09 Add GitHub Actions CI workflow
 ```
 
 ---
@@ -1031,7 +1031,7 @@ curl -fsS -X POST "$DUE_CARD_REMINDER_JOB_URL" \
 ## Expected Commit Message
 
 ```txt
-ci: add due card reminder cron workflow
+TASK-20.10 Add GitHub Actions cron workflow
 ```
 
 ---
@@ -1124,7 +1124,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-docs(deploy): add MVP deployment guide
+TASK-20.11 Add deployment documentation
 ```
 
 ---
@@ -1244,7 +1244,7 @@ pnpm --filter @flashcards/mobile build:web
 ## Expected Commit Message
 
 ```txt
-chore(deploy): finalize MVP deployment
+TASK-20.12 Add deployment final checks
 ```
 
 ---

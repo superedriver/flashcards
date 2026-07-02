@@ -257,7 +257,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(email): add email provider foundation
+TASK-03.01 Add email module and email provider port
 ```
 
 ---
@@ -359,7 +359,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(email): add development email provider
+TASK-03.02 Add development email provider
 ```
 
 ---
@@ -488,7 +488,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add email token repository ports
+TASK-03.03 Add email token repository ports
 ```
 
 ---
@@ -588,7 +588,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add Prisma email verification token repository
+TASK-03.04 Add Prisma email verification token repository
 ```
 
 ---
@@ -688,7 +688,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add Prisma password reset token repository
+TASK-03.05 Add Prisma password reset token repository
 ```
 
 ---
@@ -795,7 +795,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(auth): add auth email templates
+TASK-03.06 Add email template helpers
 ```
 
 ---
@@ -907,7 +907,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add email verification token use case
+TASK-03.07 Add CreateEmailVerificationTokenUseCase
 ```
 
 ---
@@ -1001,7 +1001,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): send verification email after registration
+TASK-03.08 Send verification email after registration
 ```
 
 ---
@@ -1105,7 +1105,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add verify email use case
+TASK-03.09 Add VerifyEmailUseCase
 ```
 
 ---
@@ -1198,7 +1198,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add verify email mutation
+TASK-03.10 Add verifyEmail mutation
 ```
 
 ---
@@ -1301,7 +1301,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add resend verification use case
+TASK-03.11 Add ResendVerificationEmailUseCase
 ```
 
 ---
@@ -1381,7 +1381,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add resend verification mutation
+TASK-03.12 Add resendVerificationEmail mutation
 ```
 
 ---
@@ -1499,7 +1499,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add password reset request use case
+TASK-03.13 Add RequestPasswordResetUseCase
 ```
 
 ---
@@ -1591,7 +1591,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add password reset request mutation
+TASK-03.14 Add requestPasswordReset mutation
 ```
 
 ---
@@ -1718,7 +1718,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add reset password use case
+TASK-03.15 Add ResetPasswordUseCase
 ```
 
 ---
@@ -1812,7 +1812,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(auth): add reset password mutation
+TASK-03.16 Add resetPassword mutation
 ```
 
 ---
@@ -1901,7 +1901,7 @@ pnpm --filter @flashcards/api start:dev
 ## Expected Commit Message
 
 ```txt
-chore(auth): finalize email verification and password reset
+TASK-03.17 Add email verification and password reset final checks
 ```
 
 ---
@@ -2089,7 +2089,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-test(auth): add email verification and password reset unit tests
+TASK-03.18 Add email verification and password reset unit tests
 ```
 
 ---

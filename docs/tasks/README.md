@@ -58,6 +58,35 @@ If a task becomes too large, split it before implementing.
 
 ---
 
+## Commit Message Convention
+
+Every completed task should be committed with exactly one commit message in this format:
+
+```txt
+TASK-XX.YY <task title>
+```
+
+Rules:
+
+```txt
+- XX.YY is the task id from the task heading (example: TASK-12.05).
+- The title must match the task heading text after the task id.
+- One task equals one commit.
+- Use the Expected Commit Message from the task file when present.
+```
+
+Examples:
+
+```txt
+TASK-12.01 Add admin module skeleton
+TASK-11.14 Add SendDueCardRemindersUseCase
+TASK-10.30 Add groups unit tests
+```
+
+Do not use conventional commit prefixes (`chore:`, `feat:`, etc.) instead of the task id.
+
+---
+
 ## Required Cursor Behavior
 
 For every task, Cursor must:
@@ -70,6 +99,7 @@ For every task, Cursor must:
 5. Run all Commands to Run.
 6. Fix errors found by the commands.
 7. Keep the working tree clean after commit.
+8. Use the task commit message format from Commit Message Convention.
 ```
 
 Cursor must not:

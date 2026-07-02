@@ -342,7 +342,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-lessons): add lesson GraphQL documents
+TASK-16.01 Add lesson GraphQL documents
 ```
 
 ---
@@ -412,7 +412,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-lessons): generate lesson GraphQL types
+TASK-16.02 Generate lesson GraphQL types
 ```
 
 ---
@@ -488,7 +488,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-lessons): add lessons feature structure
+TASK-16.03 Add lessons feature structure
 ```
 
 ---
@@ -567,7 +567,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-lessons): add deck learning stats component
+TASK-16.04 Add deck learning stats component
 ```
 
 ---
@@ -654,7 +654,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-lessons): add lesson start route
+TASK-16.05 Add lesson start route
 ```
 
 ---
@@ -752,7 +752,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-lessons): add active lesson state model
+TASK-16.06 Add lesson state model
 ```
 
 ---
@@ -838,7 +838,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-lessons): add lesson review screen
+TASK-16.07 Add lesson review screen
 ```
 
 ---
@@ -924,7 +924,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-lessons): add review flashcard component
+TASK-16.08 Add flashcard review component
 ```
 
 ---
@@ -1032,7 +1032,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-lessons): add review answer actions
+TASK-16.09 Add review answer actions
 ```
 
 ---
@@ -1113,7 +1113,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-lessons): add lesson progress UI
+TASK-16.10 Add lesson progress UI
 ```
 
 ---
@@ -1222,7 +1222,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-lessons): add lesson completion flow
+TASK-16.11 Add lesson completion flow
 ```
 
 ---
@@ -1299,7 +1299,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-lessons): integrate lessons into deck detail
+TASK-16.12 Integrate lessons into deck detail
 ```
 
 ---
@@ -1403,7 +1403,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-lessons): finalize lesson flow
+TASK-16.13 Add frontend lesson final checks
 ```
 
 ---

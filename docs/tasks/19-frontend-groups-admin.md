@@ -748,7 +748,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-groups-admin): add groups admin GraphQL documents
+TASK-19.01 Add groups/admin GraphQL documents
 ```
 
 ---
@@ -832,7 +832,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-groups-admin): generate groups admin GraphQL types
+TASK-19.02 Generate groups/admin GraphQL types
 ```
 
 ---
@@ -908,7 +908,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-groups): add groups feature structure
+TASK-19.03 Add groups feature structure
 ```
 
 ---
@@ -983,7 +983,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-admin): add admin feature structure
+TASK-19.04 Add admin feature structure
 ```
 
 ---
@@ -1058,7 +1058,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-groups): add group navigation routes
+TASK-19.05 Add groups navigation entry points
 ```
 
 ---
@@ -1143,7 +1143,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-groups): add my groups screen
+TASK-19.06 Add my groups screen
 ```
 
 ---
@@ -1238,7 +1238,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-groups): add create group screen
+TASK-19.07 Add create group screen
 ```
 
 ---
@@ -1324,7 +1324,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-groups): add group detail screen
+TASK-19.08 Add group detail screen
 ```
 
 ---
@@ -1418,7 +1418,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-groups): add invite user flow
+TASK-19.09 Add invite user to group flow
 ```
 
 ---
@@ -1505,7 +1505,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-groups): add group invitations screen
+TASK-19.10 Add group invitations screen
 ```
 
 ---
@@ -1587,7 +1587,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-groups): add invitation actions
+TASK-19.11 Add accept/decline invitation actions
 ```
 
 ---
@@ -1668,7 +1668,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-groups): add share deck with group flow
+TASK-19.12 Add share deck with group flow
 ```
 
 ---
@@ -1748,7 +1748,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-groups): add group shared decks UI
+TASK-19.13 Add group shared decks UI
 ```
 
 ---
@@ -1839,7 +1839,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-admin): add admin navigation routes
+TASK-19.14 Add admin navigation entry points
 ```
 
 ---
@@ -1932,7 +1932,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-admin): add admin dashboard screen
+TASK-19.15 Add admin dashboard screen
 ```
 
 ---
@@ -2011,7 +2011,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-admin): add admin user search screen
+TASK-19.16 Add admin user search screen
 ```
 
 ---
@@ -2095,7 +2095,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-admin): add block unblock user actions
+TASK-19.17 Add block/unblock user actions
 ```
 
 ---
@@ -2182,7 +2182,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-admin): add moderation queue screen
+TASK-19.18 Add moderation queue screen
 ```
 
 ---
@@ -2265,7 +2265,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-admin): add deck moderation actions
+TASK-19.19 Add deck moderation actions
 ```
 
 ---
@@ -2346,7 +2346,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-feat(frontend-admin): add official deck toggle
+TASK-19.20 Add official deck action
 ```
 
 ---
@@ -2463,7 +2463,7 @@ pnpm lint
 ## Expected Commit Message
 
 ```txt
-chore(frontend-groups-admin): finalize groups admin screens
+TASK-19.21 Add frontend groups/admin final checks
 ```
 
 ---
