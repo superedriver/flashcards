@@ -49,4 +49,5 @@ export type StudySessionRepositoryPort = {
     answer: ReviewAnswer;
   }): Promise<number>;
   complete(sessionId: string, completedAt: Date): Promise<StudySession>;
+  abandon(sessionId: string, abandonedAt: Date): Promise<StudySession>;
 };

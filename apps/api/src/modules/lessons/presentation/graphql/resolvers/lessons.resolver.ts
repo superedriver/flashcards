@@ -3,14 +3,17 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthUser } from '../../../../auth/domain/types';
 import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/current-user.decorator';
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
+import { AbandonLessonUseCase } from '../../../application/use-cases/abandon-lesson.use-case';
 import { CompleteLessonUseCase } from '../../../application/use-cases/complete-lesson.use-case';
 import { DeckLearningStatsUseCase } from '../../../application/use-cases/deck-learning-stats.use-case';
 import { StartLessonUseCase } from '../../../application/use-cases/start-lesson.use-case';
 import { SubmitReviewUseCase } from '../../../application/use-cases/submit-review.use-case';
 import { CardReviewState } from '../../../domain/types';
+import { AbandonLessonInput } from '../inputs/abandon-lesson.input';
 import { CompleteLessonInput } from '../inputs/complete-lesson.input';
 import { StartLessonInput } from '../inputs/start-lesson.input';
 import { SubmitReviewInput } from '../inputs/submit-review.input';
+import { AbandonLessonPayloadType } from '../types/abandon-lesson-payload.type';
 import { CardReviewStateType } from '../types/card-review-state.type';
 import { CompleteLessonPayloadType } from '../types/complete-lesson-payload.type';
 import { DeckLearningStatsType } from '../types/deck-learning-stats.type';
@@ -23,6 +26,7 @@ export class LessonsResolver {
     private readonly startLessonUseCase: StartLessonUseCase,
     private readonly submitReviewUseCase: SubmitReviewUseCase,
     private readonly completeLessonUseCase: CompleteLessonUseCase,
+    private readonly abandonLessonUseCase: AbandonLessonUseCase,
     private readonly deckLearningStatsUseCase: DeckLearningStatsUseCase,
   ) {}
 
@@ -97,6 +101,18 @@ export class LessonsResolver {
     @Args('input') input: CompleteLessonInput,
   ): Promise<CompleteLessonPayloadType> {
     return this.completeLessonUseCase.execute({
+      currentUser: user,
+      sessionId: input.sessionId,
+    });
+  }
+
+  @Mutation(() => AbandonLessonPayloadType)
+  @UseGuards(GqlAuthGuard)
+  async abandonLesson(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: AbandonLessonInput,
+  ): Promise<AbandonLessonPayloadType> {
+    return this.abandonLessonUseCase.execute({
       currentUser: user,
       sessionId: input.sessionId,
     });

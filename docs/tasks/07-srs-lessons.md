@@ -137,7 +137,7 @@ MVP does not support:
 - [x] TASK-07.17 Add completeLesson mutation
 - [x] TASK-07.18 Add DeckLearningStatsUseCase
 - [x] TASK-07.19 Add deckLearningStats query
-- [ ] TASK-07.20 Add abandonLesson mutation
+- [x] TASK-07.20 Add abandonLesson mutation
 - [ ] TASK-07.21 Add SRS and lessons final checks
 ```
 
@@ -2298,7 +2298,7 @@ feat(lessons): add deck learning stats query
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
