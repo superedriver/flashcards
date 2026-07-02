@@ -79,6 +79,16 @@ function createReviewState(cardId: string): CardReviewState {
   };
 }
 
+function createDeckGroupShareRepository(userHasAccess = false) {
+  return {
+    create: jest.fn(),
+    findByDeckAndGroup: jest.fn(),
+    findActiveGroupsForDeck: jest.fn(),
+    findSharedDecksForGroup: jest.fn(),
+    userHasAccessToDeck: jest.fn().mockResolvedValue(userHasAccess),
+  };
+}
+
 function createUseCase(options?: {
   user?: SafeUser | null;
   deck?: Deck | null;
@@ -87,6 +97,7 @@ function createUseCase(options?: {
   dueCardIds?: string[];
   reviewStatesByCardId?: Record<string, CardReviewState | null>;
   totalCards?: number;
+  userHasGroupAccess?: boolean;
 }) {
   const findByIdUser = jest
     .fn()
@@ -179,6 +190,7 @@ function createUseCase(options?: {
       createForUser,
       update: jest.fn(),
     },
+    createDeckGroupShareRepository(options?.userHasGroupAccess ?? false),
   );
 
   return {
@@ -209,7 +221,7 @@ describe('StartLessonUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.DECK_NOT_FOUND });
   });
 
-  it('throws DECK_NOT_FOUND for non-owned deck (canManageDeck)', async () => {
+  it('throws DECK_NOT_FOUND for non-viewable deck', async () => {
     const { useCase } = createUseCase({
       deck: { ...deck, ownerId: 'other-user' },
     });
@@ -217,6 +229,22 @@ describe('StartLessonUseCase', () => {
     await expect(
       useCase.execute({ currentUser: authUser, deckId: 'deck-1' }),
     ).rejects.toMatchObject({ code: ErrorCodes.DECK_NOT_FOUND });
+  });
+
+  it('allows lesson on deck shared via group', async () => {
+    const { useCase, createSession } = createUseCase({
+      deck: { ...deck, ownerId: 'other-user' },
+      cards: [createCard('card-1', 1)],
+      userHasGroupAccess: true,
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      deckId: 'deck-1',
+    });
+
+    expect(createSession).toHaveBeenCalled();
+    expect(result.sessionId).toBe('session-1');
   });
 
   it('resolves lessonSize from user settings when omitted', async () => {

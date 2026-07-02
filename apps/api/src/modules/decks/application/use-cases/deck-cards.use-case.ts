@@ -1,8 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import { AuthUser } from '../../../auth/domain/types';
+import {
+  DECK_GROUP_SHARE_REPOSITORY,
+  DeckGroupShareRepositoryPort,
+} from '../../../groups/application/ports/deck-group-share-repository.port';
 import { DeckPermissionService } from '../../domain/services/deck-permission.service';
 import { Card } from '../../domain/types';
+import { canViewDeck } from '../services/deck-view-access.service';
 import {
   CARD_REPOSITORY,
   CardRepositoryPort,
@@ -28,6 +33,8 @@ export class DeckCardsUseCase {
     private readonly deckRepository: DeckRepositoryPort,
     @Inject(CARD_REPOSITORY)
     private readonly cardRepository: CardRepositoryPort,
+    @Inject(DECK_GROUP_SHARE_REPOSITORY)
+    private readonly deckGroupShareRepository: DeckGroupShareRepositoryPort,
   ) {}
 
   async execute(input: DeckCardsUseCaseInput): Promise<DeckCardsUseCaseResult> {
@@ -37,9 +44,11 @@ export class DeckCardsUseCase {
       throw new ApplicationError(ErrorCodes.DECK_NOT_FOUND, 'Deck not found');
     }
 
-    const canView = this.deckPermissionService.canViewDeck({
+    const canView = await canViewDeck({
       user: input.currentUser,
       deck,
+      deckPermissionService: this.deckPermissionService,
+      deckGroupShareRepository: this.deckGroupShareRepository,
     });
 
     if (!canView) {

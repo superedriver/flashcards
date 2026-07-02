@@ -1,5 +1,6 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
+import { GroupsModule } from '../groups/groups.module';
 import { CARD_REPOSITORY } from './application/ports/card-repository.port';
 import { DECK_REPOSITORY } from './application/ports/deck-repository.port';
 import { CopyPublicDeckUseCase } from './application/use-cases/copy-public-deck.use-case';
@@ -22,7 +23,7 @@ import { PrismaDeckRepository } from './infrastructure/persistence/prisma-deck.r
 import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
 
 @Module({
-  imports: [AuthModule],
+  imports: [AuthModule, forwardRef(() => GroupsModule)],
   providers: [
     {
       provide: DECK_REPOSITORY,
