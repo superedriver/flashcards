@@ -19,6 +19,7 @@ import { LessonsModule } from './modules/lessons/lessons.module';
 import { CsvImportModule } from './modules/csv-import/csv-import.module';
 import { GroupsModule } from './modules/groups/groups.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { AdminModule } from './modules/admin/admin.module';
 import { AiModule } from './modules/ai/ai.module';
 import { EmailModule } from './modules/email/email.module';
 import { PrismaModule } from './infrastructure/prisma';
@@ -51,6 +52,7 @@ import { PrismaModule } from './infrastructure/prisma';
     CsvImportModule,
     GroupsModule,
     NotificationsModule,
+    AdminModule,
     AiModule,
     EmailModule,
   ],

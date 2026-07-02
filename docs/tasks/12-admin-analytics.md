@@ -144,7 +144,7 @@ No external analytics provider is required in this epic.
 ## Epic Summary
 
 ```md
-- [ ] TASK-12.01 Add admin module skeleton
+- [x] TASK-12.01 Add admin module skeleton
 - [ ] TASK-12.02 Add admin domain types
 - [ ] TASK-12.03 Add admin permission service
 - [ ] TASK-12.04 Add admin repository ports
@@ -175,7 +175,7 @@ No external analytics provider is required in this epic.
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
