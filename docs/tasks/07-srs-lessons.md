@@ -132,7 +132,7 @@ MVP does not support:
 - [x] TASK-07.12 Add StartLessonUseCase
 - [x] TASK-07.13 Add startLesson mutation
 - [x] TASK-07.14 Add SubmitReviewUseCase
-- [ ] TASK-07.15 Add submitReview mutation
+- [x] TASK-07.15 Add submitReview mutation
 - [ ] TASK-07.16 Add CompleteLessonUseCase
 - [ ] TASK-07.17 Add completeLesson mutation
 - [ ] TASK-07.18 Add DeckLearningStatsUseCase
@@ -1846,7 +1846,7 @@ feat(lessons): add submit review use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
