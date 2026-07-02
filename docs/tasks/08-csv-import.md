@@ -139,7 +139,7 @@ max notes length = 4000
 
 ```md
 - [x] TASK-08.01 Add CSV import Prisma schema
-- [ ] TASK-08.02 Add CSV import module skeleton
+- [x] TASK-08.02 Add CSV import module skeleton
 - [ ] TASK-08.03 Add CSV import domain types
 - [ ] TASK-08.04 Add CSV parser service
 - [ ] TASK-08.05 Add CSV import repository port
@@ -296,7 +296,7 @@ chore(db): add CSV import schema
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
