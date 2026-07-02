@@ -129,7 +129,7 @@ MVP does not support:
 - [x] TASK-07.09 Add Prisma review state repository
 - [x] TASK-07.10 Add Prisma study session repository
 - [x] TASK-07.11 Add lesson GraphQL types and inputs
-- [ ] TASK-07.12 Add StartLessonUseCase
+- [x] TASK-07.12 Add StartLessonUseCase
 - [ ] TASK-07.13 Add startLesson mutation
 - [ ] TASK-07.14 Add SubmitReviewUseCase
 - [ ] TASK-07.15 Add submitReview mutation
@@ -1485,7 +1485,7 @@ chore(lessons): add lesson GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
