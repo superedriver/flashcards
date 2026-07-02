@@ -131,7 +131,7 @@ MVP does not support:
 - [x] TASK-07.11 Add lesson GraphQL types and inputs
 - [x] TASK-07.12 Add StartLessonUseCase
 - [x] TASK-07.13 Add startLesson mutation
-- [ ] TASK-07.14 Add SubmitReviewUseCase
+- [x] TASK-07.14 Add SubmitReviewUseCase
 - [ ] TASK-07.15 Add submitReview mutation
 - [ ] TASK-07.16 Add CompleteLessonUseCase
 - [ ] TASK-07.17 Add completeLesson mutation
@@ -1707,7 +1707,7 @@ feat(lessons): add start lesson mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
