@@ -152,7 +152,7 @@ Group-shared deck restrictions:
 ```md
 - [x] TASK-10.01 Add groups Prisma schema
 - [x] TASK-10.02 Add groups module skeleton
-- [ ] TASK-10.03 Add group domain types
+- [x] TASK-10.03 Add group domain types
 - [ ] TASK-10.04 Add group repository ports
 - [ ] TASK-10.05 Add GroupPermissionService
 - [ ] TASK-10.06 Add Prisma group repository
