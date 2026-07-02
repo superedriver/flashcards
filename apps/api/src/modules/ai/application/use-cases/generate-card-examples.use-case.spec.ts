@@ -6,6 +6,7 @@ import {
   GenerateCardExamplesResult,
 } from '../ports/ai-provider.port';
 import { CreateAiRequestLogInput } from '../ports/ai-request-log-repository.port';
+import { AiRequestLog } from '../../domain/types/ai-request-log.type';
 import { GenerateCardExamplesUseCase } from './generate-card-examples.use-case';
 
 const owner: AuthUser = {
@@ -78,7 +79,7 @@ function createUseCase(options?: {
   const updateCard = jest.fn();
   const generateCardExamples = jest.fn().mockResolvedValue(aiResult);
   const createLog = jest
-    .fn<Promise<{ id: string }>, [CreateAiRequestLogInput]>()
+    .fn<Promise<AiRequestLog>, [CreateAiRequestLogInput]>()
     .mockResolvedValue({
       id: 'log-1',
       userId: 'owner-1',
