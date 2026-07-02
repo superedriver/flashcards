@@ -142,7 +142,7 @@ max notes length = 4000
 - [x] TASK-08.02 Add CSV import module skeleton
 - [x] TASK-08.03 Add CSV import domain types
 - [x] TASK-08.04 Add CSV parser service
-- [ ] TASK-08.05 Add CSV import repository port
+- [x] TASK-08.05 Add CSV import repository port
 - [ ] TASK-08.06 Add Prisma CSV import repository
 - [ ] TASK-08.07 Add CSV import GraphQL types and inputs
 - [ ] TASK-08.08 Add PreviewCsvImportUseCase
@@ -649,7 +649,7 @@ feat(csv): add CSV parser service
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
