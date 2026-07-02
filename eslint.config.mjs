@@ -15,6 +15,7 @@ export default [
       'apps/mobile/web-build/**',
       'apps/mobile/dist/**',
       'apps/api/src/generated/**',
+      'apps/mobile/src/graphql/generated/**',
     ],
   },
   js.configs.recommended,
