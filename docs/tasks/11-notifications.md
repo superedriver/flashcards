@@ -125,7 +125,7 @@ For MVP cron simplicity:
 ## Epic Summary
 
 ```md
-- [ ] TASK-11.01 Add notification Prisma schema
+- [x] TASK-11.01 Add notification Prisma schema
 - [ ] TASK-11.02 Add notifications module skeleton
 - [ ] TASK-11.03 Add notification domain types
 - [ ] TASK-11.04 Add push token repository port
@@ -149,7 +149,7 @@ For MVP cron simplicity:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
