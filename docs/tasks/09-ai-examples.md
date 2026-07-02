@@ -179,7 +179,7 @@ outputPreview max = 1000 characters
 - [x] TASK-09.01 Add AI Prisma schema
 - [x] TASK-09.02 Add AI module skeleton
 - [x] TASK-09.03 Add AI domain types
-- [ ] TASK-09.04 Add AI provider port
+- [x] TASK-09.04 Add AI provider port
 - [ ] TASK-09.05 Add mock AI provider
 - [ ] TASK-09.06 Add Gemini AI provider
 - [ ] TASK-09.07 Add AI log repository port
@@ -534,7 +534,7 @@ chore(ai): add AI domain types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
