@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AI_PROVIDER } from './application/ports/ai-provider.port';
+import { AI_REQUEST_LOG_REPOSITORY } from './application/ports/ai-request-log-repository.port';
+import { PrismaAiRequestLogRepository } from './infrastructure/persistence/prisma-ai-request-log.repository';
 import { GeminiAiProvider } from './infrastructure/providers/gemini-ai.provider';
 import { MockAiProvider } from './infrastructure/providers/mock-ai.provider';
 
@@ -26,7 +28,11 @@ import { MockAiProvider } from './infrastructure/providers/mock-ai.provider';
       },
       inject: [ConfigService, MockAiProvider, GeminiAiProvider],
     },
+    {
+      provide: AI_REQUEST_LOG_REPOSITORY,
+      useClass: PrismaAiRequestLogRepository,
+    },
   ],
-  exports: [AI_PROVIDER],
+  exports: [AI_PROVIDER, AI_REQUEST_LOG_REPOSITORY],
 })
 export class AiModule {}
