@@ -128,7 +128,7 @@ For MVP cron simplicity:
 - [x] TASK-11.01 Add notification Prisma schema
 - [x] TASK-11.02 Add notifications module skeleton
 - [x] TASK-11.03 Add notification domain types
-- [ ] TASK-11.04 Add push token repository port
+- [x] TASK-11.04 Add push token repository port
 - [ ] TASK-11.05 Add Prisma push token repository
 - [ ] TASK-11.06 Add notification provider port
 - [ ] TASK-11.07 Add mock notification provider
@@ -443,7 +443,7 @@ chore(notifications): add notification domain types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
