@@ -176,7 +176,7 @@ outputPreview max = 1000 characters
 ## Epic Summary
 
 ```md
-- [ ] TASK-09.01 Add AI Prisma schema
+- [x] TASK-09.01 Add AI Prisma schema
 - [ ] TASK-09.02 Add AI module skeleton
 - [ ] TASK-09.03 Add AI domain types
 - [ ] TASK-09.04 Add AI provider port
@@ -199,7 +199,7 @@ outputPreview max = 1000 characters
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

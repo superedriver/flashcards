@@ -50,6 +50,16 @@ enum CsvImportStatus {
   EXPIRED
 }
 
+enum AiProvider {
+  MOCK
+  GEMINI
+}
+
+enum AiRequestStatus {
+  SUCCESS
+  FAILED
+}
+
 model User {
   id                String    @id @default(uuid())
   email             String    @unique
@@ -75,6 +85,7 @@ model User {
   studySessions           StudySession[]
   studySessionReviews     StudySessionReview[]
   csvImports              CsvImport[]
+  aiRequestLogs           AiRequestLog[]
 
   @@index([email])
   @@index([role])
@@ -179,6 +190,7 @@ model Deck {
   studySessions      StudySession[]
   studySessionReviews StudySessionReview[]
   csvImports         CsvImport[]
+  aiRequestLogs      AiRequestLog[]
 
   @@index([ownerId])
   @@index([visibility])
@@ -203,6 +215,7 @@ model Card {
   deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
   reviewStates   CardReviewState[]
   sessionReviews StudySessionReview[]
+  aiRequestLogs  AiRequestLog[]
 
   @@index([deckId])
   @@index([position])
@@ -307,4 +320,30 @@ model CsvImport {
   @@index([deckId])
   @@index([status])
   @@index([expiresAt])
+}
+
+model AiRequestLog {
+  id            String          @id @default(uuid())
+  userId        String
+  deckId        String
+  cardId        String
+  provider      AiProvider
+  feature       String
+  status        AiRequestStatus
+  promptPreview String?
+  outputPreview String?
+  errorMessage  String?
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([deckId])
+  @@index([cardId])
+  @@index([provider])
+  @@index([status])
+  @@index([createdAt])
 }
