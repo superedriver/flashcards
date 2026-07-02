@@ -219,7 +219,7 @@ mutation ResetPassword($input: ResetPasswordInput!) {
 - [x] TASK-14.07 Add auth provider and bootstrap
 - [x] TASK-14.08 Add protected route gating
 - [x] TASK-14.09 Add sign in screen
-- [ ] TASK-14.10 Add sign up screen
+- [x] TASK-14.10 Add sign up screen
 - [ ] TASK-14.11 Add logout flow
 - [ ] TASK-14.12 Add email verification screens
 - [ ] TASK-14.13 Add password reset screens
@@ -1062,7 +1062,7 @@ TASK-14.09 Add sign in screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
