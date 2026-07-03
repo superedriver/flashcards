@@ -1,0 +1,139 @@
+query MyDecks {
+  myDecks {
+    id
+    ownerId
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    createdAt
+    updatedAt
+  }
+}
+
+query Deck($id: ID!) {
+  deck(id: $id) {
+    id
+    ownerId
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    createdAt
+    updatedAt
+  }
+}
+
+query DeckCards($deckId: ID!) {
+  deckCards(deckId: $deckId) {
+    id
+    deckId
+    front
+    back
+    example
+    notes
+    position
+    createdAt
+    updatedAt
+  }
+}
+
+mutation CreateDeck($input: CreateDeckInput!) {
+  createDeck(input: $input) {
+    id
+    ownerId
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateDeck($input: UpdateDeckInput!) {
+  updateDeck(input: $input) {
+    id
+    ownerId
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    createdAt
+    updatedAt
+  }
+}
+
+mutation DeleteDeck($deckId: ID!) {
+  deleteDeck(deckId: $deckId)
+}
+
+mutation CreateCard($input: CreateCardInput!) {
+  createCard(input: $input) {
+    id
+    deckId
+    front
+    back
+    example
+    notes
+    position
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateCard($input: UpdateCardInput!) {
+  updateCard(input: $input) {
+    id
+    deckId
+    front
+    back
+    example
+    notes
+    position
+    createdAt
+    updatedAt
+  }
+}
+
+mutation DeleteCard($cardId: ID!) {
+  deleteCard(cardId: $cardId)
+}
+
+mutation PublishDeck($deckId: ID!) {
+  publishDeck(deckId: $deckId) {
+    id
+    ownerId
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UnpublishDeck($deckId: ID!) {
+  unpublishDeck(deckId: $deckId) {
+    id
+    ownerId
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    createdAt
+    updatedAt
+  }
+}
