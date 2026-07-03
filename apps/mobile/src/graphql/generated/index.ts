@@ -815,6 +815,202 @@ export type VerifyEmailInput = {
   token: Scalars['String']['input']
 }
 
+export type AdminDashboardStatsQueryVariables = Exact<{ [key: string]: never }>
+
+export type AdminDashboardStatsQuery = {
+  __typename?: 'Query'
+  adminDashboardStats: {
+    __typename?: 'AdminDashboardStats'
+    totalUsers: number
+    totalDecks: number
+    totalPublicDecks: number
+    totalCards: number
+    totalStudySessions: number
+    totalReviews: number
+    usersCreatedLast7Days: number
+    decksCreatedLast7Days: number
+    reviewsSubmittedLast7Days: number
+  }
+}
+
+export type AdminSearchUsersQueryVariables = Exact<{
+  input?: InputMaybe<AdminSearchUsersInput>
+}>
+
+export type AdminSearchUsersQuery = {
+  __typename?: 'Query'
+  adminSearchUsers: {
+    __typename?: 'AdminUserSearchResult'
+    total: number
+    items: Array<{
+      __typename?: 'AdminUserSummary'
+      id: string
+      email: string
+      role: UserRole
+      emailVerifiedAt?: any | null
+      blockedAt?: any | null
+      createdAt: any
+      updatedAt: any
+    }>
+  }
+}
+
+export type BlockUserMutationVariables = Exact<{
+  userId: Scalars['ID']['input']
+}>
+
+export type BlockUserMutation = {
+  __typename?: 'Mutation'
+  blockUser: {
+    __typename?: 'AdminUserSummary'
+    id: string
+    email: string
+    role: UserRole
+    emailVerifiedAt?: any | null
+    blockedAt?: any | null
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type UnblockUserMutationVariables = Exact<{
+  userId: Scalars['ID']['input']
+}>
+
+export type UnblockUserMutation = {
+  __typename?: 'Mutation'
+  unblockUser: {
+    __typename?: 'AdminUserSummary'
+    id: string
+    email: string
+    role: UserRole
+    emailVerifiedAt?: any | null
+    blockedAt?: any | null
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type ModerationQueueQueryVariables = Exact<{
+  input?: InputMaybe<ModerationQueueInput>
+}>
+
+export type ModerationQueueQuery = {
+  __typename?: 'Query'
+  moderationQueue: {
+    __typename?: 'ModerationQueueResult'
+    total: number
+    items: Array<{
+      __typename?: 'ModerationDeck'
+      id: string
+      ownerId: string
+      ownerEmail: string
+      title: string
+      description?: string | null
+      visibility: DeckVisibility
+      moderationStatus: DeckModerationStatus
+      isOfficial: boolean
+      sourceDeckId?: string | null
+      cardCount: number
+      createdAt: any
+      updatedAt: any
+    }>
+  }
+}
+
+export type ApproveDeckMutationVariables = Exact<{
+  deckId: Scalars['ID']['input']
+}>
+
+export type ApproveDeckMutation = {
+  __typename?: 'Mutation'
+  approveDeck: {
+    __typename?: 'ModerationDeck'
+    id: string
+    ownerId: string
+    ownerEmail: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    cardCount: number
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type RejectDeckMutationVariables = Exact<{
+  deckId: Scalars['ID']['input']
+}>
+
+export type RejectDeckMutation = {
+  __typename?: 'Mutation'
+  rejectDeck: {
+    __typename?: 'ModerationDeck'
+    id: string
+    ownerId: string
+    ownerEmail: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    cardCount: number
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type HideDeckMutationVariables = Exact<{
+  deckId: Scalars['ID']['input']
+}>
+
+export type HideDeckMutation = {
+  __typename?: 'Mutation'
+  hideDeck: {
+    __typename?: 'ModerationDeck'
+    id: string
+    ownerId: string
+    ownerEmail: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    cardCount: number
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type SetOfficialDeckMutationVariables = Exact<{
+  deckId: Scalars['ID']['input']
+  isOfficial: Scalars['Boolean']['input']
+}>
+
+export type SetOfficialDeckMutation = {
+  __typename?: 'Mutation'
+  setOfficialDeck: {
+    __typename?: 'ModerationDeck'
+    id: string
+    ownerId: string
+    ownerEmail: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    cardCount: number
+    createdAt: any
+    updatedAt: any
+  }
+}
+
 export type GenerateCardExamplesMutationVariables = Exact<{
   input: GenerateCardExamplesInput
 }>
@@ -1243,6 +1439,177 @@ export type UnpublishDeckMutation = {
   }
 }
 
+export type MyGroupsQueryVariables = Exact<{ [key: string]: never }>
+
+export type MyGroupsQuery = {
+  __typename?: 'Query'
+  myGroups: Array<{
+    __typename?: 'Group'
+    id: string
+    name: string
+    description?: string | null
+    createdById: string
+    createdAt: any
+    updatedAt: any
+  }>
+}
+
+export type GroupQueryVariables = Exact<{
+  id: Scalars['String']['input']
+}>
+
+export type GroupQuery = {
+  __typename?: 'Query'
+  group: {
+    __typename?: 'Group'
+    id: string
+    name: string
+    description?: string | null
+    createdById: string
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type CreateGroupMutationVariables = Exact<{
+  input: CreateGroupInput
+}>
+
+export type CreateGroupMutation = {
+  __typename?: 'Mutation'
+  createGroup: {
+    __typename?: 'Group'
+    id: string
+    name: string
+    description?: string | null
+    createdById: string
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type InviteUserToGroupMutationVariables = Exact<{
+  input: InviteUserToGroupInput
+}>
+
+export type InviteUserToGroupMutation = {
+  __typename?: 'Mutation'
+  inviteUserToGroup: {
+    __typename?: 'GroupInvitation'
+    id: string
+    groupId: string
+    email: string
+    invitedById: string
+    status: GroupInvitationStatus
+    expiresAt: any
+    createdAt: any
+    acceptedAt?: any | null
+    declinedAt?: any | null
+  }
+}
+
+export type MyGroupInvitationsQueryVariables = Exact<{ [key: string]: never }>
+
+export type MyGroupInvitationsQuery = {
+  __typename?: 'Query'
+  myGroupInvitations: Array<{
+    __typename?: 'GroupInvitation'
+    id: string
+    groupId: string
+    email: string
+    invitedById: string
+    status: GroupInvitationStatus
+    expiresAt: any
+    createdAt: any
+    acceptedAt?: any | null
+    declinedAt?: any | null
+  }>
+}
+
+export type AcceptGroupInvitationMutationVariables = Exact<{
+  invitationId: Scalars['String']['input']
+}>
+
+export type AcceptGroupInvitationMutation = {
+  __typename?: 'Mutation'
+  acceptGroupInvitation: {
+    __typename?: 'AcceptGroupInvitationPayload'
+    invitation: {
+      __typename?: 'GroupInvitation'
+      id: string
+      groupId: string
+      email: string
+      status: GroupInvitationStatus
+      acceptedAt?: any | null
+    }
+    member: {
+      __typename?: 'GroupMember'
+      id: string
+      groupId: string
+      userId: string
+      role: GroupRole
+      createdAt: any
+    }
+  }
+}
+
+export type DeclineGroupInvitationMutationVariables = Exact<{
+  invitationId: Scalars['String']['input']
+}>
+
+export type DeclineGroupInvitationMutation = {
+  __typename?: 'Mutation'
+  declineGroupInvitation: {
+    __typename?: 'GroupInvitation'
+    id: string
+    groupId: string
+    email: string
+    status: GroupInvitationStatus
+    declinedAt?: any | null
+  }
+}
+
+export type ShareDeckWithGroupMutationVariables = Exact<{
+  input: ShareDeckWithGroupInput
+}>
+
+export type ShareDeckWithGroupMutation = {
+  __typename?: 'Mutation'
+  shareDeckWithGroup: {
+    __typename?: 'ShareDeckWithGroupPayload'
+    share: {
+      __typename?: 'DeckGroupShare'
+      id: string
+      deckId: string
+      groupId: string
+      permission: DeckGroupSharePermission
+      createdById: string
+      createdAt: any
+    }
+  }
+}
+
+export type GroupSharedDecksQueryVariables = Exact<{
+  groupId: Scalars['String']['input']
+}>
+
+export type GroupSharedDecksQuery = {
+  __typename?: 'Query'
+  groupSharedDecks: Array<{
+    __typename?: 'Deck'
+    id: string
+    ownerId: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    createdAt: any
+    updatedAt: any
+  }>
+}
+
 export type StartLessonMutationVariables = Exact<{
   input: StartLessonInput
 }>
@@ -1504,6 +1871,593 @@ export type UpdateMySettingsMutation = {
   }
 }
 
+export const AdminDashboardStatsDocument = gql`
+  query AdminDashboardStats {
+    adminDashboardStats {
+      totalUsers
+      totalDecks
+      totalPublicDecks
+      totalCards
+      totalStudySessions
+      totalReviews
+      usersCreatedLast7Days
+      decksCreatedLast7Days
+      reviewsSubmittedLast7Days
+    }
+  }
+`
+
+/**
+ * __useAdminDashboardStatsQuery__
+ *
+ * To run a query within a React component, call `useAdminDashboardStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminDashboardStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminDashboardStatsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAdminDashboardStatsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    AdminDashboardStatsQuery,
+    AdminDashboardStatsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AdminDashboardStatsQuery, AdminDashboardStatsQueryVariables>(
+    AdminDashboardStatsDocument,
+    options,
+  )
+}
+export function useAdminDashboardStatsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    AdminDashboardStatsQuery,
+    AdminDashboardStatsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AdminDashboardStatsQuery, AdminDashboardStatsQueryVariables>(
+    AdminDashboardStatsDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useAdminDashboardStatsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    AdminDashboardStatsQuery,
+    AdminDashboardStatsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<AdminDashboardStatsQuery, AdminDashboardStatsQueryVariables>
+export function useAdminDashboardStatsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<AdminDashboardStatsQuery, AdminDashboardStatsQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  AdminDashboardStatsQuery | undefined,
+  AdminDashboardStatsQueryVariables
+>
+export function useAdminDashboardStatsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<AdminDashboardStatsQuery, AdminDashboardStatsQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<AdminDashboardStatsQuery, AdminDashboardStatsQueryVariables>(
+    AdminDashboardStatsDocument,
+    options,
+  )
+}
+export type AdminDashboardStatsQueryHookResult = ReturnType<typeof useAdminDashboardStatsQuery>
+export type AdminDashboardStatsLazyQueryHookResult = ReturnType<
+  typeof useAdminDashboardStatsLazyQuery
+>
+export type AdminDashboardStatsSuspenseQueryHookResult = ReturnType<
+  typeof useAdminDashboardStatsSuspenseQuery
+>
+export type AdminDashboardStatsQueryResult = Apollo.QueryResult<
+  AdminDashboardStatsQuery,
+  AdminDashboardStatsQueryVariables
+>
+export const AdminSearchUsersDocument = gql`
+  query AdminSearchUsers($input: AdminSearchUsersInput) {
+    adminSearchUsers(input: $input) {
+      items {
+        id
+        email
+        role
+        emailVerifiedAt
+        blockedAt
+        createdAt
+        updatedAt
+      }
+      total
+    }
+  }
+`
+
+/**
+ * __useAdminSearchUsersQuery__
+ *
+ * To run a query within a React component, call `useAdminSearchUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAdminSearchUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAdminSearchUsersQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAdminSearchUsersQuery(
+  baseOptions?: Apollo.QueryHookOptions<AdminSearchUsersQuery, AdminSearchUsersQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AdminSearchUsersQuery, AdminSearchUsersQueryVariables>(
+    AdminSearchUsersDocument,
+    options,
+  )
+}
+export function useAdminSearchUsersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<AdminSearchUsersQuery, AdminSearchUsersQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AdminSearchUsersQuery, AdminSearchUsersQueryVariables>(
+    AdminSearchUsersDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useAdminSearchUsersSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    AdminSearchUsersQuery,
+    AdminSearchUsersQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<AdminSearchUsersQuery, AdminSearchUsersQueryVariables>
+export function useAdminSearchUsersSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<AdminSearchUsersQuery, AdminSearchUsersQueryVariables>,
+): Apollo.UseSuspenseQueryResult<AdminSearchUsersQuery | undefined, AdminSearchUsersQueryVariables>
+export function useAdminSearchUsersSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<AdminSearchUsersQuery, AdminSearchUsersQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<AdminSearchUsersQuery, AdminSearchUsersQueryVariables>(
+    AdminSearchUsersDocument,
+    options,
+  )
+}
+export type AdminSearchUsersQueryHookResult = ReturnType<typeof useAdminSearchUsersQuery>
+export type AdminSearchUsersLazyQueryHookResult = ReturnType<typeof useAdminSearchUsersLazyQuery>
+export type AdminSearchUsersSuspenseQueryHookResult = ReturnType<
+  typeof useAdminSearchUsersSuspenseQuery
+>
+export type AdminSearchUsersQueryResult = Apollo.QueryResult<
+  AdminSearchUsersQuery,
+  AdminSearchUsersQueryVariables
+>
+export const BlockUserDocument = gql`
+  mutation BlockUser($userId: ID!) {
+    blockUser(userId: $userId) {
+      id
+      email
+      role
+      emailVerifiedAt
+      blockedAt
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type BlockUserMutationFn = Apollo.MutationFunction<
+  BlockUserMutation,
+  BlockUserMutationVariables
+>
+
+/**
+ * __useBlockUserMutation__
+ *
+ * To run a mutation, you first call `useBlockUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBlockUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [blockUserMutation, { data, loading, error }] = useBlockUserMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useBlockUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<BlockUserMutation, BlockUserMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<BlockUserMutation, BlockUserMutationVariables>(
+    BlockUserDocument,
+    options,
+  )
+}
+export type BlockUserMutationHookResult = ReturnType<typeof useBlockUserMutation>
+export type BlockUserMutationResult = Apollo.MutationResult<BlockUserMutation>
+export type BlockUserMutationOptions = Apollo.BaseMutationOptions<
+  BlockUserMutation,
+  BlockUserMutationVariables
+>
+export const UnblockUserDocument = gql`
+  mutation UnblockUser($userId: ID!) {
+    unblockUser(userId: $userId) {
+      id
+      email
+      role
+      emailVerifiedAt
+      blockedAt
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type UnblockUserMutationFn = Apollo.MutationFunction<
+  UnblockUserMutation,
+  UnblockUserMutationVariables
+>
+
+/**
+ * __useUnblockUserMutation__
+ *
+ * To run a mutation, you first call `useUnblockUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnblockUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unblockUserMutation, { data, loading, error }] = useUnblockUserMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUnblockUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<UnblockUserMutation, UnblockUserMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UnblockUserMutation, UnblockUserMutationVariables>(
+    UnblockUserDocument,
+    options,
+  )
+}
+export type UnblockUserMutationHookResult = ReturnType<typeof useUnblockUserMutation>
+export type UnblockUserMutationResult = Apollo.MutationResult<UnblockUserMutation>
+export type UnblockUserMutationOptions = Apollo.BaseMutationOptions<
+  UnblockUserMutation,
+  UnblockUserMutationVariables
+>
+export const ModerationQueueDocument = gql`
+  query ModerationQueue($input: ModerationQueueInput) {
+    moderationQueue(input: $input) {
+      items {
+        id
+        ownerId
+        ownerEmail
+        title
+        description
+        visibility
+        moderationStatus
+        isOfficial
+        sourceDeckId
+        cardCount
+        createdAt
+        updatedAt
+      }
+      total
+    }
+  }
+`
+
+/**
+ * __useModerationQueueQuery__
+ *
+ * To run a query within a React component, call `useModerationQueueQuery` and pass it any options that fit your needs.
+ * When your component renders, `useModerationQueueQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useModerationQueueQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useModerationQueueQuery(
+  baseOptions?: Apollo.QueryHookOptions<ModerationQueueQuery, ModerationQueueQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ModerationQueueQuery, ModerationQueueQueryVariables>(
+    ModerationQueueDocument,
+    options,
+  )
+}
+export function useModerationQueueLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ModerationQueueQuery, ModerationQueueQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ModerationQueueQuery, ModerationQueueQueryVariables>(
+    ModerationQueueDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useModerationQueueSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    ModerationQueueQuery,
+    ModerationQueueQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<ModerationQueueQuery, ModerationQueueQueryVariables>
+export function useModerationQueueSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<ModerationQueueQuery, ModerationQueueQueryVariables>,
+): Apollo.UseSuspenseQueryResult<ModerationQueueQuery | undefined, ModerationQueueQueryVariables>
+export function useModerationQueueSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<ModerationQueueQuery, ModerationQueueQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<ModerationQueueQuery, ModerationQueueQueryVariables>(
+    ModerationQueueDocument,
+    options,
+  )
+}
+export type ModerationQueueQueryHookResult = ReturnType<typeof useModerationQueueQuery>
+export type ModerationQueueLazyQueryHookResult = ReturnType<typeof useModerationQueueLazyQuery>
+export type ModerationQueueSuspenseQueryHookResult = ReturnType<
+  typeof useModerationQueueSuspenseQuery
+>
+export type ModerationQueueQueryResult = Apollo.QueryResult<
+  ModerationQueueQuery,
+  ModerationQueueQueryVariables
+>
+export const ApproveDeckDocument = gql`
+  mutation ApproveDeck($deckId: ID!) {
+    approveDeck(deckId: $deckId) {
+      id
+      ownerId
+      ownerEmail
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      cardCount
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type ApproveDeckMutationFn = Apollo.MutationFunction<
+  ApproveDeckMutation,
+  ApproveDeckMutationVariables
+>
+
+/**
+ * __useApproveDeckMutation__
+ *
+ * To run a mutation, you first call `useApproveDeckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useApproveDeckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [approveDeckMutation, { data, loading, error }] = useApproveDeckMutation({
+ *   variables: {
+ *      deckId: // value for 'deckId'
+ *   },
+ * });
+ */
+export function useApproveDeckMutation(
+  baseOptions?: Apollo.MutationHookOptions<ApproveDeckMutation, ApproveDeckMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<ApproveDeckMutation, ApproveDeckMutationVariables>(
+    ApproveDeckDocument,
+    options,
+  )
+}
+export type ApproveDeckMutationHookResult = ReturnType<typeof useApproveDeckMutation>
+export type ApproveDeckMutationResult = Apollo.MutationResult<ApproveDeckMutation>
+export type ApproveDeckMutationOptions = Apollo.BaseMutationOptions<
+  ApproveDeckMutation,
+  ApproveDeckMutationVariables
+>
+export const RejectDeckDocument = gql`
+  mutation RejectDeck($deckId: ID!) {
+    rejectDeck(deckId: $deckId) {
+      id
+      ownerId
+      ownerEmail
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      cardCount
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type RejectDeckMutationFn = Apollo.MutationFunction<
+  RejectDeckMutation,
+  RejectDeckMutationVariables
+>
+
+/**
+ * __useRejectDeckMutation__
+ *
+ * To run a mutation, you first call `useRejectDeckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRejectDeckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rejectDeckMutation, { data, loading, error }] = useRejectDeckMutation({
+ *   variables: {
+ *      deckId: // value for 'deckId'
+ *   },
+ * });
+ */
+export function useRejectDeckMutation(
+  baseOptions?: Apollo.MutationHookOptions<RejectDeckMutation, RejectDeckMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<RejectDeckMutation, RejectDeckMutationVariables>(
+    RejectDeckDocument,
+    options,
+  )
+}
+export type RejectDeckMutationHookResult = ReturnType<typeof useRejectDeckMutation>
+export type RejectDeckMutationResult = Apollo.MutationResult<RejectDeckMutation>
+export type RejectDeckMutationOptions = Apollo.BaseMutationOptions<
+  RejectDeckMutation,
+  RejectDeckMutationVariables
+>
+export const HideDeckDocument = gql`
+  mutation HideDeck($deckId: ID!) {
+    hideDeck(deckId: $deckId) {
+      id
+      ownerId
+      ownerEmail
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      cardCount
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type HideDeckMutationFn = Apollo.MutationFunction<
+  HideDeckMutation,
+  HideDeckMutationVariables
+>
+
+/**
+ * __useHideDeckMutation__
+ *
+ * To run a mutation, you first call `useHideDeckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useHideDeckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [hideDeckMutation, { data, loading, error }] = useHideDeckMutation({
+ *   variables: {
+ *      deckId: // value for 'deckId'
+ *   },
+ * });
+ */
+export function useHideDeckMutation(
+  baseOptions?: Apollo.MutationHookOptions<HideDeckMutation, HideDeckMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<HideDeckMutation, HideDeckMutationVariables>(HideDeckDocument, options)
+}
+export type HideDeckMutationHookResult = ReturnType<typeof useHideDeckMutation>
+export type HideDeckMutationResult = Apollo.MutationResult<HideDeckMutation>
+export type HideDeckMutationOptions = Apollo.BaseMutationOptions<
+  HideDeckMutation,
+  HideDeckMutationVariables
+>
+export const SetOfficialDeckDocument = gql`
+  mutation SetOfficialDeck($deckId: ID!, $isOfficial: Boolean!) {
+    setOfficialDeck(deckId: $deckId, isOfficial: $isOfficial) {
+      id
+      ownerId
+      ownerEmail
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      cardCount
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type SetOfficialDeckMutationFn = Apollo.MutationFunction<
+  SetOfficialDeckMutation,
+  SetOfficialDeckMutationVariables
+>
+
+/**
+ * __useSetOfficialDeckMutation__
+ *
+ * To run a mutation, you first call `useSetOfficialDeckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetOfficialDeckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setOfficialDeckMutation, { data, loading, error }] = useSetOfficialDeckMutation({
+ *   variables: {
+ *      deckId: // value for 'deckId'
+ *      isOfficial: // value for 'isOfficial'
+ *   },
+ * });
+ */
+export function useSetOfficialDeckMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    SetOfficialDeckMutation,
+    SetOfficialDeckMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<SetOfficialDeckMutation, SetOfficialDeckMutationVariables>(
+    SetOfficialDeckDocument,
+    options,
+  )
+}
+export type SetOfficialDeckMutationHookResult = ReturnType<typeof useSetOfficialDeckMutation>
+export type SetOfficialDeckMutationResult = Apollo.MutationResult<SetOfficialDeckMutation>
+export type SetOfficialDeckMutationOptions = Apollo.BaseMutationOptions<
+  SetOfficialDeckMutation,
+  SetOfficialDeckMutationVariables
+>
 export const GenerateCardExamplesDocument = gql`
   mutation GenerateCardExamples($input: GenerateCardExamplesInput!) {
     generateCardExamples(input: $input) {
@@ -2775,6 +3729,578 @@ export type UnpublishDeckMutationResult = Apollo.MutationResult<UnpublishDeckMut
 export type UnpublishDeckMutationOptions = Apollo.BaseMutationOptions<
   UnpublishDeckMutation,
   UnpublishDeckMutationVariables
+>
+export const MyGroupsDocument = gql`
+  query MyGroups {
+    myGroups {
+      id
+      name
+      description
+      createdById
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+/**
+ * __useMyGroupsQuery__
+ *
+ * To run a query within a React component, call `useMyGroupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyGroupsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyGroupsQuery(
+  baseOptions?: Apollo.QueryHookOptions<MyGroupsQuery, MyGroupsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MyGroupsQuery, MyGroupsQueryVariables>(MyGroupsDocument, options)
+}
+export function useMyGroupsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<MyGroupsQuery, MyGroupsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MyGroupsQuery, MyGroupsQueryVariables>(MyGroupsDocument, options)
+}
+// @ts-ignore
+export function useMyGroupsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<MyGroupsQuery, MyGroupsQueryVariables>,
+): Apollo.UseSuspenseQueryResult<MyGroupsQuery, MyGroupsQueryVariables>
+export function useMyGroupsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<MyGroupsQuery, MyGroupsQueryVariables>,
+): Apollo.UseSuspenseQueryResult<MyGroupsQuery | undefined, MyGroupsQueryVariables>
+export function useMyGroupsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<MyGroupsQuery, MyGroupsQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<MyGroupsQuery, MyGroupsQueryVariables>(MyGroupsDocument, options)
+}
+export type MyGroupsQueryHookResult = ReturnType<typeof useMyGroupsQuery>
+export type MyGroupsLazyQueryHookResult = ReturnType<typeof useMyGroupsLazyQuery>
+export type MyGroupsSuspenseQueryHookResult = ReturnType<typeof useMyGroupsSuspenseQuery>
+export type MyGroupsQueryResult = Apollo.QueryResult<MyGroupsQuery, MyGroupsQueryVariables>
+export const GroupDocument = gql`
+  query Group($id: String!) {
+    group(id: $id) {
+      id
+      name
+      description
+      createdById
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+/**
+ * __useGroupQuery__
+ *
+ * To run a query within a React component, call `useGroupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGroupQuery(
+  baseOptions: Apollo.QueryHookOptions<GroupQuery, GroupQueryVariables> &
+    ({ variables: GroupQueryVariables; skip?: boolean } | { skip: boolean }),
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GroupQuery, GroupQueryVariables>(GroupDocument, options)
+}
+export function useGroupLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GroupQuery, GroupQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GroupQuery, GroupQueryVariables>(GroupDocument, options)
+}
+// @ts-ignore
+export function useGroupSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<GroupQuery, GroupQueryVariables>,
+): Apollo.UseSuspenseQueryResult<GroupQuery, GroupQueryVariables>
+export function useGroupSuspenseQuery(
+  baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GroupQuery, GroupQueryVariables>,
+): Apollo.UseSuspenseQueryResult<GroupQuery | undefined, GroupQueryVariables>
+export function useGroupSuspenseQuery(
+  baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GroupQuery, GroupQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<GroupQuery, GroupQueryVariables>(GroupDocument, options)
+}
+export type GroupQueryHookResult = ReturnType<typeof useGroupQuery>
+export type GroupLazyQueryHookResult = ReturnType<typeof useGroupLazyQuery>
+export type GroupSuspenseQueryHookResult = ReturnType<typeof useGroupSuspenseQuery>
+export type GroupQueryResult = Apollo.QueryResult<GroupQuery, GroupQueryVariables>
+export const CreateGroupDocument = gql`
+  mutation CreateGroup($input: CreateGroupInput!) {
+    createGroup(input: $input) {
+      id
+      name
+      description
+      createdById
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type CreateGroupMutationFn = Apollo.MutationFunction<
+  CreateGroupMutation,
+  CreateGroupMutationVariables
+>
+
+/**
+ * __useCreateGroupMutation__
+ *
+ * To run a mutation, you first call `useCreateGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGroupMutation, { data, loading, error }] = useCreateGroupMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateGroupMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateGroupMutation, CreateGroupMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateGroupMutation, CreateGroupMutationVariables>(
+    CreateGroupDocument,
+    options,
+  )
+}
+export type CreateGroupMutationHookResult = ReturnType<typeof useCreateGroupMutation>
+export type CreateGroupMutationResult = Apollo.MutationResult<CreateGroupMutation>
+export type CreateGroupMutationOptions = Apollo.BaseMutationOptions<
+  CreateGroupMutation,
+  CreateGroupMutationVariables
+>
+export const InviteUserToGroupDocument = gql`
+  mutation InviteUserToGroup($input: InviteUserToGroupInput!) {
+    inviteUserToGroup(input: $input) {
+      id
+      groupId
+      email
+      invitedById
+      status
+      expiresAt
+      createdAt
+      acceptedAt
+      declinedAt
+    }
+  }
+`
+export type InviteUserToGroupMutationFn = Apollo.MutationFunction<
+  InviteUserToGroupMutation,
+  InviteUserToGroupMutationVariables
+>
+
+/**
+ * __useInviteUserToGroupMutation__
+ *
+ * To run a mutation, you first call `useInviteUserToGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInviteUserToGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [inviteUserToGroupMutation, { data, loading, error }] = useInviteUserToGroupMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useInviteUserToGroupMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    InviteUserToGroupMutation,
+    InviteUserToGroupMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<InviteUserToGroupMutation, InviteUserToGroupMutationVariables>(
+    InviteUserToGroupDocument,
+    options,
+  )
+}
+export type InviteUserToGroupMutationHookResult = ReturnType<typeof useInviteUserToGroupMutation>
+export type InviteUserToGroupMutationResult = Apollo.MutationResult<InviteUserToGroupMutation>
+export type InviteUserToGroupMutationOptions = Apollo.BaseMutationOptions<
+  InviteUserToGroupMutation,
+  InviteUserToGroupMutationVariables
+>
+export const MyGroupInvitationsDocument = gql`
+  query MyGroupInvitations {
+    myGroupInvitations {
+      id
+      groupId
+      email
+      invitedById
+      status
+      expiresAt
+      createdAt
+      acceptedAt
+      declinedAt
+    }
+  }
+`
+
+/**
+ * __useMyGroupInvitationsQuery__
+ *
+ * To run a query within a React component, call `useMyGroupInvitationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyGroupInvitationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyGroupInvitationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyGroupInvitationsQuery(
+  baseOptions?: Apollo.QueryHookOptions<MyGroupInvitationsQuery, MyGroupInvitationsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MyGroupInvitationsQuery, MyGroupInvitationsQueryVariables>(
+    MyGroupInvitationsDocument,
+    options,
+  )
+}
+export function useMyGroupInvitationsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    MyGroupInvitationsQuery,
+    MyGroupInvitationsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MyGroupInvitationsQuery, MyGroupInvitationsQueryVariables>(
+    MyGroupInvitationsDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useMyGroupInvitationsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    MyGroupInvitationsQuery,
+    MyGroupInvitationsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<MyGroupInvitationsQuery, MyGroupInvitationsQueryVariables>
+export function useMyGroupInvitationsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<MyGroupInvitationsQuery, MyGroupInvitationsQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  MyGroupInvitationsQuery | undefined,
+  MyGroupInvitationsQueryVariables
+>
+export function useMyGroupInvitationsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<MyGroupInvitationsQuery, MyGroupInvitationsQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<MyGroupInvitationsQuery, MyGroupInvitationsQueryVariables>(
+    MyGroupInvitationsDocument,
+    options,
+  )
+}
+export type MyGroupInvitationsQueryHookResult = ReturnType<typeof useMyGroupInvitationsQuery>
+export type MyGroupInvitationsLazyQueryHookResult = ReturnType<
+  typeof useMyGroupInvitationsLazyQuery
+>
+export type MyGroupInvitationsSuspenseQueryHookResult = ReturnType<
+  typeof useMyGroupInvitationsSuspenseQuery
+>
+export type MyGroupInvitationsQueryResult = Apollo.QueryResult<
+  MyGroupInvitationsQuery,
+  MyGroupInvitationsQueryVariables
+>
+export const AcceptGroupInvitationDocument = gql`
+  mutation AcceptGroupInvitation($invitationId: String!) {
+    acceptGroupInvitation(invitationId: $invitationId) {
+      invitation {
+        id
+        groupId
+        email
+        status
+        acceptedAt
+      }
+      member {
+        id
+        groupId
+        userId
+        role
+        createdAt
+      }
+    }
+  }
+`
+export type AcceptGroupInvitationMutationFn = Apollo.MutationFunction<
+  AcceptGroupInvitationMutation,
+  AcceptGroupInvitationMutationVariables
+>
+
+/**
+ * __useAcceptGroupInvitationMutation__
+ *
+ * To run a mutation, you first call `useAcceptGroupInvitationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptGroupInvitationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptGroupInvitationMutation, { data, loading, error }] = useAcceptGroupInvitationMutation({
+ *   variables: {
+ *      invitationId: // value for 'invitationId'
+ *   },
+ * });
+ */
+export function useAcceptGroupInvitationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AcceptGroupInvitationMutation,
+    AcceptGroupInvitationMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AcceptGroupInvitationMutation, AcceptGroupInvitationMutationVariables>(
+    AcceptGroupInvitationDocument,
+    options,
+  )
+}
+export type AcceptGroupInvitationMutationHookResult = ReturnType<
+  typeof useAcceptGroupInvitationMutation
+>
+export type AcceptGroupInvitationMutationResult =
+  Apollo.MutationResult<AcceptGroupInvitationMutation>
+export type AcceptGroupInvitationMutationOptions = Apollo.BaseMutationOptions<
+  AcceptGroupInvitationMutation,
+  AcceptGroupInvitationMutationVariables
+>
+export const DeclineGroupInvitationDocument = gql`
+  mutation DeclineGroupInvitation($invitationId: String!) {
+    declineGroupInvitation(invitationId: $invitationId) {
+      id
+      groupId
+      email
+      status
+      declinedAt
+    }
+  }
+`
+export type DeclineGroupInvitationMutationFn = Apollo.MutationFunction<
+  DeclineGroupInvitationMutation,
+  DeclineGroupInvitationMutationVariables
+>
+
+/**
+ * __useDeclineGroupInvitationMutation__
+ *
+ * To run a mutation, you first call `useDeclineGroupInvitationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeclineGroupInvitationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [declineGroupInvitationMutation, { data, loading, error }] = useDeclineGroupInvitationMutation({
+ *   variables: {
+ *      invitationId: // value for 'invitationId'
+ *   },
+ * });
+ */
+export function useDeclineGroupInvitationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeclineGroupInvitationMutation,
+    DeclineGroupInvitationMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    DeclineGroupInvitationMutation,
+    DeclineGroupInvitationMutationVariables
+  >(DeclineGroupInvitationDocument, options)
+}
+export type DeclineGroupInvitationMutationHookResult = ReturnType<
+  typeof useDeclineGroupInvitationMutation
+>
+export type DeclineGroupInvitationMutationResult =
+  Apollo.MutationResult<DeclineGroupInvitationMutation>
+export type DeclineGroupInvitationMutationOptions = Apollo.BaseMutationOptions<
+  DeclineGroupInvitationMutation,
+  DeclineGroupInvitationMutationVariables
+>
+export const ShareDeckWithGroupDocument = gql`
+  mutation ShareDeckWithGroup($input: ShareDeckWithGroupInput!) {
+    shareDeckWithGroup(input: $input) {
+      share {
+        id
+        deckId
+        groupId
+        permission
+        createdById
+        createdAt
+      }
+    }
+  }
+`
+export type ShareDeckWithGroupMutationFn = Apollo.MutationFunction<
+  ShareDeckWithGroupMutation,
+  ShareDeckWithGroupMutationVariables
+>
+
+/**
+ * __useShareDeckWithGroupMutation__
+ *
+ * To run a mutation, you first call `useShareDeckWithGroupMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useShareDeckWithGroupMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [shareDeckWithGroupMutation, { data, loading, error }] = useShareDeckWithGroupMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useShareDeckWithGroupMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ShareDeckWithGroupMutation,
+    ShareDeckWithGroupMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<ShareDeckWithGroupMutation, ShareDeckWithGroupMutationVariables>(
+    ShareDeckWithGroupDocument,
+    options,
+  )
+}
+export type ShareDeckWithGroupMutationHookResult = ReturnType<typeof useShareDeckWithGroupMutation>
+export type ShareDeckWithGroupMutationResult = Apollo.MutationResult<ShareDeckWithGroupMutation>
+export type ShareDeckWithGroupMutationOptions = Apollo.BaseMutationOptions<
+  ShareDeckWithGroupMutation,
+  ShareDeckWithGroupMutationVariables
+>
+export const GroupSharedDecksDocument = gql`
+  query GroupSharedDecks($groupId: String!) {
+    groupSharedDecks(groupId: $groupId) {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+/**
+ * __useGroupSharedDecksQuery__
+ *
+ * To run a query within a React component, call `useGroupSharedDecksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupSharedDecksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupSharedDecksQuery({
+ *   variables: {
+ *      groupId: // value for 'groupId'
+ *   },
+ * });
+ */
+export function useGroupSharedDecksQuery(
+  baseOptions: Apollo.QueryHookOptions<GroupSharedDecksQuery, GroupSharedDecksQueryVariables> &
+    ({ variables: GroupSharedDecksQueryVariables; skip?: boolean } | { skip: boolean }),
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GroupSharedDecksQuery, GroupSharedDecksQueryVariables>(
+    GroupSharedDecksDocument,
+    options,
+  )
+}
+export function useGroupSharedDecksLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GroupSharedDecksQuery, GroupSharedDecksQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GroupSharedDecksQuery, GroupSharedDecksQueryVariables>(
+    GroupSharedDecksDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useGroupSharedDecksSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    GroupSharedDecksQuery,
+    GroupSharedDecksQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<GroupSharedDecksQuery, GroupSharedDecksQueryVariables>
+export function useGroupSharedDecksSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GroupSharedDecksQuery, GroupSharedDecksQueryVariables>,
+): Apollo.UseSuspenseQueryResult<GroupSharedDecksQuery | undefined, GroupSharedDecksQueryVariables>
+export function useGroupSharedDecksSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<GroupSharedDecksQuery, GroupSharedDecksQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<GroupSharedDecksQuery, GroupSharedDecksQueryVariables>(
+    GroupSharedDecksDocument,
+    options,
+  )
+}
+export type GroupSharedDecksQueryHookResult = ReturnType<typeof useGroupSharedDecksQuery>
+export type GroupSharedDecksLazyQueryHookResult = ReturnType<typeof useGroupSharedDecksLazyQuery>
+export type GroupSharedDecksSuspenseQueryHookResult = ReturnType<
+  typeof useGroupSharedDecksSuspenseQuery
+>
+export type GroupSharedDecksQueryResult = Apollo.QueryResult<
+  GroupSharedDecksQuery,
+  GroupSharedDecksQueryVariables
 >
 export const StartLessonDocument = gql`
   mutation StartLesson($input: StartLessonInput!) {
