@@ -27,7 +27,7 @@ docs/tasks/09-ai-examples.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -292,20 +292,20 @@ AI example generation should be integrated into:
 ## Epic Summary
 
 ```md
-- [ ] TASK-17.01 Add public/CSV/AI GraphQL documents
-- [ ] TASK-17.02 Generate public/CSV/AI GraphQL types
-- [ ] TASK-17.03 Add public decks feature structure
-- [ ] TASK-17.04 Add public decks screen
-- [ ] TASK-17.05 Add public deck detail screen
-- [ ] TASK-17.06 Add copy public deck action
-- [ ] TASK-17.07 Add CSV import feature structure
-- [ ] TASK-17.08 Add CSV import screen
-- [ ] TASK-17.09 Add CSV preview UI
-- [ ] TASK-17.10 Add CSV confirm flow
-- [ ] TASK-17.11 Add AI examples feature structure
-- [ ] TASK-17.12 Add AI example generator component
-- [ ] TASK-17.13 Integrate AI examples into card forms
-- [ ] TASK-17.14 Add public/CSV/AI frontend final checks
+- [x] TASK-17.01 Add public/CSV/AI GraphQL documents
+- [x] TASK-17.02 Generate public/CSV/AI GraphQL types
+- [x] TASK-17.03 Add public decks feature structure
+- [x] TASK-17.04 Add public decks screen
+- [x] TASK-17.05 Add public deck detail screen
+- [x] TASK-17.06 Add copy public deck action
+- [x] TASK-17.07 Add CSV import feature structure
+- [x] TASK-17.08 Add CSV import screen
+- [x] TASK-17.09 Add CSV preview UI
+- [x] TASK-17.10 Add CSV confirm flow
+- [x] TASK-17.11 Add AI examples feature structure
+- [x] TASK-17.12 Add AI example generator component
+- [x] TASK-17.13 Integrate AI examples into card forms
+- [x] TASK-17.14 Add public/CSV/AI frontend final checks
 ```
 
 ---
@@ -314,7 +314,7 @@ AI example generation should be integrated into:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -520,7 +520,7 @@ TASK-17.01 Add public/CSV/AI GraphQL documents
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -594,7 +594,7 @@ TASK-17.02 Generate public/CSV/AI GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -669,7 +669,7 @@ TASK-17.03 Add public decks feature structure
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -760,7 +760,7 @@ TASK-17.04 Add public decks screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -838,7 +838,7 @@ TASK-17.05 Add public deck detail screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -913,7 +913,7 @@ TASK-17.06 Add copy public deck action
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -988,7 +988,7 @@ TASK-17.07 Add CSV import feature structure
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1085,7 +1085,7 @@ TASK-17.08 Add CSV import screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1175,7 +1175,7 @@ TASK-17.09 Add CSV preview UI
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1255,7 +1255,7 @@ TASK-17.10 Add CSV confirm flow
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1329,7 +1329,7 @@ TASK-17.11 Add AI examples feature structure
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1418,7 +1418,7 @@ TASK-17.12 Add AI example generator component
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1501,7 +1501,7 @@ TASK-17.13 Integrate AI examples into card forms
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
