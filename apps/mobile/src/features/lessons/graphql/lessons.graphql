@@ -1,0 +1,63 @@
+mutation StartLesson($input: StartLessonInput!) {
+  startLesson(input: $input) {
+    sessionId
+    deckId
+    lessonSize
+    totalCards
+    cards {
+      cardId
+      front
+      back
+      example
+      notes
+      position
+      reviewState {
+        id
+        easeFactor
+        intervalDays
+        repetitions
+        dueAt
+        lastReviewedAt
+      }
+    }
+  }
+}
+
+mutation SubmitReview($input: SubmitReviewInput!) {
+  submitReview(input: $input) {
+    sessionId
+    cardId
+    reviewedCards
+    reviewState {
+      id
+      easeFactor
+      intervalDays
+      repetitions
+      dueAt
+      lastReviewedAt
+    }
+  }
+}
+
+mutation CompleteLesson($input: CompleteLessonInput!) {
+  completeLesson(input: $input) {
+    sessionId
+    deckId
+    totalCards
+    reviewedCards
+    knownCount
+    dontKnowCount
+    completedAt
+  }
+}
+
+query DeckLearningStats($deckId: String!) {
+  deckLearningStats(deckId: $deckId) {
+    deckId
+    totalCards
+    newCards
+    dueCards
+    reviewedCards
+    nextDueAt
+  }
+}
