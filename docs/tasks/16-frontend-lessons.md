@@ -37,7 +37,7 @@ docs/tasks/15-frontend-decks-cards.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -205,19 +205,19 @@ Recommended query params:
 ## Epic Summary
 
 ```md
-- [ ] TASK-16.01 Add lesson GraphQL documents
-- [ ] TASK-16.02 Generate lesson GraphQL types
-- [ ] TASK-16.03 Add lessons feature structure
-- [ ] TASK-16.04 Add deck learning stats component
-- [ ] TASK-16.05 Add lesson start route
-- [ ] TASK-16.06 Add lesson state model
-- [ ] TASK-16.07 Add lesson review screen
-- [ ] TASK-16.08 Add flashcard review component
-- [ ] TASK-16.09 Add review answer actions
-- [ ] TASK-16.10 Add lesson progress UI
-- [ ] TASK-16.11 Add lesson completion flow
-- [ ] TASK-16.12 Integrate lessons into deck detail
-- [ ] TASK-16.13 Add frontend lesson final checks
+- [x] TASK-16.01 Add lesson GraphQL documents
+- [x] TASK-16.02 Generate lesson GraphQL types
+- [x] TASK-16.03 Add lessons feature structure
+- [x] TASK-16.04 Add deck learning stats component
+- [x] TASK-16.05 Add lesson start route
+- [x] TASK-16.06 Add lesson state model
+- [x] TASK-16.07 Add lesson review screen
+- [x] TASK-16.08 Add flashcard review component
+- [x] TASK-16.09 Add review answer actions
+- [x] TASK-16.10 Add lesson progress UI
+- [x] TASK-16.11 Add lesson completion flow
+- [x] TASK-16.12 Integrate lessons into deck detail
+- [x] TASK-16.13 Add frontend lesson final checks
 ```
 
 ---
@@ -226,7 +226,7 @@ Recommended query params:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -351,7 +351,7 @@ TASK-16.01 Add lesson GraphQL documents
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -421,7 +421,7 @@ TASK-16.02 Generate lesson GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -497,7 +497,7 @@ TASK-16.03 Add lessons feature structure
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -576,7 +576,7 @@ TASK-16.04 Add deck learning stats component
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -663,7 +663,7 @@ TASK-16.05 Add lesson start route
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -761,7 +761,7 @@ TASK-16.06 Add lesson state model
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -847,7 +847,7 @@ TASK-16.07 Add lesson review screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -933,7 +933,7 @@ TASK-16.08 Add flashcard review component
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1041,7 +1041,7 @@ TASK-16.09 Add review answer actions
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1122,7 +1122,7 @@ TASK-16.10 Add lesson progress UI
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1231,7 +1231,7 @@ TASK-16.11 Add lesson completion flow
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1308,7 +1308,7 @@ TASK-16.12 Integrate lessons into deck detail
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
