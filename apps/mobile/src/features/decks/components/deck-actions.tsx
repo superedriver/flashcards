@@ -134,6 +134,9 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
       <AppButton disabled={isBusy} onPress={() => router.push(`/decks/${deck.id}/cards/new`)}>
         Add Card
       </AppButton>
+      <AppButton disabled={isBusy} onPress={() => router.push(`/decks/${deck.id}/import-csv`)}>
+        Import CSV
+      </AppButton>
 
       {deck.visibility === DeckVisibility.Private ? (
         <AppButton disabled={isBusy} onPress={handlePublish}>
