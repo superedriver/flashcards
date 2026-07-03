@@ -1,0 +1,112 @@
+import { create } from 'zustand'
+
+import type { ActiveLesson, LessonCard, LessonCompletion } from '../types/active-lesson'
+
+type ActiveLessonStore = {
+  activeLesson: ActiveLesson | null
+  completion: LessonCompletion | null
+  clearActiveLesson: () => void
+  clearCompletion: () => void
+  getCurrentCard: () => LessonCard | null
+  goToNextCard: () => void
+  markCardReviewed: (cardId: string) => void
+  setActiveLesson: (lesson: ActiveLesson) => void
+  setCompletion: (completion: LessonCompletion) => void
+}
+
+export const useActiveLessonStore = create<ActiveLessonStore>((set, get) => ({
+  activeLesson: null,
+  completion: null,
+
+  clearActiveLesson: () => set({ activeLesson: null }),
+
+  clearCompletion: () => set({ completion: null }),
+
+  getCurrentCard: () => {
+    const lesson = get().activeLesson
+
+    if (!lesson) {
+      return null
+    }
+
+    return lesson.cards[lesson.currentIndex] ?? null
+  },
+
+  goToNextCard: () =>
+    set((state) => {
+      if (!state.activeLesson) {
+        return state
+      }
+
+      return {
+        activeLesson: {
+          ...state.activeLesson,
+          currentIndex: state.activeLesson.currentIndex + 1,
+        },
+      }
+    }),
+
+  markCardReviewed: (cardId: string) =>
+    set((state) => {
+      if (!state.activeLesson) {
+        return state
+      }
+
+      if (state.activeLesson.reviewedCardIds.includes(cardId)) {
+        return state
+      }
+
+      return {
+        activeLesson: {
+          ...state.activeLesson,
+          reviewedCardIds: [...state.activeLesson.reviewedCardIds, cardId],
+        },
+      }
+    }),
+
+  setActiveLesson: (lesson) => set({ activeLesson: lesson }),
+
+  setCompletion: (completion) => set({ completion }),
+}))
+
+export function useActiveLesson(sessionId?: string) {
+  const activeLesson = useActiveLessonStore((state) => state.activeLesson)
+  const completion = useActiveLessonStore((state) => state.completion)
+  const clearActiveLesson = useActiveLessonStore((state) => state.clearActiveLesson)
+  const clearCompletion = useActiveLessonStore((state) => state.clearCompletion)
+  const getCurrentCard = useActiveLessonStore((state) => state.getCurrentCard)
+  const goToNextCard = useActiveLessonStore((state) => state.goToNextCard)
+  const markCardReviewed = useActiveLessonStore((state) => state.markCardReviewed)
+  const setActiveLesson = useActiveLessonStore((state) => state.setActiveLesson)
+  const setCompletion = useActiveLessonStore((state) => state.setCompletion)
+
+  const lesson =
+    activeLesson && sessionId && activeLesson.sessionId === sessionId ? activeLesson : null
+
+  const currentCard = lesson ? (lesson.cards[lesson.currentIndex] ?? null) : null
+  const totalCards = lesson?.cards.length ?? 0
+  const reviewedCount = lesson?.reviewedCardIds.length ?? 0
+  const currentNumber =
+    totalCards === 0 ? 0 : Math.min(lesson?.currentIndex ?? 0, totalCards - 1) + 1
+  const isComplete =
+    lesson !== null && lesson.currentIndex >= lesson.cards.length && lesson.cards.length > 0
+  const hasMoreCards = lesson !== null && lesson.currentIndex < lesson.cards.length
+
+  return {
+    clearActiveLesson,
+    clearCompletion,
+    completion,
+    currentCard,
+    currentNumber,
+    getCurrentCard,
+    goToNextCard,
+    hasMoreCards,
+    isComplete,
+    lesson,
+    markCardReviewed,
+    reviewedCount,
+    setActiveLesson,
+    setCompletion,
+    totalCards,
+  }
+}
