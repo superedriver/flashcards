@@ -13,7 +13,7 @@ query MyDecks {
   }
 }
 
-query Deck($id: ID!) {
+query Deck($id: String!) {
   deck(id: $id) {
     id
     ownerId
@@ -28,7 +28,7 @@ query Deck($id: ID!) {
   }
 }
 
-query DeckCards($deckId: ID!) {
+query DeckCards($deckId: String!) {
   deckCards(deckId: $deckId) {
     id
     deckId
@@ -72,7 +72,7 @@ mutation UpdateDeck($input: UpdateDeckInput!) {
   }
 }
 
-mutation DeleteDeck($deckId: ID!) {
+mutation DeleteDeck($deckId: String!) {
   deleteDeck(deckId: $deckId)
 }
 
@@ -104,11 +104,11 @@ mutation UpdateCard($input: UpdateCardInput!) {
   }
 }
 
-mutation DeleteCard($cardId: ID!) {
+mutation DeleteCard($cardId: String!) {
   deleteCard(cardId: $cardId)
 }
 
-mutation PublishDeck($deckId: ID!) {
+mutation PublishDeck($deckId: String!) {
   publishDeck(deckId: $deckId) {
     id
     ownerId
@@ -123,7 +123,7 @@ mutation PublishDeck($deckId: ID!) {
   }
 }
 
-mutation UnpublishDeck($deckId: ID!) {
+mutation UnpublishDeck($deckId: String!) {
   unpublishDeck(deckId: $deckId) {
     id
     ownerId

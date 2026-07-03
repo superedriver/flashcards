@@ -946,6 +946,202 @@ export type ResetPasswordMutationVariables = Exact<{
 
 export type ResetPasswordMutation = { __typename?: 'Mutation'; resetPassword: boolean }
 
+export type MyDecksQueryVariables = Exact<{ [key: string]: never }>
+
+export type MyDecksQuery = {
+  __typename?: 'Query'
+  myDecks: Array<{
+    __typename?: 'Deck'
+    id: string
+    ownerId: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    createdAt: any
+    updatedAt: any
+  }>
+}
+
+export type DeckQueryVariables = Exact<{
+  id: Scalars['String']['input']
+}>
+
+export type DeckQuery = {
+  __typename?: 'Query'
+  deck: {
+    __typename?: 'Deck'
+    id: string
+    ownerId: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type DeckCardsQueryVariables = Exact<{
+  deckId: Scalars['String']['input']
+}>
+
+export type DeckCardsQuery = {
+  __typename?: 'Query'
+  deckCards: Array<{
+    __typename?: 'Card'
+    id: string
+    deckId: string
+    front: string
+    back: string
+    example?: string | null
+    notes?: string | null
+    position: number
+    createdAt: any
+    updatedAt: any
+  }>
+}
+
+export type CreateDeckMutationVariables = Exact<{
+  input: CreateDeckInput
+}>
+
+export type CreateDeckMutation = {
+  __typename?: 'Mutation'
+  createDeck: {
+    __typename?: 'Deck'
+    id: string
+    ownerId: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type UpdateDeckMutationVariables = Exact<{
+  input: UpdateDeckInput
+}>
+
+export type UpdateDeckMutation = {
+  __typename?: 'Mutation'
+  updateDeck: {
+    __typename?: 'Deck'
+    id: string
+    ownerId: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type DeleteDeckMutationVariables = Exact<{
+  deckId: Scalars['String']['input']
+}>
+
+export type DeleteDeckMutation = { __typename?: 'Mutation'; deleteDeck: boolean }
+
+export type CreateCardMutationVariables = Exact<{
+  input: CreateCardInput
+}>
+
+export type CreateCardMutation = {
+  __typename?: 'Mutation'
+  createCard: {
+    __typename?: 'Card'
+    id: string
+    deckId: string
+    front: string
+    back: string
+    example?: string | null
+    notes?: string | null
+    position: number
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type UpdateCardMutationVariables = Exact<{
+  input: UpdateCardInput
+}>
+
+export type UpdateCardMutation = {
+  __typename?: 'Mutation'
+  updateCard: {
+    __typename?: 'Card'
+    id: string
+    deckId: string
+    front: string
+    back: string
+    example?: string | null
+    notes?: string | null
+    position: number
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type DeleteCardMutationVariables = Exact<{
+  cardId: Scalars['String']['input']
+}>
+
+export type DeleteCardMutation = { __typename?: 'Mutation'; deleteCard: boolean }
+
+export type PublishDeckMutationVariables = Exact<{
+  deckId: Scalars['String']['input']
+}>
+
+export type PublishDeckMutation = {
+  __typename?: 'Mutation'
+  publishDeck: {
+    __typename?: 'Deck'
+    id: string
+    ownerId: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type UnpublishDeckMutationVariables = Exact<{
+  deckId: Scalars['String']['input']
+}>
+
+export type UnpublishDeckMutation = {
+  __typename?: 'Mutation'
+  unpublishDeck: {
+    __typename?: 'Deck'
+    id: string
+    ownerId: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    createdAt: any
+    updatedAt: any
+  }
+}
+
 export const RegisterDocument = gql`
   mutation Register($input: RegisterInput!) {
     register(input: $input) {
@@ -1374,4 +1570,604 @@ export type ResetPasswordMutationResult = Apollo.MutationResult<ResetPasswordMut
 export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<
   ResetPasswordMutation,
   ResetPasswordMutationVariables
+>
+export const MyDecksDocument = gql`
+  query MyDecks {
+    myDecks {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+/**
+ * __useMyDecksQuery__
+ *
+ * To run a query within a React component, call `useMyDecksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyDecksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyDecksQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyDecksQuery(
+  baseOptions?: Apollo.QueryHookOptions<MyDecksQuery, MyDecksQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MyDecksQuery, MyDecksQueryVariables>(MyDecksDocument, options)
+}
+export function useMyDecksLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<MyDecksQuery, MyDecksQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MyDecksQuery, MyDecksQueryVariables>(MyDecksDocument, options)
+}
+// @ts-ignore
+export function useMyDecksSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<MyDecksQuery, MyDecksQueryVariables>,
+): Apollo.UseSuspenseQueryResult<MyDecksQuery, MyDecksQueryVariables>
+export function useMyDecksSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<MyDecksQuery, MyDecksQueryVariables>,
+): Apollo.UseSuspenseQueryResult<MyDecksQuery | undefined, MyDecksQueryVariables>
+export function useMyDecksSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<MyDecksQuery, MyDecksQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<MyDecksQuery, MyDecksQueryVariables>(MyDecksDocument, options)
+}
+export type MyDecksQueryHookResult = ReturnType<typeof useMyDecksQuery>
+export type MyDecksLazyQueryHookResult = ReturnType<typeof useMyDecksLazyQuery>
+export type MyDecksSuspenseQueryHookResult = ReturnType<typeof useMyDecksSuspenseQuery>
+export type MyDecksQueryResult = Apollo.QueryResult<MyDecksQuery, MyDecksQueryVariables>
+export const DeckDocument = gql`
+  query Deck($id: String!) {
+    deck(id: $id) {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+/**
+ * __useDeckQuery__
+ *
+ * To run a query within a React component, call `useDeckQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDeckQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDeckQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeckQuery(
+  baseOptions: Apollo.QueryHookOptions<DeckQuery, DeckQueryVariables> &
+    ({ variables: DeckQueryVariables; skip?: boolean } | { skip: boolean }),
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<DeckQuery, DeckQueryVariables>(DeckDocument, options)
+}
+export function useDeckLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<DeckQuery, DeckQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<DeckQuery, DeckQueryVariables>(DeckDocument, options)
+}
+// @ts-ignore
+export function useDeckSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<DeckQuery, DeckQueryVariables>,
+): Apollo.UseSuspenseQueryResult<DeckQuery, DeckQueryVariables>
+export function useDeckSuspenseQuery(
+  baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<DeckQuery, DeckQueryVariables>,
+): Apollo.UseSuspenseQueryResult<DeckQuery | undefined, DeckQueryVariables>
+export function useDeckSuspenseQuery(
+  baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<DeckQuery, DeckQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<DeckQuery, DeckQueryVariables>(DeckDocument, options)
+}
+export type DeckQueryHookResult = ReturnType<typeof useDeckQuery>
+export type DeckLazyQueryHookResult = ReturnType<typeof useDeckLazyQuery>
+export type DeckSuspenseQueryHookResult = ReturnType<typeof useDeckSuspenseQuery>
+export type DeckQueryResult = Apollo.QueryResult<DeckQuery, DeckQueryVariables>
+export const DeckCardsDocument = gql`
+  query DeckCards($deckId: String!) {
+    deckCards(deckId: $deckId) {
+      id
+      deckId
+      front
+      back
+      example
+      notes
+      position
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+/**
+ * __useDeckCardsQuery__
+ *
+ * To run a query within a React component, call `useDeckCardsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDeckCardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDeckCardsQuery({
+ *   variables: {
+ *      deckId: // value for 'deckId'
+ *   },
+ * });
+ */
+export function useDeckCardsQuery(
+  baseOptions: Apollo.QueryHookOptions<DeckCardsQuery, DeckCardsQueryVariables> &
+    ({ variables: DeckCardsQueryVariables; skip?: boolean } | { skip: boolean }),
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<DeckCardsQuery, DeckCardsQueryVariables>(DeckCardsDocument, options)
+}
+export function useDeckCardsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<DeckCardsQuery, DeckCardsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<DeckCardsQuery, DeckCardsQueryVariables>(DeckCardsDocument, options)
+}
+// @ts-ignore
+export function useDeckCardsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<DeckCardsQuery, DeckCardsQueryVariables>,
+): Apollo.UseSuspenseQueryResult<DeckCardsQuery, DeckCardsQueryVariables>
+export function useDeckCardsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<DeckCardsQuery, DeckCardsQueryVariables>,
+): Apollo.UseSuspenseQueryResult<DeckCardsQuery | undefined, DeckCardsQueryVariables>
+export function useDeckCardsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<DeckCardsQuery, DeckCardsQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<DeckCardsQuery, DeckCardsQueryVariables>(
+    DeckCardsDocument,
+    options,
+  )
+}
+export type DeckCardsQueryHookResult = ReturnType<typeof useDeckCardsQuery>
+export type DeckCardsLazyQueryHookResult = ReturnType<typeof useDeckCardsLazyQuery>
+export type DeckCardsSuspenseQueryHookResult = ReturnType<typeof useDeckCardsSuspenseQuery>
+export type DeckCardsQueryResult = Apollo.QueryResult<DeckCardsQuery, DeckCardsQueryVariables>
+export const CreateDeckDocument = gql`
+  mutation CreateDeck($input: CreateDeckInput!) {
+    createDeck(input: $input) {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type CreateDeckMutationFn = Apollo.MutationFunction<
+  CreateDeckMutation,
+  CreateDeckMutationVariables
+>
+
+/**
+ * __useCreateDeckMutation__
+ *
+ * To run a mutation, you first call `useCreateDeckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateDeckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createDeckMutation, { data, loading, error }] = useCreateDeckMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateDeckMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateDeckMutation, CreateDeckMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateDeckMutation, CreateDeckMutationVariables>(
+    CreateDeckDocument,
+    options,
+  )
+}
+export type CreateDeckMutationHookResult = ReturnType<typeof useCreateDeckMutation>
+export type CreateDeckMutationResult = Apollo.MutationResult<CreateDeckMutation>
+export type CreateDeckMutationOptions = Apollo.BaseMutationOptions<
+  CreateDeckMutation,
+  CreateDeckMutationVariables
+>
+export const UpdateDeckDocument = gql`
+  mutation UpdateDeck($input: UpdateDeckInput!) {
+    updateDeck(input: $input) {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type UpdateDeckMutationFn = Apollo.MutationFunction<
+  UpdateDeckMutation,
+  UpdateDeckMutationVariables
+>
+
+/**
+ * __useUpdateDeckMutation__
+ *
+ * To run a mutation, you first call `useUpdateDeckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateDeckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateDeckMutation, { data, loading, error }] = useUpdateDeckMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateDeckMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateDeckMutation, UpdateDeckMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateDeckMutation, UpdateDeckMutationVariables>(
+    UpdateDeckDocument,
+    options,
+  )
+}
+export type UpdateDeckMutationHookResult = ReturnType<typeof useUpdateDeckMutation>
+export type UpdateDeckMutationResult = Apollo.MutationResult<UpdateDeckMutation>
+export type UpdateDeckMutationOptions = Apollo.BaseMutationOptions<
+  UpdateDeckMutation,
+  UpdateDeckMutationVariables
+>
+export const DeleteDeckDocument = gql`
+  mutation DeleteDeck($deckId: String!) {
+    deleteDeck(deckId: $deckId)
+  }
+`
+export type DeleteDeckMutationFn = Apollo.MutationFunction<
+  DeleteDeckMutation,
+  DeleteDeckMutationVariables
+>
+
+/**
+ * __useDeleteDeckMutation__
+ *
+ * To run a mutation, you first call `useDeleteDeckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteDeckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteDeckMutation, { data, loading, error }] = useDeleteDeckMutation({
+ *   variables: {
+ *      deckId: // value for 'deckId'
+ *   },
+ * });
+ */
+export function useDeleteDeckMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteDeckMutation, DeleteDeckMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeleteDeckMutation, DeleteDeckMutationVariables>(
+    DeleteDeckDocument,
+    options,
+  )
+}
+export type DeleteDeckMutationHookResult = ReturnType<typeof useDeleteDeckMutation>
+export type DeleteDeckMutationResult = Apollo.MutationResult<DeleteDeckMutation>
+export type DeleteDeckMutationOptions = Apollo.BaseMutationOptions<
+  DeleteDeckMutation,
+  DeleteDeckMutationVariables
+>
+export const CreateCardDocument = gql`
+  mutation CreateCard($input: CreateCardInput!) {
+    createCard(input: $input) {
+      id
+      deckId
+      front
+      back
+      example
+      notes
+      position
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type CreateCardMutationFn = Apollo.MutationFunction<
+  CreateCardMutation,
+  CreateCardMutationVariables
+>
+
+/**
+ * __useCreateCardMutation__
+ *
+ * To run a mutation, you first call `useCreateCardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCardMutation, { data, loading, error }] = useCreateCardMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateCardMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateCardMutation, CreateCardMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateCardMutation, CreateCardMutationVariables>(
+    CreateCardDocument,
+    options,
+  )
+}
+export type CreateCardMutationHookResult = ReturnType<typeof useCreateCardMutation>
+export type CreateCardMutationResult = Apollo.MutationResult<CreateCardMutation>
+export type CreateCardMutationOptions = Apollo.BaseMutationOptions<
+  CreateCardMutation,
+  CreateCardMutationVariables
+>
+export const UpdateCardDocument = gql`
+  mutation UpdateCard($input: UpdateCardInput!) {
+    updateCard(input: $input) {
+      id
+      deckId
+      front
+      back
+      example
+      notes
+      position
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type UpdateCardMutationFn = Apollo.MutationFunction<
+  UpdateCardMutation,
+  UpdateCardMutationVariables
+>
+
+/**
+ * __useUpdateCardMutation__
+ *
+ * To run a mutation, you first call `useUpdateCardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCardMutation, { data, loading, error }] = useUpdateCardMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateCardMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateCardMutation, UpdateCardMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateCardMutation, UpdateCardMutationVariables>(
+    UpdateCardDocument,
+    options,
+  )
+}
+export type UpdateCardMutationHookResult = ReturnType<typeof useUpdateCardMutation>
+export type UpdateCardMutationResult = Apollo.MutationResult<UpdateCardMutation>
+export type UpdateCardMutationOptions = Apollo.BaseMutationOptions<
+  UpdateCardMutation,
+  UpdateCardMutationVariables
+>
+export const DeleteCardDocument = gql`
+  mutation DeleteCard($cardId: String!) {
+    deleteCard(cardId: $cardId)
+  }
+`
+export type DeleteCardMutationFn = Apollo.MutationFunction<
+  DeleteCardMutation,
+  DeleteCardMutationVariables
+>
+
+/**
+ * __useDeleteCardMutation__
+ *
+ * To run a mutation, you first call `useDeleteCardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCardMutation, { data, loading, error }] = useDeleteCardMutation({
+ *   variables: {
+ *      cardId: // value for 'cardId'
+ *   },
+ * });
+ */
+export function useDeleteCardMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteCardMutation, DeleteCardMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeleteCardMutation, DeleteCardMutationVariables>(
+    DeleteCardDocument,
+    options,
+  )
+}
+export type DeleteCardMutationHookResult = ReturnType<typeof useDeleteCardMutation>
+export type DeleteCardMutationResult = Apollo.MutationResult<DeleteCardMutation>
+export type DeleteCardMutationOptions = Apollo.BaseMutationOptions<
+  DeleteCardMutation,
+  DeleteCardMutationVariables
+>
+export const PublishDeckDocument = gql`
+  mutation PublishDeck($deckId: String!) {
+    publishDeck(deckId: $deckId) {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type PublishDeckMutationFn = Apollo.MutationFunction<
+  PublishDeckMutation,
+  PublishDeckMutationVariables
+>
+
+/**
+ * __usePublishDeckMutation__
+ *
+ * To run a mutation, you first call `usePublishDeckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePublishDeckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [publishDeckMutation, { data, loading, error }] = usePublishDeckMutation({
+ *   variables: {
+ *      deckId: // value for 'deckId'
+ *   },
+ * });
+ */
+export function usePublishDeckMutation(
+  baseOptions?: Apollo.MutationHookOptions<PublishDeckMutation, PublishDeckMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<PublishDeckMutation, PublishDeckMutationVariables>(
+    PublishDeckDocument,
+    options,
+  )
+}
+export type PublishDeckMutationHookResult = ReturnType<typeof usePublishDeckMutation>
+export type PublishDeckMutationResult = Apollo.MutationResult<PublishDeckMutation>
+export type PublishDeckMutationOptions = Apollo.BaseMutationOptions<
+  PublishDeckMutation,
+  PublishDeckMutationVariables
+>
+export const UnpublishDeckDocument = gql`
+  mutation UnpublishDeck($deckId: String!) {
+    unpublishDeck(deckId: $deckId) {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type UnpublishDeckMutationFn = Apollo.MutationFunction<
+  UnpublishDeckMutation,
+  UnpublishDeckMutationVariables
+>
+
+/**
+ * __useUnpublishDeckMutation__
+ *
+ * To run a mutation, you first call `useUnpublishDeckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnpublishDeckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unpublishDeckMutation, { data, loading, error }] = useUnpublishDeckMutation({
+ *   variables: {
+ *      deckId: // value for 'deckId'
+ *   },
+ * });
+ */
+export function useUnpublishDeckMutation(
+  baseOptions?: Apollo.MutationHookOptions<UnpublishDeckMutation, UnpublishDeckMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UnpublishDeckMutation, UnpublishDeckMutationVariables>(
+    UnpublishDeckDocument,
+    options,
+  )
+}
+export type UnpublishDeckMutationHookResult = ReturnType<typeof useUnpublishDeckMutation>
+export type UnpublishDeckMutationResult = Apollo.MutationResult<UnpublishDeckMutation>
+export type UnpublishDeckMutationOptions = Apollo.BaseMutationOptions<
+  UnpublishDeckMutation,
+  UnpublishDeckMutationVariables
 >
