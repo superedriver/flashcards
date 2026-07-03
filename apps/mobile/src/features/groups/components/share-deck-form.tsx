@@ -6,7 +6,6 @@ type ShareDeckFormProps = {
   decks: MyDecksQuery['myDecks']
   errorMessage?: string | null
   feedback?: string | null
-  isSubmitting?: boolean
   onSelectDeck: (deckId: string) => void
   selectedDeckId: string | null
 }
@@ -15,7 +14,6 @@ export function ShareDeckForm({
   decks,
   errorMessage,
   feedback,
-  isSubmitting = false,
   onSelectDeck,
   selectedDeckId,
 }: ShareDeckFormProps) {

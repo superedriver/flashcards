@@ -60,7 +60,6 @@ export function ShareDeckWithGroupScreen() {
             decks={data.myDecks}
             errorMessage={errorMessage}
             feedback={feedback}
-            isSubmitting={isSubmitting}
             selectedDeckId={selectedDeckId}
             onSelectDeck={setSelectedDeckId}
           />

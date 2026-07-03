@@ -31,7 +31,7 @@ docs/tasks/12-admin-analytics.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -404,27 +404,27 @@ Optional:
 ## Epic Summary
 
 ```md
-- [ ] TASK-19.01 Add groups/admin GraphQL documents
-- [ ] TASK-19.02 Generate groups/admin GraphQL types
-- [ ] TASK-19.03 Add groups feature structure
-- [ ] TASK-19.04 Add admin feature structure
-- [ ] TASK-19.05 Add groups navigation entry points
-- [ ] TASK-19.06 Add my groups screen
-- [ ] TASK-19.07 Add create group screen
-- [ ] TASK-19.08 Add group detail screen
-- [ ] TASK-19.09 Add invite user to group flow
-- [ ] TASK-19.10 Add group invitations screen
-- [ ] TASK-19.11 Add accept/decline invitation actions
-- [ ] TASK-19.12 Add share deck with group flow
-- [ ] TASK-19.13 Add group shared decks UI
-- [ ] TASK-19.14 Add admin navigation entry points
-- [ ] TASK-19.15 Add admin dashboard screen
-- [ ] TASK-19.16 Add admin user search screen
-- [ ] TASK-19.17 Add block/unblock user actions
-- [ ] TASK-19.18 Add moderation queue screen
-- [ ] TASK-19.19 Add deck moderation actions
-- [ ] TASK-19.20 Add official deck action
-- [ ] TASK-19.21 Add frontend groups/admin final checks
+- [x] TASK-19.01 Add groups/admin GraphQL documents
+- [x] TASK-19.02 Generate groups/admin GraphQL types
+- [x] TASK-19.03 Add groups feature structure
+- [x] TASK-19.04 Add admin feature structure
+- [x] TASK-19.05 Add groups navigation entry points
+- [x] TASK-19.06 Add my groups screen
+- [x] TASK-19.07 Add create group screen
+- [x] TASK-19.08 Add group detail screen
+- [x] TASK-19.09 Add invite user to group flow
+- [x] TASK-19.10 Add group invitations screen
+- [x] TASK-19.11 Add accept/decline invitation actions
+- [x] TASK-19.12 Add share deck with group flow
+- [x] TASK-19.13 Add group shared decks UI
+- [x] TASK-19.14 Add admin navigation entry points
+- [x] TASK-19.15 Add admin dashboard screen
+- [x] TASK-19.16 Add admin user search screen
+- [x] TASK-19.17 Add block/unblock user actions
+- [x] TASK-19.18 Add moderation queue screen
+- [x] TASK-19.19 Add deck moderation actions
+- [x] TASK-19.20 Add official deck action
+- [x] TASK-19.21 Add frontend groups/admin final checks
 ```
 
 ---
@@ -433,7 +433,7 @@ Optional:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -757,7 +757,7 @@ TASK-19.01 Add groups/admin GraphQL documents
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -841,7 +841,7 @@ TASK-19.02 Generate groups/admin GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -917,7 +917,7 @@ TASK-19.03 Add groups feature structure
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -992,7 +992,7 @@ TASK-19.04 Add admin feature structure
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1067,7 +1067,7 @@ TASK-19.05 Add groups navigation entry points
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1152,7 +1152,7 @@ TASK-19.06 Add my groups screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1247,7 +1247,7 @@ TASK-19.07 Add create group screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1333,7 +1333,7 @@ TASK-19.08 Add group detail screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1427,7 +1427,7 @@ TASK-19.09 Add invite user to group flow
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1514,7 +1514,7 @@ TASK-19.10 Add group invitations screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1596,7 +1596,7 @@ TASK-19.11 Add accept/decline invitation actions
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1677,7 +1677,7 @@ TASK-19.12 Add share deck with group flow
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1757,7 +1757,7 @@ TASK-19.13 Add group shared decks UI
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1848,7 +1848,7 @@ TASK-19.14 Add admin navigation entry points
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1941,7 +1941,7 @@ TASK-19.15 Add admin dashboard screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2020,7 +2020,7 @@ TASK-19.16 Add admin user search screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2104,7 +2104,7 @@ TASK-19.17 Add block/unblock user actions
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2191,7 +2191,7 @@ TASK-19.18 Add moderation queue screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2274,7 +2274,7 @@ TASK-19.19 Add deck moderation actions
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -2355,7 +2355,7 @@ TASK-19.20 Add official deck action
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
