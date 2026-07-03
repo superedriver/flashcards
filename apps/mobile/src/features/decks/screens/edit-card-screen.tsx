@@ -80,6 +80,7 @@ export function EditCardScreen() {
     <Screen>
       <PageTitle title="Edit Card" />
       <CardForm
+        cardId={cardId}
         defaultValues={{
           back: card.back,
           example: card.example ?? '',

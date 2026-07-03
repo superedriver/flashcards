@@ -2,12 +2,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Controller, useForm } from 'react-hook-form'
 import { View } from 'react-native'
 
+import { AiExampleGenerator } from '@/features/ai-examples/components/ai-example-generator'
 import { cardFormSchema, type CardFormValues } from '@/features/decks/validation/card-form.schema'
-import { AppButton, AppInput } from '@/ui/primitives'
+import { AppButton, AppInput, AppText } from '@/ui/primitives'
 import { ErrorState } from '@/ui/components'
 
 type CardFormProps = {
   cancelLabel?: string
+  cardId?: string
   defaultValues?: CardFormValues
   errorMessage?: string | null
   isSubmitting?: boolean
@@ -20,6 +22,7 @@ type CardFormProps = {
 
 export function CardForm({
   cancelLabel = 'Cancel',
+  cardId,
   defaultValues,
   errorMessage,
   isSubmitting = false,
@@ -33,6 +36,8 @@ export function CardForm({
     control,
     formState: { errors },
     handleSubmit,
+    setValue,
+    watch,
   } = useForm<CardFormValues>({
     defaultValues: defaultValues ?? {
       back: '',
@@ -92,6 +97,18 @@ export function CardForm({
         )}
       />
       {errors.example ? <ErrorState message={errors.example.message} /> : null}
+
+      {cardId ? (
+        <AiExampleGenerator
+          cardId={cardId}
+          currentExample={watch('example')}
+          onExampleSelected={(exampleText) =>
+            setValue('example', exampleText, { shouldDirty: true, shouldValidate: true })
+          }
+        />
+      ) : (
+        <AppText style={{ color: '#666666' }}>Save the card first to generate AI examples.</AppText>
+      )}
 
       <Controller
         control={control}
