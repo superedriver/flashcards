@@ -815,6 +815,42 @@ export type VerifyEmailInput = {
   token: Scalars['String']['input']
 }
 
+export type GenerateCardExamplesMutationVariables = Exact<{
+  input: GenerateCardExamplesInput
+}>
+
+export type GenerateCardExamplesMutation = {
+  __typename?: 'Mutation'
+  generateCardExamples: {
+    __typename?: 'GenerateCardExamplesPayload'
+    cardId: string
+    examples: Array<{ __typename?: 'GeneratedCardExample'; text: string }>
+  }
+}
+
+export type SaveGeneratedCardExampleMutationVariables = Exact<{
+  input: SaveGeneratedCardExampleInput
+}>
+
+export type SaveGeneratedCardExampleMutation = {
+  __typename?: 'Mutation'
+  saveGeneratedCardExample: {
+    __typename?: 'SaveGeneratedCardExamplePayload'
+    card: {
+      __typename?: 'Card'
+      id: string
+      deckId: string
+      front: string
+      back: string
+      example?: string | null
+      notes?: string | null
+      position: number
+      createdAt: any
+      updatedAt: any
+    }
+  }
+}
+
 export type RegisterMutationVariables = Exact<{
   input: RegisterInput
 }>
@@ -945,6 +981,71 @@ export type ResetPasswordMutationVariables = Exact<{
 }>
 
 export type ResetPasswordMutation = { __typename?: 'Mutation'; resetPassword: boolean }
+
+export type PreviewCsvImportMutationVariables = Exact<{
+  input: PreviewCsvImportInput
+}>
+
+export type PreviewCsvImportMutation = {
+  __typename?: 'Mutation'
+  previewCsvImport: {
+    __typename?: 'CsvImport'
+    id: string
+    deckId: string
+    status: CsvImportStatus
+    totalRows: number
+    validRows: number
+    invalidRows: number
+    createdAt: any
+    confirmedAt?: any | null
+    expiresAt: any
+    previewRows: Array<{
+      __typename?: 'CsvImportPreviewRow'
+      rowNumber: number
+      front: string
+      back: string
+      example?: string | null
+      notes?: string | null
+      isValid: boolean
+      errors: Array<{
+        __typename?: 'CsvImportRowError'
+        rowNumber: number
+        field: string
+        message: string
+      }>
+    }>
+    errors: Array<{
+      __typename?: 'CsvImportRowError'
+      rowNumber: number
+      field: string
+      message: string
+    }>
+  }
+}
+
+export type ConfirmCsvImportMutationVariables = Exact<{
+  input: ConfirmCsvImportInput
+}>
+
+export type ConfirmCsvImportMutation = {
+  __typename?: 'Mutation'
+  confirmCsvImport: {
+    __typename?: 'ConfirmCsvImportPayload'
+    createdCardsCount: number
+    import: {
+      __typename?: 'CsvImport'
+      id: string
+      deckId: string
+      status: CsvImportStatus
+      totalRows: number
+      validRows: number
+      invalidRows: number
+      createdAt: any
+      confirmedAt?: any | null
+      expiresAt: any
+    }
+  }
+}
 
 export type MyDecksQueryVariables = Exact<{ [key: string]: never }>
 
@@ -1233,6 +1334,220 @@ export type DeckLearningStatsQuery = {
   }
 }
 
+export type PublicDecksQueryVariables = Exact<{
+  input?: InputMaybe<PublicDecksInput>
+}>
+
+export type PublicDecksQuery = {
+  __typename?: 'Query'
+  publicDecks: {
+    __typename?: 'PublicDeckSearchResult'
+    total: number
+    items: Array<{
+      __typename?: 'Deck'
+      id: string
+      ownerId: string
+      title: string
+      description?: string | null
+      visibility: DeckVisibility
+      moderationStatus: DeckModerationStatus
+      isOfficial: boolean
+      sourceDeckId?: string | null
+      createdAt: any
+      updatedAt: any
+    }>
+  }
+}
+
+export type PublicDeckQueryVariables = Exact<{
+  deckId: Scalars['String']['input']
+}>
+
+export type PublicDeckQuery = {
+  __typename?: 'Query'
+  publicDeck: {
+    __typename?: 'Deck'
+    id: string
+    ownerId: string
+    title: string
+    description?: string | null
+    visibility: DeckVisibility
+    moderationStatus: DeckModerationStatus
+    isOfficial: boolean
+    sourceDeckId?: string | null
+    createdAt: any
+    updatedAt: any
+  }
+}
+
+export type PublicDeckCardsQueryVariables = Exact<{
+  deckId: Scalars['String']['input']
+}>
+
+export type PublicDeckCardsQuery = {
+  __typename?: 'Query'
+  publicDeckCards: Array<{
+    __typename?: 'Card'
+    id: string
+    deckId: string
+    front: string
+    back: string
+    example?: string | null
+    notes?: string | null
+    position: number
+    createdAt: any
+    updatedAt: any
+  }>
+}
+
+export type CopyPublicDeckMutationVariables = Exact<{
+  sourceDeckId: Scalars['String']['input']
+}>
+
+export type CopyPublicDeckMutation = {
+  __typename?: 'Mutation'
+  copyPublicDeck: {
+    __typename?: 'CopyPublicDeckPayload'
+    deck: {
+      __typename?: 'Deck'
+      id: string
+      ownerId: string
+      title: string
+      description?: string | null
+      visibility: DeckVisibility
+      moderationStatus: DeckModerationStatus
+      isOfficial: boolean
+      sourceDeckId?: string | null
+      createdAt: any
+      updatedAt: any
+    }
+    cards: Array<{
+      __typename?: 'Card'
+      id: string
+      deckId: string
+      front: string
+      back: string
+      example?: string | null
+      notes?: string | null
+      position: number
+      createdAt: any
+      updatedAt: any
+    }>
+  }
+}
+
+export const GenerateCardExamplesDocument = gql`
+  mutation GenerateCardExamples($input: GenerateCardExamplesInput!) {
+    generateCardExamples(input: $input) {
+      cardId
+      examples {
+        text
+      }
+    }
+  }
+`
+export type GenerateCardExamplesMutationFn = Apollo.MutationFunction<
+  GenerateCardExamplesMutation,
+  GenerateCardExamplesMutationVariables
+>
+
+/**
+ * __useGenerateCardExamplesMutation__
+ *
+ * To run a mutation, you first call `useGenerateCardExamplesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGenerateCardExamplesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [generateCardExamplesMutation, { data, loading, error }] = useGenerateCardExamplesMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGenerateCardExamplesMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    GenerateCardExamplesMutation,
+    GenerateCardExamplesMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<GenerateCardExamplesMutation, GenerateCardExamplesMutationVariables>(
+    GenerateCardExamplesDocument,
+    options,
+  )
+}
+export type GenerateCardExamplesMutationHookResult = ReturnType<
+  typeof useGenerateCardExamplesMutation
+>
+export type GenerateCardExamplesMutationResult = Apollo.MutationResult<GenerateCardExamplesMutation>
+export type GenerateCardExamplesMutationOptions = Apollo.BaseMutationOptions<
+  GenerateCardExamplesMutation,
+  GenerateCardExamplesMutationVariables
+>
+export const SaveGeneratedCardExampleDocument = gql`
+  mutation SaveGeneratedCardExample($input: SaveGeneratedCardExampleInput!) {
+    saveGeneratedCardExample(input: $input) {
+      card {
+        id
+        deckId
+        front
+        back
+        example
+        notes
+        position
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+export type SaveGeneratedCardExampleMutationFn = Apollo.MutationFunction<
+  SaveGeneratedCardExampleMutation,
+  SaveGeneratedCardExampleMutationVariables
+>
+
+/**
+ * __useSaveGeneratedCardExampleMutation__
+ *
+ * To run a mutation, you first call `useSaveGeneratedCardExampleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSaveGeneratedCardExampleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [saveGeneratedCardExampleMutation, { data, loading, error }] = useSaveGeneratedCardExampleMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSaveGeneratedCardExampleMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    SaveGeneratedCardExampleMutation,
+    SaveGeneratedCardExampleMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    SaveGeneratedCardExampleMutation,
+    SaveGeneratedCardExampleMutationVariables
+  >(SaveGeneratedCardExampleDocument, options)
+}
+export type SaveGeneratedCardExampleMutationHookResult = ReturnType<
+  typeof useSaveGeneratedCardExampleMutation
+>
+export type SaveGeneratedCardExampleMutationResult =
+  Apollo.MutationResult<SaveGeneratedCardExampleMutation>
+export type SaveGeneratedCardExampleMutationOptions = Apollo.BaseMutationOptions<
+  SaveGeneratedCardExampleMutation,
+  SaveGeneratedCardExampleMutationVariables
+>
 export const RegisterDocument = gql`
   mutation Register($input: RegisterInput!) {
     register(input: $input) {
@@ -1661,6 +1976,137 @@ export type ResetPasswordMutationResult = Apollo.MutationResult<ResetPasswordMut
 export type ResetPasswordMutationOptions = Apollo.BaseMutationOptions<
   ResetPasswordMutation,
   ResetPasswordMutationVariables
+>
+export const PreviewCsvImportDocument = gql`
+  mutation PreviewCsvImport($input: PreviewCsvImportInput!) {
+    previewCsvImport(input: $input) {
+      id
+      deckId
+      status
+      totalRows
+      validRows
+      invalidRows
+      previewRows {
+        rowNumber
+        front
+        back
+        example
+        notes
+        isValid
+        errors {
+          rowNumber
+          field
+          message
+        }
+      }
+      errors {
+        rowNumber
+        field
+        message
+      }
+      createdAt
+      confirmedAt
+      expiresAt
+    }
+  }
+`
+export type PreviewCsvImportMutationFn = Apollo.MutationFunction<
+  PreviewCsvImportMutation,
+  PreviewCsvImportMutationVariables
+>
+
+/**
+ * __usePreviewCsvImportMutation__
+ *
+ * To run a mutation, you first call `usePreviewCsvImportMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePreviewCsvImportMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [previewCsvImportMutation, { data, loading, error }] = usePreviewCsvImportMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function usePreviewCsvImportMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    PreviewCsvImportMutation,
+    PreviewCsvImportMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<PreviewCsvImportMutation, PreviewCsvImportMutationVariables>(
+    PreviewCsvImportDocument,
+    options,
+  )
+}
+export type PreviewCsvImportMutationHookResult = ReturnType<typeof usePreviewCsvImportMutation>
+export type PreviewCsvImportMutationResult = Apollo.MutationResult<PreviewCsvImportMutation>
+export type PreviewCsvImportMutationOptions = Apollo.BaseMutationOptions<
+  PreviewCsvImportMutation,
+  PreviewCsvImportMutationVariables
+>
+export const ConfirmCsvImportDocument = gql`
+  mutation ConfirmCsvImport($input: ConfirmCsvImportInput!) {
+    confirmCsvImport(input: $input) {
+      import {
+        id
+        deckId
+        status
+        totalRows
+        validRows
+        invalidRows
+        createdAt
+        confirmedAt
+        expiresAt
+      }
+      createdCardsCount
+    }
+  }
+`
+export type ConfirmCsvImportMutationFn = Apollo.MutationFunction<
+  ConfirmCsvImportMutation,
+  ConfirmCsvImportMutationVariables
+>
+
+/**
+ * __useConfirmCsvImportMutation__
+ *
+ * To run a mutation, you first call `useConfirmCsvImportMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useConfirmCsvImportMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [confirmCsvImportMutation, { data, loading, error }] = useConfirmCsvImportMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useConfirmCsvImportMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ConfirmCsvImportMutation,
+    ConfirmCsvImportMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<ConfirmCsvImportMutation, ConfirmCsvImportMutationVariables>(
+    ConfirmCsvImportDocument,
+    options,
+  )
+}
+export type ConfirmCsvImportMutationHookResult = ReturnType<typeof useConfirmCsvImportMutation>
+export type ConfirmCsvImportMutationResult = Apollo.MutationResult<ConfirmCsvImportMutation>
+export type ConfirmCsvImportMutationOptions = Apollo.BaseMutationOptions<
+  ConfirmCsvImportMutation,
+  ConfirmCsvImportMutationVariables
 >
 export const MyDecksDocument = gql`
   query MyDecks {
@@ -2515,4 +2961,301 @@ export type DeckLearningStatsSuspenseQueryHookResult = ReturnType<
 export type DeckLearningStatsQueryResult = Apollo.QueryResult<
   DeckLearningStatsQuery,
   DeckLearningStatsQueryVariables
+>
+export const PublicDecksDocument = gql`
+  query PublicDecks($input: PublicDecksInput) {
+    publicDecks(input: $input) {
+      items {
+        id
+        ownerId
+        title
+        description
+        visibility
+        moderationStatus
+        isOfficial
+        sourceDeckId
+        createdAt
+        updatedAt
+      }
+      total
+    }
+  }
+`
+
+/**
+ * __usePublicDecksQuery__
+ *
+ * To run a query within a React component, call `usePublicDecksQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePublicDecksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePublicDecksQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function usePublicDecksQuery(
+  baseOptions?: Apollo.QueryHookOptions<PublicDecksQuery, PublicDecksQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<PublicDecksQuery, PublicDecksQueryVariables>(PublicDecksDocument, options)
+}
+export function usePublicDecksLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<PublicDecksQuery, PublicDecksQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<PublicDecksQuery, PublicDecksQueryVariables>(
+    PublicDecksDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function usePublicDecksSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<PublicDecksQuery, PublicDecksQueryVariables>,
+): Apollo.UseSuspenseQueryResult<PublicDecksQuery, PublicDecksQueryVariables>
+export function usePublicDecksSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<PublicDecksQuery, PublicDecksQueryVariables>,
+): Apollo.UseSuspenseQueryResult<PublicDecksQuery | undefined, PublicDecksQueryVariables>
+export function usePublicDecksSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<PublicDecksQuery, PublicDecksQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<PublicDecksQuery, PublicDecksQueryVariables>(
+    PublicDecksDocument,
+    options,
+  )
+}
+export type PublicDecksQueryHookResult = ReturnType<typeof usePublicDecksQuery>
+export type PublicDecksLazyQueryHookResult = ReturnType<typeof usePublicDecksLazyQuery>
+export type PublicDecksSuspenseQueryHookResult = ReturnType<typeof usePublicDecksSuspenseQuery>
+export type PublicDecksQueryResult = Apollo.QueryResult<PublicDecksQuery, PublicDecksQueryVariables>
+export const PublicDeckDocument = gql`
+  query PublicDeck($deckId: String!) {
+    publicDeck(deckId: $deckId) {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+/**
+ * __usePublicDeckQuery__
+ *
+ * To run a query within a React component, call `usePublicDeckQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePublicDeckQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePublicDeckQuery({
+ *   variables: {
+ *      deckId: // value for 'deckId'
+ *   },
+ * });
+ */
+export function usePublicDeckQuery(
+  baseOptions: Apollo.QueryHookOptions<PublicDeckQuery, PublicDeckQueryVariables> &
+    ({ variables: PublicDeckQueryVariables; skip?: boolean } | { skip: boolean }),
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<PublicDeckQuery, PublicDeckQueryVariables>(PublicDeckDocument, options)
+}
+export function usePublicDeckLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<PublicDeckQuery, PublicDeckQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<PublicDeckQuery, PublicDeckQueryVariables>(PublicDeckDocument, options)
+}
+// @ts-ignore
+export function usePublicDeckSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<PublicDeckQuery, PublicDeckQueryVariables>,
+): Apollo.UseSuspenseQueryResult<PublicDeckQuery, PublicDeckQueryVariables>
+export function usePublicDeckSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<PublicDeckQuery, PublicDeckQueryVariables>,
+): Apollo.UseSuspenseQueryResult<PublicDeckQuery | undefined, PublicDeckQueryVariables>
+export function usePublicDeckSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<PublicDeckQuery, PublicDeckQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<PublicDeckQuery, PublicDeckQueryVariables>(
+    PublicDeckDocument,
+    options,
+  )
+}
+export type PublicDeckQueryHookResult = ReturnType<typeof usePublicDeckQuery>
+export type PublicDeckLazyQueryHookResult = ReturnType<typeof usePublicDeckLazyQuery>
+export type PublicDeckSuspenseQueryHookResult = ReturnType<typeof usePublicDeckSuspenseQuery>
+export type PublicDeckQueryResult = Apollo.QueryResult<PublicDeckQuery, PublicDeckQueryVariables>
+export const PublicDeckCardsDocument = gql`
+  query PublicDeckCards($deckId: String!) {
+    publicDeckCards(deckId: $deckId) {
+      id
+      deckId
+      front
+      back
+      example
+      notes
+      position
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+/**
+ * __usePublicDeckCardsQuery__
+ *
+ * To run a query within a React component, call `usePublicDeckCardsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePublicDeckCardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePublicDeckCardsQuery({
+ *   variables: {
+ *      deckId: // value for 'deckId'
+ *   },
+ * });
+ */
+export function usePublicDeckCardsQuery(
+  baseOptions: Apollo.QueryHookOptions<PublicDeckCardsQuery, PublicDeckCardsQueryVariables> &
+    ({ variables: PublicDeckCardsQueryVariables; skip?: boolean } | { skip: boolean }),
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<PublicDeckCardsQuery, PublicDeckCardsQueryVariables>(
+    PublicDeckCardsDocument,
+    options,
+  )
+}
+export function usePublicDeckCardsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<PublicDeckCardsQuery, PublicDeckCardsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<PublicDeckCardsQuery, PublicDeckCardsQueryVariables>(
+    PublicDeckCardsDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function usePublicDeckCardsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    PublicDeckCardsQuery,
+    PublicDeckCardsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<PublicDeckCardsQuery, PublicDeckCardsQueryVariables>
+export function usePublicDeckCardsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<PublicDeckCardsQuery, PublicDeckCardsQueryVariables>,
+): Apollo.UseSuspenseQueryResult<PublicDeckCardsQuery | undefined, PublicDeckCardsQueryVariables>
+export function usePublicDeckCardsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<PublicDeckCardsQuery, PublicDeckCardsQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<PublicDeckCardsQuery, PublicDeckCardsQueryVariables>(
+    PublicDeckCardsDocument,
+    options,
+  )
+}
+export type PublicDeckCardsQueryHookResult = ReturnType<typeof usePublicDeckCardsQuery>
+export type PublicDeckCardsLazyQueryHookResult = ReturnType<typeof usePublicDeckCardsLazyQuery>
+export type PublicDeckCardsSuspenseQueryHookResult = ReturnType<
+  typeof usePublicDeckCardsSuspenseQuery
+>
+export type PublicDeckCardsQueryResult = Apollo.QueryResult<
+  PublicDeckCardsQuery,
+  PublicDeckCardsQueryVariables
+>
+export const CopyPublicDeckDocument = gql`
+  mutation CopyPublicDeck($sourceDeckId: String!) {
+    copyPublicDeck(sourceDeckId: $sourceDeckId) {
+      deck {
+        id
+        ownerId
+        title
+        description
+        visibility
+        moderationStatus
+        isOfficial
+        sourceDeckId
+        createdAt
+        updatedAt
+      }
+      cards {
+        id
+        deckId
+        front
+        back
+        example
+        notes
+        position
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+export type CopyPublicDeckMutationFn = Apollo.MutationFunction<
+  CopyPublicDeckMutation,
+  CopyPublicDeckMutationVariables
+>
+
+/**
+ * __useCopyPublicDeckMutation__
+ *
+ * To run a mutation, you first call `useCopyPublicDeckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCopyPublicDeckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [copyPublicDeckMutation, { data, loading, error }] = useCopyPublicDeckMutation({
+ *   variables: {
+ *      sourceDeckId: // value for 'sourceDeckId'
+ *   },
+ * });
+ */
+export function useCopyPublicDeckMutation(
+  baseOptions?: Apollo.MutationHookOptions<CopyPublicDeckMutation, CopyPublicDeckMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CopyPublicDeckMutation, CopyPublicDeckMutationVariables>(
+    CopyPublicDeckDocument,
+    options,
+  )
+}
+export type CopyPublicDeckMutationHookResult = ReturnType<typeof useCopyPublicDeckMutation>
+export type CopyPublicDeckMutationResult = Apollo.MutationResult<CopyPublicDeckMutation>
+export type CopyPublicDeckMutationOptions = Apollo.BaseMutationOptions<
+  CopyPublicDeckMutation,
+  CopyPublicDeckMutationVariables
 >
