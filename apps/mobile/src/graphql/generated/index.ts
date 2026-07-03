@@ -1142,6 +1142,97 @@ export type UnpublishDeckMutation = {
   }
 }
 
+export type StartLessonMutationVariables = Exact<{
+  input: StartLessonInput
+}>
+
+export type StartLessonMutation = {
+  __typename?: 'Mutation'
+  startLesson: {
+    __typename?: 'StartLessonPayload'
+    sessionId?: string | null
+    deckId: string
+    lessonSize: number
+    totalCards: number
+    cards: Array<{
+      __typename?: 'LessonCard'
+      cardId: string
+      front: string
+      back: string
+      example?: string | null
+      notes?: string | null
+      position: number
+      reviewState?: {
+        __typename?: 'CardReviewState'
+        id: string
+        easeFactor: number
+        intervalDays: number
+        repetitions: number
+        dueAt: any
+        lastReviewedAt?: any | null
+      } | null
+    }>
+  }
+}
+
+export type SubmitReviewMutationVariables = Exact<{
+  input: SubmitReviewInput
+}>
+
+export type SubmitReviewMutation = {
+  __typename?: 'Mutation'
+  submitReview: {
+    __typename?: 'SubmitReviewPayload'
+    sessionId: string
+    cardId: string
+    reviewedCards: number
+    reviewState: {
+      __typename?: 'CardReviewState'
+      id: string
+      easeFactor: number
+      intervalDays: number
+      repetitions: number
+      dueAt: any
+      lastReviewedAt?: any | null
+    }
+  }
+}
+
+export type CompleteLessonMutationVariables = Exact<{
+  input: CompleteLessonInput
+}>
+
+export type CompleteLessonMutation = {
+  __typename?: 'Mutation'
+  completeLesson: {
+    __typename?: 'CompleteLessonPayload'
+    sessionId: string
+    deckId: string
+    totalCards: number
+    reviewedCards: number
+    knownCount: number
+    dontKnowCount: number
+    completedAt: any
+  }
+}
+
+export type DeckLearningStatsQueryVariables = Exact<{
+  deckId: Scalars['String']['input']
+}>
+
+export type DeckLearningStatsQuery = {
+  __typename?: 'Query'
+  deckLearningStats: {
+    __typename?: 'DeckLearningStats'
+    deckId: string
+    totalCards: number
+    newCards: number
+    dueCards: number
+    reviewedCards: number
+    nextDueAt?: any | null
+  }
+}
+
 export const RegisterDocument = gql`
   mutation Register($input: RegisterInput!) {
     register(input: $input) {
@@ -2170,4 +2261,258 @@ export type UnpublishDeckMutationResult = Apollo.MutationResult<UnpublishDeckMut
 export type UnpublishDeckMutationOptions = Apollo.BaseMutationOptions<
   UnpublishDeckMutation,
   UnpublishDeckMutationVariables
+>
+export const StartLessonDocument = gql`
+  mutation StartLesson($input: StartLessonInput!) {
+    startLesson(input: $input) {
+      sessionId
+      deckId
+      lessonSize
+      totalCards
+      cards {
+        cardId
+        front
+        back
+        example
+        notes
+        position
+        reviewState {
+          id
+          easeFactor
+          intervalDays
+          repetitions
+          dueAt
+          lastReviewedAt
+        }
+      }
+    }
+  }
+`
+export type StartLessonMutationFn = Apollo.MutationFunction<
+  StartLessonMutation,
+  StartLessonMutationVariables
+>
+
+/**
+ * __useStartLessonMutation__
+ *
+ * To run a mutation, you first call `useStartLessonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStartLessonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [startLessonMutation, { data, loading, error }] = useStartLessonMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useStartLessonMutation(
+  baseOptions?: Apollo.MutationHookOptions<StartLessonMutation, StartLessonMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<StartLessonMutation, StartLessonMutationVariables>(
+    StartLessonDocument,
+    options,
+  )
+}
+export type StartLessonMutationHookResult = ReturnType<typeof useStartLessonMutation>
+export type StartLessonMutationResult = Apollo.MutationResult<StartLessonMutation>
+export type StartLessonMutationOptions = Apollo.BaseMutationOptions<
+  StartLessonMutation,
+  StartLessonMutationVariables
+>
+export const SubmitReviewDocument = gql`
+  mutation SubmitReview($input: SubmitReviewInput!) {
+    submitReview(input: $input) {
+      sessionId
+      cardId
+      reviewedCards
+      reviewState {
+        id
+        easeFactor
+        intervalDays
+        repetitions
+        dueAt
+        lastReviewedAt
+      }
+    }
+  }
+`
+export type SubmitReviewMutationFn = Apollo.MutationFunction<
+  SubmitReviewMutation,
+  SubmitReviewMutationVariables
+>
+
+/**
+ * __useSubmitReviewMutation__
+ *
+ * To run a mutation, you first call `useSubmitReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubmitReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [submitReviewMutation, { data, loading, error }] = useSubmitReviewMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSubmitReviewMutation(
+  baseOptions?: Apollo.MutationHookOptions<SubmitReviewMutation, SubmitReviewMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<SubmitReviewMutation, SubmitReviewMutationVariables>(
+    SubmitReviewDocument,
+    options,
+  )
+}
+export type SubmitReviewMutationHookResult = ReturnType<typeof useSubmitReviewMutation>
+export type SubmitReviewMutationResult = Apollo.MutationResult<SubmitReviewMutation>
+export type SubmitReviewMutationOptions = Apollo.BaseMutationOptions<
+  SubmitReviewMutation,
+  SubmitReviewMutationVariables
+>
+export const CompleteLessonDocument = gql`
+  mutation CompleteLesson($input: CompleteLessonInput!) {
+    completeLesson(input: $input) {
+      sessionId
+      deckId
+      totalCards
+      reviewedCards
+      knownCount
+      dontKnowCount
+      completedAt
+    }
+  }
+`
+export type CompleteLessonMutationFn = Apollo.MutationFunction<
+  CompleteLessonMutation,
+  CompleteLessonMutationVariables
+>
+
+/**
+ * __useCompleteLessonMutation__
+ *
+ * To run a mutation, you first call `useCompleteLessonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCompleteLessonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [completeLessonMutation, { data, loading, error }] = useCompleteLessonMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCompleteLessonMutation(
+  baseOptions?: Apollo.MutationHookOptions<CompleteLessonMutation, CompleteLessonMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CompleteLessonMutation, CompleteLessonMutationVariables>(
+    CompleteLessonDocument,
+    options,
+  )
+}
+export type CompleteLessonMutationHookResult = ReturnType<typeof useCompleteLessonMutation>
+export type CompleteLessonMutationResult = Apollo.MutationResult<CompleteLessonMutation>
+export type CompleteLessonMutationOptions = Apollo.BaseMutationOptions<
+  CompleteLessonMutation,
+  CompleteLessonMutationVariables
+>
+export const DeckLearningStatsDocument = gql`
+  query DeckLearningStats($deckId: String!) {
+    deckLearningStats(deckId: $deckId) {
+      deckId
+      totalCards
+      newCards
+      dueCards
+      reviewedCards
+      nextDueAt
+    }
+  }
+`
+
+/**
+ * __useDeckLearningStatsQuery__
+ *
+ * To run a query within a React component, call `useDeckLearningStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDeckLearningStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDeckLearningStatsQuery({
+ *   variables: {
+ *      deckId: // value for 'deckId'
+ *   },
+ * });
+ */
+export function useDeckLearningStatsQuery(
+  baseOptions: Apollo.QueryHookOptions<DeckLearningStatsQuery, DeckLearningStatsQueryVariables> &
+    ({ variables: DeckLearningStatsQueryVariables; skip?: boolean } | { skip: boolean }),
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<DeckLearningStatsQuery, DeckLearningStatsQueryVariables>(
+    DeckLearningStatsDocument,
+    options,
+  )
+}
+export function useDeckLearningStatsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    DeckLearningStatsQuery,
+    DeckLearningStatsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<DeckLearningStatsQuery, DeckLearningStatsQueryVariables>(
+    DeckLearningStatsDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useDeckLearningStatsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    DeckLearningStatsQuery,
+    DeckLearningStatsQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<DeckLearningStatsQuery, DeckLearningStatsQueryVariables>
+export function useDeckLearningStatsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<DeckLearningStatsQuery, DeckLearningStatsQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  DeckLearningStatsQuery | undefined,
+  DeckLearningStatsQueryVariables
+>
+export function useDeckLearningStatsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<DeckLearningStatsQuery, DeckLearningStatsQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<DeckLearningStatsQuery, DeckLearningStatsQueryVariables>(
+    DeckLearningStatsDocument,
+    options,
+  )
+}
+export type DeckLearningStatsQueryHookResult = ReturnType<typeof useDeckLearningStatsQuery>
+export type DeckLearningStatsLazyQueryHookResult = ReturnType<typeof useDeckLearningStatsLazyQuery>
+export type DeckLearningStatsSuspenseQueryHookResult = ReturnType<
+  typeof useDeckLearningStatsSuspenseQuery
+>
+export type DeckLearningStatsQueryResult = Apollo.QueryResult<
+  DeckLearningStatsQuery,
+  DeckLearningStatsQueryVariables
 >
