@@ -1,0 +1,140 @@
+query AdminDashboardStats {
+  adminDashboardStats {
+    totalUsers
+    totalDecks
+    totalPublicDecks
+    totalCards
+    totalStudySessions
+    totalReviews
+    usersCreatedLast7Days
+    decksCreatedLast7Days
+    reviewsSubmittedLast7Days
+  }
+}
+
+query AdminSearchUsers($input: AdminSearchUsersInput) {
+  adminSearchUsers(input: $input) {
+    items {
+      id
+      email
+      role
+      emailVerifiedAt
+      blockedAt
+      createdAt
+      updatedAt
+    }
+    total
+  }
+}
+
+mutation BlockUser($userId: ID!) {
+  blockUser(userId: $userId) {
+    id
+    email
+    role
+    emailVerifiedAt
+    blockedAt
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UnblockUser($userId: ID!) {
+  unblockUser(userId: $userId) {
+    id
+    email
+    role
+    emailVerifiedAt
+    blockedAt
+    createdAt
+    updatedAt
+  }
+}
+
+query ModerationQueue($input: ModerationQueueInput) {
+  moderationQueue(input: $input) {
+    items {
+      id
+      ownerId
+      ownerEmail
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      cardCount
+      createdAt
+      updatedAt
+    }
+    total
+  }
+}
+
+mutation ApproveDeck($deckId: ID!) {
+  approveDeck(deckId: $deckId) {
+    id
+    ownerId
+    ownerEmail
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    cardCount
+    createdAt
+    updatedAt
+  }
+}
+
+mutation RejectDeck($deckId: ID!) {
+  rejectDeck(deckId: $deckId) {
+    id
+    ownerId
+    ownerEmail
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    cardCount
+    createdAt
+    updatedAt
+  }
+}
+
+mutation HideDeck($deckId: ID!) {
+  hideDeck(deckId: $deckId) {
+    id
+    ownerId
+    ownerEmail
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    cardCount
+    createdAt
+    updatedAt
+  }
+}
+
+mutation SetOfficialDeck($deckId: ID!, $isOfficial: Boolean!) {
+  setOfficialDeck(deckId: $deckId, isOfficial: $isOfficial) {
+    id
+    ownerId
+    ownerEmail
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    cardCount
+    createdAt
+    updatedAt
+  }
+}

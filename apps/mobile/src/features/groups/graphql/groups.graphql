@@ -1,0 +1,117 @@
+query MyGroups {
+  myGroups {
+    id
+    name
+    description
+    createdById
+    createdAt
+    updatedAt
+  }
+}
+
+query Group($id: String!) {
+  group(id: $id) {
+    id
+    name
+    description
+    createdById
+    createdAt
+    updatedAt
+  }
+}
+
+mutation CreateGroup($input: CreateGroupInput!) {
+  createGroup(input: $input) {
+    id
+    name
+    description
+    createdById
+    createdAt
+    updatedAt
+  }
+}
+
+mutation InviteUserToGroup($input: InviteUserToGroupInput!) {
+  inviteUserToGroup(input: $input) {
+    id
+    groupId
+    email
+    invitedById
+    status
+    expiresAt
+    createdAt
+    acceptedAt
+    declinedAt
+  }
+}
+
+query MyGroupInvitations {
+  myGroupInvitations {
+    id
+    groupId
+    email
+    invitedById
+    status
+    expiresAt
+    createdAt
+    acceptedAt
+    declinedAt
+  }
+}
+
+mutation AcceptGroupInvitation($invitationId: String!) {
+  acceptGroupInvitation(invitationId: $invitationId) {
+    invitation {
+      id
+      groupId
+      email
+      status
+      acceptedAt
+    }
+    member {
+      id
+      groupId
+      userId
+      role
+      createdAt
+    }
+  }
+}
+
+mutation DeclineGroupInvitation($invitationId: String!) {
+  declineGroupInvitation(invitationId: $invitationId) {
+    id
+    groupId
+    email
+    status
+    declinedAt
+  }
+}
+
+mutation ShareDeckWithGroup($input: ShareDeckWithGroupInput!) {
+  shareDeckWithGroup(input: $input) {
+    share {
+      id
+      deckId
+      groupId
+      permission
+      createdById
+      createdAt
+    }
+  }
+}
+
+query GroupSharedDecks($groupId: String!) {
+  groupSharedDecks(groupId: $groupId) {
+    id
+    ownerId
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    createdAt
+    updatedAt
+  }
+}
