@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { View } from 'react-native'
 
 import { useLogout } from '@/features/auth/hooks/use-logout'
+import { NotificationSettingsCard } from '@/features/notifications/components/notification-settings-card'
 import { AccountStatusCard } from '@/features/profile/components/account-status-card'
 import { ProfileCard } from '@/features/profile/components/profile-card'
 import { UserSettingsForm } from '@/features/settings/components/user-settings-form'
@@ -30,6 +31,10 @@ export function ProfileScreen() {
           <UserSettingsForm
             notificationsEnabled={notificationsEnabled}
             onNotificationsEnabledChange={setNotificationsEnabled}
+          />
+          <NotificationSettingsCard
+            enabled={notificationsEnabled}
+            onEnabledChange={setNotificationsEnabled}
           />
           <AppButton onPress={() => void logout()}>Log Out</AppButton>
         </View>
