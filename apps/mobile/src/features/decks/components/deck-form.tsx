@@ -3,7 +3,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { View } from 'react-native'
 
 import { deckFormSchema, type DeckFormValues } from '@/features/decks/validation/deck-form.schema'
-import { AppButton, AppInput, AppText } from '@/ui/primitives'
+import { AppButton, AppInput } from '@/ui/primitives'
 import { ErrorState } from '@/ui/components'
 
 type DeckFormProps = {

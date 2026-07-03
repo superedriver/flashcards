@@ -34,7 +34,7 @@ docs/tasks/16-frontend-lessons.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -238,22 +238,22 @@ mutation UnpublishDeck($deckId: ID!) {
 ## Epic Summary
 
 ```md
-- [ ] TASK-15.01 Add deck/card GraphQL documents
-- [ ] TASK-15.02 Generate deck/card GraphQL types
-- [ ] TASK-15.03 Add deck/card feature structure
-- [ ] TASK-15.04 Add deck form validation
-- [ ] TASK-15.05 Add card form validation
-- [ ] TASK-15.06 Add my decks screen
-- [ ] TASK-15.07 Add create deck screen
-- [ ] TASK-15.08 Add deck detail screen
-- [ ] TASK-15.09 Add edit deck screen
-- [ ] TASK-15.10 Add delete deck action
-- [ ] TASK-15.11 Add card list UI
-- [ ] TASK-15.12 Add create card screen
-- [ ] TASK-15.13 Add edit card screen
-- [ ] TASK-15.14 Add delete card action
-- [ ] TASK-15.15 Add publish/unpublish deck actions
-- [ ] TASK-15.16 Add deck/card frontend final checks
+- [x] TASK-15.01 Add deck/card GraphQL documents
+- [x] TASK-15.02 Generate deck/card GraphQL types
+- [x] TASK-15.03 Add deck/card feature structure
+- [x] TASK-15.04 Add deck form validation
+- [x] TASK-15.05 Add card form validation
+- [x] TASK-15.06 Add my decks screen
+- [x] TASK-15.07 Add create deck screen
+- [x] TASK-15.08 Add deck detail screen
+- [x] TASK-15.09 Add edit deck screen
+- [x] TASK-15.10 Add delete deck action
+- [x] TASK-15.11 Add card list UI
+- [x] TASK-15.12 Add create card screen
+- [x] TASK-15.13 Add edit card screen
+- [x] TASK-15.14 Add delete card action
+- [x] TASK-15.15 Add publish/unpublish deck actions
+- [x] TASK-15.16 Add deck/card frontend final checks
 ```
 
 ---
@@ -262,7 +262,7 @@ mutation UnpublishDeck($deckId: ID!) {
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -460,7 +460,7 @@ TASK-15.01 Add deck/card GraphQL documents
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -537,7 +537,7 @@ TASK-15.02 Generate deck/card GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -613,7 +613,7 @@ TASK-15.03 Add deck/card feature structure
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -687,7 +687,7 @@ TASK-15.04 Add deck form validation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -774,7 +774,7 @@ TASK-15.05 Add card form validation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -863,7 +863,7 @@ TASK-15.06 Add my decks screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -948,7 +948,7 @@ TASK-15.07 Add create deck screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1032,7 +1032,7 @@ TASK-15.08 Add deck detail screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1116,7 +1116,7 @@ TASK-15.09 Add edit deck screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1190,7 +1190,7 @@ TASK-15.10 Add delete deck action
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1262,7 +1262,7 @@ TASK-15.11 Add card list UI
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1349,7 +1349,7 @@ TASK-15.12 Add create card screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1431,7 +1431,7 @@ TASK-15.13 Add edit card screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1506,7 +1506,7 @@ TASK-15.14 Add delete card action
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1592,7 +1592,7 @@ TASK-15.15 Add publish/unpublish deck actions
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

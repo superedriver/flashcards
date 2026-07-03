@@ -1,4 +1,4 @@
-import { FlatList, View } from 'react-native'
+import { FlatList } from 'react-native'
 
 import type { MyDecksQuery } from '@/graphql/generated'
 import { EmptyState } from '@/ui/components'

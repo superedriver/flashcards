@@ -3,7 +3,7 @@ import { View } from 'react-native'
 
 import { useMyDecksQuery } from '@/graphql/generated'
 import { AppButton } from '@/ui/primitives'
-import { EmptyState, ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
+import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 import { DeckList } from '../components/deck-list'
 

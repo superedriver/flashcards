@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router'
-import { Pressable, View } from 'react-native'
+import { Pressable } from 'react-native'
 
 import type { MyDecksQuery } from '@/graphql/generated'
 import { AppCard, AppText } from '@/ui/primitives'
