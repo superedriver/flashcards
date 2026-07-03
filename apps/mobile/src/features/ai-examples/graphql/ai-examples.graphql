@@ -1,0 +1,24 @@
+mutation GenerateCardExamples($input: GenerateCardExamplesInput!) {
+  generateCardExamples(input: $input) {
+    cardId
+    examples {
+      text
+    }
+  }
+}
+
+mutation SaveGeneratedCardExample($input: SaveGeneratedCardExampleInput!) {
+  saveGeneratedCardExample(input: $input) {
+    card {
+      id
+      deckId
+      front
+      back
+      example
+      notes
+      position
+      createdAt
+      updatedAt
+    }
+  }
+}

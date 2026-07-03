@@ -1,0 +1,74 @@
+query PublicDecks($input: PublicDecksInput) {
+  publicDecks(input: $input) {
+    items {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      createdAt
+      updatedAt
+    }
+    total
+  }
+}
+
+query PublicDeck($deckId: String!) {
+  publicDeck(deckId: $deckId) {
+    id
+    ownerId
+    title
+    description
+    visibility
+    moderationStatus
+    isOfficial
+    sourceDeckId
+    createdAt
+    updatedAt
+  }
+}
+
+query PublicDeckCards($deckId: String!) {
+  publicDeckCards(deckId: $deckId) {
+    id
+    deckId
+    front
+    back
+    example
+    notes
+    position
+    createdAt
+    updatedAt
+  }
+}
+
+mutation CopyPublicDeck($sourceDeckId: String!) {
+  copyPublicDeck(sourceDeckId: $sourceDeckId) {
+    deck {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      createdAt
+      updatedAt
+    }
+    cards {
+      id
+      deckId
+      front
+      back
+      example
+      notes
+      position
+      createdAt
+      updatedAt
+    }
+  }
+}

@@ -1,0 +1,48 @@
+mutation PreviewCsvImport($input: PreviewCsvImportInput!) {
+  previewCsvImport(input: $input) {
+    id
+    deckId
+    status
+    totalRows
+    validRows
+    invalidRows
+    previewRows {
+      rowNumber
+      front
+      back
+      example
+      notes
+      isValid
+      errors {
+        rowNumber
+        field
+        message
+      }
+    }
+    errors {
+      rowNumber
+      field
+      message
+    }
+    createdAt
+    confirmedAt
+    expiresAt
+  }
+}
+
+mutation ConfirmCsvImport($input: ConfirmCsvImportInput!) {
+  confirmCsvImport(input: $input) {
+    import {
+      id
+      deckId
+      status
+      totalRows
+      validRows
+      invalidRows
+      createdAt
+      confirmedAt
+      expiresAt
+    }
+    createdCardsCount
+  }
+}
