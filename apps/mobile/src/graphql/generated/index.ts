@@ -1334,6 +1334,37 @@ export type DeckLearningStatsQuery = {
   }
 }
 
+export type RegisterPushTokenMutationVariables = Exact<{
+  input: RegisterPushTokenInput
+}>
+
+export type RegisterPushTokenMutation = {
+  __typename?: 'Mutation'
+  registerPushToken: { __typename?: 'RegisterPushTokenPayloadType'; success: boolean }
+}
+
+export type RemovePushTokenMutationVariables = Exact<{
+  input: RemovePushTokenInput
+}>
+
+export type RemovePushTokenMutation = { __typename?: 'Mutation'; removePushToken: boolean }
+
+export type ProfileMeQueryVariables = Exact<{ [key: string]: never }>
+
+export type ProfileMeQuery = {
+  __typename?: 'Query'
+  me: {
+    __typename?: 'SafeUser'
+    id: string
+    email: string
+    role: UserRole
+    emailVerifiedAt?: any | null
+    blockedAt?: any | null
+    createdAt: any
+    updatedAt: any
+  }
+}
+
 export type PublicDecksQueryVariables = Exact<{
   input?: InputMaybe<PublicDecksInput>
 }>
@@ -1433,6 +1464,43 @@ export type CopyPublicDeckMutation = {
       createdAt: any
       updatedAt: any
     }>
+  }
+}
+
+export type MySettingsQueryVariables = Exact<{ [key: string]: never }>
+
+export type MySettingsQuery = {
+  __typename?: 'Query'
+  myAccount: {
+    __typename?: 'MyAccount'
+    settings: {
+      __typename?: 'UserSettings'
+      userId: string
+      lessonSize: number
+      notificationsEnabled: boolean
+      reminderTime: string
+      timezone: string
+      createdAt: any
+      updatedAt: any
+    }
+  }
+}
+
+export type UpdateMySettingsMutationVariables = Exact<{
+  input: UpdateSettingsInput
+}>
+
+export type UpdateMySettingsMutation = {
+  __typename?: 'Mutation'
+  updateSettings: {
+    __typename?: 'UserSettings'
+    userId: string
+    lessonSize: number
+    notificationsEnabled: boolean
+    reminderTime: string
+    timezone: string
+    createdAt: any
+    updatedAt: any
   }
 }
 
@@ -2962,6 +3030,164 @@ export type DeckLearningStatsQueryResult = Apollo.QueryResult<
   DeckLearningStatsQuery,
   DeckLearningStatsQueryVariables
 >
+export const RegisterPushTokenDocument = gql`
+  mutation RegisterPushToken($input: RegisterPushTokenInput!) {
+    registerPushToken(input: $input) {
+      success
+    }
+  }
+`
+export type RegisterPushTokenMutationFn = Apollo.MutationFunction<
+  RegisterPushTokenMutation,
+  RegisterPushTokenMutationVariables
+>
+
+/**
+ * __useRegisterPushTokenMutation__
+ *
+ * To run a mutation, you first call `useRegisterPushTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterPushTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerPushTokenMutation, { data, loading, error }] = useRegisterPushTokenMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRegisterPushTokenMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RegisterPushTokenMutation,
+    RegisterPushTokenMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<RegisterPushTokenMutation, RegisterPushTokenMutationVariables>(
+    RegisterPushTokenDocument,
+    options,
+  )
+}
+export type RegisterPushTokenMutationHookResult = ReturnType<typeof useRegisterPushTokenMutation>
+export type RegisterPushTokenMutationResult = Apollo.MutationResult<RegisterPushTokenMutation>
+export type RegisterPushTokenMutationOptions = Apollo.BaseMutationOptions<
+  RegisterPushTokenMutation,
+  RegisterPushTokenMutationVariables
+>
+export const RemovePushTokenDocument = gql`
+  mutation RemovePushToken($input: RemovePushTokenInput!) {
+    removePushToken(input: $input)
+  }
+`
+export type RemovePushTokenMutationFn = Apollo.MutationFunction<
+  RemovePushTokenMutation,
+  RemovePushTokenMutationVariables
+>
+
+/**
+ * __useRemovePushTokenMutation__
+ *
+ * To run a mutation, you first call `useRemovePushTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemovePushTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removePushTokenMutation, { data, loading, error }] = useRemovePushTokenMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemovePushTokenMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemovePushTokenMutation,
+    RemovePushTokenMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<RemovePushTokenMutation, RemovePushTokenMutationVariables>(
+    RemovePushTokenDocument,
+    options,
+  )
+}
+export type RemovePushTokenMutationHookResult = ReturnType<typeof useRemovePushTokenMutation>
+export type RemovePushTokenMutationResult = Apollo.MutationResult<RemovePushTokenMutation>
+export type RemovePushTokenMutationOptions = Apollo.BaseMutationOptions<
+  RemovePushTokenMutation,
+  RemovePushTokenMutationVariables
+>
+export const ProfileMeDocument = gql`
+  query ProfileMe {
+    me {
+      id
+      email
+      role
+      emailVerifiedAt
+      blockedAt
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+/**
+ * __useProfileMeQuery__
+ *
+ * To run a query within a React component, call `useProfileMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfileMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProfileMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProfileMeQuery(
+  baseOptions?: Apollo.QueryHookOptions<ProfileMeQuery, ProfileMeQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ProfileMeQuery, ProfileMeQueryVariables>(ProfileMeDocument, options)
+}
+export function useProfileMeLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ProfileMeQuery, ProfileMeQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ProfileMeQuery, ProfileMeQueryVariables>(ProfileMeDocument, options)
+}
+// @ts-ignore
+export function useProfileMeSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<ProfileMeQuery, ProfileMeQueryVariables>,
+): Apollo.UseSuspenseQueryResult<ProfileMeQuery, ProfileMeQueryVariables>
+export function useProfileMeSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<ProfileMeQuery, ProfileMeQueryVariables>,
+): Apollo.UseSuspenseQueryResult<ProfileMeQuery | undefined, ProfileMeQueryVariables>
+export function useProfileMeSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<ProfileMeQuery, ProfileMeQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<ProfileMeQuery, ProfileMeQueryVariables>(
+    ProfileMeDocument,
+    options,
+  )
+}
+export type ProfileMeQueryHookResult = ReturnType<typeof useProfileMeQuery>
+export type ProfileMeLazyQueryHookResult = ReturnType<typeof useProfileMeLazyQuery>
+export type ProfileMeSuspenseQueryHookResult = ReturnType<typeof useProfileMeSuspenseQuery>
+export type ProfileMeQueryResult = Apollo.QueryResult<ProfileMeQuery, ProfileMeQueryVariables>
 export const PublicDecksDocument = gql`
   query PublicDecks($input: PublicDecksInput) {
     publicDecks(input: $input) {
@@ -3258,4 +3484,125 @@ export type CopyPublicDeckMutationResult = Apollo.MutationResult<CopyPublicDeckM
 export type CopyPublicDeckMutationOptions = Apollo.BaseMutationOptions<
   CopyPublicDeckMutation,
   CopyPublicDeckMutationVariables
+>
+export const MySettingsDocument = gql`
+  query MySettings {
+    myAccount {
+      settings {
+        userId
+        lessonSize
+        notificationsEnabled
+        reminderTime
+        timezone
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+
+/**
+ * __useMySettingsQuery__
+ *
+ * To run a query within a React component, call `useMySettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMySettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMySettingsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMySettingsQuery(
+  baseOptions?: Apollo.QueryHookOptions<MySettingsQuery, MySettingsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MySettingsQuery, MySettingsQueryVariables>(MySettingsDocument, options)
+}
+export function useMySettingsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<MySettingsQuery, MySettingsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MySettingsQuery, MySettingsQueryVariables>(MySettingsDocument, options)
+}
+// @ts-ignore
+export function useMySettingsSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<MySettingsQuery, MySettingsQueryVariables>,
+): Apollo.UseSuspenseQueryResult<MySettingsQuery, MySettingsQueryVariables>
+export function useMySettingsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<MySettingsQuery, MySettingsQueryVariables>,
+): Apollo.UseSuspenseQueryResult<MySettingsQuery | undefined, MySettingsQueryVariables>
+export function useMySettingsSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<MySettingsQuery, MySettingsQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<MySettingsQuery, MySettingsQueryVariables>(
+    MySettingsDocument,
+    options,
+  )
+}
+export type MySettingsQueryHookResult = ReturnType<typeof useMySettingsQuery>
+export type MySettingsLazyQueryHookResult = ReturnType<typeof useMySettingsLazyQuery>
+export type MySettingsSuspenseQueryHookResult = ReturnType<typeof useMySettingsSuspenseQuery>
+export type MySettingsQueryResult = Apollo.QueryResult<MySettingsQuery, MySettingsQueryVariables>
+export const UpdateMySettingsDocument = gql`
+  mutation UpdateMySettings($input: UpdateSettingsInput!) {
+    updateSettings(input: $input) {
+      userId
+      lessonSize
+      notificationsEnabled
+      reminderTime
+      timezone
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type UpdateMySettingsMutationFn = Apollo.MutationFunction<
+  UpdateMySettingsMutation,
+  UpdateMySettingsMutationVariables
+>
+
+/**
+ * __useUpdateMySettingsMutation__
+ *
+ * To run a mutation, you first call `useUpdateMySettingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMySettingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMySettingsMutation, { data, loading, error }] = useUpdateMySettingsMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateMySettingsMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateMySettingsMutation,
+    UpdateMySettingsMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateMySettingsMutation, UpdateMySettingsMutationVariables>(
+    UpdateMySettingsDocument,
+    options,
+  )
+}
+export type UpdateMySettingsMutationHookResult = ReturnType<typeof useUpdateMySettingsMutation>
+export type UpdateMySettingsMutationResult = Apollo.MutationResult<UpdateMySettingsMutation>
+export type UpdateMySettingsMutationOptions = Apollo.BaseMutationOptions<
+  UpdateMySettingsMutation,
+  UpdateMySettingsMutationVariables
 >
