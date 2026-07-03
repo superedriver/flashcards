@@ -7,10 +7,14 @@ import { DeckHeader } from '@/features/decks/components/deck-header'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { useAuth } from '@/features/auth/hooks/use-auth'
+import { DeckLearningStatsCard } from '@/features/lessons/components/deck-learning-stats-card'
+import { useRouter } from 'expo-router'
 import { useDeckCardsQuery, useDeckQuery, useDeleteCardMutation } from '@/graphql/generated'
+import { AppButton } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function DeckDetailScreen() {
+  const router = useRouter()
   const { deckId } = useLocalSearchParams<{ deckId: string }>()
   const { user } = useAuth()
   const [actionError, setActionError] = useState<string | null>(null)
@@ -70,6 +74,16 @@ export function DeckDetailScreen() {
       {!loading && !error && deck && deckId ? (
         <>
           <DeckHeader cardCount={cards.length} deck={deck} />
+          <DeckLearningStatsCard deckId={deckId} />
+          <AppButton
+            disabled={cards.length === 0}
+            onPress={() => router.push(`/lessons/start?deckId=${deckId}`)}
+          >
+            Start Lesson
+          </AppButton>
+          {cards.length === 0 ? (
+            <ErrorState message="Add cards to this deck before starting a lesson." />
+          ) : null}
           <DeckActions deck={deck} isOwner={isOwner} />
           <CardList
             cards={cards}
