@@ -1,0 +1,25 @@
+query MySettings {
+  myAccount {
+    settings {
+      userId
+      lessonSize
+      notificationsEnabled
+      reminderTime
+      timezone
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation UpdateMySettings($input: UpdateSettingsInput!) {
+  updateSettings(input: $input) {
+    userId
+    lessonSize
+    notificationsEnabled
+    reminderTime
+    timezone
+    createdAt
+    updatedAt
+  }
+}

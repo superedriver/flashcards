@@ -1,0 +1,11 @@
+query ProfileMe {
+  me {
+    id
+    email
+    role
+    emailVerifiedAt
+    blockedAt
+    createdAt
+    updatedAt
+  }
+}

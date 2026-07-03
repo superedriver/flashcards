@@ -1,0 +1,9 @@
+mutation RegisterPushToken($input: RegisterPushTokenInput!) {
+  registerPushToken(input: $input) {
+    success
+  }
+}
+
+mutation RemovePushToken($input: RemovePushTokenInput!) {
+  removePushToken(input: $input)
+}
