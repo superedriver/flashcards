@@ -1,9 +1,5 @@
-import { PageTitle, Screen } from '@/ui/components'
+import { PublicDecksScreen } from '@/features/public-decks/screens/public-decks-screen'
 
 export default function PublicScreen() {
-  return (
-    <Screen>
-      <PageTitle title="Public" />
-    </Screen>
-  )
+  return <PublicDecksScreen />
 }
