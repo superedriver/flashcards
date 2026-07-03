@@ -4,6 +4,9 @@ import { env } from '@/config/env'
 import { authErrorLink, authLink } from '@/features/auth/services/apollo-auth-links'
 
 const httpLink = new HttpLink({
+  headers: {
+    'apollo-require-preflight': 'true',
+  },
   uri: env.apiUrl,
 })
 

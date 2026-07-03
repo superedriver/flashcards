@@ -38,6 +38,7 @@ export async function performRefreshToken(): Promise<boolean> {
       }),
       headers: {
         'Content-Type': 'application/json',
+        'apollo-require-preflight': 'true',
       },
       method: 'POST',
     })
