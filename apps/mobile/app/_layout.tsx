@@ -12,6 +12,7 @@ export default function RootLayout() {
         <Stack.Screen name="(auth)" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="decks" />
+        <Stack.Screen name="lessons" />
       </Stack>
     </AppProviders>
   )
