@@ -1,9 +1,5 @@
-import { PageTitle, Screen } from '@/ui/components'
+import { MyDecksScreen } from '@/features/decks/screens/my-decks-screen'
 
 export default function DecksScreen() {
-  return (
-    <Screen>
-      <PageTitle title="Decks" />
-    </Screen>
-  )
+  return <MyDecksScreen />
 }
