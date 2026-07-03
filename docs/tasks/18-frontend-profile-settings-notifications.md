@@ -33,7 +33,7 @@ docs/tasks/14-frontend-auth.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -192,19 +192,19 @@ MVP can keep all profile/settings/notification controls inside the profile tab.
 ## Epic Summary
 
 ```md
-- [ ] TASK-18.01 Add profile/settings/notification GraphQL documents
-- [ ] TASK-18.02 Generate profile/settings/notification GraphQL types
-- [ ] TASK-18.03 Add profile feature structure
-- [ ] TASK-18.04 Add settings feature structure
-- [ ] TASK-18.05 Add notifications feature structure
-- [ ] TASK-18.06 Add profile screen
-- [ ] TASK-18.07 Add settings form validation
-- [ ] TASK-18.08 Add user settings screen section
-- [ ] TASK-18.09 Add notification permission service
-- [ ] TASK-18.10 Add push token service
-- [ ] TASK-18.11 Add notification settings UI
-- [ ] TASK-18.12 Integrate push token removal with logout
-- [ ] TASK-18.13 Add profile/settings/notifications final checks
+- [x] TASK-18.01 Add profile/settings/notification GraphQL documents
+- [x] TASK-18.02 Generate profile/settings/notification GraphQL types
+- [x] TASK-18.03 Add profile feature structure
+- [x] TASK-18.04 Add settings feature structure
+- [x] TASK-18.05 Add notifications feature structure
+- [x] TASK-18.06 Add profile screen
+- [x] TASK-18.07 Add settings form validation
+- [x] TASK-18.08 Add user settings screen section
+- [x] TASK-18.09 Add notification permission service
+- [x] TASK-18.10 Add push token service
+- [x] TASK-18.11 Add notification settings UI
+- [x] TASK-18.12 Integrate push token removal with logout
+- [x] TASK-18.13 Add profile/settings/notifications final checks
 ```
 
 ---
@@ -213,7 +213,7 @@ MVP can keep all profile/settings/notification controls inside the profile tab.
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -329,7 +329,7 @@ TASK-18.01 Add profile/settings/notification GraphQL documents
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -400,7 +400,7 @@ TASK-18.02 Generate profile/settings/notification GraphQL types
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -475,7 +475,7 @@ TASK-18.03 Add profile feature structure
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -550,7 +550,7 @@ TASK-18.04 Add settings feature structure
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -625,7 +625,7 @@ TASK-18.05 Add notifications feature structure
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -717,7 +717,7 @@ TASK-18.06 Add profile screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -804,7 +804,7 @@ TASK-18.07 Add settings form validation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -900,7 +900,7 @@ TASK-18.08 Add user settings screen section
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -994,7 +994,7 @@ TASK-18.09 Add notification permission service
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1087,7 +1087,7 @@ TASK-18.10 Add push token service
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1183,7 +1183,7 @@ TASK-18.11 Add notification settings UI
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -1258,7 +1258,7 @@ TASK-18.12 Integrate push token removal with logout
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
