@@ -14,6 +14,8 @@ export default function RootLayout() {
         <Stack.Screen name="decks" />
         <Stack.Screen name="lessons" />
         <Stack.Screen name="public" />
+        <Stack.Screen name="groups" />
+        <Stack.Screen name="admin" />
       </Stack>
     </AppProviders>
   )

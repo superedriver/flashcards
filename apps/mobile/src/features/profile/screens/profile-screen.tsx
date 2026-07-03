@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { View } from 'react-native'
 
@@ -11,6 +12,7 @@ import { AppButton } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function ProfileScreen() {
+  const router = useRouter()
   const logout = useLogout()
   const [notificationsEnabled, setNotificationsEnabled] = useState(false)
   const { data, error, loading } = useProfileMeQuery()
@@ -28,6 +30,12 @@ export function ProfileScreen() {
         <View style={{ gap: 12 }}>
           <ProfileCard user={user} />
           <AccountStatusCard user={user} />
+          <View style={{ gap: 12 }}>
+            <AppButton onPress={() => router.push('/groups')}>My Groups</AppButton>
+            <AppButton onPress={() => router.push('/groups/invitations')}>
+              Group Invitations
+            </AppButton>
+          </View>
           <UserSettingsForm
             notificationsEnabled={notificationsEnabled}
             onNotificationsEnabledChange={setNotificationsEnabled}
