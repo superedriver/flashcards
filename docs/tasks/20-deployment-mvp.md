@@ -146,7 +146,7 @@ INTERNAL_JOB_SECRET=
 ## Epic Summary
 
 ```md
-- [ ] TASK-20.01 Add backend health endpoint
+- [x] TASK-20.01 Add backend health endpoint
 - [ ] TASK-20.02 Harden backend production config
 - [ ] TASK-20.03 Add production CORS configuration
 - [ ] TASK-20.04 Add production-safe GraphQL error handling
@@ -166,7 +166,7 @@ INTERNAL_JOB_SECRET=
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
