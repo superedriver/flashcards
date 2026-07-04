@@ -1,0 +1,21 @@
+# Render Blueprint for Flashcards API (MVP).
+# Set secrets in the Render dashboard — do not commit real values here.
+#
+# Required environment variables:
+# NODE_ENV, DATABASE_URL, APP_WEB_URL, CORS_ORIGIN,
+# JWT_ACCESS_SECRET, JWT_REFRESH_SECRET, INTERNAL_JOB_SECRET,
+# EMAIL_PROVIDER, RESEND_API_KEY, BREVO_API_KEY, EMAIL_FROM,
+# AI_PROVIDER, AI_API_KEY, PUSH_PROVIDER
+#
+# If Render splits install from build, run `pnpm install --frozen-lockfile`
+# before the build command below.
+
+services:
+  - type: web
+    name: flashcards-api
+    runtime: node
+    plan: free
+    rootDir: .
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @flashcards/api db:generate && pnpm --filter @flashcards/api build
+    startCommand: pnpm --filter @flashcards/api db:migrate:deploy && pnpm --filter @flashcards/api start:prod
+    healthCheckPath: /health
