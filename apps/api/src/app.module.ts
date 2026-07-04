@@ -10,6 +10,7 @@ import {
   emailConfig,
   pushConfig,
 } from './config';
+import { formatGraphQLError } from './common/errors';
 import { RootResolver } from './presentation/graphql/root.resolver';
 import { HealthModule } from './modules/health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -43,6 +44,7 @@ import { PrismaModule } from './infrastructure/prisma';
       autoSchemaFile: true,
       sortSchema: true,
       playground: process.env.NODE_ENV !== 'production',
+      formatError: formatGraphQLError,
     }),
     HealthModule,
     AuthModule,
