@@ -25,9 +25,12 @@
     "test": "pnpm -r test",
     "test:coverage": "pnpm --filter @flashcards/api test:cov",
     "secrets:scan": "gitleaks detect --source . -v",
-    "db:validate": "pnpm --filter @flashcards/api prisma:validate",
-    "db:generate": "pnpm --filter @flashcards/api prisma:generate",
-    "db:migrate:deploy": "pnpm --filter @flashcards/api prisma:migrate:deploy"
+    "db:validate": "pnpm --filter @flashcards/api db:validate",
+    "db:generate": "pnpm --filter @flashcards/api db:generate",
+    "db:migrate:deploy": "pnpm --filter @flashcards/api db:migrate:deploy",
+    "api:db:validate": "pnpm --filter @flashcards/api db:validate",
+    "api:db:generate": "pnpm --filter @flashcards/api db:generate",
+    "api:db:migrate:deploy": "pnpm --filter @flashcards/api db:migrate:deploy"
   },
   "packageManager": "pnpm@9.0.0",
   "pnpm": {

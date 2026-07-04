@@ -150,7 +150,7 @@ INTERNAL_JOB_SECRET=
 - [x] TASK-20.02 Harden backend production config
 - [x] TASK-20.03 Add production CORS configuration
 - [x] TASK-20.04 Add production-safe GraphQL error handling
-- [ ] TASK-20.05 Add database migration scripts
+- [x] TASK-20.05 Add database migration scripts
 - [ ] TASK-20.06 Add Render deployment config
 - [ ] TASK-20.07 Add frontend web build config
 - [ ] TASK-20.08 Add Vercel or Netlify deployment config
@@ -510,7 +510,7 @@ TASK-20.04 Add production-safe GraphQL error handling
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
