@@ -31,7 +31,7 @@ Email: Resend primary, Brevo fallback
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -157,7 +157,7 @@ INTERNAL_JOB_SECRET=
 - [x] TASK-20.09 Add GitHub Actions CI workflow
 - [x] TASK-20.10 Add GitHub Actions cron workflow
 - [x] TASK-20.11 Add deployment documentation
-- [ ] TASK-20.12 Add deployment final checks
+- [x] TASK-20.12 Add deployment final checks
 ```
 
 ---
@@ -1133,7 +1133,7 @@ TASK-20.11 Add deployment documentation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
