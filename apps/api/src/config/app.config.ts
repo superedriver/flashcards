@@ -1,10 +1,17 @@
 import { registerAs } from '@nestjs/config';
-import { resolveEnv } from './env';
+import { resolveEnv, validateProductionEnvironment } from './env';
 
-export const appConfig = registerAs('app', () => ({
-  nodeEnv: process.env.NODE_ENV ?? 'development',
-  port: Number(process.env.PORT ?? '3000'),
-  webUrl: resolveEnv('APP_WEB_URL', 'http://localhost:8081'),
-  corsOrigin: resolveEnv('CORS_ORIGIN', 'http://localhost:8081'),
-  internalJobSecret: process.env.INTERNAL_JOB_SECRET ?? '',
-}));
+export const appConfig = registerAs('app', () => {
+  validateProductionEnvironment();
+
+  return {
+    nodeEnv: process.env.NODE_ENV ?? 'development',
+    port: Number(process.env.PORT ?? '3000'),
+    webUrl: resolveEnv('APP_WEB_URL', 'http://localhost:8081'),
+    corsOrigin: resolveEnv('CORS_ORIGIN', 'http://localhost:8081'),
+    internalJobSecret: resolveEnv(
+      'INTERNAL_JOB_SECRET',
+      'replace-with-dev-internal-job-secret',
+    ),
+  };
+});

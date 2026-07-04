@@ -147,7 +147,7 @@ INTERNAL_JOB_SECRET=
 
 ```md
 - [x] TASK-20.01 Add backend health endpoint
-- [ ] TASK-20.02 Harden backend production config
+- [x] TASK-20.02 Harden backend production config
 - [ ] TASK-20.03 Add production CORS configuration
 - [ ] TASK-20.04 Add production-safe GraphQL error handling
 - [ ] TASK-20.05 Add database migration scripts
@@ -254,7 +254,7 @@ TASK-20.01 Add backend health endpoint
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
