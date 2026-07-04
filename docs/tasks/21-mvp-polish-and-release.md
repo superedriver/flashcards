@@ -142,7 +142,7 @@ MVP may defer:
 ## Epic Summary
 
 ```md
-- [ ] TASK-21.01 Add MVP smoke test checklist
+- [x] TASK-21.01 Add MVP smoke test checklist
 - [ ] TASK-21.02 Add seed/demo data script
 - [ ] TASK-21.03 Polish loading/error/empty states
 - [ ] TASK-21.04 Polish auth UX
@@ -165,7 +165,7 @@ MVP may defer:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
