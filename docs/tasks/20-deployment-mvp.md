@@ -153,7 +153,7 @@ INTERNAL_JOB_SECRET=
 - [x] TASK-20.05 Add database migration scripts
 - [x] TASK-20.06 Add Render deployment config
 - [x] TASK-20.07 Add frontend web build config
-- [ ] TASK-20.08 Add Vercel or Netlify deployment config
+- [x] TASK-20.08 Add Vercel or Netlify deployment config
 - [ ] TASK-20.09 Add GitHub Actions CI workflow
 - [ ] TASK-20.10 Add GitHub Actions cron workflow
 - [ ] TASK-20.11 Add deployment documentation
@@ -784,7 +784,7 @@ TASK-20.07 Add frontend web build config
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
