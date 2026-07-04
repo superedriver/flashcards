@@ -8,6 +8,7 @@
     "build:api": "pnpm --filter @flashcards/api build",
     "dev:app": "pnpm --filter @flashcards/mobile start",
     "build:web": "pnpm --filter @flashcards/mobile build:web",
+    "mobile:build:web": "pnpm --filter @flashcards/mobile build:web",
     "mobile:start": "pnpm --filter @flashcards/mobile start",
     "mobile:web": "pnpm --filter @flashcards/mobile web",
     "mobile:typecheck": "pnpm --filter @flashcards/mobile typecheck",
