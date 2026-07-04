@@ -2,30 +2,20 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-function parseCorsOrigins(raw: string): string | string[] {
-  const origins = raw
-    .split(',')
-    .map((value) => value.trim())
-    .filter(Boolean);
-
-  if (origins.length <= 1) {
-    return origins[0] ?? 'http://localhost:8081';
-  }
-
-  return origins;
-}
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
-  const corsOrigin = configService.get<string>(
-    'app.corsOrigin',
+  const corsOrigins = configService.get<string[]>('app.corsOrigins', [
     'http://localhost:8081',
+  ]);
+  const corsCredentials = configService.get<boolean>(
+    'app.corsCredentials',
+    true,
   );
 
   app.enableCors({
-    credentials: true,
-    origin: parseCorsOrigins(corsOrigin),
+    credentials: corsCredentials,
+    origin: corsOrigins.length === 1 ? corsOrigins[0] : corsOrigins,
   });
 
   await app.listen(process.env.PORT ?? 3000);
