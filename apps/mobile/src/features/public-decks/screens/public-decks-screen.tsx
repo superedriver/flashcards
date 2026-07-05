@@ -19,8 +19,8 @@ export function PublicDecksScreen() {
     },
   })
 
-  return (
-    <Screen>
+  const listHeader = (
+    <>
       <PageTitle title="Public Decks" />
       <AppText style={{ color: '#666666', marginBottom: 12 }}>
         Browse community decks and copy them to your library.
@@ -28,13 +28,29 @@ export function PublicDecksScreen() {
       <View style={{ gap: 12, marginBottom: 16 }}>
         <PublicDeckSearch value={searchQuery} onSearchChange={handleSearchChange} />
       </View>
+    </>
+  )
 
-      {loading ? <LoadingState message="Loading public decks..." /> : null}
+  return (
+    <Screen>
+      {loading ? (
+        <>
+          {listHeader}
+          <LoadingState message="Loading public decks..." />
+        </>
+      ) : null}
       {error ? (
-        <ErrorState message="Could not load public decks." onRetry={() => void refetch()} />
+        <>
+          {listHeader}
+          <ErrorState message="Could not load public decks." onRetry={() => void refetch()} />
+        </>
       ) : null}
       {!loading && !error && data?.publicDecks ? (
-        <PublicDeckList decks={data.publicDecks.items} searchQuery={searchQuery} />
+        <PublicDeckList
+          decks={data.publicDecks.items}
+          listHeader={listHeader}
+          searchQuery={searchQuery}
+        />
       ) : null}
     </Screen>
   )

@@ -46,7 +46,7 @@ export function VerifyEmailPrompt() {
   }
 
   return (
-    <Screen>
+    <Screen variant="narrow">
       <PageTitle title="Verify Your Email" />
       <AppText>
         We sent a verification link to {user?.email ?? 'your email address'}. Open the link to

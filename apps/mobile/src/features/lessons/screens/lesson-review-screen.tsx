@@ -148,7 +148,7 @@ export function LessonReviewScreen() {
   }
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title="Lesson Review" />
       <LessonProgress
         currentNumber={currentNumber}

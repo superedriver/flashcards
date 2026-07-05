@@ -72,6 +72,21 @@ export function DeckDetailScreen() {
     })
   }
 
+  const listHeader =
+    !loading && !error && deck && deckId ? (
+      <>
+        <DeckHeader cardCount={cards.length} deck={deck} />
+        <DeckLearningStatsCard deckId={deckId} />
+        <AppButton
+          disabled={cards.length === 0}
+          onPress={() => router.push(`/lessons/start?deckId=${deckId}`)}
+        >
+          Start Lesson
+        </AppButton>
+        <DeckActions deck={deck} isOwner={isOwner} />
+      </>
+    ) : null
+
   return (
     <Screen>
       <PageTitle title="Deck Detail" />
@@ -82,25 +97,15 @@ export function DeckDetailScreen() {
       {actionFeedback ? <AppText style={{ color: '#2e7d32' }}>{actionFeedback}</AppText> : null}
 
       {!loading && !error && deck && deckId ? (
-        <>
-          <DeckHeader cardCount={cards.length} deck={deck} />
-          <DeckLearningStatsCard deckId={deckId} />
-          <AppButton
-            disabled={cards.length === 0}
-            onPress={() => router.push(`/lessons/start?deckId=${deckId}`)}
-          >
-            Start Lesson
-          </AppButton>
-          <DeckActions deck={deck} isOwner={isOwner} />
-          <CardList
-            cards={cards}
-            deckId={deckId}
-            emptyActionLabel="Add card"
-            isOwner={isOwner}
-            onDeleteCard={isOwner ? handleDeleteCard : undefined}
-            onEmptyAction={isOwner ? () => router.push(`/decks/${deckId}/cards/new`) : undefined}
-          />
-        </>
+        <CardList
+          cards={cards}
+          deckId={deckId}
+          emptyActionLabel="Add card"
+          isOwner={isOwner}
+          listHeader={listHeader}
+          onDeleteCard={isOwner ? handleDeleteCard : undefined}
+          onEmptyAction={isOwner ? () => router.push(`/decks/${deckId}/cards/new`) : undefined}
+        />
       ) : null}
     </Screen>
   )

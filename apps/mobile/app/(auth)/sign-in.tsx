@@ -13,7 +13,7 @@ export default function SignInScreen() {
   }
 
   return (
-    <Screen>
+    <Screen variant="narrow">
       <PageTitle title="Sign In" />
       {error ? <ErrorState message={error} /> : null}
       <SignInForm />

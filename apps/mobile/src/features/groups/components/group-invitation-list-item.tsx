@@ -34,7 +34,7 @@ export function GroupInvitationListItem({
       </AppText>
 
       {isPending && onAccept && onDecline ? (
-        <View style={{ flexDirection: 'row', gap: 8, marginTop: 4 }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 4 }}>
           <AppButton disabled={isSubmitting} onPress={() => onAccept(invitation.id)}>
             {isSubmitting ? 'Working...' : 'Accept'}
           </AppButton>

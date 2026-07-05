@@ -152,7 +152,7 @@ MVP may defer:
 - [x] TASK-21.08 Polish profile/settings/notifications UX
 - [x] TASK-21.09 Polish groups/admin UX
 - [x] TASK-21.10 Add accessibility basics pass
-- [ ] TASK-21.11 Add responsive web pass
+- [x] TASK-21.11 Add responsive web pass
 - [ ] TASK-21.12 Add production observability basics
 - [ ] TASK-21.13 Add release notes
 - [ ] TASK-21.14 Add MVP release checklist
@@ -1038,7 +1038,7 @@ TASK-21.10 Add accessibility basics pass
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

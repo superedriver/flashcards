@@ -63,7 +63,7 @@ export function VerifyEmailScreen() {
   }
 
   return (
-    <Screen>
+    <Screen variant="narrow">
       <PageTitle title="Verify Email" />
       {status === 'loading' ? <LoadingState message="Verifying email..." /> : null}
       {status === 'success' ? (

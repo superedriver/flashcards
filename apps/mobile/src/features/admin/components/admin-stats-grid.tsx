@@ -1,4 +1,7 @@
+import { View } from 'react-native'
+
 import type { AdminDashboardStatsQuery } from '@/graphql/generated'
+import { responsiveGridItemStyle, responsiveGridStyle } from '@/ui/utils/responsive'
 
 import { AdminStatCard } from './admin-stat-card'
 
@@ -20,10 +23,12 @@ export function AdminStatsGrid({ stats }: AdminStatsGridProps) {
   ]
 
   return (
-    <>
+    <View style={responsiveGridStyle}>
       {items.map((item) => (
-        <AdminStatCard key={item.label} label={item.label} value={item.value} />
+        <View key={item.label} style={responsiveGridItemStyle}>
+          <AdminStatCard label={item.label} value={item.value} />
+        </View>
       ))}
-    </>
+    </View>
   )
 }

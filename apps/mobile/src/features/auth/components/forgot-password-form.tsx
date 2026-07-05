@@ -95,7 +95,7 @@ export function ForgotPasswordForm() {
 
 export function ForgotPasswordScreen() {
   return (
-    <Screen>
+    <Screen variant="narrow">
       <PageTitle title="Forgot Password" />
       <ForgotPasswordForm />
     </Screen>

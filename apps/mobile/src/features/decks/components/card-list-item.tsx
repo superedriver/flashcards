@@ -25,7 +25,7 @@ export function CardListItem({ card, deckId, isOwner, onDelete }: CardListItemPr
       ) : null}
 
       {isOwner ? (
-        <View style={{ flexDirection: 'row', gap: 12, marginTop: 4 }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 4 }}>
           <AppButton onPress={() => router.push(`/decks/${deckId}/cards/${card.id}/edit`)}>
             Edit
           </AppButton>

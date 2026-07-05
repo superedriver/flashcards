@@ -13,7 +13,7 @@ export default function SignUpScreen() {
   }
 
   return (
-    <Screen>
+    <Screen variant="narrow">
       <PageTitle title="Sign Up" />
       {error ? <ErrorState message={error} /> : null}
       <SignUpForm />

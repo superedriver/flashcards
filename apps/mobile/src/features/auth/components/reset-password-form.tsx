@@ -136,7 +136,7 @@ export function ResetPasswordForm() {
 
 export function ResetPasswordScreen() {
   return (
-    <Screen>
+    <Screen variant="narrow">
       <PageTitle title="Reset Password" />
       <ResetPasswordForm />
     </Screen>

@@ -1,34 +1,51 @@
-import { FlatList } from 'react-native'
+import type { ReactElement } from 'react'
+import { FlatList, useWindowDimensions, View } from 'react-native'
 
 import type { PublicDecksQuery } from '@/graphql/generated'
 import { EmptyState } from '@/ui/components'
+import { getListNumColumns } from '@/ui/utils/responsive'
 
 import { PublicDeckListItem } from './public-deck-list-item'
 
 type PublicDeckListProps = {
   decks: PublicDecksQuery['publicDecks']['items']
+  listHeader?: ReactElement | null
   searchQuery?: string
 }
 
-export function PublicDeckList({ decks, searchQuery }: PublicDeckListProps) {
+export function PublicDeckList({ decks, listHeader, searchQuery }: PublicDeckListProps) {
+  const { width } = useWindowDimensions()
+  const numColumns = getListNumColumns(width)
+
   if (decks.length === 0) {
     return (
-      <EmptyState
-        message={
-          searchQuery
-            ? `No public decks match "${searchQuery}".`
-            : 'No public decks are available yet.'
-        }
-      />
+      <>
+        {listHeader}
+        <EmptyState
+          message={
+            searchQuery
+              ? `No public decks match "${searchQuery}".`
+              : 'No public decks are available yet.'
+          }
+        />
+      </>
     )
   }
 
   return (
     <FlatList
-      data={decks}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <PublicDeckListItem deck={item} />}
+      columnWrapperStyle={numColumns > 1 ? { gap: 12 } : undefined}
       contentContainerStyle={{ paddingBottom: 16 }}
+      data={decks}
+      key={`public-decks-${numColumns}`}
+      keyExtractor={(item) => item.id}
+      ListHeaderComponent={listHeader ?? undefined}
+      numColumns={numColumns}
+      renderItem={({ item }) => (
+        <View style={numColumns > 1 ? { flex: 1 } : undefined}>
+          <PublicDeckListItem deck={item} />
+        </View>
+      )}
     />
   )
 }
