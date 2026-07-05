@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
@@ -11,6 +11,7 @@ import {
   pushConfig,
 } from './config';
 import { formatGraphQLError } from './common/errors';
+import { HstsMiddleware } from './common/http/hsts.middleware';
 import { RootResolver } from './presentation/graphql/root.resolver';
 import { HealthModule } from './modules/health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -59,6 +60,10 @@ import { PrismaModule } from './infrastructure/prisma';
     EmailModule,
   ],
   controllers: [],
-  providers: [RootResolver],
+  providers: [RootResolver, HstsMiddleware],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(HstsMiddleware).forRoutes('*');
+  }
+}

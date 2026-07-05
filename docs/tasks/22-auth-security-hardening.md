@@ -28,7 +28,7 @@ Out of scope:
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -105,7 +105,7 @@ Expected state:
 - [x] TASK-22.12 Frontend web cookie-based session restore
 - [x] TASK-22.13 Update auth-token-strategy for web cookie flow
 - [x] TASK-22.14 Update auth session smoke tests
-- [ ] TASK-22.15 Add HSTS headers on production API
+- [x] TASK-22.15 Add HSTS headers on production API
 ```
 
 ---
@@ -1469,7 +1469,7 @@ TASK-22.14 Update auth session smoke tests
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
