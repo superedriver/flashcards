@@ -165,6 +165,30 @@ query {
 
 ---
 
+## 4a. Web Password Field Masking
+
+**Goal:** Verify password inputs mask characters on web (regression check for Tamagui/AppInput).
+
+**Steps:**
+
+1. Open `${WEB_APP_URL}` in a desktop browser.
+2. Go to sign-in. Type any placeholder text in the password field (for example `test-password-placeholder`).
+3. Go to sign-up. Type placeholder text in password and confirm password fields.
+4. Open forgot password, submit an email if required, then open reset-password with a valid reset token link.
+5. Type placeholder text in new password and confirm password fields.
+
+**Expected result:**
+
+```txt
+- Password characters are masked (bullets/dots), not visible as plain text
+- Email fields still show plain text normally
+- Masking works on sign-in, sign-up, and reset-password screens
+```
+
+**Result:** - [ ] PASS - [ ] FAIL
+
+---
+
 ## 5. Logout
 
 **Goal:** Verify session can be cleared.

@@ -93,7 +93,7 @@ Expected state:
 ```md
 - [x] TASK-22.01 Fix password masking on web in AppInput
 - [x] TASK-22.02 Audit all password fields
-- [ ] TASK-22.03 Add web password masking smoke check
+- [x] TASK-22.03 Add web password masking smoke check
 - [ ] TASK-22.04 Add production HTTPS guard for API URL
 - [ ] TASK-22.05 Update security checklist for credentials in transit
 - [ ] TASK-22.06 Update deployment guide HTTPS requirements
@@ -308,7 +308,7 @@ TASK-22.02 Audit all password fields
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
