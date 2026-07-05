@@ -96,7 +96,7 @@ Expected state:
 - [x] TASK-22.03 Add web password masking smoke check
 - [x] TASK-22.04 Add production HTTPS guard for API URL
 - [x] TASK-22.05 Update security checklist for credentials in transit
-- [ ] TASK-22.06 Update deployment guide HTTPS requirements
+- [x] TASK-22.06 Update deployment guide HTTPS requirements
 - [ ] TASK-22.07 Audit API logging for password leakage
 - [ ] TASK-22.08 Add auth logging safety test
 - [ ] TASK-22.09 Add bootstrapping guards to auth screens
@@ -586,7 +586,7 @@ TASK-22.05 Update security checklist for credentials in transit
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

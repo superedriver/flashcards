@@ -156,6 +156,16 @@ This repository uses Vercel config from `vercel.json`.
 EXPO_PUBLIC_API_URL=https://<render-api-host>/graphql
 ```
 
+HTTPS requirements:
+
+```txt
+- EXPO_PUBLIC_API_URL must use https:// in production.
+- Do not use http:// API URLs in Vercel production environment variables.
+- http://localhost is allowed for local development only.
+- Auth credentials and refresh token cookies require HTTPS in production.
+- Vercel serves the web app over HTTPS by default.
+```
+
 Do not put backend secrets in Vercel.
 
 1. Deploy and note the web URL:
