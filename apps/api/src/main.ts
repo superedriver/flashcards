@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { logApplicationStartup } from './common/observability';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -18,7 +19,16 @@ async function bootstrap() {
     origin: corsOrigins.length === 1 ? corsOrigins[0] : corsOrigins,
   });
 
-  await app.listen(process.env.PORT ?? 3000);
+  const port = Number(
+    configService.get<number>('app.port') ?? process.env.PORT ?? 3000,
+  );
+
+  await app.listen(port);
+
+  logApplicationStartup({
+    nodeEnv: configService.get<string>('app.nodeEnv', 'development'),
+    port,
+  });
 }
 
 void bootstrap();

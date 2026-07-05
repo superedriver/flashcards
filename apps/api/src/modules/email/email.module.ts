@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EMAIL_PROVIDER } from './application/ports/email-provider.port';
 import { DevEmailProvider } from './infrastructure/dev-email.provider';
+import { ObservabilityEmailProvider } from './infrastructure/observability-email.provider';
 
 @Module({
   providers: [
@@ -16,7 +17,7 @@ import { DevEmailProvider } from './infrastructure/dev-email.provider';
         const provider = config.get<string>('email.provider') ?? 'dev';
 
         if (provider === 'dev') {
-          return devEmailProvider;
+          return new ObservabilityEmailProvider(devEmailProvider, 'dev');
         }
 
         throw new Error(`Unsupported email provider: ${provider}`);

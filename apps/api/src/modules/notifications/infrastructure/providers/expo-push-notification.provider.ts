@@ -1,5 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import Expo, { ExpoPushMessage, ExpoPushTicket } from 'expo-server-sdk';
+
+import { logPushDeliverySummary } from '../../../../common/observability';
+import { sanitizeLogMessage } from '../../../../common/observability/sanitize-log-message';
 import {
   PushNotificationProviderPort,
   PushSendResult,
@@ -25,13 +28,22 @@ export class ExpoPushNotificationProvider implements PushNotificationProviderPor
     }));
 
     if (expoMessages.length === 0) {
-      return {
+      const result = {
         successCount: 0,
         failureCount: skippedCount,
         invalidTokens: messages
           .filter((message) => !Expo.isExpoPushToken(message.to))
           .map((message) => message.to),
       };
+
+      logPushDeliverySummary({
+        provider: 'expo',
+        successCount: result.successCount,
+        failureCount: result.failureCount,
+        invalidTokenCount: result.invalidTokens.length,
+      });
+
+      return result;
     }
 
     const chunks = this.expo.chunkPushNotifications(expoMessages);
@@ -49,14 +61,19 @@ export class ExpoPushNotificationProvider implements PushNotificationProviderPor
         failureCount += chunkResult.failureCount;
         invalidTokens.push(...chunkResult.invalidTokens);
       } catch (error) {
-        this.logger.error('Expo push chunk failed');
+        this.logger.error(
+          `Expo push chunk failed: ${sanitizeLogMessage(error)}`,
+        );
         failureCount += chunk.length;
-
-        if (error instanceof Error) {
-          this.logger.error(error.message);
-        }
       }
     }
+
+    logPushDeliverySummary({
+      provider: 'expo',
+      successCount,
+      failureCount,
+      invalidTokenCount: invalidTokens.length,
+    });
 
     return {
       successCount,

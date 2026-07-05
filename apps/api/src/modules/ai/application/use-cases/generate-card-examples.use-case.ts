@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
+import { logAiRequestSummary } from '../../../../common/observability';
 import {
   USER_REPOSITORY,
   UserRepositoryPort,
@@ -115,6 +116,13 @@ export class GenerateCardExamplesUseCase {
         outputPreview: aiResult.rawOutputPreview,
       });
 
+      logAiRequestSummary({
+        provider: this.aiProvider.providerName,
+        feature: AI_FEATURE,
+        status: 'SUCCESS',
+        cardId: card.id,
+      });
+
       return {
         cardId: card.id,
         examples: aiResult.examples,
@@ -133,6 +141,14 @@ export class GenerateCardExamplesUseCase {
         feature: AI_FEATURE,
         status: 'FAILED',
         promptPreview: promptResult.prompt,
+        errorMessage,
+      });
+
+      logAiRequestSummary({
+        provider: this.aiProvider.providerName,
+        feature: AI_FEATURE,
+        status: 'FAILED',
+        cardId: card.id,
         errorMessage,
       });
 

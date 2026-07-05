@@ -1,5 +1,7 @@
 import { Controller, Post, UseGuards } from '@nestjs/common';
+
 import { InternalJobGuard } from '../../../../common/guards/internal-job.guard';
+import { logReminderJobSummary } from '../../../../common/observability';
 import { SendDueCardRemindersUseCase } from '../../application/use-cases/send-due-card-reminders.use-case';
 
 @Controller('internal/jobs')
@@ -16,8 +18,12 @@ export class InternalNotificationsController {
     sentMessages: number;
     failedMessages: number;
   }> {
-    return this.sendDueCardRemindersUseCase.execute({
+    const result = await this.sendDueCardRemindersUseCase.execute({
       now: new Date(),
     });
+
+    logReminderJobSummary(result);
+
+    return result;
   }
 }

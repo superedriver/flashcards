@@ -291,7 +291,47 @@ pnpm --filter @flashcards/mobile typecheck
 pnpm --filter @flashcards/mobile build:web
 ```
 
-## 9. Secret Scan (Optional)
+## 10. Safe Log Inspection (Render)
+
+Production API logs are available in Render:
+
+```txt
+Render Dashboard -> Web Service -> Logs
+```
+
+Use logs for operational debugging only. Safe events to look for:
+
+```txt
+- Application started
+- Health check status=ok
+- Due card reminder job summary
+- Email delivery summary
+- AI request summary
+- Push delivery summary
+```
+
+Do not copy or share log lines that may contain secrets. The API must never log:
+
+```txt
+- passwords
+- access tokens / refresh tokens
+- verification / reset tokens
+- push tokens
+- API keys
+- DATABASE_URL
+```
+
+If debugging auth or email issues:
+
+```txt
+- use timestamps and safe status fields
+- use user id or email subject only when needed
+- never paste full email bodies or reset links into tickets
+```
+
+Request correlation ids are not implemented in MVP; add later if needed.
+
+## 11. Secret Scan (Optional)
 
 Before release, scan repository for accidental secret commits:
 

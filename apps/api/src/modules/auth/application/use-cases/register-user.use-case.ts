@@ -1,4 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
+import { sanitizeLogMessage } from '../../../../common/observability';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import { SafeUser } from '../../domain/types';
 import {
@@ -120,8 +121,7 @@ export class RegisterUserUseCase {
       });
     } catch (error) {
       this.logger.error(
-        'Failed to send verification email after registration',
-        error instanceof Error ? error.stack : String(error),
+        `Failed to send verification email after registration: ${sanitizeLogMessage(error)}`,
       );
     }
 
