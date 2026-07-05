@@ -372,6 +372,7 @@ Implement tasks in this order:
 19-frontend-groups-admin.md
 20-deployment-mvp.md
 21-mvp-polish-and-release.md
+22-auth-security-hardening.md
 ```
 
 ---
@@ -726,6 +727,22 @@ Purpose:
 
 ```txt
 Polish MVP UX, add smoke tests, seed data, release notes, release checklist, and final release checks.
+```
+
+---
+
+### 22 Auth Security & UX Hardening
+
+File:
+
+```txt
+docs/tasks/22-auth-security-hardening.md
+```
+
+Purpose:
+
+```txt
+Fix password masking on web, harden auth transport and logging, improve auth routing UX, and add httpOnly cookie session persistence for web.
 ```
 
 ---
