@@ -144,7 +144,7 @@ MVP may defer:
 ```md
 - [x] TASK-21.01 Add MVP smoke test checklist
 - [x] TASK-21.02 Add seed/demo data script
-- [ ] TASK-21.03 Polish loading/error/empty states
+- [x] TASK-21.03 Polish loading/error/empty states
 - [ ] TASK-21.04 Polish auth UX
 - [ ] TASK-21.05 Polish deck/card UX
 - [ ] TASK-21.06 Polish lesson UX
@@ -363,7 +363,7 @@ TASK-21.02 Add seed/demo data script
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

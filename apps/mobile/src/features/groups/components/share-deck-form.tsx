@@ -1,4 +1,5 @@
 import type { MyDecksQuery } from '@/graphql/generated'
+import { EmptyState } from '@/ui/components'
 import { AppCard, AppText } from '@/ui/primitives'
 import { Pressable, View } from 'react-native'
 
@@ -6,6 +7,7 @@ type ShareDeckFormProps = {
   decks: MyDecksQuery['myDecks']
   errorMessage?: string | null
   feedback?: string | null
+  onCreateDeck?: () => void
   onSelectDeck: (deckId: string) => void
   selectedDeckId: string | null
 }
@@ -14,6 +16,7 @@ export function ShareDeckForm({
   decks,
   errorMessage,
   feedback,
+  onCreateDeck,
   onSelectDeck,
   selectedDeckId,
 }: ShareDeckFormProps) {
@@ -22,7 +25,11 @@ export function ShareDeckForm({
       <AppText style={{ color: '#666666' }}>Shared decks are view-only for group members.</AppText>
 
       {decks.length === 0 ? (
-        <AppText>You have no decks to share.</AppText>
+        <EmptyState
+          actionLabel={onCreateDeck ? 'Create a deck' : undefined}
+          message="You have no decks to share."
+          onAction={onCreateDeck}
+        />
       ) : (
         decks.map((deck) => {
           const isSelected = selectedDeckId === deck.id

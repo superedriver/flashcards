@@ -12,7 +12,7 @@ export function PublicDecksScreen() {
     setSearchQuery(query)
   }, [])
 
-  const { data, error, loading } = usePublicDecksQuery({
+  const { data, error, loading, refetch } = usePublicDecksQuery({
     variables: {
       input: searchQuery ? { query: searchQuery } : undefined,
     },
@@ -26,7 +26,9 @@ export function PublicDecksScreen() {
       </View>
 
       {loading ? <LoadingState message="Loading public decks..." /> : null}
-      {error ? <ErrorState message="Could not load public decks." /> : null}
+      {error ? (
+        <ErrorState message="Could not load public decks." onRetry={() => void refetch()} />
+      ) : null}
       {!loading && !error && data?.publicDecks ? (
         <PublicDeckList decks={data.publicDecks.items} />
       ) : null}

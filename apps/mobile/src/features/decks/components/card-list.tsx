@@ -8,13 +8,28 @@ import { CardListItem } from './card-list-item'
 type CardListProps = {
   cards: DeckCardsQuery['deckCards']
   deckId: string
+  emptyActionLabel?: string
   isOwner: boolean
   onDeleteCard?: (cardId: string) => void
+  onEmptyAction?: () => void
 }
 
-export function CardList({ cards, deckId, isOwner, onDeleteCard }: CardListProps) {
+export function CardList({
+  cards,
+  deckId,
+  emptyActionLabel,
+  isOwner,
+  onDeleteCard,
+  onEmptyAction,
+}: CardListProps) {
   if (cards.length === 0) {
-    return <EmptyState message="This deck has no cards yet." />
+    return (
+      <EmptyState
+        actionLabel={onEmptyAction ? emptyActionLabel : undefined}
+        message="This deck has no cards yet."
+        onAction={onEmptyAction}
+      />
+    )
   }
 
   return (

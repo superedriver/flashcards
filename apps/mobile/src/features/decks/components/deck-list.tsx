@@ -7,11 +7,18 @@ import { DeckListItem } from './deck-list-item'
 
 type DeckListProps = {
   decks: MyDecksQuery['myDecks']
+  onCreateDeck?: () => void
 }
 
-export function DeckList({ decks }: DeckListProps) {
+export function DeckList({ decks, onCreateDeck }: DeckListProps) {
   if (decks.length === 0) {
-    return <EmptyState message="You have no decks yet. Create your first deck." />
+    return (
+      <EmptyState
+        actionLabel={onCreateDeck ? 'Create your first deck' : undefined}
+        message="You have no decks yet."
+        onAction={onCreateDeck}
+      />
+    )
   }
 
   return (

@@ -11,7 +11,7 @@ export function EditDeckScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const { data, error, loading } = useDeckQuery({
+  const { data, error, loading, refetch } = useDeckQuery({
     skip: !deckId,
     variables: { id: deckId ?? '' },
   })
@@ -41,7 +41,7 @@ export function EditDeckScreen() {
     return (
       <Screen>
         <PageTitle title="Edit Deck" />
-        <ErrorState message="Could not load deck. Try again later." />
+        <ErrorState message="Could not load deck." onRetry={() => void refetch()} />
       </Screen>
     )
   }

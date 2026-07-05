@@ -9,7 +9,7 @@ import { DeckList } from '../components/deck-list'
 
 export function MyDecksScreen() {
   const router = useRouter()
-  const { data, error, loading } = useMyDecksQuery()
+  const { data, error, loading, refetch } = useMyDecksQuery()
 
   return (
     <Screen>
@@ -19,8 +19,10 @@ export function MyDecksScreen() {
       </View>
 
       {loading ? <LoadingState message="Loading decks..." /> : null}
-      {error ? <ErrorState message="Could not load decks. Pull to refresh or try again." /> : null}
-      {!loading && !error && data?.myDecks ? <DeckList decks={data.myDecks} /> : null}
+      {error ? <ErrorState message="Could not load decks." onRetry={() => void refetch()} /> : null}
+      {!loading && !error && data?.myDecks ? (
+        <DeckList decks={data.myDecks} onCreateDeck={() => router.push('/decks/new')} />
+      ) : null}
     </Screen>
   )
 }

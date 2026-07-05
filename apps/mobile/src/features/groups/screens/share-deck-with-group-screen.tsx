@@ -14,7 +14,7 @@ export function ShareDeckWithGroupScreen() {
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const { data, error, loading } = useMyDecksQuery()
+  const { data, error, loading, refetch } = useMyDecksQuery()
   const [shareDeckWithGroup, { loading: isSubmitting }] = useShareDeckWithGroupMutation()
 
   const handleShare = async () => {
@@ -52,7 +52,7 @@ export function ShareDeckWithGroupScreen() {
       <PageTitle title="Share Deck" />
 
       {loading ? <LoadingState message="Loading decks..." /> : null}
-      {error ? <ErrorState message="Could not load decks." /> : null}
+      {error ? <ErrorState message="Could not load decks." onRetry={() => void refetch()} /> : null}
 
       {!loading && !error && data?.myDecks ? (
         <>
@@ -60,6 +60,7 @@ export function ShareDeckWithGroupScreen() {
             decks={data.myDecks}
             errorMessage={errorMessage}
             feedback={feedback}
+            onCreateDeck={() => router.push('/decks/new')}
             selectedDeckId={selectedDeckId}
             onSelectDeck={setSelectedDeckId}
           />

@@ -131,7 +131,9 @@ export function ModerationQueueScreen() {
       <ModerationStatusFilter value={status} onChange={setStatus} />
 
       {loading ? <LoadingState message="Loading moderation queue..." /> : null}
-      {error ? <ErrorState message="Could not load moderation queue." /> : null}
+      {error ? (
+        <ErrorState message="Could not load moderation queue." onRetry={() => void refetch()} />
+      ) : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
       {feedback ? <AppText>{feedback}</AppText> : null}
 

@@ -8,7 +8,7 @@ import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function MyGroupsScreen() {
   const router = useRouter()
-  const { data, error, loading } = useMyGroupsQuery()
+  const { data, error, loading, refetch } = useMyGroupsQuery()
 
   return (
     <Screen>
@@ -19,8 +19,12 @@ export function MyGroupsScreen() {
       </View>
 
       {loading ? <LoadingState message="Loading groups..." /> : null}
-      {error ? <ErrorState message="Could not load groups." /> : null}
-      {!loading && !error && data?.myGroups ? <GroupList groups={data.myGroups} /> : null}
+      {error ? (
+        <ErrorState message="Could not load groups." onRetry={() => void refetch()} />
+      ) : null}
+      {!loading && !error && data?.myGroups ? (
+        <GroupList groups={data.myGroups} onCreateGroup={() => router.push('/groups/new')} />
+      ) : null}
     </Screen>
   )
 }

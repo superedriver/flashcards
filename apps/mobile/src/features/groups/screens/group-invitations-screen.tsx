@@ -75,7 +75,9 @@ export function GroupInvitationsScreen() {
       <PageTitle title="Group Invitations" />
 
       {loading ? <LoadingState message="Loading invitations..." /> : null}
-      {error ? <ErrorState message="Could not load invitations." /> : null}
+      {error ? (
+        <ErrorState message="Could not load invitations." onRetry={() => void refetch()} />
+      ) : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
       {feedback ? <AppText>{feedback}</AppText> : null}
 

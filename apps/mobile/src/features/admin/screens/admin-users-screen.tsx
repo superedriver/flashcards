@@ -90,7 +90,9 @@ export function AdminUsersScreen() {
       </View>
 
       {loading ? <LoadingState message="Searching users..." /> : null}
-      {error ? <ErrorState message="Could not search users." /> : null}
+      {error ? (
+        <ErrorState message="Could not search users." onRetry={() => void refetch()} />
+      ) : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
       {feedback ? <AppText>{feedback}</AppText> : null}
 

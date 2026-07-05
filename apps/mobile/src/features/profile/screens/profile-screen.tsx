@@ -17,7 +17,7 @@ export function ProfileScreen() {
   const logout = useLogout()
   const { user: authUser } = useAuth()
   const [notificationsEnabled, setNotificationsEnabled] = useState(false)
-  const { data, error, loading } = useProfileMeQuery()
+  const { data, error, loading, refetch } = useProfileMeQuery()
 
   const user = data?.me
   const isAdmin = authUser?.role === 'ADMIN'
@@ -28,7 +28,9 @@ export function ProfileScreen() {
       <PageTitle title="Profile" />
 
       {loading ? <LoadingState message="Loading profile..." /> : null}
-      {error ? <ErrorState message="Could not load profile." /> : null}
+      {error ? (
+        <ErrorState message="Could not load profile." onRetry={() => void refetch()} />
+      ) : null}
 
       {user ? (
         <View style={{ gap: 12 }}>

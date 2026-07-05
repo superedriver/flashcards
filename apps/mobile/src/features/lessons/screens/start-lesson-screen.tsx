@@ -19,6 +19,7 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isEmptyLesson, setIsEmptyLesson] = useState(false)
   const [isStarting, setIsStarting] = useState(true)
+  const [retryCount, setRetryCount] = useState(0)
   const hasStartedRef = useRef(false)
 
   useEffect(() => {
@@ -71,7 +72,15 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
       .finally(() => {
         setIsStarting(false)
       })
-  }, [deckId, router, setActiveLesson, startLesson])
+  }, [deckId, retryCount, router, setActiveLesson, startLesson])
+
+  const handleRetry = () => {
+    setErrorMessage(null)
+    setIsEmptyLesson(false)
+    setIsStarting(true)
+    hasStartedRef.current = false
+    setRetryCount((current) => current + 1)
+  }
 
   if (!deckId) {
     return (
@@ -86,7 +95,7 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
     <Screen>
       <PageTitle title="Start Lesson" />
       {isStarting ? <LoadingState message="Starting lesson..." /> : null}
-      {errorMessage ? <ErrorState message={errorMessage} /> : null}
+      {errorMessage ? <ErrorState message={errorMessage} onRetry={handleRetry} /> : null}
       {isEmptyLesson ? (
         <View style={{ gap: 12 }}>
           <EmptyState message="No cards are ready for review right now." />

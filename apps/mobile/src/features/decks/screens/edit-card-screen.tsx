@@ -16,7 +16,7 @@ export function EditCardScreen() {
   const { cardId, deckId } = useLocalSearchParams<{ cardId: string; deckId: string }>()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const { data, error, loading } = useDeckCardsQuery({
+  const { data, error, loading, refetch } = useDeckCardsQuery({
     skip: !deckId,
     variables: { deckId: deckId ?? '' },
   })
@@ -46,7 +46,7 @@ export function EditCardScreen() {
     return (
       <Screen>
         <PageTitle title="Edit Card" />
-        <ErrorState message="Could not load card. Try again later." />
+        <ErrorState message="Could not load card." onRetry={() => void refetch()} />
       </Screen>
     )
   }

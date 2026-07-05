@@ -37,6 +37,10 @@ export function DeckDetailScreen() {
   const cards = cardsQuery.data?.deckCards ?? []
   const isOwner = Boolean(deck && user && deck.ownerId === user.id)
 
+  const handleRetry = () => {
+    void Promise.all([deckQuery.refetch(), cardsQuery.refetch()])
+  }
+
   const handleDeleteCard = (cardId: string) => {
     if (!deckId) {
       return
@@ -68,7 +72,7 @@ export function DeckDetailScreen() {
       <PageTitle title="Deck Detail" />
 
       {loading ? <LoadingState message="Loading deck..." /> : null}
-      {error ? <ErrorState message="Could not load deck. Try again later." /> : null}
+      {error ? <ErrorState message="Could not load deck." onRetry={handleRetry} /> : null}
       {actionError ? <ErrorState message={actionError} /> : null}
 
       {!loading && !error && deck && deckId ? (
@@ -81,15 +85,14 @@ export function DeckDetailScreen() {
           >
             Start Lesson
           </AppButton>
-          {cards.length === 0 ? (
-            <ErrorState message="Add cards to this deck before starting a lesson." />
-          ) : null}
           <DeckActions deck={deck} isOwner={isOwner} />
           <CardList
             cards={cards}
             deckId={deckId}
+            emptyActionLabel="Add card"
             isOwner={isOwner}
             onDeleteCard={isOwner ? handleDeleteCard : undefined}
+            onEmptyAction={isOwner ? () => router.push(`/decks/${deckId}/cards/new`) : undefined}
           />
         </>
       ) : null}

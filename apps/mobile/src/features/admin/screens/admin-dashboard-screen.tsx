@@ -15,7 +15,7 @@ function isForbiddenError(error: unknown): boolean {
 }
 
 export function AdminDashboardScreen() {
-  const { data, error, loading } = useAdminDashboardStatsQuery()
+  const { data, error, loading, refetch } = useAdminDashboardStatsQuery()
 
   if (loading) {
     return (
@@ -36,6 +36,7 @@ export function AdminDashboardScreen() {
               ? 'You do not have permission to view the admin dashboard.'
               : getGraphqlErrorMessage(error, 'Could not load dashboard stats.')
           }
+          onRetry={isForbiddenError(error) ? undefined : () => void refetch()}
         />
       </Screen>
     )

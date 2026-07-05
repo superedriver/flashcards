@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { View } from 'react-native'
 
@@ -10,6 +10,7 @@ import { useGroupQuery, useGroupSharedDecksQuery } from '@/graphql/generated'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function GroupDetailScreen() {
+  const router = useRouter()
   const { groupId } = useLocalSearchParams<{ groupId: string }>()
   const [showInviteForm, setShowInviteForm] = useState(false)
 
@@ -17,6 +18,7 @@ export function GroupDetailScreen() {
     data: groupData,
     error: groupError,
     loading: groupLoading,
+    refetch: refetchGroup,
   } = useGroupQuery({
     skip: !groupId,
     variables: { id: groupId ?? '' },
@@ -26,6 +28,7 @@ export function GroupDetailScreen() {
     data: sharedDecksData,
     error: sharedDecksError,
     loading: sharedDecksLoading,
+    refetch: refetchSharedDecks,
   } = useGroupSharedDecksQuery({
     skip: !groupId,
     variables: { groupId: groupId ?? '' },
@@ -35,12 +38,16 @@ export function GroupDetailScreen() {
   const loading = groupLoading || sharedDecksLoading
   const error = groupError ?? sharedDecksError
 
+  const handleRetry = () => {
+    void Promise.all([refetchGroup(), refetchSharedDecks()])
+  }
+
   return (
     <Screen>
       <PageTitle title="Group" />
 
       {loading ? <LoadingState message="Loading group..." /> : null}
-      {error ? <ErrorState message="Could not load group." /> : null}
+      {error ? <ErrorState message="Could not load group." onRetry={handleRetry} /> : null}
 
       {group && groupId ? (
         <View style={{ gap: 12 }}>
@@ -51,7 +58,10 @@ export function GroupDetailScreen() {
           />
           {showInviteForm ? <InviteUserForm groupId={groupId} /> : null}
           {sharedDecksData?.groupSharedDecks ? (
-            <GroupSharedDeckList decks={sharedDecksData.groupSharedDecks} />
+            <GroupSharedDeckList
+              decks={sharedDecksData.groupSharedDecks}
+              onShareDeck={() => router.push(`/groups/${groupId}/share-deck`)}
+            />
           ) : null}
         </View>
       ) : null}

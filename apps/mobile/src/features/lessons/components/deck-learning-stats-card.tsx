@@ -15,7 +15,7 @@ function formatNextReview(value?: string | null): string {
 }
 
 export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
-  const { data, error, loading } = useDeckLearningStatsQuery({
+  const { data, error, loading, refetch } = useDeckLearningStatsQuery({
     variables: { deckId },
   })
 
@@ -24,7 +24,7 @@ export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
   }
 
   if (error || !data?.deckLearningStats) {
-    return <ErrorState message="Could not load learning stats." />
+    return <ErrorState message="Could not load learning stats." onRetry={() => void refetch()} />
   }
 
   const stats = data.deckLearningStats

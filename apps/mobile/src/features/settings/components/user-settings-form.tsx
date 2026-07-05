@@ -28,7 +28,7 @@ export function UserSettingsForm({
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const { data, error, loading } = useMySettingsQuery()
+  const { data, error, loading, refetch } = useMySettingsQuery()
   const [updateSettings, { loading: isSaving }] = useUpdateMySettingsMutation({
     refetchQueries: ['MySettings'],
   })
@@ -103,7 +103,7 @@ export function UserSettingsForm({
   }
 
   if (error) {
-    return <ErrorState message="Could not load settings." />
+    return <ErrorState message="Could not load settings." onRetry={() => void refetch()} />
   }
 
   return (
