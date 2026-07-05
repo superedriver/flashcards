@@ -88,17 +88,19 @@ access token: memory only
 refresh token: Expo SecureStore
 ```
 
-Web MVP:
+Web:
 
 ```txt
 access token: memory only
-refresh token: memory only until httpOnly cookie backend flow is implemented
+refresh token: httpOnly secure cookie (backend-managed)
+GraphQL/fetch auth calls use credentials:include
 ```
 
 Production web target:
 
 ```txt
-refresh token should move to httpOnly secure cookie flow
+refresh token remains in httpOnly secure cookie
+access token remains memory only
 ```
 
 Never use:

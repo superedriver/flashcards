@@ -242,28 +242,44 @@ If backend logout fails:
 
 ## Web Token Storage
 
-Web MVP rule:
+Web rule:
 
 ```txt
 Access token:
 - store in memory only
+
+Refresh token:
+- httpOnly secure cookie set by backend
+- not stored in JavaScript memory
+- not stored in localStorage or sessionStorage
 ```
 
-For refresh token, preferred production strategy:
+Implementation:
+
+```txt
+- login/register/refresh mutations set httpOnly cookie on API response
+- logout clears httpOnly cookie
+- web client uses credentials:include on GraphQL and auth fetch calls
+- refreshToken mutation may omit body refreshToken when cookie is present
+- CORS must allow credentials from configured web origin
+```
+
+Cookie attributes:
+
+```txt
+- httpOnly: true
+- secure: true in production
+- sameSite: lax
+- path: /
+- name: flashcards.refreshToken
+```
+
+Mobile rule (unchanged):
 
 ```txt
 Refresh token:
-- httpOnly secure cookie
-```
-
-However, if web cookie implementation is not ready in MVP, the web client must not use localStorage for access tokens.
-
-Allowed MVP fallback:
-
-```txt
-- Web session may be shorter.
-- Web can require login after refresh token is unavailable.
-- Web must not store access token in localStorage.
+- Expo SecureStore
+- returned in GraphQL AuthPayload body
 ```
 
 Forbidden on web:
@@ -272,6 +288,7 @@ Forbidden on web:
 - localStorage access token
 - localStorage refresh token
 - sessionStorage refresh token
+- in-memory JavaScript refresh token storage
 - logging tokens
 ```
 
@@ -292,17 +309,17 @@ Auth payload:
 ```ts
 export type AuthPayload = {
   accessToken: string
-  refreshToken: string
+  refreshToken?: string
   user: SafeUser
 }
 ```
 
-If web httpOnly cookie strategy is implemented later:
+Web vs mobile payload:
 
 ```txt
-- refreshToken may be omitted from GraphQL payload for web
-- refresh token may be set as cookie by backend
-- mobile can still receive refreshToken in payload
+- mobile receives refreshToken in GraphQL payload body
+- web may receive refreshToken in body for compatibility, but must rely on httpOnly cookie
+- refresh token cookie is set by backend on login/register/refresh
 ```
 
 ## Safe User Output
