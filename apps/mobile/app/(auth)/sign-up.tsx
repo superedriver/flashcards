@@ -2,13 +2,14 @@ import { Redirect } from 'expo-router'
 
 import { SignUpForm } from '@/features/auth/components/sign-up-form'
 import { useAuth } from '@/features/auth/hooks/use-auth'
-import { getPostAuthRedirectHref } from '@/features/auth/utils/get-post-auth-redirect'
+import { useAuthGate } from '@/features/auth/hooks/use-auth-gate'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export default function SignUpScreen() {
-  const { error, isAuthenticated, isBootstrapping, user } = useAuth()
+  const { error } = useAuth()
+  const gate = useAuthGate('guestOnly')
 
-  if (isBootstrapping) {
+  if (gate.status === 'loading') {
     return (
       <Screen>
         <LoadingState message="Loading session..." />
@@ -16,8 +17,8 @@ export default function SignUpScreen() {
     )
   }
 
-  if (isAuthenticated && user) {
-    return <Redirect href={getPostAuthRedirectHref(user)} />
+  if (gate.status === 'redirect') {
+    return <Redirect href={gate.href} />
   }
 
   return (

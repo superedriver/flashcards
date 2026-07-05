@@ -1,13 +1,12 @@
 import { Redirect } from 'expo-router'
 
-import { useAuth } from '@/features/auth/hooks/use-auth'
-import { getPostAuthRedirectHref } from '@/features/auth/utils/get-post-auth-redirect'
+import { useAuthGate } from '@/features/auth/hooks/use-auth-gate'
 import { LoadingState, Screen } from '@/ui/components'
 
 export default function IndexScreen() {
-  const { isAuthenticated, isBootstrapping, user } = useAuth()
+  const gate = useAuthGate('publicRoot')
 
-  if (isBootstrapping) {
+  if (gate.status === 'loading') {
     return (
       <Screen>
         <LoadingState message="Loading session..." />
@@ -15,9 +14,9 @@ export default function IndexScreen() {
     )
   }
 
-  if (isAuthenticated && user) {
-    return <Redirect href={getPostAuthRedirectHref(user)} />
+  if (gate.status === 'redirect') {
+    return <Redirect href={gate.href} />
   }
 
-  return <Redirect href="/(auth)/sign-in" />
+  return null
 }

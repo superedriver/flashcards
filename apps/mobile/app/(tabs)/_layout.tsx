@@ -1,12 +1,12 @@
 import { Redirect, Tabs } from 'expo-router'
 
-import { useAuth } from '@/features/auth/hooks/use-auth'
+import { useAuthGate } from '@/features/auth/hooks/use-auth-gate'
 import { LoadingState, Screen } from '@/ui/components'
 
 export default function TabsLayout() {
-  const { isAuthenticated, isBootstrapping } = useAuth()
+  const gate = useAuthGate('protected')
 
-  if (isBootstrapping) {
+  if (gate.status === 'loading') {
     return (
       <Screen>
         <LoadingState message="Loading session..." />
@@ -14,8 +14,8 @@ export default function TabsLayout() {
     )
   }
 
-  if (!isAuthenticated) {
-    return <Redirect href="/(auth)/sign-in" />
+  if (gate.status === 'redirect') {
+    return <Redirect href={gate.href} />
   }
 
   return (
