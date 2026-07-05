@@ -231,6 +231,54 @@ query {
 
 ---
 
+## 6a. Web Session Persistence After Reload
+
+**Goal:** Verify web session survives page reload using httpOnly refresh token cookie.
+
+**Steps:**
+
+1. Sign in on web with `demo@example.com` or a placeholder test account.
+2. Navigate to `/` or any authenticated tab route.
+3. Reload the browser page.
+4. Confirm the app restores the session without showing the sign-in form.
+
+**Expected result:**
+
+```txt
+- User remains authenticated after reload
+- App redirects to tabs or verify-email prompt as appropriate
+- No refresh token stored in localStorage or sessionStorage
+```
+
+**Result:** - [ ] PASS - [ ] FAIL
+
+---
+
+## 6b. Auth Route Redirects
+
+**Goal:** Verify authenticated users are not shown guest auth screens.
+
+**Steps:**
+
+1. Sign in on web.
+2. Navigate directly to `/sign-in`.
+3. Navigate to `/`.
+4. Log out.
+5. Reload `/` and confirm sign-in is shown.
+
+**Expected result:**
+
+```txt
+- Logged-in user visiting /sign-in redirects to app home/tabs
+- Logged-in user visiting / redirects to app home/tabs
+- After logout and reload, user sees sign-in
+- No login form flash before bootstrap completes
+```
+
+**Result:** - [ ] PASS - [ ] FAIL
+
+---
+
 ## 7. Email Verification
 
 **Goal:** Verify email verification flow works.
