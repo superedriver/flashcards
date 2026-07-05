@@ -29,6 +29,7 @@ import { ResendVerificationEmailUseCase } from './application/use-cases/resend-v
 import { RequestPasswordResetUseCase } from './application/use-cases/request-password-reset.use-case';
 import { ResetPasswordUseCase } from './application/use-cases/reset-password.use-case';
 import { AuthResolver } from './presentation/graphql/resolvers/auth.resolver';
+import { RefreshTokenCookieService } from './presentation/http/refresh-token-cookie.service';
 import { GqlAuthGuard } from './presentation/graphql/guards/gql-auth.guard';
 import { OptionalGqlAuthGuard } from './presentation/graphql/guards/optional-gql-auth.guard';
 
@@ -86,6 +87,7 @@ import { OptionalGqlAuthGuard } from './presentation/graphql/guards/optional-gql
     ResendVerificationEmailUseCase,
     RequestPasswordResetUseCase,
     ResetPasswordUseCase,
+    RefreshTokenCookieService,
     AuthResolver,
     GqlAuthGuard,
     OptionalGqlAuthGuard,

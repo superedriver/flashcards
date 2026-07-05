@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ApplicationError, ErrorCodes } from '../../../../../common/errors';
 import { GetMeUseCase } from '../../../application/use-cases/get-me.use-case';
 import { LoginUseCase } from '../../../application/use-cases/login.use-case';
 import { LogoutUseCase } from '../../../application/use-cases/logout.use-case';
@@ -22,6 +23,13 @@ import { AuthPayloadType } from '../types/auth-payload.type';
 import { SafeUserType } from '../types/safe-user.type';
 import { UserRole } from '../types/user-role.type';
 import { AuthUser } from '../../../domain/types';
+import { RefreshTokenCookieService } from '../../http/refresh-token-cookie.service';
+import type { Request, Response } from 'express';
+
+type AuthGraphqlContext = {
+  req: Request;
+  res: Response;
+};
 
 @Resolver()
 export class AuthResolver {
@@ -35,13 +43,20 @@ export class AuthResolver {
     private readonly resendVerificationEmailUseCase: ResendVerificationEmailUseCase,
     private readonly requestPasswordResetUseCase: RequestPasswordResetUseCase,
     private readonly resetPasswordUseCase: ResetPasswordUseCase,
+    private readonly refreshTokenCookieService: RefreshTokenCookieService,
   ) {}
 
   @Mutation(() => AuthPayloadType)
   async register(
     @Args('input') input: RegisterInput,
+    @Context() context: AuthGraphqlContext,
   ): Promise<AuthPayloadType> {
     const result = await this.registerUserUseCase.execute(input);
+
+    this.refreshTokenCookieService.setRefreshTokenCookie(
+      context.res,
+      result.refreshToken,
+    );
 
     return {
       accessToken: result.accessToken,
@@ -54,8 +69,16 @@ export class AuthResolver {
   }
 
   @Mutation(() => AuthPayloadType)
-  async login(@Args('input') input: LoginInput): Promise<AuthPayloadType> {
+  async login(
+    @Args('input') input: LoginInput,
+    @Context() context: AuthGraphqlContext,
+  ): Promise<AuthPayloadType> {
     const result = await this.loginUseCase.execute(input);
+
+    this.refreshTokenCookieService.setRefreshTokenCookie(
+      context.res,
+      result.refreshToken,
+    );
 
     return {
       accessToken: result.accessToken,
@@ -70,8 +93,18 @@ export class AuthResolver {
   @Mutation(() => AuthPayloadType)
   async refreshToken(
     @Args('input') input: RefreshTokenInput,
+    @Context() context: AuthGraphqlContext,
   ): Promise<AuthPayloadType> {
-    const result = await this.refreshTokenUseCase.execute(input);
+    const refreshToken = this.resolveRefreshToken(
+      input.refreshToken,
+      context.req,
+    );
+    const result = await this.refreshTokenUseCase.execute({ refreshToken });
+
+    this.refreshTokenCookieService.setRefreshTokenCookie(
+      context.res,
+      result.refreshToken,
+    );
 
     return {
       accessToken: result.accessToken,
@@ -84,9 +117,24 @@ export class AuthResolver {
   }
 
   @Mutation(() => Boolean)
-  async logout(@Args('input') input: LogoutInput): Promise<boolean> {
-    const result = await this.logoutUseCase.execute(input);
-    return result.success;
+  async logout(
+    @Args('input') input: LogoutInput,
+    @Context() context: AuthGraphqlContext,
+  ): Promise<boolean> {
+    const refreshToken =
+      input.refreshToken?.trim() ||
+      this.refreshTokenCookieService.getRefreshTokenFromRequest(context.req);
+
+    if (refreshToken) {
+      const result = await this.logoutUseCase.execute({ refreshToken });
+      this.refreshTokenCookieService.clearRefreshTokenCookie(context.res);
+
+      return result.success;
+    }
+
+    this.refreshTokenCookieService.clearRefreshTokenCookie(context.res);
+
+    return true;
   }
 
   @Mutation(() => SafeUserType)
@@ -140,5 +188,20 @@ export class AuthResolver {
       ...safeUser,
       role: safeUser.role as UserRole,
     };
+  }
+
+  private resolveRefreshToken(
+    inputRefreshToken: string | undefined,
+    req: Request,
+  ): string {
+    const refreshToken =
+      inputRefreshToken?.trim() ||
+      this.refreshTokenCookieService.getRefreshTokenFromRequest(req);
+
+    if (!refreshToken) {
+      throw new ApplicationError(ErrorCodes.UNAUTHORIZED, 'Unauthorized');
+    }
+
+    return refreshToken;
   }
 }

@@ -101,7 +101,7 @@ Expected state:
 - [x] TASK-22.08 Add auth logging safety test
 - [x] TASK-22.09 Add bootstrapping guards to auth screens
 - [x] TASK-22.10 Add shared auth redirect helper
-- [ ] TASK-22.11 Backend httpOnly refresh token cookie for web
+- [x] TASK-22.11 Backend httpOnly refresh token cookie for web
 - [ ] TASK-22.12 Frontend web cookie-based session restore
 - [ ] TASK-22.13 Update auth-token-strategy for web cookie flow
 - [ ] TASK-22.14 Update auth session smoke tests
@@ -1048,7 +1048,7 @@ TASK-22.10 Add shared auth redirect helper
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
