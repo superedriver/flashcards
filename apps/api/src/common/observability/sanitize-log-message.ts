@@ -13,6 +13,10 @@ const REDACTIONS: Array<{ pattern: RegExp; replacement: string }> = [
     pattern: /(api[_-]?key|authorization|password|secret)\s*[:=]\s*\S+/gi,
     replacement: '$1=[REDACTED]',
   },
+  {
+    pattern: /"(password|refreshToken|accessToken)"\s*:\s*"[^"]*"/gi,
+    replacement: '"$1":"[REDACTED]"',
+  },
 ];
 
 export function sanitizeLogMessage(value: unknown): string {

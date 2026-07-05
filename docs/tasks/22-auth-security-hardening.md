@@ -97,7 +97,7 @@ Expected state:
 - [x] TASK-22.04 Add production HTTPS guard for API URL
 - [x] TASK-22.05 Update security checklist for credentials in transit
 - [x] TASK-22.06 Update deployment guide HTTPS requirements
-- [ ] TASK-22.07 Audit API logging for password leakage
+- [x] TASK-22.07 Audit API logging for password leakage
 - [ ] TASK-22.08 Add auth logging safety test
 - [ ] TASK-22.09 Add bootstrapping guards to auth screens
 - [ ] TASK-22.10 Add shared auth redirect helper
@@ -670,7 +670,7 @@ TASK-22.06 Update deployment guide HTTPS requirements
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
