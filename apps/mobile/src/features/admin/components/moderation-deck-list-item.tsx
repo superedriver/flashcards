@@ -26,24 +26,36 @@ export function ModerationDeckListItem({
   return (
     <AppCard style={{ gap: 8, marginBottom: 12, padding: 16 }}>
       <AppText style={{ fontSize: 18, fontWeight: '600' }}>{deck.title}</AppText>
-      <AppText>{deck.ownerEmail}</AppText>
+      <AppText style={{ color: '#666666' }}>Owner: {deck.ownerEmail}</AppText>
       <AppText>Cards: {deck.cardCount}</AppText>
-      {deck.isOfficial ? <AppText style={{ color: '#1976d2' }}>Official deck</AppText> : null}
+      {deck.isOfficial ? (
+        <AppText style={{ color: '#1565c0', fontWeight: '600' }}>Official deck</AppText>
+      ) : null}
       <DeckStatusBadge moderationStatus={deck.moderationStatus} visibility={deck.visibility} />
 
       {onApprove ? (
-        <AppButton disabled={isSubmitting} onPress={() => onApprove(deck.id)}>
-          Approve
+        <AppButton
+          background="#2e7d32"
+          color="white"
+          disabled={isSubmitting}
+          onPress={() => onApprove(deck.id)}
+        >
+          {isSubmitting ? 'Working...' : 'Approve'}
         </AppButton>
       ) : null}
       {onReject ? (
-        <AppButton disabled={isSubmitting} onPress={() => onReject(deck.id)}>
-          Reject
+        <AppButton
+          background="#c62828"
+          color="white"
+          disabled={isSubmitting}
+          onPress={() => onReject(deck.id)}
+        >
+          {isSubmitting ? 'Working...' : 'Reject'}
         </AppButton>
       ) : null}
       {onHide ? (
         <AppButton disabled={isSubmitting} onPress={() => onHide(deck.id)}>
-          Hide
+          {isSubmitting ? 'Working...' : 'Hide'}
         </AppButton>
       ) : null}
 
@@ -52,7 +64,7 @@ export function ModerationDeckListItem({
           disabled={isSubmitting}
           onPress={() => onToggleOfficial(deck.id, !deck.isOfficial)}
         >
-          {deck.isOfficial ? 'Remove Official' : 'Mark Official'}
+          {isSubmitting ? 'Working...' : deck.isOfficial ? 'Remove official' : 'Mark official'}
         </AppButton>
       ) : null}
     </AppCard>

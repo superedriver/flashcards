@@ -8,6 +8,10 @@ type AdminUserListItemProps = {
   isSubmitting?: boolean
 }
 
+function formatRole(role: string): string {
+  return role.charAt(0) + role.slice(1).toLowerCase()
+}
+
 export function AdminUserListItem({
   onBlock,
   onUnblock,
@@ -20,21 +24,30 @@ export function AdminUserListItem({
   return (
     <AppCard style={{ gap: 8, marginBottom: 12, padding: 16 }}>
       <AppText style={{ fontSize: 16, fontWeight: '600' }}>{user.email}</AppText>
-      <AppText>Role: {user.role}</AppText>
-      <AppText style={{ color: isVerified ? '#2e7d32' : '#ed6c02' }}>
+      <AppText style={{ color: '#666666' }}>Role: {formatRole(user.role)}</AppText>
+      <AppText style={{ color: isVerified ? '#2e7d32' : '#ef6c00', fontWeight: '600' }}>
         {isVerified ? 'Email verified' : 'Email not verified'}
       </AppText>
-      {isBlocked ? <AppText style={{ color: '#b00020' }}>Blocked</AppText> : null}
+      {isBlocked ? (
+        <AppText style={{ color: '#b00020', fontWeight: '600' }}>Blocked</AppText>
+      ) : (
+        <AppText style={{ color: '#2e7d32' }}>Active</AppText>
+      )}
 
       {isBlocked && onUnblock ? (
         <AppButton disabled={isSubmitting} onPress={() => onUnblock(user.id)}>
-          Unblock User
+          {isSubmitting ? 'Updating...' : 'Unblock user'}
         </AppButton>
       ) : null}
 
       {!isBlocked && onBlock ? (
-        <AppButton disabled={isSubmitting} onPress={() => onBlock(user.id)}>
-          Block User
+        <AppButton
+          background="#b00020"
+          color="white"
+          disabled={isSubmitting}
+          onPress={() => onBlock(user.id)}
+        >
+          {isSubmitting ? 'Updating...' : 'Block user'}
         </AppButton>
       ) : null}
     </AppCard>

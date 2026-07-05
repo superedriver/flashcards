@@ -1,5 +1,5 @@
 import type { MyDecksQuery } from '@/graphql/generated'
-import { EmptyState } from '@/ui/components'
+import { EmptyState, ErrorState } from '@/ui/components'
 import { AppCard, AppText } from '@/ui/primitives'
 import { Pressable, View } from 'react-native'
 
@@ -55,8 +55,10 @@ export function ShareDeckForm({
         })
       )}
 
-      {feedback ? <AppText>{feedback}</AppText> : null}
-      {errorMessage ? <AppText style={{ color: '#b00020' }}>{errorMessage}</AppText> : null}
+      {feedback ? (
+        <AppText style={{ color: '#2e7d32', fontWeight: '600' }}>{feedback}</AppText>
+      ) : null}
+      {errorMessage ? <ErrorState message={errorMessage} /> : null}
     </View>
   )
 }

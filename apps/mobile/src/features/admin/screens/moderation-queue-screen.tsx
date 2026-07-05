@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
-import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
+import { confirmAction, confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { ModerationDeckList } from '@/features/admin/components/moderation-deck-list'
 import { ModerationStatusFilter } from '@/features/admin/components/moderation-status-filter'
+import { getForbiddenMessage, isForbiddenError } from '@/features/admin/utils/is-forbidden-error'
 import {
   DeckModerationStatus,
   useApproveDeckMutation,
@@ -51,9 +52,9 @@ export function ModerationQueueScreen() {
   }
 
   const handleApprove = (deckId: string) => {
-    confirmDestructiveAction(
+    confirmAction(
       'Approve deck',
-      'This deck will be approved for public visibility.',
+      'This deck will be approved and visible in public search.',
       () => {
         void runMutation(
           async () => {
@@ -71,19 +72,23 @@ export function ModerationQueueScreen() {
   }
 
   const handleReject = (deckId: string) => {
-    confirmDestructiveAction('Reject deck', 'This deck will be rejected.', () => {
-      void runMutation(
-        async () => {
-          const result = await rejectDeck({ variables: { deckId } })
+    confirmDestructiveAction(
+      'Reject deck',
+      'This deck will be rejected and removed from the public moderation queue.',
+      () => {
+        void runMutation(
+          async () => {
+            const result = await rejectDeck({ variables: { deckId } })
 
-          if (!result.data?.rejectDeck) {
-            throw new Error('Could not reject deck.')
-          }
-        },
-        'Deck rejected.',
-        'Could not reject deck.',
-      )
-    })
+            if (!result.data?.rejectDeck) {
+              throw new Error('Could not reject deck.')
+            }
+          },
+          'Deck rejected.',
+          'Could not reject deck.',
+        )
+      },
+    )
   }
 
   const handleHide = (deckId: string) => {
@@ -103,12 +108,12 @@ export function ModerationQueueScreen() {
   }
 
   const handleToggleOfficial = (deckId: string, isOfficial: boolean) => {
-    const title = isOfficial ? 'Mark official deck' : 'Remove official deck'
+    const title = isOfficial ? 'Mark as official deck' : 'Remove official status'
     const message = isOfficial
-      ? 'This deck will be marked as official.'
-      : 'This deck will no longer be official.'
+      ? 'This deck will be highlighted as an official curated deck.'
+      : 'This deck will no longer be marked as official.'
 
-    confirmDestructiveAction(title, message, () => {
+    confirmAction(title, message, () => {
       void runMutation(
         async () => {
           const result = await setOfficialDeck({
@@ -125,17 +130,31 @@ export function ModerationQueueScreen() {
     })
   }
 
+  const queryErrorMessage = error
+    ? isForbiddenError(error)
+      ? getForbiddenMessage()
+      : 'Could not load moderation queue.'
+    : null
+
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title="Moderation Queue" />
+      <AppText style={{ color: '#666666', marginBottom: 12 }}>
+        Review public decks awaiting moderation. Actions are enforced on the server.
+      </AppText>
       <ModerationStatusFilter value={status} onChange={setStatus} />
 
       {loading ? <LoadingState message="Loading moderation queue..." /> : null}
-      {error ? (
-        <ErrorState message="Could not load moderation queue." onRetry={() => void refetch()} />
+      {queryErrorMessage ? (
+        <ErrorState
+          message={queryErrorMessage}
+          onRetry={isForbiddenError(error) ? undefined : () => void refetch()}
+        />
       ) : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      {feedback ? <AppText>{feedback}</AppText> : null}
+      {feedback ? (
+        <AppText style={{ color: '#2e7d32', fontWeight: '600' }}>{feedback}</AppText>
+      ) : null}
 
       {!loading && !error && data?.moderationQueue ? (
         <ModerationDeckList

@@ -1,10 +1,10 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { ShareDeckForm } from '@/features/groups/components/share-deck-form'
 import { useMyDecksQuery, useShareDeckWithGroupMutation } from '@/graphql/generated'
-import { AppButton } from '@/ui/primitives'
+import { AppButton, AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function ShareDeckWithGroupScreen() {
@@ -13,6 +13,7 @@ export function ShareDeckWithGroupScreen() {
   const [selectedDeckId, setSelectedDeckId] = useState<string | null>(null)
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const isSubmittingRef = useRef(false)
 
   const { data, error, loading, refetch } = useMyDecksQuery()
   const [shareDeckWithGroup, { loading: isSubmitting }] = useShareDeckWithGroupMutation()
@@ -22,6 +23,11 @@ export function ShareDeckWithGroupScreen() {
       return
     }
 
+    if (isSubmittingRef.current || isSubmitting) {
+      return
+    }
+
+    isSubmittingRef.current = true
     setErrorMessage(null)
     setFeedback(null)
 
@@ -44,12 +50,17 @@ export function ShareDeckWithGroupScreen() {
       router.replace(`/groups/${groupId}`)
     } catch (shareError) {
       setErrorMessage(getGraphqlErrorMessage(shareError, 'Could not share deck with group.'))
+    } finally {
+      isSubmittingRef.current = false
     }
   }
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title="Share Deck" />
+      <AppText style={{ color: '#666666', marginBottom: 12 }}>
+        Choose one of your decks to share with this group. Members get view-only access.
+      </AppText>
 
       {loading ? <LoadingState message="Loading decks..." /> : null}
       {error ? <ErrorState message="Could not load decks." onRetry={() => void refetch()} /> : null}
@@ -68,7 +79,7 @@ export function ShareDeckWithGroupScreen() {
             disabled={!selectedDeckId || isSubmitting || data.myDecks.length === 0}
             onPress={() => void handleShare()}
           >
-            Share Selected Deck
+            {isSubmitting ? 'Sharing...' : 'Share selected deck'}
           </AppButton>
         </>
       ) : null}

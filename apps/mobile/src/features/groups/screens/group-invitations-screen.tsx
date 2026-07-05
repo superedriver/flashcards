@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
+import { confirmAction, confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { GroupInvitationList } from '@/features/groups/components/group-invitation-list'
 import {
@@ -15,6 +16,7 @@ export function GroupInvitationsScreen() {
   const router = useRouter()
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const isSubmittingRef = useRef(false)
   const { data, error, loading, refetch } = useMyGroupInvitationsQuery()
   const [acceptInvitation, { loading: isAccepting }] = useAcceptGroupInvitationMutation({
     refetchQueries: ['MyGroupInvitations', 'MyGroups'],
@@ -25,68 +27,99 @@ export function GroupInvitationsScreen() {
 
   const isSubmitting = isAccepting || isDeclining
 
-  const handleAccept = async (invitationId: string) => {
-    setErrorMessage(null)
-    setFeedback(null)
+  const handleAccept = (invitationId: string) => {
+    confirmAction(
+      'Accept invitation',
+      'You will join this group and can access its shared decks.',
+      () => {
+        void (async () => {
+          if (isSubmittingRef.current || isSubmitting) {
+            return
+          }
 
-    try {
-      const result = await acceptInvitation({
-        variables: { invitationId },
-      })
+          isSubmittingRef.current = true
+          setErrorMessage(null)
+          setFeedback(null)
 
-      const groupId = result.data?.acceptGroupInvitation.member.groupId
+          try {
+            const result = await acceptInvitation({
+              variables: { invitationId },
+            })
 
-      if (!groupId) {
-        setErrorMessage('Could not accept invitation.')
-        return
-      }
+            const groupId = result.data?.acceptGroupInvitation.member.groupId
 
-      setFeedback('Invitation accepted.')
-      await refetch()
-      router.push(`/groups/${groupId}`)
-    } catch (acceptError) {
-      setErrorMessage(getGraphqlErrorMessage(acceptError, 'Could not accept invitation.'))
-    }
+            if (!groupId) {
+              setErrorMessage('Could not accept invitation.')
+              return
+            }
+
+            setFeedback('Invitation accepted.')
+            await refetch()
+            router.push(`/groups/${groupId}`)
+          } catch (acceptError) {
+            setErrorMessage(getGraphqlErrorMessage(acceptError, 'Could not accept invitation.'))
+          } finally {
+            isSubmittingRef.current = false
+          }
+        })()
+      },
+    )
   }
 
-  const handleDecline = async (invitationId: string) => {
-    setErrorMessage(null)
-    setFeedback(null)
+  const handleDecline = (invitationId: string) => {
+    confirmDestructiveAction('Decline invitation', 'You will not be added to this group.', () => {
+      void (async () => {
+        if (isSubmittingRef.current || isSubmitting) {
+          return
+        }
 
-    try {
-      const result = await declineInvitation({
-        variables: { invitationId },
-      })
+        isSubmittingRef.current = true
+        setErrorMessage(null)
+        setFeedback(null)
 
-      if (!result.data?.declineGroupInvitation) {
-        setErrorMessage('Could not decline invitation.')
-        return
-      }
+        try {
+          const result = await declineInvitation({
+            variables: { invitationId },
+          })
 
-      setFeedback('Invitation declined.')
-      await refetch()
-    } catch (declineError) {
-      setErrorMessage(getGraphqlErrorMessage(declineError, 'Could not decline invitation.'))
-    }
+          if (!result.data?.declineGroupInvitation) {
+            setErrorMessage('Could not decline invitation.')
+            return
+          }
+
+          setFeedback('Invitation declined.')
+          await refetch()
+        } catch (declineError) {
+          setErrorMessage(getGraphqlErrorMessage(declineError, 'Could not decline invitation.'))
+        } finally {
+          isSubmittingRef.current = false
+        }
+      })()
+    })
   }
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title="Group Invitations" />
+      <AppText style={{ color: '#666666', marginBottom: 12 }}>
+        Accept invitations to join groups and access shared decks.
+      </AppText>
 
       {loading ? <LoadingState message="Loading invitations..." /> : null}
       {error ? (
         <ErrorState message="Could not load invitations." onRetry={() => void refetch()} />
       ) : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      {feedback ? <AppText>{feedback}</AppText> : null}
+      {feedback ? (
+        <AppText style={{ color: '#2e7d32', fontWeight: '600' }}>{feedback}</AppText>
+      ) : null}
 
       {!loading && !error && data?.myGroupInvitations ? (
         <GroupInvitationList
           invitations={data.myGroupInvitations}
           isSubmitting={isSubmitting}
-          onAccept={(invitationId) => void handleAccept(invitationId)}
-          onDecline={(invitationId) => void handleDecline(invitationId)}
+          onAccept={handleAccept}
+          onDecline={handleDecline}
         />
       ) : null}
     </Screen>

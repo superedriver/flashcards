@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { GroupForm } from '@/features/groups/components/group-form'
 import { getGraphqlErrorMessage, optionalText } from '@/features/decks/utils/deck-form-utils'
@@ -10,11 +10,17 @@ import { PageTitle, Screen } from '@/ui/components'
 export function CreateGroupScreen() {
   const router = useRouter()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const isSubmittingRef = useRef(false)
   const [createGroup, { loading }] = useCreateGroupMutation({
     refetchQueries: ['MyGroups'],
   })
 
   const handleSubmit = async (values: GroupFormValues) => {
+    if (isSubmittingRef.current || loading) {
+      return
+    }
+
+    isSubmittingRef.current = true
     setErrorMessage(null)
 
     try {
@@ -37,6 +43,8 @@ export function CreateGroupScreen() {
       router.replace(`/groups/${group.id}`)
     } catch (error) {
       setErrorMessage(getGraphqlErrorMessage(error, 'Could not create group.'))
+    } finally {
+      isSubmittingRef.current = false
     }
   }
 
@@ -47,7 +55,9 @@ export function CreateGroupScreen() {
         errorMessage={errorMessage}
         isSubmitting={loading}
         submitLabel="Create Group"
+        submittingLabel="Creating group..."
         onCancel={() => router.back()}
+        onClearError={() => setErrorMessage(null)}
         onSubmit={handleSubmit}
       />
     </Screen>

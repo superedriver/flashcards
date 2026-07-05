@@ -1,18 +1,9 @@
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { AdminStatsGrid } from '@/features/admin/components/admin-stats-grid'
+import { getForbiddenMessage, isForbiddenError } from '@/features/admin/utils/is-forbidden-error'
 import { useAdminDashboardStatsQuery } from '@/graphql/generated'
+import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
-
-function isForbiddenError(error: unknown): boolean {
-  if (error instanceof Error && 'graphQLErrors' in error) {
-    const message = (error as { graphQLErrors: Array<{ message?: string }> }).graphQLErrors[0]
-      ?.message
-
-    return Boolean(message?.toLowerCase().includes('forbidden') || message?.includes('403'))
-  }
-
-  return false
-}
 
 export function AdminDashboardScreen() {
   const { data, error, loading, refetch } = useAdminDashboardStatsQuery()
@@ -33,7 +24,7 @@ export function AdminDashboardScreen() {
         <ErrorState
           message={
             isForbiddenError(error)
-              ? 'You do not have permission to view the admin dashboard.'
+              ? getForbiddenMessage()
               : getGraphqlErrorMessage(error, 'Could not load dashboard stats.')
           }
           onRetry={isForbiddenError(error) ? undefined : () => void refetch()}
@@ -43,8 +34,11 @@ export function AdminDashboardScreen() {
   }
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title="Admin Dashboard" />
+      <AppText style={{ color: '#666666', marginBottom: 16 }}>
+        Platform overview for administrators. Access is enforced on the server.
+      </AppText>
       {data?.adminDashboardStats ? <AdminStatsGrid stats={data.adminDashboardStats} /> : null}
     </Screen>
   )

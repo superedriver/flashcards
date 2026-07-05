@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { View } from 'react-native'
 
@@ -10,7 +10,7 @@ import {
 } from '@/features/groups/validation/invite-user.schema'
 import { useInviteUserToGroupMutation } from '@/graphql/generated'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
-import { ErrorState } from '@/ui/components'
+import { ErrorState, FormFieldError } from '@/ui/components'
 
 type InviteUserFormProps = {
   groupId: string
@@ -20,6 +20,7 @@ type InviteUserFormProps = {
 export function InviteUserForm({ groupId, onSuccess }: InviteUserFormProps) {
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const isSubmittingRef = useRef(false)
   const [inviteUser, { loading }] = useInviteUserToGroupMutation()
 
   const {
@@ -33,6 +34,11 @@ export function InviteUserForm({ groupId, onSuccess }: InviteUserFormProps) {
   })
 
   const onSubmit = handleSubmit(async (values) => {
+    if (isSubmittingRef.current || loading) {
+      return
+    }
+
+    isSubmittingRef.current = true
     setErrorMessage(null)
     setFeedback(null)
 
@@ -56,12 +62,17 @@ export function InviteUserForm({ groupId, onSuccess }: InviteUserFormProps) {
       onSuccess?.()
     } catch (error) {
       setErrorMessage(getGraphqlErrorMessage(error, 'Could not send invitation.'))
+    } finally {
+      isSubmittingRef.current = false
     }
   })
 
   return (
     <View style={{ gap: 12, marginBottom: 16 }}>
       <AppText style={{ fontSize: 16, fontWeight: '600' }}>Invite by email</AppText>
+      <AppText style={{ color: '#666666', fontSize: 14 }}>
+        The user must already have an account with this email address.
+      </AppText>
       <Controller
         control={control}
         name="email"
@@ -72,15 +83,20 @@ export function InviteUserForm({ groupId, onSuccess }: InviteUserFormProps) {
             placeholder="Email address"
             value={value}
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              setErrorMessage(null)
+              onChange(text)
+            }}
           />
         )}
       />
-      {errors.email ? <ErrorState message={errors.email.message} /> : null}
+      <FormFieldError message={errors.email?.message} />
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      {feedback ? <AppText>{feedback}</AppText> : null}
+      {feedback ? (
+        <AppText style={{ color: '#2e7d32', fontWeight: '600' }}>{feedback}</AppText>
+      ) : null}
       <AppButton disabled={loading} onPress={() => void onSubmit()}>
-        Send Invitation
+        {loading ? 'Sending...' : 'Send invitation'}
       </AppButton>
     </View>
   )

@@ -43,7 +43,7 @@ export function GroupDetailScreen() {
   }
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title="Group" />
 
       {loading ? <LoadingState message="Loading group..." /> : null}

@@ -5,6 +5,7 @@ import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destruc
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { AdminUserList } from '@/features/admin/components/admin-user-list'
 import { AdminUserSearch } from '@/features/admin/components/admin-user-search'
+import { getForbiddenMessage, isForbiddenError } from '@/features/admin/utils/is-forbidden-error'
 import {
   useAdminSearchUsersQuery,
   useBlockUserMutation,
@@ -33,26 +34,30 @@ export function AdminUsersScreen() {
   }, [])
 
   const handleBlock = (userId: string) => {
-    confirmDestructiveAction('Block user', 'This user will be blocked from the platform.', () => {
-      void (async () => {
-        setErrorMessage(null)
-        setFeedback(null)
+    confirmDestructiveAction(
+      'Block user',
+      'This user will be blocked from signing in and using the platform.',
+      () => {
+        void (async () => {
+          setErrorMessage(null)
+          setFeedback(null)
 
-        try {
-          const result = await blockUser({ variables: { userId } })
+          try {
+            const result = await blockUser({ variables: { userId } })
 
-          if (!result.data?.blockUser) {
-            setErrorMessage('Could not block user.')
-            return
+            if (!result.data?.blockUser) {
+              setErrorMessage('Could not block user.')
+              return
+            }
+
+            setFeedback('User blocked.')
+            await refetch()
+          } catch (blockError) {
+            setErrorMessage(getGraphqlErrorMessage(blockError, 'Could not block user.'))
           }
-
-          setFeedback('User blocked.')
-          await refetch()
-        } catch (blockError) {
-          setErrorMessage(getGraphqlErrorMessage(blockError, 'Could not block user.'))
-        }
-      })()
-    })
+        })()
+      },
+    )
   }
 
   const handleUnblock = (userId: string) => {
@@ -82,19 +87,33 @@ export function AdminUsersScreen() {
     )
   }
 
+  const queryErrorMessage = error
+    ? isForbiddenError(error)
+      ? getForbiddenMessage()
+      : 'Could not search users.'
+    : null
+
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title="User Management" />
+      <AppText style={{ color: '#666666', marginBottom: 12 }}>
+        Search users by email. Only email and account status are shown — no sensitive credentials.
+      </AppText>
       <View style={{ gap: 12, marginBottom: 16 }}>
         <AdminUserSearch value={query} onQueryChange={handleQueryChange} />
       </View>
 
       {loading ? <LoadingState message="Searching users..." /> : null}
-      {error ? (
-        <ErrorState message="Could not search users." onRetry={() => void refetch()} />
+      {queryErrorMessage ? (
+        <ErrorState
+          message={queryErrorMessage}
+          onRetry={isForbiddenError(error) ? undefined : () => void refetch()}
+        />
       ) : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      {feedback ? <AppText>{feedback}</AppText> : null}
+      {feedback ? (
+        <AppText style={{ color: '#2e7d32', fontWeight: '600' }}>{feedback}</AppText>
+      ) : null}
 
       {!loading && !error && data?.adminSearchUsers ? (
         <AdminUserList

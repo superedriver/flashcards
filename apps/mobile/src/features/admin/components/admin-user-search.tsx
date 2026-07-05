@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { AppInput } from '@/ui/primitives'
+import { AppInput, AppText } from '@/ui/primitives'
 
 type AdminUserSearchProps = {
   onQueryChange: (query: string) => void
@@ -19,11 +19,14 @@ export function AdminUserSearch({ onQueryChange, value }: AdminUserSearchProps) 
   }, [inputValue, onQueryChange])
 
   return (
-    <AppInput
-      autoCapitalize="none"
-      placeholder="Search users by email"
-      value={inputValue}
-      onChangeText={setInputValue}
-    />
+    <>
+      <AppText style={{ fontWeight: '600' }}>Search users</AppText>
+      <AppInput
+        autoCapitalize="none"
+        placeholder="Search by email"
+        value={inputValue}
+        onChangeText={setInputValue}
+      />
+    </>
   )
 }
