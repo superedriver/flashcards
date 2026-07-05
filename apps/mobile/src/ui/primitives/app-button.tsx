@@ -3,6 +3,6 @@ import { Button } from 'tamagui'
 
 type AppButtonProps = ComponentProps<typeof Button>
 
-export function AppButton(props: AppButtonProps) {
-  return <Button {...props} />
+export function AppButton({ accessibilityRole = 'button', height = 44, ...props }: AppButtonProps) {
+  return <Button accessibilityRole={accessibilityRole} height={height} {...props} />
 }

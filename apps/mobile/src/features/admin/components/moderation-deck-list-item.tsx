@@ -45,6 +45,8 @@ export function ModerationDeckListItem({
       ) : null}
       {onReject ? (
         <AppButton
+          accessibilityHint="Rejects this deck from public moderation."
+          accessibilityLabel="Reject deck"
           background="#c62828"
           color="white"
           disabled={isSubmitting}

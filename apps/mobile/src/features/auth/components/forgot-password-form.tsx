@@ -10,8 +10,8 @@ import {
   type ForgotPasswordFormValues,
 } from '@/features/auth/validation/forgot-password.schema'
 import { useRequestPasswordResetMutation } from '@/graphql/generated'
+import { FieldLabel, PageTitle, Screen } from '@/ui/components'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
-import { PageTitle, Screen } from '@/ui/components'
 
 export function ForgotPasswordForm() {
   const router = useRouter()
@@ -66,12 +66,15 @@ export function ForgotPasswordForm() {
         Enter your email and we will send reset instructions if an account exists.
       </AppText>
 
+      <FieldLabel>Email</FieldLabel>
       <Controller
         control={control}
         name="email"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Email"
             autoCapitalize="none"
+            autoComplete="email"
             keyboardType="email-address"
             placeholder="Email"
             value={value}

@@ -1,5 +1,6 @@
 export { EmptyState } from './empty-state'
 export { ErrorState } from './error-state'
+export { FieldLabel } from './field-label'
 export { FormFieldError } from './form-field-error'
 export { LoadingState } from './loading-state'
 export { PageTitle } from './page-title'

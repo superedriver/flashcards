@@ -11,8 +11,8 @@ import {
 } from '@/features/auth/validation/reset-password.schema'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { useResetPasswordMutation } from '@/graphql/generated'
+import { ErrorState, FieldLabel, PageTitle, Screen } from '@/ui/components'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
-import { ErrorState, PageTitle, Screen } from '@/ui/components'
 
 export function ResetPasswordForm() {
   const router = useRouter()
@@ -84,11 +84,14 @@ export function ResetPasswordForm() {
 
   return (
     <View style={{ gap: 12 }}>
+      <FieldLabel>New password</FieldLabel>
       <Controller
         control={control}
         name="newPassword"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="New password"
+            autoComplete="new-password"
             placeholder="New password"
             secureTextEntry
             value={value}
@@ -102,11 +105,14 @@ export function ResetPasswordForm() {
       />
       <AuthFieldError message={errors.newPassword?.message} />
 
+      <FieldLabel>Confirm new password</FieldLabel>
       <Controller
         control={control}
         name="confirmPassword"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Confirm new password"
+            autoComplete="new-password"
             placeholder="Confirm new password"
             secureTextEntry
             value={value}

@@ -9,5 +9,13 @@ export function AuthFieldError({ message }: AuthFieldErrorProps) {
     return null
   }
 
-  return <AppText style={{ color: '#c0392b', fontSize: 14 }}>{message}</AppText>
+  return (
+    <AppText
+      accessibilityLiveRegion="polite"
+      accessibilityRole="alert"
+      style={{ color: '#c0392b', fontSize: 14 }}
+    >
+      {message}
+    </AppText>
+  )
 }

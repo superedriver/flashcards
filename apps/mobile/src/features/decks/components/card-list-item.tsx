@@ -3,6 +3,7 @@ import { View } from 'react-native'
 
 import type { DeckCardsQuery } from '@/graphql/generated'
 import { AppButton, AppCard, AppText } from '@/ui/primitives'
+import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
 
 type CardListItemProps = {
   card: DeckCardsQuery['deckCards'][number]
@@ -29,7 +30,12 @@ export function CardListItem({ card, deckId, isOwner, onDelete }: CardListItemPr
             Edit
           </AppButton>
           {onDelete ? (
-            <AppButton background="#b00020" color="white" onPress={() => onDelete(card.id)}>
+            <AppButton
+              {...destructiveButtonA11yProps('Delete card')}
+              background="#b00020"
+              color="white"
+              onPress={() => onDelete(card.id)}
+            >
               Delete
             </AppButton>
           ) : null}

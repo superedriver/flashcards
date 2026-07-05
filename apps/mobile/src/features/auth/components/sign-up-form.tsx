@@ -12,6 +12,7 @@ import { getPostAuthRedirectHref } from '@/features/auth/utils/get-post-auth-red
 import { signUpSchema, type SignUpFormValues } from '@/features/auth/validation/sign-up.schema'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { useRegisterMutation } from '@/graphql/generated'
+import { FieldLabel } from '@/ui/components'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
 
 import { GoogleLoginButton } from './google-login-button'
@@ -73,12 +74,15 @@ export function SignUpForm() {
 
   return (
     <View style={{ gap: 12 }}>
+      <FieldLabel>Email</FieldLabel>
       <Controller
         control={control}
         name="email"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Email"
             autoCapitalize="none"
+            autoComplete="email"
             keyboardType="email-address"
             placeholder="Email"
             value={value}
@@ -92,11 +96,14 @@ export function SignUpForm() {
       />
       <AuthFieldError message={errors.email?.message} />
 
+      <FieldLabel>Password</FieldLabel>
       <Controller
         control={control}
         name="password"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Password"
+            autoComplete="new-password"
             placeholder="Password"
             secureTextEntry
             value={value}
@@ -110,11 +117,14 @@ export function SignUpForm() {
       />
       <AuthFieldError message={errors.password?.message} />
 
+      <FieldLabel>Confirm password</FieldLabel>
       <Controller
         control={control}
         name="confirmPassword"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Confirm password"
+            autoComplete="new-password"
             placeholder="Confirm password"
             secureTextEntry
             value={value}

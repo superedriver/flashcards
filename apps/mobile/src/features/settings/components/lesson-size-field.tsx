@@ -22,6 +22,7 @@ export function LessonSizeField({ control, errors }: LessonSizeFieldProps) {
         name="lessonSize"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Lesson size"
             keyboardType="number-pad"
             placeholder="e.g. 20"
             value={String(value ?? '')}

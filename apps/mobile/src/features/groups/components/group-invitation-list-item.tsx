@@ -3,6 +3,7 @@ import { GroupInvitationStatus } from '@/graphql/generated'
 import { View } from 'react-native'
 import { formatInvitationStatus } from '@/features/groups/utils/format-invitation-status'
 import { AppButton, AppCard, AppText } from '@/ui/primitives'
+import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
 
 type GroupInvitationListItemProps = {
   invitation: MyGroupInvitationsQuery['myGroupInvitations'][number]
@@ -38,6 +39,7 @@ export function GroupInvitationListItem({
             {isSubmitting ? 'Working...' : 'Accept'}
           </AppButton>
           <AppButton
+            {...destructiveButtonA11yProps('Decline invitation')}
             background="#b00020"
             color="white"
             disabled={isSubmitting}

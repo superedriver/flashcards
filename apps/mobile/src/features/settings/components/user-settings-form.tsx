@@ -116,7 +116,9 @@ export function UserSettingsForm({
 
   return (
     <View style={{ gap: 12, marginBottom: 16 }}>
-      <AppText style={{ fontSize: 16, fontWeight: '600' }}>Settings</AppText>
+      <AppText accessibilityRole="header" style={{ fontSize: 16, fontWeight: '600' }}>
+        Settings
+      </AppText>
       <AppText style={{ color: '#666666', fontSize: 14 }}>
         Lesson preferences and reminder schedule. Notification delivery is managed below.
       </AppText>

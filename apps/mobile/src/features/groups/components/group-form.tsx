@@ -8,7 +8,7 @@ import {
   type GroupFormValues,
 } from '@/features/groups/validation/group-form.schema'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
-import { ErrorState, FormFieldError } from '@/ui/components'
+import { ErrorState, FieldLabel, FormFieldError } from '@/ui/components'
 
 type GroupFormProps = {
   cancelLabel?: string
@@ -70,11 +70,13 @@ export function GroupForm({
       <AppText style={{ color: '#666666', fontSize: 14 }}>
         Groups let you invite others and share decks for view-only study.
       </AppText>
+      <FieldLabel>Group name</FieldLabel>
       <Controller
         control={control}
         name="name"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Group name"
             placeholder="Group name"
             value={value}
             onBlur={onBlur}
@@ -87,11 +89,13 @@ export function GroupForm({
       />
       <FormFieldError message={errors.name?.message} />
 
+      <FieldLabel>Description</FieldLabel>
       <Controller
         control={control}
         name="description"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Description (optional)"
             multiline
             numberOfLines={4}
             placeholder="Description (optional)"

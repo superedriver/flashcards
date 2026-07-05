@@ -14,9 +14,23 @@ export function ErrorState({
   retryLabel = 'Try again',
 }: ErrorStateProps) {
   return (
-    <View style={{ gap: 12, paddingVertical: 16 }}>
-      <AppText style={{ color: '#c0392b' }}>{message}</AppText>
-      {onRetry ? <AppButton onPress={onRetry}>{retryLabel}</AppButton> : null}
+    <View accessibilityRole="alert" style={{ gap: 12, paddingVertical: 16 }}>
+      <AppText
+        accessibilityLiveRegion="polite"
+        accessibilityRole="alert"
+        style={{ color: '#c0392b' }}
+      >
+        {message}
+      </AppText>
+      {onRetry ? (
+        <AppButton
+          accessibilityHint="Retries the previous action."
+          accessibilityLabel={retryLabel}
+          onPress={onRetry}
+        >
+          {retryLabel}
+        </AppButton>
+      ) : null}
     </View>
   )
 }

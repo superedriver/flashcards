@@ -12,7 +12,12 @@ export function LessonProgress({ currentNumber, reviewedCount, totalCards }: Les
   const progressPercent = totalCards === 0 ? 0 : Math.round((reviewedCount / totalCards) * 100)
 
   return (
-    <View style={{ gap: 8, marginBottom: 16 }}>
+    <View
+      accessibilityLabel={`Card ${currentNumber} of ${totalCards}. Reviewed ${reviewedCount} of ${totalCards}. ${progressPercent} percent complete.`}
+      accessibilityRole="progressbar"
+      accessibilityValue={{ max: totalCards, min: 0, now: reviewedCount }}
+      style={{ gap: 8, marginBottom: 16 }}
+    >
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <AppText style={{ fontWeight: '600' }}>
           Card {currentNumber} of {totalCards}

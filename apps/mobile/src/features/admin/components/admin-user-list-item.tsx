@@ -1,5 +1,6 @@
 import type { AdminSearchUsersQuery } from '@/graphql/generated'
 import { AppButton, AppCard, AppText } from '@/ui/primitives'
+import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
 
 type AdminUserListItemProps = {
   onBlock?: (userId: string) => void
@@ -42,6 +43,7 @@ export function AdminUserListItem({
 
       {!isBlocked && onBlock ? (
         <AppButton
+          {...destructiveButtonA11yProps('Block user')}
           background="#b00020"
           color="white"
           disabled={isSubmitting}

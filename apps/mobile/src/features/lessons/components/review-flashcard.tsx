@@ -37,7 +37,13 @@ export function ReviewFlashcard({
           <AppText style={{ color: '#666666', fontSize: 14, textAlign: 'center' }}>
             Try to recall the answer, then reveal it.
           </AppText>
-          <AppButton onPress={onReveal}>Reveal answer</AppButton>
+          <AppButton
+            accessibilityHint="Shows the back of the card."
+            accessibilityLabel="Reveal answer"
+            onPress={onReveal}
+          >
+            Reveal answer
+          </AppButton>
         </View>
       ) : (
         <View style={{ gap: 12, marginTop: 8 }}>

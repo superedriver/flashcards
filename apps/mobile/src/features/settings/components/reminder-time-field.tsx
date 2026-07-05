@@ -23,6 +23,7 @@ export function ReminderTimeField({ control, errors }: ReminderTimeFieldProps) {
         name="reminderTime"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Reminder time"
             placeholder="09:00"
             value={value ?? ''}
             onBlur={onBlur}

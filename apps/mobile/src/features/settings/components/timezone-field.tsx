@@ -26,12 +26,19 @@ export function TimezoneField({ control, errors }: TimezoneFieldProps) {
         render={({ field: { onBlur, onChange, value } }) => (
           <>
             <AppInput
+              accessibilityLabel="Timezone"
               placeholder="Europe/Kyiv"
               value={value}
               onBlur={onBlur}
               onChangeText={onChange}
             />
-            <AppButton onPress={() => onChange(getDeviceTimezone())}>Use device timezone</AppButton>
+            <AppButton
+              accessibilityHint="Fills the timezone field with your device timezone."
+              accessibilityLabel="Use device timezone"
+              onPress={() => onChange(getDeviceTimezone())}
+            >
+              Use device timezone
+            </AppButton>
           </>
         )}
       />

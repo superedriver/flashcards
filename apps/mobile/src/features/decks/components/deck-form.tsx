@@ -5,7 +5,7 @@ import { View } from 'react-native'
 
 import { deckFormSchema, type DeckFormValues } from '@/features/decks/validation/deck-form.schema'
 import { AppButton, AppInput } from '@/ui/primitives'
-import { ErrorState, FormFieldError } from '@/ui/components'
+import { ErrorState, FieldLabel, FormFieldError } from '@/ui/components'
 
 type DeckFormProps = {
   cancelLabel?: string
@@ -64,11 +64,13 @@ export function DeckForm({
 
   return (
     <View style={{ gap: 12 }}>
+      <FieldLabel>Title</FieldLabel>
       <Controller
         control={control}
         name="title"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Title"
             placeholder="Title"
             value={value}
             onBlur={onBlur}
@@ -81,11 +83,13 @@ export function DeckForm({
       />
       <FormFieldError message={errors.title?.message} />
 
+      <FieldLabel>Description</FieldLabel>
       <Controller
         control={control}
         name="description"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Description (optional)"
             multiline
             numberOfLines={4}
             placeholder="Description (optional)"

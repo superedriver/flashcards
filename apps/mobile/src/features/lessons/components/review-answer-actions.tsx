@@ -2,6 +2,7 @@ import { View } from 'react-native'
 
 import { ReviewAnswer } from '@/graphql/generated'
 import { AppButton, AppText } from '@/ui/primitives'
+import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
 
 type ReviewAnswerActionsProps = {
   disabled?: boolean
@@ -27,6 +28,7 @@ export function ReviewAnswerActions({
       ) : null}
 
       <AppButton
+        {...destructiveButtonA11yProps("Don't know", 'Marks this card as not known.')}
         background="#c62828"
         color="white"
         disabled={isDisabled}
@@ -35,6 +37,8 @@ export function ReviewAnswerActions({
         {isSubmitting ? 'Saving...' : "Don't know"}
       </AppButton>
       <AppButton
+        accessibilityHint="Marks this card as known."
+        accessibilityLabel="Know"
         background="#2e7d32"
         color="white"
         disabled={isDisabled}

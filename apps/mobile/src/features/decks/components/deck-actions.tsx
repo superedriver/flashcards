@@ -15,6 +15,7 @@ import {
 } from '@/graphql/generated'
 import { AppButton, AppText } from '@/ui/primitives'
 import { ErrorState } from '@/ui/components'
+import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
 
 type DeckActionsProps = {
   deck: NonNullable<DeckQuery['deck']>
@@ -169,7 +170,13 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
         </AppText>
       ) : null}
 
-      <AppButton background="#b00020" color="white" disabled={isBusy} onPress={handleDelete}>
+      <AppButton
+        {...destructiveButtonA11yProps('Delete deck')}
+        background="#b00020"
+        color="white"
+        disabled={isBusy}
+        onPress={handleDelete}
+      >
         {isDeleting ? 'Deleting...' : 'Delete Deck'}
       </AppButton>
 

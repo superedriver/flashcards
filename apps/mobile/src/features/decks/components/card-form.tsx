@@ -6,7 +6,8 @@ import { View } from 'react-native'
 import { AiExampleGenerator } from '@/features/ai-examples/components/ai-example-generator'
 import { cardFormSchema, type CardFormValues } from '@/features/decks/validation/card-form.schema'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
-import { ErrorState, FormFieldError } from '@/ui/components'
+import { ErrorState, FieldLabel, FormFieldError } from '@/ui/components'
+import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
 
 type CardFormProps = {
   cancelLabel?: string
@@ -75,11 +76,13 @@ export function CardForm({
 
   return (
     <View style={{ gap: 12 }}>
+      <FieldLabel>Front</FieldLabel>
       <Controller
         control={control}
         name="front"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Front"
             multiline
             numberOfLines={3}
             placeholder="Front"
@@ -94,11 +97,13 @@ export function CardForm({
       />
       <FormFieldError message={errors.front?.message} />
 
+      <FieldLabel>Back</FieldLabel>
       <Controller
         control={control}
         name="back"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Back"
             multiline
             numberOfLines={3}
             placeholder="Back"
@@ -113,11 +118,13 @@ export function CardForm({
       />
       <FormFieldError message={errors.back?.message} />
 
+      <FieldLabel>Example</FieldLabel>
       <Controller
         control={control}
         name="example"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Example (optional)"
             multiline
             numberOfLines={3}
             placeholder="Example (optional)"
@@ -144,11 +151,13 @@ export function CardForm({
         <AppText style={{ color: '#666666' }}>Save the card first to generate AI examples.</AppText>
       )}
 
+      <FieldLabel>Notes</FieldLabel>
       <Controller
         control={control}
         name="notes"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Notes (optional)"
             multiline
             numberOfLines={3}
             placeholder="Notes (optional)"
@@ -176,7 +185,13 @@ export function CardForm({
       ) : null}
 
       {showDelete && onDelete ? (
-        <AppButton background="#b00020" color="white" disabled={isSubmitting} onPress={onDelete}>
+        <AppButton
+          {...destructiveButtonA11yProps('Delete card')}
+          background="#b00020"
+          color="white"
+          disabled={isSubmitting}
+          onPress={onDelete}
+        >
           Delete Card
         </AppButton>
       ) : null}

@@ -12,6 +12,7 @@ import { getPostAuthRedirectHref } from '@/features/auth/utils/get-post-auth-red
 import { signInSchema, type SignInFormValues } from '@/features/auth/validation/sign-in.schema'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { useLoginMutation } from '@/graphql/generated'
+import { FieldLabel } from '@/ui/components'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
 
 import { GoogleLoginButton } from './google-login-button'
@@ -74,12 +75,15 @@ export function SignInForm() {
 
   return (
     <View style={{ gap: 12 }}>
+      <FieldLabel>Email</FieldLabel>
       <Controller
         control={control}
         name="email"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Email"
             autoCapitalize="none"
+            autoComplete="email"
             keyboardType="email-address"
             placeholder="Email"
             value={value}
@@ -93,11 +97,14 @@ export function SignInForm() {
       />
       <AuthFieldError message={errors.email?.message} />
 
+      <FieldLabel>Password</FieldLabel>
       <Controller
         control={control}
         name="password"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
+            accessibilityLabel="Password"
+            autoComplete="current-password"
             placeholder="Password"
             secureTextEntry
             value={value}
