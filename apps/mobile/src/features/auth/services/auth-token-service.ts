@@ -1,5 +1,10 @@
 import { clearAccessToken, getAccessToken, setAccessToken } from './access-token-memory'
-import { clearRefreshToken, getRefreshToken, setRefreshToken } from './refresh-token-storage'
+import {
+  clearRefreshToken,
+  getRefreshToken,
+  setRefreshToken,
+  usesWebRefreshTokenCookie,
+} from './refresh-token-storage'
 
 export const authTokenService = {
   async clearTokens(): Promise<void> {
@@ -15,8 +20,13 @@ export const authTokenService = {
     return getRefreshToken()
   },
 
-  async setTokens(accessToken: string, refreshToken: string): Promise<void> {
+  async setTokens(accessToken: string, refreshToken?: string | null): Promise<void> {
     setAccessToken(accessToken)
-    await setRefreshToken(refreshToken)
+
+    if (!usesWebRefreshTokenCookie() && refreshToken) {
+      await setRefreshToken(refreshToken)
+    }
   },
+
+  usesWebRefreshTokenCookie,
 }

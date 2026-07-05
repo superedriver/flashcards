@@ -3,11 +3,9 @@ import { Platform } from 'react-native'
 
 import { REFRESH_TOKEN_KEY } from './access-token-memory'
 
-let webRefreshToken: string | null = null
-
 export async function getRefreshToken(): Promise<string | null> {
   if (Platform.OS === 'web') {
-    return webRefreshToken
+    return null
   }
 
   return SecureStore.getItemAsync(REFRESH_TOKEN_KEY)
@@ -15,7 +13,6 @@ export async function getRefreshToken(): Promise<string | null> {
 
 export async function setRefreshToken(token: string): Promise<void> {
   if (Platform.OS === 'web') {
-    webRefreshToken = token
     return
   }
 
@@ -24,9 +21,12 @@ export async function setRefreshToken(token: string): Promise<void> {
 
 export async function clearRefreshToken(): Promise<void> {
   if (Platform.OS === 'web') {
-    webRefreshToken = null
     return
   }
 
   await SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY)
+}
+
+export function usesWebRefreshTokenCookie(): boolean {
+  return Platform.OS === 'web'
 }

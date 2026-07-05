@@ -21,16 +21,17 @@ export function useLogout() {
 
     const refreshToken = await authTokenService.getRefreshToken()
 
-    if (refreshToken) {
-      try {
-        await logoutMutation({
-          variables: {
-            input: { refreshToken },
-          },
-        })
-      } catch {
-        // Local logout must still proceed if backend logout fails.
-      }
+    try {
+      await logoutMutation({
+        context: authTokenService.usesWebRefreshTokenCookie()
+          ? { fetchOptions: { credentials: 'include' } }
+          : undefined,
+        variables: {
+          input: refreshToken ? { refreshToken } : {},
+        },
+      })
+    } catch {
+      // Local logout must still proceed if backend logout fails.
     }
 
     await clearAuthSession()

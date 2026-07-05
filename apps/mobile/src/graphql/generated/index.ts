@@ -76,7 +76,7 @@ export type AdminUserSummary = {
 export type AuthPayloadType = {
   __typename?: 'AuthPayloadType'
   accessToken: Scalars['String']['output']
-  refreshToken: Scalars['String']['output']
+  refreshToken?: Maybe<Scalars['String']['output']>
   user: SafeUser
 }
 
@@ -329,7 +329,7 @@ export type LoginInput = {
 }
 
 export type LogoutInput = {
-  refreshToken: Scalars['String']['input']
+  refreshToken?: InputMaybe<Scalars['String']['input']>
 }
 
 export type ModerationDeck = {
@@ -648,7 +648,7 @@ export type QueryPublicDecksArgs = {
 }
 
 export type RefreshTokenInput = {
-  refreshToken: Scalars['String']['input']
+  refreshToken?: InputMaybe<Scalars['String']['input']>
 }
 
 export type RegisterInput = {

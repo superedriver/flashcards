@@ -1,9 +1,11 @@
 import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client'
+import { Platform } from 'react-native'
 
 import { env } from '@/config/env'
 import { authErrorLink, authLink } from '@/features/auth/services/apollo-auth-links'
 
 const httpLink = new HttpLink({
+  credentials: Platform.OS === 'web' ? 'include' : 'same-origin',
   headers: {
     'apollo-require-preflight': 'true',
   },
