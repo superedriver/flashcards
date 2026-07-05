@@ -1,21 +1,23 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { View } from 'react-native'
 
+import { AuthFieldError } from '@/features/auth/components/auth-field-error'
 import {
   forgotPasswordSchema,
   type ForgotPasswordFormValues,
 } from '@/features/auth/validation/forgot-password.schema'
 import { useRequestPasswordResetMutation } from '@/graphql/generated'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
-import { ErrorState, PageTitle, Screen } from '@/ui/components'
+import { PageTitle, Screen } from '@/ui/components'
 
 export function ForgotPasswordForm() {
   const router = useRouter()
   const [requestPasswordReset, { loading }] = useRequestPasswordResetMutation()
   const [submitted, setSubmitted] = useState(false)
+  const isSubmittingRef = useRef(false)
 
   const {
     control,
@@ -27,6 +29,12 @@ export function ForgotPasswordForm() {
   })
 
   const onSubmit = handleSubmit(async (values) => {
+    if (isSubmittingRef.current || loading || submitted) {
+      return
+    }
+
+    isSubmittingRef.current = true
+
     try {
       await requestPasswordReset({
         variables: {
@@ -36,20 +44,28 @@ export function ForgotPasswordForm() {
     } catch {
       // Always show generic success to avoid email enumeration.
     } finally {
+      isSubmittingRef.current = false
       setSubmitted(true)
     }
   })
 
   if (submitted) {
     return (
-      <AppText>
-        If an account exists for that email, password reset instructions have been sent.
-      </AppText>
+      <View style={{ gap: 12 }}>
+        <AppText>
+          If an account exists for that email, password reset instructions have been sent.
+        </AppText>
+        <AppButton onPress={() => router.replace('/(auth)/sign-in')}>Back to sign in</AppButton>
+      </View>
     )
   }
 
   return (
     <View style={{ gap: 12 }}>
+      <AppText style={{ color: '#666666' }}>
+        Enter your email and we will send reset instructions if an account exists.
+      </AppText>
+
       <Controller
         control={control}
         name="email"
@@ -64,10 +80,10 @@ export function ForgotPasswordForm() {
           />
         )}
       />
-      {errors.email ? <ErrorState message={errors.email.message} /> : null}
+      <AuthFieldError message={errors.email?.message} />
 
       <AppButton disabled={loading} onPress={() => void onSubmit()}>
-        Send reset link
+        {loading ? 'Sending...' : 'Send reset link'}
       </AppButton>
       <AppButton onPress={() => router.replace('/(auth)/sign-in')}>Back to sign in</AppButton>
     </View>

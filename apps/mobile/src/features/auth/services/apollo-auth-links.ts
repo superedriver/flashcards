@@ -2,8 +2,9 @@ import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
 import { Observable } from '@apollo/client/utilities'
 
+import { handleSessionExpired } from './handle-session-expired'
 import { authTokenService } from './auth-token-service'
-import { clearAuthSession, performRefreshToken } from './auth-session'
+import { performRefreshToken } from './auth-session'
 
 let isRefreshing = false
 let pendingRequests: Array<() => void> = []
@@ -69,7 +70,7 @@ export const authErrorLink = onError(({ graphQLErrors, operation, forward }) => 
     void performRefreshToken()
       .then(async (success) => {
         if (!success) {
-          await clearAuthSession()
+          await handleSessionExpired()
           observer.error(new Error('Session expired'))
           return
         }
@@ -78,7 +79,7 @@ export const authErrorLink = onError(({ graphQLErrors, operation, forward }) => 
         retryOperation()
       })
       .catch(async () => {
-        await clearAuthSession()
+        await handleSessionExpired()
         observer.error(new Error('Session expired'))
       })
       .finally(() => {

@@ -1,13 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { View } from 'react-native'
 
+import { AuthFieldError } from '@/features/auth/components/auth-field-error'
 import {
   resetPasswordSchema,
   type ResetPasswordFormValues,
 } from '@/features/auth/validation/reset-password.schema'
+import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { useResetPasswordMutation } from '@/graphql/generated'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
 import { ErrorState, PageTitle, Screen } from '@/ui/components'
@@ -18,6 +20,7 @@ export function ResetPasswordForm() {
   const [resetPassword, { loading }] = useResetPasswordMutation()
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const isSubmittingRef = useRef(false)
 
   const {
     control,
@@ -31,12 +34,24 @@ export function ResetPasswordForm() {
     resolver: zodResolver(resetPasswordSchema),
   })
 
+  if (!token || typeof token !== 'string') {
+    return (
+      <View style={{ gap: 12 }}>
+        <ErrorState message="This reset link is invalid or incomplete." />
+        <AppButton onPress={() => router.replace('/(auth)/forgot-password')}>
+          Request a new reset link
+        </AppButton>
+        <AppButton onPress={() => router.replace('/(auth)/sign-in')}>Back to sign in</AppButton>
+      </View>
+    )
+  }
+
   const onSubmit = handleSubmit(async (values) => {
-    if (!token || typeof token !== 'string') {
-      setError('Reset token is missing.')
+    if (isSubmittingRef.current || loading) {
       return
     }
 
+    isSubmittingRef.current = true
     setError(null)
 
     try {
@@ -49,15 +64,19 @@ export function ResetPasswordForm() {
         },
       })
       setSuccess(true)
-    } catch {
-      setError('Password reset failed. The link may have expired.')
+    } catch (submitError) {
+      setError(
+        getGraphqlErrorMessage(submitError, 'Password reset failed. The link may have expired.'),
+      )
+    } finally {
+      isSubmittingRef.current = false
     }
   })
 
   if (success) {
     return (
       <View style={{ gap: 12 }}>
-        <AppText>Your password has been reset.</AppText>
+        <AppText>Your password has been reset. You can now sign in with your new password.</AppText>
         <AppButton onPress={() => router.replace('/(auth)/sign-in')}>Go to sign in</AppButton>
       </View>
     )
@@ -74,11 +93,14 @@ export function ResetPasswordForm() {
             secureTextEntry
             value={value}
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              setError(null)
+              onChange(text)
+            }}
           />
         )}
       />
-      {errors.newPassword ? <ErrorState message={errors.newPassword.message} /> : null}
+      <AuthFieldError message={errors.newPassword?.message} />
 
       <Controller
         control={control}
@@ -89,15 +111,18 @@ export function ResetPasswordForm() {
             secureTextEntry
             value={value}
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              setError(null)
+              onChange(text)
+            }}
           />
         )}
       />
-      {errors.confirmPassword ? <ErrorState message={errors.confirmPassword.message} /> : null}
+      <AuthFieldError message={errors.confirmPassword?.message} />
       {error ? <ErrorState message={error} /> : null}
 
       <AppButton disabled={loading} onPress={() => void onSubmit()}>
-        Reset password
+        {loading ? 'Resetting...' : 'Reset password'}
       </AppButton>
     </View>
   )

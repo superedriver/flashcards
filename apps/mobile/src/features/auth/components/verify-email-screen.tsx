@@ -1,8 +1,10 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 
 import { mapSafeUserToAuthUser, useAuthStore } from '@/features/auth/state/auth-store'
+import type { AuthUser } from '@/features/auth/types/auth-user'
+import { getPostAuthRedirectHref } from '@/features/auth/utils/get-post-auth-redirect'
 import { useVerifyEmailMutation } from '@/graphql/generated'
 import { AppButton, AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
@@ -13,37 +15,52 @@ export function VerifyEmailScreen() {
   const [verifyEmail] = useVerifyEmailMutation()
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [message, setMessage] = useState<string | null>(null)
+  const [verifiedUser, setVerifiedUser] = useState<AuthUser | null>(null)
+  const [attempt, setAttempt] = useState(0)
 
-  useEffect(() => {
+  const runVerification = useCallback(async () => {
     if (!token || typeof token !== 'string') {
       setStatus('error')
       setMessage('Verification token is missing.')
       return
     }
 
-    void verifyEmail({
-      variables: {
-        input: { token },
-      },
-    })
-      .then((result) => {
-        const user = result.data?.verifyEmail
+    setStatus('loading')
+    setMessage(null)
 
-        if (!user) {
-          setStatus('error')
-          setMessage('Email verification failed.')
-          return
-        }
-
-        useAuthStore.getState().setUser(mapSafeUserToAuthUser(user))
-        setStatus('success')
-        setMessage('Your email has been verified.')
+    try {
+      const result = await verifyEmail({
+        variables: {
+          input: { token },
+        },
       })
-      .catch(() => {
+
+      const user = result.data?.verifyEmail
+
+      if (!user) {
         setStatus('error')
-        setMessage('Email verification failed.')
-      })
+        setMessage('Email verification failed. The link may have expired.')
+        return
+      }
+
+      const authUser = mapSafeUserToAuthUser(user)
+      useAuthStore.getState().setUser(authUser)
+      setVerifiedUser(authUser)
+      setStatus('success')
+      setMessage('Your email has been verified.')
+    } catch {
+      setStatus('error')
+      setMessage('Email verification failed. The link may have expired.')
+    }
   }, [token, verifyEmail])
+
+  useEffect(() => {
+    void runVerification()
+  }, [attempt, runVerification])
+
+  const handleRetry = () => {
+    setAttempt((current) => current + 1)
+  }
 
   return (
     <Screen>
@@ -52,10 +69,23 @@ export function VerifyEmailScreen() {
       {status === 'success' ? (
         <View style={{ gap: 12 }}>
           <AppText>{message}</AppText>
-          <AppButton onPress={() => router.replace('/(tabs)')}>Continue</AppButton>
+          <AppButton
+            onPress={() => {
+              if (verifiedUser) {
+                router.replace(getPostAuthRedirectHref(verifiedUser))
+              }
+            }}
+          >
+            Continue
+          </AppButton>
         </View>
       ) : null}
-      {status === 'error' ? <ErrorState message={message ?? 'Verification failed.'} /> : null}
+      {status === 'error' ? (
+        <View style={{ gap: 12 }}>
+          <ErrorState message={message ?? 'Verification failed.'} onRetry={handleRetry} />
+          <AppButton onPress={() => router.replace('/(auth)/sign-in')}>Back to sign in</AppButton>
+        </View>
+      ) : null}
     </Screen>
   )
 }
