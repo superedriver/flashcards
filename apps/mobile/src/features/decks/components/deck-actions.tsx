@@ -1,11 +1,13 @@
 import { useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { View } from 'react-native'
 
-import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
+import { confirmAction, confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
+import { getDeckStatusSummary } from '@/features/decks/utils/format-deck-status'
 import type { DeckQuery } from '@/graphql/generated'
 import {
+  DeckModerationStatus,
   DeckVisibility,
   useDeleteDeckMutation,
   usePublishDeckMutation,
@@ -23,6 +25,7 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
   const router = useRouter()
   const [feedback, setFeedback] = useState<string | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
+  const isPublishingRef = useRef(false)
 
   const [deleteDeck, { loading: isDeleting }] = useDeleteDeckMutation({
     refetchQueries: ['MyDecks'],
@@ -71,28 +74,57 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
   }
 
   const handlePublish = () => {
-    confirmDestructiveAction(
-      'Publish deck',
-      'Your deck will become public after moderation.',
+    if (isPublishingRef.current || isPublishing) {
+      return
+    }
+
+    isPublishingRef.current = true
+    setActionError(null)
+    setFeedback(null)
+
+    void (async () => {
+      try {
+        const result = await publishDeck({
+          variables: { deckId: deck.id },
+        })
+
+        if (!result.data?.publishDeck) {
+          setActionError('Could not publish deck. Please try again.')
+          return
+        }
+
+        setFeedback('Deck submitted for moderation. It will appear publicly once approved.')
+      } catch (error) {
+        setActionError(getGraphqlErrorMessage(error, 'Could not publish deck. Please try again.'))
+      } finally {
+        isPublishingRef.current = false
+      }
+    })()
+  }
+
+  const handleUnpublish = () => {
+    confirmAction(
+      'Unpublish deck',
+      'Your deck will become private and will no longer appear in public search.',
       () => {
         void (async () => {
           setActionError(null)
           setFeedback(null)
 
           try {
-            const result = await publishDeck({
+            const result = await unpublishDeck({
               variables: { deckId: deck.id },
             })
 
-            if (!result.data?.publishDeck) {
-              setActionError('Could not publish deck. Please try again.')
+            if (!result.data?.unpublishDeck) {
+              setActionError('Could not unpublish deck. Please try again.')
               return
             }
 
-            setFeedback('Deck published.')
+            setFeedback('Deck is now private.')
           } catch (error) {
             setActionError(
-              getGraphqlErrorMessage(error, 'Could not publish deck. Please try again.'),
+              getGraphqlErrorMessage(error, 'Could not unpublish deck. Please try again.'),
             )
           }
         })()
@@ -100,34 +132,17 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
     )
   }
 
-  const handleUnpublish = () => {
-    confirmDestructiveAction('Unpublish deck', 'Your deck will become private again.', () => {
-      void (async () => {
-        setActionError(null)
-        setFeedback(null)
-
-        try {
-          const result = await unpublishDeck({
-            variables: { deckId: deck.id },
-          })
-
-          if (!result.data?.unpublishDeck) {
-            setActionError('Could not unpublish deck. Please try again.')
-            return
-          }
-
-          setFeedback('Deck unpublished.')
-        } catch (error) {
-          setActionError(
-            getGraphqlErrorMessage(error, 'Could not unpublish deck. Please try again.'),
-          )
-        }
-      })()
-    })
-  }
+  const isPrivate = deck.visibility === DeckVisibility.Private
+  const isPendingPublic =
+    deck.visibility === DeckVisibility.Public &&
+    deck.moderationStatus === DeckModerationStatus.Pending
 
   return (
     <View style={{ gap: 8, marginBottom: 16 }}>
+      <AppText style={{ color: '#666666' }}>
+        Status: {getDeckStatusSummary(deck.visibility, deck.moderationStatus)}
+      </AppText>
+
       <AppButton disabled={isBusy} onPress={() => router.push(`/decks/${deck.id}/edit`)}>
         Edit Deck
       </AppButton>
@@ -138,21 +153,27 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
         Import CSV
       </AppButton>
 
-      {deck.visibility === DeckVisibility.Private ? (
+      {isPrivate ? (
         <AppButton disabled={isBusy} onPress={handlePublish}>
-          Publish Deck
+          {isPublishing ? 'Publishing...' : 'Publish Deck'}
         </AppButton>
       ) : (
         <AppButton disabled={isBusy} onPress={handleUnpublish}>
-          Unpublish Deck
+          {isUnpublishing ? 'Unpublishing...' : 'Unpublish Deck'}
         </AppButton>
       )}
 
+      {isPendingPublic ? (
+        <AppText style={{ color: '#ef6c00', fontSize: 14 }}>
+          This deck is awaiting moderation before it appears in public search.
+        </AppText>
+      ) : null}
+
       <AppButton background="#b00020" color="white" disabled={isBusy} onPress={handleDelete}>
-        Delete Deck
+        {isDeleting ? 'Deleting...' : 'Delete Deck'}
       </AppButton>
 
-      {feedback ? <AppText>{feedback}</AppText> : null}
+      {feedback ? <AppText style={{ color: '#2e7d32' }}>{feedback}</AppText> : null}
       {actionError ? <ErrorState message={actionError} /> : null}
     </View>
   )

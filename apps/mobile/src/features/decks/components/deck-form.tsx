@@ -1,10 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { View } from 'react-native'
 
 import { deckFormSchema, type DeckFormValues } from '@/features/decks/validation/deck-form.schema'
 import { AppButton, AppInput } from '@/ui/primitives'
-import { ErrorState } from '@/ui/components'
+import { ErrorState, FormFieldError } from '@/ui/components'
 
 type DeckFormProps = {
   cancelLabel?: string
@@ -12,8 +13,10 @@ type DeckFormProps = {
   errorMessage?: string | null
   isSubmitting?: boolean
   onCancel?: () => void
+  onClearError?: () => void
   onSubmit: (values: DeckFormValues) => Promise<void>
   submitLabel: string
+  submittingLabel?: string
 }
 
 export function DeckForm({
@@ -22,9 +25,13 @@ export function DeckForm({
   errorMessage,
   isSubmitting = false,
   onCancel,
+  onClearError,
   onSubmit,
   submitLabel,
+  submittingLabel,
 }: DeckFormProps) {
+  const isSubmittingRef = useRef(false)
+
   const {
     control,
     formState: { errors },
@@ -37,16 +44,42 @@ export function DeckForm({
     resolver: zodResolver(deckFormSchema),
   })
 
+  const handleFormSubmit = handleSubmit(async (values) => {
+    if (isSubmittingRef.current || isSubmitting) {
+      return
+    }
+
+    isSubmittingRef.current = true
+
+    try {
+      await onSubmit(values)
+    } finally {
+      isSubmittingRef.current = false
+    }
+  })
+
+  const clearError = () => {
+    onClearError?.()
+  }
+
   return (
     <View style={{ gap: 12 }}>
       <Controller
         control={control}
         name="title"
         render={({ field: { onBlur, onChange, value } }) => (
-          <AppInput placeholder="Title" value={value} onBlur={onBlur} onChangeText={onChange} />
+          <AppInput
+            placeholder="Title"
+            value={value}
+            onBlur={onBlur}
+            onChangeText={(text) => {
+              clearError()
+              onChange(text)
+            }}
+          />
         )}
       />
-      {errors.title ? <ErrorState message={errors.title.message} /> : null}
+      <FormFieldError message={errors.title?.message} />
 
       <Controller
         control={control}
@@ -58,16 +91,19 @@ export function DeckForm({
             placeholder="Description (optional)"
             value={value ?? ''}
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              clearError()
+              onChange(text)
+            }}
           />
         )}
       />
-      {errors.description ? <ErrorState message={errors.description.message} /> : null}
+      <FormFieldError message={errors.description?.message} />
 
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
 
-      <AppButton disabled={isSubmitting} onPress={() => void handleSubmit(onSubmit)()}>
-        {submitLabel}
+      <AppButton disabled={isSubmitting} onPress={() => void handleFormSubmit()}>
+        {isSubmitting ? (submittingLabel ?? `${submitLabel}...`) : submitLabel}
       </AppButton>
 
       {onCancel ? (

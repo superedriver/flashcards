@@ -91,7 +91,9 @@ export function EditCardScreen() {
         isSubmitting={isSubmitting || isDeleting}
         showDelete
         submitLabel="Save Changes"
+        submittingLabel="Saving..."
         onCancel={() => router.back()}
+        onClearError={() => setErrorMessage(null)}
         onDelete={handleDelete}
         onSubmit={async (values) => {
           setErrorMessage(null)

@@ -10,7 +10,7 @@ import { useAuth } from '@/features/auth/hooks/use-auth'
 import { DeckLearningStatsCard } from '@/features/lessons/components/deck-learning-stats-card'
 import { useRouter } from 'expo-router'
 import { useDeckCardsQuery, useDeckQuery, useDeleteCardMutation } from '@/graphql/generated'
-import { AppButton } from '@/ui/primitives'
+import { AppButton, AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function DeckDetailScreen() {
@@ -18,6 +18,7 @@ export function DeckDetailScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>()
   const { user } = useAuth()
   const [actionError, setActionError] = useState<string | null>(null)
+  const [actionFeedback, setActionFeedback] = useState<string | null>(null)
 
   const deckQuery = useDeckQuery({
     skip: !deckId,
@@ -49,6 +50,7 @@ export function DeckDetailScreen() {
     confirmDestructiveAction('Delete card', 'This card will be permanently deleted.', () => {
       void (async () => {
         setActionError(null)
+        setActionFeedback(null)
 
         try {
           const result = await deleteCard({
@@ -57,7 +59,10 @@ export function DeckDetailScreen() {
 
           if (!result.data?.deleteCard) {
             setActionError('Could not delete card. Please try again.')
+            return
           }
+
+          setActionFeedback('Card deleted.')
         } catch (deleteError) {
           setActionError(
             getGraphqlErrorMessage(deleteError, 'Could not delete card. Please try again.'),
@@ -74,6 +79,7 @@ export function DeckDetailScreen() {
       {loading ? <LoadingState message="Loading deck..." /> : null}
       {error ? <ErrorState message="Could not load deck." onRetry={handleRetry} /> : null}
       {actionError ? <ErrorState message={actionError} /> : null}
+      {actionFeedback ? <AppText style={{ color: '#2e7d32' }}>{actionFeedback}</AppText> : null}
 
       {!loading && !error && deck && deckId ? (
         <>

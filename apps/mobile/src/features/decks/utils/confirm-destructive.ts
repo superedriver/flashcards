@@ -18,3 +18,18 @@ export function confirmDestructiveAction(
     { onPress: onConfirm, style: 'destructive', text: 'Confirm' },
   ])
 }
+
+export function confirmAction(title: string, message: string, onConfirm: () => void): void {
+  if (Platform.OS === 'web') {
+    if (globalThis.confirm(`${title}\n\n${message}`)) {
+      onConfirm()
+    }
+
+    return
+  }
+
+  Alert.alert(title, message, [
+    { style: 'cancel', text: 'Cancel' },
+    { onPress: onConfirm, text: 'Confirm' },
+  ])
+}

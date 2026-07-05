@@ -20,7 +20,9 @@ export function CreateDeckScreen() {
         errorMessage={errorMessage}
         isSubmitting={loading}
         submitLabel="Create Deck"
+        submittingLabel="Creating deck..."
         onCancel={() => router.back()}
+        onClearError={() => setErrorMessage(null)}
         onSubmit={async (values) => {
           setErrorMessage(null)
 

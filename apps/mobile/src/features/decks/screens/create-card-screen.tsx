@@ -21,7 +21,9 @@ export function CreateCardScreen() {
         errorMessage={errorMessage}
         isSubmitting={loading}
         submitLabel="Create Card"
+        submittingLabel="Creating card..."
         onCancel={() => router.back()}
+        onClearError={() => setErrorMessage(null)}
         onSubmit={async (values) => {
           if (!deckId) {
             return

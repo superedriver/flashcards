@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { View } from 'react-native'
 
 import { AiExampleGenerator } from '@/features/ai-examples/components/ai-example-generator'
 import { cardFormSchema, type CardFormValues } from '@/features/decks/validation/card-form.schema'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
-import { ErrorState } from '@/ui/components'
+import { ErrorState, FormFieldError } from '@/ui/components'
 
 type CardFormProps = {
   cancelLabel?: string
@@ -14,10 +15,12 @@ type CardFormProps = {
   errorMessage?: string | null
   isSubmitting?: boolean
   onCancel?: () => void
+  onClearError?: () => void
   onDelete?: () => void
   onSubmit: (values: CardFormValues) => Promise<void>
   showDelete?: boolean
   submitLabel: string
+  submittingLabel?: string
 }
 
 export function CardForm({
@@ -27,11 +30,15 @@ export function CardForm({
   errorMessage,
   isSubmitting = false,
   onCancel,
+  onClearError,
   onDelete,
   onSubmit,
   showDelete = false,
   submitLabel,
+  submittingLabel,
 }: CardFormProps) {
+  const isSubmittingRef = useRef(false)
+
   const {
     control,
     formState: { errors },
@@ -48,6 +55,24 @@ export function CardForm({
     resolver: zodResolver(cardFormSchema),
   })
 
+  const handleFormSubmit = handleSubmit(async (values) => {
+    if (isSubmittingRef.current || isSubmitting) {
+      return
+    }
+
+    isSubmittingRef.current = true
+
+    try {
+      await onSubmit(values)
+    } finally {
+      isSubmittingRef.current = false
+    }
+  })
+
+  const clearError = () => {
+    onClearError?.()
+  }
+
   return (
     <View style={{ gap: 12 }}>
       <Controller
@@ -60,11 +85,14 @@ export function CardForm({
             placeholder="Front"
             value={value}
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              clearError()
+              onChange(text)
+            }}
           />
         )}
       />
-      {errors.front ? <ErrorState message={errors.front.message} /> : null}
+      <FormFieldError message={errors.front?.message} />
 
       <Controller
         control={control}
@@ -76,11 +104,14 @@ export function CardForm({
             placeholder="Back"
             value={value}
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              clearError()
+              onChange(text)
+            }}
           />
         )}
       />
-      {errors.back ? <ErrorState message={errors.back.message} /> : null}
+      <FormFieldError message={errors.back?.message} />
 
       <Controller
         control={control}
@@ -92,11 +123,14 @@ export function CardForm({
             placeholder="Example (optional)"
             value={value ?? ''}
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              clearError()
+              onChange(text)
+            }}
           />
         )}
       />
-      {errors.example ? <ErrorState message={errors.example.message} /> : null}
+      <FormFieldError message={errors.example?.message} />
 
       {cardId ? (
         <AiExampleGenerator
@@ -120,16 +154,19 @@ export function CardForm({
             placeholder="Notes (optional)"
             value={value ?? ''}
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              clearError()
+              onChange(text)
+            }}
           />
         )}
       />
-      {errors.notes ? <ErrorState message={errors.notes.message} /> : null}
+      <FormFieldError message={errors.notes?.message} />
 
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
 
-      <AppButton disabled={isSubmitting} onPress={() => void handleSubmit(onSubmit)()}>
-        {submitLabel}
+      <AppButton disabled={isSubmitting} onPress={() => void handleFormSubmit()}>
+        {isSubmitting ? (submittingLabel ?? `${submitLabel}...`) : submitLabel}
       </AppButton>
 
       {onCancel ? (

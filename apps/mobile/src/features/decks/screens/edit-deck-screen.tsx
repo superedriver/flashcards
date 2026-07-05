@@ -54,7 +54,9 @@ export function EditDeckScreen() {
         errorMessage={errorMessage}
         isSubmitting={isSubmitting}
         submitLabel="Save Changes"
+        submittingLabel="Saving..."
         onCancel={() => router.back()}
+        onClearError={() => setErrorMessage(null)}
         onSubmit={async (values) => {
           if (!deckId) {
             return
