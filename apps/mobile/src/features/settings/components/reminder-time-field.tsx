@@ -2,8 +2,8 @@ import type { Control, FieldErrors } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 
 import type { SettingsFormValues } from '@/features/settings/validation/settings-form.schema'
-import { AppInput } from '@/ui/primitives'
-import { ErrorState } from '@/ui/components'
+import { AppInput, AppText } from '@/ui/primitives'
+import { FormFieldError } from '@/ui/components'
 
 type ReminderTimeFieldProps = {
   control: Control<SettingsFormValues>
@@ -13,19 +13,24 @@ type ReminderTimeFieldProps = {
 export function ReminderTimeField({ control, errors }: ReminderTimeFieldProps) {
   return (
     <>
+      <AppText style={{ fontWeight: '600' }}>Reminder time</AppText>
+      <AppText style={{ color: '#666666', fontSize: 14 }}>
+        Daily reminder hour in 24-hour format (HH:mm). Minutes are stored but only the hour is used
+        for reminders in this MVP.
+      </AppText>
       <Controller
         control={control}
         name="reminderTime"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            placeholder="Reminder time (HH:mm)"
+            placeholder="09:00"
             value={value ?? ''}
             onBlur={onBlur}
             onChangeText={onChange}
           />
         )}
       />
-      {errors.reminderTime ? <ErrorState message={errors.reminderTime.message} /> : null}
+      <FormFieldError message={errors.reminderTime?.message} />
     </>
   )
 }

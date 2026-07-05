@@ -1,9 +1,12 @@
 import type { Control, FieldErrors } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
 
-import type { SettingsFormValues } from '@/features/settings/validation/settings-form.schema'
-import { AppInput } from '@/ui/primitives'
-import { ErrorState } from '@/ui/components'
+import {
+  getDeviceTimezone,
+  type SettingsFormValues,
+} from '@/features/settings/validation/settings-form.schema'
+import { AppButton, AppInput, AppText } from '@/ui/primitives'
+import { FormFieldError } from '@/ui/components'
 
 type TimezoneFieldProps = {
   control: Control<SettingsFormValues>
@@ -13,14 +16,26 @@ type TimezoneFieldProps = {
 export function TimezoneField({ control, errors }: TimezoneFieldProps) {
   return (
     <>
+      <AppText style={{ fontWeight: '600' }}>Timezone</AppText>
+      <AppText style={{ color: '#666666', fontSize: 14 }}>
+        Used for daily reminder scheduling (IANA timezone, e.g. Europe/Kyiv).
+      </AppText>
       <Controller
         control={control}
         name="timezone"
         render={({ field: { onBlur, onChange, value } }) => (
-          <AppInput placeholder="Timezone" value={value} onBlur={onBlur} onChangeText={onChange} />
+          <>
+            <AppInput
+              placeholder="Europe/Kyiv"
+              value={value}
+              onBlur={onBlur}
+              onChangeText={onChange}
+            />
+            <AppButton onPress={() => onChange(getDeviceTimezone())}>Use device timezone</AppButton>
+          </>
         )}
       />
-      {errors.timezone ? <ErrorState message={errors.timezone.message} /> : null}
+      <FormFieldError message={errors.timezone?.message} />
     </>
   )
 }

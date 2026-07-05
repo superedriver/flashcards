@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { View } from 'react-native'
 
@@ -27,6 +27,7 @@ export function UserSettingsForm({
 }: UserSettingsFormProps) {
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const isSubmittingRef = useRef(false)
 
   const { data, error, loading, refetch } = useMySettingsQuery()
   const [updateSettings, { loading: isSaving }] = useUpdateMySettingsMutation({
@@ -72,6 +73,11 @@ export function UserSettingsForm({
   }, [notificationsEnabled, reset])
 
   const onSubmit = handleSubmit(async (values) => {
+    if (isSubmittingRef.current || isSaving) {
+      return
+    }
+
+    isSubmittingRef.current = true
     setErrorMessage(null)
     setFeedback(null)
 
@@ -95,6 +101,8 @@ export function UserSettingsForm({
       setFeedback('Settings saved.')
     } catch (submitError) {
       setErrorMessage(getGraphqlErrorMessage(submitError, 'Could not save settings.'))
+    } finally {
+      isSubmittingRef.current = false
     }
   })
 
@@ -109,13 +117,18 @@ export function UserSettingsForm({
   return (
     <View style={{ gap: 12, marginBottom: 16 }}>
       <AppText style={{ fontSize: 16, fontWeight: '600' }}>Settings</AppText>
+      <AppText style={{ color: '#666666', fontSize: 14 }}>
+        Lesson preferences and reminder schedule. Notification delivery is managed below.
+      </AppText>
       <LessonSizeField control={control} errors={errors} />
       <ReminderTimeField control={control} errors={errors} />
       <TimezoneField control={control} errors={errors} />
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      {feedback ? <AppText>{feedback}</AppText> : null}
+      {feedback ? (
+        <AppText style={{ color: '#2e7d32', fontWeight: '600' }}>{feedback}</AppText>
+      ) : null}
       <AppButton disabled={isSaving} onPress={() => void onSubmit()}>
-        Save Settings
+        {isSaving ? 'Saving...' : 'Save settings'}
       </AppButton>
     </View>
   )

@@ -1,14 +1,20 @@
 import { z } from 'zod'
 
 export const settingsFormSchema = z.object({
-  lessonSize: z.coerce.number().int().min(5).max(100),
+  lessonSize: z.coerce
+    .number({
+      invalid_type_error: 'Lesson size must be a number.',
+    })
+    .int('Lesson size must be a whole number.')
+    .min(5, 'Lesson size must be at least 5 cards.')
+    .max(100, 'Lesson size must be at most 100 cards.'),
   notificationsEnabled: z.boolean(),
   reminderTime: z
     .string()
-    .regex(/^([01]\d|2[0-3]):[0-5]\d$/)
+    .regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Use 24-hour time in HH:mm format (e.g. 09:00).')
     .nullable()
     .optional(),
-  timezone: z.string().trim().min(1).max(100),
+  timezone: z.string().trim().min(1, 'Timezone is required.').max(100, 'Timezone is too long.'),
 })
 
 export type SettingsFormValues = z.infer<typeof settingsFormSchema>

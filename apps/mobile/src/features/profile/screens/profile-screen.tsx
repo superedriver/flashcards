@@ -24,7 +24,7 @@ export function ProfileScreen() {
   const isModerator = authUser?.role === 'MODERATOR'
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title="Profile" />
 
       {loading ? <LoadingState message="Loading profile..." /> : null}
