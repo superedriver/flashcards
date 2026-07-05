@@ -1,5 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { View } from 'react-native'
 
 import { CsvImportSummary } from '@/features/csv-import/components/csv-import-summary'
@@ -19,6 +19,8 @@ export function CsvImportScreen() {
   >(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const isPreviewingRef = useRef(false)
+  const isConfirmingRef = useRef(false)
 
   const [previewCsvImport, { loading: isPreviewing }] = usePreviewCsvImportMutation()
   const [confirmCsvImport, { loading: isConfirming }] = useConfirmCsvImportMutation({
@@ -31,8 +33,14 @@ export function CsvImportScreen() {
       return
     }
 
+    if (isPreviewingRef.current || isPreviewing) {
+      return
+    }
+
+    isPreviewingRef.current = true
     setErrorMessage(null)
     setSuccessMessage(null)
+    setPreviewResult(null)
 
     try {
       const result = await previewCsvImport({
@@ -52,6 +60,8 @@ export function CsvImportScreen() {
       setPreviewResult(result.data.previewCsvImport)
     } catch (error) {
       setErrorMessage(getGraphqlErrorMessage(error, 'Could not preview CSV import.'))
+    } finally {
+      isPreviewingRef.current = false
     }
   }
 
@@ -60,6 +70,11 @@ export function CsvImportScreen() {
       return
     }
 
+    if (isConfirmingRef.current || isConfirming) {
+      return
+    }
+
+    isConfirmingRef.current = true
     setErrorMessage(null)
     setSuccessMessage(null)
 
@@ -77,11 +92,15 @@ export function CsvImportScreen() {
         return
       }
 
-      setSuccessMessage(`Imported ${count} cards successfully.`)
+      setSuccessMessage(
+        count === 1 ? 'Imported 1 card successfully.' : `Imported ${count} cards successfully.`,
+      )
       setPreviewResult(null)
       setCsvText('')
     } catch (error) {
       setErrorMessage(getGraphqlErrorMessage(error, 'Could not confirm CSV import.'))
+    } finally {
+      isConfirmingRef.current = false
     }
   }
 
@@ -90,20 +109,30 @@ export function CsvImportScreen() {
       <Screen>
         <PageTitle title="Import CSV" />
         <ErrorState message="Deck id is missing." />
+        <View style={{ gap: 12, marginTop: 16 }}>
+          <AppButton onPress={() => router.replace('/(tabs)/decks')}>Back to decks</AppButton>
+        </View>
       </Screen>
     )
   }
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title="Import CSV" />
-      <CsvInputForm
-        csvText={csvText}
-        errorMessage={errorMessage}
-        isSubmitting={isPreviewing}
-        onChangeCsvText={setCsvText}
-        onPreview={() => void handlePreview()}
-      />
+      <AppText style={{ color: '#666666', marginBottom: 12 }}>
+        Preview validates your CSV without creating cards. Confirm import to add valid rows.
+      </AppText>
+
+      {!successMessage ? (
+        <CsvInputForm
+          csvText={csvText}
+          errorMessage={errorMessage}
+          isSubmitting={isPreviewing}
+          onChangeCsvText={setCsvText}
+          onClearError={() => setErrorMessage(null)}
+          onPreview={() => void handlePreview()}
+        />
+      ) : null}
 
       {previewResult ? (
         <CsvImportSummary
@@ -115,8 +144,18 @@ export function CsvImportScreen() {
 
       {successMessage ? (
         <View style={{ gap: 12, marginTop: 16 }}>
-          <AppText>{successMessage}</AppText>
-          <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>Back to deck</AppButton>
+          <AppText style={{ color: '#2e7d32', fontSize: 16, fontWeight: '600' }}>
+            {successMessage}
+          </AppText>
+          <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>View deck</AppButton>
+          <AppButton
+            onPress={() => {
+              setSuccessMessage(null)
+              setErrorMessage(null)
+            }}
+          >
+            Import more cards
+          </AppButton>
         </View>
       ) : null}
     </Screen>

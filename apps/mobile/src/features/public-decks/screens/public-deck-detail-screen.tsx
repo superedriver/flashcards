@@ -3,7 +3,7 @@ import { useLocalSearchParams } from 'expo-router'
 import { PublicDeckActions } from '@/features/public-decks/components/public-deck-actions'
 import { PublicDeckHeader } from '@/features/public-decks/components/public-deck-header'
 import { usePublicDeckCardsQuery, usePublicDeckQuery } from '@/graphql/generated'
-import { AppText } from '@/ui/primitives'
+import { AppCard, AppText } from '@/ui/primitives'
 import { EmptyState, ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function PublicDeckDetailScreen() {
@@ -28,7 +28,7 @@ export function PublicDeckDetailScreen() {
   }
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title="Public Deck" />
 
       {loading ? <LoadingState message="Loading deck..." /> : null}
@@ -41,12 +41,18 @@ export function PublicDeckDetailScreen() {
           {cards.length === 0 ? (
             <EmptyState message="This deck has no cards." />
           ) : (
-            cards.map((card) => (
-              <AppText key={card.id} style={{ marginBottom: 8 }}>
-                {card.position}. {card.front} — {card.back}
-              </AppText>
-            ))
+            <AppText style={{ fontSize: 16, fontWeight: '600', marginBottom: 12 }}>Cards</AppText>
           )}
+          {cards.map((card) => (
+            <AppCard key={card.id} style={{ gap: 6, marginBottom: 12, padding: 16 }}>
+              <AppText style={{ color: '#888888', fontSize: 12 }}>#{card.position}</AppText>
+              <AppText style={{ fontSize: 16, fontWeight: '600' }}>{card.front}</AppText>
+              <AppText style={{ color: '#444444' }}>{card.back}</AppText>
+              {card.example ? (
+                <AppText style={{ color: '#666666' }}>Example: {card.example}</AppText>
+              ) : null}
+            </AppCard>
+          ))}
         </>
       ) : null}
     </Screen>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { View } from 'react-native'
 
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
@@ -26,6 +26,8 @@ export function AiExampleGenerator({
   const [selectedExample, setSelectedExample] = useState<string | null>(currentExample ?? null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [feedback, setFeedback] = useState<string | null>(null)
+  const [savingExample, setSavingExample] = useState<string | null>(null)
+  const isGeneratingRef = useRef(false)
 
   const [generateCardExamples, { loading: isGenerating }] = useGenerateCardExamplesMutation()
   const [saveGeneratedCardExample, { loading: isSaving }] = useSaveGeneratedCardExampleMutation({
@@ -33,6 +35,11 @@ export function AiExampleGenerator({
   })
 
   const handleGenerate = async () => {
+    if (isGeneratingRef.current || isGenerating || isSaving) {
+      return
+    }
+
+    isGeneratingRef.current = true
     setErrorMessage(null)
     setFeedback(null)
 
@@ -53,15 +60,23 @@ export function AiExampleGenerator({
       setExamples(generated)
     } catch (error) {
       setErrorMessage(getGraphqlErrorMessage(error, 'Could not generate examples.'))
+    } finally {
+      isGeneratingRef.current = false
     }
   }
 
   const handleSelect = (exampleText: string) => {
     setSelectedExample(exampleText)
     onExampleSelected(exampleText)
+    setFeedback('Example added to the form. Save the card or use Save to card to persist it.')
   }
 
   const handleSave = async (exampleText: string) => {
+    if (isSaving) {
+      return
+    }
+
+    setSavingExample(exampleText)
     setErrorMessage(null)
     setFeedback(null)
 
@@ -85,20 +100,28 @@ export function AiExampleGenerator({
       setFeedback('Example saved to card.')
     } catch (error) {
       setErrorMessage(getGraphqlErrorMessage(error, 'Could not save example.'))
+    } finally {
+      setSavingExample(null)
     }
   }
 
   return (
     <View style={{ gap: 12, marginBottom: 16 }}>
       <AppText style={{ fontWeight: '600' }}>AI examples</AppText>
+      <AppText style={{ color: '#666666', fontSize: 14 }}>
+        Generate example sentences for this card. Examples are not saved until you choose Save to
+        card.
+      </AppText>
       <AppButton disabled={isGenerating || isSaving} onPress={() => void handleGenerate()}>
-        Generate examples
+        {isGenerating ? 'Generating...' : 'Generate examples'}
       </AppButton>
       {isGenerating ? <LoadingState message="Generating examples..." /> : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      {feedback ? <AppText>{feedback}</AppText> : null}
+      {feedback ? <AppText style={{ color: '#2e7d32' }}>{feedback}</AppText> : null}
       <GeneratedExampleList
         examples={examples}
+        isSaving={isSaving}
+        savingExample={savingExample}
         selectedExample={selectedExample}
         onExampleSelected={handleSelect}
         onSaveExample={(exampleText) => void handleSave(exampleText)}

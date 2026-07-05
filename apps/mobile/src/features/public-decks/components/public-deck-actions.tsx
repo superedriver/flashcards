@@ -1,8 +1,8 @@
 import { useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { View } from 'react-native'
 
-import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
+import { confirmAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { useCopyPublicDeckMutation } from '@/graphql/generated'
 import { AppButton, AppText } from '@/ui/primitives'
@@ -19,44 +19,51 @@ export function PublicDeckActions({ deckId }: PublicDeckActionsProps) {
   })
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const isCopyingRef = useRef(false)
 
   const handleCopy = () => {
-    confirmDestructiveAction(
-      'Copy deck',
-      'This will add a copy of this public deck to your library.',
-      () => {
-        void (async () => {
-          setErrorMessage(null)
-          setFeedback(null)
+    confirmAction('Copy deck', 'A private copy of this deck will be added to your library.', () => {
+      if (isCopyingRef.current || loading) {
+        return
+      }
 
-          try {
-            const result = await copyPublicDeck({
-              variables: { sourceDeckId: deckId },
-            })
+      isCopyingRef.current = true
+      setErrorMessage(null)
+      setFeedback(null)
 
-            const copiedDeck = result.data?.copyPublicDeck.deck
+      void (async () => {
+        try {
+          const result = await copyPublicDeck({
+            variables: { sourceDeckId: deckId },
+          })
 
-            if (!copiedDeck) {
-              setErrorMessage('Could not copy deck. Please try again.')
-              return
-            }
+          const copiedDeck = result.data?.copyPublicDeck.deck
 
-            setFeedback('Deck copied to your library.')
-            router.replace(`/decks/${copiedDeck.id}`)
-          } catch (error) {
-            setErrorMessage(getGraphqlErrorMessage(error, 'Could not copy deck. Please try again.'))
+          if (!copiedDeck) {
+            setErrorMessage('Could not copy deck. Please try again.')
+            return
           }
-        })()
-      },
-    )
+
+          setFeedback('Deck copied to your library.')
+          router.replace(`/decks/${copiedDeck.id}`)
+        } catch (error) {
+          setErrorMessage(getGraphqlErrorMessage(error, 'Could not copy deck. Please try again.'))
+        } finally {
+          isCopyingRef.current = false
+        }
+      })()
+    })
   }
 
   return (
     <View style={{ gap: 8, marginBottom: 16 }}>
+      <AppText style={{ color: '#666666', fontSize: 14 }}>
+        Copy this deck to study and edit your own private version.
+      </AppText>
       <AppButton disabled={loading} onPress={handleCopy}>
-        Copy to My Decks
+        {loading ? 'Copying...' : 'Copy to My Decks'}
       </AppButton>
-      {feedback ? <AppText>{feedback}</AppText> : null}
+      {feedback ? <AppText style={{ color: '#2e7d32' }}>{feedback}</AppText> : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
     </View>
   )

@@ -7,11 +7,20 @@ import { PublicDeckListItem } from './public-deck-list-item'
 
 type PublicDeckListProps = {
   decks: PublicDecksQuery['publicDecks']['items']
+  searchQuery?: string
 }
 
-export function PublicDeckList({ decks }: PublicDeckListProps) {
+export function PublicDeckList({ decks, searchQuery }: PublicDeckListProps) {
   if (decks.length === 0) {
-    return <EmptyState message="No public decks found." />
+    return (
+      <EmptyState
+        message={
+          searchQuery
+            ? `No public decks match "${searchQuery}".`
+            : 'No public decks are available yet.'
+        }
+      />
+    )
   }
 
   return (
