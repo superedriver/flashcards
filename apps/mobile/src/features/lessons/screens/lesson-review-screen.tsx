@@ -1,11 +1,12 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { View } from 'react-native'
 
 import { LessonProgress } from '@/features/lessons/components/lesson-progress'
 import { ReviewAnswerActions } from '@/features/lessons/components/review-answer-actions'
 import { ReviewFlashcard } from '@/features/lessons/components/review-flashcard'
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
+import { confirmAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import {
   ReviewAnswer,
@@ -34,6 +35,12 @@ export function LessonReviewScreen() {
   const [isRevealed, setIsRevealed] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const isSubmittingRef = useRef(false)
+
+  useEffect(() => {
+    setIsRevealed(false)
+    setErrorMessage(null)
+  }, [currentCard?.cardId])
 
   if (!sessionId) {
     return (
@@ -51,6 +58,11 @@ export function LessonReviewScreen() {
         <ErrorState message="Lesson state was lost. Please start the lesson again." />
         <View style={{ gap: 12, marginTop: 16 }}>
           {deckId ? (
+            <AppButton onPress={() => router.replace(`/lessons/start?deckId=${deckId}`)}>
+              Start lesson again
+            </AppButton>
+          ) : null}
+          {deckId ? (
             <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>Back to deck</AppButton>
           ) : null}
           <AppButton onPress={() => router.replace('/(tabs)/decks')}>Back to decks</AppButton>
@@ -59,11 +71,21 @@ export function LessonReviewScreen() {
     )
   }
 
+  const handleLeaveLesson = () => {
+    const targetDeckId = deckId ?? lesson.deckId
+
+    confirmAction('Leave lesson?', 'Your progress in this session will not be saved.', () => {
+      clearActiveLesson()
+      router.replace(targetDeckId ? `/decks/${targetDeckId}` : '/(tabs)/decks')
+    })
+  }
+
   const handleAnswer = async (answer: ReviewAnswer) => {
-    if (isSubmitting) {
+    if (isSubmittingRef.current || isSubmitting || !isRevealed) {
       return
     }
 
+    isSubmittingRef.current = true
     setIsSubmitting(true)
     setErrorMessage(null)
 
@@ -120,6 +142,7 @@ export function LessonReviewScreen() {
     } catch (error) {
       setErrorMessage(getGraphqlErrorMessage(error, 'Could not submit review. Please try again.'))
     } finally {
+      isSubmittingRef.current = false
       setIsSubmitting(false)
     }
   }
@@ -141,12 +164,17 @@ export function LessonReviewScreen() {
         onReveal={() => setIsRevealed(true)}
       />
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      {isRevealed ? (
-        <ReviewAnswerActions
-          disabled={isSubmitting}
-          onAnswer={(answer) => void handleAnswer(answer)}
-        />
-      ) : null}
+      <ReviewAnswerActions
+        disabled={isSubmitting}
+        isRevealed={isRevealed}
+        isSubmitting={isSubmitting}
+        onAnswer={(answer) => void handleAnswer(answer)}
+      />
+      <View style={{ marginTop: 16 }}>
+        <AppButton disabled={isSubmitting} onPress={handleLeaveLesson}>
+          Leave lesson
+        </AppButton>
+      </View>
     </Screen>
   )
 }

@@ -147,7 +147,7 @@ MVP may defer:
 - [x] TASK-21.03 Polish loading/error/empty states
 - [x] TASK-21.04 Polish auth UX
 - [x] TASK-21.05 Polish deck/card UX
-- [ ] TASK-21.06 Polish lesson UX
+- [x] TASK-21.06 Polish lesson UX
 - [ ] TASK-21.07 Polish public/CSV/AI UX
 - [ ] TASK-21.08 Polish profile/settings/notifications UX
 - [ ] TASK-21.09 Polish groups/admin UX
@@ -623,7 +623,7 @@ TASK-21.05 Polish deck/card UX
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

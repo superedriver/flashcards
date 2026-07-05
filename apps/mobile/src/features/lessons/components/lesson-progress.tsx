@@ -9,21 +9,24 @@ type LessonProgressProps = {
 }
 
 export function LessonProgress({ currentNumber, reviewedCount, totalCards }: LessonProgressProps) {
-  const progress = totalCards === 0 ? 0 : reviewedCount / totalCards
+  const progressPercent = totalCards === 0 ? 0 : Math.round((reviewedCount / totalCards) * 100)
 
   return (
     <View style={{ gap: 8, marginBottom: 16 }}>
-      <AppText>
-        Card {currentNumber} of {totalCards}
-      </AppText>
-      <AppText>
-        Reviewed {reviewedCount} / {totalCards}
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <AppText style={{ fontWeight: '600' }}>
+          Card {currentNumber} of {totalCards}
+        </AppText>
+        <AppText style={{ color: '#666666' }}>{progressPercent}%</AppText>
+      </View>
+      <AppText style={{ color: '#666666' }}>
+        Reviewed {reviewedCount} of {totalCards}
       </AppText>
       <View
         style={{
           backgroundColor: '#e0e0e0',
           borderRadius: 4,
-          height: 8,
+          height: 10,
           overflow: 'hidden',
           width: '100%',
         }}
@@ -32,7 +35,7 @@ export function LessonProgress({ currentNumber, reviewedCount, totalCards }: Les
           style={{
             backgroundColor: '#4caf50',
             height: '100%',
-            width: `${Math.round(progress * 100)}%`,
+            width: `${progressPercent}%`,
           }}
         />
       </View>

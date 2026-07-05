@@ -4,6 +4,7 @@ import { View } from 'react-native'
 
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
 import type { LessonCard } from '@/features/lessons/types/active-lesson'
+import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { useStartLessonMutation } from '@/graphql/generated'
 import { AppButton } from '@/ui/primitives'
 import { EmptyState, ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
@@ -66,8 +67,8 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
 
         router.replace(`/lessons/${payload.sessionId}?deckId=${payload.deckId}`)
       })
-      .catch(() => {
-        setErrorMessage('Could not start lesson. Please try again.')
+      .catch((error) => {
+        setErrorMessage(getGraphqlErrorMessage(error, 'Could not start lesson. Please try again.'))
       })
       .finally(() => {
         setIsStarting(false)
@@ -87,6 +88,9 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
       <Screen>
         <PageTitle title="Start Lesson" />
         <ErrorState message="Deck id is missing." />
+        <View style={{ gap: 12, marginTop: 16 }}>
+          <AppButton onPress={() => router.replace('/(tabs)/decks')}>Back to decks</AppButton>
+        </View>
       </Screen>
     )
   }
@@ -94,12 +98,13 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
   return (
     <Screen>
       <PageTitle title="Start Lesson" />
-      {isStarting ? <LoadingState message="Starting lesson..." /> : null}
+      {isStarting ? <LoadingState message="Preparing your lesson..." /> : null}
       {errorMessage ? <ErrorState message={errorMessage} onRetry={handleRetry} /> : null}
       {isEmptyLesson ? (
         <View style={{ gap: 12 }}>
-          <EmptyState message="No cards are ready for review right now." />
+          <EmptyState message="No cards are due for review right now. Come back later or add more cards to this deck." />
           <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>Back to deck</AppButton>
+          <AppButton onPress={() => router.replace('/(tabs)/decks')}>Back to decks</AppButton>
         </View>
       ) : null}
     </Screen>

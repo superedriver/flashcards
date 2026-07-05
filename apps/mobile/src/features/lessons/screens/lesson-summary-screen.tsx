@@ -2,8 +2,16 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import { View } from 'react-native'
 
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
-import { AppButton, AppText } from '@/ui/primitives'
+import { AppButton, AppCard, AppText } from '@/ui/primitives'
 import { ErrorState, PageTitle, Screen } from '@/ui/components'
+
+function formatKnownPercent(knownCount: number, reviewedCards: number): string {
+  if (reviewedCards === 0) {
+    return '0%'
+  }
+
+  return `${Math.round((knownCount / reviewedCards) * 100)}%`
+}
 
 export function LessonSummaryScreen() {
   const router = useRouter()
@@ -26,26 +34,27 @@ export function LessonSummaryScreen() {
   }
 
   const targetDeckId = deckId ?? completion.deckId
+  const knownPercent = formatKnownPercent(completion.knownCount, completion.reviewedCards)
 
   return (
     <Screen>
       <PageTitle title="Lesson Complete" />
-      <View style={{ gap: 8, marginBottom: 16 }}>
-        <AppText>Total cards: {completion.totalCards}</AppText>
-        <AppText>Reviewed: {completion.reviewedCards}</AppText>
-        <AppText>Know: {completion.knownCount}</AppText>
-        <AppText>Don&apos;t know: {completion.dontKnowCount}</AppText>
-        <AppText>Completed: {new Date(completion.completedAt).toLocaleString()}</AppText>
-      </View>
+      <AppCard style={{ gap: 12, marginBottom: 16, padding: 16 }}>
+        <AppText style={{ fontSize: 20, fontWeight: '700' }}>Nice work!</AppText>
+        <AppText style={{ color: '#666666' }}>
+          Completed {new Date(completion.completedAt).toLocaleString()}
+        </AppText>
+        <View style={{ gap: 6, marginTop: 8 }}>
+          <AppText>Cards in lesson: {completion.totalCards}</AppText>
+          <AppText>Reviewed: {completion.reviewedCards}</AppText>
+          <AppText style={{ color: '#2e7d32' }}>Know: {completion.knownCount}</AppText>
+          <AppText style={{ color: '#c62828' }}>
+            Don&apos;t know: {completion.dontKnowCount}
+          </AppText>
+          <AppText style={{ fontWeight: '600' }}>Known: {knownPercent}</AppText>
+        </View>
+      </AppCard>
       <View style={{ gap: 12 }}>
-        <AppButton
-          onPress={() => {
-            clearCompletion()
-            router.replace(`/decks/${targetDeckId}`)
-          }}
-        >
-          Back to deck
-        </AppButton>
         <AppButton
           onPress={() => {
             clearCompletion()
@@ -53,6 +62,14 @@ export function LessonSummaryScreen() {
           }}
         >
           Start another lesson
+        </AppButton>
+        <AppButton
+          onPress={() => {
+            clearCompletion()
+            router.replace(`/decks/${targetDeckId}`)
+          }}
+        >
+          Back to deck
         </AppButton>
         <AppButton
           onPress={() => {
