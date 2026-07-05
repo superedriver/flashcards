@@ -155,6 +155,36 @@ Password reset must:
 - revoke all active refresh tokens for the user
 ```
 
+## Credentials In Transit
+
+Email/password auth sends credentials in the GraphQL request body. This is expected for login, register, and password reset flows.
+
+Rules:
+
+```txt
+- Production API and web app must use HTTPS (TLS).
+- EXPO_PUBLIC_API_URL must use https:// in production web builds (except localhost development).
+- Browser DevTools may show request bodies to the user on their own device; that is not the same as sending credentials unencrypted over the network.
+- Passwords must never be logged server-side, even in error paths.
+- Do not use client-side password hashing as a substitute for TLS.
+- Do not send auth credentials over http:// except localhost development.
+```
+
+Development:
+
+```txt
+- http://localhost is allowed for local API and web testing.
+- Developers should still treat local request bodies as sensitive during debugging.
+```
+
+Production:
+
+```txt
+- API must be served over HTTPS.
+- Web app must call https:// GraphQL endpoint.
+- CORS_ORIGIN must match the deployed web origin exactly.
+```
+
 ## Token Security
 
 Token strategy must follow:
