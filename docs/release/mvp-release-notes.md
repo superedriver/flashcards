@@ -144,8 +144,11 @@ Target stack: Neon PostgreSQL, Render API, Vercel web, GitHub Actions cron for d
 - [x] Mobile typecheck passes locally
 - [x] Format check passes
 - [x] Lint passes
-- [x] Web static export build passes locally (with known Tamagui warnings in some environments)
+- [x] Prisma validate passes
+- [x] Web static export build passes locally (Tamagui/esbuild warnings possible in some environments)
 ```
+
+Final verification run: 2026-07-05 (TASK-21.15).
 
 ### Manual smoke tests
 

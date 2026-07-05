@@ -30,7 +30,7 @@ docs/tasks/20-deployment-mvp.md
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -156,7 +156,7 @@ MVP may defer:
 - [x] TASK-21.12 Add production observability basics
 - [x] TASK-21.13 Add release notes
 - [x] TASK-21.14 Add MVP release checklist
-- [ ] TASK-21.15 Run final release checks
+- [x] TASK-21.15 Run final release checks
 ```
 
 ---
@@ -1375,7 +1375,49 @@ TASK-21.14 Add MVP release checklist
 
 ## Status
 
-TODO
+DONE
+
+## Final Check Results (2026-07-05)
+
+### Command checks
+
+```txt
+- [x] pnpm format:check
+- [x] pnpm lint
+- [x] pnpm --filter @flashcards/api db:validate
+- [x] pnpm --filter @flashcards/api build
+- [x] pnpm --filter @flashcards/mobile typecheck
+- [x] pnpm --filter @flashcards/mobile build:web
+```
+
+### Security grep review
+
+```txt
+- [x] No real DATABASE_URL, JWT, AI, INTERNAL_JOB, or RESEND secrets in tracked source
+      (matches are .env.example placeholders and documentation only)
+- [x] No passwordHash or refreshTokenHash in apps/mobile
+- [x] No localStorage or sessionStorage in apps/mobile (refresh tokens use expo-secure-store)
+```
+
+### Production smoke tests
+
+```txt
+- [ ] Pending — production not deployed yet (Neon/Render/Vercel)
+      Run docs/release/mvp-smoke-tests.md after deployment.
+```
+
+### Git
+
+```txt
+- [x] Clean working tree after final commit
+```
+
+### Release readiness
+
+```txt
+Repository / build readiness: GO
+Production user release: NO-GO until deployment and production smoke tests pass
+```
 
 ## Context
 

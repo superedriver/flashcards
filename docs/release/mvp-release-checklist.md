@@ -257,3 +257,40 @@ pnpm --filter @flashcards/api build
 pnpm --filter @flashcards/mobile typecheck
 pnpm --filter @flashcards/mobile build:web
 ```
+
+---
+
+## Final Check Results (TASK-21.15)
+
+Run date: 2026-07-05
+
+### Command checks
+
+```txt
+- [x] pnpm format:check
+- [x] pnpm lint
+- [x] pnpm --filter @flashcards/api db:validate
+- [x] pnpm --filter @flashcards/api build
+- [x] pnpm --filter @flashcards/mobile typecheck
+- [x] pnpm --filter @flashcards/mobile build:web
+```
+
+### Security grep review
+
+```txt
+- [x] Secret scan reviewed — placeholders/docs only, no real secrets committed
+- [x] apps/mobile — no passwordHash, refreshTokenHash, localStorage, or sessionStorage
+```
+
+### Production smoke tests
+
+```txt
+- [ ] Pending deployment — complete mvp-smoke-tests.md after Render/Vercel deploy
+```
+
+### Release decision
+
+```txt
+Repository readiness: GO (EPIC-21 complete)
+Production release: NO-GO until deployment + production smoke tests pass
+```
