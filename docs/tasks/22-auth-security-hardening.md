@@ -98,8 +98,8 @@ Expected state:
 - [x] TASK-22.05 Update security checklist for credentials in transit
 - [x] TASK-22.06 Update deployment guide HTTPS requirements
 - [x] TASK-22.07 Audit API logging for password leakage
-- [ ] TASK-22.08 Add auth logging safety test
-- [ ] TASK-22.09 Add bootstrapping guards to auth screens
+- [x] TASK-22.08 Add auth logging safety test
+- [x] TASK-22.09 Add bootstrapping guards to auth screens
 - [ ] TASK-22.10 Add shared auth redirect helper
 - [ ] TASK-22.11 Backend httpOnly refresh token cookie for web
 - [ ] TASK-22.12 Frontend web cookie-based session restore
@@ -760,7 +760,7 @@ TASK-22.07 Audit API logging for password leakage
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -850,7 +850,7 @@ TASK-22.08 Add auth logging safety test
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
