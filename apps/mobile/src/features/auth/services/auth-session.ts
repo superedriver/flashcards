@@ -3,6 +3,7 @@ import { Platform } from 'react-native'
 
 import { env } from '@/config/env'
 import { RefreshTokenDocument } from '@/graphql/generated'
+import { syncLocaleFromBackend } from '@/i18n/sync-locale-from-backend'
 
 import { mapSafeUserToAuthUser, useAuthStore } from '../state/auth-store'
 import { authTokenService } from './auth-token-service'
@@ -78,4 +79,5 @@ export async function applyAuthPayload(payload: {
 }): Promise<void> {
   await authTokenService.setTokens(payload.accessToken, payload.refreshToken)
   useAuthStore.getState().setAuthResult(mapSafeUserToAuthUser(payload.user))
+  await syncLocaleFromBackend()
 }

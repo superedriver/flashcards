@@ -3,6 +3,7 @@ import { Platform } from 'react-native'
 import { performRefreshToken } from '@/features/auth/services/auth-session'
 import { authTokenService } from '@/features/auth/services/auth-token-service'
 import { useAuthStore } from '@/features/auth/state/auth-store'
+import { syncLocaleFromBackend } from '@/i18n/sync-locale-from-backend'
 
 export async function bootstrapAuth(): Promise<void> {
   const store = useAuthStore.getState()
@@ -20,7 +21,10 @@ export async function bootstrapAuth(): Promise<void> {
     if (!success) {
       await authTokenService.clearTokens()
       store.clearAuth()
+      return
     }
+
+    await syncLocaleFromBackend()
   } finally {
     useAuthStore.getState().setBootstrapping(false)
   }

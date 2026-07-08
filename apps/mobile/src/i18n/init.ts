@@ -36,14 +36,12 @@ export async function setAppLocale(locale: AppLocale): Promise<void> {
   await i18n.changeLanguage(locale)
 }
 
-const initialLocale = resolveDeviceLocale()
-
 void i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
     uk: { translation: uk },
   },
-  lng: initialLocale,
+  lng: DEFAULT_LOCALE,
   fallbackLng: DEFAULT_LOCALE,
   supportedLngs: [...SUPPORTED_LOCALES],
   interpolation: {
