@@ -1,3 +1,4 @@
+import { aiExamplesUk } from './uk/ai-examples'
 import { authUk } from './uk/auth'
 import { csvImportUk } from './uk/csv-import'
 import { decksUk } from './uk/decks'
@@ -19,6 +20,7 @@ export const uk = {
     empty: 'Тут поки нічого немає.',
   },
   auth: authUk,
+  aiExamples: aiExamplesUk,
   profile: profileUk,
   settings: settingsUk,
   decks: decksUk,

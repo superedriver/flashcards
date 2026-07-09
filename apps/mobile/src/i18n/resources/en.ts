@@ -1,3 +1,4 @@
+import { aiExamplesEn } from './en/ai-examples'
 import { authEn } from './en/auth'
 import { csvImportEn } from './en/csv-import'
 import { decksEn } from './en/decks'
@@ -19,6 +20,7 @@ export const en = {
     empty: 'Nothing here yet.',
   },
   auth: authEn,
+  aiExamples: aiExamplesEn,
   profile: profileEn,
   settings: settingsEn,
   decks: decksEn,

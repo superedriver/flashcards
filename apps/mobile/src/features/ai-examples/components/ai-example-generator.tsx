@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
+import { getCurrentLocale } from '@/i18n'
 import {
   useGenerateCardExamplesMutation,
   useSaveGeneratedCardExampleMutation,
@@ -22,6 +24,7 @@ export function AiExampleGenerator({
   currentExample,
   onExampleSelected,
 }: AiExampleGeneratorProps) {
+  const { t } = useTranslation()
   const [examples, setExamples] = useState<string[]>([])
   const [selectedExample, setSelectedExample] = useState<string | null>(currentExample ?? null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -46,20 +49,23 @@ export function AiExampleGenerator({
     try {
       const result = await generateCardExamples({
         variables: {
-          input: { cardId },
+          input: {
+            cardId,
+            locale: getCurrentLocale(),
+          },
         },
       })
 
       const generated = result.data?.generateCardExamples.examples.map((item) => item.text) ?? []
 
       if (generated.length === 0) {
-        setErrorMessage('No examples were generated. Try again.')
+        setErrorMessage(t('aiExamples.noExamples'))
         return
       }
 
       setExamples(generated)
     } catch (error) {
-      setErrorMessage(getGraphqlErrorMessage(error, 'Could not generate examples.'))
+      setErrorMessage(getGraphqlErrorMessage(error, t('aiExamples.generateError')))
     } finally {
       isGeneratingRef.current = false
     }
@@ -68,7 +74,7 @@ export function AiExampleGenerator({
   const handleSelect = (exampleText: string) => {
     setSelectedExample(exampleText)
     onExampleSelected(exampleText)
-    setFeedback('Example added to the form. Save the card or use Save to card to persist it.')
+    setFeedback(t('aiExamples.selectedFeedback'))
   }
 
   const handleSave = async (exampleText: string) => {
@@ -91,15 +97,15 @@ export function AiExampleGenerator({
       })
 
       if (!result.data?.saveGeneratedCardExample.card) {
-        setErrorMessage('Could not save example.')
+        setErrorMessage(t('aiExamples.saveError'))
         return
       }
 
       setSelectedExample(exampleText)
       onExampleSelected(exampleText)
-      setFeedback('Example saved to card.')
+      setFeedback(t('aiExamples.savedFeedback'))
     } catch (error) {
-      setErrorMessage(getGraphqlErrorMessage(error, 'Could not save example.'))
+      setErrorMessage(getGraphqlErrorMessage(error, t('aiExamples.saveError')))
     } finally {
       setSavingExample(null)
     }
@@ -107,15 +113,12 @@ export function AiExampleGenerator({
 
   return (
     <View style={{ gap: 12, marginBottom: 16 }}>
-      <AppText style={{ fontWeight: '600' }}>AI examples</AppText>
-      <AppText style={{ color: '#666666', fontSize: 14 }}>
-        Generate example sentences for this card. Examples are not saved until you choose Save to
-        card.
-      </AppText>
+      <AppText style={{ fontWeight: '600' }}>{t('aiExamples.title')}</AppText>
+      <AppText style={{ color: '#666666', fontSize: 14 }}>{t('aiExamples.description')}</AppText>
       <AppButton disabled={isGenerating || isSaving} onPress={() => void handleGenerate()}>
-        {isGenerating ? 'Generating...' : 'Generate examples'}
+        {isGenerating ? t('aiExamples.generating') : t('aiExamples.generate')}
       </AppButton>
-      {isGenerating ? <LoadingState message="Generating examples..." /> : null}
+      {isGenerating ? <LoadingState message={t('aiExamples.generatingMessage')} /> : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
       {feedback ? <AppText style={{ color: '#2e7d32' }}>{feedback}</AppText> : null}
       <GeneratedExampleList

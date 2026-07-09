@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { AppText } from '@/ui/primitives'
@@ -21,15 +22,15 @@ export function GeneratedExampleList({
   selectedExample,
   savingExample,
 }: GeneratedExampleListProps) {
+  const { t } = useTranslation()
+
   if (examples.length === 0) {
     return null
   }
 
   return (
     <View style={{ gap: 8 }}>
-      <AppText style={{ color: '#666666', fontSize: 14 }}>
-        Select a candidate to fill the form, then save to persist it on the card.
-      </AppText>
+      <AppText style={{ color: '#666666', fontSize: 14 }}>{t('aiExamples.listHint')}</AppText>
       {examples.map((exampleText) => (
         <GeneratedExampleListItem
           key={exampleText}
