@@ -1,12 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'expo-router'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { AuthFieldError } from '@/features/auth/components/auth-field-error'
 import {
-  forgotPasswordSchema,
+  createForgotPasswordSchema,
   type ForgotPasswordFormValues,
 } from '@/features/auth/validation/forgot-password.schema'
 import { useRequestPasswordResetMutation } from '@/graphql/generated'
@@ -14,10 +15,12 @@ import { FieldLabel, PageTitle, Screen } from '@/ui/components'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
 
 export function ForgotPasswordForm() {
+  const { t } = useTranslation()
   const router = useRouter()
   const [requestPasswordReset, { loading }] = useRequestPasswordResetMutation()
   const [submitted, setSubmitted] = useState(false)
   const isSubmittingRef = useRef(false)
+  const forgotPasswordSchema = useMemo(() => createForgotPasswordSchema(t), [t])
 
   const {
     control,
@@ -52,31 +55,29 @@ export function ForgotPasswordForm() {
   if (submitted) {
     return (
       <View style={{ gap: 12 }}>
-        <AppText>
-          If an account exists for that email, password reset instructions have been sent.
-        </AppText>
-        <AppButton onPress={() => router.replace('/(auth)/sign-in')}>Back to sign in</AppButton>
+        <AppText>{t('auth.forgotPassword.success')}</AppText>
+        <AppButton onPress={() => router.replace('/(auth)/sign-in')}>
+          {t('auth.forgotPassword.backToSignIn')}
+        </AppButton>
       </View>
     )
   }
 
   return (
     <View style={{ gap: 12 }}>
-      <AppText style={{ color: '#666666' }}>
-        Enter your email and we will send reset instructions if an account exists.
-      </AppText>
+      <AppText style={{ color: '#666666' }}>{t('auth.forgotPassword.description')}</AppText>
 
-      <FieldLabel>Email</FieldLabel>
+      <FieldLabel>{t('auth.email')}</FieldLabel>
       <Controller
         control={control}
         name="email"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Email"
+            accessibilityLabel={t('auth.email')}
             autoCapitalize="none"
             autoComplete="email"
             keyboardType="email-address"
-            placeholder="Email"
+            placeholder={t('auth.email')}
             value={value}
             onBlur={onBlur}
             onChangeText={onChange}
@@ -86,17 +87,21 @@ export function ForgotPasswordForm() {
       <AuthFieldError message={errors.email?.message} />
 
       <AppButton disabled={loading} onPress={() => void onSubmit()}>
-        {loading ? 'Sending...' : 'Send reset link'}
+        {loading ? t('auth.forgotPassword.submitting') : t('auth.forgotPassword.submit')}
       </AppButton>
-      <AppButton onPress={() => router.replace('/(auth)/sign-in')}>Back to sign in</AppButton>
+      <AppButton onPress={() => router.replace('/(auth)/sign-in')}>
+        {t('auth.forgotPassword.backToSignIn')}
+      </AppButton>
     </View>
   )
 }
 
 export function ForgotPasswordScreen() {
+  const { t } = useTranslation()
+
   return (
     <Screen variant="narrow">
-      <PageTitle title="Forgot Password" />
+      <PageTitle title={t('auth.forgotPassword.title')} />
       <ForgotPasswordForm />
     </Screen>
   )

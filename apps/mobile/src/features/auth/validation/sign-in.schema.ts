@@ -1,12 +1,18 @@
+import type { TFunction } from 'i18next'
 import { z } from 'zod'
 
-export const signInSchema = z.object({
-  email: z.string().min(1, 'Email is required').email('Enter a valid email'),
-  password: z
-    .string()
-    .min(1, 'Password is required')
-    .min(8, 'Password must be at least 8 characters')
-    .max(128, 'Password must be at most 128 characters'),
-})
+export function createSignInSchema(t: TFunction) {
+  return z.object({
+    email: z
+      .string()
+      .min(1, t('auth.validation.emailRequired'))
+      .email(t('auth.validation.emailInvalid')),
+    password: z
+      .string()
+      .min(1, t('auth.validation.passwordRequired'))
+      .min(8, t('auth.validation.passwordMin'))
+      .max(128, t('auth.validation.passwordMax')),
+  })
+}
 
-export type SignInFormValues = z.infer<typeof signInSchema>
+export type SignInFormValues = z.infer<ReturnType<typeof createSignInSchema>>

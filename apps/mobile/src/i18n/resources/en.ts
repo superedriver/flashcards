@@ -1,3 +1,5 @@
+import { authEn } from './en/auth'
+
 export const en = {
   common: {
     ok: 'OK',
@@ -7,4 +9,5 @@ export const en = {
     save: 'Save',
     error: 'Something went wrong.',
   },
+  auth: authEn,
 } as const

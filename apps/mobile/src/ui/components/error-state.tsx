@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { AppButton, AppText } from '@/ui/primitives'
@@ -8,11 +9,11 @@ type ErrorStateProps = {
   retryLabel?: string
 }
 
-export function ErrorState({
-  message = 'Something went wrong.',
-  onRetry,
-  retryLabel = 'Try again',
-}: ErrorStateProps) {
+export function ErrorState({ message, onRetry, retryLabel }: ErrorStateProps) {
+  const { t } = useTranslation()
+  const displayMessage = message ?? t('common.error')
+  const displayRetryLabel = retryLabel ?? t('common.retry')
+
   return (
     <View accessibilityRole="alert" style={{ gap: 12, paddingVertical: 16 }}>
       <AppText
@@ -20,15 +21,15 @@ export function ErrorState({
         accessibilityRole="alert"
         style={{ color: '#c0392b' }}
       >
-        {message}
+        {displayMessage}
       </AppText>
       {onRetry ? (
         <AppButton
           accessibilityHint="Retries the previous action."
-          accessibilityLabel={retryLabel}
+          accessibilityLabel={displayRetryLabel}
           onPress={onRetry}
         >
-          {retryLabel}
+          {displayRetryLabel}
         </AppButton>
       ) : null}
     </View>

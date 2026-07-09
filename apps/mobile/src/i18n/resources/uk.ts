@@ -1,3 +1,5 @@
+import { authUk } from './uk/auth'
+
 export const uk = {
   common: {
     ok: 'Гаразд',
@@ -7,4 +9,5 @@ export const uk = {
     save: 'Зберегти',
     error: 'Щось пішло не так.',
   },
+  auth: authUk,
 } as const

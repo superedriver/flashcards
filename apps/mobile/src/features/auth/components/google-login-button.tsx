@@ -1,14 +1,18 @@
+import { useTranslation } from 'react-i18next'
+
 import { AppButton } from '@/ui/primitives'
 
 export function GoogleLoginButton() {
+  const { t } = useTranslation()
+
   return (
     <AppButton
-      accessibilityHint="Google sign-in is not available yet."
-      accessibilityLabel="Continue with Google (coming soon)"
+      accessibilityHint={t('auth.google.hint')}
+      accessibilityLabel={t('auth.google.label')}
       disabled
       onPress={() => undefined}
     >
-      Continue with Google (Coming soon)
+      {t('auth.google.label')}
     </AppButton>
   )
 }

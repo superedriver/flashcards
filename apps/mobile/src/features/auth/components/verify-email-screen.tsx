@@ -1,5 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { mapSafeUserToAuthUser, useAuthStore } from '@/features/auth/state/auth-store'
@@ -10,6 +11,7 @@ import { AppButton, AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function VerifyEmailScreen() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { token } = useLocalSearchParams<{ token?: string }>()
   const [verifyEmail] = useVerifyEmailMutation()
@@ -21,7 +23,7 @@ export function VerifyEmailScreen() {
   const runVerification = useCallback(async () => {
     if (!token || typeof token !== 'string') {
       setStatus('error')
-      setMessage('Verification token is missing.')
+      setMessage(t('auth.verifyEmail.tokenMissing'))
       return
     }
 
@@ -39,7 +41,7 @@ export function VerifyEmailScreen() {
 
       if (!user) {
         setStatus('error')
-        setMessage('Email verification failed. The link may have expired.')
+        setMessage(t('auth.verifyEmail.failed'))
         return
       }
 
@@ -47,12 +49,12 @@ export function VerifyEmailScreen() {
       useAuthStore.getState().setUser(authUser)
       setVerifiedUser(authUser)
       setStatus('success')
-      setMessage('Your email has been verified.')
+      setMessage(t('auth.verifyEmail.success'))
     } catch {
       setStatus('error')
-      setMessage('Email verification failed. The link may have expired.')
+      setMessage(t('auth.verifyEmail.failed'))
     }
-  }, [token, verifyEmail])
+  }, [t, token, verifyEmail])
 
   useEffect(() => {
     void runVerification()
@@ -64,8 +66,8 @@ export function VerifyEmailScreen() {
 
   return (
     <Screen variant="narrow">
-      <PageTitle title="Verify Email" />
-      {status === 'loading' ? <LoadingState message="Verifying email..." /> : null}
+      <PageTitle title={t('auth.verifyEmail.title')} />
+      {status === 'loading' ? <LoadingState message={t('auth.verifyEmail.verifying')} /> : null}
       {status === 'success' ? (
         <View style={{ gap: 12 }}>
           <AppText>{message}</AppText>
@@ -76,14 +78,19 @@ export function VerifyEmailScreen() {
               }
             }}
           >
-            Continue
+            {t('auth.verifyEmail.continue')}
           </AppButton>
         </View>
       ) : null}
       {status === 'error' ? (
         <View style={{ gap: 12 }}>
-          <ErrorState message={message ?? 'Verification failed.'} onRetry={handleRetry} />
-          <AppButton onPress={() => router.replace('/(auth)/sign-in')}>Back to sign in</AppButton>
+          <ErrorState
+            message={message ?? t('auth.verifyEmail.verificationFailed')}
+            onRetry={handleRetry}
+          />
+          <AppButton onPress={() => router.replace('/(auth)/sign-in')}>
+            {t('auth.verifyEmail.backToSignIn')}
+          </AppButton>
         </View>
       ) : null}
     </Screen>

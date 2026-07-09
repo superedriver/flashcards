@@ -1,27 +1,29 @@
 import { Stack } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import { LoadingState, Screen } from '@/ui/components'
 
 export default function AuthLayout() {
+  const { t } = useTranslation()
   const { isBootstrapping } = useAuth()
 
   if (isBootstrapping) {
     return (
       <Screen>
-        <LoadingState message="Loading session..." />
+        <LoadingState message={t('auth.loadingSession')} />
       </Screen>
     )
   }
 
   return (
     <Stack screenOptions={{ headerShown: true }}>
-      <Stack.Screen name="sign-in" options={{ title: 'Sign In' }} />
-      <Stack.Screen name="sign-up" options={{ title: 'Sign Up' }} />
-      <Stack.Screen name="verify-email-prompt" options={{ title: 'Verify Email' }} />
-      <Stack.Screen name="verify-email" options={{ title: 'Verify Email' }} />
-      <Stack.Screen name="forgot-password" options={{ title: 'Forgot Password' }} />
-      <Stack.Screen name="reset-password" options={{ title: 'Reset Password' }} />
+      <Stack.Screen name="sign-in" options={{ title: t('auth.signIn.title') }} />
+      <Stack.Screen name="sign-up" options={{ title: t('auth.signUp.title') }} />
+      <Stack.Screen name="verify-email-prompt" options={{ title: t('auth.verifyEmail.title') }} />
+      <Stack.Screen name="verify-email" options={{ title: t('auth.verifyEmail.title') }} />
+      <Stack.Screen name="forgot-password" options={{ title: t('auth.forgotPassword.title') }} />
+      <Stack.Screen name="reset-password" options={{ title: t('auth.resetPassword.title') }} />
     </Stack>
   )
 }

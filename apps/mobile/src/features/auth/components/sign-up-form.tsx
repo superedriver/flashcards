@@ -1,7 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useRouter } from 'expo-router'
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { AuthFieldError } from '@/features/auth/components/auth-field-error'
@@ -9,7 +10,10 @@ import { applyAuthPayload } from '@/features/auth/services/auth-session'
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import { mapSafeUserToAuthUser } from '@/features/auth/state/auth-store'
 import { getPostAuthRedirectHref } from '@/features/auth/utils/get-post-auth-redirect'
-import { signUpSchema, type SignUpFormValues } from '@/features/auth/validation/sign-up.schema'
+import {
+  createSignUpSchema,
+  type SignUpFormValues,
+} from '@/features/auth/validation/sign-up.schema'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { useRegisterMutation } from '@/graphql/generated'
 import { FieldLabel } from '@/ui/components'
@@ -18,10 +22,12 @@ import { AppButton, AppInput, AppText } from '@/ui/primitives'
 import { GoogleLoginButton } from './google-login-button'
 
 export function SignUpForm() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { setError, setLoading, isLoading } = useAuth()
   const [registerMutation] = useRegisterMutation()
   const isSubmittingRef = useRef(false)
+  const signUpSchema = useMemo(() => createSignUpSchema(t), [t])
 
   const {
     control,
@@ -58,14 +64,14 @@ export function SignUpForm() {
       const payload = result.data?.register
 
       if (!payload) {
-        setError('Sign up failed. Please try again.')
+        setError(t('auth.signUp.failed'))
         return
       }
 
       await applyAuthPayload(payload)
       router.replace(getPostAuthRedirectHref(mapSafeUserToAuthUser(payload.user)))
     } catch (submitError) {
-      setError(getGraphqlErrorMessage(submitError, 'Sign up failed. Please try again.'))
+      setError(getGraphqlErrorMessage(submitError, t('auth.signUp.failed')))
     } finally {
       isSubmittingRef.current = false
       setLoading(false)
@@ -74,17 +80,17 @@ export function SignUpForm() {
 
   return (
     <View style={{ gap: 12 }}>
-      <FieldLabel>Email</FieldLabel>
+      <FieldLabel>{t('auth.email')}</FieldLabel>
       <Controller
         control={control}
         name="email"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Email"
+            accessibilityLabel={t('auth.email')}
             autoCapitalize="none"
             autoComplete="email"
             keyboardType="email-address"
-            placeholder="Email"
+            placeholder={t('auth.email')}
             value={value}
             onBlur={onBlur}
             onChangeText={(text) => {
@@ -96,15 +102,15 @@ export function SignUpForm() {
       />
       <AuthFieldError message={errors.email?.message} />
 
-      <FieldLabel>Password</FieldLabel>
+      <FieldLabel>{t('auth.password')}</FieldLabel>
       <Controller
         control={control}
         name="password"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Password"
+            accessibilityLabel={t('auth.password')}
             autoComplete="new-password"
-            placeholder="Password"
+            placeholder={t('auth.password')}
             secureTextEntry
             value={value}
             onBlur={onBlur}
@@ -117,15 +123,15 @@ export function SignUpForm() {
       />
       <AuthFieldError message={errors.password?.message} />
 
-      <FieldLabel>Confirm password</FieldLabel>
+      <FieldLabel>{t('auth.confirmPassword')}</FieldLabel>
       <Controller
         control={control}
         name="confirmPassword"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Confirm password"
+            accessibilityLabel={t('auth.confirmPassword')}
             autoComplete="new-password"
-            placeholder="Confirm password"
+            placeholder={t('auth.confirmPassword')}
             secureTextEntry
             value={value}
             onBlur={onBlur}
@@ -139,13 +145,13 @@ export function SignUpForm() {
       <AuthFieldError message={errors.confirmPassword?.message} />
 
       <AppButton disabled={isLoading} onPress={() => void onSubmit()}>
-        {isLoading ? 'Creating account...' : 'Sign Up'}
+        {isLoading ? t('auth.signUp.submitting') : t('auth.signUp.submit')}
       </AppButton>
 
       <GoogleLoginButton />
 
       <Link href="/(auth)/sign-in">
-        <AppText>Already have an account? Sign in</AppText>
+        <AppText>{t('auth.signUp.hasAccount')}</AppText>
       </Link>
     </View>
   )

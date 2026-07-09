@@ -1,12 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { AuthFieldError } from '@/features/auth/components/auth-field-error'
 import {
-  resetPasswordSchema,
+  createResetPasswordSchema,
   type ResetPasswordFormValues,
 } from '@/features/auth/validation/reset-password.schema'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
@@ -15,12 +16,14 @@ import { ErrorState, FieldLabel, PageTitle, Screen } from '@/ui/components'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
 
 export function ResetPasswordForm() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { token } = useLocalSearchParams<{ token?: string }>()
   const [resetPassword, { loading }] = useResetPasswordMutation()
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const isSubmittingRef = useRef(false)
+  const resetPasswordSchema = useMemo(() => createResetPasswordSchema(t), [t])
 
   const {
     control,
@@ -37,11 +40,13 @@ export function ResetPasswordForm() {
   if (!token || typeof token !== 'string') {
     return (
       <View style={{ gap: 12 }}>
-        <ErrorState message="This reset link is invalid or incomplete." />
+        <ErrorState message={t('auth.resetPassword.invalidLink')} />
         <AppButton onPress={() => router.replace('/(auth)/forgot-password')}>
-          Request a new reset link
+          {t('auth.resetPassword.requestNewLink')}
         </AppButton>
-        <AppButton onPress={() => router.replace('/(auth)/sign-in')}>Back to sign in</AppButton>
+        <AppButton onPress={() => router.replace('/(auth)/sign-in')}>
+          {t('auth.resetPassword.backToSignIn')}
+        </AppButton>
       </View>
     )
   }
@@ -65,9 +70,7 @@ export function ResetPasswordForm() {
       })
       setSuccess(true)
     } catch (submitError) {
-      setError(
-        getGraphqlErrorMessage(submitError, 'Password reset failed. The link may have expired.'),
-      )
+      setError(getGraphqlErrorMessage(submitError, t('auth.resetPassword.failed')))
     } finally {
       isSubmittingRef.current = false
     }
@@ -76,23 +79,25 @@ export function ResetPasswordForm() {
   if (success) {
     return (
       <View style={{ gap: 12 }}>
-        <AppText>Your password has been reset. You can now sign in with your new password.</AppText>
-        <AppButton onPress={() => router.replace('/(auth)/sign-in')}>Go to sign in</AppButton>
+        <AppText>{t('auth.resetPassword.success')}</AppText>
+        <AppButton onPress={() => router.replace('/(auth)/sign-in')}>
+          {t('auth.resetPassword.goToSignIn')}
+        </AppButton>
       </View>
     )
   }
 
   return (
     <View style={{ gap: 12 }}>
-      <FieldLabel>New password</FieldLabel>
+      <FieldLabel>{t('auth.newPassword')}</FieldLabel>
       <Controller
         control={control}
         name="newPassword"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="New password"
+            accessibilityLabel={t('auth.newPassword')}
             autoComplete="new-password"
-            placeholder="New password"
+            placeholder={t('auth.newPassword')}
             secureTextEntry
             value={value}
             onBlur={onBlur}
@@ -105,15 +110,15 @@ export function ResetPasswordForm() {
       />
       <AuthFieldError message={errors.newPassword?.message} />
 
-      <FieldLabel>Confirm new password</FieldLabel>
+      <FieldLabel>{t('auth.confirmNewPassword')}</FieldLabel>
       <Controller
         control={control}
         name="confirmPassword"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Confirm new password"
+            accessibilityLabel={t('auth.confirmNewPassword')}
             autoComplete="new-password"
-            placeholder="Confirm new password"
+            placeholder={t('auth.confirmNewPassword')}
             secureTextEntry
             value={value}
             onBlur={onBlur}
@@ -128,16 +133,18 @@ export function ResetPasswordForm() {
       {error ? <ErrorState message={error} /> : null}
 
       <AppButton disabled={loading} onPress={() => void onSubmit()}>
-        {loading ? 'Resetting...' : 'Reset password'}
+        {loading ? t('auth.resetPassword.submitting') : t('auth.resetPassword.submit')}
       </AppButton>
     </View>
   )
 }
 
 export function ResetPasswordScreen() {
+  const { t } = useTranslation()
+
   return (
     <Screen variant="narrow">
-      <PageTitle title="Reset Password" />
+      <PageTitle title={t('auth.resetPassword.title')} />
       <ResetPasswordForm />
     </Screen>
   )
