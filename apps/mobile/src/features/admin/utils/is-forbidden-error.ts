@@ -1,3 +1,5 @@
+import { i18n } from '@/i18n'
+
 export function isForbiddenError(error: unknown): boolean {
   if (error instanceof Error && 'graphQLErrors' in error) {
     const message = (error as { graphQLErrors: Array<{ message?: string }> }).graphQLErrors[0]
@@ -10,5 +12,5 @@ export function isForbiddenError(error: unknown): boolean {
 }
 
 export function getForbiddenMessage(): string {
-  return 'You do not have permission to access this page.'
+  return i18n.t('admin.forbidden')
 }

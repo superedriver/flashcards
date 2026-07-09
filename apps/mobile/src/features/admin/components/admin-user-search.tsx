@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { AppInput, AppText } from '@/ui/primitives'
 
@@ -8,6 +9,7 @@ type AdminUserSearchProps = {
 }
 
 export function AdminUserSearch({ onQueryChange, value }: AdminUserSearchProps) {
+  const { t } = useTranslation()
   const [inputValue, setInputValue] = useState(value)
 
   useEffect(() => {
@@ -20,10 +22,10 @@ export function AdminUserSearch({ onQueryChange, value }: AdminUserSearchProps) 
 
   return (
     <>
-      <AppText style={{ fontWeight: '600' }}>Search users</AppText>
+      <AppText style={{ fontWeight: '600' }}>{t('admin.users.searchLabel')}</AppText>
       <AppInput
         autoCapitalize="none"
-        placeholder="Search by email"
+        placeholder={t('admin.users.searchPlaceholder')}
         value={inputValue}
         onChangeText={setInputValue}
       />

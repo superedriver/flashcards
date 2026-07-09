@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import type { ModerationQueueQuery } from '@/graphql/generated'
 import { EmptyState } from '@/ui/components'
 
@@ -20,8 +22,10 @@ export function ModerationDeckList({
   onReject,
   onToggleOfficial,
 }: ModerationDeckListProps) {
+  const { t } = useTranslation()
+
   if (decks.length === 0) {
-    return <EmptyState message="No decks in this moderation queue." />
+    return <EmptyState message={t('admin.moderation.empty')} />
   }
 
   return (

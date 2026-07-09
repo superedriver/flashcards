@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { confirmAction, confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
@@ -17,6 +18,7 @@ import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function ModerationQueueScreen() {
+  const { t } = useTranslation()
   const [status, setStatus] = useState<DeckModerationStatus | null>(DeckModerationStatus.Pending)
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -53,19 +55,19 @@ export function ModerationQueueScreen() {
 
   const handleApprove = (deckId: string) => {
     confirmAction(
-      'Approve deck',
-      'This deck will be approved and visible in public search.',
+      t('admin.moderation.approveConfirmTitle'),
+      t('admin.moderation.approveConfirmMessage'),
       () => {
         void runMutation(
           async () => {
             const result = await approveDeck({ variables: { deckId } })
 
             if (!result.data?.approveDeck) {
-              throw new Error('Could not approve deck.')
+              throw new Error(t('admin.moderation.approveError'))
             }
           },
-          'Deck approved.',
-          'Could not approve deck.',
+          t('admin.moderation.approveSuccess'),
+          t('admin.moderation.approveError'),
         )
       },
     )
@@ -73,45 +75,51 @@ export function ModerationQueueScreen() {
 
   const handleReject = (deckId: string) => {
     confirmDestructiveAction(
-      'Reject deck',
-      'This deck will be rejected and removed from the public moderation queue.',
+      t('admin.moderation.rejectConfirmTitle'),
+      t('admin.moderation.rejectConfirmMessage'),
       () => {
         void runMutation(
           async () => {
             const result = await rejectDeck({ variables: { deckId } })
 
             if (!result.data?.rejectDeck) {
-              throw new Error('Could not reject deck.')
+              throw new Error(t('admin.moderation.rejectError'))
             }
           },
-          'Deck rejected.',
-          'Could not reject deck.',
+          t('admin.moderation.rejectSuccess'),
+          t('admin.moderation.rejectError'),
         )
       },
     )
   }
 
   const handleHide = (deckId: string) => {
-    confirmDestructiveAction('Hide deck', 'This deck will be hidden from public view.', () => {
-      void runMutation(
-        async () => {
-          const result = await hideDeck({ variables: { deckId } })
+    confirmDestructiveAction(
+      t('admin.moderation.hideConfirmTitle'),
+      t('admin.moderation.hideConfirmMessage'),
+      () => {
+        void runMutation(
+          async () => {
+            const result = await hideDeck({ variables: { deckId } })
 
-          if (!result.data?.hideDeck) {
-            throw new Error('Could not hide deck.')
-          }
-        },
-        'Deck hidden.',
-        'Could not hide deck.',
-      )
-    })
+            if (!result.data?.hideDeck) {
+              throw new Error(t('admin.moderation.hideError'))
+            }
+          },
+          t('admin.moderation.hideSuccess'),
+          t('admin.moderation.hideError'),
+        )
+      },
+    )
   }
 
   const handleToggleOfficial = (deckId: string, isOfficial: boolean) => {
-    const title = isOfficial ? 'Mark as official deck' : 'Remove official status'
+    const title = isOfficial
+      ? t('admin.moderation.markOfficialConfirmTitle')
+      : t('admin.moderation.removeOfficialConfirmTitle')
     const message = isOfficial
-      ? 'This deck will be highlighted as an official curated deck.'
-      : 'This deck will no longer be marked as official.'
+      ? t('admin.moderation.markOfficialConfirmMessage')
+      : t('admin.moderation.removeOfficialConfirmMessage')
 
     confirmAction(title, message, () => {
       void runMutation(
@@ -121,11 +129,13 @@ export function ModerationQueueScreen() {
           })
 
           if (!result.data?.setOfficialDeck) {
-            throw new Error('Could not update official status.')
+            throw new Error(t('admin.moderation.officialStatusError'))
           }
         },
-        isOfficial ? 'Deck marked as official.' : 'Official status removed.',
-        'Could not update official status.',
+        isOfficial
+          ? t('admin.moderation.markOfficialSuccess')
+          : t('admin.moderation.removeOfficialSuccess'),
+        t('admin.moderation.officialStatusError'),
       )
     })
   }
@@ -133,18 +143,18 @@ export function ModerationQueueScreen() {
   const queryErrorMessage = error
     ? isForbiddenError(error)
       ? getForbiddenMessage()
-      : 'Could not load moderation queue.'
+      : t('admin.moderation.loadError')
     : null
 
   return (
     <Screen scrollable>
-      <PageTitle title="Moderation Queue" />
+      <PageTitle title={t('profile.moderationQueue')} />
       <AppText style={{ color: '#666666', marginBottom: 12 }}>
-        Review public decks awaiting moderation. Actions are enforced on the server.
+        {t('admin.moderation.subtitle')}
       </AppText>
       <ModerationStatusFilter value={status} onChange={setStatus} />
 
-      {loading ? <LoadingState message="Loading moderation queue..." /> : null}
+      {loading ? <LoadingState message={t('admin.moderation.loading')} /> : null}
       {queryErrorMessage ? (
         <ErrorState
           message={queryErrorMessage}

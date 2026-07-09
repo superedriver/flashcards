@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import type { AdminDashboardStatsQuery } from '@/graphql/generated'
@@ -10,23 +11,25 @@ type AdminStatsGridProps = {
 }
 
 export function AdminStatsGrid({ stats }: AdminStatsGridProps) {
+  const { t } = useTranslation()
+
   const items = [
-    { label: 'Total users', value: stats.totalUsers },
-    { label: 'Total decks', value: stats.totalDecks },
-    { label: 'Public decks', value: stats.totalPublicDecks },
-    { label: 'Total cards', value: stats.totalCards },
-    { label: 'Study sessions', value: stats.totalStudySessions },
-    { label: 'Reviews', value: stats.totalReviews },
-    { label: 'Users (7 days)', value: stats.usersCreatedLast7Days },
-    { label: 'Decks (7 days)', value: stats.decksCreatedLast7Days },
-    { label: 'Reviews (7 days)', value: stats.reviewsSubmittedLast7Days },
-  ]
+    { key: 'totalUsers', value: stats.totalUsers },
+    { key: 'totalDecks', value: stats.totalDecks },
+    { key: 'publicDecks', value: stats.totalPublicDecks },
+    { key: 'totalCards', value: stats.totalCards },
+    { key: 'studySessions', value: stats.totalStudySessions },
+    { key: 'reviews', value: stats.totalReviews },
+    { key: 'usersLast7Days', value: stats.usersCreatedLast7Days },
+    { key: 'decksLast7Days', value: stats.decksCreatedLast7Days },
+    { key: 'reviewsLast7Days', value: stats.reviewsSubmittedLast7Days },
+  ] as const
 
   return (
     <View style={responsiveGridStyle}>
       {items.map((item) => (
-        <View key={item.label} style={responsiveGridItemStyle}>
-          <AdminStatCard label={item.label} value={item.value} />
+        <View key={item.key} style={responsiveGridItemStyle}>
+          <AdminStatCard label={t(`admin.dashboard.stats.${item.key}`)} value={item.value} />
         </View>
       ))}
     </View>

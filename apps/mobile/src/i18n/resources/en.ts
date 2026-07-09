@@ -1,3 +1,4 @@
+import { adminEn } from './en/admin'
 import { aiExamplesEn } from './en/ai-examples'
 import { authEn } from './en/auth'
 import { csvImportEn } from './en/csv-import'
@@ -20,6 +21,7 @@ export const en = {
     error: 'Something went wrong.',
     empty: 'Nothing here yet.',
   },
+  admin: adminEn,
   auth: authEn,
   aiExamples: aiExamplesEn,
   profile: profileEn,

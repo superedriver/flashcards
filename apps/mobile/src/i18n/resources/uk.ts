@@ -1,3 +1,4 @@
+import { adminUk } from './uk/admin'
 import { aiExamplesUk } from './uk/ai-examples'
 import { authUk } from './uk/auth'
 import { csvImportUk } from './uk/csv-import'
@@ -20,6 +21,7 @@ export const uk = {
     error: 'Щось пішло не так.',
     empty: 'Тут поки нічого немає.',
   },
+  admin: adminUk,
   auth: authUk,
   aiExamples: aiExamplesUk,
   profile: profileUk,

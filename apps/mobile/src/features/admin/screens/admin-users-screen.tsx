@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
@@ -15,6 +16,7 @@ import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function AdminUsersScreen() {
+  const { t } = useTranslation()
   const [query, setQuery] = useState('')
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -35,8 +37,8 @@ export function AdminUsersScreen() {
 
   const handleBlock = (userId: string) => {
     confirmDestructiveAction(
-      'Block user',
-      'This user will be blocked from signing in and using the platform.',
+      t('admin.users.blockConfirmTitle'),
+      t('admin.users.blockConfirmMessage'),
       () => {
         void (async () => {
           setErrorMessage(null)
@@ -46,14 +48,14 @@ export function AdminUsersScreen() {
             const result = await blockUser({ variables: { userId } })
 
             if (!result.data?.blockUser) {
-              setErrorMessage('Could not block user.')
+              setErrorMessage(t('admin.users.blockError'))
               return
             }
 
-            setFeedback('User blocked.')
+            setFeedback(t('admin.users.blockSuccess'))
             await refetch()
           } catch (blockError) {
-            setErrorMessage(getGraphqlErrorMessage(blockError, 'Could not block user.'))
+            setErrorMessage(getGraphqlErrorMessage(blockError, t('admin.users.blockError')))
           }
         })()
       },
@@ -62,8 +64,8 @@ export function AdminUsersScreen() {
 
   const handleUnblock = (userId: string) => {
     confirmDestructiveAction(
-      'Unblock user',
-      'This user will regain access to the platform.',
+      t('admin.users.unblockConfirmTitle'),
+      t('admin.users.unblockConfirmMessage'),
       () => {
         void (async () => {
           setErrorMessage(null)
@@ -73,14 +75,14 @@ export function AdminUsersScreen() {
             const result = await unblockUser({ variables: { userId } })
 
             if (!result.data?.unblockUser) {
-              setErrorMessage('Could not unblock user.')
+              setErrorMessage(t('admin.users.unblockError'))
               return
             }
 
-            setFeedback('User unblocked.')
+            setFeedback(t('admin.users.unblockSuccess'))
             await refetch()
           } catch (unblockError) {
-            setErrorMessage(getGraphqlErrorMessage(unblockError, 'Could not unblock user.'))
+            setErrorMessage(getGraphqlErrorMessage(unblockError, t('admin.users.unblockError')))
           }
         })()
       },
@@ -90,20 +92,18 @@ export function AdminUsersScreen() {
   const queryErrorMessage = error
     ? isForbiddenError(error)
       ? getForbiddenMessage()
-      : 'Could not search users.'
+      : t('admin.users.searchError')
     : null
 
   return (
     <Screen scrollable>
-      <PageTitle title="User Management" />
-      <AppText style={{ color: '#666666', marginBottom: 12 }}>
-        Search users by email. Only email and account status are shown — no sensitive credentials.
-      </AppText>
+      <PageTitle title={t('profile.userManagement')} />
+      <AppText style={{ color: '#666666', marginBottom: 12 }}>{t('admin.users.subtitle')}</AppText>
       <View style={{ gap: 12, marginBottom: 16 }}>
         <AdminUserSearch value={query} onQueryChange={handleQueryChange} />
       </View>
 
-      {loading ? <LoadingState message="Searching users..." /> : null}
+      {loading ? <LoadingState message={t('admin.users.searching')} /> : null}
       {queryErrorMessage ? (
         <ErrorState
           message={queryErrorMessage}

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import type { AdminSearchUsersQuery } from '@/graphql/generated'
 import { EmptyState } from '@/ui/components'
 
@@ -16,8 +18,10 @@ export function AdminUserList({
   onUnblock,
   users,
 }: AdminUserListProps) {
+  const { t } = useTranslation()
+
   if (users.length === 0) {
-    return <EmptyState message="No users found." />
+    return <EmptyState message={t('admin.users.empty')} />
   }
 
   return (

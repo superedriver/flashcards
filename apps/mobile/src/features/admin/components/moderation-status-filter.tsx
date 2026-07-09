@@ -1,14 +1,16 @@
-import { DeckModerationStatus } from '@/graphql/generated'
-import { AppButton } from '@/ui/primitives'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
-const STATUS_OPTIONS: Array<{ label: string; value: DeckModerationStatus | null }> = [
-  { label: 'All', value: null },
-  { label: 'Pending', value: DeckModerationStatus.Pending },
-  { label: 'Approved', value: DeckModerationStatus.Approved },
-  { label: 'Rejected', value: DeckModerationStatus.Rejected },
-  { label: 'Hidden', value: DeckModerationStatus.Hidden },
-]
+import { DeckModerationStatus } from '@/graphql/generated'
+import { AppButton } from '@/ui/primitives'
+
+const STATUS_OPTIONS = [
+  { key: 'all', value: null },
+  { key: 'pending', value: DeckModerationStatus.Pending },
+  { key: 'approved', value: DeckModerationStatus.Approved },
+  { key: 'rejected', value: DeckModerationStatus.Rejected },
+  { key: 'hidden', value: DeckModerationStatus.Hidden },
+] as const
 
 type ModerationStatusFilterProps = {
   onChange: (status: DeckModerationStatus | null) => void
@@ -16,14 +18,17 @@ type ModerationStatusFilterProps = {
 }
 
 export function ModerationStatusFilter({ onChange, value }: ModerationStatusFilterProps) {
+  const { t } = useTranslation()
+
   return (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
       {STATUS_OPTIONS.map((option) => {
         const isSelected = value === option.value
+        const label = t(`admin.moderation.statusFilter.${option.key}`)
 
         return (
-          <AppButton key={option.label} onPress={() => onChange(option.value)}>
-            {isSelected ? `[${option.label}]` : option.label}
+          <AppButton key={option.key} onPress={() => onChange(option.value)}>
+            {isSelected ? `[${label}]` : label}
           </AppButton>
         )
       })}
