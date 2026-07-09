@@ -176,6 +176,7 @@ Complete [mvp-smoke-tests.md](./mvp-smoke-tests.md).
 - [ ] Public decks browse/copy
 - [ ] CSV import
 - [ ] Profile/settings
+- [ ] Interface language switching (en/uk) on web and native
 - [ ] Groups and admin (if enabled for release)
 ```
 
@@ -186,6 +187,7 @@ Complete [mvp-smoke-tests.md](./mvp-smoke-tests.md).
 - [ ] Email verification works (if Resend configured)
 - [ ] Password reset works (if email configured)
 - [ ] Production register/login from deployed web app
+- [ ] Interface language persists after reload and matches backend setting after login
 ```
 
 Record PASS/FAIL per section in the smoke test doc. Do not paste secrets into failure notes.

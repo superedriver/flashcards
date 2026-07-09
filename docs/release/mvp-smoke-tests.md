@@ -792,6 +792,37 @@ curl -fsS -X POST "$INTERNAL_JOB_URL" \
 
 ---
 
+## 31. Interface Language (i18n)
+
+**Goal:** Verify Ukrainian/English interface switching on web and native, persistence, and backend alignment after login.
+
+**Steps (web + native):**
+
+1. Before login, confirm the app uses device locale when supported (`uk` or `en`), otherwise English.
+2. Sign in and open Profile → Settings.
+3. Switch **Interface language** to **Українська**.
+4. Navigate core screens and confirm Ukrainian UI text appears (examples: My Decks, Profile, Settings labels, auth buttons if signed out elsewhere).
+5. Reload or restart the app and confirm Ukrainian remains selected.
+6. Sign out and sign back in; confirm language still matches the saved backend setting.
+7. Switch back to **English** and spot-check the same screens.
+8. Optional backend checks (local/dev):
+   - Trigger email verification or password reset and confirm email language matches `interfaceLocale`.
+   - With notifications enabled, verify push reminder title/body is Ukrainian for a `uk` user (dev push sink).
+
+**Expected result:**
+
+```txt
+- Interface language can be switched between en and uk in settings
+- Core screens show translated copy (not leftover English-only strings on main flows)
+- Language persists across reload/restart and after login (local storage + backend sync)
+- Date/time/number formatting follows interfaceLocale
+- Email/push localization matches interfaceLocale when tested (dev only)
+```
+
+**Result:** - [ ] PASS - [ ] FAIL - [ ] N/A
+
+---
+
 ## Final Sign-Off
 
 ```txt
