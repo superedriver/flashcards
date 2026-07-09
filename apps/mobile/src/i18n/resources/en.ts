@@ -1,4 +1,6 @@
 import { authEn } from './en/auth'
+import { profileEn } from './en/profile'
+import { settingsEn } from './en/settings'
 
 export const en = {
   common: {
@@ -8,6 +10,9 @@ export const en = {
     retry: 'Retry',
     save: 'Save',
     error: 'Something went wrong.',
+    empty: 'Nothing here yet.',
   },
   auth: authEn,
+  profile: profileEn,
+  settings: settingsEn,
 } as const

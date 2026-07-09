@@ -1,26 +1,33 @@
+import type { TFunction } from 'i18next'
 import { z } from 'zod'
 
-export const settingsFormSchema = z.object({
-  interfaceLocale: z.enum(['en', 'uk'], {
-    errorMap: () => ({ message: 'Select a supported interface language.' }),
-  }),
-  lessonSize: z.coerce
-    .number({
-      invalid_type_error: 'Lesson size must be a number.',
-    })
-    .int('Lesson size must be a whole number.')
-    .min(5, 'Lesson size must be at least 5 cards.')
-    .max(100, 'Lesson size must be at most 100 cards.'),
-  notificationsEnabled: z.boolean(),
-  reminderTime: z
-    .string()
-    .regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Use 24-hour time in HH:mm format (e.g. 09:00).')
-    .nullable()
-    .optional(),
-  timezone: z.string().trim().min(1, 'Timezone is required.').max(100, 'Timezone is too long.'),
-})
+export function createSettingsFormSchema(t: TFunction) {
+  return z.object({
+    interfaceLocale: z.enum(['en', 'uk'], {
+      errorMap: () => ({ message: t('settings.validation.interfaceLocale') }),
+    }),
+    lessonSize: z.coerce
+      .number({
+        invalid_type_error: t('settings.validation.lessonSizeNumber'),
+      })
+      .int(t('settings.validation.lessonSizeWhole'))
+      .min(5, t('settings.validation.lessonSizeMin'))
+      .max(100, t('settings.validation.lessonSizeMax')),
+    notificationsEnabled: z.boolean(),
+    reminderTime: z
+      .string()
+      .regex(/^([01]\d|2[0-3]):[0-5]\d$/, t('settings.validation.reminderTimeFormat'))
+      .nullable()
+      .optional(),
+    timezone: z
+      .string()
+      .trim()
+      .min(1, t('settings.validation.timezoneRequired'))
+      .max(100, t('settings.validation.timezoneTooLong')),
+  })
+}
 
-export type SettingsFormValues = z.infer<typeof settingsFormSchema>
+export type SettingsFormValues = z.infer<ReturnType<typeof createSettingsFormSchema>>
 
 export function getDeviceTimezone(): string {
   try {

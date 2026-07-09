@@ -1,5 +1,6 @@
 import type { Control, FieldErrors } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import {
   getDeviceTimezone,
@@ -14,11 +15,13 @@ type TimezoneFieldProps = {
 }
 
 export function TimezoneField({ control, errors }: TimezoneFieldProps) {
+  const { t } = useTranslation()
+
   return (
     <>
-      <AppText style={{ fontWeight: '600' }}>Timezone</AppText>
+      <AppText style={{ fontWeight: '600' }}>{t('settings.fields.timezone.label')}</AppText>
       <AppText style={{ color: '#666666', fontSize: 14 }}>
-        Used for daily reminder scheduling (IANA timezone, e.g. Europe/Kyiv).
+        {t('settings.fields.timezone.description')}
       </AppText>
       <Controller
         control={control}
@@ -26,18 +29,18 @@ export function TimezoneField({ control, errors }: TimezoneFieldProps) {
         render={({ field: { onBlur, onChange, value } }) => (
           <>
             <AppInput
-              accessibilityLabel="Timezone"
-              placeholder="Europe/Kyiv"
+              accessibilityLabel={t('settings.fields.timezone.accessibilityLabel')}
+              placeholder={t('settings.fields.timezone.placeholder')}
               value={value}
               onBlur={onBlur}
               onChangeText={onChange}
             />
             <AppButton
-              accessibilityHint="Fills the timezone field with your device timezone."
-              accessibilityLabel="Use device timezone"
+              accessibilityHint={t('settings.fields.timezone.useDeviceHint')}
+              accessibilityLabel={t('settings.fields.timezone.useDeviceAccessibilityLabel')}
               onPress={() => onChange(getDeviceTimezone())}
             >
-              Use device timezone
+              {t('settings.fields.timezone.useDevice')}
             </AppButton>
           </>
         )}

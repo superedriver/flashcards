@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
@@ -9,8 +10,8 @@ import { LessonSizeField } from '@/features/settings/components/lesson-size-fiel
 import { ReminderTimeField } from '@/features/settings/components/reminder-time-field'
 import { TimezoneField } from '@/features/settings/components/timezone-field'
 import {
+  createSettingsFormSchema,
   getDeviceTimezone,
-  settingsFormSchema,
   type SettingsFormValues,
 } from '@/features/settings/validation/settings-form.schema'
 import { getCurrentLocale, setAppLocale } from '@/i18n'
@@ -28,9 +29,11 @@ export function UserSettingsForm({
   notificationsEnabled,
   onNotificationsEnabledChange,
 }: UserSettingsFormProps) {
+  const { t } = useTranslation()
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const isSubmittingRef = useRef(false)
+  const settingsFormSchema = useMemo(() => createSettingsFormSchema(t), [t])
 
   const { data, error, loading, refetch } = useMySettingsQuery()
   const [updateSettings, { loading: isSaving }] = useUpdateMySettingsMutation({
@@ -100,36 +103,34 @@ export function UserSettingsForm({
       })
 
       if (!result.data?.updateSettings) {
-        setErrorMessage('Could not save settings.')
+        setErrorMessage(t('settings.saveError'))
         return
       }
 
       await setAppLocale(values.interfaceLocale)
       await persistLocale(values.interfaceLocale)
-      setFeedback('Settings saved.')
+      setFeedback(t('settings.saved'))
     } catch (submitError) {
-      setErrorMessage(getGraphqlErrorMessage(submitError, 'Could not save settings.'))
+      setErrorMessage(getGraphqlErrorMessage(submitError, t('settings.saveError')))
     } finally {
       isSubmittingRef.current = false
     }
   })
 
   if (loading) {
-    return <LoadingState message="Loading settings..." />
+    return <LoadingState message={t('settings.loading')} />
   }
 
   if (error) {
-    return <ErrorState message="Could not load settings." onRetry={() => void refetch()} />
+    return <ErrorState message={t('settings.loadError')} onRetry={() => void refetch()} />
   }
 
   return (
     <View style={{ gap: 12, marginBottom: 16 }}>
       <AppText accessibilityRole="header" style={{ fontSize: 16, fontWeight: '600' }}>
-        Settings
+        {t('settings.title')}
       </AppText>
-      <AppText style={{ color: '#666666', fontSize: 14 }}>
-        Lesson preferences and reminder schedule. Notification delivery is managed below.
-      </AppText>
+      <AppText style={{ color: '#666666', fontSize: 14 }}>{t('settings.description')}</AppText>
       <InterfaceLocaleField control={control} errors={errors} />
       <LessonSizeField control={control} errors={errors} />
       <ReminderTimeField control={control} errors={errors} />
@@ -139,7 +140,7 @@ export function UserSettingsForm({
         <AppText style={{ color: '#2e7d32', fontWeight: '600' }}>{feedback}</AppText>
       ) : null}
       <AppButton disabled={isSaving} onPress={() => void onSubmit()}>
-        {isSaving ? 'Saving...' : 'Save settings'}
+        {isSaving ? t('settings.saving') : t('settings.save')}
       </AppButton>
     </View>
   )

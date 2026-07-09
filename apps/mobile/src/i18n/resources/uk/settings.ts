@@ -1,0 +1,51 @@
+export const settingsUk = {
+  title: 'Налаштування',
+  description: 'Параметри уроків і розклад нагадувань. Доставку сповіщень налаштовуйте нижче.',
+  loading: 'Завантаження налаштувань...',
+  loadError: 'Не вдалося завантажити налаштування.',
+  save: 'Зберегти налаштування',
+  saving: 'Збереження...',
+  saved: 'Налаштування збережено.',
+  saveError: 'Не вдалося зберегти налаштування.',
+  fields: {
+    interfaceLocale: {
+      label: 'Мова інтерфейсу',
+      description: 'Мова меню, кнопок і повідомлень у застосунку.',
+      optionEn: 'English',
+      optionUk: 'Українська',
+      accessibilityLabel: 'Мова інтерфейсу {{label}}',
+    },
+    lessonSize: {
+      label: 'Розмір уроку',
+      description: 'Кількість карток за одну сесію уроку (5–100).',
+      accessibilityLabel: 'Розмір уроку',
+      placeholder: 'напр. 20',
+    },
+    reminderTime: {
+      label: 'Час нагадування',
+      description:
+        'Щоденне нагадування у 24-годинному форматі (ГГ:хх). Хвилини зберігаються, але в цьому MVP для нагадувань використовується лише година.',
+      accessibilityLabel: 'Час нагадування',
+      placeholder: '09:00',
+    },
+    timezone: {
+      label: 'Часовий пояс',
+      description: 'Використовується для щоденних нагадувань (IANA, напр. Europe/Kyiv).',
+      accessibilityLabel: 'Часовий пояс',
+      placeholder: 'Europe/Kyiv',
+      useDevice: 'Використати часовий пояс пристрою',
+      useDeviceHint: 'Заповнює поле часовим поясом вашого пристрою.',
+      useDeviceAccessibilityLabel: 'Використати часовий пояс пристрою',
+    },
+  },
+  validation: {
+    interfaceLocale: 'Оберіть підтримувану мову інтерфейсу.',
+    lessonSizeNumber: 'Розмір уроку має бути числом.',
+    lessonSizeWhole: 'Розмір уроку має бути цілим числом.',
+    lessonSizeMin: 'Розмір уроку має бути щонайменше 5 карток.',
+    lessonSizeMax: 'Розмір уроку має бути не більше 100 карток.',
+    reminderTimeFormat: 'Використовуйте 24-годинний формат ГГ:хх (напр. 09:00).',
+    timezoneRequired: 'Часовий пояс обовʼязковий.',
+    timezoneTooLong: 'Часовий пояс занадто довгий.',
+  },
+} as const

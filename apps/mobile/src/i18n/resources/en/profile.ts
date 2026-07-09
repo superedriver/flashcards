@@ -1,0 +1,28 @@
+export const profileEn = {
+  title: 'Profile',
+  loading: 'Loading profile...',
+  loadError: 'Could not load profile.',
+  signedInAs: 'Signed in as',
+  role: 'Role: {{role}}',
+  joined: 'Joined {{date}}',
+  roles: {
+    admin: 'Admin',
+    moderator: 'Moderator',
+    user: 'User',
+  },
+  accountStatus: {
+    title: 'Account status',
+    emailVerified: 'Email verified',
+    emailNotVerified: 'Email not verified',
+    verifiedAt: 'Verified {{date}}',
+    verifyPrompt: 'Verify your email to secure your account and unlock all features.',
+    resendVerification: 'Resend verification email',
+    blocked: 'This account is blocked. Contact support if you think this is a mistake.',
+  },
+  myGroups: 'My Groups',
+  groupInvitations: 'Group Invitations',
+  adminDashboard: 'Admin Dashboard',
+  userManagement: 'User Management',
+  moderationQueue: 'Moderation Queue',
+  logOut: 'Log Out',
+} as const

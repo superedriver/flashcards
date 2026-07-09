@@ -1,5 +1,6 @@
 import type { Control, FieldErrors } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import type { SettingsFormValues } from '@/features/settings/validation/settings-form.schema'
 import { AppInput, AppText } from '@/ui/primitives'
@@ -11,20 +12,22 @@ type LessonSizeFieldProps = {
 }
 
 export function LessonSizeField({ control, errors }: LessonSizeFieldProps) {
+  const { t } = useTranslation()
+
   return (
     <>
-      <AppText style={{ fontWeight: '600' }}>Lesson size</AppText>
+      <AppText style={{ fontWeight: '600' }}>{t('settings.fields.lessonSize.label')}</AppText>
       <AppText style={{ color: '#666666', fontSize: 14 }}>
-        Number of cards per lesson session (5–100).
+        {t('settings.fields.lessonSize.description')}
       </AppText>
       <Controller
         control={control}
         name="lessonSize"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Lesson size"
+            accessibilityLabel={t('settings.fields.lessonSize.accessibilityLabel')}
             keyboardType="number-pad"
-            placeholder="e.g. 20"
+            placeholder={t('settings.fields.lessonSize.placeholder')}
             value={String(value ?? '')}
             onBlur={onBlur}
             onChangeText={onChange}

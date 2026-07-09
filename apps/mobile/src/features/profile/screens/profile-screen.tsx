@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { useAuth } from '@/features/auth/hooks/use-auth'
@@ -13,6 +14,7 @@ import { AppButton } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function ProfileScreen() {
+  const { t } = useTranslation()
   const router = useRouter()
   const logout = useLogout()
   const { user: authUser } = useAuth()
@@ -25,11 +27,11 @@ export function ProfileScreen() {
 
   return (
     <Screen scrollable>
-      <PageTitle title="Profile" />
+      <PageTitle title={t('profile.title')} />
 
-      {loading ? <LoadingState message="Loading profile..." /> : null}
+      {loading ? <LoadingState message={t('profile.loading')} /> : null}
       {error ? (
-        <ErrorState message="Could not load profile." onRetry={() => void refetch()} />
+        <ErrorState message={t('profile.loadError')} onRetry={() => void refetch()} />
       ) : null}
 
       {user ? (
@@ -37,21 +39,25 @@ export function ProfileScreen() {
           <ProfileCard user={user} />
           <AccountStatusCard user={user} />
           <View style={{ gap: 12 }}>
-            <AppButton onPress={() => router.push('/groups')}>My Groups</AppButton>
+            <AppButton onPress={() => router.push('/groups')}>{t('profile.myGroups')}</AppButton>
             <AppButton onPress={() => router.push('/groups/invitations')}>
-              Group Invitations
+              {t('profile.groupInvitations')}
             </AppButton>
           </View>
           {(isAdmin || isModerator) && (
             <View style={{ gap: 12 }}>
               {isAdmin ? (
                 <>
-                  <AppButton onPress={() => router.push('/admin')}>Admin Dashboard</AppButton>
-                  <AppButton onPress={() => router.push('/admin/users')}>User Management</AppButton>
+                  <AppButton onPress={() => router.push('/admin')}>
+                    {t('profile.adminDashboard')}
+                  </AppButton>
+                  <AppButton onPress={() => router.push('/admin/users')}>
+                    {t('profile.userManagement')}
+                  </AppButton>
                 </>
               ) : null}
               <AppButton onPress={() => router.push('/admin/moderation')}>
-                Moderation Queue
+                {t('profile.moderationQueue')}
               </AppButton>
             </View>
           )}
@@ -63,7 +69,7 @@ export function ProfileScreen() {
             enabled={notificationsEnabled}
             onEnabledChange={setNotificationsEnabled}
           />
-          <AppButton onPress={() => void logout()}>Log Out</AppButton>
+          <AppButton onPress={() => void logout()}>{t('profile.logOut')}</AppButton>
         </View>
       ) : null}
     </Screen>

@@ -1,5 +1,6 @@
 import type { Control, FieldErrors } from 'react-hook-form'
 import { Controller } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import type { SettingsFormValues } from '@/features/settings/validation/settings-form.schema'
 import { AppInput, AppText } from '@/ui/primitives'
@@ -11,20 +12,21 @@ type ReminderTimeFieldProps = {
 }
 
 export function ReminderTimeField({ control, errors }: ReminderTimeFieldProps) {
+  const { t } = useTranslation()
+
   return (
     <>
-      <AppText style={{ fontWeight: '600' }}>Reminder time</AppText>
+      <AppText style={{ fontWeight: '600' }}>{t('settings.fields.reminderTime.label')}</AppText>
       <AppText style={{ color: '#666666', fontSize: 14 }}>
-        Daily reminder hour in 24-hour format (HH:mm). Minutes are stored but only the hour is used
-        for reminders in this MVP.
+        {t('settings.fields.reminderTime.description')}
       </AppText>
       <Controller
         control={control}
         name="reminderTime"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Reminder time"
-            placeholder="09:00"
+            accessibilityLabel={t('settings.fields.reminderTime.accessibilityLabel')}
+            placeholder={t('settings.fields.reminderTime.placeholder')}
             value={value ?? ''}
             onBlur={onBlur}
             onChangeText={onChange}

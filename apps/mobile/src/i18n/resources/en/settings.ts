@@ -1,0 +1,51 @@
+export const settingsEn = {
+  title: 'Settings',
+  description: 'Lesson preferences and reminder schedule. Notification delivery is managed below.',
+  loading: 'Loading settings...',
+  loadError: 'Could not load settings.',
+  save: 'Save settings',
+  saving: 'Saving...',
+  saved: 'Settings saved.',
+  saveError: 'Could not save settings.',
+  fields: {
+    interfaceLocale: {
+      label: 'Interface language',
+      description: 'Language for app menus, buttons, and messages.',
+      optionEn: 'English',
+      optionUk: 'Українська',
+      accessibilityLabel: 'Interface language {{label}}',
+    },
+    lessonSize: {
+      label: 'Lesson size',
+      description: 'Number of cards per lesson session (5–100).',
+      accessibilityLabel: 'Lesson size',
+      placeholder: 'e.g. 20',
+    },
+    reminderTime: {
+      label: 'Reminder time',
+      description:
+        'Daily reminder hour in 24-hour format (HH:mm). Minutes are stored but only the hour is used for reminders in this MVP.',
+      accessibilityLabel: 'Reminder time',
+      placeholder: '09:00',
+    },
+    timezone: {
+      label: 'Timezone',
+      description: 'Used for daily reminder scheduling (IANA timezone, e.g. Europe/Kyiv).',
+      accessibilityLabel: 'Timezone',
+      placeholder: 'Europe/Kyiv',
+      useDevice: 'Use device timezone',
+      useDeviceHint: 'Fills the timezone field with your device timezone.',
+      useDeviceAccessibilityLabel: 'Use device timezone',
+    },
+  },
+  validation: {
+    interfaceLocale: 'Select a supported interface language.',
+    lessonSizeNumber: 'Lesson size must be a number.',
+    lessonSizeWhole: 'Lesson size must be a whole number.',
+    lessonSizeMin: 'Lesson size must be at least 5 cards.',
+    lessonSizeMax: 'Lesson size must be at most 100 cards.',
+    reminderTimeFormat: 'Use 24-hour time in HH:mm format (e.g. 09:00).',
+    timezoneRequired: 'Timezone is required.',
+    timezoneTooLong: 'Timezone is too long.',
+  },
+} as const
