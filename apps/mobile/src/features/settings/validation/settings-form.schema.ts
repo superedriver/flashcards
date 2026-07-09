@@ -1,6 +1,9 @@
 import { z } from 'zod'
 
 export const settingsFormSchema = z.object({
+  interfaceLocale: z.enum(['en', 'uk'], {
+    errorMap: () => ({ message: 'Select a supported interface language.' }),
+  }),
   lessonSize: z.coerce
     .number({
       invalid_type_error: 'Lesson size must be a number.',

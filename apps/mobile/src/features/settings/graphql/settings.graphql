@@ -2,6 +2,7 @@ query MySettings {
   myAccount {
     settings {
       userId
+      interfaceLocale
       lessonSize
       notificationsEnabled
       reminderTime
@@ -15,6 +16,7 @@ query MySettings {
 mutation UpdateMySettings($input: UpdateSettingsInput!) {
   updateSettings(input: $input) {
     userId
+    interfaceLocale
     lessonSize
     notificationsEnabled
     reminderTime

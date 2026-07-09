@@ -1843,6 +1843,7 @@ export type MySettingsQuery = {
     settings: {
       __typename?: 'UserSettings'
       userId: string
+      interfaceLocale: string
       lessonSize: number
       notificationsEnabled: boolean
       reminderTime: string
@@ -1862,6 +1863,7 @@ export type UpdateMySettingsMutation = {
   updateSettings: {
     __typename?: 'UserSettings'
     userId: string
+    interfaceLocale: string
     lessonSize: number
     notificationsEnabled: boolean
     reminderTime: string
@@ -5016,6 +5018,7 @@ export const MySettingsDocument = gql`
     myAccount {
       settings {
         userId
+        interfaceLocale
         lessonSize
         notificationsEnabled
         reminderTime
@@ -5083,6 +5086,7 @@ export const UpdateMySettingsDocument = gql`
   mutation UpdateMySettings($input: UpdateSettingsInput!) {
     updateSettings(input: $input) {
       userId
+      interfaceLocale
       lessonSize
       notificationsEnabled
       reminderTime

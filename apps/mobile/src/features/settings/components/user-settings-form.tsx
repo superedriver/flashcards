@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { View } from 'react-native'
 
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
+import { InterfaceLocaleField } from '@/features/settings/components/interface-locale-field'
 import { LessonSizeField } from '@/features/settings/components/lesson-size-field'
 import { ReminderTimeField } from '@/features/settings/components/reminder-time-field'
 import { TimezoneField } from '@/features/settings/components/timezone-field'
@@ -12,6 +13,8 @@ import {
   settingsFormSchema,
   type SettingsFormValues,
 } from '@/features/settings/validation/settings-form.schema'
+import { getCurrentLocale, setAppLocale } from '@/i18n'
+import { persistLocale } from '@/i18n/locale-storage'
 import { useMySettingsQuery, useUpdateMySettingsMutation } from '@/graphql/generated'
 import { AppButton, AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState } from '@/ui/components'
@@ -41,6 +44,7 @@ export function UserSettingsForm({
     reset,
   } = useForm<SettingsFormValues>({
     defaultValues: {
+      interfaceLocale: getCurrentLocale(),
       lessonSize: 20,
       notificationsEnabled: false,
       reminderTime: '09:00',
@@ -57,6 +61,7 @@ export function UserSettingsForm({
     }
 
     reset({
+      interfaceLocale: settings.interfaceLocale === 'uk' ? 'uk' : 'en',
       lessonSize: settings.lessonSize,
       notificationsEnabled: settings.notificationsEnabled,
       reminderTime: settings.reminderTime,
@@ -85,6 +90,7 @@ export function UserSettingsForm({
       const result = await updateSettings({
         variables: {
           input: {
+            interfaceLocale: values.interfaceLocale,
             lessonSize: values.lessonSize,
             notificationsEnabled: values.notificationsEnabled,
             reminderTime: values.reminderTime ?? undefined,
@@ -98,6 +104,8 @@ export function UserSettingsForm({
         return
       }
 
+      await setAppLocale(values.interfaceLocale)
+      await persistLocale(values.interfaceLocale)
       setFeedback('Settings saved.')
     } catch (submitError) {
       setErrorMessage(getGraphqlErrorMessage(submitError, 'Could not save settings.'))
@@ -122,6 +130,7 @@ export function UserSettingsForm({
       <AppText style={{ color: '#666666', fontSize: 14 }}>
         Lesson preferences and reminder schedule. Notification delivery is managed below.
       </AppText>
+      <InterfaceLocaleField control={control} errors={errors} />
       <LessonSizeField control={control} errors={errors} />
       <ReminderTimeField control={control} errors={errors} />
       <TimezoneField control={control} errors={errors} />

@@ -1,3 +1,4 @@
+export * from './interface-locale-field'
 export * from './lesson-size-field'
 export * from './reminder-time-field'
 export * from './timezone-field'
