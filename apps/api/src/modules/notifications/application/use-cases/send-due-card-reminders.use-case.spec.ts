@@ -209,6 +209,29 @@ describe('SendDueCardRemindersUseCase', () => {
     expect(markUsed).toHaveBeenCalledWith(pushToken.id, now);
   });
 
+  it('sends Ukrainian reminder copy when interfaceLocale is uk', async () => {
+    const pushToken = createPushToken({ userId: 'user-1' });
+    const { useCase, send } = createUseCase({
+      settings: [
+        createUserSettings({ userId: 'user-1', interfaceLocale: 'uk' }),
+      ],
+      dueCounts: { 'user-1': 2 },
+      pushTokens: [pushToken],
+      sendResult: { successCount: 1, failureCount: 0, invalidTokens: [] },
+    });
+
+    await useCase.execute({ now });
+
+    expect(send).toHaveBeenCalledWith([
+      {
+        to: pushToken.token,
+        title: 'Час повторити',
+        body: 'У вас є картки, які потрібно повторити.',
+        data: { type: 'DUE_CARDS_REMINDER' },
+      },
+    ]);
+  });
+
   it('skips users with due cards but no active push tokens', async () => {
     const { useCase, send } = createUseCase({
       settings: [createUserSettings({ userId: 'user-1' })],

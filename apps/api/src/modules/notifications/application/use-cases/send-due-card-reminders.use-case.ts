@@ -17,6 +17,7 @@ import {
   PushTokenRepositoryPort,
 } from '../ports/push-token-repository.port';
 import { PushMessage, PushToken } from '../../domain/types';
+import { getReminderMessage } from '../i18n/reminder-messages';
 
 export type SendDueCardRemindersUseCaseInput = {
   now: Date;
@@ -28,9 +29,6 @@ export type SendDueCardRemindersUseCaseResult = {
   sentMessages: number;
   failedMessages: number;
 };
-
-const REMINDER_TITLE = 'Time to review';
-const REMINDER_BODY = 'You have cards due for review.';
 
 @Injectable()
 export class SendDueCardRemindersUseCase {
@@ -84,6 +82,9 @@ export class SendDueCardRemindersUseCase {
       await this.pushTokenRepository.findActiveForUsers(userIdsToNotify);
 
     const tokensByUserId = groupTokensByUserId(pushTokens);
+    const settingsByUserId = new Map(
+      reminderSettings.map((setting) => [setting.userId, setting]),
+    );
     const messages: PushMessage[] = [];
     const messageOwners: PushToken[] = [];
 
@@ -96,11 +97,15 @@ export class SendDueCardRemindersUseCase {
 
       notifiedUsers += 1;
 
+      const reminderMessage = getReminderMessage(
+        settingsByUserId.get(userId)?.interfaceLocale,
+      );
+
       for (const pushToken of userTokens) {
         messages.push({
           to: pushToken.token,
-          title: REMINDER_TITLE,
-          body: REMINDER_BODY,
+          title: reminderMessage.title,
+          body: reminderMessage.body,
           data: {
             type: 'DUE_CARDS_REMINDER',
           },
