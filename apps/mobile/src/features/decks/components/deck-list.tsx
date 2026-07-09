@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FlatList, useWindowDimensions, View } from 'react-native'
 
 import type { MyDecksQuery } from '@/graphql/generated'
@@ -14,6 +15,7 @@ type DeckListProps = {
 }
 
 export function DeckList({ decks, listHeader, onCreateDeck }: DeckListProps) {
+  const { t } = useTranslation()
   const { width } = useWindowDimensions()
   const numColumns = getListNumColumns(width)
 
@@ -22,8 +24,8 @@ export function DeckList({ decks, listHeader, onCreateDeck }: DeckListProps) {
       <>
         {listHeader}
         <EmptyState
-          actionLabel={onCreateDeck ? 'Create your first deck' : undefined}
-          message="You have no decks yet."
+          actionLabel={onCreateDeck ? t('decks.myDecks.emptyAction') : undefined}
+          message={t('decks.myDecks.empty')}
           onAction={onCreateDeck}
         />
       </>

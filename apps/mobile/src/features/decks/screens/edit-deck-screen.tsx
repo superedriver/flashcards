@@ -1,5 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { DeckForm } from '@/features/decks/components/deck-form'
 import { getGraphqlErrorMessage, optionalText } from '@/features/decks/utils/deck-form-utils'
@@ -7,6 +8,7 @@ import { useDeckQuery, useUpdateDeckMutation } from '@/graphql/generated'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function EditDeckScreen() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { deckId } = useLocalSearchParams<{ deckId: string }>()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -31,8 +33,8 @@ export function EditDeckScreen() {
   if (loading) {
     return (
       <Screen>
-        <PageTitle title="Edit Deck" />
-        <LoadingState message="Loading deck..." />
+        <PageTitle title={t('decks.editDeck.title')} />
+        <LoadingState message={t('decks.editDeck.loading')} />
       </Screen>
     )
   }
@@ -40,21 +42,21 @@ export function EditDeckScreen() {
   if (error || !data?.deck) {
     return (
       <Screen>
-        <PageTitle title="Edit Deck" />
-        <ErrorState message="Could not load deck." onRetry={() => void refetch()} />
+        <PageTitle title={t('decks.editDeck.title')} />
+        <ErrorState message={t('decks.editDeck.loadError')} onRetry={() => void refetch()} />
       </Screen>
     )
   }
 
   return (
     <Screen>
-      <PageTitle title="Edit Deck" />
+      <PageTitle title={t('decks.editDeck.title')} />
       <DeckForm
         defaultValues={defaultValues}
         errorMessage={errorMessage}
         isSubmitting={isSubmitting}
-        submitLabel="Save Changes"
-        submittingLabel="Saving..."
+        submitLabel={t('decks.editDeck.submit')}
+        submittingLabel={t('decks.editDeck.submitting')}
         onCancel={() => router.back()}
         onClearError={() => setErrorMessage(null)}
         onSubmit={async (values) => {
@@ -76,15 +78,13 @@ export function EditDeckScreen() {
             })
 
             if (!result.data?.updateDeck) {
-              setErrorMessage('Could not update deck. Please try again.')
+              setErrorMessage(t('decks.editDeck.error'))
               return
             }
 
             router.replace(`/decks/${deckId}`)
           } catch (submitError) {
-            setErrorMessage(
-              getGraphqlErrorMessage(submitError, 'Could not update deck. Please try again.'),
-            )
+            setErrorMessage(getGraphqlErrorMessage(submitError, t('decks.editDeck.error')))
           }
         }}
       />

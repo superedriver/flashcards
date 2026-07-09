@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { DeckForm } from '@/features/decks/components/deck-form'
 import { getGraphqlErrorMessage, optionalText } from '@/features/decks/utils/deck-form-utils'
@@ -7,6 +8,7 @@ import { useCreateDeckMutation } from '@/graphql/generated'
 import { PageTitle, Screen } from '@/ui/components'
 
 export function CreateDeckScreen() {
+  const { t } = useTranslation()
   const router = useRouter()
   const [createDeck, { loading }] = useCreateDeckMutation({
     refetchQueries: ['MyDecks'],
@@ -15,12 +17,12 @@ export function CreateDeckScreen() {
 
   return (
     <Screen>
-      <PageTitle title="Create Deck" />
+      <PageTitle title={t('decks.createDeck.title')} />
       <DeckForm
         errorMessage={errorMessage}
         isSubmitting={loading}
-        submitLabel="Create Deck"
-        submittingLabel="Creating deck..."
+        submitLabel={t('decks.createDeck.submit')}
+        submittingLabel={t('decks.createDeck.submitting')}
         onCancel={() => router.back()}
         onClearError={() => setErrorMessage(null)}
         onSubmit={async (values) => {
@@ -39,15 +41,13 @@ export function CreateDeckScreen() {
             const deck = result.data?.createDeck
 
             if (!deck) {
-              setErrorMessage('Could not create deck. Please try again.')
+              setErrorMessage(t('decks.createDeck.error'))
               return
             }
 
             router.replace(`/decks/${deck.id}`)
           } catch (error) {
-            setErrorMessage(
-              getGraphqlErrorMessage(error, 'Could not create deck. Please try again.'),
-            )
+            setErrorMessage(getGraphqlErrorMessage(error, t('decks.createDeck.error')))
           }
         }}
       />

@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router'
 import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { confirmAction, confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
@@ -23,6 +24,7 @@ type DeckActionsProps = {
 }
 
 export function DeckActions({ deck, isOwner }: DeckActionsProps) {
+  const { t } = useTranslation()
   const router = useRouter()
   const [feedback, setFeedback] = useState<string | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
@@ -46,8 +48,8 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
 
   const handleDelete = () => {
     confirmDestructiveAction(
-      'Delete deck',
-      'This will permanently delete the deck and its cards.',
+      t('decks.actions.deleteDeckTitle'),
+      t('decks.actions.deleteDeckMessage'),
       () => {
         void (async () => {
           setActionError(null)
@@ -59,15 +61,13 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
             })
 
             if (!result.data?.deleteDeck) {
-              setActionError('Could not delete deck. Please try again.')
+              setActionError(t('decks.actions.deleteDeckError'))
               return
             }
 
             router.replace('/(tabs)/decks')
           } catch (error) {
-            setActionError(
-              getGraphqlErrorMessage(error, 'Could not delete deck. Please try again.'),
-            )
+            setActionError(getGraphqlErrorMessage(error, t('decks.actions.deleteDeckError')))
           }
         })()
       },
@@ -90,13 +90,13 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
         })
 
         if (!result.data?.publishDeck) {
-          setActionError('Could not publish deck. Please try again.')
+          setActionError(t('decks.actions.publishError'))
           return
         }
 
-        setFeedback('Deck submitted for moderation. It will appear publicly once approved.')
+        setFeedback(t('decks.actions.publishSuccess'))
       } catch (error) {
-        setActionError(getGraphqlErrorMessage(error, 'Could not publish deck. Please try again.'))
+        setActionError(getGraphqlErrorMessage(error, t('decks.actions.publishError')))
       } finally {
         isPublishingRef.current = false
       }
@@ -104,33 +104,27 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
   }
 
   const handleUnpublish = () => {
-    confirmAction(
-      'Unpublish deck',
-      'Your deck will become private and will no longer appear in public search.',
-      () => {
-        void (async () => {
-          setActionError(null)
-          setFeedback(null)
+    confirmAction(t('decks.actions.unpublishTitle'), t('decks.actions.unpublishMessage'), () => {
+      void (async () => {
+        setActionError(null)
+        setFeedback(null)
 
-          try {
-            const result = await unpublishDeck({
-              variables: { deckId: deck.id },
-            })
+        try {
+          const result = await unpublishDeck({
+            variables: { deckId: deck.id },
+          })
 
-            if (!result.data?.unpublishDeck) {
-              setActionError('Could not unpublish deck. Please try again.')
-              return
-            }
-
-            setFeedback('Deck is now private.')
-          } catch (error) {
-            setActionError(
-              getGraphqlErrorMessage(error, 'Could not unpublish deck. Please try again.'),
-            )
+          if (!result.data?.unpublishDeck) {
+            setActionError(t('decks.actions.unpublishError'))
+            return
           }
-        })()
-      },
-    )
+
+          setFeedback(t('decks.actions.unpublishSuccess'))
+        } catch (error) {
+          setActionError(getGraphqlErrorMessage(error, t('decks.actions.unpublishError')))
+        }
+      })()
+    })
   }
 
   const isPrivate = deck.visibility === DeckVisibility.Private
@@ -141,43 +135,45 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
   return (
     <View style={{ gap: 8, marginBottom: 16 }}>
       <AppText style={{ color: '#666666' }}>
-        Status: {getDeckStatusSummary(deck.visibility, deck.moderationStatus)}
+        {t('decks.actions.status', {
+          status: getDeckStatusSummary(deck.visibility, deck.moderationStatus),
+        })}
       </AppText>
 
       <AppButton disabled={isBusy} onPress={() => router.push(`/decks/${deck.id}/edit`)}>
-        Edit Deck
+        {t('decks.actions.editDeck')}
       </AppButton>
       <AppButton disabled={isBusy} onPress={() => router.push(`/decks/${deck.id}/cards/new`)}>
-        Add Card
+        {t('decks.actions.addCard')}
       </AppButton>
       <AppButton disabled={isBusy} onPress={() => router.push(`/decks/${deck.id}/import-csv`)}>
-        Import CSV
+        {t('decks.actions.importCsv')}
       </AppButton>
 
       {isPrivate ? (
         <AppButton disabled={isBusy} onPress={handlePublish}>
-          {isPublishing ? 'Publishing...' : 'Publish Deck'}
+          {isPublishing ? t('decks.actions.publishing') : t('decks.actions.publish')}
         </AppButton>
       ) : (
         <AppButton disabled={isBusy} onPress={handleUnpublish}>
-          {isUnpublishing ? 'Unpublishing...' : 'Unpublish Deck'}
+          {isUnpublishing ? t('decks.actions.unpublishing') : t('decks.actions.unpublish')}
         </AppButton>
       )}
 
       {isPendingPublic ? (
         <AppText style={{ color: '#ef6c00', fontSize: 14 }}>
-          This deck is awaiting moderation before it appears in public search.
+          {t('decks.actions.pendingModeration')}
         </AppText>
       ) : null}
 
       <AppButton
-        {...destructiveButtonA11yProps('Delete deck')}
+        {...destructiveButtonA11yProps(t('decks.actions.deleteDeckTitle'))}
         background="#b00020"
         color="white"
         disabled={isBusy}
         onPress={handleDelete}
       >
-        {isDeleting ? 'Deleting...' : 'Delete Deck'}
+        {isDeleting ? t('decks.actions.deleting') : t('decks.actions.deleteDeck')}
       </AppButton>
 
       {feedback ? <AppText style={{ color: '#2e7d32' }}>{feedback}</AppText> : null}

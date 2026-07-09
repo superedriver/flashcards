@@ -1,5 +1,6 @@
 import { useLocalSearchParams } from 'expo-router'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { CardList } from '@/features/decks/components/card-list'
 import { DeckActions } from '@/features/decks/components/deck-actions'
@@ -14,6 +15,7 @@ import { AppButton, AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function DeckDetailScreen() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { deckId } = useLocalSearchParams<{ deckId: string }>()
   const { user } = useAuth()
@@ -47,7 +49,7 @@ export function DeckDetailScreen() {
       return
     }
 
-    confirmDestructiveAction('Delete card', 'This card will be permanently deleted.', () => {
+    confirmDestructiveAction(t('decks.card.deleteTitle'), t('decks.card.deleteMessage'), () => {
       void (async () => {
         setActionError(null)
         setActionFeedback(null)
@@ -58,15 +60,13 @@ export function DeckDetailScreen() {
           })
 
           if (!result.data?.deleteCard) {
-            setActionError('Could not delete card. Please try again.')
+            setActionError(t('decks.card.deleteError'))
             return
           }
 
-          setActionFeedback('Card deleted.')
+          setActionFeedback(t('decks.card.deleted'))
         } catch (deleteError) {
-          setActionError(
-            getGraphqlErrorMessage(deleteError, 'Could not delete card. Please try again.'),
-          )
+          setActionError(getGraphqlErrorMessage(deleteError, t('decks.card.deleteError')))
         }
       })()
     })
@@ -81,7 +81,7 @@ export function DeckDetailScreen() {
           disabled={cards.length === 0}
           onPress={() => router.push(`/lessons/start?deckId=${deckId}`)}
         >
-          Start Lesson
+          {t('decks.deckDetail.startLesson')}
         </AppButton>
         <DeckActions deck={deck} isOwner={isOwner} />
       </>
@@ -89,10 +89,12 @@ export function DeckDetailScreen() {
 
   return (
     <Screen>
-      <PageTitle title="Deck Detail" />
+      <PageTitle title={t('decks.deckDetail.title')} />
 
-      {loading ? <LoadingState message="Loading deck..." /> : null}
-      {error ? <ErrorState message="Could not load deck." onRetry={handleRetry} /> : null}
+      {loading ? <LoadingState message={t('decks.deckDetail.loading')} /> : null}
+      {error ? (
+        <ErrorState message={t('decks.deckDetail.loadError')} onRetry={handleRetry} />
+      ) : null}
       {actionError ? <ErrorState message={actionError} /> : null}
       {actionFeedback ? <AppText style={{ color: '#2e7d32' }}>{actionFeedback}</AppText> : null}
 
@@ -100,7 +102,7 @@ export function DeckDetailScreen() {
         <CardList
           cards={cards}
           deckId={deckId}
-          emptyActionLabel="Add card"
+          emptyActionLabel={t('decks.deckDetail.addCard')}
           isOwner={isOwner}
           listHeader={listHeader}
           onDeleteCard={isOwner ? handleDeleteCard : undefined}

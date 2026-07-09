@@ -1,3 +1,4 @@
+import { i18n } from '@/i18n'
 import { Alert, Platform } from 'react-native'
 
 export function confirmDestructiveAction(
@@ -14,8 +15,8 @@ export function confirmDestructiveAction(
   }
 
   Alert.alert(title, message, [
-    { style: 'cancel', text: 'Cancel' },
-    { onPress: onConfirm, style: 'destructive', text: 'Confirm' },
+    { style: 'cancel', text: i18n.t('common.cancel') },
+    { onPress: onConfirm, style: 'destructive', text: i18n.t('common.confirm') },
   ])
 }
 
@@ -29,7 +30,7 @@ export function confirmAction(title: string, message: string, onConfirm: () => v
   }
 
   Alert.alert(title, message, [
-    { style: 'cancel', text: 'Cancel' },
-    { onPress: onConfirm, text: 'Confirm' },
+    { style: 'cancel', text: i18n.t('common.cancel') },
+    { onPress: onConfirm, text: i18n.t('common.confirm') },
   ])
 }

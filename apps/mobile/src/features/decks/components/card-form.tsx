@@ -1,10 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { AiExampleGenerator } from '@/features/ai-examples/components/ai-example-generator'
-import { cardFormSchema, type CardFormValues } from '@/features/decks/validation/card-form.schema'
+import {
+  createCardFormSchema,
+  type CardFormValues,
+} from '@/features/decks/validation/card-form.schema'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
 import { ErrorState, FieldLabel, FormFieldError } from '@/ui/components'
 import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
@@ -25,7 +29,7 @@ type CardFormProps = {
 }
 
 export function CardForm({
-  cancelLabel = 'Cancel',
+  cancelLabel,
   cardId,
   defaultValues,
   errorMessage,
@@ -38,7 +42,10 @@ export function CardForm({
   submitLabel,
   submittingLabel,
 }: CardFormProps) {
+  const { t } = useTranslation()
   const isSubmittingRef = useRef(false)
+  const cardFormSchema = useMemo(() => createCardFormSchema(t), [t])
+  const resolvedCancelLabel = cancelLabel ?? t('common.cancel')
 
   const {
     control,
@@ -76,16 +83,16 @@ export function CardForm({
 
   return (
     <View style={{ gap: 12 }}>
-      <FieldLabel>Front</FieldLabel>
+      <FieldLabel>{t('decks.cardForm.front')}</FieldLabel>
       <Controller
         control={control}
         name="front"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Front"
+            accessibilityLabel={t('decks.cardForm.front')}
             multiline
             numberOfLines={3}
-            placeholder="Front"
+            placeholder={t('decks.cardForm.front')}
             value={value}
             onBlur={onBlur}
             onChangeText={(text) => {
@@ -97,16 +104,16 @@ export function CardForm({
       />
       <FormFieldError message={errors.front?.message} />
 
-      <FieldLabel>Back</FieldLabel>
+      <FieldLabel>{t('decks.cardForm.back')}</FieldLabel>
       <Controller
         control={control}
         name="back"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Back"
+            accessibilityLabel={t('decks.cardForm.back')}
             multiline
             numberOfLines={3}
-            placeholder="Back"
+            placeholder={t('decks.cardForm.back')}
             value={value}
             onBlur={onBlur}
             onChangeText={(text) => {
@@ -118,16 +125,16 @@ export function CardForm({
       />
       <FormFieldError message={errors.back?.message} />
 
-      <FieldLabel>Example</FieldLabel>
+      <FieldLabel>{t('decks.cardForm.example')}</FieldLabel>
       <Controller
         control={control}
         name="example"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Example (optional)"
+            accessibilityLabel={t('decks.cardForm.exampleOptional')}
             multiline
             numberOfLines={3}
-            placeholder="Example (optional)"
+            placeholder={t('decks.cardForm.exampleOptional')}
             value={value ?? ''}
             onBlur={onBlur}
             onChangeText={(text) => {
@@ -148,19 +155,19 @@ export function CardForm({
           }
         />
       ) : (
-        <AppText style={{ color: '#666666' }}>Save the card first to generate AI examples.</AppText>
+        <AppText style={{ color: '#666666' }}>{t('decks.cardForm.saveFirstForAi')}</AppText>
       )}
 
-      <FieldLabel>Notes</FieldLabel>
+      <FieldLabel>{t('decks.cardForm.notes')}</FieldLabel>
       <Controller
         control={control}
         name="notes"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Notes (optional)"
+            accessibilityLabel={t('decks.cardForm.notesOptional')}
             multiline
             numberOfLines={3}
-            placeholder="Notes (optional)"
+            placeholder={t('decks.cardForm.notesOptional')}
             value={value ?? ''}
             onBlur={onBlur}
             onChangeText={(text) => {
@@ -180,19 +187,19 @@ export function CardForm({
 
       {onCancel ? (
         <AppButton disabled={isSubmitting} onPress={onCancel}>
-          {cancelLabel}
+          {resolvedCancelLabel}
         </AppButton>
       ) : null}
 
       {showDelete && onDelete ? (
         <AppButton
-          {...destructiveButtonA11yProps('Delete card')}
+          {...destructiveButtonA11yProps(t('decks.card.deleteCardA11y'))}
           background="#b00020"
           color="white"
           disabled={isSubmitting}
           onPress={onDelete}
         >
-          Delete Card
+          {t('decks.card.deleteCard')}
         </AppButton>
       ) : null}
     </View>

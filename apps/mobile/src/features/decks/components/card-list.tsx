@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FlatList } from 'react-native'
 
 import type { DeckCardsQuery } from '@/graphql/generated'
@@ -25,13 +26,15 @@ export function CardList({
   onDeleteCard,
   onEmptyAction,
 }: CardListProps) {
+  const { t } = useTranslation()
+
   if (cards.length === 0) {
     return (
       <>
         {listHeader}
         <EmptyState
           actionLabel={onEmptyAction ? emptyActionLabel : undefined}
-          message="This deck has no cards yet."
+          message={t('decks.card.empty')}
           onAction={onEmptyAction}
         />
       </>

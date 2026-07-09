@@ -1,21 +1,24 @@
+import { i18n } from '@/i18n'
 import { DeckModerationStatus, DeckVisibility } from '@/graphql/generated'
 
 export function getVisibilityLabel(visibility: DeckVisibility): string {
-  return visibility === DeckVisibility.Public ? 'Public' : 'Private'
+  return visibility === DeckVisibility.Public
+    ? i18n.t('decks.status.public')
+    : i18n.t('decks.status.private')
 }
 
 export function getModerationLabel(moderationStatus: DeckModerationStatus): string | null {
   switch (moderationStatus) {
     case DeckModerationStatus.Approved:
-      return 'Published'
+      return i18n.t('decks.status.published')
     case DeckModerationStatus.Hidden:
-      return 'Hidden'
+      return i18n.t('decks.status.hidden')
     case DeckModerationStatus.None:
       return null
     case DeckModerationStatus.Pending:
-      return 'Pending review'
+      return i18n.t('decks.status.pendingReview')
     case DeckModerationStatus.Rejected:
-      return 'Rejected'
+      return i18n.t('decks.status.rejected')
     default:
       return null
   }
@@ -32,5 +35,5 @@ export function getDeckStatusSummary(
     return visibilityLabel
   }
 
-  return `${visibilityLabel} · ${moderationLabel}`
+  return `${visibilityLabel}${i18n.t('decks.status.separator')}${moderationLabel}`
 }

@@ -1,9 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
-import { deckFormSchema, type DeckFormValues } from '@/features/decks/validation/deck-form.schema'
+import {
+  createDeckFormSchema,
+  type DeckFormValues,
+} from '@/features/decks/validation/deck-form.schema'
 import { AppButton, AppInput } from '@/ui/primitives'
 import { ErrorState, FieldLabel, FormFieldError } from '@/ui/components'
 
@@ -20,7 +24,7 @@ type DeckFormProps = {
 }
 
 export function DeckForm({
-  cancelLabel = 'Cancel',
+  cancelLabel,
   defaultValues,
   errorMessage,
   isSubmitting = false,
@@ -30,7 +34,10 @@ export function DeckForm({
   submitLabel,
   submittingLabel,
 }: DeckFormProps) {
+  const { t } = useTranslation()
   const isSubmittingRef = useRef(false)
+  const deckFormSchema = useMemo(() => createDeckFormSchema(t), [t])
+  const resolvedCancelLabel = cancelLabel ?? t('common.cancel')
 
   const {
     control,
@@ -64,14 +71,14 @@ export function DeckForm({
 
   return (
     <View style={{ gap: 12 }}>
-      <FieldLabel>Title</FieldLabel>
+      <FieldLabel>{t('decks.deckForm.title')}</FieldLabel>
       <Controller
         control={control}
         name="title"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Title"
-            placeholder="Title"
+            accessibilityLabel={t('decks.deckForm.title')}
+            placeholder={t('decks.deckForm.title')}
             value={value}
             onBlur={onBlur}
             onChangeText={(text) => {
@@ -83,16 +90,16 @@ export function DeckForm({
       />
       <FormFieldError message={errors.title?.message} />
 
-      <FieldLabel>Description</FieldLabel>
+      <FieldLabel>{t('decks.deckForm.description')}</FieldLabel>
       <Controller
         control={control}
         name="description"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Description (optional)"
+            accessibilityLabel={t('decks.deckForm.descriptionOptional')}
             multiline
             numberOfLines={4}
-            placeholder="Description (optional)"
+            placeholder={t('decks.deckForm.descriptionOptional')}
             value={value ?? ''}
             onBlur={onBlur}
             onChangeText={(text) => {
@@ -112,7 +119,7 @@ export function DeckForm({
 
       {onCancel ? (
         <AppButton disabled={isSubmitting} onPress={onCancel}>
-          {cancelLabel}
+          {resolvedCancelLabel}
         </AppButton>
       ) : null}
     </View>

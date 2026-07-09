@@ -1,5 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { CardForm } from '@/features/decks/components/card-form'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
@@ -12,6 +13,7 @@ import {
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function EditCardScreen() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { cardId, deckId } = useLocalSearchParams<{ cardId: string; deckId: string }>()
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -36,8 +38,8 @@ export function EditCardScreen() {
   if (loading) {
     return (
       <Screen>
-        <PageTitle title="Edit Card" />
-        <LoadingState message="Loading card..." />
+        <PageTitle title={t('decks.editCard.title')} />
+        <LoadingState message={t('decks.editCard.loading')} />
       </Screen>
     )
   }
@@ -45,14 +47,14 @@ export function EditCardScreen() {
   if (error || !card || !deckId || !cardId) {
     return (
       <Screen>
-        <PageTitle title="Edit Card" />
-        <ErrorState message="Could not load card." onRetry={() => void refetch()} />
+        <PageTitle title={t('decks.editCard.title')} />
+        <ErrorState message={t('decks.editCard.loadError')} onRetry={() => void refetch()} />
       </Screen>
     )
   }
 
   const handleDelete = () => {
-    confirmDestructiveAction('Delete card', 'This card will be permanently deleted.', () => {
+    confirmDestructiveAction(t('decks.card.deleteTitle'), t('decks.card.deleteMessage'), () => {
       void (async () => {
         setErrorMessage(null)
 
@@ -62,15 +64,13 @@ export function EditCardScreen() {
           })
 
           if (!result.data?.deleteCard) {
-            setErrorMessage('Could not delete card. Please try again.')
+            setErrorMessage(t('decks.card.deleteError'))
             return
           }
 
           router.replace(`/decks/${deckId}`)
         } catch (deleteError) {
-          setErrorMessage(
-            getGraphqlErrorMessage(deleteError, 'Could not delete card. Please try again.'),
-          )
+          setErrorMessage(getGraphqlErrorMessage(deleteError, t('decks.card.deleteError')))
         }
       })()
     })
@@ -78,7 +78,7 @@ export function EditCardScreen() {
 
   return (
     <Screen>
-      <PageTitle title="Edit Card" />
+      <PageTitle title={t('decks.editCard.title')} />
       <CardForm
         cardId={cardId}
         defaultValues={{
@@ -90,8 +90,8 @@ export function EditCardScreen() {
         errorMessage={errorMessage}
         isSubmitting={isSubmitting || isDeleting}
         showDelete
-        submitLabel="Save Changes"
-        submittingLabel="Saving..."
+        submitLabel={t('decks.editCard.submit')}
+        submittingLabel={t('decks.editCard.submitting')}
         onCancel={() => router.back()}
         onClearError={() => setErrorMessage(null)}
         onDelete={handleDelete}
@@ -112,15 +112,13 @@ export function EditCardScreen() {
             })
 
             if (!result.data?.updateCard) {
-              setErrorMessage('Could not update card. Please try again.')
+              setErrorMessage(t('decks.editCard.error'))
               return
             }
 
             router.replace(`/decks/${deckId}`)
           } catch (submitError) {
-            setErrorMessage(
-              getGraphqlErrorMessage(submitError, 'Could not update card. Please try again.'),
-            )
+            setErrorMessage(getGraphqlErrorMessage(submitError, t('decks.editCard.error')))
           }
         }}
       />

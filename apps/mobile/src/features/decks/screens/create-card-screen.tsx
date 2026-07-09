@@ -1,5 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { CardForm } from '@/features/decks/components/card-form'
 import { getGraphqlErrorMessage, optionalText } from '@/features/decks/utils/deck-form-utils'
@@ -7,6 +8,7 @@ import { useCreateCardMutation } from '@/graphql/generated'
 import { PageTitle, Screen } from '@/ui/components'
 
 export function CreateCardScreen() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { deckId } = useLocalSearchParams<{ deckId: string }>()
   const [createCard, { loading }] = useCreateCardMutation({
@@ -16,12 +18,12 @@ export function CreateCardScreen() {
 
   return (
     <Screen>
-      <PageTitle title="Add Card" />
+      <PageTitle title={t('decks.createCard.title')} />
       <CardForm
         errorMessage={errorMessage}
         isSubmitting={loading}
-        submitLabel="Create Card"
-        submittingLabel="Creating card..."
+        submitLabel={t('decks.createCard.submit')}
+        submittingLabel={t('decks.createCard.submitting')}
         onCancel={() => router.back()}
         onClearError={() => setErrorMessage(null)}
         onSubmit={async (values) => {
@@ -45,15 +47,13 @@ export function CreateCardScreen() {
             })
 
             if (!result.data?.createCard) {
-              setErrorMessage('Could not create card. Please try again.')
+              setErrorMessage(t('decks.createCard.error'))
               return
             }
 
             router.replace(`/decks/${deckId}`)
           } catch (error) {
-            setErrorMessage(
-              getGraphqlErrorMessage(error, 'Could not create card. Please try again.'),
-            )
+            setErrorMessage(getGraphqlErrorMessage(error, t('decks.createCard.error')))
           }
         }}
       />
