@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import { useDeckLearningStatsQuery } from '@/graphql/generated'
 import { formatDateTime } from '@/i18n/formatters'
 import { AppCard, AppText } from '@/ui/primitives'
@@ -7,45 +9,44 @@ type DeckLearningStatsCardProps = {
   deckId: string
 }
 
-function formatNextReview(value?: string | null): string {
-  if (!value) {
-    return 'No cards scheduled yet'
-  }
-
-  return formatDateTime(value)
-}
-
 export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
+  const { t } = useTranslation()
   const { data, error, loading, refetch } = useDeckLearningStatsQuery({
     variables: { deckId },
   })
 
+  const formatNextReview = (value?: string | null): string => {
+    if (!value) {
+      return t('lessons.stats.noScheduled')
+    }
+
+    return formatDateTime(value)
+  }
+
   if (loading) {
-    return <LoadingState message="Loading learning stats..." />
+    return <LoadingState message={t('lessons.stats.loading')} />
   }
 
   if (error || !data?.deckLearningStats) {
-    return <ErrorState message="Could not load learning stats." onRetry={() => void refetch()} />
+    return <ErrorState message={t('lessons.stats.loadError')} onRetry={() => void refetch()} />
   }
 
   const stats = data.deckLearningStats
 
   return (
     <AppCard style={{ gap: 8, marginBottom: 16, padding: 16 }}>
-      <AppText style={{ fontSize: 16, fontWeight: '600' }}>Learning stats</AppText>
-      <AppText>Total cards: {stats.totalCards}</AppText>
-      <AppText>New: {stats.newCards}</AppText>
+      <AppText style={{ fontSize: 16, fontWeight: '600' }}>{t('lessons.stats.title')}</AppText>
+      <AppText>{t('lessons.stats.totalCards', { count: stats.totalCards })}</AppText>
+      <AppText>{t('lessons.stats.newCards', { count: stats.newCards })}</AppText>
       <AppText style={{ fontWeight: stats.dueCards > 0 ? '600' : '400' }}>
-        Due now: {stats.dueCards}
+        {t('lessons.stats.dueNow', { count: stats.dueCards })}
       </AppText>
-      <AppText>Reviewed: {stats.reviewedCards}</AppText>
+      <AppText>{t('lessons.stats.reviewed', { count: stats.reviewedCards })}</AppText>
       <AppText style={{ color: '#666666' }}>
-        Next review: {formatNextReview(stats.nextDueAt)}
+        {t('lessons.stats.nextReview', { value: formatNextReview(stats.nextDueAt) })}
       </AppText>
       {stats.dueCards === 0 && stats.totalCards > 0 ? (
-        <AppText style={{ color: '#666666', fontSize: 14 }}>
-          No cards are due right now. Check back later or add more cards.
-        </AppText>
+        <AppText style={{ color: '#666666', fontSize: 14 }}>{t('lessons.stats.noneDue')}</AppText>
       ) : null}
     </AppCard>
   )

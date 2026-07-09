@@ -1,5 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { LessonProgress } from '@/features/lessons/components/lesson-progress'
@@ -17,6 +18,7 @@ import { AppButton } from '@/ui/primitives'
 import { ErrorState, PageTitle, Screen } from '@/ui/components'
 
 export function LessonReviewScreen() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { deckId, sessionId } = useLocalSearchParams<{ deckId?: string; sessionId?: string }>()
   const {
@@ -45,8 +47,8 @@ export function LessonReviewScreen() {
   if (!sessionId) {
     return (
       <Screen>
-        <PageTitle title="Lesson" />
-        <ErrorState message="Lesson session is missing." />
+        <PageTitle title={t('lessons.review.title')} />
+        <ErrorState message={t('lessons.review.sessionMissing')} />
       </Screen>
     )
   }
@@ -54,18 +56,22 @@ export function LessonReviewScreen() {
   if (!lesson || !currentCard) {
     return (
       <Screen>
-        <PageTitle title="Lesson" />
-        <ErrorState message="Lesson state was lost. Please start the lesson again." />
+        <PageTitle title={t('lessons.review.title')} />
+        <ErrorState message={t('lessons.review.stateLost')} />
         <View style={{ gap: 12, marginTop: 16 }}>
           {deckId ? (
             <AppButton onPress={() => router.replace(`/lessons/start?deckId=${deckId}`)}>
-              Start lesson again
+              {t('lessons.review.startAgain')}
             </AppButton>
           ) : null}
           {deckId ? (
-            <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>Back to deck</AppButton>
+            <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>
+              {t('lessons.review.backToDeck')}
+            </AppButton>
           ) : null}
-          <AppButton onPress={() => router.replace('/(tabs)/decks')}>Back to decks</AppButton>
+          <AppButton onPress={() => router.replace('/(tabs)/decks')}>
+            {t('lessons.review.backToDecks')}
+          </AppButton>
         </View>
       </Screen>
     )
@@ -74,7 +80,7 @@ export function LessonReviewScreen() {
   const handleLeaveLesson = () => {
     const targetDeckId = deckId ?? lesson.deckId
 
-    confirmAction('Leave lesson?', 'Your progress in this session will not be saved.', () => {
+    confirmAction(t('lessons.review.leaveTitle'), t('lessons.review.leaveMessage'), () => {
       clearActiveLesson()
       router.replace(targetDeckId ? `/decks/${targetDeckId}` : '/(tabs)/decks')
     })
@@ -101,7 +107,7 @@ export function LessonReviewScreen() {
       })
 
       if (!result.data?.submitReview) {
-        setErrorMessage('Could not submit review. Please try again.')
+        setErrorMessage(t('lessons.review.submitError'))
         return
       }
 
@@ -120,7 +126,7 @@ export function LessonReviewScreen() {
         const summary = completeResult.data?.completeLesson
 
         if (!summary) {
-          setErrorMessage('Could not complete lesson. Please try again.')
+          setErrorMessage(t('lessons.review.completeError'))
           return
         }
 
@@ -140,7 +146,7 @@ export function LessonReviewScreen() {
 
       goToNextCard()
     } catch (error) {
-      setErrorMessage(getGraphqlErrorMessage(error, 'Could not submit review. Please try again.'))
+      setErrorMessage(getGraphqlErrorMessage(error, t('lessons.review.submitError')))
     } finally {
       isSubmittingRef.current = false
       setIsSubmitting(false)
@@ -149,7 +155,7 @@ export function LessonReviewScreen() {
 
   return (
     <Screen scrollable>
-      <PageTitle title="Lesson Review" />
+      <PageTitle title={t('lessons.review.pageTitle')} />
       <LessonProgress
         currentNumber={currentNumber}
         reviewedCount={reviewedCount}
@@ -172,7 +178,7 @@ export function LessonReviewScreen() {
       />
       <View style={{ marginTop: 16 }}>
         <AppButton disabled={isSubmitting} onPress={handleLeaveLesson}>
-          Leave lesson
+          {t('lessons.review.leaveLesson')}
         </AppButton>
       </View>
     </Screen>

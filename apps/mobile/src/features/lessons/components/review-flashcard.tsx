@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { View, useWindowDimensions } from 'react-native'
 
 import { AppButton, AppCard, AppText } from '@/ui/primitives'
@@ -20,6 +21,7 @@ export function ReviewFlashcard({
   notes,
   onReveal,
 }: ReviewFlashcardProps) {
+  const { t } = useTranslation()
   const { width } = useWindowDimensions()
   const containerStyle = getLessonCardContainerStyle(width)
 
@@ -36,7 +38,7 @@ export function ReviewFlashcard({
             textTransform: 'uppercase',
           }}
         >
-          Front
+          {t('lessons.flashcard.front')}
         </AppText>
         <AppText style={{ fontSize: 28, fontWeight: '700', lineHeight: 36, textAlign: 'center' }}>
           {front}
@@ -45,14 +47,14 @@ export function ReviewFlashcard({
         {!isRevealed ? (
           <View style={{ gap: 8, marginTop: 8 }}>
             <AppText style={{ color: '#666666', fontSize: 14, textAlign: 'center' }}>
-              Try to recall the answer, then reveal it.
+              {t('lessons.flashcard.recallHint')}
             </AppText>
             <AppButton
-              accessibilityHint="Shows the back of the card."
-              accessibilityLabel="Reveal answer"
+              accessibilityHint={t('lessons.flashcard.revealHint')}
+              accessibilityLabel={t('lessons.flashcard.revealAnswer')}
               onPress={onReveal}
             >
-              Reveal answer
+              {t('lessons.flashcard.revealAnswer')}
             </AppButton>
           </View>
         ) : (
@@ -65,17 +67,17 @@ export function ReviewFlashcard({
                 textTransform: 'uppercase',
               }}
             >
-              Back
+              {t('lessons.flashcard.back')}
             </AppText>
             <AppText style={{ fontSize: 24, lineHeight: 32, textAlign: 'center' }}>{back}</AppText>
             {example ? (
               <AppText style={{ color: '#666666', fontSize: 16, textAlign: 'center' }}>
-                Example: {example}
+                {t('lessons.flashcard.example', { text: example })}
               </AppText>
             ) : null}
             {notes ? (
               <AppText style={{ color: '#666666', fontSize: 14, textAlign: 'center' }}>
-                Notes: {notes}
+                {t('lessons.flashcard.notes', { text: notes })}
               </AppText>
             ) : null}
           </View>

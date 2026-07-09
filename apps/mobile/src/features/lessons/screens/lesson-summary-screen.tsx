@@ -1,4 +1,5 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
@@ -6,15 +7,8 @@ import { formatDateTime } from '@/i18n/formatters'
 import { AppButton, AppCard, AppText } from '@/ui/primitives'
 import { ErrorState, PageTitle, Screen } from '@/ui/components'
 
-function formatKnownPercent(knownCount: number, reviewedCards: number): string {
-  if (reviewedCards === 0) {
-    return '0%'
-  }
-
-  return `${Math.round((knownCount / reviewedCards) * 100)}%`
-}
-
 export function LessonSummaryScreen() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { deckId } = useLocalSearchParams<{ deckId?: string }>()
   const { clearCompletion, completion } = useActiveLesson()
@@ -22,37 +16,52 @@ export function LessonSummaryScreen() {
   if (!completion) {
     return (
       <Screen>
-        <PageTitle title="Lesson Summary" />
-        <ErrorState message="Lesson summary is not available." />
+        <PageTitle title={t('lessons.summary.title')} />
+        <ErrorState message={t('lessons.summary.unavailable')} />
         <View style={{ gap: 12, marginTop: 16 }}>
           {deckId ? (
-            <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>Back to deck</AppButton>
+            <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>
+              {t('lessons.summary.backToDeck')}
+            </AppButton>
           ) : null}
-          <AppButton onPress={() => router.replace('/(tabs)/decks')}>Back to decks</AppButton>
+          <AppButton onPress={() => router.replace('/(tabs)/decks')}>
+            {t('lessons.summary.backToDecks')}
+          </AppButton>
         </View>
       </Screen>
     )
   }
 
   const targetDeckId = deckId ?? completion.deckId
-  const knownPercent = formatKnownPercent(completion.knownCount, completion.reviewedCards)
+  const knownPercent =
+    completion.reviewedCards === 0
+      ? t('lessons.progress.percent', { percent: 0 })
+      : t('lessons.progress.percent', {
+          percent: Math.round((completion.knownCount / completion.reviewedCards) * 100),
+        })
 
   return (
     <Screen>
-      <PageTitle title="Lesson Complete" />
+      <PageTitle title={t('lessons.summary.completeTitle')} />
       <AppCard style={{ gap: 12, marginBottom: 16, padding: 16 }}>
-        <AppText style={{ fontSize: 20, fontWeight: '700' }}>Nice work!</AppText>
+        <AppText style={{ fontSize: 20, fontWeight: '700' }}>
+          {t('lessons.summary.niceWork')}
+        </AppText>
         <AppText style={{ color: '#666666' }}>
-          Completed {formatDateTime(completion.completedAt)}
+          {t('lessons.summary.completedAt', { date: formatDateTime(completion.completedAt) })}
         </AppText>
         <View style={{ gap: 6, marginTop: 8 }}>
-          <AppText>Cards in lesson: {completion.totalCards}</AppText>
-          <AppText>Reviewed: {completion.reviewedCards}</AppText>
-          <AppText style={{ color: '#2e7d32' }}>Know: {completion.knownCount}</AppText>
-          <AppText style={{ color: '#c62828' }}>
-            Don&apos;t know: {completion.dontKnowCount}
+          <AppText>{t('lessons.summary.cardsInLesson', { count: completion.totalCards })}</AppText>
+          <AppText>{t('lessons.summary.reviewed', { count: completion.reviewedCards })}</AppText>
+          <AppText style={{ color: '#2e7d32' }}>
+            {t('lessons.summary.know', { count: completion.knownCount })}
           </AppText>
-          <AppText style={{ fontWeight: '600' }}>Known: {knownPercent}</AppText>
+          <AppText style={{ color: '#c62828' }}>
+            {t('lessons.summary.dontKnow', { count: completion.dontKnowCount })}
+          </AppText>
+          <AppText style={{ fontWeight: '600' }}>
+            {t('lessons.summary.knownPercent', { percent: knownPercent })}
+          </AppText>
         </View>
       </AppCard>
       <View style={{ gap: 12 }}>
@@ -62,7 +71,7 @@ export function LessonSummaryScreen() {
             router.replace(`/lessons/start?deckId=${targetDeckId}`)
           }}
         >
-          Start another lesson
+          {t('lessons.summary.startAnother')}
         </AppButton>
         <AppButton
           onPress={() => {
@@ -70,7 +79,7 @@ export function LessonSummaryScreen() {
             router.replace(`/decks/${targetDeckId}`)
           }}
         >
-          Back to deck
+          {t('lessons.summary.backToDeck')}
         </AppButton>
         <AppButton
           onPress={() => {
@@ -78,7 +87,7 @@ export function LessonSummaryScreen() {
             router.replace('/(tabs)/decks')
           }}
         >
-          Back to decks
+          {t('lessons.summary.backToDecks')}
         </AppButton>
       </View>
     </Screen>

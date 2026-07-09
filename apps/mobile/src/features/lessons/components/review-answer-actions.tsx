@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { ReviewAnswer } from '@/graphql/generated'
@@ -17,34 +18,38 @@ export function ReviewAnswerActions({
   isSubmitting = false,
   onAnswer,
 }: ReviewAnswerActionsProps) {
+  const { t } = useTranslation()
   const isDisabled = disabled || isSubmitting || !isRevealed
 
   return (
     <View style={{ gap: 12 }}>
       {!isRevealed ? (
         <AppText style={{ color: '#666666', fontSize: 14, textAlign: 'center' }}>
-          Reveal the answer to rate how well you knew it.
+          {t('lessons.reviewActions.revealHint')}
         </AppText>
       ) : null}
 
       <AppButton
-        {...destructiveButtonA11yProps("Don't know", 'Marks this card as not known.')}
+        {...destructiveButtonA11yProps(
+          t('lessons.reviewActions.dontKnow'),
+          t('lessons.reviewActions.dontKnowHint'),
+        )}
         background="#c62828"
         color="white"
         disabled={isDisabled}
         onPress={() => onAnswer(ReviewAnswer.DontKnow)}
       >
-        {isSubmitting ? 'Saving...' : "Don't know"}
+        {isSubmitting ? t('common.saving') : t('lessons.reviewActions.dontKnow')}
       </AppButton>
       <AppButton
-        accessibilityHint="Marks this card as known."
-        accessibilityLabel="Know"
+        accessibilityHint={t('lessons.reviewActions.knowHint')}
+        accessibilityLabel={t('lessons.reviewActions.know')}
         background="#2e7d32"
         color="white"
         disabled={isDisabled}
         onPress={() => onAnswer(ReviewAnswer.Know)}
       >
-        {isSubmitting ? 'Saving...' : 'Know'}
+        {isSubmitting ? t('common.saving') : t('lessons.reviewActions.know')}
       </AppButton>
     </View>
   )

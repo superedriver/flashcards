@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
@@ -14,6 +15,7 @@ type StartLessonScreenProps = {
 }
 
 export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
+  const { t } = useTranslation()
   const router = useRouter()
   const { setActiveLesson } = useActiveLesson()
   const [startLesson] = useStartLessonMutation()
@@ -39,7 +41,7 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
         const payload = result.data?.startLesson
 
         if (!payload) {
-          setErrorMessage('Could not start lesson. Please try again.')
+          setErrorMessage(t('lessons.start.startError'))
           return
         }
 
@@ -68,12 +70,12 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
         router.replace(`/lessons/${payload.sessionId}?deckId=${payload.deckId}`)
       })
       .catch((error) => {
-        setErrorMessage(getGraphqlErrorMessage(error, 'Could not start lesson. Please try again.'))
+        setErrorMessage(getGraphqlErrorMessage(error, t('lessons.start.startError')))
       })
       .finally(() => {
         setIsStarting(false)
       })
-  }, [deckId, retryCount, router, setActiveLesson, startLesson])
+  }, [deckId, retryCount, router, setActiveLesson, startLesson, t])
 
   const handleRetry = () => {
     setErrorMessage(null)
@@ -86,10 +88,12 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
   if (!deckId) {
     return (
       <Screen>
-        <PageTitle title="Start Lesson" />
-        <ErrorState message="Deck id is missing." />
+        <PageTitle title={t('lessons.start.title')} />
+        <ErrorState message={t('lessons.start.deckIdMissing')} />
         <View style={{ gap: 12, marginTop: 16 }}>
-          <AppButton onPress={() => router.replace('/(tabs)/decks')}>Back to decks</AppButton>
+          <AppButton onPress={() => router.replace('/(tabs)/decks')}>
+            {t('lessons.start.backToDecks')}
+          </AppButton>
         </View>
       </Screen>
     )
@@ -97,14 +101,18 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
 
   return (
     <Screen>
-      <PageTitle title="Start Lesson" />
-      {isStarting ? <LoadingState message="Preparing your lesson..." /> : null}
+      <PageTitle title={t('lessons.start.title')} />
+      {isStarting ? <LoadingState message={t('lessons.start.preparing')} /> : null}
       {errorMessage ? <ErrorState message={errorMessage} onRetry={handleRetry} /> : null}
       {isEmptyLesson ? (
         <View style={{ gap: 12 }}>
-          <EmptyState message="No cards are due for review right now. Come back later or add more cards to this deck." />
-          <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>Back to deck</AppButton>
-          <AppButton onPress={() => router.replace('/(tabs)/decks')}>Back to decks</AppButton>
+          <EmptyState message={t('lessons.start.empty')} />
+          <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>
+            {t('lessons.start.backToDeck')}
+          </AppButton>
+          <AppButton onPress={() => router.replace('/(tabs)/decks')}>
+            {t('lessons.start.backToDecks')}
+          </AppButton>
         </View>
       ) : null}
     </Screen>
