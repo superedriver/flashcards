@@ -2,6 +2,7 @@ import { aiExamplesUk } from './uk/ai-examples'
 import { authUk } from './uk/auth'
 import { csvImportUk } from './uk/csv-import'
 import { decksUk } from './uk/decks'
+import { groupsUk } from './uk/groups'
 import { lessonsUk } from './uk/lessons'
 import { profileUk } from './uk/profile'
 import { publicDecksUk } from './uk/public-decks'
@@ -24,6 +25,7 @@ export const uk = {
   profile: profileUk,
   settings: settingsUk,
   decks: decksUk,
+  groups: groupsUk,
   lessons: lessonsUk,
   publicDecks: publicDecksUk,
   csvImport: csvImportUk,

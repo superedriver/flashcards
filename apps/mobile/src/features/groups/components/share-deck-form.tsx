@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next'
+import { Pressable, View } from 'react-native'
+
 import type { MyDecksQuery } from '@/graphql/generated'
 import { EmptyState, ErrorState } from '@/ui/components'
 import { AppCard, AppText } from '@/ui/primitives'
-import { Pressable, View } from 'react-native'
 
 type ShareDeckFormProps = {
   decks: MyDecksQuery['myDecks']
@@ -20,14 +22,16 @@ export function ShareDeckForm({
   onSelectDeck,
   selectedDeckId,
 }: ShareDeckFormProps) {
+  const { t } = useTranslation()
+
   return (
     <View style={{ gap: 12 }}>
-      <AppText style={{ color: '#666666' }}>Shared decks are view-only for group members.</AppText>
+      <AppText style={{ color: '#666666' }}>{t('groups.shareDeck.viewOnlyHint')}</AppText>
 
       {decks.length === 0 ? (
         <EmptyState
-          actionLabel={onCreateDeck ? 'Create a deck' : undefined}
-          message="You have no decks to share."
+          actionLabel={onCreateDeck ? t('groups.shareDeck.emptyAction') : undefined}
+          message={t('groups.shareDeck.empty')}
           onAction={onCreateDeck}
         />
       ) : (

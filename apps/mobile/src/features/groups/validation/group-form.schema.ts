@@ -1,8 +1,15 @@
+import type { TFunction } from 'i18next'
 import { z } from 'zod'
 
-export const groupFormSchema = z.object({
-  name: z.string().trim().min(1, 'Name is required.').max(120, 'Name is too long.'),
-  description: z.string().trim().max(1000, 'Description is too long.').optional(),
-})
+export function createGroupFormSchema(t: TFunction) {
+  return z.object({
+    name: z
+      .string()
+      .trim()
+      .min(1, t('groups.validation.nameRequired'))
+      .max(120, t('groups.validation.nameTooLong')),
+    description: z.string().trim().max(1000, t('groups.validation.descriptionTooLong')).optional(),
+  })
+}
 
-export type GroupFormValues = z.infer<typeof groupFormSchema>
+export type GroupFormValues = z.infer<ReturnType<typeof createGroupFormSchema>>

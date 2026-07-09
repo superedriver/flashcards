@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import {
-  inviteUserSchema,
+  createInviteUserSchema,
   type InviteUserValues,
 } from '@/features/groups/validation/invite-user.schema'
 import { useInviteUserToGroupMutation } from '@/graphql/generated'
@@ -18,10 +19,12 @@ type InviteUserFormProps = {
 }
 
 export function InviteUserForm({ groupId, onSuccess }: InviteUserFormProps) {
+  const { t } = useTranslation()
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const isSubmittingRef = useRef(false)
   const [inviteUser, { loading }] = useInviteUserToGroupMutation()
+  const inviteUserSchema = useMemo(() => createInviteUserSchema(t), [t])
 
   const {
     control,
@@ -53,15 +56,15 @@ export function InviteUserForm({ groupId, onSuccess }: InviteUserFormProps) {
       })
 
       if (!result.data?.inviteUserToGroup) {
-        setErrorMessage('Could not send invitation.')
+        setErrorMessage(t('groups.inviteUser.error'))
         return
       }
 
       reset({ email: '' })
-      setFeedback('Invitation sent. The user can accept it from their invitations screen.')
+      setFeedback(t('groups.inviteUser.success'))
       onSuccess?.()
     } catch (error) {
-      setErrorMessage(getGraphqlErrorMessage(error, 'Could not send invitation.'))
+      setErrorMessage(getGraphqlErrorMessage(error, t('groups.inviteUser.error')))
     } finally {
       isSubmittingRef.current = false
     }
@@ -69,10 +72,8 @@ export function InviteUserForm({ groupId, onSuccess }: InviteUserFormProps) {
 
   return (
     <View style={{ gap: 12, marginBottom: 16 }}>
-      <AppText style={{ fontSize: 16, fontWeight: '600' }}>Invite by email</AppText>
-      <AppText style={{ color: '#666666', fontSize: 14 }}>
-        The user must already have an account with this email address.
-      </AppText>
+      <AppText style={{ fontSize: 16, fontWeight: '600' }}>{t('groups.inviteUser.title')}</AppText>
+      <AppText style={{ color: '#666666', fontSize: 14 }}>{t('groups.inviteUser.hint')}</AppText>
       <Controller
         control={control}
         name="email"
@@ -80,7 +81,7 @@ export function InviteUserForm({ groupId, onSuccess }: InviteUserFormProps) {
           <AppInput
             autoCapitalize="none"
             keyboardType="email-address"
-            placeholder="Email address"
+            placeholder={t('groups.inviteUser.emailPlaceholder')}
             value={value}
             onBlur={onBlur}
             onChangeText={(text) => {
@@ -96,7 +97,7 @@ export function InviteUserForm({ groupId, onSuccess }: InviteUserFormProps) {
         <AppText style={{ color: '#2e7d32', fontWeight: '600' }}>{feedback}</AppText>
       ) : null}
       <AppButton disabled={loading} onPress={() => void onSubmit()}>
-        {loading ? 'Sending...' : 'Send invitation'}
+        {loading ? t('groups.inviteUser.sending') : t('groups.inviteUser.submit')}
       </AppButton>
     </View>
   )

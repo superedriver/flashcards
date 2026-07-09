@@ -1,10 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import {
-  groupFormSchema,
+  createGroupFormSchema,
   type GroupFormValues,
 } from '@/features/groups/validation/group-form.schema'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
@@ -23,7 +24,7 @@ type GroupFormProps = {
 }
 
 export function GroupForm({
-  cancelLabel = 'Cancel',
+  cancelLabel,
   defaultValues,
   errorMessage,
   isSubmitting = false,
@@ -33,7 +34,10 @@ export function GroupForm({
   submitLabel,
   submittingLabel,
 }: GroupFormProps) {
+  const { t } = useTranslation()
   const isSubmittingRef = useRef(false)
+  const groupFormSchema = useMemo(() => createGroupFormSchema(t), [t])
+  const resolvedCancelLabel = cancelLabel ?? t('common.cancel')
 
   const {
     control,
@@ -68,16 +72,16 @@ export function GroupForm({
   return (
     <View style={{ gap: 12 }}>
       <AppText style={{ color: '#666666', fontSize: 14 }}>
-        Groups let you invite others and share decks for view-only study.
+        {t('groups.groupForm.description')}
       </AppText>
-      <FieldLabel>Group name</FieldLabel>
+      <FieldLabel>{t('groups.groupForm.name')}</FieldLabel>
       <Controller
         control={control}
         name="name"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Group name"
-            placeholder="Group name"
+            accessibilityLabel={t('groups.groupForm.name')}
+            placeholder={t('groups.groupForm.name')}
             value={value}
             onBlur={onBlur}
             onChangeText={(text) => {
@@ -89,16 +93,16 @@ export function GroupForm({
       />
       <FormFieldError message={errors.name?.message} />
 
-      <FieldLabel>Description</FieldLabel>
+      <FieldLabel>{t('groups.groupForm.descriptionLabel')}</FieldLabel>
       <Controller
         control={control}
         name="description"
         render={({ field: { onBlur, onChange, value } }) => (
           <AppInput
-            accessibilityLabel="Description (optional)"
+            accessibilityLabel={t('groups.groupForm.descriptionOptional')}
             multiline
             numberOfLines={4}
-            placeholder="Description (optional)"
+            placeholder={t('groups.groupForm.descriptionOptional')}
             value={value ?? ''}
             onBlur={onBlur}
             onChangeText={(text) => {
@@ -118,7 +122,7 @@ export function GroupForm({
 
       {onCancel ? (
         <AppButton disabled={isSubmitting} onPress={onCancel}>
-          {cancelLabel}
+          {resolvedCancelLabel}
         </AppButton>
       ) : null}
     </View>

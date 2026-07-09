@@ -1,5 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { GroupActions } from '@/features/groups/components/group-actions'
@@ -10,6 +11,7 @@ import { useGroupQuery, useGroupSharedDecksQuery } from '@/graphql/generated'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function GroupDetailScreen() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { groupId } = useLocalSearchParams<{ groupId: string }>()
   const [showInviteForm, setShowInviteForm] = useState(false)
@@ -44,10 +46,12 @@ export function GroupDetailScreen() {
 
   return (
     <Screen scrollable>
-      <PageTitle title="Group" />
+      <PageTitle title={t('groups.groupDetail.title')} />
 
-      {loading ? <LoadingState message="Loading group..." /> : null}
-      {error ? <ErrorState message="Could not load group." onRetry={handleRetry} /> : null}
+      {loading ? <LoadingState message={t('groups.groupDetail.loading')} /> : null}
+      {error ? (
+        <ErrorState message={t('groups.groupDetail.loadError')} onRetry={handleRetry} />
+      ) : null}
 
       {group && groupId ? (
         <View style={{ gap: 12 }}>

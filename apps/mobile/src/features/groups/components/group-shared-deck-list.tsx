@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import type { GroupSharedDecksQuery } from '@/graphql/generated'
 import { EmptyState } from '@/ui/components'
 import { AppText } from '@/ui/primitives'
@@ -10,13 +12,17 @@ type GroupSharedDeckListProps = {
 }
 
 export function GroupSharedDeckList({ decks, onShareDeck }: GroupSharedDeckListProps) {
+  const { t } = useTranslation()
+
   return (
     <>
-      <AppText style={{ fontSize: 16, fontWeight: '600', marginBottom: 12 }}>Shared decks</AppText>
+      <AppText style={{ fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
+        {t('groups.sharedDecks.title')}
+      </AppText>
       {decks.length === 0 ? (
         <EmptyState
-          actionLabel={onShareDeck ? 'Share a deck' : undefined}
-          message="No decks have been shared with this group yet."
+          actionLabel={onShareDeck ? t('groups.sharedDecks.emptyAction') : undefined}
+          message={t('groups.sharedDecks.empty')}
           onAction={onShareDeck}
         />
       ) : (

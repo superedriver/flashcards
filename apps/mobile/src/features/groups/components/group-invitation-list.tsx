@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next'
+
 import type { MyGroupInvitationsQuery } from '@/graphql/generated'
 import { EmptyState } from '@/ui/components'
 
@@ -16,8 +18,10 @@ export function GroupInvitationList({
   onAccept,
   onDecline,
 }: GroupInvitationListProps) {
+  const { t } = useTranslation()
+
   if (invitations.length === 0) {
-    return <EmptyState message="You have no group invitations." />
+    return <EmptyState message={t('groups.invitations.empty')} />
   }
 
   return (
