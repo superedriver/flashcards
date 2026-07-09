@@ -1,6 +1,8 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
+import { AccountModule } from '../account/account.module';
 import { DecksModule } from '../decks/decks.module';
+import { EmailModule } from '../email/email.module';
 import { DECK_GROUP_SHARE_REPOSITORY } from './application/ports/deck-group-share-repository.port';
 import { GROUP_INVITATION_REPOSITORY } from './application/ports/group-invitation-repository.port';
 import { GROUP_REPOSITORY } from './application/ports/group-repository.port';
@@ -19,7 +21,12 @@ import { PrismaGroupRepository } from './infrastructure/persistence/prisma-group
 import { GroupsResolver } from './presentation/graphql/resolvers/groups.resolver';
 
 @Module({
-  imports: [AuthModule, forwardRef(() => DecksModule)],
+  imports: [
+    AuthModule,
+    EmailModule,
+    forwardRef(() => AccountModule),
+    forwardRef(() => DecksModule),
+  ],
   providers: [
     {
       provide: GROUP_REPOSITORY,

@@ -15,6 +15,7 @@ function createUseCase() {
   const generateRefreshToken = jest.fn().mockReturnValue('raw-verify-token');
   const hashToken = jest.fn().mockReturnValue('token-hash');
   const send = jest.fn().mockResolvedValue(undefined);
+  const findByUserId = jest.fn().mockResolvedValue({ interfaceLocale: 'en' });
   const getOrThrow = jest.fn().mockReturnValue(appWebUrl);
 
   const useCase = new CreateEmailVerificationTokenUseCase(
@@ -27,6 +28,12 @@ function createUseCase() {
     { generateRefreshToken },
     { hash: hashToken },
     { send },
+    {
+      findByUserId,
+      createForUser: jest.fn(),
+      update: jest.fn(),
+      findWithNotificationsEnabled: jest.fn(),
+    },
     { getOrThrow } as never,
   );
 
@@ -37,6 +44,7 @@ function createUseCase() {
     generateRefreshToken,
     hashToken,
     send,
+    findByUserId,
   };
 }
 
@@ -101,5 +109,18 @@ describe('CreateEmailVerificationTokenUseCase', () => {
       'http://localhost:8081/verify-email?token=raw-verify-token',
     );
     expect(result).toEqual({ success: true });
+  });
+
+  it('sends Ukrainian verification email when interfaceLocale is uk', async () => {
+    const { useCase, send, findByUserId } = createUseCase();
+    findByUserId.mockResolvedValue({ interfaceLocale: 'uk' });
+
+    await useCase.execute({ userId: 'user-1', email: 'test@example.com' });
+
+    expect(send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        subject: 'Підтвердьте електронну пошту',
+      }),
+    );
   });
 });

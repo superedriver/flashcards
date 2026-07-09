@@ -1,4 +1,5 @@
 import {
+  buildGroupInvitationEmail,
   buildPasswordResetEmail,
   buildVerificationEmail,
 } from './email-templates';
@@ -77,5 +78,39 @@ describe('email templates', () => {
     expect(email.text).toContain(
       'http://localhost:8081/verify-email?token=verify-token',
     );
+  });
+
+  it('buildVerificationEmail returns Ukrainian copy for uk locale', () => {
+    const email = buildVerificationEmail({
+      appWebUrl,
+      locale: 'uk',
+      token: 'verify-token',
+    });
+
+    expect(email.subject).toBe('Підтвердьте електронну пошту');
+    expect(email.text).toContain('24 години');
+  });
+
+  it('buildPasswordResetEmail returns Ukrainian copy for uk locale', () => {
+    const email = buildPasswordResetEmail({
+      appWebUrl,
+      locale: 'uk',
+      token: 'reset-token',
+    });
+
+    expect(email.subject).toBe('Скиньте пароль');
+    expect(email.text).toContain('1 годину');
+  });
+
+  it('buildGroupInvitationEmail returns localized invitation content', () => {
+    const email = buildGroupInvitationEmail({
+      appWebUrl,
+      groupName: 'Study Group',
+      locale: 'uk',
+    });
+
+    expect(email.subject).toBe('Вас запрошено до групи Flashcards');
+    expect(email.text).toContain('Study Group');
+    expect(email.text).toContain('/groups/invitations');
   });
 });

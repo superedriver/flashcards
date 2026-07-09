@@ -85,11 +85,15 @@ function createUseCase(options?: {
   const createInvitation = jest
     .fn<Promise<GroupInvitation>, [CreateGroupInvitationInput]>()
     .mockResolvedValue(invitation);
+  const findByEmail = jest.fn().mockResolvedValue(null);
+  const findByUserId = jest.fn().mockResolvedValue(null);
+  const send = jest.fn().mockResolvedValue(undefined);
+  const getOrThrow = jest.fn().mockReturnValue('http://localhost:8081');
 
   const useCase = new InviteUserToGroupUseCase(
     {
       findById: findByIdUser,
-      findByEmail: jest.fn(),
+      findByEmail,
       create: jest.fn(),
       markEmailVerified: jest.fn(),
       updatePasswordHash: jest.fn(),
@@ -110,9 +114,17 @@ function createUseCase(options?: {
       markAccepted: jest.fn(),
       markDeclined: jest.fn(),
     },
+    {
+      findByUserId,
+      createForUser: jest.fn(),
+      update: jest.fn(),
+      findWithNotificationsEnabled: jest.fn(),
+    },
+    { send },
+    { getOrThrow } as never,
   );
 
-  return { useCase, createInvitation };
+  return { useCase, createInvitation, send };
 }
 
 describe('InviteUserToGroupUseCase', () => {
@@ -197,5 +209,22 @@ describe('InviteUserToGroupUseCase', () => {
     const createInput = createInvitation.mock.calls[0]![0];
     expect(createInput.expiresAt).toBeInstanceOf(Date);
     expect(result).toEqual(invitation);
+  });
+
+  it('sends localized group invitation email', async () => {
+    const { useCase, send } = createUseCase();
+
+    await useCase.execute({
+      currentUser: authUser,
+      groupId: 'group-1',
+      email: 'invitee@example.com',
+    });
+
+    expect(send).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: 'invitee@example.com',
+        subject: 'You are invited to a Flashcards group',
+      }),
+    );
   });
 });

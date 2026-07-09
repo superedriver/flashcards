@@ -29,6 +29,7 @@ function createUseCase(options?: { user?: typeof activeUser | null }) {
   const generateRefreshToken = jest.fn().mockReturnValue('raw-reset-token');
   const hashToken = jest.fn().mockReturnValue('token-hash');
   const send = jest.fn().mockResolvedValue(undefined);
+  const findByUserId = jest.fn().mockResolvedValue({ interfaceLocale: 'en' });
   const getOrThrow = jest.fn().mockReturnValue(appWebUrl);
 
   const useCase = new RequestPasswordResetUseCase(
@@ -48,6 +49,12 @@ function createUseCase(options?: { user?: typeof activeUser | null }) {
     { generateRefreshToken },
     { hash: hashToken },
     { send },
+    {
+      findByUserId,
+      createForUser: jest.fn(),
+      update: jest.fn(),
+      findWithNotificationsEnabled: jest.fn(),
+    },
     { getOrThrow } as never,
   );
 

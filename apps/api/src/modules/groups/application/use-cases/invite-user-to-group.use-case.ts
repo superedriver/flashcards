@@ -1,5 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
+import {
+  USER_SETTINGS_REPOSITORY,
+  UserSettingsRepositoryPort,
+} from '../../../account/application/ports/user-settings-repository.port';
+import {
+  EMAIL_PROVIDER,
+  EmailProviderPort,
+} from '../../../email/application/ports/email-provider.port';
+import { buildGroupInvitationEmail } from '../../../auth/application/email/email-templates';
 import {
   USER_REPOSITORY,
   UserRepositoryPort,
@@ -39,6 +49,11 @@ export class InviteUserToGroupUseCase {
     private readonly groupRepository: GroupRepositoryPort,
     @Inject(GROUP_INVITATION_REPOSITORY)
     private readonly groupInvitationRepository: GroupInvitationRepositoryPort,
+    @Inject(USER_SETTINGS_REPOSITORY)
+    private readonly userSettingsRepository: UserSettingsRepositoryPort,
+    @Inject(EMAIL_PROVIDER)
+    private readonly emailProvider: EmailProviderPort,
+    private readonly configService: ConfigService,
   ) {}
 
   async execute(
@@ -95,11 +110,31 @@ export class InviteUserToGroupUseCase {
       Date.now() + INVITATION_EXPIRY_DAYS * 24 * 60 * 60 * 1000,
     );
 
-    return this.groupInvitationRepository.create({
+    const invitation = await this.groupInvitationRepository.create({
       groupId: input.groupId,
       email,
       invitedById: input.currentUser.id,
       expiresAt,
     });
+
+    const invitee = await this.userRepository.findByEmail(email);
+    const inviteeSettings = invitee
+      ? await this.userSettingsRepository.findByUserId(invitee.id)
+      : null;
+    const appWebUrl = this.configService.getOrThrow<string>('app.webUrl');
+    const emailContent = buildGroupInvitationEmail({
+      appWebUrl,
+      groupName: group.name,
+      locale: inviteeSettings?.interfaceLocale,
+    });
+
+    await this.emailProvider.send({
+      to: email,
+      subject: emailContent.subject,
+      text: emailContent.text,
+      html: emailContent.html,
+    });
+
+    return invitation;
   }
 }

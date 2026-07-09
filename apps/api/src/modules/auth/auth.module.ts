@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { AccountModule } from '../account/account.module';
 import { EmailModule } from '../email/email.module';
 import { ACCESS_TOKEN_SERVICE } from './application/ports/access-token-service.port';
 import { PASSWORD_HASHER } from './application/ports/password-hasher.port';
@@ -36,6 +37,7 @@ import { OptionalGqlAuthGuard } from './presentation/graphql/guards/optional-gql
 @Module({
   imports: [
     EmailModule,
+    forwardRef(() => AccountModule),
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({

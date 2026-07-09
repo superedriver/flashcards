@@ -1,6 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
+  USER_SETTINGS_REPOSITORY,
+  UserSettingsRepositoryPort,
+} from '../../../account/application/ports/user-settings-repository.port';
+import {
   EMAIL_PROVIDER,
   EmailProviderPort,
 } from '../../../email/application/ports/email-provider.port';
@@ -42,6 +46,8 @@ export class RequestPasswordResetUseCase {
     private readonly tokenHasher: TokenHasherPort,
     @Inject(EMAIL_PROVIDER)
     private readonly emailProvider: EmailProviderPort,
+    @Inject(USER_SETTINGS_REPOSITORY)
+    private readonly userSettingsRepository: UserSettingsRepositoryPort,
     private readonly configService: ConfigService,
   ) {}
 
@@ -72,8 +78,10 @@ export class RequestPasswordResetUseCase {
     });
 
     const appWebUrl = this.configService.getOrThrow<string>('app.webUrl');
+    const settings = await this.userSettingsRepository.findByUserId(user.id);
     const emailContent = buildPasswordResetEmail({
       appWebUrl,
+      locale: settings?.interfaceLocale,
       token: rawToken,
     });
 
