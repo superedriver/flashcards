@@ -2,6 +2,7 @@ import type { MyGroupInvitationsQuery } from '@/graphql/generated'
 import { GroupInvitationStatus } from '@/graphql/generated'
 import { View } from 'react-native'
 import { formatInvitationStatus } from '@/features/groups/utils/format-invitation-status'
+import { formatDateTime } from '@/i18n/formatters'
 import { AppButton, AppCard, AppText } from '@/ui/primitives'
 import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
 
@@ -30,7 +31,7 @@ export function GroupInvitationListItem({
         Status: {statusLabel}
       </AppText>
       <AppText style={{ color: '#666666' }}>
-        {isExpired ? 'Expired' : 'Expires'} {new Date(invitation.expiresAt).toLocaleString()}
+        {isExpired ? 'Expired' : 'Expires'} {formatDateTime(invitation.expiresAt)}
       </AppText>
 
       {isPending && onAccept && onDecline ? (

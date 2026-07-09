@@ -1,4 +1,5 @@
 import { useDeckLearningStatsQuery } from '@/graphql/generated'
+import { formatDateTime } from '@/i18n/formatters'
 import { AppCard, AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState } from '@/ui/components'
 
@@ -11,7 +12,7 @@ function formatNextReview(value?: string | null): string {
     return 'No cards scheduled yet'
   }
 
-  return new Date(value).toLocaleString()
+  return formatDateTime(value)
 }
 
 export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {

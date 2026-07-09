@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router'
 
 import type { ProfileMeQuery } from '@/graphql/generated'
+import { formatDateTime } from '@/i18n/formatters'
 import { AppButton, AppCard, AppText } from '@/ui/primitives'
 
 type AccountStatusCardProps = {
@@ -20,7 +21,7 @@ export function AccountStatusCard({ user }: AccountStatusCardProps) {
       </AppText>
       {isVerified && user.emailVerifiedAt ? (
         <AppText style={{ color: '#666666' }}>
-          Verified {new Date(user.emailVerifiedAt).toLocaleString()}
+          Verified {formatDateTime(user.emailVerifiedAt)}
         </AppText>
       ) : (
         <AppText style={{ color: '#666666' }}>

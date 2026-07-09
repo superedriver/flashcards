@@ -2,6 +2,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router'
 import { View } from 'react-native'
 
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
+import { formatDateTime } from '@/i18n/formatters'
 import { AppButton, AppCard, AppText } from '@/ui/primitives'
 import { ErrorState, PageTitle, Screen } from '@/ui/components'
 
@@ -42,7 +43,7 @@ export function LessonSummaryScreen() {
       <AppCard style={{ gap: 12, marginBottom: 16, padding: 16 }}>
         <AppText style={{ fontSize: 20, fontWeight: '700' }}>Nice work!</AppText>
         <AppText style={{ color: '#666666' }}>
-          Completed {new Date(completion.completedAt).toLocaleString()}
+          Completed {formatDateTime(completion.completedAt)}
         </AppText>
         <View style={{ gap: 6, marginTop: 8 }}>
           <AppText>Cards in lesson: {completion.totalCards}</AppText>

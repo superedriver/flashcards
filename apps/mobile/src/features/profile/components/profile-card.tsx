@@ -1,4 +1,5 @@
 import type { ProfileMeQuery } from '@/graphql/generated'
+import { formatDate } from '@/i18n/formatters'
 import { AppCard, AppText } from '@/ui/primitives'
 
 type ProfileCardProps = {
@@ -17,9 +18,7 @@ export function ProfileCard({ user }: ProfileCardProps) {
       </AppText>
       <AppText style={{ fontSize: 18, fontWeight: '600' }}>{user.email}</AppText>
       <AppText style={{ color: '#666666' }}>Role: {formatRole(user.role)}</AppText>
-      <AppText style={{ color: '#666666' }}>
-        Joined {new Date(user.createdAt).toLocaleDateString()}
-      </AppText>
+      <AppText style={{ color: '#666666' }}>Joined {formatDate(user.createdAt)}</AppText>
     </AppCard>
   )
 }

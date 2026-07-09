@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router'
 import { Pressable } from 'react-native'
 
 import type { PublicDecksQuery } from '@/graphql/generated'
+import { formatDate } from '@/i18n/formatters'
 import { AppCard, AppText } from '@/ui/primitives'
 
 type PublicDeckListItemProps = {
@@ -22,7 +23,7 @@ export function PublicDeckListItem({ deck }: PublicDeckListItemProps) {
           <AppText style={{ color: '#666666' }}>{deck.description}</AppText>
         ) : null}
         <AppText style={{ color: '#888888', fontSize: 12 }}>
-          Updated {new Date(deck.updatedAt).toLocaleDateString()}
+          Updated {formatDate(deck.updatedAt)}
         </AppText>
       </AppCard>
     </Pressable>
