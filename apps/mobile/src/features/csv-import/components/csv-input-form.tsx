@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
@@ -20,19 +21,19 @@ export function CsvInputForm({
   onClearError,
   onPreview,
 }: CsvInputFormProps) {
+  const { t } = useTranslation()
+
   return (
     <View style={{ gap: 12 }}>
-      <AppText style={{ fontWeight: '600' }}>CSV format</AppText>
-      <AppText style={{ color: '#666666' }}>
-        First row must be a header. Required columns: front, back. Optional: example, notes.
-      </AppText>
+      <AppText style={{ fontWeight: '600' }}>{t('csvImport.form.formatTitle')}</AppText>
+      <AppText style={{ color: '#666666' }}>{t('csvImport.form.formatDescription')}</AppText>
       <AppText style={{ color: '#666666', fontFamily: 'monospace', fontSize: 13 }}>
-        {`front,back,example,notes\nhello,привіт,Hello world,Common greeting`}
+        {t('csvImport.form.example')}
       </AppText>
       <AppInput
         multiline
         numberOfLines={10}
-        placeholder="Paste CSV text here"
+        placeholder={t('csvImport.form.placeholder')}
         value={csvText}
         onChangeText={(text) => {
           onClearError?.()
@@ -41,7 +42,7 @@ export function CsvInputForm({
       />
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
       <AppButton disabled={isSubmitting || csvText.trim().length === 0} onPress={onPreview}>
-        {isSubmitting ? 'Previewing...' : 'Preview import'}
+        {isSubmitting ? t('csvImport.form.previewing') : t('csvImport.form.preview')}
       </AppButton>
     </View>
   )

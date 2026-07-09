@@ -1,5 +1,6 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { CsvImportSummary } from '@/features/csv-import/components/csv-import-summary'
@@ -11,6 +12,7 @@ import { AppButton, AppText } from '@/ui/primitives'
 import { ErrorState, PageTitle, Screen } from '@/ui/components'
 
 export function CsvImportScreen() {
+  const { t } = useTranslation()
   const router = useRouter()
   const { deckId } = useLocalSearchParams<{ deckId: string }>()
   const [csvText, setCsvText] = useState('')
@@ -29,7 +31,7 @@ export function CsvImportScreen() {
 
   const handlePreview = async () => {
     if (!deckId || csvText.trim().length === 0) {
-      setErrorMessage('CSV text is required.')
+      setErrorMessage(t('csvImport.csvRequired'))
       return
     }
 
@@ -53,13 +55,13 @@ export function CsvImportScreen() {
       })
 
       if (!result.data?.previewCsvImport) {
-        setErrorMessage('Could not preview CSV import.')
+        setErrorMessage(t('csvImport.previewError'))
         return
       }
 
       setPreviewResult(result.data.previewCsvImport)
     } catch (error) {
-      setErrorMessage(getGraphqlErrorMessage(error, 'Could not preview CSV import.'))
+      setErrorMessage(getGraphqlErrorMessage(error, t('csvImport.previewError')))
     } finally {
       isPreviewingRef.current = false
     }
@@ -88,17 +90,15 @@ export function CsvImportScreen() {
       const count = result.data?.confirmCsvImport.createdCardsCount
 
       if (count === undefined || count === null) {
-        setErrorMessage('Could not confirm CSV import.')
+        setErrorMessage(t('csvImport.confirmError'))
         return
       }
 
-      setSuccessMessage(
-        count === 1 ? 'Imported 1 card successfully.' : `Imported ${count} cards successfully.`,
-      )
+      setSuccessMessage(t('csvImport.importSuccess', { count }))
       setPreviewResult(null)
       setCsvText('')
     } catch (error) {
-      setErrorMessage(getGraphqlErrorMessage(error, 'Could not confirm CSV import.'))
+      setErrorMessage(getGraphqlErrorMessage(error, t('csvImport.confirmError')))
     } finally {
       isConfirmingRef.current = false
     }
@@ -107,10 +107,12 @@ export function CsvImportScreen() {
   if (!deckId) {
     return (
       <Screen>
-        <PageTitle title="Import CSV" />
-        <ErrorState message="Deck id is missing." />
+        <PageTitle title={t('csvImport.title')} />
+        <ErrorState message={t('csvImport.deckIdMissing')} />
         <View style={{ gap: 12, marginTop: 16 }}>
-          <AppButton onPress={() => router.replace('/(tabs)/decks')}>Back to decks</AppButton>
+          <AppButton onPress={() => router.replace('/(tabs)/decks')}>
+            {t('csvImport.backToDecks')}
+          </AppButton>
         </View>
       </Screen>
     )
@@ -118,10 +120,8 @@ export function CsvImportScreen() {
 
   return (
     <Screen scrollable>
-      <PageTitle title="Import CSV" />
-      <AppText style={{ color: '#666666', marginBottom: 12 }}>
-        Preview validates your CSV without creating cards. Confirm import to add valid rows.
-      </AppText>
+      <PageTitle title={t('csvImport.title')} />
+      <AppText style={{ color: '#666666', marginBottom: 12 }}>{t('csvImport.description')}</AppText>
 
       {!successMessage ? (
         <CsvInputForm
@@ -147,14 +147,16 @@ export function CsvImportScreen() {
           <AppText style={{ color: '#2e7d32', fontSize: 16, fontWeight: '600' }}>
             {successMessage}
           </AppText>
-          <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>View deck</AppButton>
+          <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>
+            {t('csvImport.viewDeck')}
+          </AppButton>
           <AppButton
             onPress={() => {
               setSuccessMessage(null)
               setErrorMessage(null)
             }}
           >
-            Import more cards
+            {t('csvImport.importMore')}
           </AppButton>
         </View>
       ) : null}

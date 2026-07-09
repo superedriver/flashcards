@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import type { PreviewCsvImportMutation } from '@/graphql/generated'
@@ -19,6 +20,7 @@ export function CsvImportSummary({
   isConfirming = false,
   onConfirm,
 }: CsvImportSummaryProps) {
+  const { t } = useTranslation()
   const canConfirm =
     importResult.status === CsvImportStatus.Pending &&
     importResult.validRows > 0 &&
@@ -26,16 +28,18 @@ export function CsvImportSummary({
 
   return (
     <View style={{ gap: 12, marginTop: 16 }}>
-      <AppText style={{ fontSize: 16, fontWeight: '600' }}>Import preview</AppText>
+      <AppText style={{ fontSize: 16, fontWeight: '600' }}>{t('csvImport.summary.title')}</AppText>
       <AppCard style={{ gap: 8, padding: 16 }}>
-        <AppText>Total rows: {importResult.totalRows}</AppText>
-        <AppText style={{ color: '#2e7d32' }}>Valid rows: {importResult.validRows}</AppText>
+        <AppText>{t('csvImport.summary.totalRows', { count: importResult.totalRows })}</AppText>
+        <AppText style={{ color: '#2e7d32' }}>
+          {t('csvImport.summary.validRows', { count: importResult.validRows })}
+        </AppText>
         <AppText style={{ color: importResult.invalidRows > 0 ? '#c62828' : '#666666' }}>
-          Invalid rows: {importResult.invalidRows}
+          {t('csvImport.summary.invalidRows', { count: importResult.invalidRows })}
         </AppText>
         {importResult.invalidRows > 0 ? (
           <AppText style={{ color: '#666666', fontSize: 14 }}>
-            Invalid rows will be skipped. Only valid rows are imported.
+            {t('csvImport.summary.invalidHint')}
           </AppText>
         ) : null}
       </AppCard>
@@ -45,12 +49,14 @@ export function CsvImportSummary({
 
       {canConfirm ? (
         <AppButton disabled={isConfirming} onPress={onConfirm}>
-          {isConfirming ? 'Importing...' : `Import ${importResult.validRows} cards`}
+          {isConfirming
+            ? t('csvImport.summary.importing')
+            : t('csvImport.summary.importCards', { count: importResult.validRows })}
         </AppButton>
       ) : null}
 
       {importResult.validRows === 0 ? (
-        <ErrorState message="No valid rows to import. Fix your CSV and preview again." />
+        <ErrorState message={t('csvImport.summary.noValidRows')} />
       ) : null}
     </View>
   )

@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FlatList, useWindowDimensions, View } from 'react-native'
 
 import type { PublicDecksQuery } from '@/graphql/generated'
@@ -14,6 +15,7 @@ type PublicDeckListProps = {
 }
 
 export function PublicDeckList({ decks, listHeader, searchQuery }: PublicDeckListProps) {
+  const { t } = useTranslation()
   const { width } = useWindowDimensions()
   const numColumns = getListNumColumns(width)
 
@@ -24,8 +26,8 @@ export function PublicDeckList({ decks, listHeader, searchQuery }: PublicDeckLis
         <EmptyState
           message={
             searchQuery
-              ? `No public decks match "${searchQuery}".`
-              : 'No public decks are available yet.'
+              ? t('publicDecks.emptyNoMatch', { query: searchQuery })
+              : t('publicDecks.empty')
           }
         />
       </>

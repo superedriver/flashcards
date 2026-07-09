@@ -1,0 +1,31 @@
+export const publicDecksEn = {
+  title: 'Public Decks',
+  description: 'Browse community decks and copy them to your library.',
+  loading: 'Loading public decks...',
+  loadError: 'Could not load public decks.',
+  searchPlaceholder: 'Search public decks',
+  emptyNoMatch: 'No public decks match "{{query}}".',
+  empty: 'No public decks are available yet.',
+  detail: {
+    title: 'Public Deck',
+    loading: 'Loading deck...',
+    loadError: 'Could not load public deck.',
+    emptyCards: 'This deck has no cards.',
+    cardsHeading: 'Cards',
+    example: 'Example: {{text}}',
+  },
+  actions: {
+    description: 'Copy this deck to study and edit your own private version.',
+    copy: 'Copy to My Decks',
+    copying: 'Copying...',
+    copyTitle: 'Copy deck',
+    copyMessage: 'A private copy of this deck will be added to your library.',
+    copySuccess: 'Deck copied to your library.',
+    copyError: 'Could not copy deck. Please try again.',
+  },
+  header: {
+    officialDeck: 'Official deck',
+    cardCount_one: '{{count}} card',
+    cardCount_other: '{{count}} cards',
+  },
+} as const

@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router'
 import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { confirmAction } from '@/features/decks/utils/confirm-destructive'
@@ -13,6 +14,7 @@ type PublicDeckActionsProps = {
 }
 
 export function PublicDeckActions({ deckId }: PublicDeckActionsProps) {
+  const { t } = useTranslation()
   const router = useRouter()
   const [copyPublicDeck, { loading }] = useCopyPublicDeckMutation({
     refetchQueries: ['MyDecks'],
@@ -22,7 +24,7 @@ export function PublicDeckActions({ deckId }: PublicDeckActionsProps) {
   const isCopyingRef = useRef(false)
 
   const handleCopy = () => {
-    confirmAction('Copy deck', 'A private copy of this deck will be added to your library.', () => {
+    confirmAction(t('publicDecks.actions.copyTitle'), t('publicDecks.actions.copyMessage'), () => {
       if (isCopyingRef.current || loading) {
         return
       }
@@ -40,14 +42,14 @@ export function PublicDeckActions({ deckId }: PublicDeckActionsProps) {
           const copiedDeck = result.data?.copyPublicDeck.deck
 
           if (!copiedDeck) {
-            setErrorMessage('Could not copy deck. Please try again.')
+            setErrorMessage(t('publicDecks.actions.copyError'))
             return
           }
 
-          setFeedback('Deck copied to your library.')
+          setFeedback(t('publicDecks.actions.copySuccess'))
           router.replace(`/decks/${copiedDeck.id}`)
         } catch (error) {
-          setErrorMessage(getGraphqlErrorMessage(error, 'Could not copy deck. Please try again.'))
+          setErrorMessage(getGraphqlErrorMessage(error, t('publicDecks.actions.copyError')))
         } finally {
           isCopyingRef.current = false
         }
@@ -58,10 +60,10 @@ export function PublicDeckActions({ deckId }: PublicDeckActionsProps) {
   return (
     <View style={{ gap: 8, marginBottom: 16 }}>
       <AppText style={{ color: '#666666', fontSize: 14 }}>
-        Copy this deck to study and edit your own private version.
+        {t('publicDecks.actions.description')}
       </AppText>
       <AppButton disabled={loading} onPress={handleCopy}>
-        {loading ? 'Copying...' : 'Copy to My Decks'}
+        {loading ? t('publicDecks.actions.copying') : t('publicDecks.actions.copy')}
       </AppButton>
       {feedback ? <AppText style={{ color: '#2e7d32' }}>{feedback}</AppText> : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
