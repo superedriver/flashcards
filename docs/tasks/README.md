@@ -747,6 +747,38 @@ Fix password masking on web, harden auth transport and logging, improve auth rou
 
 ---
 
+### 23 Internationalization (i18n)
+
+File:
+
+```txt
+docs/tasks/23-i18n.md
+```
+
+Purpose:
+
+```txt
+Implement UI translations (en/uk), interfaceLocale persistence, locale formatters, and backend push/email/AI locale localization.
+```
+
+---
+
+### 24 Study Languages
+
+File:
+
+```txt
+docs/tasks/24-study-languages.md
+```
+
+Purpose:
+
+```txt
+Implement study/learning languages: language catalog, onboarding, deck language pairs, active target context, Decks page sections, copy/regenerate preview flows, and legacy deck handling.
+```
+
+---
+
 ## Recommended Commit Style
 
 Use Conventional Commits.
