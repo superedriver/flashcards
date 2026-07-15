@@ -46,6 +46,14 @@ function createUseCase(deck: Deck | null) {
           input.description !== undefined
             ? input.description
             : createDeck().description,
+        targetLanguage:
+          input.targetLanguage !== undefined
+            ? input.targetLanguage
+            : createDeck().targetLanguage,
+        sourceLanguage:
+          input.sourceLanguage !== undefined
+            ? input.sourceLanguage
+            : createDeck().sourceLanguage,
       }),
     );
 
@@ -67,13 +75,13 @@ function createUseCase(deck: Deck | null) {
       findAll: jest.fn(),
       findByCode: jest.fn().mockImplementation((code: string) =>
         Promise.resolve(
-          code === 'es'
+          ['es', 'en'].includes(code)
             ? {
                 code,
-                englishName: 'Spanish',
-                nativeName: 'Español',
-                flag: '🇪🇸',
-                popularSortOrder: 2,
+                englishName: code,
+                nativeName: code,
+                flag: '🏳️',
+                popularSortOrder: null,
               }
             : null,
         ),
@@ -199,5 +207,20 @@ describe('UpdateDeckUseCase', () => {
       deckId: 'deck-1',
       targetLanguage: 'es',
     });
+  });
+
+  it('returns SOURCE_TARGET_SAME warning when resolved languages match', async () => {
+    const { useCase } = createUseCase(createDeck());
+
+    const result = await useCase.execute({
+      currentUser: owner,
+      deckId: 'deck-1',
+      targetLanguage: 'en',
+      sourceLanguage: 'en',
+    });
+
+    expect(result.warnings).toEqual([
+      expect.objectContaining({ code: 'SOURCE_TARGET_SAME' }),
+    ]);
   });
 });

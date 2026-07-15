@@ -164,7 +164,7 @@ describe('CreateDeckUseCase', () => {
       targetLanguage: 'es',
       sourceLanguage: 'uk',
     });
-    expect(result.title).toBe('Spanish Basics');
+    expect(result.deck.title).toBe('Spanish Basics');
   });
 
   it('rejects empty title after trim with VALIDATION_ERROR', async () => {
@@ -284,5 +284,32 @@ describe('CreateDeckUseCase', () => {
         targetLanguage: 'es',
       }),
     ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
+  });
+
+  it('returns SOURCE_TARGET_SAME warning when languages match', async () => {
+    const { useCase } = createUseCase();
+
+    const result = await useCase.execute({
+      currentUserId: 'owner-1',
+      title: 'Deck',
+      targetLanguage: 'uk',
+      sourceLanguage: 'uk',
+    });
+
+    expect(result.warnings).toEqual([
+      expect.objectContaining({ code: 'SOURCE_TARGET_SAME' }),
+    ]);
+  });
+
+  it('returns no warnings when languages differ', async () => {
+    const { useCase } = createUseCase();
+
+    const result = await useCase.execute({
+      currentUserId: 'owner-1',
+      title: 'Deck',
+      targetLanguage: 'es',
+    });
+
+    expect(result.warnings).toEqual([]);
   });
 });

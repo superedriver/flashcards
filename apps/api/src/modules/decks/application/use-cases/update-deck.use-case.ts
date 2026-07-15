@@ -7,6 +7,8 @@ import {
 } from '../../../languages/application/ports/language-repository.port';
 import { DeckPermissionService } from '../../domain/services/deck-permission.service';
 import { Deck } from '../../domain/types';
+import { DeckLanguageWarning } from '../../domain/types/deck-language-warning.type';
+import { DeckLanguageValidationService } from '../../domain/services/deck-language-validation.service';
 import {
   DECK_REPOSITORY,
   DeckRepositoryPort,
@@ -21,7 +23,10 @@ export type UpdateDeckUseCaseInput = {
   sourceLanguage?: string;
 };
 
-export type UpdateDeckUseCaseResult = Deck;
+export type UpdateDeckUseCaseResult = {
+  deck: Deck;
+  warnings: DeckLanguageWarning[];
+};
 
 const TITLE_MAX_LENGTH = 120;
 const DESCRIPTION_MAX_LENGTH = 1000;
@@ -29,6 +34,8 @@ const DESCRIPTION_MAX_LENGTH = 1000;
 @Injectable()
 export class UpdateDeckUseCase {
   private readonly deckPermissionService = new DeckPermissionService();
+  private readonly deckLanguageValidationService =
+    new DeckLanguageValidationService();
 
   constructor(
     @Inject(DECK_REPOSITORY)
@@ -124,10 +131,28 @@ export class UpdateDeckUseCase {
       updateData.sourceLanguage = sourceLanguage;
     }
 
-    return this.deckRepository.update({
+    const updatedDeck = await this.deckRepository.update({
       deckId: input.deckId,
       ...updateData,
     });
+
+    const resolvedTargetLanguage =
+      updatedDeck.targetLanguage ?? updateData.targetLanguage ?? null;
+    const resolvedSourceLanguage =
+      updatedDeck.sourceLanguage ?? updateData.sourceLanguage ?? null;
+
+    const warnings =
+      resolvedTargetLanguage && resolvedSourceLanguage
+        ? this.deckLanguageValidationService.getLanguagePairWarnings(
+            resolvedTargetLanguage,
+            resolvedSourceLanguage,
+          )
+        : [];
+
+    return {
+      deck: updatedDeck,
+      warnings,
+    };
   }
 
   private async ensureLanguageExists(languageCode: string): Promise<void> {

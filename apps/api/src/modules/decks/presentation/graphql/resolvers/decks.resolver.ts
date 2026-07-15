@@ -25,15 +25,39 @@ import { PublicDecksInput } from '../inputs/public-decks.input';
 import { UpdateDeckInput } from '../inputs/update-deck.input';
 import { UpdateCardInput } from '../inputs/update-card.input';
 import { CardType } from '../types/card.type';
-import { CopyPublicDeckPayloadType } from '../types/copy-public-deck-payload.type';
+import { CreateDeckPayloadType } from '../types/create-deck-payload.type';
+import { DeckLanguageWarningCode } from '../types/deck-language-warning.type';
 import { DeckModerationStatus } from '../types/deck-moderation-status.type';
 import { DeckVisibility } from '../types/deck-visibility.type';
+import { UpdateDeckPayloadType } from '../types/update-deck-payload.type';
+import { CopyPublicDeckPayloadType } from '../types/copy-public-deck-payload.type';
 import { DeckType } from '../types/deck.type';
 import { PublicDeckSearchResultType } from '../types/public-deck-search-result.type';
 
 type GraphqlRequest = {
   authUser?: AuthUser;
 };
+
+function toDeckType(deck: {
+  id: string;
+  ownerId: string;
+  title: string;
+  description: string | null;
+  visibility: string;
+  moderationStatus: string;
+  isOfficial: boolean;
+  sourceDeckId: string | null;
+  targetLanguage: string | null;
+  sourceLanguage: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}): DeckType {
+  return {
+    ...deck,
+    visibility: deck.visibility as DeckVisibility,
+    moderationStatus: deck.moderationStatus as DeckModerationStatus,
+  };
+}
 
 @Resolver()
 export class DecksResolver {
@@ -136,13 +160,13 @@ export class DecksResolver {
     });
   }
 
-  @Mutation(() => DeckType)
+  @Mutation(() => CreateDeckPayloadType)
   @UseGuards(GqlAuthGuard)
   async createDeck(
     @CurrentUser() user: AuthUser,
     @Args('input') input: CreateDeckInput,
-  ): Promise<DeckType> {
-    const deck = await this.createDeckUseCase.execute({
+  ): Promise<CreateDeckPayloadType> {
+    const result = await this.createDeckUseCase.execute({
       currentUserId: user.id,
       title: input.title,
       description: input.description,
@@ -151,19 +175,21 @@ export class DecksResolver {
     });
 
     return {
-      ...deck,
-      visibility: deck.visibility as DeckVisibility,
-      moderationStatus: deck.moderationStatus as DeckModerationStatus,
+      deck: toDeckType(result.deck),
+      warnings: result.warnings.map((warning) => ({
+        code: warning.code as DeckLanguageWarningCode,
+        message: warning.message,
+      })),
     };
   }
 
-  @Mutation(() => DeckType)
+  @Mutation(() => UpdateDeckPayloadType)
   @UseGuards(GqlAuthGuard)
   async updateDeck(
     @CurrentUser() user: AuthUser,
     @Args('input') input: UpdateDeckInput,
-  ): Promise<DeckType> {
-    const deck = await this.updateDeckUseCase.execute({
+  ): Promise<UpdateDeckPayloadType> {
+    const result = await this.updateDeckUseCase.execute({
       currentUser: user,
       deckId: input.deckId,
       title: input.title,
@@ -173,9 +199,11 @@ export class DecksResolver {
     });
 
     return {
-      ...deck,
-      visibility: deck.visibility as DeckVisibility,
-      moderationStatus: deck.moderationStatus as DeckModerationStatus,
+      deck: toDeckType(result.deck),
+      warnings: result.warnings.map((warning) => ({
+        code: warning.code as DeckLanguageWarningCode,
+        message: warning.message,
+      })),
     };
   }
 

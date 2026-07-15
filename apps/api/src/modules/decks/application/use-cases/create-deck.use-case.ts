@@ -13,6 +13,8 @@ import {
   LanguageRepositoryPort,
 } from '../../../languages/application/ports/language-repository.port';
 import { Deck } from '../../domain/types';
+import { DeckLanguageWarning } from '../../domain/types/deck-language-warning.type';
+import { DeckLanguageValidationService } from '../../domain/services/deck-language-validation.service';
 import {
   DECK_REPOSITORY,
   DeckRepositoryPort,
@@ -26,13 +28,19 @@ export type CreateDeckUseCaseInput = {
   sourceLanguage?: string;
 };
 
-export type CreateDeckUseCaseResult = Deck;
+export type CreateDeckUseCaseResult = {
+  deck: Deck;
+  warnings: DeckLanguageWarning[];
+};
 
 const TITLE_MAX_LENGTH = 120;
 const DESCRIPTION_MAX_LENGTH = 1000;
 
 @Injectable()
 export class CreateDeckUseCase {
+  private readonly deckLanguageValidationService =
+    new DeckLanguageValidationService();
+
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: UserRepositoryPort,
@@ -116,13 +124,21 @@ export class CreateDeckUseCase {
 
     await this.ensureLanguageExists(sourceLanguage);
 
-    return this.deckRepository.create({
+    const deck = await this.deckRepository.create({
       ownerId: input.currentUserId,
       title,
       description,
       targetLanguage,
       sourceLanguage,
     });
+
+    return {
+      deck,
+      warnings: this.deckLanguageValidationService.getLanguagePairWarnings(
+        targetLanguage,
+        sourceLanguage,
+      ),
+    };
   }
 
   private async ensureLanguageExists(languageCode: string): Promise<void> {
