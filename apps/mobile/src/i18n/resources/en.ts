@@ -8,6 +8,7 @@ import { lessonsEn } from './en/lessons'
 import { profileEn } from './en/profile'
 import { publicDecksEn } from './en/public-decks'
 import { settingsEn } from './en/settings'
+import { studyLanguagesEn } from './en/study-languages'
 
 export const en = {
   common: {
@@ -31,4 +32,5 @@ export const en = {
   lessons: lessonsEn,
   publicDecks: publicDecksEn,
   csvImport: csvImportEn,
+  studyLanguages: studyLanguagesEn,
 } as const

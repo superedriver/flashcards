@@ -1,6 +1,7 @@
 import { Redirect, Tabs } from 'expo-router'
 
 import { useAuthGate } from '@/features/auth/hooks/use-auth-gate'
+import { StudyLanguageSelector } from '@/features/study-languages/components/study-language-selector'
 import { LoadingState, Screen } from '@/ui/components'
 
 export default function TabsLayout() {
@@ -19,7 +20,13 @@ export default function TabsLayout() {
   }
 
   return (
-    <Tabs screenOptions={{ headerShown: true }}>
+    <Tabs
+      screenOptions={{
+        headerShown: true,
+        headerTitleAlign: 'center',
+        headerTitle: () => <StudyLanguageSelector />,
+      }}
+    >
       <Tabs.Screen name="index" options={{ title: 'Home' }} />
       <Tabs.Screen name="decks" options={{ title: 'Decks' }} />
       <Tabs.Screen name="public" options={{ title: 'Public' }} />
