@@ -1,17 +1,26 @@
 import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 
-import { useMyDecksQuery } from '@/graphql/generated'
+import { DecksPageSections } from '@/features/decks/components/decks-page-sections'
+import { useStudyLanguageContext } from '@/features/study-languages/hooks/use-study-language-context'
+import { useDecksPageQuery } from '@/graphql/generated'
 import { AppButton } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
-
-import { DeckList } from '../components/deck-list'
 
 export function MyDecksScreen() {
   const { t } = useTranslation()
   const router = useRouter()
-  const { data, error, loading, refetch } = useMyDecksQuery()
+  const { activeTargetLanguage, loading: studyLanguageLoading } = useStudyLanguageContext()
+
+  const { data, error, loading, refetch } = useDecksPageQuery({
+    skip: !activeTargetLanguage,
+    variables: {
+      input: {
+        activeTargetLanguage: activeTargetLanguage ?? '',
+      },
+    },
+  })
 
   const listHeader = (
     <>
@@ -24,27 +33,42 @@ export function MyDecksScreen() {
     </>
   )
 
+  if (studyLanguageLoading || loading) {
+    return (
+      <Screen>
+        {listHeader}
+        <LoadingState message={t('decks.myDecks.loading')} />
+      </Screen>
+    )
+  }
+
+  if (!activeTargetLanguage) {
+    return (
+      <Screen>
+        {listHeader}
+        <ErrorState message={t('decks.myDecks.loadError')} />
+      </Screen>
+    )
+  }
+
+  if (error || !data?.decksPage) {
+    return (
+      <Screen>
+        {listHeader}
+        <ErrorState message={t('decks.myDecks.loadError')} onRetry={() => void refetch()} />
+      </Screen>
+    )
+  }
+
   return (
     <Screen>
-      {loading ? (
-        <>
-          {listHeader}
-          <LoadingState message={t('decks.myDecks.loading')} />
-        </>
-      ) : null}
-      {error ? (
-        <>
-          {listHeader}
-          <ErrorState message={t('decks.myDecks.loadError')} onRetry={() => void refetch()} />
-        </>
-      ) : null}
-      {!loading && !error && data?.myDecks ? (
-        <DeckList
-          decks={data.myDecks}
+      <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
+        <DecksPageSections
           listHeader={listHeader}
+          page={data.decksPage}
           onCreateDeck={() => router.push('/decks/new')}
         />
-      ) : null}
+      </ScrollView>
     </Screen>
   )
 }

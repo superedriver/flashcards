@@ -8,8 +8,75 @@ query MyDecks {
     moderationStatus
     isOfficial
     sourceDeckId
+    targetLanguage
+    sourceLanguage
     createdAt
     updatedAt
+  }
+}
+
+query DecksPage($input: DecksPageInput!) {
+  decksPage(input: $input) {
+    ownDecks {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      targetLanguage
+      sourceLanguage
+      origin
+      createdAt
+      updatedAt
+    }
+    groupDecks {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      targetLanguage
+      sourceLanguage
+      origin
+      createdAt
+      updatedAt
+    }
+    publicDecks {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      targetLanguage
+      sourceLanguage
+      origin
+      createdAt
+      updatedAt
+    }
+    noLanguageDecks {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      targetLanguage
+      sourceLanguage
+      origin
+      createdAt
+      updatedAt
+    }
   }
 }
 

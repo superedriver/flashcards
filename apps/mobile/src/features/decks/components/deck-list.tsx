@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { FlatList, useWindowDimensions, View } from 'react-native'
 
 import type { MyDecksQuery } from '@/graphql/generated'
+import { DeckOrigin } from '@/graphql/generated'
 import { EmptyState } from '@/ui/components'
 import { getListNumColumns } from '@/ui/utils/responsive'
 
@@ -43,7 +44,7 @@ export function DeckList({ decks, listHeader, onCreateDeck }: DeckListProps) {
       numColumns={numColumns}
       renderItem={({ item }) => (
         <View style={numColumns > 1 ? { flex: 1 } : undefined}>
-          <DeckListItem deck={item} />
+          <DeckListItem deck={{ ...item, origin: DeckOrigin.Own }} />
         </View>
       )}
     />

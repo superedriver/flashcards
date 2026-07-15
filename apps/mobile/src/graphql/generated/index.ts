@@ -1464,9 +1464,86 @@ export type MyDecksQuery = {
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
     sourceDeckId?: string | null
+    targetLanguage?: string | null
+    sourceLanguage?: string | null
     createdAt: any
     updatedAt: any
   }>
+}
+
+export type DecksPageQueryVariables = Exact<{
+  input: DecksPageInput
+}>
+
+export type DecksPageQuery = {
+  __typename?: 'Query'
+  decksPage: {
+    __typename?: 'DecksPageResult'
+    ownDecks: Array<{
+      __typename?: 'DecksPageDeck'
+      id: string
+      ownerId: string
+      title: string
+      description?: string | null
+      visibility: DeckVisibility
+      moderationStatus: DeckModerationStatus
+      isOfficial: boolean
+      sourceDeckId?: string | null
+      targetLanguage?: string | null
+      sourceLanguage?: string | null
+      origin: DeckOrigin
+      createdAt: any
+      updatedAt: any
+    }>
+    groupDecks: Array<{
+      __typename?: 'DecksPageDeck'
+      id: string
+      ownerId: string
+      title: string
+      description?: string | null
+      visibility: DeckVisibility
+      moderationStatus: DeckModerationStatus
+      isOfficial: boolean
+      sourceDeckId?: string | null
+      targetLanguage?: string | null
+      sourceLanguage?: string | null
+      origin: DeckOrigin
+      createdAt: any
+      updatedAt: any
+    }>
+    publicDecks: Array<{
+      __typename?: 'DecksPageDeck'
+      id: string
+      ownerId: string
+      title: string
+      description?: string | null
+      visibility: DeckVisibility
+      moderationStatus: DeckModerationStatus
+      isOfficial: boolean
+      sourceDeckId?: string | null
+      targetLanguage?: string | null
+      sourceLanguage?: string | null
+      origin: DeckOrigin
+      createdAt: any
+      updatedAt: any
+    }>
+    noLanguageDecks: Array<{
+      __typename?: 'DecksPageDeck'
+      id: string
+      ownerId: string
+      title: string
+      description?: string | null
+      visibility: DeckVisibility
+      moderationStatus: DeckModerationStatus
+      isOfficial: boolean
+      sourceDeckId?: string | null
+      targetLanguage?: string | null
+      sourceLanguage?: string | null
+      origin: DeckOrigin
+      createdAt: any
+      updatedAt: any
+    }>
+  }
 }
 
 export type DeckQueryVariables = Exact<{
@@ -3607,6 +3684,8 @@ export const MyDecksDocument = gql`
       moderationStatus
       isOfficial
       sourceDeckId
+      targetLanguage
+      sourceLanguage
       createdAt
       updatedAt
     }
@@ -3662,6 +3741,127 @@ export type MyDecksQueryHookResult = ReturnType<typeof useMyDecksQuery>
 export type MyDecksLazyQueryHookResult = ReturnType<typeof useMyDecksLazyQuery>
 export type MyDecksSuspenseQueryHookResult = ReturnType<typeof useMyDecksSuspenseQuery>
 export type MyDecksQueryResult = Apollo.QueryResult<MyDecksQuery, MyDecksQueryVariables>
+export const DecksPageDocument = gql`
+  query DecksPage($input: DecksPageInput!) {
+    decksPage(input: $input) {
+      ownDecks {
+        id
+        ownerId
+        title
+        description
+        visibility
+        moderationStatus
+        isOfficial
+        sourceDeckId
+        targetLanguage
+        sourceLanguage
+        origin
+        createdAt
+        updatedAt
+      }
+      groupDecks {
+        id
+        ownerId
+        title
+        description
+        visibility
+        moderationStatus
+        isOfficial
+        sourceDeckId
+        targetLanguage
+        sourceLanguage
+        origin
+        createdAt
+        updatedAt
+      }
+      publicDecks {
+        id
+        ownerId
+        title
+        description
+        visibility
+        moderationStatus
+        isOfficial
+        sourceDeckId
+        targetLanguage
+        sourceLanguage
+        origin
+        createdAt
+        updatedAt
+      }
+      noLanguageDecks {
+        id
+        ownerId
+        title
+        description
+        visibility
+        moderationStatus
+        isOfficial
+        sourceDeckId
+        targetLanguage
+        sourceLanguage
+        origin
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+
+/**
+ * __useDecksPageQuery__
+ *
+ * To run a query within a React component, call `useDecksPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDecksPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDecksPageQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDecksPageQuery(
+  baseOptions: Apollo.QueryHookOptions<DecksPageQuery, DecksPageQueryVariables> &
+    ({ variables: DecksPageQueryVariables; skip?: boolean } | { skip: boolean }),
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<DecksPageQuery, DecksPageQueryVariables>(DecksPageDocument, options)
+}
+export function useDecksPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<DecksPageQuery, DecksPageQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<DecksPageQuery, DecksPageQueryVariables>(DecksPageDocument, options)
+}
+// @ts-ignore
+export function useDecksPageSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<DecksPageQuery, DecksPageQueryVariables>,
+): Apollo.UseSuspenseQueryResult<DecksPageQuery, DecksPageQueryVariables>
+export function useDecksPageSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<DecksPageQuery, DecksPageQueryVariables>,
+): Apollo.UseSuspenseQueryResult<DecksPageQuery | undefined, DecksPageQueryVariables>
+export function useDecksPageSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<DecksPageQuery, DecksPageQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<DecksPageQuery, DecksPageQueryVariables>(
+    DecksPageDocument,
+    options,
+  )
+}
+export type DecksPageQueryHookResult = ReturnType<typeof useDecksPageQuery>
+export type DecksPageLazyQueryHookResult = ReturnType<typeof useDecksPageLazyQuery>
+export type DecksPageSuspenseQueryHookResult = ReturnType<typeof useDecksPageSuspenseQuery>
+export type DecksPageQueryResult = Apollo.QueryResult<DecksPageQuery, DecksPageQueryVariables>
 export const DeckDocument = gql`
   query Deck($id: String!) {
     deck(id: $id) {

@@ -7,6 +7,29 @@ export const decksUk = {
     empty: 'У вас ще немає колод.',
     emptyAction: 'Створіть свою першу колоду',
   },
+  sections: {
+    own: {
+      title: 'Мої',
+      empty: 'Немає колод для цієї мови.',
+    },
+    group: {
+      title: 'Групові',
+      empty: 'Немає групових колод для цієї мови.',
+    },
+    public: {
+      title: 'Публічні',
+      empty: 'Немає публічних колод для цієї мови.',
+    },
+    noLanguage: {
+      title: 'Без мови',
+      empty: 'Немає колод без мови.',
+    },
+    origin: {
+      OWN: 'Моя',
+      GROUP: 'Група',
+      PUBLIC: 'Публічна',
+    },
+  },
   deckDetail: {
     title: 'Деталі колоди',
     loading: 'Завантаження колоди...',

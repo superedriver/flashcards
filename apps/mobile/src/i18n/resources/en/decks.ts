@@ -7,6 +7,29 @@ export const decksEn = {
     empty: 'You have no decks yet.',
     emptyAction: 'Create your first deck',
   },
+  sections: {
+    own: {
+      title: 'Own',
+      empty: 'No decks for this language yet.',
+    },
+    group: {
+      title: 'Group',
+      empty: 'No group decks for this language.',
+    },
+    public: {
+      title: 'Public',
+      empty: 'No public decks for this language.',
+    },
+    noLanguage: {
+      title: 'No language',
+      empty: 'No decks without a language.',
+    },
+    origin: {
+      OWN: 'Own',
+      GROUP: 'Group',
+      PUBLIC: 'Public',
+    },
+  },
   deckDetail: {
     title: 'Deck Detail',
     loading: 'Loading deck...',

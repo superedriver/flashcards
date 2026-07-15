@@ -237,7 +237,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 - [x] TASK-24.20 Add study languages mobile GraphQL + hooks
 - [x] TASK-24.21 Add top language selector + language picker modal
 - [x] TASK-24.22 Add blocking onboarding screen
-- [ ] TASK-24.23 Refactor Decks screen (4 sections, remove Public tab)
+- [x] TASK-24.23 Refactor Decks screen (4 sections, remove Public tab)
 - [ ] TASK-24.24 Extend deck create/edit/settings with language pair
 - [ ] TASK-24.25 Add legacy assign languages + language-gated actions
 - [ ] TASK-24.26 Add copy/regenerate preview UI flows
@@ -1296,7 +1296,7 @@ TASK-24.22 Add blocking onboarding screen
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
