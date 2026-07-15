@@ -90,6 +90,8 @@ query Deck($id: String!) {
     moderationStatus
     isOfficial
     sourceDeckId
+    targetLanguage
+    sourceLanguage
     createdAt
     updatedAt
   }

@@ -50,6 +50,9 @@ export const decksEn = {
     submit: 'Save Changes',
     submitting: 'Saving...',
     error: 'Could not update deck. Please try again.',
+    languageChangeTitle: 'Change deck languages?',
+    languageChangeMessage:
+      'Card text will not be regenerated automatically. You can regenerate translations later from deck settings.',
   },
   createCard: {
     title: 'Add Card',
@@ -112,6 +115,12 @@ export const decksEn = {
     title: 'Title',
     description: 'Description',
     descriptionOptional: 'Description (optional)',
+    targetLanguage: 'Target language (front)',
+    sourceLanguage: 'Source language (back)',
+    languagePlaceholder: 'Select a language',
+    sameLanguageTitle: 'Same language pair',
+    sameLanguageWarning:
+      'Target and source are the same. You can continue, but translation practice will not help.',
   },
   header: {
     cardCount_one: '{{count}} card',
@@ -130,6 +139,8 @@ export const decksEn = {
     titleRequired: 'Title is required',
     titleTooLong: 'Title is too long',
     descriptionTooLong: 'Description is too long',
+    targetLanguageRequired: 'Target language is required',
+    sourceLanguageRequired: 'Source language is required',
     frontRequired: 'Front is required',
     frontTooLong: 'Front is too long',
     backRequired: 'Back is required',

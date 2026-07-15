@@ -1,10 +1,12 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Alert } from 'react-native'
 
 import { DeckForm } from '@/features/decks/components/deck-form'
+import { confirmAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage, optionalText } from '@/features/decks/utils/deck-form-utils'
-import { useDeckQuery, useUpdateDeckMutation } from '@/graphql/generated'
+import { DeckLanguageWarningCode, useDeckQuery, useUpdateDeckMutation } from '@/graphql/generated'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function EditDeckScreen() {
@@ -19,15 +21,22 @@ export function EditDeckScreen() {
   })
 
   const [updateDeck, { loading: isSubmitting }] = useUpdateDeckMutation({
-    refetchQueries: ['MyDecks', 'Deck'],
+    refetchQueries: ['MyDecks', 'Deck', 'DecksPage'],
   })
 
   const defaultValues = useMemo(
     () => ({
       description: data?.deck.description ?? '',
+      sourceLanguage: data?.deck.sourceLanguage ?? '',
+      targetLanguage: data?.deck.targetLanguage ?? '',
       title: data?.deck.title ?? '',
     }),
-    [data?.deck.description, data?.deck.title],
+    [
+      data?.deck.description,
+      data?.deck.sourceLanguage,
+      data?.deck.targetLanguage,
+      data?.deck.title,
+    ],
   )
 
   if (loading) {
@@ -49,7 +58,7 @@ export function EditDeckScreen() {
   }
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title={t('decks.editDeck.title')} />
       <DeckForm
         defaultValues={defaultValues}
@@ -66,26 +75,57 @@ export function EditDeckScreen() {
 
           setErrorMessage(null)
 
-          try {
-            const result = await updateDeck({
-              variables: {
-                input: {
-                  deckId,
-                  description: optionalText(values.description),
-                  title: values.title,
+          const languagesChanged =
+            values.targetLanguage !== (data.deck.targetLanguage ?? '') ||
+            values.sourceLanguage !== (data.deck.sourceLanguage ?? '')
+
+          const save = async () => {
+            try {
+              const result = await updateDeck({
+                variables: {
+                  input: {
+                    deckId,
+                    description: optionalText(values.description),
+                    sourceLanguage: values.sourceLanguage,
+                    targetLanguage: values.targetLanguage,
+                    title: values.title,
+                  },
                 },
-              },
-            })
+              })
 
-            if (!result.data?.updateDeck?.deck) {
-              setErrorMessage(t('decks.editDeck.error'))
-              return
+              const payload = result.data?.updateDeck
+
+              if (!payload?.deck) {
+                setErrorMessage(t('decks.editDeck.error'))
+                return
+              }
+
+              const sameLanguageWarning = payload.warnings.find(
+                (warning) => warning.code === DeckLanguageWarningCode.SourceTargetSame,
+              )
+
+              if (sameLanguageWarning) {
+                Alert.alert(t('decks.deckForm.sameLanguageTitle'), sameLanguageWarning.message)
+              }
+
+              router.replace(`/decks/${deckId}`)
+            } catch (submitError) {
+              setErrorMessage(getGraphqlErrorMessage(submitError, t('decks.editDeck.error')))
             }
-
-            router.replace(`/decks/${deckId}`)
-          } catch (submitError) {
-            setErrorMessage(getGraphqlErrorMessage(submitError, t('decks.editDeck.error')))
           }
+
+          if (languagesChanged) {
+            confirmAction(
+              t('decks.editDeck.languageChangeTitle'),
+              t('decks.editDeck.languageChangeMessage'),
+              () => {
+                void save()
+              },
+            )
+            return
+          }
+
+          await save()
         }}
       />
     </Screen>

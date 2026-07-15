@@ -14,6 +14,8 @@ export function createDeckFormSchema(t: TFunction) {
       .max(1000, t('decks.validation.descriptionTooLong'))
       .optional()
       .or(z.literal('')),
+    targetLanguage: z.string().trim().min(1, t('decks.validation.targetLanguageRequired')),
+    sourceLanguage: z.string().trim().min(1, t('decks.validation.sourceLanguageRequired')),
   })
 }
 

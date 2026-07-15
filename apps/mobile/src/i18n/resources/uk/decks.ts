@@ -50,6 +50,9 @@ export const decksUk = {
     submit: 'Зберегти зміни',
     submitting: 'Збереження...',
     error: 'Не вдалося оновити колоду. Спробуйте ще раз.',
+    languageChangeTitle: 'Змінити мови колоди?',
+    languageChangeMessage:
+      'Текст карток не буде перегенеровано автоматично. Пізніше можна регенерувати переклади в налаштуваннях колоди.',
   },
   createCard: {
     title: 'Додати картку',
@@ -112,6 +115,12 @@ export const decksUk = {
     title: 'Назва',
     description: 'Опис',
     descriptionOptional: 'Опис (необовʼязково)',
+    targetLanguage: 'Мова вивчення (лицьова сторона)',
+    sourceLanguage: 'Мова перекладу (зворотна сторона)',
+    languagePlaceholder: 'Оберіть мову',
+    sameLanguageTitle: 'Однакові мови',
+    sameLanguageWarning:
+      'Мова вивчення і мова перекладу збігаються. Можна продовжити, але практика перекладу буде малокорисною.',
   },
   header: {
     cardCount_one: '{{count}} картка',
@@ -132,6 +141,8 @@ export const decksUk = {
     titleRequired: 'Назва обовʼязкова',
     titleTooLong: 'Назва занадто довга',
     descriptionTooLong: 'Опис занадто довгий',
+    targetLanguageRequired: 'Мова вивчення обовʼязкова',
+    sourceLanguageRequired: 'Мова перекладу обовʼязкова',
     frontRequired: 'Лицьова сторона обовʼязкова',
     frontTooLong: 'Лицьова сторона занадто довга',
     backRequired: 'Зворотна сторона обовʼязкова',
