@@ -5,6 +5,7 @@ import { DecksModule } from '../decks/decks.module';
 import { AI_PROVIDER } from './application/ports/ai-provider.port';
 import { AI_REQUEST_LOG_REPOSITORY } from './application/ports/ai-request-log-repository.port';
 import { GenerateCardExamplesUseCase } from './application/use-cases/generate-card-examples.use-case';
+import { GeneratePreviewExampleUseCase } from './application/use-cases/generate-preview-example.use-case';
 import { SaveGeneratedCardExampleUseCase } from './application/use-cases/save-generated-card-example.use-case';
 import { TranslateCardBackUseCase } from './application/use-cases/translate-card-back.use-case';
 import { PrismaAiRequestLogRepository } from './infrastructure/persistence/prisma-ai-request-log.repository';
@@ -41,6 +42,7 @@ import { AiResolver } from './presentation/graphql/resolvers/ai.resolver';
     GenerateCardExamplesUseCase,
     SaveGeneratedCardExampleUseCase,
     TranslateCardBackUseCase,
+    GeneratePreviewExampleUseCase,
     AiResolver,
   ],
   exports: [
@@ -49,6 +51,7 @@ import { AiResolver } from './presentation/graphql/resolvers/ai.resolver';
     GenerateCardExamplesUseCase,
     SaveGeneratedCardExampleUseCase,
     TranslateCardBackUseCase,
+    GeneratePreviewExampleUseCase,
   ],
 })
 export class AiModule {}

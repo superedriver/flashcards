@@ -6,6 +6,8 @@ import {
   AiProviderPort,
   GenerateCardExamplesInput,
   GenerateCardExamplesResult,
+  GeneratePreviewExampleInput,
+  GeneratePreviewExampleResult,
   TranslateCardBackInput,
   TranslateCardBackResult,
 } from '../../application/ports/ai-provider.port';
@@ -83,6 +85,65 @@ export class GeminiAiProvider implements AiProviderPort {
       );
     }
   }
+
+  async generatePreviewExample(
+    input: GeneratePreviewExampleInput,
+  ): Promise<GeneratePreviewExampleResult> {
+    const apiKey = this.configService.get<string>('ai.apiKey', '');
+
+    if (!apiKey) {
+      throw new ApplicationError(
+        ErrorCodes.VALIDATION_ERROR,
+        'AI provider is not configured',
+      );
+    }
+
+    const prompt = buildPreviewExamplePrompt(input);
+
+    try {
+      const client = new GoogleGenerativeAI(apiKey);
+      const model = client.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      const response = await model.generateContent(prompt);
+      const rawText = response.response.text().trim();
+      const example = parseSingleExample(rawText, input.front);
+
+      return {
+        example,
+        rawOutputPreview: truncatePreview(rawText, OUTPUT_PREVIEW_MAX_LENGTH),
+      };
+    } catch {
+      throw new ApplicationError(
+        ErrorCodes.INTERNAL_ERROR,
+        'Failed to generate preview example',
+      );
+    }
+  }
+}
+
+function buildPreviewExamplePrompt(input: GeneratePreviewExampleInput): string {
+  return [
+    'Generate exactly one concise example sentence for a flashcard learner.',
+    'The sentence must be in the target language and must use the front word/phrase naturally.',
+    'Return plain text only: one sentence with no markdown, numbering, or quotes.',
+    `Target language code: ${input.targetLanguage.trim()}`,
+    `Source language code: ${input.sourceLanguage.trim()}`,
+    `Front: ${input.front.trim()}`,
+    `Back: ${input.back.trim()}`,
+  ].join('\n');
+}
+
+function parseSingleExample(rawText: string, front: string): string {
+  const firstLine = rawText
+    .split('\n')
+    .map((line) => line.replace(/^\s*[-*]\s*/, '').replace(/^\d+[.)]\s*/, ''))
+    .map((line) => line.trim())
+    .find((line) => line.length > 0);
+
+  if (firstLine) {
+    return firstLine;
+  }
+
+  return `Example: I use "${front.trim()}" every day.`;
 }
 
 function buildTranslateCardBackPrompt(input: TranslateCardBackInput): string {

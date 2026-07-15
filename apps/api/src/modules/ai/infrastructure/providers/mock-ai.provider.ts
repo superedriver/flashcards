@@ -3,6 +3,8 @@ import {
   AiProviderPort,
   GenerateCardExamplesInput,
   GenerateCardExamplesResult,
+  GeneratePreviewExampleInput,
+  GeneratePreviewExampleResult,
   TranslateCardBackInput,
   TranslateCardBackResult,
 } from '../../application/ports/ai-provider.port';
@@ -38,6 +40,17 @@ export class MockAiProvider implements AiProviderPort {
     return Promise.resolve({
       back: `[${sourceLanguage}] ${front}`,
       rawOutputPreview: 'mock translate',
+    });
+  }
+
+  generatePreviewExample(
+    input: GeneratePreviewExampleInput,
+  ): Promise<GeneratePreviewExampleResult> {
+    const front = input.front.trim();
+
+    return Promise.resolve({
+      example: `Example: I use "${front}" every day.`,
+      rawOutputPreview: 'mock preview example',
     });
   }
 }

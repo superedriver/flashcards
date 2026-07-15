@@ -26,6 +26,18 @@ export type TranslateCardBackResult = {
   rawOutputPreview: string | null;
 };
 
+export type GeneratePreviewExampleInput = {
+  front: string;
+  back: string;
+  targetLanguage: string;
+  sourceLanguage: string;
+};
+
+export type GeneratePreviewExampleResult = {
+  example: string;
+  rawOutputPreview: string | null;
+};
+
 export type AiProviderPort = {
   readonly providerName: 'MOCK' | 'GEMINI';
   generateCardExamples(
@@ -34,4 +46,7 @@ export type AiProviderPort = {
   translateCardBack(
     input: TranslateCardBackInput,
   ): Promise<TranslateCardBackResult>;
+  generatePreviewExample(
+    input: GeneratePreviewExampleInput,
+  ): Promise<GeneratePreviewExampleResult>;
 };

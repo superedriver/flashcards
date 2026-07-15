@@ -1,6 +1,6 @@
 import { ErrorCodes } from '../../../../common/errors';
 import { SafeUser } from '../../../auth/domain/types';
-import { TranslateCardBackUseCase } from './translate-card-back.use-case';
+import { GeneratePreviewExampleUseCase } from './generate-preview-example.use-case';
 
 const safeUser: SafeUser = {
   id: 'user-1',
@@ -14,23 +14,23 @@ const safeUser: SafeUser = {
 
 function createUseCase(options?: {
   user?: SafeUser | null;
-  translateResult?: { back: string; rawOutputPreview: string | null };
-  translateError?: Error;
+  generateResult?: { example: string; rawOutputPreview: string | null };
+  generateError?: Error;
 }) {
   const findById = jest
     .fn()
     .mockResolvedValue(options?.user === undefined ? safeUser : options.user);
-  const translateCardBack = options?.translateError
-    ? jest.fn().mockRejectedValue(options.translateError)
+  const generatePreviewExample = options?.generateError
+    ? jest.fn().mockRejectedValue(options.generateError)
     : jest.fn().mockResolvedValue(
-        options?.translateResult ?? {
-          back: '[uk] hola',
-          rawOutputPreview: 'mock translate',
+        options?.generateResult ?? {
+          example: 'Ejemplo: uso hola cada día.',
+          rawOutputPreview: 'mock preview example',
         },
       );
   const createLog = jest.fn().mockResolvedValue({ id: 'log-1' });
 
-  const useCase = new TranslateCardBackUseCase(
+  const useCase = new GeneratePreviewExampleUseCase(
     {
       findById,
       findByEmail: jest.fn(),
@@ -41,18 +41,18 @@ function createUseCase(options?: {
     {
       providerName: 'MOCK',
       generateCardExamples: jest.fn(),
-      translateCardBack,
-      generatePreviewExample: jest.fn(),
+      translateCardBack: jest.fn(),
+      generatePreviewExample,
     },
     {
       create: createLog,
     },
   );
 
-  return { useCase, translateCardBack, createLog };
+  return { useCase, generatePreviewExample, createLog };
 }
 
-describe('TranslateCardBackUseCase', () => {
+describe('GeneratePreviewExampleUseCase', () => {
   it('rejects missing user with UNAUTHORIZED', async () => {
     const { useCase } = createUseCase({ user: null });
 
@@ -60,6 +60,7 @@ describe('TranslateCardBackUseCase', () => {
       useCase.execute({
         currentUserId: 'missing',
         front: 'hola',
+        back: 'привіт',
         targetLanguage: 'es',
         sourceLanguage: 'uk',
         deckId: 'deck-1',
@@ -68,64 +69,63 @@ describe('TranslateCardBackUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.UNAUTHORIZED });
   });
 
-  it('translates card back for es→uk pair via mock provider', async () => {
-    const { useCase, translateCardBack } = createUseCase();
+  it('generates a single example after back is available', async () => {
+    const { useCase, generatePreviewExample } = createUseCase();
 
     const result = await useCase.execute({
       currentUserId: 'user-1',
       front: 'hola',
+      back: 'привіт',
       targetLanguage: 'es',
       sourceLanguage: 'uk',
       deckId: 'deck-1',
       cardId: 'card-1',
     });
 
-    expect(translateCardBack).toHaveBeenCalledWith({
+    expect(generatePreviewExample).toHaveBeenCalledWith({
       front: 'hola',
+      back: 'привіт',
       targetLanguage: 'es',
       sourceLanguage: 'uk',
     });
     expect(result).toEqual({
-      back: '[uk] hola',
+      example: 'Ejemplo: uso hola cada día.',
       error: null,
     });
   });
 
-  it('returns safe error for preview UI when provider fails', async () => {
+  it('returns empty example and error when provider fails', async () => {
     const { useCase } = createUseCase({
-      translateError: new Error('provider unavailable'),
+      generateError: new Error('provider unavailable'),
     });
 
     const result = await useCase.execute({
       currentUserId: 'user-1',
       front: 'hola',
+      back: 'привіт',
       targetLanguage: 'es',
       sourceLanguage: 'uk',
       deckId: 'deck-1',
       cardId: 'card-1',
     });
 
-    expect(result.back).toBeNull();
-    expect(result.error).toBe('Failed to translate card back');
+    expect(result.example).toBeNull();
+    expect(result.error).toBe('Failed to generate preview example');
   });
 
-  it('logs AI request on success and failure', async () => {
-    const { useCase, createLog } = createUseCase();
+  it('rejects empty back with VALIDATION_ERROR', async () => {
+    const { useCase } = createUseCase();
 
-    await useCase.execute({
-      currentUserId: 'user-1',
-      front: 'hola',
-      targetLanguage: 'es',
-      sourceLanguage: 'uk',
-      deckId: 'deck-1',
-      cardId: 'card-1',
-    });
-
-    expect(createLog).toHaveBeenCalledWith(
-      expect.objectContaining({
-        feature: 'translate-card-back',
-        status: 'SUCCESS',
+    await expect(
+      useCase.execute({
+        currentUserId: 'user-1',
+        front: 'hola',
+        back: '   ',
+        targetLanguage: 'es',
+        sourceLanguage: 'uk',
+        deckId: 'deck-1',
+        cardId: 'card-1',
       }),
-    );
+    ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
   });
 });

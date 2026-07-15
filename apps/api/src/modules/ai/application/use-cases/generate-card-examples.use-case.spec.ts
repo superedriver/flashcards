@@ -100,6 +100,7 @@ function createUseCase(options?: {
     providerName: 'MOCK',
     generateCardExamples,
     translateCardBack: jest.fn(),
+    generatePreviewExample: jest.fn(),
     ...options?.aiProvider,
   };
 

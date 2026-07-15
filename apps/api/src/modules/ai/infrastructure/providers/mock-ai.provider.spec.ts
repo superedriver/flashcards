@@ -47,4 +47,16 @@ describe('MockAiProvider', () => {
     expect(result.back).toBe('[uk] hola');
     expect(result.rawOutputPreview).toBe('mock translate');
   });
+
+  it('generatePreviewExample returns a single example using front', async () => {
+    const result = await provider.generatePreviewExample({
+      front: 'hola',
+      back: 'привіт',
+      targetLanguage: 'es',
+      sourceLanguage: 'uk',
+    });
+
+    expect(result.example).toContain('hola');
+    expect(result.rawOutputPreview).toBe('mock preview example');
+  });
 });
