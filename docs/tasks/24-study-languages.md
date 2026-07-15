@@ -215,7 +215,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 ## Epic Summary
 
 ```md
-- [ ] TASK-24.01 Add Language catalog Prisma schema + seed
+- [x] TASK-24.01 Add Language catalog Prisma schema + seed
 - [ ] TASK-24.02 Add study languages + preview session Prisma schema
 - [ ] TASK-24.03 Add languages module skeleton (backend)
 - [ ] TASK-24.04 Add Language repository + languages GraphQL query
@@ -252,7 +252,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

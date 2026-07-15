@@ -4,6 +4,7 @@ import * as argon2 from 'argon2';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import { PrismaClient } from '../src/generated/prisma/client';
+import { seedLanguages } from './seeds/languages.seed';
 
 const DEMO_EMAIL = 'demo@example.com';
 const DEMO_PASSWORD = 'demo-password-123';
@@ -182,6 +183,9 @@ async function main() {
 
   try {
     await prisma.$connect();
+
+    const languageCount = await seedLanguages(prisma);
+    console.log(`Seeded ${languageCount} languages.`);
 
     const user = await upsertDemoUser(prisma);
 

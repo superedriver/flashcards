@@ -82,6 +82,16 @@ enum PushProvider {
   EXPO
 }
 
+model Language {
+  code             String @id
+  englishName      String
+  nativeName       String
+  flag             String
+  popularSortOrder Int?
+
+  @@index([popularSortOrder])
+}
+
 model User {
   id                String    @id @default(uuid())
   email             String    @unique
