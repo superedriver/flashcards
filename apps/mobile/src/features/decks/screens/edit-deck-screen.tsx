@@ -77,7 +77,7 @@ export function EditDeckScreen() {
               },
             })
 
-            if (!result.data?.updateDeck) {
+            if (!result.data?.updateDeck?.deck) {
               setErrorMessage(t('decks.editDeck.error'))
               return
             }

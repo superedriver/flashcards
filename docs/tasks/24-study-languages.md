@@ -234,7 +234,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 - [x] TASK-24.17 Extend CSV import language step for new decks
 - [x] TASK-24.18 Add onboarding completion API + bootstrap gate
 - [x] TASK-24.19 Add unified decks page GraphQL query (4 sections)
-- [ ] TASK-24.20 Add study languages mobile GraphQL + hooks
+- [x] TASK-24.20 Add study languages mobile GraphQL + hooks
 - [ ] TASK-24.21 Add top language selector + language picker modal
 - [ ] TASK-24.22 Add blocking onboarding screen
 - [ ] TASK-24.23 Refactor Decks screen (4 sections, remove Public tab)
@@ -1181,7 +1181,7 @@ TASK-24.19 Add unified decks page GraphQL query (4 sections)
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

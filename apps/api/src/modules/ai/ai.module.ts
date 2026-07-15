@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from '../auth/auth.module';
 import { DecksModule } from '../decks/decks.module';
@@ -14,7 +14,11 @@ import { MockAiProvider } from './infrastructure/providers/mock-ai.provider';
 import { AiResolver } from './presentation/graphql/resolvers/ai.resolver';
 
 @Module({
-  imports: [ConfigModule, AuthModule, DecksModule],
+  imports: [
+    ConfigModule,
+    forwardRef(() => AuthModule),
+    forwardRef(() => DecksModule),
+  ],
   providers: [
     MockAiProvider,
     GeminiAiProvider,

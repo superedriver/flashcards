@@ -1,0 +1,159 @@
+query Languages($search: String) {
+  languages(search: $search) {
+    code
+    englishName
+    nativeName
+    flag
+    popularSortOrder
+  }
+}
+
+query MyStudyLanguages {
+  myStudyLanguages {
+    languageCode
+    isActive
+    createdAt
+    language {
+      code
+      englishName
+      nativeName
+      flag
+      popularSortOrder
+    }
+  }
+}
+
+query StudyLanguageBootstrap {
+  myAccount {
+    needsStudyLanguageOnboarding
+    settings {
+      activeTargetLanguage
+      nativeLanguage
+    }
+    studyLanguages {
+      languageCode
+      isActive
+      createdAt
+      language {
+        code
+        englishName
+        nativeName
+        flag
+        popularSortOrder
+      }
+    }
+  }
+}
+
+query StudyLanguageRemovalImpact($languageCode: String!) {
+  studyLanguageRemovalImpact(languageCode: $languageCode) {
+    affectedDeckCount
+  }
+}
+
+mutation AddStudyLanguage($languageCode: String!) {
+  addStudyLanguage(languageCode: $languageCode) {
+    languageCode
+    isActive
+    createdAt
+    language {
+      code
+      englishName
+      nativeName
+      flag
+      popularSortOrder
+    }
+  }
+}
+
+mutation RemoveStudyLanguage($languageCode: String!) {
+  removeStudyLanguage(languageCode: $languageCode) {
+    languageCode
+    isActive
+    createdAt
+    language {
+      code
+      englishName
+      nativeName
+      flag
+      popularSortOrder
+    }
+  }
+}
+
+mutation SetActiveTargetLanguage($languageCode: String!) {
+  setActiveTargetLanguage(languageCode: $languageCode) {
+    languageCode
+    isActive
+    createdAt
+    language {
+      code
+      englishName
+      nativeName
+      flag
+      popularSortOrder
+    }
+  }
+}
+
+mutation CompleteStudyLanguageOnboarding($input: CompleteStudyLanguageOnboardingInput!) {
+  completeStudyLanguageOnboarding(input: $input) {
+    needsStudyLanguageOnboarding
+    studyLanguages {
+      languageCode
+      isActive
+      createdAt
+      language {
+        code
+        englishName
+        nativeName
+        flag
+        popularSortOrder
+      }
+    }
+  }
+}
+
+mutation StartPublicDeckCopyPreview($input: StartPublicDeckCopyPreviewInput!) {
+  startPublicDeckCopyPreview(input: $input) {
+    id
+    type
+    status
+    sourceDeckId
+    targetLanguage
+    chosenSourceLanguage
+    cards {
+      sourceCardId
+      front
+      back
+      example
+      backError
+      exampleError
+    }
+    expiresAt
+    createdAt
+    updatedAt
+  }
+}
+
+mutation StartGroupDeckCopyPreview($input: StartGroupDeckCopyPreviewInput!) {
+  startGroupDeckCopyPreview(input: $input) {
+    id
+    type
+    status
+    sourceDeckId
+    targetLanguage
+    chosenSourceLanguage
+    cards {
+      sourceCardId
+      front
+      back
+      example
+      backError
+      exampleError
+    }
+    expiresAt
+    createdAt
+    updatedAt
+  }
+}

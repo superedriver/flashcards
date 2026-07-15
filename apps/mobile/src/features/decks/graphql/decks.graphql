@@ -44,31 +44,47 @@ query DeckCards($deckId: String!) {
 
 mutation CreateDeck($input: CreateDeckInput!) {
   createDeck(input: $input) {
-    id
-    ownerId
-    title
-    description
-    visibility
-    moderationStatus
-    isOfficial
-    sourceDeckId
-    createdAt
-    updatedAt
+    deck {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      targetLanguage
+      sourceLanguage
+      createdAt
+      updatedAt
+    }
+    warnings {
+      code
+      message
+    }
   }
 }
 
 mutation UpdateDeck($input: UpdateDeckInput!) {
   updateDeck(input: $input) {
-    id
-    ownerId
-    title
-    description
-    visibility
-    moderationStatus
-    isOfficial
-    sourceDeckId
-    createdAt
-    updatedAt
+    deck {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      targetLanguage
+      sourceLanguage
+      createdAt
+      updatedAt
+    }
+    warnings {
+      code
+      message
+    }
   }
 }
 

@@ -27,7 +27,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
 
 @Module({
   imports: [
-    AuthModule,
+    forwardRef(() => AuthModule),
     forwardRef(() => AccountModule),
     forwardRef(() => LanguagesModule),
     forwardRef(() => GroupsModule),

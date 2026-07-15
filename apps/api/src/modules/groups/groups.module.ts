@@ -24,7 +24,7 @@ import { GroupsResolver } from './presentation/graphql/resolvers/groups.resolver
 
 @Module({
   imports: [
-    AuthModule,
+    forwardRef(() => AuthModule),
     EmailModule,
     forwardRef(() => AccountModule),
     forwardRef(() => DecksModule),

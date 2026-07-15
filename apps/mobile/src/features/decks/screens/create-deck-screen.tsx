@@ -4,12 +4,14 @@ import { useTranslation } from 'react-i18next'
 
 import { DeckForm } from '@/features/decks/components/deck-form'
 import { getGraphqlErrorMessage, optionalText } from '@/features/decks/utils/deck-form-utils'
+import { useStudyLanguageContext } from '@/features/study-languages/hooks/use-study-language-context'
 import { useCreateDeckMutation } from '@/graphql/generated'
 import { PageTitle, Screen } from '@/ui/components'
 
 export function CreateDeckScreen() {
   const { t } = useTranslation()
   const router = useRouter()
+  const { activeTargetLanguage, nativeLanguage } = useStudyLanguageContext()
   const [createDeck, { loading }] = useCreateDeckMutation({
     refetchQueries: ['MyDecks'],
   })
@@ -28,17 +30,24 @@ export function CreateDeckScreen() {
         onSubmit={async (values) => {
           setErrorMessage(null)
 
+          if (!activeTargetLanguage || !nativeLanguage) {
+            setErrorMessage(t('decks.createDeck.error'))
+            return
+          }
+
           try {
             const result = await createDeck({
               variables: {
                 input: {
                   description: optionalText(values.description),
                   title: values.title,
+                  targetLanguage: activeTargetLanguage,
+                  sourceLanguage: nativeLanguage,
                 },
               },
             })
 
-            const deck = result.data?.createDeck
+            const deck = result.data?.createDeck?.deck
 
             if (!deck) {
               setErrorMessage(t('decks.createDeck.error'))

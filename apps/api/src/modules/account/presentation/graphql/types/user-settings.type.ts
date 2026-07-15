@@ -33,7 +33,7 @@ export class UserSettingsType {
   @Field()
   nativeLanguage: string;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   activeTargetLanguage: string | null;
 
   @Field()

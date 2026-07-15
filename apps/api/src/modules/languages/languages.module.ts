@@ -30,7 +30,7 @@ import { InternalDeckPreviewController } from './presentation/http/internal-deck
 
 @Module({
   imports: [
-    AuthModule,
+    forwardRef(() => AuthModule),
     forwardRef(() => AccountModule),
     forwardRef(() => DecksModule),
     forwardRef(() => GroupsModule),

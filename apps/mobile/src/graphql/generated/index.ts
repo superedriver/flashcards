@@ -119,6 +119,17 @@ export type CompleteLessonPayload = {
   totalCards: Scalars['Int']['output']
 }
 
+export type CompleteStudyLanguageOnboardingInput = {
+  nativeLanguage: Scalars['String']['input']
+  targetLanguage: Scalars['String']['input']
+}
+
+export type CompleteStudyLanguageOnboardingPayload = {
+  __typename?: 'CompleteStudyLanguageOnboardingPayload'
+  needsStudyLanguageOnboarding: Scalars['Boolean']['output']
+  studyLanguages: Array<UserStudyLanguage>
+}
+
 export type ConfirmCsvImportInput = {
   importId: Scalars['String']['input']
 }
@@ -127,6 +138,12 @@ export type ConfirmCsvImportPayload = {
   __typename?: 'ConfirmCsvImportPayload'
   createdCardsCount: Scalars['Int']['output']
   import: CsvImport
+}
+
+export type CopyGroupDeckPayload = {
+  __typename?: 'CopyGroupDeckPayload'
+  cards: Array<Card>
+  deck: Deck
 }
 
 export type CopyPublicDeckPayload = {
@@ -146,7 +163,15 @@ export type CreateCardInput = {
 
 export type CreateDeckInput = {
   description?: InputMaybe<Scalars['String']['input']>
+  sourceLanguage?: InputMaybe<Scalars['String']['input']>
+  targetLanguage: Scalars['String']['input']
   title: Scalars['String']['input']
+}
+
+export type CreateDeckPayload = {
+  __typename?: 'CreateDeckPayload'
+  deck: Deck
+  warnings: Array<DeckLanguageWarning>
 }
 
 export type CreateGroupInput = {
@@ -203,6 +228,8 @@ export type Deck = {
   moderationStatus: DeckModerationStatus
   ownerId: Scalars['String']['output']
   sourceDeckId?: Maybe<Scalars['String']['output']>
+  sourceLanguage?: Maybe<Scalars['String']['output']>
+  targetLanguage?: Maybe<Scalars['String']['output']>
   title: Scalars['String']['output']
   updatedAt: Scalars['DateTime']['output']
   visibility: DeckVisibility
@@ -220,6 +247,16 @@ export type DeckGroupShare = {
 
 export enum DeckGroupSharePermission {
   View = 'VIEW',
+}
+
+export type DeckLanguageWarning = {
+  __typename?: 'DeckLanguageWarning'
+  code: DeckLanguageWarningCode
+  message: Scalars['String']['output']
+}
+
+export enum DeckLanguageWarningCode {
+  SourceTargetSame = 'SOURCE_TARGET_SAME',
 }
 
 export type DeckLearningStats = {
@@ -240,9 +277,80 @@ export enum DeckModerationStatus {
   Rejected = 'REJECTED',
 }
 
+export enum DeckOrigin {
+  Group = 'GROUP',
+  Own = 'OWN',
+  Public = 'PUBLIC',
+}
+
+export type DeckPreviewSession = {
+  __typename?: 'DeckPreviewSession'
+  cards: Array<DeckPreviewSessionCard>
+  chosenSourceLanguage: Scalars['String']['output']
+  createdAt: Scalars['DateTime']['output']
+  expiresAt: Scalars['DateTime']['output']
+  id: Scalars['String']['output']
+  sourceDeckId?: Maybe<Scalars['String']['output']>
+  status: DeckPreviewSessionStatus
+  targetLanguage: Scalars['String']['output']
+  type: DeckPreviewSessionType
+  updatedAt: Scalars['DateTime']['output']
+}
+
+export type DeckPreviewSessionCard = {
+  __typename?: 'DeckPreviewSessionCard'
+  back: Scalars['String']['output']
+  backError?: Maybe<Scalars['String']['output']>
+  example?: Maybe<Scalars['String']['output']>
+  exampleError?: Maybe<Scalars['String']['output']>
+  front: Scalars['String']['output']
+  sourceCardId?: Maybe<Scalars['String']['output']>
+}
+
+export enum DeckPreviewSessionStatus {
+  Expired = 'EXPIRED',
+  Generating = 'GENERATING',
+  Ready = 'READY',
+}
+
+export enum DeckPreviewSessionType {
+  CopyGroup = 'COPY_GROUP',
+  CopyPublic = 'COPY_PUBLIC',
+  RegenerateDeck = 'REGENERATE_DECK',
+}
+
 export enum DeckVisibility {
   Private = 'PRIVATE',
   Public = 'PUBLIC',
+}
+
+export type DecksPageDeck = {
+  __typename?: 'DecksPageDeck'
+  createdAt: Scalars['DateTime']['output']
+  description?: Maybe<Scalars['String']['output']>
+  id: Scalars['String']['output']
+  isOfficial: Scalars['Boolean']['output']
+  moderationStatus: DeckModerationStatus
+  origin: DeckOrigin
+  ownerId: Scalars['String']['output']
+  sourceDeckId?: Maybe<Scalars['String']['output']>
+  sourceLanguage?: Maybe<Scalars['String']['output']>
+  targetLanguage?: Maybe<Scalars['String']['output']>
+  title: Scalars['String']['output']
+  updatedAt: Scalars['DateTime']['output']
+  visibility: DeckVisibility
+}
+
+export type DecksPageInput = {
+  activeTargetLanguage: Scalars['String']['input']
+}
+
+export type DecksPageResult = {
+  __typename?: 'DecksPageResult'
+  groupDecks: Array<DecksPageDeck>
+  noLanguageDecks: Array<DecksPageDeck>
+  ownDecks: Array<DecksPageDeck>
+  publicDecks: Array<DecksPageDeck>
 }
 
 export type GenerateCardExamplesInput = {
@@ -312,6 +420,15 @@ export type InviteUserToGroupInput = {
   groupId: Scalars['String']['input']
 }
 
+export type Language = {
+  __typename?: 'Language'
+  code: Scalars['String']['output']
+  englishName: Scalars['String']['output']
+  flag: Scalars['String']['output']
+  nativeName: Scalars['String']['output']
+  popularSortOrder?: Maybe<Scalars['Int']['output']>
+}
+
 export type LessonCard = {
   __typename?: 'LessonCard'
   back: Scalars['String']['output']
@@ -364,13 +481,16 @@ export type Mutation = {
   __typename?: 'Mutation'
   abandonLesson: AbandonLessonPayload
   acceptGroupInvitation: AcceptGroupInvitationPayload
+  addStudyLanguage: UserStudyLanguage
   approveDeck: ModerationDeck
   blockUser: AdminUserSummary
   completeLesson: CompleteLessonPayload
+  completeStudyLanguageOnboarding: CompleteStudyLanguageOnboardingPayload
   confirmCsvImport: ConfirmCsvImportPayload
+  copyGroupDeck: CopyGroupDeckPayload
   copyPublicDeck: CopyPublicDeckPayload
   createCard: Card
-  createDeck: Deck
+  createDeck: CreateDeckPayload
   createGroup: Group
   declineGroupInvitation: GroupInvitation
   deleteCard: Scalars['Boolean']['output']
@@ -387,18 +507,22 @@ export type Mutation = {
   registerPushToken: RegisterPushTokenPayloadType
   rejectDeck: ModerationDeck
   removePushToken: Scalars['Boolean']['output']
+  removeStudyLanguage: Array<UserStudyLanguage>
   requestPasswordReset: Scalars['Boolean']['output']
   resendVerificationEmail: Scalars['Boolean']['output']
   resetPassword: Scalars['Boolean']['output']
   saveGeneratedCardExample: SaveGeneratedCardExamplePayload
+  setActiveTargetLanguage: Array<UserStudyLanguage>
   setOfficialDeck: ModerationDeck
   shareDeckWithGroup: ShareDeckWithGroupPayload
+  startGroupDeckCopyPreview: DeckPreviewSession
   startLesson: StartLessonPayload
+  startPublicDeckCopyPreview: DeckPreviewSession
   submitReview: SubmitReviewPayload
   unblockUser: AdminUserSummary
   unpublishDeck: Deck
   updateCard: Card
-  updateDeck: Deck
+  updateDeck: UpdateDeckPayload
   updateProfile: UserProfile
   updateSettings: UserSettings
   verifyEmail: SafeUser
@@ -410,6 +534,10 @@ export type MutationAbandonLessonArgs = {
 
 export type MutationAcceptGroupInvitationArgs = {
   invitationId: Scalars['String']['input']
+}
+
+export type MutationAddStudyLanguageArgs = {
+  languageCode: Scalars['String']['input']
 }
 
 export type MutationApproveDeckArgs = {
@@ -424,8 +552,16 @@ export type MutationCompleteLessonArgs = {
   input: CompleteLessonInput
 }
 
+export type MutationCompleteStudyLanguageOnboardingArgs = {
+  input: CompleteStudyLanguageOnboardingInput
+}
+
 export type MutationConfirmCsvImportArgs = {
   input: ConfirmCsvImportInput
+}
+
+export type MutationCopyGroupDeckArgs = {
+  sourceDeckId: Scalars['String']['input']
 }
 
 export type MutationCopyPublicDeckArgs = {
@@ -504,6 +640,10 @@ export type MutationRemovePushTokenArgs = {
   input: RemovePushTokenInput
 }
 
+export type MutationRemoveStudyLanguageArgs = {
+  languageCode: Scalars['String']['input']
+}
+
 export type MutationRequestPasswordResetArgs = {
   input: RequestPasswordResetInput
 }
@@ -516,6 +656,10 @@ export type MutationSaveGeneratedCardExampleArgs = {
   input: SaveGeneratedCardExampleInput
 }
 
+export type MutationSetActiveTargetLanguageArgs = {
+  languageCode: Scalars['String']['input']
+}
+
 export type MutationSetOfficialDeckArgs = {
   deckId: Scalars['ID']['input']
   isOfficial: Scalars['Boolean']['input']
@@ -525,8 +669,16 @@ export type MutationShareDeckWithGroupArgs = {
   input: ShareDeckWithGroupInput
 }
 
+export type MutationStartGroupDeckCopyPreviewArgs = {
+  input: StartGroupDeckCopyPreviewInput
+}
+
 export type MutationStartLessonArgs = {
   input: StartLessonInput
+}
+
+export type MutationStartPublicDeckCopyPreviewArgs = {
+  input: StartPublicDeckCopyPreviewInput
 }
 
 export type MutationSubmitReviewArgs = {
@@ -563,8 +715,10 @@ export type MutationVerifyEmailArgs = {
 
 export type MyAccount = {
   __typename?: 'MyAccount'
+  needsStudyLanguageOnboarding: Scalars['Boolean']['output']
   profile: UserProfile
   settings: UserSettings
+  studyLanguages: Array<UserStudyLanguage>
   user: SafeUser
 }
 
@@ -583,6 +737,7 @@ export type PublicDecksInput = {
   limit?: InputMaybe<Scalars['Int']['input']>
   offset?: InputMaybe<Scalars['Int']['input']>
   query?: InputMaybe<Scalars['String']['input']>
+  targetLanguage?: InputMaybe<Scalars['String']['input']>
 }
 
 export type Query = {
@@ -594,17 +749,21 @@ export type Query = {
   deck: Deck
   deckCards: Array<Card>
   deckLearningStats: DeckLearningStats
+  decksPage: DecksPageResult
   group: Group
   groupSharedDecks: Array<Deck>
+  languages: Array<Language>
   me: SafeUser
   moderationQueue: ModerationQueueResult
   myAccount: MyAccount
   myDecks: Array<Deck>
   myGroupInvitations: Array<GroupInvitation>
   myGroups: Array<Group>
+  myStudyLanguages: Array<UserStudyLanguage>
   publicDeck: Deck
   publicDeckCards: Array<Card>
   publicDecks: PublicDeckSearchResult
+  studyLanguageRemovalImpact: StudyLanguageRemovalImpact
 }
 
 export type QueryAdminSearchUsersArgs = {
@@ -623,12 +782,20 @@ export type QueryDeckLearningStatsArgs = {
   deckId: Scalars['String']['input']
 }
 
+export type QueryDecksPageArgs = {
+  input: DecksPageInput
+}
+
 export type QueryGroupArgs = {
   id: Scalars['String']['input']
 }
 
 export type QueryGroupSharedDecksArgs = {
   groupId: Scalars['String']['input']
+}
+
+export type QueryLanguagesArgs = {
+  search?: InputMaybe<Scalars['String']['input']>
 }
 
 export type QueryModerationQueueArgs = {
@@ -645,6 +812,10 @@ export type QueryPublicDeckCardsArgs = {
 
 export type QueryPublicDecksArgs = {
   input?: InputMaybe<PublicDecksInput>
+}
+
+export type QueryStudyLanguageRemovalImpactArgs = {
+  languageCode: Scalars['String']['input']
 }
 
 export type RefreshTokenInput = {
@@ -716,6 +887,12 @@ export type ShareDeckWithGroupPayload = {
   share: DeckGroupShare
 }
 
+export type StartGroupDeckCopyPreviewInput = {
+  chosenSourceLanguage: Scalars['String']['input']
+  discardActive?: InputMaybe<Scalars['Boolean']['input']>
+  sourceDeckId: Scalars['String']['input']
+}
+
 export type StartLessonInput = {
   deckId: Scalars['String']['input']
   lessonSize?: InputMaybe<Scalars['Int']['input']>
@@ -728,6 +905,17 @@ export type StartLessonPayload = {
   lessonSize: Scalars['Int']['output']
   sessionId?: Maybe<Scalars['String']['output']>
   totalCards: Scalars['Int']['output']
+}
+
+export type StartPublicDeckCopyPreviewInput = {
+  chosenSourceLanguage: Scalars['String']['input']
+  discardActive?: InputMaybe<Scalars['Boolean']['input']>
+  sourceDeckId: Scalars['String']['input']
+}
+
+export type StudyLanguageRemovalImpact = {
+  __typename?: 'StudyLanguageRemovalImpact'
+  affectedDeckCount: Scalars['Int']['output']
 }
 
 export type SubmitReviewInput = {
@@ -762,7 +950,15 @@ export type UpdateCardInput = {
 export type UpdateDeckInput = {
   deckId: Scalars['String']['input']
   description?: InputMaybe<Scalars['String']['input']>
+  sourceLanguage?: InputMaybe<Scalars['String']['input']>
+  targetLanguage?: InputMaybe<Scalars['String']['input']>
   title?: InputMaybe<Scalars['String']['input']>
+}
+
+export type UpdateDeckPayload = {
+  __typename?: 'UpdateDeckPayload'
+  deck: Deck
+  warnings: Array<DeckLanguageWarning>
 }
 
 export type UpdateProfileInput = {
@@ -774,6 +970,7 @@ export type UpdateSettingsInput = {
   audioAutoplayEnabled?: InputMaybe<Scalars['Boolean']['input']>
   interfaceLocale?: InputMaybe<Scalars['String']['input']>
   lessonSize?: InputMaybe<Scalars['Int']['input']>
+  nativeLanguage?: InputMaybe<Scalars['String']['input']>
   notificationsEnabled?: InputMaybe<Scalars['Boolean']['input']>
   reminderTime?: InputMaybe<Scalars['String']['input']>
   themePreference?: InputMaybe<ThemePreference>
@@ -798,17 +995,27 @@ export enum UserRole {
 
 export type UserSettings = {
   __typename?: 'UserSettings'
+  activeTargetLanguage?: Maybe<Scalars['String']['output']>
   audioAutoplayEnabled: Scalars['Boolean']['output']
   createdAt: Scalars['DateTime']['output']
   id: Scalars['String']['output']
   interfaceLocale: Scalars['String']['output']
   lessonSize: Scalars['Float']['output']
+  nativeLanguage: Scalars['String']['output']
   notificationsEnabled: Scalars['Boolean']['output']
   reminderTime: Scalars['String']['output']
   themePreference: ThemePreference
   timezone: Scalars['String']['output']
   updatedAt: Scalars['DateTime']['output']
   userId: Scalars['String']['output']
+}
+
+export type UserStudyLanguage = {
+  __typename?: 'UserStudyLanguage'
+  createdAt: Scalars['DateTime']['output']
+  isActive: Scalars['Boolean']['output']
+  language: Language
+  languageCode: Scalars['String']['output']
 }
 
 export type VerifyEmailInput = {
@@ -1056,7 +1263,7 @@ export type RegisterMutation = {
   register: {
     __typename?: 'AuthPayloadType'
     accessToken: string
-    refreshToken: string
+    refreshToken?: string | null
     user: {
       __typename?: 'SafeUser'
       id: string
@@ -1079,7 +1286,7 @@ export type LoginMutation = {
   login: {
     __typename?: 'AuthPayloadType'
     accessToken: string
-    refreshToken: string
+    refreshToken?: string | null
     user: {
       __typename?: 'SafeUser'
       id: string
@@ -1102,7 +1309,7 @@ export type RefreshTokenMutation = {
   refreshToken: {
     __typename?: 'AuthPayloadType'
     accessToken: string
-    refreshToken: string
+    refreshToken?: string | null
     user: {
       __typename?: 'SafeUser'
       id: string
@@ -1310,17 +1517,27 @@ export type CreateDeckMutationVariables = Exact<{
 export type CreateDeckMutation = {
   __typename?: 'Mutation'
   createDeck: {
-    __typename?: 'Deck'
-    id: string
-    ownerId: string
-    title: string
-    description?: string | null
-    visibility: DeckVisibility
-    moderationStatus: DeckModerationStatus
-    isOfficial: boolean
-    sourceDeckId?: string | null
-    createdAt: any
-    updatedAt: any
+    __typename?: 'CreateDeckPayload'
+    deck: {
+      __typename?: 'Deck'
+      id: string
+      ownerId: string
+      title: string
+      description?: string | null
+      visibility: DeckVisibility
+      moderationStatus: DeckModerationStatus
+      isOfficial: boolean
+      sourceDeckId?: string | null
+      targetLanguage?: string | null
+      sourceLanguage?: string | null
+      createdAt: any
+      updatedAt: any
+    }
+    warnings: Array<{
+      __typename?: 'DeckLanguageWarning'
+      code: DeckLanguageWarningCode
+      message: string
+    }>
   }
 }
 
@@ -1331,17 +1548,27 @@ export type UpdateDeckMutationVariables = Exact<{
 export type UpdateDeckMutation = {
   __typename?: 'Mutation'
   updateDeck: {
-    __typename?: 'Deck'
-    id: string
-    ownerId: string
-    title: string
-    description?: string | null
-    visibility: DeckVisibility
-    moderationStatus: DeckModerationStatus
-    isOfficial: boolean
-    sourceDeckId?: string | null
-    createdAt: any
-    updatedAt: any
+    __typename?: 'UpdateDeckPayload'
+    deck: {
+      __typename?: 'Deck'
+      id: string
+      ownerId: string
+      title: string
+      description?: string | null
+      visibility: DeckVisibility
+      moderationStatus: DeckModerationStatus
+      isOfficial: boolean
+      sourceDeckId?: string | null
+      targetLanguage?: string | null
+      sourceLanguage?: string | null
+      createdAt: any
+      updatedAt: any
+    }
+    warnings: Array<{
+      __typename?: 'DeckLanguageWarning'
+      code: DeckLanguageWarningCode
+      message: string
+    }>
   }
 }
 
@@ -1870,6 +2097,243 @@ export type UpdateMySettingsMutation = {
     timezone: string
     createdAt: any
     updatedAt: any
+  }
+}
+
+export type LanguagesQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']['input']>
+}>
+
+export type LanguagesQuery = {
+  __typename?: 'Query'
+  languages: Array<{
+    __typename?: 'Language'
+    code: string
+    englishName: string
+    nativeName: string
+    flag: string
+    popularSortOrder?: number | null
+  }>
+}
+
+export type MyStudyLanguagesQueryVariables = Exact<{ [key: string]: never }>
+
+export type MyStudyLanguagesQuery = {
+  __typename?: 'Query'
+  myStudyLanguages: Array<{
+    __typename?: 'UserStudyLanguage'
+    languageCode: string
+    isActive: boolean
+    createdAt: any
+    language: {
+      __typename?: 'Language'
+      code: string
+      englishName: string
+      nativeName: string
+      flag: string
+      popularSortOrder?: number | null
+    }
+  }>
+}
+
+export type StudyLanguageBootstrapQueryVariables = Exact<{ [key: string]: never }>
+
+export type StudyLanguageBootstrapQuery = {
+  __typename?: 'Query'
+  myAccount: {
+    __typename?: 'MyAccount'
+    needsStudyLanguageOnboarding: boolean
+    settings: {
+      __typename?: 'UserSettings'
+      activeTargetLanguage?: string | null
+      nativeLanguage: string
+    }
+    studyLanguages: Array<{
+      __typename?: 'UserStudyLanguage'
+      languageCode: string
+      isActive: boolean
+      createdAt: any
+      language: {
+        __typename?: 'Language'
+        code: string
+        englishName: string
+        nativeName: string
+        flag: string
+        popularSortOrder?: number | null
+      }
+    }>
+  }
+}
+
+export type StudyLanguageRemovalImpactQueryVariables = Exact<{
+  languageCode: Scalars['String']['input']
+}>
+
+export type StudyLanguageRemovalImpactQuery = {
+  __typename?: 'Query'
+  studyLanguageRemovalImpact: {
+    __typename?: 'StudyLanguageRemovalImpact'
+    affectedDeckCount: number
+  }
+}
+
+export type AddStudyLanguageMutationVariables = Exact<{
+  languageCode: Scalars['String']['input']
+}>
+
+export type AddStudyLanguageMutation = {
+  __typename?: 'Mutation'
+  addStudyLanguage: {
+    __typename?: 'UserStudyLanguage'
+    languageCode: string
+    isActive: boolean
+    createdAt: any
+    language: {
+      __typename?: 'Language'
+      code: string
+      englishName: string
+      nativeName: string
+      flag: string
+      popularSortOrder?: number | null
+    }
+  }
+}
+
+export type RemoveStudyLanguageMutationVariables = Exact<{
+  languageCode: Scalars['String']['input']
+}>
+
+export type RemoveStudyLanguageMutation = {
+  __typename?: 'Mutation'
+  removeStudyLanguage: Array<{
+    __typename?: 'UserStudyLanguage'
+    languageCode: string
+    isActive: boolean
+    createdAt: any
+    language: {
+      __typename?: 'Language'
+      code: string
+      englishName: string
+      nativeName: string
+      flag: string
+      popularSortOrder?: number | null
+    }
+  }>
+}
+
+export type SetActiveTargetLanguageMutationVariables = Exact<{
+  languageCode: Scalars['String']['input']
+}>
+
+export type SetActiveTargetLanguageMutation = {
+  __typename?: 'Mutation'
+  setActiveTargetLanguage: Array<{
+    __typename?: 'UserStudyLanguage'
+    languageCode: string
+    isActive: boolean
+    createdAt: any
+    language: {
+      __typename?: 'Language'
+      code: string
+      englishName: string
+      nativeName: string
+      flag: string
+      popularSortOrder?: number | null
+    }
+  }>
+}
+
+export type CompleteStudyLanguageOnboardingMutationVariables = Exact<{
+  input: CompleteStudyLanguageOnboardingInput
+}>
+
+export type CompleteStudyLanguageOnboardingMutation = {
+  __typename?: 'Mutation'
+  completeStudyLanguageOnboarding: {
+    __typename?: 'CompleteStudyLanguageOnboardingPayload'
+    needsStudyLanguageOnboarding: boolean
+    studyLanguages: Array<{
+      __typename?: 'UserStudyLanguage'
+      languageCode: string
+      isActive: boolean
+      createdAt: any
+      language: {
+        __typename?: 'Language'
+        code: string
+        englishName: string
+        nativeName: string
+        flag: string
+        popularSortOrder?: number | null
+      }
+    }>
+  }
+}
+
+export type StartPublicDeckCopyPreviewMutationVariables = Exact<{
+  input: StartPublicDeckCopyPreviewInput
+}>
+
+export type StartPublicDeckCopyPreviewMutation = {
+  __typename?: 'Mutation'
+  startPublicDeckCopyPreview: {
+    __typename?: 'DeckPreviewSession'
+    id: string
+    type: DeckPreviewSessionType
+    status: DeckPreviewSessionStatus
+    sourceDeckId?: string | null
+    targetLanguage: string
+    chosenSourceLanguage: string
+    expiresAt: any
+    createdAt: any
+    updatedAt: any
+    cards: Array<{
+      __typename?: 'DeckPreviewSessionCard'
+      sourceCardId?: string | null
+      front: string
+      back: string
+      example?: string | null
+      backError?: string | null
+      exampleError?: string | null
+    }>
+  }
+}
+
+export type StartGroupDeckCopyPreviewMutationVariables = Exact<{
+  input: StartGroupDeckCopyPreviewInput
+}>
+
+export type StartGroupDeckCopyPreviewMutation = {
+  __typename?: 'Mutation'
+  startGroupDeckCopyPreview: {
+    __typename?: 'DeckPreviewSession'
+    id: string
+    type: DeckPreviewSessionType
+    status: DeckPreviewSessionStatus
+    sourceDeckId?: string | null
+    targetLanguage: string
+    chosenSourceLanguage: string
+    expiresAt: any
+    createdAt: any
+    updatedAt: any
+    cards: Array<{
+      __typename?: 'DeckPreviewSessionCard'
+      sourceCardId?: string | null
+      front: string
+      back: string
+      example?: string | null
+      backError?: string | null
+      exampleError?: string | null
+    }>
+  }
+}
+
+export type AccountLocaleQueryVariables = Exact<{ [key: string]: never }>
+
+export type AccountLocaleQuery = {
+  __typename?: 'Query'
+  myAccount: {
+    __typename?: 'MyAccount'
+    settings: { __typename?: 'UserSettings'; interfaceLocale: string }
   }
 }
 
@@ -3335,16 +3799,24 @@ export type DeckCardsQueryResult = Apollo.QueryResult<DeckCardsQuery, DeckCardsQ
 export const CreateDeckDocument = gql`
   mutation CreateDeck($input: CreateDeckInput!) {
     createDeck(input: $input) {
-      id
-      ownerId
-      title
-      description
-      visibility
-      moderationStatus
-      isOfficial
-      sourceDeckId
-      createdAt
-      updatedAt
+      deck {
+        id
+        ownerId
+        title
+        description
+        visibility
+        moderationStatus
+        isOfficial
+        sourceDeckId
+        targetLanguage
+        sourceLanguage
+        createdAt
+        updatedAt
+      }
+      warnings {
+        code
+        message
+      }
     }
   }
 `
@@ -3388,16 +3860,24 @@ export type CreateDeckMutationOptions = Apollo.BaseMutationOptions<
 export const UpdateDeckDocument = gql`
   mutation UpdateDeck($input: UpdateDeckInput!) {
     updateDeck(input: $input) {
-      id
-      ownerId
-      title
-      description
-      visibility
-      moderationStatus
-      isOfficial
-      sourceDeckId
-      createdAt
-      updatedAt
+      deck {
+        id
+        ownerId
+        title
+        description
+        visibility
+        moderationStatus
+        isOfficial
+        sourceDeckId
+        targetLanguage
+        sourceLanguage
+        createdAt
+        updatedAt
+      }
+      warnings {
+        code
+        message
+      }
     }
   }
 `
@@ -5135,4 +5615,797 @@ export type UpdateMySettingsMutationResult = Apollo.MutationResult<UpdateMySetti
 export type UpdateMySettingsMutationOptions = Apollo.BaseMutationOptions<
   UpdateMySettingsMutation,
   UpdateMySettingsMutationVariables
+>
+export const LanguagesDocument = gql`
+  query Languages($search: String) {
+    languages(search: $search) {
+      code
+      englishName
+      nativeName
+      flag
+      popularSortOrder
+    }
+  }
+`
+
+/**
+ * __useLanguagesQuery__
+ *
+ * To run a query within a React component, call `useLanguagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLanguagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLanguagesQuery({
+ *   variables: {
+ *      search: // value for 'search'
+ *   },
+ * });
+ */
+export function useLanguagesQuery(
+  baseOptions?: Apollo.QueryHookOptions<LanguagesQuery, LanguagesQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<LanguagesQuery, LanguagesQueryVariables>(LanguagesDocument, options)
+}
+export function useLanguagesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<LanguagesQuery, LanguagesQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<LanguagesQuery, LanguagesQueryVariables>(LanguagesDocument, options)
+}
+// @ts-ignore
+export function useLanguagesSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<LanguagesQuery, LanguagesQueryVariables>,
+): Apollo.UseSuspenseQueryResult<LanguagesQuery, LanguagesQueryVariables>
+export function useLanguagesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<LanguagesQuery, LanguagesQueryVariables>,
+): Apollo.UseSuspenseQueryResult<LanguagesQuery | undefined, LanguagesQueryVariables>
+export function useLanguagesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<LanguagesQuery, LanguagesQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<LanguagesQuery, LanguagesQueryVariables>(
+    LanguagesDocument,
+    options,
+  )
+}
+export type LanguagesQueryHookResult = ReturnType<typeof useLanguagesQuery>
+export type LanguagesLazyQueryHookResult = ReturnType<typeof useLanguagesLazyQuery>
+export type LanguagesSuspenseQueryHookResult = ReturnType<typeof useLanguagesSuspenseQuery>
+export type LanguagesQueryResult = Apollo.QueryResult<LanguagesQuery, LanguagesQueryVariables>
+export const MyStudyLanguagesDocument = gql`
+  query MyStudyLanguages {
+    myStudyLanguages {
+      languageCode
+      isActive
+      createdAt
+      language {
+        code
+        englishName
+        nativeName
+        flag
+        popularSortOrder
+      }
+    }
+  }
+`
+
+/**
+ * __useMyStudyLanguagesQuery__
+ *
+ * To run a query within a React component, call `useMyStudyLanguagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyStudyLanguagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyStudyLanguagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyStudyLanguagesQuery(
+  baseOptions?: Apollo.QueryHookOptions<MyStudyLanguagesQuery, MyStudyLanguagesQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<MyStudyLanguagesQuery, MyStudyLanguagesQueryVariables>(
+    MyStudyLanguagesDocument,
+    options,
+  )
+}
+export function useMyStudyLanguagesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<MyStudyLanguagesQuery, MyStudyLanguagesQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<MyStudyLanguagesQuery, MyStudyLanguagesQueryVariables>(
+    MyStudyLanguagesDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useMyStudyLanguagesSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    MyStudyLanguagesQuery,
+    MyStudyLanguagesQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<MyStudyLanguagesQuery, MyStudyLanguagesQueryVariables>
+export function useMyStudyLanguagesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<MyStudyLanguagesQuery, MyStudyLanguagesQueryVariables>,
+): Apollo.UseSuspenseQueryResult<MyStudyLanguagesQuery | undefined, MyStudyLanguagesQueryVariables>
+export function useMyStudyLanguagesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<MyStudyLanguagesQuery, MyStudyLanguagesQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<MyStudyLanguagesQuery, MyStudyLanguagesQueryVariables>(
+    MyStudyLanguagesDocument,
+    options,
+  )
+}
+export type MyStudyLanguagesQueryHookResult = ReturnType<typeof useMyStudyLanguagesQuery>
+export type MyStudyLanguagesLazyQueryHookResult = ReturnType<typeof useMyStudyLanguagesLazyQuery>
+export type MyStudyLanguagesSuspenseQueryHookResult = ReturnType<
+  typeof useMyStudyLanguagesSuspenseQuery
+>
+export type MyStudyLanguagesQueryResult = Apollo.QueryResult<
+  MyStudyLanguagesQuery,
+  MyStudyLanguagesQueryVariables
+>
+export const StudyLanguageBootstrapDocument = gql`
+  query StudyLanguageBootstrap {
+    myAccount {
+      needsStudyLanguageOnboarding
+      settings {
+        activeTargetLanguage
+        nativeLanguage
+      }
+      studyLanguages {
+        languageCode
+        isActive
+        createdAt
+        language {
+          code
+          englishName
+          nativeName
+          flag
+          popularSortOrder
+        }
+      }
+    }
+  }
+`
+
+/**
+ * __useStudyLanguageBootstrapQuery__
+ *
+ * To run a query within a React component, call `useStudyLanguageBootstrapQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudyLanguageBootstrapQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudyLanguageBootstrapQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useStudyLanguageBootstrapQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    StudyLanguageBootstrapQuery,
+    StudyLanguageBootstrapQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<StudyLanguageBootstrapQuery, StudyLanguageBootstrapQueryVariables>(
+    StudyLanguageBootstrapDocument,
+    options,
+  )
+}
+export function useStudyLanguageBootstrapLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    StudyLanguageBootstrapQuery,
+    StudyLanguageBootstrapQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<StudyLanguageBootstrapQuery, StudyLanguageBootstrapQueryVariables>(
+    StudyLanguageBootstrapDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useStudyLanguageBootstrapSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    StudyLanguageBootstrapQuery,
+    StudyLanguageBootstrapQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<StudyLanguageBootstrapQuery, StudyLanguageBootstrapQueryVariables>
+export function useStudyLanguageBootstrapSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        StudyLanguageBootstrapQuery,
+        StudyLanguageBootstrapQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  StudyLanguageBootstrapQuery | undefined,
+  StudyLanguageBootstrapQueryVariables
+>
+export function useStudyLanguageBootstrapSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        StudyLanguageBootstrapQuery,
+        StudyLanguageBootstrapQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<StudyLanguageBootstrapQuery, StudyLanguageBootstrapQueryVariables>(
+    StudyLanguageBootstrapDocument,
+    options,
+  )
+}
+export type StudyLanguageBootstrapQueryHookResult = ReturnType<
+  typeof useStudyLanguageBootstrapQuery
+>
+export type StudyLanguageBootstrapLazyQueryHookResult = ReturnType<
+  typeof useStudyLanguageBootstrapLazyQuery
+>
+export type StudyLanguageBootstrapSuspenseQueryHookResult = ReturnType<
+  typeof useStudyLanguageBootstrapSuspenseQuery
+>
+export type StudyLanguageBootstrapQueryResult = Apollo.QueryResult<
+  StudyLanguageBootstrapQuery,
+  StudyLanguageBootstrapQueryVariables
+>
+export const StudyLanguageRemovalImpactDocument = gql`
+  query StudyLanguageRemovalImpact($languageCode: String!) {
+    studyLanguageRemovalImpact(languageCode: $languageCode) {
+      affectedDeckCount
+    }
+  }
+`
+
+/**
+ * __useStudyLanguageRemovalImpactQuery__
+ *
+ * To run a query within a React component, call `useStudyLanguageRemovalImpactQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudyLanguageRemovalImpactQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudyLanguageRemovalImpactQuery({
+ *   variables: {
+ *      languageCode: // value for 'languageCode'
+ *   },
+ * });
+ */
+export function useStudyLanguageRemovalImpactQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    StudyLanguageRemovalImpactQuery,
+    StudyLanguageRemovalImpactQueryVariables
+  > &
+    ({ variables: StudyLanguageRemovalImpactQueryVariables; skip?: boolean } | { skip: boolean }),
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<StudyLanguageRemovalImpactQuery, StudyLanguageRemovalImpactQueryVariables>(
+    StudyLanguageRemovalImpactDocument,
+    options,
+  )
+}
+export function useStudyLanguageRemovalImpactLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    StudyLanguageRemovalImpactQuery,
+    StudyLanguageRemovalImpactQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<
+    StudyLanguageRemovalImpactQuery,
+    StudyLanguageRemovalImpactQueryVariables
+  >(StudyLanguageRemovalImpactDocument, options)
+}
+// @ts-ignore
+export function useStudyLanguageRemovalImpactSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    StudyLanguageRemovalImpactQuery,
+    StudyLanguageRemovalImpactQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<
+  StudyLanguageRemovalImpactQuery,
+  StudyLanguageRemovalImpactQueryVariables
+>
+export function useStudyLanguageRemovalImpactSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        StudyLanguageRemovalImpactQuery,
+        StudyLanguageRemovalImpactQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  StudyLanguageRemovalImpactQuery | undefined,
+  StudyLanguageRemovalImpactQueryVariables
+>
+export function useStudyLanguageRemovalImpactSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        StudyLanguageRemovalImpactQuery,
+        StudyLanguageRemovalImpactQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<
+    StudyLanguageRemovalImpactQuery,
+    StudyLanguageRemovalImpactQueryVariables
+  >(StudyLanguageRemovalImpactDocument, options)
+}
+export type StudyLanguageRemovalImpactQueryHookResult = ReturnType<
+  typeof useStudyLanguageRemovalImpactQuery
+>
+export type StudyLanguageRemovalImpactLazyQueryHookResult = ReturnType<
+  typeof useStudyLanguageRemovalImpactLazyQuery
+>
+export type StudyLanguageRemovalImpactSuspenseQueryHookResult = ReturnType<
+  typeof useStudyLanguageRemovalImpactSuspenseQuery
+>
+export type StudyLanguageRemovalImpactQueryResult = Apollo.QueryResult<
+  StudyLanguageRemovalImpactQuery,
+  StudyLanguageRemovalImpactQueryVariables
+>
+export const AddStudyLanguageDocument = gql`
+  mutation AddStudyLanguage($languageCode: String!) {
+    addStudyLanguage(languageCode: $languageCode) {
+      languageCode
+      isActive
+      createdAt
+      language {
+        code
+        englishName
+        nativeName
+        flag
+        popularSortOrder
+      }
+    }
+  }
+`
+export type AddStudyLanguageMutationFn = Apollo.MutationFunction<
+  AddStudyLanguageMutation,
+  AddStudyLanguageMutationVariables
+>
+
+/**
+ * __useAddStudyLanguageMutation__
+ *
+ * To run a mutation, you first call `useAddStudyLanguageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddStudyLanguageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addStudyLanguageMutation, { data, loading, error }] = useAddStudyLanguageMutation({
+ *   variables: {
+ *      languageCode: // value for 'languageCode'
+ *   },
+ * });
+ */
+export function useAddStudyLanguageMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddStudyLanguageMutation,
+    AddStudyLanguageMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AddStudyLanguageMutation, AddStudyLanguageMutationVariables>(
+    AddStudyLanguageDocument,
+    options,
+  )
+}
+export type AddStudyLanguageMutationHookResult = ReturnType<typeof useAddStudyLanguageMutation>
+export type AddStudyLanguageMutationResult = Apollo.MutationResult<AddStudyLanguageMutation>
+export type AddStudyLanguageMutationOptions = Apollo.BaseMutationOptions<
+  AddStudyLanguageMutation,
+  AddStudyLanguageMutationVariables
+>
+export const RemoveStudyLanguageDocument = gql`
+  mutation RemoveStudyLanguage($languageCode: String!) {
+    removeStudyLanguage(languageCode: $languageCode) {
+      languageCode
+      isActive
+      createdAt
+      language {
+        code
+        englishName
+        nativeName
+        flag
+        popularSortOrder
+      }
+    }
+  }
+`
+export type RemoveStudyLanguageMutationFn = Apollo.MutationFunction<
+  RemoveStudyLanguageMutation,
+  RemoveStudyLanguageMutationVariables
+>
+
+/**
+ * __useRemoveStudyLanguageMutation__
+ *
+ * To run a mutation, you first call `useRemoveStudyLanguageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveStudyLanguageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeStudyLanguageMutation, { data, loading, error }] = useRemoveStudyLanguageMutation({
+ *   variables: {
+ *      languageCode: // value for 'languageCode'
+ *   },
+ * });
+ */
+export function useRemoveStudyLanguageMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveStudyLanguageMutation,
+    RemoveStudyLanguageMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<RemoveStudyLanguageMutation, RemoveStudyLanguageMutationVariables>(
+    RemoveStudyLanguageDocument,
+    options,
+  )
+}
+export type RemoveStudyLanguageMutationHookResult = ReturnType<
+  typeof useRemoveStudyLanguageMutation
+>
+export type RemoveStudyLanguageMutationResult = Apollo.MutationResult<RemoveStudyLanguageMutation>
+export type RemoveStudyLanguageMutationOptions = Apollo.BaseMutationOptions<
+  RemoveStudyLanguageMutation,
+  RemoveStudyLanguageMutationVariables
+>
+export const SetActiveTargetLanguageDocument = gql`
+  mutation SetActiveTargetLanguage($languageCode: String!) {
+    setActiveTargetLanguage(languageCode: $languageCode) {
+      languageCode
+      isActive
+      createdAt
+      language {
+        code
+        englishName
+        nativeName
+        flag
+        popularSortOrder
+      }
+    }
+  }
+`
+export type SetActiveTargetLanguageMutationFn = Apollo.MutationFunction<
+  SetActiveTargetLanguageMutation,
+  SetActiveTargetLanguageMutationVariables
+>
+
+/**
+ * __useSetActiveTargetLanguageMutation__
+ *
+ * To run a mutation, you first call `useSetActiveTargetLanguageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetActiveTargetLanguageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setActiveTargetLanguageMutation, { data, loading, error }] = useSetActiveTargetLanguageMutation({
+ *   variables: {
+ *      languageCode: // value for 'languageCode'
+ *   },
+ * });
+ */
+export function useSetActiveTargetLanguageMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    SetActiveTargetLanguageMutation,
+    SetActiveTargetLanguageMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    SetActiveTargetLanguageMutation,
+    SetActiveTargetLanguageMutationVariables
+  >(SetActiveTargetLanguageDocument, options)
+}
+export type SetActiveTargetLanguageMutationHookResult = ReturnType<
+  typeof useSetActiveTargetLanguageMutation
+>
+export type SetActiveTargetLanguageMutationResult =
+  Apollo.MutationResult<SetActiveTargetLanguageMutation>
+export type SetActiveTargetLanguageMutationOptions = Apollo.BaseMutationOptions<
+  SetActiveTargetLanguageMutation,
+  SetActiveTargetLanguageMutationVariables
+>
+export const CompleteStudyLanguageOnboardingDocument = gql`
+  mutation CompleteStudyLanguageOnboarding($input: CompleteStudyLanguageOnboardingInput!) {
+    completeStudyLanguageOnboarding(input: $input) {
+      needsStudyLanguageOnboarding
+      studyLanguages {
+        languageCode
+        isActive
+        createdAt
+        language {
+          code
+          englishName
+          nativeName
+          flag
+          popularSortOrder
+        }
+      }
+    }
+  }
+`
+export type CompleteStudyLanguageOnboardingMutationFn = Apollo.MutationFunction<
+  CompleteStudyLanguageOnboardingMutation,
+  CompleteStudyLanguageOnboardingMutationVariables
+>
+
+/**
+ * __useCompleteStudyLanguageOnboardingMutation__
+ *
+ * To run a mutation, you first call `useCompleteStudyLanguageOnboardingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCompleteStudyLanguageOnboardingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [completeStudyLanguageOnboardingMutation, { data, loading, error }] = useCompleteStudyLanguageOnboardingMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCompleteStudyLanguageOnboardingMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CompleteStudyLanguageOnboardingMutation,
+    CompleteStudyLanguageOnboardingMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    CompleteStudyLanguageOnboardingMutation,
+    CompleteStudyLanguageOnboardingMutationVariables
+  >(CompleteStudyLanguageOnboardingDocument, options)
+}
+export type CompleteStudyLanguageOnboardingMutationHookResult = ReturnType<
+  typeof useCompleteStudyLanguageOnboardingMutation
+>
+export type CompleteStudyLanguageOnboardingMutationResult =
+  Apollo.MutationResult<CompleteStudyLanguageOnboardingMutation>
+export type CompleteStudyLanguageOnboardingMutationOptions = Apollo.BaseMutationOptions<
+  CompleteStudyLanguageOnboardingMutation,
+  CompleteStudyLanguageOnboardingMutationVariables
+>
+export const StartPublicDeckCopyPreviewDocument = gql`
+  mutation StartPublicDeckCopyPreview($input: StartPublicDeckCopyPreviewInput!) {
+    startPublicDeckCopyPreview(input: $input) {
+      id
+      type
+      status
+      sourceDeckId
+      targetLanguage
+      chosenSourceLanguage
+      cards {
+        sourceCardId
+        front
+        back
+        example
+        backError
+        exampleError
+      }
+      expiresAt
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type StartPublicDeckCopyPreviewMutationFn = Apollo.MutationFunction<
+  StartPublicDeckCopyPreviewMutation,
+  StartPublicDeckCopyPreviewMutationVariables
+>
+
+/**
+ * __useStartPublicDeckCopyPreviewMutation__
+ *
+ * To run a mutation, you first call `useStartPublicDeckCopyPreviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStartPublicDeckCopyPreviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [startPublicDeckCopyPreviewMutation, { data, loading, error }] = useStartPublicDeckCopyPreviewMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useStartPublicDeckCopyPreviewMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    StartPublicDeckCopyPreviewMutation,
+    StartPublicDeckCopyPreviewMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    StartPublicDeckCopyPreviewMutation,
+    StartPublicDeckCopyPreviewMutationVariables
+  >(StartPublicDeckCopyPreviewDocument, options)
+}
+export type StartPublicDeckCopyPreviewMutationHookResult = ReturnType<
+  typeof useStartPublicDeckCopyPreviewMutation
+>
+export type StartPublicDeckCopyPreviewMutationResult =
+  Apollo.MutationResult<StartPublicDeckCopyPreviewMutation>
+export type StartPublicDeckCopyPreviewMutationOptions = Apollo.BaseMutationOptions<
+  StartPublicDeckCopyPreviewMutation,
+  StartPublicDeckCopyPreviewMutationVariables
+>
+export const StartGroupDeckCopyPreviewDocument = gql`
+  mutation StartGroupDeckCopyPreview($input: StartGroupDeckCopyPreviewInput!) {
+    startGroupDeckCopyPreview(input: $input) {
+      id
+      type
+      status
+      sourceDeckId
+      targetLanguage
+      chosenSourceLanguage
+      cards {
+        sourceCardId
+        front
+        back
+        example
+        backError
+        exampleError
+      }
+      expiresAt
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type StartGroupDeckCopyPreviewMutationFn = Apollo.MutationFunction<
+  StartGroupDeckCopyPreviewMutation,
+  StartGroupDeckCopyPreviewMutationVariables
+>
+
+/**
+ * __useStartGroupDeckCopyPreviewMutation__
+ *
+ * To run a mutation, you first call `useStartGroupDeckCopyPreviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStartGroupDeckCopyPreviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [startGroupDeckCopyPreviewMutation, { data, loading, error }] = useStartGroupDeckCopyPreviewMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useStartGroupDeckCopyPreviewMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    StartGroupDeckCopyPreviewMutation,
+    StartGroupDeckCopyPreviewMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    StartGroupDeckCopyPreviewMutation,
+    StartGroupDeckCopyPreviewMutationVariables
+  >(StartGroupDeckCopyPreviewDocument, options)
+}
+export type StartGroupDeckCopyPreviewMutationHookResult = ReturnType<
+  typeof useStartGroupDeckCopyPreviewMutation
+>
+export type StartGroupDeckCopyPreviewMutationResult =
+  Apollo.MutationResult<StartGroupDeckCopyPreviewMutation>
+export type StartGroupDeckCopyPreviewMutationOptions = Apollo.BaseMutationOptions<
+  StartGroupDeckCopyPreviewMutation,
+  StartGroupDeckCopyPreviewMutationVariables
+>
+export const AccountLocaleDocument = gql`
+  query AccountLocale {
+    myAccount {
+      settings {
+        interfaceLocale
+      }
+    }
+  }
+`
+
+/**
+ * __useAccountLocaleQuery__
+ *
+ * To run a query within a React component, call `useAccountLocaleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAccountLocaleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAccountLocaleQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAccountLocaleQuery(
+  baseOptions?: Apollo.QueryHookOptions<AccountLocaleQuery, AccountLocaleQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<AccountLocaleQuery, AccountLocaleQueryVariables>(
+    AccountLocaleDocument,
+    options,
+  )
+}
+export function useAccountLocaleLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<AccountLocaleQuery, AccountLocaleQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<AccountLocaleQuery, AccountLocaleQueryVariables>(
+    AccountLocaleDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useAccountLocaleSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<AccountLocaleQuery, AccountLocaleQueryVariables>,
+): Apollo.UseSuspenseQueryResult<AccountLocaleQuery, AccountLocaleQueryVariables>
+export function useAccountLocaleSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<AccountLocaleQuery, AccountLocaleQueryVariables>,
+): Apollo.UseSuspenseQueryResult<AccountLocaleQuery | undefined, AccountLocaleQueryVariables>
+export function useAccountLocaleSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<AccountLocaleQuery, AccountLocaleQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<AccountLocaleQuery, AccountLocaleQueryVariables>(
+    AccountLocaleDocument,
+    options,
+  )
+}
+export type AccountLocaleQueryHookResult = ReturnType<typeof useAccountLocaleQuery>
+export type AccountLocaleLazyQueryHookResult = ReturnType<typeof useAccountLocaleLazyQuery>
+export type AccountLocaleSuspenseQueryHookResult = ReturnType<typeof useAccountLocaleSuspenseQuery>
+export type AccountLocaleQueryResult = Apollo.QueryResult<
+  AccountLocaleQuery,
+  AccountLocaleQueryVariables
 >
