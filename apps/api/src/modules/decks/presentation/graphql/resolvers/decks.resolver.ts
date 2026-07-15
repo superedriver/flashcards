@@ -8,6 +8,7 @@ import { CopyPublicDeckUseCase } from '../../../application/use-cases/copy-publi
 import { CreateCardUseCase } from '../../../application/use-cases/create-card.use-case';
 import { CreateDeckUseCase } from '../../../application/use-cases/create-deck.use-case';
 import { DeckCardsUseCase } from '../../../application/use-cases/deck-cards.use-case';
+import { DecksPageUseCase } from '../../../application/use-cases/decks-page.use-case';
 import { DeleteDeckUseCase } from '../../../application/use-cases/delete-deck.use-case';
 import { DeleteCardUseCase } from '../../../application/use-cases/delete-card.use-case';
 import { GetDeckUseCase } from '../../../application/use-cases/get-deck.use-case';
@@ -22,6 +23,7 @@ import { UpdateCardUseCase } from '../../../application/use-cases/update-card.us
 import { StartDeckPreviewUseCase } from '../../../../languages/application/use-cases/start-deck-preview.use-case';
 import { CreateDeckInput } from '../inputs/create-deck.input';
 import { CreateCardInput } from '../inputs/create-card.input';
+import { DecksPageInput } from '../inputs/decks-page.input';
 import { PublicDecksInput } from '../inputs/public-decks.input';
 import { StartPublicDeckCopyPreviewInput } from '../inputs/start-public-deck-copy-preview.input';
 import { UpdateDeckInput } from '../inputs/update-deck.input';
@@ -30,7 +32,9 @@ import { CardType } from '../types/card.type';
 import { CreateDeckPayloadType } from '../types/create-deck-payload.type';
 import { DeckLanguageWarningCode } from '../types/deck-language-warning.type';
 import { DeckModerationStatus } from '../types/deck-moderation-status.type';
+import { DeckOrigin } from '../types/deck-origin.type';
 import { DeckVisibility } from '../types/deck-visibility.type';
+import { DecksPageResultType } from '../types/decks-page-result.type';
 import { UpdateDeckPayloadType } from '../types/update-deck-payload.type';
 import { CopyPublicDeckPayloadType } from '../types/copy-public-deck-payload.type';
 import {
@@ -71,6 +75,7 @@ export class DecksResolver {
   constructor(
     private readonly createDeckUseCase: CreateDeckUseCase,
     private readonly myDecksUseCase: MyDecksUseCase,
+    private readonly decksPageUseCase: DecksPageUseCase,
     private readonly getDeckUseCase: GetDeckUseCase,
     private readonly updateDeckUseCase: UpdateDeckUseCase,
     private readonly deleteDeckUseCase: DeleteDeckUseCase,
@@ -86,6 +91,30 @@ export class DecksResolver {
     private readonly unpublishDeckUseCase: UnpublishDeckUseCase,
     private readonly startDeckPreviewUseCase: StartDeckPreviewUseCase,
   ) {}
+
+  @Query(() => DecksPageResultType)
+  @UseGuards(GqlAuthGuard)
+  async decksPage(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: DecksPageInput,
+  ): Promise<DecksPageResultType> {
+    const result = await this.decksPageUseCase.execute({
+      currentUserId: user.id,
+      activeTargetLanguage: input.activeTargetLanguage,
+    });
+
+    const toPageDeck = (deck: (typeof result.ownDecks)[number]) => ({
+      ...toDeckType(deck),
+      origin: deck.origin as DeckOrigin,
+    });
+
+    return {
+      ownDecks: result.ownDecks.map(toPageDeck),
+      groupDecks: result.groupDecks.map(toPageDeck),
+      publicDecks: result.publicDecks.map(toPageDeck),
+      noLanguageDecks: result.noLanguageDecks.map(toPageDeck),
+    };
+  }
 
   @Query(() => DeckType)
   @UseGuards(OptionalGqlAuthGuard)

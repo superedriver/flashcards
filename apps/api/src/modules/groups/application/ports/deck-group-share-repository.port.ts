@@ -19,6 +19,7 @@ export type DeckGroupShareRepositoryPort = {
   }): Promise<DeckGroupShare | null>;
   findActiveGroupsForDeck(deckId: string): Promise<DeckGroupShare[]>;
   findSharedDecksForGroup(groupId: string): Promise<Deck[]>;
+  findSharedDecksForUser(userId: string): Promise<Deck[]>;
   userHasAccessToDeck(input: {
     userId: string;
     deckId: string;

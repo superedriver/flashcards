@@ -75,6 +75,45 @@ export class PrismaDeckGroupShareRepository implements DeckGroupShareRepositoryP
     return shares.map((share) => toDeck(share.deck));
   }
 
+  async findSharedDecksForUser(userId: string): Promise<Deck[]> {
+    const shares = await this.prisma.deckGroupShare.findMany({
+      where: {
+        deletedAt: null,
+        deck: {
+          deletedAt: null,
+        },
+        group: {
+          deletedAt: null,
+          members: {
+            some: {
+              userId,
+            },
+          },
+        },
+      },
+      include: {
+        deck: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    const seen = new Set<string>();
+    const decks: Deck[] = [];
+
+    for (const share of shares) {
+      if (seen.has(share.deck.id)) {
+        continue;
+      }
+
+      seen.add(share.deck.id);
+      decks.push(toDeck(share.deck));
+    }
+
+    return decks;
+  }
+
   async userHasAccessToDeck(input: {
     userId: string;
     deckId: string;

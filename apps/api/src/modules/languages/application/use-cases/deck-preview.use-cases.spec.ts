@@ -121,6 +121,7 @@ describe('Deck preview use cases lifecycle', () => {
         findByDeckAndGroup: jest.fn(),
         findActiveGroupsForDeck: jest.fn(),
         findSharedDecksForGroup: jest.fn(),
+        findSharedDecksForUser: jest.fn(),
         userHasAccessToDeck: jest.fn(),
       },
       {
@@ -209,6 +210,7 @@ describe('Deck preview use cases lifecycle', () => {
         findByDeckAndGroup: jest.fn(),
         findActiveGroupsForDeck: jest.fn(),
         findSharedDecksForGroup: jest.fn(),
+        findSharedDecksForUser: jest.fn(),
         userHasAccessToDeck: jest.fn(),
       },
       {

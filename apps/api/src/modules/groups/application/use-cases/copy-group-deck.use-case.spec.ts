@@ -113,6 +113,7 @@ function createUseCase(options?: {
       findByDeckAndGroup: jest.fn(),
       findActiveGroupsForDeck: jest.fn(),
       findSharedDecksForGroup: jest.fn(),
+      findSharedDecksForUser: jest.fn(),
       userHasAccessToDeck: jest
         .fn()
         .mockResolvedValue(options?.hasAccess ?? true),

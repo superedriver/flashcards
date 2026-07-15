@@ -21,6 +21,8 @@ export type UpdateDeckInput = {
 export type PublicDeckSearchInput = {
   query?: string | null;
   targetLanguage?: string | null;
+  /** When true, only PUBLIC approved decks with targetLanguage IS NULL. */
+  requireNullTargetLanguage?: boolean;
   limit: number;
   offset: number;
 };

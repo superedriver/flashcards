@@ -134,6 +134,7 @@ function createUseCase(options?: {
       findByDeckAndGroup,
       findActiveGroupsForDeck: jest.fn(),
       findSharedDecksForGroup: jest.fn(),
+      findSharedDecksForUser: jest.fn(),
       userHasAccessToDeck: jest.fn(),
     },
   );

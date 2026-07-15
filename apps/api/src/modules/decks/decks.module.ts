@@ -9,6 +9,7 @@ import { CopyPublicDeckUseCase } from './application/use-cases/copy-public-deck.
 import { CreateCardUseCase } from './application/use-cases/create-card.use-case';
 import { CreateDeckUseCase } from './application/use-cases/create-deck.use-case';
 import { DeckCardsUseCase } from './application/use-cases/deck-cards.use-case';
+import { DecksPageUseCase } from './application/use-cases/decks-page.use-case';
 import { DeleteDeckUseCase } from './application/use-cases/delete-deck.use-case';
 import { DeleteCardUseCase } from './application/use-cases/delete-card.use-case';
 import { GetDeckUseCase } from './application/use-cases/get-deck.use-case';
@@ -42,6 +43,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     },
     CreateDeckUseCase,
     MyDecksUseCase,
+    DecksPageUseCase,
     GetDeckUseCase,
     UpdateDeckUseCase,
     DeleteDeckUseCase,
@@ -62,6 +64,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     CARD_REPOSITORY,
     CreateDeckUseCase,
     MyDecksUseCase,
+    DecksPageUseCase,
     GetDeckUseCase,
     UpdateDeckUseCase,
     DeleteDeckUseCase,
