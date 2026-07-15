@@ -82,12 +82,28 @@ enum PushProvider {
   EXPO
 }
 
+enum DeckPreviewSessionType {
+  COPY_PUBLIC
+  COPY_GROUP
+  REGENERATE_DECK
+}
+
+enum DeckPreviewSessionStatus {
+  GENERATING
+  READY
+  EXPIRED
+}
+
 model Language {
   code             String @id
   englishName      String
   nativeName       String
   flag             String
   popularSortOrder Int?
+
+  studyLanguages UserStudyLanguage[]
+  decksAsTarget  Deck[] @relation("DeckTargetLanguage")
+  decksAsSource  Deck[] @relation("DeckSourceLanguage")
 
   @@index([popularSortOrder])
 }
@@ -123,6 +139,8 @@ model User {
   groupInvitationsSent    GroupInvitation[]  @relation("GroupInvitationInvitedBy")
   deckGroupSharesCreated  DeckGroupShare[]   @relation("DeckGroupShareCreatedBy")
   pushTokens              PushToken[]
+  studyLanguages          UserStudyLanguage[]
+  deckPreviewSessions     DeckPreviewSession[]
 
   @@index([email])
   @@index([role])
@@ -151,6 +169,8 @@ model UserSettings {
   timezone             String          @default("UTC")
   audioAutoplayEnabled Boolean         @default(false)
   lessonSize           Int             @default(20)
+  nativeLanguage       String          @default("en")
+  activeTargetLanguage String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -217,12 +237,16 @@ model Deck {
   moderationStatus DeckModerationStatus @default(NONE)
   isOfficial       Boolean              @default(false)
   sourceDeckId     String?
+  targetLanguage   String?
+  sourceLanguage   String?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  owner User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  owner             User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  targetLanguageRef Language? @relation("DeckTargetLanguage", fields: [targetLanguage], references: [code], onDelete: Restrict)
+  sourceLanguageRef Language? @relation("DeckSourceLanguage", fields: [sourceLanguage], references: [code], onDelete: Restrict)
   cards Card[]
   studySessions      StudySession[]
   studySessionReviews StudySessionReview[]
@@ -235,6 +259,8 @@ model Deck {
   @@index([moderationStatus])
   @@index([isOfficial])
   @@index([deletedAt])
+  @@index([targetLanguage])
+  @@index([sourceLanguage])
 }
 
 model Card {
@@ -485,4 +511,38 @@ model PushToken {
   @@index([userId])
   @@index([provider])
   @@index([disabledAt])
+}
+
+model UserStudyLanguage {
+  id           String   @id @default(uuid())
+  userId       String
+  languageCode String
+  createdAt    DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  language Language @relation(fields: [languageCode], references: [code], onDelete: Restrict)
+
+  @@unique([userId, languageCode])
+  @@index([userId])
+  @@index([languageCode])
+}
+
+model DeckPreviewSession {
+  id                   String                   @id @default(uuid())
+  userId               String
+  type                 DeckPreviewSessionType
+  status               DeckPreviewSessionStatus @default(GENERATING)
+  sourceDeckId         String?
+  targetLanguage       String
+  chosenSourceLanguage String
+  cards                Json
+  expiresAt            DateTime
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@index([status])
 }
