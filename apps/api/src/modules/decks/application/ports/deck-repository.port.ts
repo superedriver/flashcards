@@ -20,6 +20,7 @@ export type UpdateDeckInput = {
 
 export type PublicDeckSearchInput = {
   query?: string | null;
+  targetLanguage?: string | null;
   limit: number;
   offset: number;
 };

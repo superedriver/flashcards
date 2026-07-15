@@ -151,6 +151,7 @@ export class PrismaDeckRepository implements DeckRepositoryPort {
       visibility: 'PUBLIC' as const,
       moderationStatus: 'APPROVED' as const,
       deletedAt: null,
+      ...(input.targetLanguage ? { targetLanguage: input.targetLanguage } : {}),
       ...(query
         ? {
             OR: [

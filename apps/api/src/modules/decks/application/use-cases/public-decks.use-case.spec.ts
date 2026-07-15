@@ -108,9 +108,20 @@ describe('PublicDecksUseCase', () => {
 
     expect(searchPublicApproved).toHaveBeenCalledWith({
       query: 'hello',
+      targetLanguage: null,
       limit: 10,
       offset: 5,
     });
+  });
+
+  it('passes trimmed targetLanguage filter to repository', async () => {
+    const { useCase, searchPublicApproved } = createUseCase();
+
+    await useCase.execute({ targetLanguage: '  es  ' });
+
+    expect(searchPublicApproved).toHaveBeenCalledWith(
+      expect.objectContaining({ targetLanguage: 'es' }),
+    );
   });
 
   it('returns items and total from repository', async () => {

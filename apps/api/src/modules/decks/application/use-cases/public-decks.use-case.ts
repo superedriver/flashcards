@@ -12,6 +12,7 @@ const DEFAULT_OFFSET = 0;
 
 export type PublicDecksUseCaseInput = {
   query?: string | null;
+  targetLanguage?: string | null;
   limit?: number;
   offset?: number;
 };
@@ -37,9 +38,22 @@ export class PublicDecksUseCase {
 
     return this.deckRepository.searchPublicApproved({
       query,
+      targetLanguage: this.normalizeTargetLanguage(input.targetLanguage),
       limit,
       offset,
     });
+  }
+
+  private normalizeTargetLanguage(
+    targetLanguage?: string | null,
+  ): string | null {
+    if (targetLanguage == null) {
+      return null;
+    }
+
+    const trimmed = targetLanguage.trim();
+
+    return trimmed.length > 0 ? trimmed : null;
   }
 
   private normalizeQuery(query?: string | null): string | null {

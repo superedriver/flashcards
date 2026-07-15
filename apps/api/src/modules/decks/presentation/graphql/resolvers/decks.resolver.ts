@@ -126,6 +126,7 @@ export class DecksResolver {
   ): Promise<PublicDeckSearchResultType> {
     const result = await this.publicDecksUseCase.execute({
       query: input?.query,
+      targetLanguage: input?.targetLanguage,
       limit: input?.limit,
       offset: input?.offset,
     });

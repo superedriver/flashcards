@@ -5,6 +5,9 @@ export class PublicDecksInput {
   @Field(() => String, { nullable: true })
   query?: string | null;
 
+  @Field(() => String, { nullable: true })
+  targetLanguage?: string | null;
+
   @Field(() => Int, { nullable: true })
   limit?: number;
 
