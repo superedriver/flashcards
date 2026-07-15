@@ -26,6 +26,8 @@ function createDeck(overrides: Partial<Deck> = {}): Deck {
     moderationStatus: 'NONE',
     isOfficial: false,
     sourceDeckId: null,
+    targetLanguage: null,
+    sourceLanguage: null,
     createdAt: new Date('2026-01-01T00:00:00.000Z'),
     updatedAt: new Date('2026-01-01T00:00:00.000Z'),
     deletedAt: null,
@@ -47,19 +49,37 @@ function createUseCase(deck: Deck | null) {
       }),
     );
 
-  const useCase = new UpdateDeckUseCase({
-    create: jest.fn(),
-    findById: jest.fn().mockResolvedValue(deck),
-    findByOwner: jest.fn(),
-    update,
-    softDelete: jest.fn(),
-    publish: jest.fn(),
-    unpublish: jest.fn(),
-    findPublicApprovedById: jest.fn(),
-    searchPublicApproved: jest.fn(),
-    createCopiedDeck: jest.fn(),
-    countByOwnerAndTargetLanguage: jest.fn(),
-  });
+  const useCase = new UpdateDeckUseCase(
+    {
+      create: jest.fn(),
+      findById: jest.fn().mockResolvedValue(deck),
+      findByOwner: jest.fn(),
+      update,
+      softDelete: jest.fn(),
+      publish: jest.fn(),
+      unpublish: jest.fn(),
+      findPublicApprovedById: jest.fn(),
+      searchPublicApproved: jest.fn(),
+      createCopiedDeck: jest.fn(),
+      countByOwnerAndTargetLanguage: jest.fn(),
+    },
+    {
+      findAll: jest.fn(),
+      findByCode: jest.fn().mockImplementation((code: string) =>
+        Promise.resolve(
+          code === 'es'
+            ? {
+                code,
+                englishName: 'Spanish',
+                nativeName: 'Español',
+                flag: '🇪🇸',
+                popularSortOrder: 2,
+              }
+            : null,
+        ),
+      ),
+    },
+  );
 
   return { useCase, update };
 }
@@ -163,6 +183,21 @@ describe('UpdateDeckUseCase', () => {
     expect(update).toHaveBeenCalledWith({
       deckId: 'deck-1',
       title: 'Only Title',
+    });
+  });
+
+  it('updates targetLanguage for legacy assign flow', async () => {
+    const { useCase, update } = createUseCase(createDeck());
+
+    await useCase.execute({
+      currentUser: owner,
+      deckId: 'deck-1',
+      targetLanguage: 'es',
+    });
+
+    expect(update).toHaveBeenCalledWith({
+      deckId: 'deck-1',
+      targetLanguage: 'es',
     });
   });
 });

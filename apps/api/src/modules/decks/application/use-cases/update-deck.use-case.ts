@@ -1,6 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import { AuthUser } from '../../../auth/domain/types';
+import {
+  LANGUAGE_REPOSITORY,
+  LanguageRepositoryPort,
+} from '../../../languages/application/ports/language-repository.port';
 import { DeckPermissionService } from '../../domain/services/deck-permission.service';
 import { Deck } from '../../domain/types';
 import {
@@ -13,6 +17,8 @@ export type UpdateDeckUseCaseInput = {
   deckId: string;
   title?: string;
   description?: string | null;
+  targetLanguage?: string;
+  sourceLanguage?: string;
 };
 
 export type UpdateDeckUseCaseResult = Deck;
@@ -27,6 +33,8 @@ export class UpdateDeckUseCase {
   constructor(
     @Inject(DECK_REPOSITORY)
     private readonly deckRepository: DeckRepositoryPort,
+    @Inject(LANGUAGE_REPOSITORY)
+    private readonly languageRepository: LanguageRepositoryPort,
   ) {}
 
   async execute(
@@ -50,6 +58,8 @@ export class UpdateDeckUseCase {
     const updateData: {
       title?: string;
       description?: string | null;
+      targetLanguage?: string;
+      sourceLanguage?: string;
     } = {};
 
     if (input.title !== undefined) {
@@ -86,9 +96,48 @@ export class UpdateDeckUseCase {
       updateData.description = description;
     }
 
+    if (input.targetLanguage !== undefined) {
+      const targetLanguage = input.targetLanguage.trim();
+
+      if (!targetLanguage) {
+        throw new ApplicationError(
+          ErrorCodes.VALIDATION_ERROR,
+          'Target language is required',
+        );
+      }
+
+      await this.ensureLanguageExists(targetLanguage);
+      updateData.targetLanguage = targetLanguage;
+    }
+
+    if (input.sourceLanguage !== undefined) {
+      const sourceLanguage = input.sourceLanguage.trim();
+
+      if (!sourceLanguage) {
+        throw new ApplicationError(
+          ErrorCodes.VALIDATION_ERROR,
+          'Source language is required',
+        );
+      }
+
+      await this.ensureLanguageExists(sourceLanguage);
+      updateData.sourceLanguage = sourceLanguage;
+    }
+
     return this.deckRepository.update({
       deckId: input.deckId,
       ...updateData,
     });
+  }
+
+  private async ensureLanguageExists(languageCode: string): Promise<void> {
+    const language = await this.languageRepository.findByCode(languageCode);
+
+    if (!language) {
+      throw new ApplicationError(
+        ErrorCodes.LANGUAGE_NOT_FOUND,
+        'Language not found',
+      );
+    }
   }
 }

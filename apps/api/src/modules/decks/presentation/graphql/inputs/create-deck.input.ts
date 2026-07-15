@@ -7,4 +7,10 @@ export class CreateDeckInput {
 
   @Field(() => String, { nullable: true })
   description?: string | null;
+
+  @Field()
+  targetLanguage: string;
+
+  @Field({ nullable: true })
+  sourceLanguage?: string;
 }

@@ -6,12 +6,16 @@ export type CreateDeckInput = {
   ownerId: string;
   title: string;
   description?: string | null;
+  targetLanguage: string;
+  sourceLanguage: string;
 };
 
 export type UpdateDeckInput = {
   deckId: string;
   title?: string;
   description?: string | null;
+  targetLanguage?: string;
+  sourceLanguage?: string;
 };
 
 export type PublicDeckSearchInput = {

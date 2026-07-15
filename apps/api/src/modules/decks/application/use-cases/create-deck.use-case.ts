@@ -1,9 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import {
+  USER_SETTINGS_REPOSITORY,
+  UserSettingsRepositoryPort,
+} from '../../../account/application/ports/user-settings-repository.port';
+import {
   USER_REPOSITORY,
   UserRepositoryPort,
 } from '../../../auth/application/ports/user-repository.port';
+import {
+  LANGUAGE_REPOSITORY,
+  LanguageRepositoryPort,
+} from '../../../languages/application/ports/language-repository.port';
 import { Deck } from '../../domain/types';
 import {
   DECK_REPOSITORY,
@@ -14,6 +22,8 @@ export type CreateDeckUseCaseInput = {
   currentUserId: string;
   title: string;
   description?: string | null;
+  targetLanguage: string;
+  sourceLanguage?: string;
 };
 
 export type CreateDeckUseCaseResult = Deck;
@@ -28,6 +38,10 @@ export class CreateDeckUseCase {
     private readonly userRepository: UserRepositoryPort,
     @Inject(DECK_REPOSITORY)
     private readonly deckRepository: DeckRepositoryPort,
+    @Inject(USER_SETTINGS_REPOSITORY)
+    private readonly userSettingsRepository: UserSettingsRepositoryPort,
+    @Inject(LANGUAGE_REPOSITORY)
+    private readonly languageRepository: LanguageRepositoryPort,
   ) {}
 
   async execute(
@@ -72,10 +86,53 @@ export class CreateDeckUseCase {
       }
     }
 
+    const targetLanguage = input.targetLanguage.trim();
+
+    if (!targetLanguage) {
+      throw new ApplicationError(
+        ErrorCodes.VALIDATION_ERROR,
+        'Target language is required',
+      );
+    }
+
+    await this.ensureLanguageExists(targetLanguage);
+
+    let sourceLanguage = input.sourceLanguage?.trim();
+
+    if (!sourceLanguage) {
+      const settings = await this.userSettingsRepository.findByUserId(
+        input.currentUserId,
+      );
+
+      if (!settings) {
+        throw new ApplicationError(
+          ErrorCodes.VALIDATION_ERROR,
+          'Source language is required',
+        );
+      }
+
+      sourceLanguage = settings.nativeLanguage;
+    }
+
+    await this.ensureLanguageExists(sourceLanguage);
+
     return this.deckRepository.create({
       ownerId: input.currentUserId,
       title,
       description,
+      targetLanguage,
+      sourceLanguage,
     });
+  }
+
+  private async ensureLanguageExists(languageCode: string): Promise<void> {
+    const language = await this.languageRepository.findByCode(languageCode);
+
+    if (!language) {
+      throw new ApplicationError(
+        ErrorCodes.LANGUAGE_NOT_FOUND,
+        'Language not found',
+      );
+    }
   }
 }

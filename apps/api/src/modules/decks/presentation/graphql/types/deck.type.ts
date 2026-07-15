@@ -28,6 +28,12 @@ export class DeckType {
   @Field(() => String, { nullable: true })
   sourceDeckId: string | null;
 
+  @Field(() => String, { nullable: true })
+  targetLanguage: string | null;
+
+  @Field(() => String, { nullable: true })
+  sourceLanguage: string | null;
+
   @Field()
   createdAt: Date;
 

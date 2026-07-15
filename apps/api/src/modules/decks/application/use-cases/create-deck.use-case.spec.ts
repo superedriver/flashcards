@@ -1,5 +1,6 @@
 import { ErrorCodes } from '../../../../common/errors';
 import { SafeUser } from '../../../auth/domain/types';
+import { UserSettings } from '../../../account/domain/types';
 import { Deck } from '../../domain/types';
 import { CreateDeckInput } from '../ports/deck-repository.port';
 import { CreateDeckUseCase } from './create-deck.use-case';
@@ -14,6 +15,22 @@ const safeUser: SafeUser = {
   updatedAt: new Date('2026-01-01T00:00:00.000Z'),
 };
 
+const settings: UserSettings = {
+  id: 'settings-1',
+  userId: 'owner-1',
+  interfaceLocale: 'en',
+  themePreference: 'SYSTEM',
+  notificationsEnabled: false,
+  reminderTime: '18:00',
+  timezone: 'UTC',
+  audioAutoplayEnabled: false,
+  lessonSize: 20,
+  nativeLanguage: 'uk',
+  activeTargetLanguage: null,
+  createdAt: new Date('2026-01-01T00:00:00.000Z'),
+  updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+};
+
 const deck: Deck = {
   id: 'deck-1',
   ownerId: 'owner-1',
@@ -23,12 +40,17 @@ const deck: Deck = {
   moderationStatus: 'NONE',
   isOfficial: false,
   sourceDeckId: null,
+  targetLanguage: 'es',
+  sourceLanguage: 'uk',
   createdAt: new Date('2026-01-01T00:00:00.000Z'),
   updatedAt: new Date('2026-01-01T00:00:00.000Z'),
   deletedAt: null,
 };
 
-function createUseCase(options?: { user?: SafeUser | null }) {
+function createUseCase(options?: {
+  user?: SafeUser | null;
+  settings?: UserSettings | null;
+}) {
   const findById = jest
     .fn()
     .mockResolvedValue(options?.user === undefined ? safeUser : options.user);
@@ -40,8 +62,28 @@ function createUseCase(options?: { user?: SafeUser | null }) {
         ownerId: input.ownerId,
         title: input.title,
         description: input.description ?? null,
+        targetLanguage: input.targetLanguage,
+        sourceLanguage: input.sourceLanguage,
       }),
     );
+  const findByUserId = jest
+    .fn()
+    .mockResolvedValue(
+      options?.settings === undefined ? settings : options.settings,
+    );
+  const findByCode = jest.fn().mockImplementation((code: string) =>
+    Promise.resolve(
+      ['es', 'uk', 'en'].includes(code)
+        ? {
+            code,
+            englishName: code,
+            nativeName: code,
+            flag: '🏳️',
+            popularSortOrder: null,
+          }
+        : null,
+    ),
+  );
 
   const useCase = new CreateDeckUseCase(
     {
@@ -64,9 +106,19 @@ function createUseCase(options?: { user?: SafeUser | null }) {
       createCopiedDeck: jest.fn(),
       countByOwnerAndTargetLanguage: jest.fn(),
     },
+    {
+      findByUserId,
+      createForUser: jest.fn(),
+      update: jest.fn(),
+      findWithNotificationsEnabled: jest.fn(),
+    },
+    {
+      findAll: jest.fn(),
+      findByCode,
+    },
   );
 
-  return { useCase, create };
+  return { useCase, create, findByCode, findByUserId };
 }
 
 describe('CreateDeckUseCase', () => {
@@ -74,7 +126,11 @@ describe('CreateDeckUseCase', () => {
     const { useCase } = createUseCase({ user: null });
 
     await expect(
-      useCase.execute({ currentUserId: 'missing', title: 'Deck' }),
+      useCase.execute({
+        currentUserId: 'missing',
+        title: 'Deck',
+        targetLanguage: 'es',
+      }),
     ).rejects.toMatchObject({ code: ErrorCodes.UNAUTHORIZED });
   });
 
@@ -84,7 +140,11 @@ describe('CreateDeckUseCase', () => {
     });
 
     await expect(
-      useCase.execute({ currentUserId: 'owner-1', title: 'Deck' }),
+      useCase.execute({
+        currentUserId: 'owner-1',
+        title: 'Deck',
+        targetLanguage: 'es',
+      }),
     ).rejects.toMatchObject({ code: ErrorCodes.USER_BLOCKED });
   });
 
@@ -94,12 +154,15 @@ describe('CreateDeckUseCase', () => {
     const result = await useCase.execute({
       currentUserId: 'owner-1',
       title: '  Spanish Basics  ',
+      targetLanguage: 'es',
     });
 
     expect(create).toHaveBeenCalledWith({
       ownerId: 'owner-1',
       title: 'Spanish Basics',
       description: undefined,
+      targetLanguage: 'es',
+      sourceLanguage: 'uk',
     });
     expect(result.title).toBe('Spanish Basics');
   });
@@ -108,7 +171,11 @@ describe('CreateDeckUseCase', () => {
     const { useCase } = createUseCase();
 
     await expect(
-      useCase.execute({ currentUserId: 'owner-1', title: '   ' }),
+      useCase.execute({
+        currentUserId: 'owner-1',
+        title: '   ',
+        targetLanguage: 'es',
+      }),
     ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
   });
 
@@ -116,7 +183,11 @@ describe('CreateDeckUseCase', () => {
     const { useCase } = createUseCase();
 
     await expect(
-      useCase.execute({ currentUserId: 'owner-1', title: 'a'.repeat(121) }),
+      useCase.execute({
+        currentUserId: 'owner-1',
+        title: 'a'.repeat(121),
+        targetLanguage: 'es',
+      }),
     ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
   });
 
@@ -127,6 +198,7 @@ describe('CreateDeckUseCase', () => {
       currentUserId: 'owner-1',
       title: 'Deck',
       description: '   ',
+      targetLanguage: 'es',
     });
 
     expect(create).toHaveBeenCalledWith(
@@ -142,6 +214,7 @@ describe('CreateDeckUseCase', () => {
         currentUserId: 'owner-1',
         title: 'Deck',
         description: 'a'.repeat(1001),
+        targetLanguage: 'es',
       }),
     ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
   });
@@ -149,10 +222,67 @@ describe('CreateDeckUseCase', () => {
   it('creates deck with ownerId = currentUserId', async () => {
     const { useCase, create } = createUseCase();
 
-    await useCase.execute({ currentUserId: 'owner-1', title: 'Deck' });
+    await useCase.execute({
+      currentUserId: 'owner-1',
+      title: 'Deck',
+      targetLanguage: 'es',
+    });
 
     expect(create).toHaveBeenCalledWith(
       expect.objectContaining({ ownerId: 'owner-1' }),
     );
+  });
+
+  it('defaults sourceLanguage from user settings nativeLanguage', async () => {
+    const { useCase, create } = createUseCase();
+
+    await useCase.execute({
+      currentUserId: 'owner-1',
+      title: 'Deck',
+      targetLanguage: 'es',
+    });
+
+    expect(create).toHaveBeenCalledWith(
+      expect.objectContaining({ sourceLanguage: 'uk' }),
+    );
+  });
+
+  it('uses explicit sourceLanguage when provided', async () => {
+    const { useCase, create } = createUseCase();
+
+    await useCase.execute({
+      currentUserId: 'owner-1',
+      title: 'Deck',
+      targetLanguage: 'es',
+      sourceLanguage: 'en',
+    });
+
+    expect(create).toHaveBeenCalledWith(
+      expect.objectContaining({ sourceLanguage: 'en' }),
+    );
+  });
+
+  it('rejects unknown targetLanguage with LANGUAGE_NOT_FOUND', async () => {
+    const { useCase } = createUseCase();
+
+    await expect(
+      useCase.execute({
+        currentUserId: 'owner-1',
+        title: 'Deck',
+        targetLanguage: 'xx',
+      }),
+    ).rejects.toMatchObject({ code: ErrorCodes.LANGUAGE_NOT_FOUND });
+  });
+
+  it('rejects missing settings when sourceLanguage omitted', async () => {
+    const { useCase } = createUseCase({ settings: null });
+
+    await expect(
+      useCase.execute({
+        currentUserId: 'owner-1',
+        title: 'Deck',
+        targetLanguage: 'es',
+      }),
+    ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
   });
 });

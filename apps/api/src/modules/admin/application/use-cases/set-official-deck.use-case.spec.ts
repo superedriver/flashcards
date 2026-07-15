@@ -40,6 +40,8 @@ const officialDeck: ModerationDeck = {
   moderationStatus: 'APPROVED',
   isOfficial: true,
   sourceDeckId: null,
+  targetLanguage: null,
+  sourceLanguage: null,
   createdAt: new Date('2026-01-01T00:00:00.000Z'),
   updatedAt: new Date('2026-06-01T00:00:00.000Z'),
   deletedAt: null,

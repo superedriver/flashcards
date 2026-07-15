@@ -9,6 +9,8 @@ type PrismaDeckRecord = {
   moderationStatus: string;
   isOfficial: boolean;
   sourceDeckId: string | null;
+  targetLanguage: string | null;
+  sourceLanguage: string | null;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
@@ -24,6 +26,8 @@ export function toDeck(deck: PrismaDeckRecord): Deck {
     moderationStatus: deck.moderationStatus as DeckModerationStatus,
     isOfficial: deck.isOfficial,
     sourceDeckId: deck.sourceDeckId,
+    targetLanguage: deck.targetLanguage,
+    sourceLanguage: deck.sourceLanguage,
     createdAt: deck.createdAt,
     updatedAt: deck.updatedAt,
     deletedAt: deck.deletedAt,

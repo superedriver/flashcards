@@ -10,4 +10,10 @@ export class UpdateDeckInput {
 
   @Field(() => String, { nullable: true })
   description?: string | null;
+
+  @Field({ nullable: true })
+  targetLanguage?: string;
+
+  @Field({ nullable: true })
+  sourceLanguage?: string;
 }

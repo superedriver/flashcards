@@ -221,7 +221,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 - [x] TASK-24.04 Add Language repository + languages GraphQL query
 - [x] TASK-24.05 Add UserStudyLanguage use cases + GraphQL
 - [x] TASK-24.06 Extend UserSettings for nativeLanguage and activeTargetLanguage
-- [ ] TASK-24.07 Extend Deck with targetLanguage and sourceLanguage
+- [x] TASK-24.07 Extend Deck with targetLanguage and sourceLanguage
 - [ ] TASK-24.08 Add deck language validation (soft same-language warning)
 - [ ] TASK-24.09 Add DeckPreviewSession persistence + TTL cleanup
 - [ ] TASK-24.10 Add AI translate card back use case
@@ -671,7 +671,7 @@ TASK-24.06 Extend UserSettings for nativeLanguage and activeTargetLanguage
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

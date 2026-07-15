@@ -10,6 +10,8 @@ export type Deck = {
   moderationStatus: DeckModerationStatus;
   isOfficial: boolean;
   sourceDeckId: string | null;
+  targetLanguage: string | null;
+  sourceLanguage: string | null;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;

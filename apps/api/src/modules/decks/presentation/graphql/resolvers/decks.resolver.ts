@@ -146,6 +146,8 @@ export class DecksResolver {
       currentUserId: user.id,
       title: input.title,
       description: input.description,
+      targetLanguage: input.targetLanguage,
+      sourceLanguage: input.sourceLanguage,
     });
 
     return {
@@ -166,6 +168,8 @@ export class DecksResolver {
       deckId: input.deckId,
       title: input.title,
       description: input.description,
+      targetLanguage: input.targetLanguage,
+      sourceLanguage: input.sourceLanguage,
     });
 
     return {

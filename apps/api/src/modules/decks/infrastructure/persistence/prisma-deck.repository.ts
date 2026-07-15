@@ -25,6 +25,8 @@ export class PrismaDeckRepository implements DeckRepositoryPort {
         ownerId: input.ownerId,
         title: input.title,
         description: input.description ?? null,
+        targetLanguage: input.targetLanguage,
+        sourceLanguage: input.sourceLanguage,
       },
     });
 
@@ -58,6 +60,8 @@ export class PrismaDeckRepository implements DeckRepositoryPort {
     const data: {
       title?: string;
       description?: string | null;
+      targetLanguage?: string;
+      sourceLanguage?: string;
     } = {};
 
     if (input.title !== undefined) {
@@ -66,6 +70,14 @@ export class PrismaDeckRepository implements DeckRepositoryPort {
 
     if (input.description !== undefined) {
       data.description = input.description;
+    }
+
+    if (input.targetLanguage !== undefined) {
+      data.targetLanguage = input.targetLanguage;
+    }
+
+    if (input.sourceLanguage !== undefined) {
+      data.sourceLanguage = input.sourceLanguage;
     }
 
     const deck = await this.prisma.deck.update({
