@@ -4,6 +4,7 @@ import {
   USER_REPOSITORY,
   UserRepositoryPort,
 } from '../../../auth/application/ports/user-repository.port';
+import { MyStudyLanguagesUseCase } from '../../../languages/application/use-cases/my-study-languages.use-case';
 import { MyAccount } from '../../domain/types';
 import {
   USER_PROFILE_REPOSITORY,
@@ -29,6 +30,7 @@ export class GetMyAccountUseCase {
     private readonly userProfileRepository: UserProfileRepositoryPort,
     @Inject(USER_SETTINGS_REPOSITORY)
     private readonly userSettingsRepository: UserSettingsRepositoryPort,
+    private readonly myStudyLanguagesUseCase: MyStudyLanguagesUseCase,
   ) {}
 
   async execute(input: GetMyAccountInput): Promise<GetMyAccountResult> {
@@ -52,10 +54,16 @@ export class GetMyAccountUseCase {
       settings = await this.userSettingsRepository.createForUser(input.userId);
     }
 
+    const studyLanguages = await this.myStudyLanguagesUseCase.execute({
+      currentUserId: input.userId,
+    });
+
     return {
       user,
       profile,
       settings,
+      studyLanguages,
+      needsStudyLanguageOnboarding: studyLanguages.length === 0,
     };
   }
 }

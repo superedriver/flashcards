@@ -11,6 +11,7 @@ import { USER_STUDY_LANGUAGE_REPOSITORY } from './application/ports/user-study-l
 import { AddStudyLanguageUseCase } from './application/use-cases/add-study-language.use-case';
 import { CancelDeckPreviewUseCase } from './application/use-cases/cancel-deck-preview.use-case';
 import { CleanupExpiredDeckPreviewSessionsUseCase } from './application/use-cases/cleanup-expired-deck-preview-sessions.use-case';
+import { CompleteStudyLanguageOnboardingUseCase } from './application/use-cases/complete-study-language-onboarding.use-case';
 import { ConfirmDeckPreviewUseCase } from './application/use-cases/confirm-deck-preview.use-case';
 import { GetActiveDeckPreviewUseCase } from './application/use-cases/get-active-deck-preview.use-case';
 import { ListLanguagesUseCase } from './application/use-cases/list-languages.use-case';
@@ -56,6 +57,7 @@ import { InternalDeckPreviewController } from './presentation/http/internal-deck
     StudyLanguageRemovalImpactUseCase,
     RemoveStudyLanguageUseCase,
     SetActiveTargetLanguageUseCase,
+    CompleteStudyLanguageOnboardingUseCase,
     CleanupExpiredDeckPreviewSessionsUseCase,
     StartDeckPreviewUseCase,
     UpdateDeckPreviewCardUseCase,
@@ -73,6 +75,7 @@ import { InternalDeckPreviewController } from './presentation/http/internal-deck
     MyStudyLanguagesUseCase,
     AddStudyLanguageUseCase,
     SetActiveTargetLanguageUseCase,
+    CompleteStudyLanguageOnboardingUseCase,
     CleanupExpiredDeckPreviewSessionsUseCase,
     StartDeckPreviewUseCase,
     UpdateDeckPreviewCardUseCase,

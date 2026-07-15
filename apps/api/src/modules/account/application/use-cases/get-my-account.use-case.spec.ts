@@ -58,6 +58,7 @@ function createUseCase(options?: {
       options?.settings === undefined ? settings : options.settings,
     );
   const createSettingsForUser = jest.fn().mockResolvedValue(settings);
+  const myStudyLanguagesExecute = jest.fn().mockResolvedValue([]);
 
   const useCase = new GetMyAccountUseCase(
     {
@@ -78,6 +79,9 @@ function createUseCase(options?: {
       update: jest.fn(),
       findWithNotificationsEnabled: jest.fn(),
     },
+    {
+      execute: myStudyLanguagesExecute,
+    } as never,
   );
 
   return {
@@ -87,6 +91,7 @@ function createUseCase(options?: {
     createProfileForUser,
     findSettingsByUserId,
     createSettingsForUser,
+    myStudyLanguagesExecute,
   };
 }
 
@@ -138,8 +143,36 @@ describe('GetMyAccountUseCase', () => {
       user: safeUser,
       profile,
       settings,
+      studyLanguages: [],
+      needsStudyLanguageOnboarding: true,
     });
     expect(result.user).not.toHaveProperty('passwordHash');
+  });
+
+  it('sets needsStudyLanguageOnboarding false when study languages exist', async () => {
+    const studyLanguages = [
+      {
+        id: 'study-1',
+        userId: 'user-1',
+        languageCode: 'es',
+        createdAt: new Date('2026-01-01T00:00:00.000Z'),
+        isActive: true,
+        language: {
+          code: 'es',
+          englishName: 'Spanish',
+          nativeName: 'Español',
+          flag: '🇪🇸',
+          popularSortOrder: 2,
+        },
+      },
+    ];
+    const { useCase, myStudyLanguagesExecute } = createUseCase();
+    myStudyLanguagesExecute.mockResolvedValue(studyLanguages);
+
+    const result = await useCase.execute({ userId: 'user-1' });
+
+    expect(result.needsStudyLanguageOnboarding).toBe(false);
+    expect(result.studyLanguages).toEqual(studyLanguages);
   });
 
   it('does not create profile or settings when they already exist', async () => {

@@ -37,6 +37,8 @@ export class AccountResolver {
         ...account.settings,
         themePreference: account.settings.themePreference as ThemePreference,
       },
+      studyLanguages: account.studyLanguages,
+      needsStudyLanguageOnboarding: account.needsStudyLanguageOnboarding,
     };
   }
 
