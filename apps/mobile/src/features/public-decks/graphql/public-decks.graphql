@@ -26,6 +26,8 @@ query PublicDeck($deckId: String!) {
     moderationStatus
     isOfficial
     sourceDeckId
+    targetLanguage
+    sourceLanguage
     createdAt
     updatedAt
   }

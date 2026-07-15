@@ -240,7 +240,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 - [x] TASK-24.23 Refactor Decks screen (4 sections, remove Public tab)
 - [x] TASK-24.24 Extend deck create/edit/settings with language pair
 - [x] TASK-24.25 Add legacy assign languages + language-gated actions
-- [ ] TASK-24.26 Add copy/regenerate preview UI flows
+- [x] TASK-24.26 Add copy/regenerate preview UI flows
 - [ ] TASK-24.27 Extend settings UI for nativeLanguage
 - [ ] TASK-24.28 Add study languages i18n strings (en/uk)
 - [ ] TASK-24.29 Study languages smoke checks + final epic checks
@@ -1423,7 +1423,7 @@ TASK-24.25 Add legacy assign languages + language-gated actions
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

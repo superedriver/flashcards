@@ -26,6 +26,7 @@ import { PrismaLanguageRepository } from './infrastructure/persistence/prisma-la
 import { PrismaUserStudyLanguageRepository } from './infrastructure/persistence/prisma-user-study-language.repository';
 import { LanguagesResolver } from './presentation/graphql/resolvers/languages.resolver';
 import { StudyLanguagesResolver } from './presentation/graphql/resolvers/study-languages.resolver';
+import { DeckPreviewResolver } from './presentation/graphql/resolvers/deck-preview.resolver';
 import { InternalDeckPreviewController } from './presentation/http/internal-deck-preview.controller';
 
 @Module({
@@ -66,6 +67,7 @@ import { InternalDeckPreviewController } from './presentation/http/internal-deck
     GetActiveDeckPreviewUseCase,
     LanguagesResolver,
     StudyLanguagesResolver,
+    DeckPreviewResolver,
   ],
   exports: [
     LANGUAGE_REPOSITORY,

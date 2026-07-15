@@ -140,6 +140,12 @@ export type ConfirmCsvImportPayload = {
   import: CsvImport
 }
 
+export type ConfirmDeckPreviewPayload = {
+  __typename?: 'ConfirmDeckPreviewPayload'
+  cards: Array<Card>
+  deck: Deck
+}
+
 export type CopyGroupDeckPayload = {
   __typename?: 'CopyGroupDeckPayload'
   cards: Array<Card>
@@ -484,9 +490,11 @@ export type Mutation = {
   addStudyLanguage: UserStudyLanguage
   approveDeck: ModerationDeck
   blockUser: AdminUserSummary
+  cancelDeckPreview: Scalars['Boolean']['output']
   completeLesson: CompleteLessonPayload
   completeStudyLanguageOnboarding: CompleteStudyLanguageOnboardingPayload
   confirmCsvImport: ConfirmCsvImportPayload
+  confirmDeckPreview: ConfirmDeckPreviewPayload
   copyGroupDeck: CopyGroupDeckPayload
   copyPublicDeck: CopyPublicDeckPayload
   createCard: Card
@@ -515,6 +523,7 @@ export type Mutation = {
   setActiveTargetLanguage: Array<UserStudyLanguage>
   setOfficialDeck: ModerationDeck
   shareDeckWithGroup: ShareDeckWithGroupPayload
+  startDeckRegeneratePreview: DeckPreviewSession
   startGroupDeckCopyPreview: DeckPreviewSession
   startLesson: StartLessonPayload
   startPublicDeckCopyPreview: DeckPreviewSession
@@ -523,6 +532,7 @@ export type Mutation = {
   unpublishDeck: Deck
   updateCard: Card
   updateDeck: UpdateDeckPayload
+  updateDeckPreviewCard: DeckPreviewSession
   updateProfile: UserProfile
   updateSettings: UserSettings
   verifyEmail: SafeUser
@@ -548,6 +558,10 @@ export type MutationBlockUserArgs = {
   userId: Scalars['ID']['input']
 }
 
+export type MutationCancelDeckPreviewArgs = {
+  sessionId: Scalars['String']['input']
+}
+
 export type MutationCompleteLessonArgs = {
   input: CompleteLessonInput
 }
@@ -558,6 +572,10 @@ export type MutationCompleteStudyLanguageOnboardingArgs = {
 
 export type MutationConfirmCsvImportArgs = {
   input: ConfirmCsvImportInput
+}
+
+export type MutationConfirmDeckPreviewArgs = {
+  sessionId: Scalars['String']['input']
 }
 
 export type MutationCopyGroupDeckArgs = {
@@ -669,6 +687,10 @@ export type MutationShareDeckWithGroupArgs = {
   input: ShareDeckWithGroupInput
 }
 
+export type MutationStartDeckRegeneratePreviewArgs = {
+  input: StartDeckRegeneratePreviewInput
+}
+
 export type MutationStartGroupDeckCopyPreviewArgs = {
   input: StartGroupDeckCopyPreviewInput
 }
@@ -699,6 +721,10 @@ export type MutationUpdateCardArgs = {
 
 export type MutationUpdateDeckArgs = {
   input: UpdateDeckInput
+}
+
+export type MutationUpdateDeckPreviewCardArgs = {
+  input: UpdateDeckPreviewCardInput
 }
 
 export type MutationUpdateProfileArgs = {
@@ -742,6 +768,7 @@ export type PublicDecksInput = {
 
 export type Query = {
   __typename?: 'Query'
+  activeDeckPreview?: Maybe<DeckPreviewSession>
   adminDashboardStats: AdminDashboardStats
   adminSearchUsers: AdminUserSearchResult
   /** GraphQL transport health check. */
@@ -887,6 +914,12 @@ export type ShareDeckWithGroupPayload = {
   share: DeckGroupShare
 }
 
+export type StartDeckRegeneratePreviewInput = {
+  chosenSourceLanguage: Scalars['String']['input']
+  discardActive?: InputMaybe<Scalars['Boolean']['input']>
+  sourceDeckId: Scalars['String']['input']
+}
+
 export type StartGroupDeckCopyPreviewInput = {
   chosenSourceLanguage: Scalars['String']['input']
   discardActive?: InputMaybe<Scalars['Boolean']['input']>
@@ -959,6 +992,13 @@ export type UpdateDeckPayload = {
   __typename?: 'UpdateDeckPayload'
   deck: Deck
   warnings: Array<DeckLanguageWarning>
+}
+
+export type UpdateDeckPreviewCardInput = {
+  back?: InputMaybe<Scalars['String']['input']>
+  cardIndex: Scalars['Int']['input']
+  example?: InputMaybe<Scalars['String']['input']>
+  sessionId: Scalars['String']['input']
 }
 
 export type UpdateProfileInput = {
@@ -1911,9 +1951,48 @@ export type GroupSharedDecksQuery = {
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
     sourceDeckId?: string | null
+    targetLanguage?: string | null
+    sourceLanguage?: string | null
     createdAt: any
     updatedAt: any
   }>
+}
+
+export type CopyGroupDeckMutationVariables = Exact<{
+  sourceDeckId: Scalars['String']['input']
+}>
+
+export type CopyGroupDeckMutation = {
+  __typename?: 'Mutation'
+  copyGroupDeck: {
+    __typename?: 'CopyGroupDeckPayload'
+    deck: {
+      __typename?: 'Deck'
+      id: string
+      ownerId: string
+      title: string
+      description?: string | null
+      visibility: DeckVisibility
+      moderationStatus: DeckModerationStatus
+      isOfficial: boolean
+      sourceDeckId?: string | null
+      targetLanguage?: string | null
+      sourceLanguage?: string | null
+      createdAt: any
+      updatedAt: any
+    }
+    cards: Array<{
+      __typename?: 'Card'
+      id: string
+      deckId: string
+      front: string
+      back: string
+      example?: string | null
+      notes?: string | null
+      createdAt: any
+      updatedAt: any
+    }>
+  }
 }
 
 export type StartLessonMutationVariables = Exact<{
@@ -2079,6 +2158,8 @@ export type PublicDeckQuery = {
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
     sourceDeckId?: string | null
+    targetLanguage?: string | null
+    sourceLanguage?: string | null
     createdAt: any
     updatedAt: any
   }
@@ -2384,6 +2465,135 @@ export type StartGroupDeckCopyPreviewMutationVariables = Exact<{
 export type StartGroupDeckCopyPreviewMutation = {
   __typename?: 'Mutation'
   startGroupDeckCopyPreview: {
+    __typename?: 'DeckPreviewSession'
+    id: string
+    type: DeckPreviewSessionType
+    status: DeckPreviewSessionStatus
+    sourceDeckId?: string | null
+    targetLanguage: string
+    chosenSourceLanguage: string
+    expiresAt: any
+    createdAt: any
+    updatedAt: any
+    cards: Array<{
+      __typename?: 'DeckPreviewSessionCard'
+      sourceCardId?: string | null
+      front: string
+      back: string
+      example?: string | null
+      backError?: string | null
+      exampleError?: string | null
+    }>
+  }
+}
+
+export type ActiveDeckPreviewQueryVariables = Exact<{ [key: string]: never }>
+
+export type ActiveDeckPreviewQuery = {
+  __typename?: 'Query'
+  activeDeckPreview?: {
+    __typename?: 'DeckPreviewSession'
+    id: string
+    type: DeckPreviewSessionType
+    status: DeckPreviewSessionStatus
+    sourceDeckId?: string | null
+    targetLanguage: string
+    chosenSourceLanguage: string
+    expiresAt: any
+    createdAt: any
+    updatedAt: any
+    cards: Array<{
+      __typename?: 'DeckPreviewSessionCard'
+      sourceCardId?: string | null
+      front: string
+      back: string
+      example?: string | null
+      backError?: string | null
+      exampleError?: string | null
+    }>
+  } | null
+}
+
+export type UpdateDeckPreviewCardMutationVariables = Exact<{
+  input: UpdateDeckPreviewCardInput
+}>
+
+export type UpdateDeckPreviewCardMutation = {
+  __typename?: 'Mutation'
+  updateDeckPreviewCard: {
+    __typename?: 'DeckPreviewSession'
+    id: string
+    type: DeckPreviewSessionType
+    status: DeckPreviewSessionStatus
+    sourceDeckId?: string | null
+    targetLanguage: string
+    chosenSourceLanguage: string
+    expiresAt: any
+    createdAt: any
+    updatedAt: any
+    cards: Array<{
+      __typename?: 'DeckPreviewSessionCard'
+      sourceCardId?: string | null
+      front: string
+      back: string
+      example?: string | null
+      backError?: string | null
+      exampleError?: string | null
+    }>
+  }
+}
+
+export type ConfirmDeckPreviewMutationVariables = Exact<{
+  sessionId: Scalars['String']['input']
+}>
+
+export type ConfirmDeckPreviewMutation = {
+  __typename?: 'Mutation'
+  confirmDeckPreview: {
+    __typename?: 'ConfirmDeckPreviewPayload'
+    deck: {
+      __typename?: 'Deck'
+      id: string
+      ownerId: string
+      title: string
+      description?: string | null
+      visibility: DeckVisibility
+      moderationStatus: DeckModerationStatus
+      isOfficial: boolean
+      sourceDeckId?: string | null
+      targetLanguage?: string | null
+      sourceLanguage?: string | null
+      createdAt: any
+      updatedAt: any
+    }
+    cards: Array<{
+      __typename?: 'Card'
+      id: string
+      deckId: string
+      front: string
+      back: string
+      example?: string | null
+      notes?: string | null
+      position: number
+      createdAt: any
+      updatedAt: any
+    }>
+  }
+}
+
+export type CancelDeckPreviewMutationVariables = Exact<{
+  sessionId: Scalars['String']['input']
+}>
+
+export type CancelDeckPreviewMutation = { __typename?: 'Mutation'; cancelDeckPreview: boolean }
+
+export type StartDeckRegeneratePreviewMutationVariables = Exact<{
+  input: StartDeckRegeneratePreviewInput
+}>
+
+export type StartDeckRegeneratePreviewMutation = {
+  __typename?: 'Mutation'
+  startDeckRegeneratePreview: {
     __typename?: 'DeckPreviewSession'
     id: string
     type: DeckPreviewSessionType
@@ -4914,6 +5124,8 @@ export const GroupSharedDecksDocument = gql`
       moderationStatus
       isOfficial
       sourceDeckId
+      targetLanguage
+      sourceLanguage
       createdAt
       updatedAt
     }
@@ -4987,6 +5199,73 @@ export type GroupSharedDecksSuspenseQueryHookResult = ReturnType<
 export type GroupSharedDecksQueryResult = Apollo.QueryResult<
   GroupSharedDecksQuery,
   GroupSharedDecksQueryVariables
+>
+export const CopyGroupDeckDocument = gql`
+  mutation CopyGroupDeck($sourceDeckId: String!) {
+    copyGroupDeck(sourceDeckId: $sourceDeckId) {
+      deck {
+        id
+        ownerId
+        title
+        description
+        visibility
+        moderationStatus
+        isOfficial
+        sourceDeckId
+        targetLanguage
+        sourceLanguage
+        createdAt
+        updatedAt
+      }
+      cards {
+        id
+        deckId
+        front
+        back
+        example
+        notes
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+export type CopyGroupDeckMutationFn = Apollo.MutationFunction<
+  CopyGroupDeckMutation,
+  CopyGroupDeckMutationVariables
+>
+
+/**
+ * __useCopyGroupDeckMutation__
+ *
+ * To run a mutation, you first call `useCopyGroupDeckMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCopyGroupDeckMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [copyGroupDeckMutation, { data, loading, error }] = useCopyGroupDeckMutation({
+ *   variables: {
+ *      sourceDeckId: // value for 'sourceDeckId'
+ *   },
+ * });
+ */
+export function useCopyGroupDeckMutation(
+  baseOptions?: Apollo.MutationHookOptions<CopyGroupDeckMutation, CopyGroupDeckMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CopyGroupDeckMutation, CopyGroupDeckMutationVariables>(
+    CopyGroupDeckDocument,
+    options,
+  )
+}
+export type CopyGroupDeckMutationHookResult = ReturnType<typeof useCopyGroupDeckMutation>
+export type CopyGroupDeckMutationResult = Apollo.MutationResult<CopyGroupDeckMutation>
+export type CopyGroupDeckMutationOptions = Apollo.BaseMutationOptions<
+  CopyGroupDeckMutation,
+  CopyGroupDeckMutationVariables
 >
 export const StartLessonDocument = gql`
   mutation StartLesson($input: StartLessonInput!) {
@@ -5487,6 +5766,8 @@ export const PublicDeckDocument = gql`
       moderationStatus
       isOfficial
       sourceDeckId
+      targetLanguage
+      sourceLanguage
       createdAt
       updatedAt
     }
@@ -6541,6 +6822,350 @@ export type StartGroupDeckCopyPreviewMutationResult =
 export type StartGroupDeckCopyPreviewMutationOptions = Apollo.BaseMutationOptions<
   StartGroupDeckCopyPreviewMutation,
   StartGroupDeckCopyPreviewMutationVariables
+>
+export const ActiveDeckPreviewDocument = gql`
+  query ActiveDeckPreview {
+    activeDeckPreview {
+      id
+      type
+      status
+      sourceDeckId
+      targetLanguage
+      chosenSourceLanguage
+      cards {
+        sourceCardId
+        front
+        back
+        example
+        backError
+        exampleError
+      }
+      expiresAt
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+/**
+ * __useActiveDeckPreviewQuery__
+ *
+ * To run a query within a React component, call `useActiveDeckPreviewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useActiveDeckPreviewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useActiveDeckPreviewQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useActiveDeckPreviewQuery(
+  baseOptions?: Apollo.QueryHookOptions<ActiveDeckPreviewQuery, ActiveDeckPreviewQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ActiveDeckPreviewQuery, ActiveDeckPreviewQueryVariables>(
+    ActiveDeckPreviewDocument,
+    options,
+  )
+}
+export function useActiveDeckPreviewLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    ActiveDeckPreviewQuery,
+    ActiveDeckPreviewQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ActiveDeckPreviewQuery, ActiveDeckPreviewQueryVariables>(
+    ActiveDeckPreviewDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useActiveDeckPreviewSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    ActiveDeckPreviewQuery,
+    ActiveDeckPreviewQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<ActiveDeckPreviewQuery, ActiveDeckPreviewQueryVariables>
+export function useActiveDeckPreviewSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<ActiveDeckPreviewQuery, ActiveDeckPreviewQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  ActiveDeckPreviewQuery | undefined,
+  ActiveDeckPreviewQueryVariables
+>
+export function useActiveDeckPreviewSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<ActiveDeckPreviewQuery, ActiveDeckPreviewQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<ActiveDeckPreviewQuery, ActiveDeckPreviewQueryVariables>(
+    ActiveDeckPreviewDocument,
+    options,
+  )
+}
+export type ActiveDeckPreviewQueryHookResult = ReturnType<typeof useActiveDeckPreviewQuery>
+export type ActiveDeckPreviewLazyQueryHookResult = ReturnType<typeof useActiveDeckPreviewLazyQuery>
+export type ActiveDeckPreviewSuspenseQueryHookResult = ReturnType<
+  typeof useActiveDeckPreviewSuspenseQuery
+>
+export type ActiveDeckPreviewQueryResult = Apollo.QueryResult<
+  ActiveDeckPreviewQuery,
+  ActiveDeckPreviewQueryVariables
+>
+export const UpdateDeckPreviewCardDocument = gql`
+  mutation UpdateDeckPreviewCard($input: UpdateDeckPreviewCardInput!) {
+    updateDeckPreviewCard(input: $input) {
+      id
+      type
+      status
+      sourceDeckId
+      targetLanguage
+      chosenSourceLanguage
+      cards {
+        sourceCardId
+        front
+        back
+        example
+        backError
+        exampleError
+      }
+      expiresAt
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type UpdateDeckPreviewCardMutationFn = Apollo.MutationFunction<
+  UpdateDeckPreviewCardMutation,
+  UpdateDeckPreviewCardMutationVariables
+>
+
+/**
+ * __useUpdateDeckPreviewCardMutation__
+ *
+ * To run a mutation, you first call `useUpdateDeckPreviewCardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateDeckPreviewCardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateDeckPreviewCardMutation, { data, loading, error }] = useUpdateDeckPreviewCardMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateDeckPreviewCardMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateDeckPreviewCardMutation,
+    UpdateDeckPreviewCardMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateDeckPreviewCardMutation, UpdateDeckPreviewCardMutationVariables>(
+    UpdateDeckPreviewCardDocument,
+    options,
+  )
+}
+export type UpdateDeckPreviewCardMutationHookResult = ReturnType<
+  typeof useUpdateDeckPreviewCardMutation
+>
+export type UpdateDeckPreviewCardMutationResult =
+  Apollo.MutationResult<UpdateDeckPreviewCardMutation>
+export type UpdateDeckPreviewCardMutationOptions = Apollo.BaseMutationOptions<
+  UpdateDeckPreviewCardMutation,
+  UpdateDeckPreviewCardMutationVariables
+>
+export const ConfirmDeckPreviewDocument = gql`
+  mutation ConfirmDeckPreview($sessionId: String!) {
+    confirmDeckPreview(sessionId: $sessionId) {
+      deck {
+        id
+        ownerId
+        title
+        description
+        visibility
+        moderationStatus
+        isOfficial
+        sourceDeckId
+        targetLanguage
+        sourceLanguage
+        createdAt
+        updatedAt
+      }
+      cards {
+        id
+        deckId
+        front
+        back
+        example
+        notes
+        position
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+export type ConfirmDeckPreviewMutationFn = Apollo.MutationFunction<
+  ConfirmDeckPreviewMutation,
+  ConfirmDeckPreviewMutationVariables
+>
+
+/**
+ * __useConfirmDeckPreviewMutation__
+ *
+ * To run a mutation, you first call `useConfirmDeckPreviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useConfirmDeckPreviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [confirmDeckPreviewMutation, { data, loading, error }] = useConfirmDeckPreviewMutation({
+ *   variables: {
+ *      sessionId: // value for 'sessionId'
+ *   },
+ * });
+ */
+export function useConfirmDeckPreviewMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ConfirmDeckPreviewMutation,
+    ConfirmDeckPreviewMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<ConfirmDeckPreviewMutation, ConfirmDeckPreviewMutationVariables>(
+    ConfirmDeckPreviewDocument,
+    options,
+  )
+}
+export type ConfirmDeckPreviewMutationHookResult = ReturnType<typeof useConfirmDeckPreviewMutation>
+export type ConfirmDeckPreviewMutationResult = Apollo.MutationResult<ConfirmDeckPreviewMutation>
+export type ConfirmDeckPreviewMutationOptions = Apollo.BaseMutationOptions<
+  ConfirmDeckPreviewMutation,
+  ConfirmDeckPreviewMutationVariables
+>
+export const CancelDeckPreviewDocument = gql`
+  mutation CancelDeckPreview($sessionId: String!) {
+    cancelDeckPreview(sessionId: $sessionId)
+  }
+`
+export type CancelDeckPreviewMutationFn = Apollo.MutationFunction<
+  CancelDeckPreviewMutation,
+  CancelDeckPreviewMutationVariables
+>
+
+/**
+ * __useCancelDeckPreviewMutation__
+ *
+ * To run a mutation, you first call `useCancelDeckPreviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelDeckPreviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelDeckPreviewMutation, { data, loading, error }] = useCancelDeckPreviewMutation({
+ *   variables: {
+ *      sessionId: // value for 'sessionId'
+ *   },
+ * });
+ */
+export function useCancelDeckPreviewMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CancelDeckPreviewMutation,
+    CancelDeckPreviewMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CancelDeckPreviewMutation, CancelDeckPreviewMutationVariables>(
+    CancelDeckPreviewDocument,
+    options,
+  )
+}
+export type CancelDeckPreviewMutationHookResult = ReturnType<typeof useCancelDeckPreviewMutation>
+export type CancelDeckPreviewMutationResult = Apollo.MutationResult<CancelDeckPreviewMutation>
+export type CancelDeckPreviewMutationOptions = Apollo.BaseMutationOptions<
+  CancelDeckPreviewMutation,
+  CancelDeckPreviewMutationVariables
+>
+export const StartDeckRegeneratePreviewDocument = gql`
+  mutation StartDeckRegeneratePreview($input: StartDeckRegeneratePreviewInput!) {
+    startDeckRegeneratePreview(input: $input) {
+      id
+      type
+      status
+      sourceDeckId
+      targetLanguage
+      chosenSourceLanguage
+      cards {
+        sourceCardId
+        front
+        back
+        example
+        backError
+        exampleError
+      }
+      expiresAt
+      createdAt
+      updatedAt
+    }
+  }
+`
+export type StartDeckRegeneratePreviewMutationFn = Apollo.MutationFunction<
+  StartDeckRegeneratePreviewMutation,
+  StartDeckRegeneratePreviewMutationVariables
+>
+
+/**
+ * __useStartDeckRegeneratePreviewMutation__
+ *
+ * To run a mutation, you first call `useStartDeckRegeneratePreviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStartDeckRegeneratePreviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [startDeckRegeneratePreviewMutation, { data, loading, error }] = useStartDeckRegeneratePreviewMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useStartDeckRegeneratePreviewMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    StartDeckRegeneratePreviewMutation,
+    StartDeckRegeneratePreviewMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<
+    StartDeckRegeneratePreviewMutation,
+    StartDeckRegeneratePreviewMutationVariables
+  >(StartDeckRegeneratePreviewDocument, options)
+}
+export type StartDeckRegeneratePreviewMutationHookResult = ReturnType<
+  typeof useStartDeckRegeneratePreviewMutation
+>
+export type StartDeckRegeneratePreviewMutationResult =
+  Apollo.MutationResult<StartDeckRegeneratePreviewMutation>
+export type StartDeckRegeneratePreviewMutationOptions = Apollo.BaseMutationOptions<
+  StartDeckRegeneratePreviewMutation,
+  StartDeckRegeneratePreviewMutationVariables
 >
 export const AccountLocaleDocument = gql`
   query AccountLocale {

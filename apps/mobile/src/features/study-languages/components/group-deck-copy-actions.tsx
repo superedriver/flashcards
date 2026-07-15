@@ -7,34 +7,28 @@ import { confirmAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { useStudyLanguageContext } from '@/features/study-languages/hooks/use-study-language-context'
 import { isPreviewSessionActiveError } from '@/features/study-languages/utils/deck-preview-utils'
-import {
-  useCopyPublicDeckMutation,
-  usePublicDeckQuery,
-  useStartPublicDeckCopyPreviewMutation,
-} from '@/graphql/generated'
+import type { DeckQuery } from '@/graphql/generated'
+import { useCopyGroupDeckMutation, useStartGroupDeckCopyPreviewMutation } from '@/graphql/generated'
 import { AppButton, AppText } from '@/ui/primitives'
-import { ErrorState, LoadingState } from '@/ui/components'
+import { ErrorState } from '@/ui/components'
 
-type PublicDeckActionsProps = {
-  deckId: string
+type GroupDeckCopyActionsProps = {
+  deck: NonNullable<DeckQuery['deck']>
 }
 
-export function PublicDeckActions({ deckId }: PublicDeckActionsProps) {
+export function GroupDeckCopyActions({ deck }: GroupDeckCopyActionsProps) {
   const { t } = useTranslation()
   const router = useRouter()
   const { nativeLanguage } = useStudyLanguageContext()
-  const deckQuery = usePublicDeckQuery({ variables: { deckId } })
-  const [copyPublicDeck, { loading: copying }] = useCopyPublicDeckMutation({
+  const [copyGroupDeck, { loading: copying }] = useCopyGroupDeckMutation({
     refetchQueries: ['MyDecks', 'DecksPage'],
   })
-  const [startPreview, { loading: startingPreview }] = useStartPublicDeckCopyPreviewMutation({
+  const [startPreview, { loading: startingPreview }] = useStartGroupDeckCopyPreviewMutation({
     refetchQueries: ['ActiveDeckPreview'],
   })
   const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const isCopyingRef = useRef(false)
-
-  const deck = deckQuery.data?.publicDeck
   const busy = copying || startingPreview
 
   async function runCopyOneToOne() {
@@ -47,21 +41,20 @@ export function PublicDeckActions({ deckId }: PublicDeckActionsProps) {
     setFeedback(null)
 
     try {
-      const result = await copyPublicDeck({
-        variables: { sourceDeckId: deckId },
+      const result = await copyGroupDeck({
+        variables: { sourceDeckId: deck.id },
       })
-
-      const copiedDeck = result.data?.copyPublicDeck.deck
+      const copiedDeck = result.data?.copyGroupDeck.deck
 
       if (!copiedDeck) {
-        setErrorMessage(t('publicDecks.actions.copyError'))
+        setErrorMessage(t('studyLanguages.groupCopy.copyError'))
         return
       }
 
-      setFeedback(t('publicDecks.actions.copySuccess'))
+      setFeedback(t('studyLanguages.groupCopy.copySuccess'))
       router.replace(`/decks/${copiedDeck.id}`)
     } catch (error) {
-      setErrorMessage(getGraphqlErrorMessage(error, t('publicDecks.actions.copyError')))
+      setErrorMessage(getGraphqlErrorMessage(error, t('studyLanguages.groupCopy.copyError')))
     } finally {
       isCopyingRef.current = false
     }
@@ -75,14 +68,13 @@ export function PublicDeckActions({ deckId }: PublicDeckActionsProps) {
       const result = await startPreview({
         variables: {
           input: {
-            sourceDeckId: deckId,
+            sourceDeckId: deck.id,
             chosenSourceLanguage,
             discardActive,
           },
         },
       })
-
-      const session = result.data?.startPublicDeckCopyPreview
+      const session = result.data?.startGroupDeckCopyPreview
 
       if (!session) {
         setErrorMessage(t('studyLanguages.preview.startError'))
@@ -107,18 +99,14 @@ export function PublicDeckActions({ deckId }: PublicDeckActionsProps) {
   }
 
   const handleCopyWithChoice = () => {
-    if (!deck) {
-      return
-    }
-
     const originalSource = deck.sourceLanguage
     const canChooseNative =
       Boolean(nativeLanguage) && Boolean(originalSource) && nativeLanguage !== originalSource
 
     if (!canChooseNative || !nativeLanguage || !originalSource) {
       confirmAction(
-        t('publicDecks.actions.copyTitle'),
-        t('publicDecks.actions.copyMessage'),
+        t('studyLanguages.groupCopy.copyTitle'),
+        t('studyLanguages.groupCopy.copyMessage'),
         () => {
           void runCopyOneToOne()
         },
@@ -166,17 +154,13 @@ export function PublicDeckActions({ deckId }: PublicDeckActionsProps) {
     )
   }
 
-  if (deckQuery.loading) {
-    return <LoadingState message={t('common.loading')} />
-  }
-
   return (
     <View style={{ gap: 8, marginBottom: 16 }}>
       <AppText style={{ color: '#666666', fontSize: 14 }}>
-        {t('publicDecks.actions.description')}
+        {t('studyLanguages.groupCopy.description')}
       </AppText>
-      <AppButton disabled={busy || !deck} onPress={handleCopyWithChoice}>
-        {busy ? t('publicDecks.actions.copying') : t('publicDecks.actions.copy')}
+      <AppButton disabled={busy} onPress={handleCopyWithChoice}>
+        {busy ? t('studyLanguages.groupCopy.copying') : t('studyLanguages.groupCopy.copy')}
       </AppButton>
       {feedback ? <AppText style={{ color: '#2e7d32' }}>{feedback}</AppText> : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}

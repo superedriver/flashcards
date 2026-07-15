@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { ScrollView, View } from 'react-native'
 
 import { DecksPageSections } from '@/features/decks/components/decks-page-sections'
+import { ActiveDeckPreviewBanner } from '@/features/study-languages/components/active-deck-preview-banner'
 import { useStudyLanguageContext } from '@/features/study-languages/hooks/use-study-language-context'
 import { useDecksPageQuery } from '@/graphql/generated'
 import { AppButton } from '@/ui/primitives'
@@ -25,6 +26,7 @@ export function MyDecksScreen() {
   const listHeader = (
     <>
       <PageTitle title={t('decks.myDecks.title')} />
+      <ActiveDeckPreviewBanner />
       <View style={{ gap: 12, marginBottom: 16 }}>
         <AppButton onPress={() => router.push('/decks/new')}>
           {t('decks.myDecks.createDeck')}

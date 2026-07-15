@@ -157,3 +157,103 @@ mutation StartGroupDeckCopyPreview($input: StartGroupDeckCopyPreviewInput!) {
     updatedAt
   }
 }
+
+query ActiveDeckPreview {
+  activeDeckPreview {
+    id
+    type
+    status
+    sourceDeckId
+    targetLanguage
+    chosenSourceLanguage
+    cards {
+      sourceCardId
+      front
+      back
+      example
+      backError
+      exampleError
+    }
+    expiresAt
+    createdAt
+    updatedAt
+  }
+}
+
+mutation UpdateDeckPreviewCard($input: UpdateDeckPreviewCardInput!) {
+  updateDeckPreviewCard(input: $input) {
+    id
+    type
+    status
+    sourceDeckId
+    targetLanguage
+    chosenSourceLanguage
+    cards {
+      sourceCardId
+      front
+      back
+      example
+      backError
+      exampleError
+    }
+    expiresAt
+    createdAt
+    updatedAt
+  }
+}
+
+mutation ConfirmDeckPreview($sessionId: String!) {
+  confirmDeckPreview(sessionId: $sessionId) {
+    deck {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      targetLanguage
+      sourceLanguage
+      createdAt
+      updatedAt
+    }
+    cards {
+      id
+      deckId
+      front
+      back
+      example
+      notes
+      position
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation CancelDeckPreview($sessionId: String!) {
+  cancelDeckPreview(sessionId: $sessionId)
+}
+
+mutation StartDeckRegeneratePreview($input: StartDeckRegeneratePreviewInput!) {
+  startDeckRegeneratePreview(input: $input) {
+    id
+    type
+    status
+    sourceDeckId
+    targetLanguage
+    chosenSourceLanguage
+    cards {
+      sourceCardId
+      front
+      back
+      example
+      backError
+      exampleError
+    }
+    expiresAt
+    createdAt
+    updatedAt
+  }
+}

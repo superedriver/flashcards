@@ -111,7 +111,38 @@ query GroupSharedDecks($groupId: String!) {
     moderationStatus
     isOfficial
     sourceDeckId
+    targetLanguage
+    sourceLanguage
     createdAt
     updatedAt
+  }
+}
+
+mutation CopyGroupDeck($sourceDeckId: String!) {
+  copyGroupDeck(sourceDeckId: $sourceDeckId) {
+    deck {
+      id
+      ownerId
+      title
+      description
+      visibility
+      moderationStatus
+      isOfficial
+      sourceDeckId
+      targetLanguage
+      sourceLanguage
+      createdAt
+      updatedAt
+    }
+    cards {
+      id
+      deckId
+      front
+      back
+      example
+      notes
+      createdAt
+      updatedAt
+    }
   }
 }

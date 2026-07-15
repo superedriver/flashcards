@@ -10,12 +10,15 @@ import {
 } from '@/features/decks/utils/deck-language-gate'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { getDeckStatusSummary } from '@/features/decks/utils/format-deck-status'
+import { GroupDeckCopyActions } from '@/features/study-languages/components/group-deck-copy-actions'
+import { isPreviewSessionActiveError } from '@/features/study-languages/utils/deck-preview-utils'
 import type { DeckQuery } from '@/graphql/generated'
 import {
   DeckModerationStatus,
   DeckVisibility,
   useDeleteDeckMutation,
   usePublishDeckMutation,
+  useStartDeckRegeneratePreviewMutation,
   useUnpublishDeckMutation,
 } from '@/graphql/generated'
 import { AppButton, AppText } from '@/ui/primitives'
@@ -43,16 +46,61 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
   const [unpublishDeck, { loading: isUnpublishing }] = useUnpublishDeckMutation({
     refetchQueries: ['Deck', 'MyDecks', 'DecksPage'],
   })
+  const [startRegenerate, { loading: isRegenerating }] = useStartDeckRegeneratePreviewMutation({
+    refetchQueries: ['ActiveDeckPreview'],
+  })
 
-  const isBusy = isDeleting || isPublishing || isUnpublishing
+  const isBusy = isDeleting || isPublishing || isUnpublishing || isRegenerating
   const needsLanguages = deckNeedsLanguageAssignment(deck)
 
   const goAssignLanguages = () => {
     router.push(`/decks/${deck.id}/assign-languages`)
   }
 
+  async function runRegenerate(discardActive = false) {
+    if (!deck.sourceLanguage) {
+      return
+    }
+
+    setActionError(null)
+
+    try {
+      const result = await startRegenerate({
+        variables: {
+          input: {
+            sourceDeckId: deck.id,
+            chosenSourceLanguage: deck.sourceLanguage,
+            discardActive,
+          },
+        },
+      })
+
+      const session = result.data?.startDeckRegeneratePreview
+
+      if (!session) {
+        setActionError(t('studyLanguages.preview.startError'))
+        return
+      }
+
+      router.push(`/preview/${session.id}`)
+    } catch (error) {
+      if (isPreviewSessionActiveError(error)) {
+        confirmAction(
+          t('studyLanguages.preview.activeConflictTitle'),
+          t('studyLanguages.preview.activeConflictMessage'),
+          () => {
+            void runRegenerate(true)
+          },
+        )
+        return
+      }
+
+      setActionError(getGraphqlErrorMessage(error, t('studyLanguages.preview.startError')))
+    }
+  }
+
   if (!isOwner) {
-    return null
+    return <GroupDeckCopyActions deck={deck} />
   }
 
   const handleDelete = () => {
@@ -157,6 +205,25 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
       {needsLanguages ? (
         <AppButton disabled={isBusy} onPress={goAssignLanguages}>
           {t('decks.assignLanguages.cta')}
+        </AppButton>
+      ) : null}
+
+      {!needsLanguages && deck.sourceLanguage ? (
+        <AppButton
+          disabled={isBusy}
+          onPress={() => {
+            confirmAction(
+              t('studyLanguages.preview.regenerate'),
+              t('decks.editDeck.languageChangeMessage'),
+              () => {
+                void runRegenerate()
+              },
+            )
+          }}
+        >
+          {isRegenerating
+            ? t('studyLanguages.preview.regenerating')
+            : t('studyLanguages.preview.regenerate')}
         </AppButton>
       ) : null}
 
