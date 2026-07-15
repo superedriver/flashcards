@@ -261,10 +261,12 @@ export function DeckPreviewSessionScreen() {
               ) : (
                 <>
                   <AppText>
-                    {t('studyLanguages.preview.backLabel')}: {item.back || '—'}
+                    {t('studyLanguages.preview.backLabel')}:{' '}
+                    {item.back || t('studyLanguages.preview.emptyValue')}
                   </AppText>
                   <AppText>
-                    {t('studyLanguages.preview.exampleLabel')}: {item.example || '—'}
+                    {t('studyLanguages.preview.exampleLabel')}:{' '}
+                    {item.example || t('studyLanguages.preview.emptyValue')}
                   </AppText>
                   {item.backError ? (
                     <AppText style={{ color: '#c62828' }}>{item.backError}</AppText>

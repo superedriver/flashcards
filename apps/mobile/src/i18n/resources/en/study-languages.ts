@@ -79,8 +79,12 @@ export const studyLanguagesEn = {
     backPlaceholder: 'Back text',
     examplePlaceholder: 'Example (optional)',
     editCard: 'Edit',
+    emptyValue: '—',
     regenerate: 'Regenerate translations',
     regenerating: 'Generating...',
+    regenerateConfirmTitle: 'Regenerate translations?',
+    regenerateConfirmMessage:
+      'New translations and examples will be generated into a preview. Approve to update this deck.',
   },
   groupCopy: {
     description: 'Copy this shared deck to study and edit your own private version.',

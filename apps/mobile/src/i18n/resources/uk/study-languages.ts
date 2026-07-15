@@ -77,8 +77,12 @@ export const studyLanguagesUk = {
     backPlaceholder: 'Текст звороту',
     examplePlaceholder: 'Приклад (необовʼязково)',
     editCard: 'Редагувати',
+    emptyValue: '—',
     regenerate: 'Регенерувати переклади',
     regenerating: 'Генерація...',
+    regenerateConfirmTitle: 'Регенерувати переклади?',
+    regenerateConfirmMessage:
+      'Нові переклади та приклади з’являться в перегляді. Підтвердіть, щоб оновити цю колоду.',
   },
   groupCopy: {
     description: 'Скопіюйте цю спільну колоду, щоб вивчати й редагувати власну приватну версію.',

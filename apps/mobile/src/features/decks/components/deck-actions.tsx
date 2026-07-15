@@ -213,8 +213,8 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
           disabled={isBusy}
           onPress={() => {
             confirmAction(
-              t('studyLanguages.preview.regenerate'),
-              t('decks.editDeck.languageChangeMessage'),
+              t('studyLanguages.preview.regenerateConfirmTitle'),
+              t('studyLanguages.preview.regenerateConfirmMessage'),
               () => {
                 void runRegenerate()
               },

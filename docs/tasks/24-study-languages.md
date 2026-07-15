@@ -242,7 +242,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 - [x] TASK-24.25 Add legacy assign languages + language-gated actions
 - [x] TASK-24.26 Add copy/regenerate preview UI flows
 - [x] TASK-24.27 Extend settings UI for nativeLanguage
-- [ ] TASK-24.28 Add study languages i18n strings (en/uk)
+- [x] TASK-24.28 Add study languages i18n strings (en/uk)
 - [ ] TASK-24.29 Study languages smoke checks + final epic checks
 ```
 
@@ -1502,7 +1502,7 @@ TASK-24.27 Extend settings UI for nativeLanguage
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
