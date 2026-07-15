@@ -19,9 +19,11 @@ import { PublicDecksUseCase } from '../../../application/use-cases/public-decks.
 import { UnpublishDeckUseCase } from '../../../application/use-cases/unpublish-deck.use-case';
 import { UpdateDeckUseCase } from '../../../application/use-cases/update-deck.use-case';
 import { UpdateCardUseCase } from '../../../application/use-cases/update-card.use-case';
+import { StartDeckPreviewUseCase } from '../../../../languages/application/use-cases/start-deck-preview.use-case';
 import { CreateDeckInput } from '../inputs/create-deck.input';
 import { CreateCardInput } from '../inputs/create-card.input';
 import { PublicDecksInput } from '../inputs/public-decks.input';
+import { StartPublicDeckCopyPreviewInput } from '../inputs/start-public-deck-copy-preview.input';
 import { UpdateDeckInput } from '../inputs/update-deck.input';
 import { UpdateCardInput } from '../inputs/update-card.input';
 import { CardType } from '../types/card.type';
@@ -31,6 +33,11 @@ import { DeckModerationStatus } from '../types/deck-moderation-status.type';
 import { DeckVisibility } from '../types/deck-visibility.type';
 import { UpdateDeckPayloadType } from '../types/update-deck-payload.type';
 import { CopyPublicDeckPayloadType } from '../types/copy-public-deck-payload.type';
+import {
+  DeckPreviewSessionStatusEnum,
+  DeckPreviewSessionType,
+  DeckPreviewSessionTypeEnum,
+} from '../types/deck-preview-session.type';
 import { DeckType } from '../types/deck.type';
 import { PublicDeckSearchResultType } from '../types/public-deck-search-result.type';
 
@@ -77,6 +84,7 @@ export class DecksResolver {
     private readonly publicDeckUseCase: PublicDeckUseCase,
     private readonly publicDecksUseCase: PublicDecksUseCase,
     private readonly unpublishDeckUseCase: UnpublishDeckUseCase,
+    private readonly startDeckPreviewUseCase: StartDeckPreviewUseCase,
   ) {}
 
   @Query(() => DeckType)
@@ -323,6 +331,27 @@ export class DecksResolver {
         moderationStatus: result.deck.moderationStatus as DeckModerationStatus,
       },
       cards: result.cards,
+    };
+  }
+
+  @Mutation(() => DeckPreviewSessionType)
+  @UseGuards(GqlAuthGuard)
+  async startPublicDeckCopyPreview(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: StartPublicDeckCopyPreviewInput,
+  ): Promise<DeckPreviewSessionType> {
+    const session = await this.startDeckPreviewUseCase.execute({
+      currentUser: user,
+      type: 'COPY_PUBLIC',
+      sourceDeckId: input.sourceDeckId,
+      chosenSourceLanguage: input.chosenSourceLanguage,
+      discardActive: input.discardActive,
+    });
+
+    return {
+      ...session,
+      type: session.type as DeckPreviewSessionTypeEnum,
+      status: session.status as DeckPreviewSessionStatusEnum,
     };
   }
 }

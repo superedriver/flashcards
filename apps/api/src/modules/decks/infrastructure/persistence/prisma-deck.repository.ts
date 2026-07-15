@@ -186,6 +186,8 @@ export class PrismaDeckRepository implements DeckRepositoryPort {
         sourceDeckId: input.sourceDeckId,
         title: input.title,
         description: input.description ?? null,
+        targetLanguage: input.targetLanguage ?? null,
+        sourceLanguage: input.sourceLanguage ?? null,
         visibility: 'PRIVATE',
         moderationStatus: 'NONE',
         isOfficial: false,

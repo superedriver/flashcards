@@ -42,6 +42,8 @@ export type CreateCopiedDeckInput = {
   sourceDeckId: string;
   title: string;
   description?: string | null;
+  targetLanguage?: string | null;
+  sourceLanguage?: string | null;
 };
 
 export type DeckRepositoryPort = {

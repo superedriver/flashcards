@@ -66,6 +66,8 @@ export class CopyPublicDeckUseCase {
       sourceDeckId: sourceDeck.id,
       title: sourceDeck.title,
       description: sourceDeck.description,
+      targetLanguage: sourceDeck.targetLanguage,
+      sourceLanguage: sourceDeck.sourceLanguage,
     });
 
     const copiedCards =

@@ -30,8 +30,8 @@ const sourceDeck: Deck = {
   moderationStatus: 'APPROVED',
   isOfficial: false,
   sourceDeckId: null,
-  targetLanguage: null,
-  sourceLanguage: null,
+  targetLanguage: 'es',
+  sourceLanguage: 'en',
   createdAt: new Date('2026-01-01T00:00:00.000Z'),
   updatedAt: new Date('2026-01-01T00:00:00.000Z'),
   deletedAt: null,
@@ -201,7 +201,22 @@ describe('CopyPublicDeckUseCase', () => {
       sourceDeckId: sourceDeck.id,
       title: sourceDeck.title,
       description: sourceDeck.description,
+      targetLanguage: 'es',
+      sourceLanguage: 'en',
     });
+  });
+
+  it('copies languages from public source for 1:1 path', async () => {
+    const { useCase, createCopiedDeck } = createUseCase();
+
+    await useCase.execute({ currentUser, sourceDeckId: 'source-deck-1' });
+
+    expect(createCopiedDeck).toHaveBeenCalledWith(
+      expect.objectContaining({
+        targetLanguage: 'es',
+        sourceLanguage: 'en',
+      }),
+    );
   });
 
   it('copies all source cards with front/back/example/notes/position preserved', async () => {
