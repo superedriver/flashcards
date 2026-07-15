@@ -11,22 +11,36 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-import { LanguageListRow } from '@/features/study-languages/components/language-list-row'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
+import { LanguageListRow } from '@/features/study-languages/components/language-list-row'
 import { useAddStudyLanguageMutation, useLanguagesQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 
+type LanguageCatalogLanguage = {
+  code: string
+  englishName: string
+  nativeName: string
+  flag: string
+  popularSortOrder?: number | null
+}
+
 type LanguageCatalogModalProps = {
-  excludedLanguageCodes: string[]
+  excludedLanguageCodes?: string[]
+  mode?: 'add' | 'select'
   onClose: () => void
   onLanguageAdded?: () => void
+  onSelect?: (language: LanguageCatalogLanguage) => void
+  title?: string
   visible: boolean
 }
 
 export function LanguageCatalogModal({
-  excludedLanguageCodes,
+  excludedLanguageCodes = [],
+  mode = 'add',
   onClose,
   onLanguageAdded,
+  onSelect,
+  title,
   visible,
 }: LanguageCatalogModalProps) {
   const { t } = useTranslation()
@@ -78,6 +92,11 @@ export function LanguageCatalogModal({
     }
   }
 
+  function handleSelect(language: LanguageCatalogLanguage) {
+    onSelect?.(language)
+    onClose()
+  }
+
   return (
     <Modal animationType="slide" onRequestClose={onClose} transparent visible={visible}>
       <View style={{ backgroundColor: 'rgba(0,0,0,0.4)', flex: 1, justifyContent: 'flex-end' }}>
@@ -103,7 +122,7 @@ export function LanguageCatalogModal({
             }}
           >
             <AppText style={{ fontSize: 18, fontWeight: '700' }}>
-              {t('studyLanguages.catalog.title')}
+              {title ?? t('studyLanguages.catalog.title')}
             </AppText>
             <Pressable accessibilityRole="button" onPress={onClose}>
               <AppText style={{ color: '#1976d2', fontWeight: '600' }}>
@@ -168,6 +187,16 @@ export function LanguageCatalogModal({
                     >
                       {item.title}
                     </AppText>
+                  )
+                }
+
+                if (mode === 'select') {
+                  return (
+                    <LanguageListRow
+                      language={item.language}
+                      selected={false}
+                      onPress={() => handleSelect(item.language)}
+                    />
                   )
                 }
 

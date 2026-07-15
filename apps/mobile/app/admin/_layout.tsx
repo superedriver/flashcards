@@ -1,5 +1,5 @@
-import { Stack } from 'expo-router'
+import { StudyLanguageProtectedStack } from '@/features/study-languages/components/study-language-protected-stack'
 
 export default function AdminLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />
+  return <StudyLanguageProtectedStack />
 }

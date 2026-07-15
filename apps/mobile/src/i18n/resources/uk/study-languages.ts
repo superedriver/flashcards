@@ -26,4 +26,22 @@ export const studyLanguagesUk = {
     alreadyAdded: 'Вже додано',
     addError: 'Не вдалося додати мову вивчення.',
   },
+  onboarding: {
+    title: 'Оберіть мови',
+    description:
+      'Оберіть мову, яку хочете вивчати, і мову перекладу. Пізніше можна додати більше мов вивчення.',
+    targetLabel: 'Мова вивчення',
+    targetPlaceholder: 'Оберіть мову вивчення',
+    targetPickerTitle: 'Оберіть мову вивчення',
+    nativeLabel: 'Моя мова',
+    nativePlaceholder: 'Оберіть рідну мову',
+    nativePickerTitle: 'Оберіть рідну мову',
+    submit: 'Продовжити',
+    submitting: 'Збереження...',
+    submitError: 'Не вдалося зберегти мови.',
+    validationRequired: 'Оберіть обидві мови, щоб продовжити.',
+    legacyHintTitle: 'Колоди без мов',
+    legacyHintMessage:
+      'Колоди без мов з’являються в розділі «Без мови» на екрані колод. Призначте мови, коли будете готові.',
+  },
 } as const
