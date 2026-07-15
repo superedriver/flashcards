@@ -15,6 +15,14 @@ export const settingsEn = {
       optionUk: 'Українська',
       accessibilityLabel: 'Interface language {{label}}',
     },
+    nativeLanguage: {
+      label: 'My language',
+      description:
+        'Default translation language for new decks only. Existing decks stay unchanged.',
+      placeholder: 'Select your language',
+      pickerTitle: 'Select your language',
+      accessibilityLabel: 'Native language',
+    },
     lessonSize: {
       label: 'Lesson size',
       description: 'Number of cards per lesson session (5–100).',
@@ -40,6 +48,7 @@ export const settingsEn = {
   },
   validation: {
     interfaceLocale: 'Select a supported interface language.',
+    nativeLanguageRequired: 'Select your language.',
     lessonSizeNumber: 'Lesson size must be a number.',
     lessonSizeWhole: 'Lesson size must be a whole number.',
     lessonSizeMin: 'Lesson size must be at least 5 cards.',

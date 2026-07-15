@@ -1,5 +1,6 @@
 export * from './interface-locale-field'
 export * from './lesson-size-field'
+export * from './native-language-field'
 export * from './reminder-time-field'
 export * from './timezone-field'
 export * from './user-settings-form'

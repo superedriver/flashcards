@@ -13,6 +13,7 @@ export function createSettingsFormSchema(t: TFunction) {
       .int(t('settings.validation.lessonSizeWhole'))
       .min(5, t('settings.validation.lessonSizeMin'))
       .max(100, t('settings.validation.lessonSizeMax')),
+    nativeLanguage: z.string().trim().min(1, t('settings.validation.nativeLanguageRequired')),
     notificationsEnabled: z.boolean(),
     reminderTime: z
       .string()

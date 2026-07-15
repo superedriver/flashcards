@@ -7,6 +7,7 @@ import { View } from 'react-native'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { InterfaceLocaleField } from '@/features/settings/components/interface-locale-field'
 import { LessonSizeField } from '@/features/settings/components/lesson-size-field'
+import { NativeLanguageField } from '@/features/settings/components/native-language-field'
 import { ReminderTimeField } from '@/features/settings/components/reminder-time-field'
 import { TimezoneField } from '@/features/settings/components/timezone-field'
 import {
@@ -37,7 +38,7 @@ export function UserSettingsForm({
 
   const { data, error, loading, refetch } = useMySettingsQuery()
   const [updateSettings, { loading: isSaving }] = useUpdateMySettingsMutation({
-    refetchQueries: ['MySettings'],
+    refetchQueries: ['MySettings', 'StudyLanguageBootstrap'],
   })
 
   const {
@@ -49,6 +50,7 @@ export function UserSettingsForm({
     defaultValues: {
       interfaceLocale: getCurrentLocale(),
       lessonSize: 20,
+      nativeLanguage: '',
       notificationsEnabled: false,
       reminderTime: '09:00',
       timezone: getDeviceTimezone(),
@@ -66,6 +68,7 @@ export function UserSettingsForm({
     reset({
       interfaceLocale: settings.interfaceLocale === 'uk' ? 'uk' : 'en',
       lessonSize: settings.lessonSize,
+      nativeLanguage: settings.nativeLanguage,
       notificationsEnabled: settings.notificationsEnabled,
       reminderTime: settings.reminderTime,
       timezone: settings.timezone || getDeviceTimezone(),
@@ -95,6 +98,7 @@ export function UserSettingsForm({
           input: {
             interfaceLocale: values.interfaceLocale,
             lessonSize: values.lessonSize,
+            nativeLanguage: values.nativeLanguage,
             notificationsEnabled: values.notificationsEnabled,
             reminderTime: values.reminderTime ?? undefined,
             timezone: values.timezone,
@@ -132,6 +136,7 @@ export function UserSettingsForm({
       </AppText>
       <AppText style={{ color: '#666666', fontSize: 14 }}>{t('settings.description')}</AppText>
       <InterfaceLocaleField control={control} errors={errors} />
+      <NativeLanguageField control={control} errors={errors} />
       <LessonSizeField control={control} errors={errors} />
       <ReminderTimeField control={control} errors={errors} />
       <TimezoneField control={control} errors={errors} />

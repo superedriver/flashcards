@@ -7,6 +7,7 @@ query MySettings {
       notificationsEnabled
       reminderTime
       timezone
+      nativeLanguage
       createdAt
       updatedAt
     }
@@ -21,6 +22,7 @@ mutation UpdateMySettings($input: UpdateSettingsInput!) {
     notificationsEnabled
     reminderTime
     timezone
+    nativeLanguage
     createdAt
     updatedAt
   }

@@ -2235,6 +2235,7 @@ export type MySettingsQuery = {
       notificationsEnabled: boolean
       reminderTime: string
       timezone: string
+      nativeLanguage: string
       createdAt: any
       updatedAt: any
     }
@@ -2255,6 +2256,7 @@ export type UpdateMySettingsMutation = {
     notificationsEnabled: boolean
     reminderTime: string
     timezone: string
+    nativeLanguage: string
     createdAt: any
     updatedAt: any
   }
@@ -5988,6 +5990,7 @@ export const MySettingsDocument = gql`
         notificationsEnabled
         reminderTime
         timezone
+        nativeLanguage
         createdAt
         updatedAt
       }
@@ -6056,6 +6059,7 @@ export const UpdateMySettingsDocument = gql`
       notificationsEnabled
       reminderTime
       timezone
+      nativeLanguage
       createdAt
       updatedAt
     }

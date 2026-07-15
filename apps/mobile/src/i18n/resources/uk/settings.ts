@@ -15,6 +15,14 @@ export const settingsUk = {
       optionUk: 'Українська',
       accessibilityLabel: 'Мова інтерфейсу {{label}}',
     },
+    nativeLanguage: {
+      label: 'Моя мова',
+      description:
+        'Мова перекладу за замовчуванням лише для нових колод. Існуючі колоди не змінюються.',
+      placeholder: 'Оберіть вашу мову',
+      pickerTitle: 'Оберіть вашу мову',
+      accessibilityLabel: 'Рідна мова',
+    },
     lessonSize: {
       label: 'Розмір уроку',
       description: 'Кількість карток за одну сесію уроку (5–100).',
@@ -40,6 +48,7 @@ export const settingsUk = {
   },
   validation: {
     interfaceLocale: 'Оберіть підтримувану мову інтерфейсу.',
+    nativeLanguageRequired: 'Оберіть вашу мову.',
     lessonSizeNumber: 'Розмір уроку має бути числом.',
     lessonSizeWhole: 'Розмір уроку має бути цілим числом.',
     lessonSizeMin: 'Розмір уроку має бути щонайменше 5 карток.',
