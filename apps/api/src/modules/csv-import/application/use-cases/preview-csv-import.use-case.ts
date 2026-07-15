@@ -69,6 +69,13 @@ export class PreviewCsvImportUseCase {
       throw new ApplicationError(ErrorCodes.DECK_FORBIDDEN, 'Deck forbidden');
     }
 
+    if (deck.targetLanguage === null || deck.sourceLanguage === null) {
+      throw new ApplicationError(
+        ErrorCodes.LANGUAGES_REQUIRED,
+        'Deck target and source languages are required before CSV import',
+      );
+    }
+
     const parsed = this.csvParserService.parse({ csvText: input.csvText });
     const expiresAt = new Date(
       Date.now() + IMPORT_EXPIRY_HOURS * 60 * 60 * 1000,

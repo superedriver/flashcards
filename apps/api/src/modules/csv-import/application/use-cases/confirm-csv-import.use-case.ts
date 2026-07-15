@@ -100,6 +100,13 @@ export class ConfirmCsvImportUseCase {
       throw new ApplicationError(ErrorCodes.DECK_FORBIDDEN, 'Deck forbidden');
     }
 
+    if (deck.targetLanguage === null || deck.sourceLanguage === null) {
+      throw new ApplicationError(
+        ErrorCodes.LANGUAGES_REQUIRED,
+        'Deck target and source languages are required before CSV import',
+      );
+    }
+
     const validRows = csvImport.previewRows.filter((row) => row.isValid);
 
     if (validRows.length === 0) {

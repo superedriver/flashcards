@@ -231,7 +231,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 - [x] TASK-24.14 Add copy group shared deck use case
 - [x] TASK-24.15 Require languages before publishDeck
 - [x] TASK-24.16 Filter public decks by targetLanguage
-- [ ] TASK-24.17 Extend CSV import language step for new decks
+- [x] TASK-24.17 Extend CSV import language step for new decks
 - [ ] TASK-24.18 Add onboarding completion API + bootstrap gate
 - [ ] TASK-24.19 Add unified decks page GraphQL query (4 sections)
 - [ ] TASK-24.20 Add study languages mobile GraphQL + hooks
@@ -1064,7 +1064,7 @@ TASK-24.16 Filter public decks by targetLanguage
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
