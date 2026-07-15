@@ -29,6 +29,8 @@ export const ErrorCodes = {
 
   LANGUAGE_NOT_FOUND: 'LANGUAGE_NOT_FOUND',
   STUDY_LANGUAGE_NOT_FOUND: 'STUDY_LANGUAGE_NOT_FOUND',
+  PREVIEW_SESSION_NOT_FOUND: 'PREVIEW_SESSION_NOT_FOUND',
+  PREVIEW_SESSION_ACTIVE: 'PREVIEW_SESSION_ACTIVE',
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];
