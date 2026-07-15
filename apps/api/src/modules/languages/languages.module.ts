@@ -16,7 +16,11 @@ import { LanguagesResolver } from './presentation/graphql/resolvers/languages.re
 import { StudyLanguagesResolver } from './presentation/graphql/resolvers/study-languages.resolver';
 
 @Module({
-  imports: [AuthModule, AccountModule, forwardRef(() => DecksModule)],
+  imports: [
+    AuthModule,
+    forwardRef(() => AccountModule),
+    forwardRef(() => DecksModule),
+  ],
   providers: [
     {
       provide: LANGUAGE_REPOSITORY,

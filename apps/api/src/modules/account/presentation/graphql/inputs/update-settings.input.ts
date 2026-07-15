@@ -23,4 +23,7 @@ export class UpdateSettingsInput {
 
   @Field(() => Int, { nullable: true })
   lessonSize?: number;
+
+  @Field({ nullable: true })
+  nativeLanguage?: string;
 }

@@ -4,6 +4,10 @@ import {
   USER_REPOSITORY,
   UserRepositoryPort,
 } from '../../../auth/application/ports/user-repository.port';
+import {
+  LANGUAGE_REPOSITORY,
+  LanguageRepositoryPort,
+} from '../../../languages/application/ports/language-repository.port';
 import { ThemePreference, UserSettings } from '../../domain/types';
 import {
   USER_SETTINGS_REPOSITORY,
@@ -19,6 +23,7 @@ export type UpdateSettingsInput = {
   timezone?: string;
   audioAutoplayEnabled?: boolean;
   lessonSize?: number;
+  nativeLanguage?: string;
 };
 
 export type UpdateSettingsResult = UserSettings;
@@ -37,6 +42,8 @@ export class UpdateSettingsUseCase {
     private readonly userRepository: UserRepositoryPort,
     @Inject(USER_SETTINGS_REPOSITORY)
     private readonly userSettingsRepository: UserSettingsRepositoryPort,
+    @Inject(LANGUAGE_REPOSITORY)
+    private readonly languageRepository: LanguageRepositoryPort,
   ) {}
 
   async execute(input: UpdateSettingsInput): Promise<UpdateSettingsResult> {
@@ -58,6 +65,7 @@ export class UpdateSettingsUseCase {
       timezone?: string;
       audioAutoplayEnabled?: boolean;
       lessonSize?: number;
+      nativeLanguage?: string;
     } = {};
 
     if (input.interfaceLocale !== undefined) {
@@ -138,6 +146,28 @@ export class UpdateSettingsUseCase {
       }
 
       updateData.lessonSize = input.lessonSize;
+    }
+
+    if (input.nativeLanguage !== undefined) {
+      const nativeLanguage = input.nativeLanguage.trim();
+
+      if (!nativeLanguage) {
+        throw new ApplicationError(
+          ErrorCodes.VALIDATION_ERROR,
+          'Native language is required',
+        );
+      }
+
+      const language = await this.languageRepository.findByCode(nativeLanguage);
+
+      if (!language) {
+        throw new ApplicationError(
+          ErrorCodes.LANGUAGE_NOT_FOUND,
+          'Language not found',
+        );
+      }
+
+      updateData.nativeLanguage = nativeLanguage;
     }
 
     const existingSettings = await this.userSettingsRepository.findByUserId(

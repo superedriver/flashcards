@@ -68,6 +68,7 @@ export class AccountResolver {
       timezone: input.timezone,
       audioAutoplayEnabled: input.audioAutoplayEnabled,
       lessonSize: input.lessonSize,
+      nativeLanguage: input.nativeLanguage,
     });
 
     return {

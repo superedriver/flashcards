@@ -46,6 +46,13 @@ function createUseCase(options?: {
   const update = jest
     .fn<Promise<UserSettings>, [UpdateUserSettingsInput]>()
     .mockImplementation((input) => Promise.resolve({ ...settings, ...input }));
+  const findByCode = jest.fn().mockResolvedValue({
+    code: 'uk',
+    englishName: 'Ukrainian',
+    nativeName: 'Українська',
+    flag: '🇺🇦',
+    popularSortOrder: null,
+  });
 
   const useCase = new UpdateSettingsUseCase(
     {
@@ -61,9 +68,13 @@ function createUseCase(options?: {
       update,
       findWithNotificationsEnabled: jest.fn(),
     },
+    {
+      findAll: jest.fn(),
+      findByCode,
+    },
   );
 
-  return { useCase, findByUserId, createForUser, update };
+  return { useCase, findByUserId, createForUser, update, findByCode };
 }
 
 describe('UpdateSettingsUseCase', () => {
@@ -248,5 +259,34 @@ describe('UpdateSettingsUseCase', () => {
     });
     const [callInput] = update.mock.calls[0] as [UpdateUserSettingsInput];
     expect(callInput).not.toHaveProperty('interfaceLocale');
+  });
+
+  it('updates nativeLanguage when valid catalog code is provided', async () => {
+    const { useCase, update, findByCode } = createUseCase();
+
+    await useCase.execute({ userId: 'user-1', nativeLanguage: 'uk' });
+
+    expect(findByCode).toHaveBeenCalledWith('uk');
+    expect(update).toHaveBeenCalledWith({
+      userId: 'user-1',
+      nativeLanguage: 'uk',
+    });
+  });
+
+  it('rejects unknown nativeLanguage with LANGUAGE_NOT_FOUND', async () => {
+    const { useCase, findByCode } = createUseCase();
+    findByCode.mockResolvedValue(null);
+
+    await expect(
+      useCase.execute({ userId: 'user-1', nativeLanguage: 'xx' }),
+    ).rejects.toMatchObject({ code: ErrorCodes.LANGUAGE_NOT_FOUND });
+  });
+
+  it('rejects empty nativeLanguage with VALIDATION_ERROR', async () => {
+    const { useCase } = createUseCase();
+
+    await expect(
+      useCase.execute({ userId: 'user-1', nativeLanguage: '   ' }),
+    ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
   });
 });

@@ -1,5 +1,6 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
+import { LanguagesModule } from '../languages/languages.module';
 import { USER_PROFILE_REPOSITORY } from './application/ports/user-profile-repository.port';
 import { USER_SETTINGS_REPOSITORY } from './application/ports/user-settings-repository.port';
 import { GetMyAccountUseCase } from './application/use-cases/get-my-account.use-case';
@@ -10,7 +11,7 @@ import { PrismaUserSettingsRepository } from './infrastructure/persistence/prism
 import { AccountResolver } from './presentation/graphql/resolvers/account.resolver';
 
 @Module({
-  imports: [forwardRef(() => AuthModule)],
+  imports: [forwardRef(() => AuthModule), forwardRef(() => LanguagesModule)],
   providers: [
     {
       provide: USER_PROFILE_REPOSITORY,

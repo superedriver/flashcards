@@ -31,6 +31,12 @@ export class UserSettingsType {
   lessonSize: number;
 
   @Field()
+  nativeLanguage: string;
+
+  @Field({ nullable: true })
+  activeTargetLanguage: string | null;
+
+  @Field()
   createdAt: Date;
 
   @Field()
