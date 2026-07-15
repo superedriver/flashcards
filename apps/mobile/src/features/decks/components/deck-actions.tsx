@@ -4,6 +4,10 @@ import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { confirmAction, confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
+import {
+  deckNeedsLanguageAssignment,
+  promptAssignLanguages,
+} from '@/features/decks/utils/deck-language-gate'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { getDeckStatusSummary } from '@/features/decks/utils/format-deck-status'
 import type { DeckQuery } from '@/graphql/generated'
@@ -31,16 +35,21 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
   const isPublishingRef = useRef(false)
 
   const [deleteDeck, { loading: isDeleting }] = useDeleteDeckMutation({
-    refetchQueries: ['MyDecks'],
+    refetchQueries: ['MyDecks', 'DecksPage'],
   })
   const [publishDeck, { loading: isPublishing }] = usePublishDeckMutation({
-    refetchQueries: ['Deck', 'MyDecks'],
+    refetchQueries: ['Deck', 'MyDecks', 'DecksPage'],
   })
   const [unpublishDeck, { loading: isUnpublishing }] = useUnpublishDeckMutation({
-    refetchQueries: ['Deck', 'MyDecks'],
+    refetchQueries: ['Deck', 'MyDecks', 'DecksPage'],
   })
 
   const isBusy = isDeleting || isPublishing || isUnpublishing
+  const needsLanguages = deckNeedsLanguageAssignment(deck)
+
+  const goAssignLanguages = () => {
+    router.push(`/decks/${deck.id}/assign-languages`)
+  }
 
   if (!isOwner) {
     return null
@@ -75,6 +84,11 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
   }
 
   const handlePublish = () => {
+    if (needsLanguages) {
+      promptAssignLanguages(goAssignLanguages)
+      return
+    }
+
     if (isPublishingRef.current || isPublishing) {
       return
     }
@@ -140,13 +154,39 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
         })}
       </AppText>
 
+      {needsLanguages ? (
+        <AppButton disabled={isBusy} onPress={goAssignLanguages}>
+          {t('decks.assignLanguages.cta')}
+        </AppButton>
+      ) : null}
+
       <AppButton disabled={isBusy} onPress={() => router.push(`/decks/${deck.id}/edit`)}>
         {t('decks.actions.editDeck')}
       </AppButton>
-      <AppButton disabled={isBusy} onPress={() => router.push(`/decks/${deck.id}/cards/new`)}>
+      <AppButton
+        disabled={isBusy}
+        onPress={() => {
+          if (needsLanguages) {
+            promptAssignLanguages(goAssignLanguages)
+            return
+          }
+
+          router.push(`/decks/${deck.id}/cards/new`)
+        }}
+      >
         {t('decks.actions.addCard')}
       </AppButton>
-      <AppButton disabled={isBusy} onPress={() => router.push(`/decks/${deck.id}/import-csv`)}>
+      <AppButton
+        disabled={isBusy}
+        onPress={() => {
+          if (needsLanguages) {
+            promptAssignLanguages(goAssignLanguages)
+            return
+          }
+
+          router.push(`/decks/${deck.id}/import-csv`)
+        }}
+      >
         {t('decks.actions.importCsv')}
       </AppButton>
 

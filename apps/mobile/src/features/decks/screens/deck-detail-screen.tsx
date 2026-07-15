@@ -6,6 +6,10 @@ import { CardList } from '@/features/decks/components/card-list'
 import { DeckActions } from '@/features/decks/components/deck-actions'
 import { DeckHeader } from '@/features/decks/components/deck-header'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
+import {
+  deckNeedsLanguageAssignment,
+  promptAssignLanguages,
+} from '@/features/decks/utils/deck-language-gate'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import { DeckLearningStatsCard } from '@/features/lessons/components/deck-learning-stats-card'
@@ -79,7 +83,14 @@ export function DeckDetailScreen() {
         <DeckLearningStatsCard deckId={deckId} />
         <AppButton
           disabled={cards.length === 0}
-          onPress={() => router.push(`/lessons/start?deckId=${deckId}`)}
+          onPress={() => {
+            if (deckNeedsLanguageAssignment(deck)) {
+              promptAssignLanguages(() => router.push(`/decks/${deckId}/assign-languages`))
+              return
+            }
+
+            router.push(`/lessons/start?deckId=${deckId}`)
+          }}
         >
           {t('decks.deckDetail.startLesson')}
         </AppButton>

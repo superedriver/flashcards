@@ -43,6 +43,19 @@ export const decksEn = {
     submitting: 'Creating deck...',
     error: 'Could not create deck. Please try again.',
   },
+  assignLanguages: {
+    title: 'Assign languages',
+    description:
+      'This deck has no languages yet. Choose a target language (front) and source language (back) to continue.',
+    loading: 'Loading deck...',
+    loadError: 'Could not load deck.',
+    submit: 'Save languages',
+    submitting: 'Saving...',
+    error: 'Could not assign languages.',
+    cta: 'Assign languages',
+    gateTitle: 'Languages required',
+    gateMessage: 'Assign languages to this deck to continue.',
+  },
   editDeck: {
     title: 'Edit Deck',
     loading: 'Loading deck...',

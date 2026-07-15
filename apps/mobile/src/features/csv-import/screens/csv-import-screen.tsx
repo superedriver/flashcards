@@ -1,15 +1,20 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { CsvImportSummary } from '@/features/csv-import/components/csv-import-summary'
 import { CsvInputForm } from '@/features/csv-import/components/csv-input-form'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
+import { deckNeedsLanguageAssignment } from '@/features/decks/utils/deck-language-gate'
 import type { PreviewCsvImportMutation } from '@/graphql/generated'
-import { useConfirmCsvImportMutation, usePreviewCsvImportMutation } from '@/graphql/generated'
+import {
+  useConfirmCsvImportMutation,
+  useDeckQuery,
+  usePreviewCsvImportMutation,
+} from '@/graphql/generated'
 import { AppButton, AppText } from '@/ui/primitives'
-import { ErrorState, PageTitle, Screen } from '@/ui/components'
+import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function CsvImportScreen() {
   const { t } = useTranslation()
@@ -24,10 +29,36 @@ export function CsvImportScreen() {
   const isPreviewingRef = useRef(false)
   const isConfirmingRef = useRef(false)
 
+  const deckQuery = useDeckQuery({
+    skip: !deckId,
+    variables: { id: deckId ?? '' },
+  })
+
+  useEffect(() => {
+    const deck = deckQuery.data?.deck
+
+    if (!deckId || !deck) {
+      return
+    }
+
+    if (deckNeedsLanguageAssignment(deck)) {
+      router.replace(`/decks/${deckId}/assign-languages`)
+    }
+  }, [deckId, deckQuery.data?.deck, router])
+
   const [previewCsvImport, { loading: isPreviewing }] = usePreviewCsvImportMutation()
   const [confirmCsvImport, { loading: isConfirming }] = useConfirmCsvImportMutation({
     refetchQueries: ['DeckCards'],
   })
+
+  if (deckQuery.loading) {
+    return (
+      <Screen>
+        <PageTitle title={t('csvImport.title')} />
+        <LoadingState message={t('common.loading')} />
+      </Screen>
+    )
+  }
 
   const handlePreview = async () => {
     if (!deckId || csvText.trim().length === 0) {

@@ -3,10 +3,11 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
+import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
+import { deckNeedsLanguageAssignment } from '@/features/decks/utils/deck-language-gate'
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
 import type { LessonCard } from '@/features/lessons/types/active-lesson'
-import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
-import { useStartLessonMutation } from '@/graphql/generated'
+import { useDeckQuery, useStartLessonMutation } from '@/graphql/generated'
 import { AppButton } from '@/ui/primitives'
 import { EmptyState, ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
@@ -25,8 +26,30 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
   const [retryCount, setRetryCount] = useState(0)
   const hasStartedRef = useRef(false)
 
+  const deckQuery = useDeckQuery({
+    skip: !deckId,
+    variables: { id: deckId ?? '' },
+  })
+
   useEffect(() => {
-    if (!deckId || hasStartedRef.current) {
+    if (!deckId || hasStartedRef.current || deckQuery.loading) {
+      return
+    }
+
+    const deck = deckQuery.data?.deck
+
+    if (!deck) {
+      if (deckQuery.error) {
+        setErrorMessage(getGraphqlErrorMessage(deckQuery.error, t('lessons.start.startError')))
+        setIsStarting(false)
+      }
+      return
+    }
+
+    if (deckNeedsLanguageAssignment(deck)) {
+      hasStartedRef.current = true
+      setIsStarting(false)
+      router.replace(`/decks/${deckId}/assign-languages`)
       return
     }
 
@@ -75,7 +98,17 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
       .finally(() => {
         setIsStarting(false)
       })
-  }, [deckId, retryCount, router, setActiveLesson, startLesson, t])
+  }, [
+    deckId,
+    deckQuery.data?.deck,
+    deckQuery.error,
+    deckQuery.loading,
+    retryCount,
+    router,
+    setActiveLesson,
+    startLesson,
+    t,
+  ])
 
   const handleRetry = () => {
     setErrorMessage(null)
@@ -102,7 +135,9 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
   return (
     <Screen>
       <PageTitle title={t('lessons.start.title')} />
-      {isStarting ? <LoadingState message={t('lessons.start.preparing')} /> : null}
+      {isStarting || deckQuery.loading ? (
+        <LoadingState message={t('lessons.start.preparing')} />
+      ) : null}
       {errorMessage ? <ErrorState message={errorMessage} onRetry={handleRetry} /> : null}
       {isEmptyLesson ? (
         <View style={{ gap: 12 }}>
