@@ -229,7 +229,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 - [x] TASK-24.12 Add deck preview use cases (start/update/confirm/cancel/resume)
 - [x] TASK-24.13 Extend copy public deck (1:1 vs preview path)
 - [x] TASK-24.14 Add copy group shared deck use case
-- [ ] TASK-24.15 Require languages before publishDeck
+- [x] TASK-24.15 Require languages before publishDeck
 - [ ] TASK-24.16 Filter public decks by targetLanguage
 - [ ] TASK-24.17 Extend CSV import language step for new decks
 - [ ] TASK-24.18 Add onboarding completion API + bootstrap gate
@@ -990,7 +990,7 @@ TASK-24.14 Add copy group shared deck use case
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

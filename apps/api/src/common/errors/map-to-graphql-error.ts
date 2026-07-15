@@ -27,6 +27,7 @@ const ERROR_CODE_TO_GRAPHQL: Record<ErrorCode, GraphQLErrorCode> = {
   [ErrorCodes.GROUP_INVITATION_INVALID]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.LANGUAGE_NOT_FOUND]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.STUDY_LANGUAGE_NOT_FOUND]: GraphQLErrorCodes.BAD_USER_INPUT,
+  [ErrorCodes.LANGUAGES_REQUIRED]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.PREVIEW_SESSION_NOT_FOUND]: GraphQLErrorCodes.NOT_FOUND,
   [ErrorCodes.PREVIEW_SESSION_ACTIVE]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.USER_ALREADY_EXISTS]: GraphQLErrorCodes.BAD_USER_INPUT,

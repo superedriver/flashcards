@@ -98,8 +98,21 @@ describe('PublishDeckUseCase', () => {
     expect(publish).not.toHaveBeenCalled();
   });
 
-  it('owner can publish non-empty deck', async () => {
-    const { useCase } = createUseCase(createDeck(), 2);
+  it('throws LANGUAGES_REQUIRED when languages are missing', async () => {
+    const { useCase, publish } = createUseCase(createDeck(), 2);
+
+    await expect(
+      useCase.execute({ currentUser: owner, deckId: 'deck-1' }),
+    ).rejects.toMatchObject({ code: ErrorCodes.LANGUAGES_REQUIRED });
+
+    expect(publish).not.toHaveBeenCalled();
+  });
+
+  it('owner can publish non-empty deck with languages', async () => {
+    const { useCase } = createUseCase(
+      createDeck({ targetLanguage: 'es', sourceLanguage: 'en' }),
+      2,
+    );
 
     const result = await useCase.execute({
       currentUser: owner,
@@ -111,7 +124,9 @@ describe('PublishDeckUseCase', () => {
   });
 
   it('calls deckRepository.publish with deckId', async () => {
-    const { useCase, publish } = createUseCase(createDeck());
+    const { useCase, publish } = createUseCase(
+      createDeck({ targetLanguage: 'es', sourceLanguage: 'en' }),
+    );
 
     await useCase.execute({ currentUser: owner, deckId: 'deck-1' });
 

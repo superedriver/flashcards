@@ -57,6 +57,13 @@ export class PublishDeckUseCase {
       );
     }
 
+    if (deck.targetLanguage === null || deck.sourceLanguage === null) {
+      throw new ApplicationError(
+        ErrorCodes.LANGUAGES_REQUIRED,
+        'Deck target and source languages are required before publish',
+      );
+    }
+
     return this.deckRepository.publish({ deckId: input.deckId });
   }
 }
