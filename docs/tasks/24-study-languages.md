@@ -218,7 +218,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 - [x] TASK-24.01 Add Language catalog Prisma schema + seed
 - [x] TASK-24.02 Add study languages + preview session Prisma schema
 - [x] TASK-24.03 Add languages module skeleton (backend)
-- [ ] TASK-24.04 Add Language repository + languages GraphQL query
+- [x] TASK-24.04 Add Language repository + languages GraphQL query
 - [ ] TASK-24.05 Add UserStudyLanguage use cases + GraphQL
 - [ ] TASK-24.06 Extend UserSettings for nativeLanguage and activeTargetLanguage
 - [ ] TASK-24.07 Extend Deck with targetLanguage and sourceLanguage
@@ -530,7 +530,7 @@ TASK-24.03 Add languages module skeleton (backend)
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
