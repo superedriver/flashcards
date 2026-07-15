@@ -139,6 +139,7 @@ function createUseCase(options?: {
         ),
       searchPublicApproved: jest.fn(),
       createCopiedDeck,
+      countByOwnerAndTargetLanguage: jest.fn(),
     },
     {
       create: jest.fn(),

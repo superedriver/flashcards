@@ -25,6 +25,8 @@ const ERROR_CODE_TO_GRAPHQL: Record<ErrorCode, GraphQLErrorCode> = {
   [ErrorCodes.VALIDATION_ERROR]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.INVALID_REVIEW_ANSWER]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.GROUP_INVITATION_INVALID]: GraphQLErrorCodes.BAD_USER_INPUT,
+  [ErrorCodes.LANGUAGE_NOT_FOUND]: GraphQLErrorCodes.BAD_USER_INPUT,
+  [ErrorCodes.STUDY_LANGUAGE_NOT_FOUND]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.USER_ALREADY_EXISTS]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.EMAIL_NOT_VERIFIED]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.LESSON_NOT_ACTIVE]: GraphQLErrorCodes.BAD_USER_INPUT,

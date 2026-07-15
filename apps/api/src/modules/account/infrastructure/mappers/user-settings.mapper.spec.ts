@@ -10,6 +10,8 @@ const prismaSettings = {
   timezone: 'Europe/Kyiv',
   audioAutoplayEnabled: true,
   lessonSize: 25,
+  nativeLanguage: 'en',
+  activeTargetLanguage: null,
   createdAt: new Date('2026-01-01T00:00:00.000Z'),
   updatedAt: new Date('2026-06-01T00:00:00.000Z'),
 };
@@ -26,6 +28,8 @@ describe('user-settings.mapper', () => {
       timezone: 'Europe/Kyiv',
       audioAutoplayEnabled: true,
       lessonSize: 25,
+      nativeLanguage: 'en',
+      activeTargetLanguage: null,
       createdAt: prismaSettings.createdAt,
       updatedAt: prismaSettings.updatedAt,
     });

@@ -42,4 +42,12 @@ export class PrismaLanguageRepository implements LanguageRepositoryPort {
 
     return languages.map(toLanguage);
   }
+
+  async findByCode(code: string): Promise<Language | null> {
+    const language = await this.prisma.language.findUnique({
+      where: { code },
+    });
+
+    return language ? toLanguage(language) : null;
+  }
 }

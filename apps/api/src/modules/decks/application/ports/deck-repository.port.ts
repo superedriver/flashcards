@@ -53,4 +53,8 @@ export type DeckRepositoryPort = {
     input: PublicDeckSearchInput,
   ): Promise<PublicDeckSearchResult>;
   createCopiedDeck(input: CreateCopiedDeckInput): Promise<Deck>;
+  countByOwnerAndTargetLanguage(
+    ownerId: string,
+    targetLanguage: string,
+  ): Promise<number>;
 };

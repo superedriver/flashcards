@@ -26,6 +26,9 @@ export const ErrorCodes = {
   GROUP_INVITATION_INVALID: 'GROUP_INVITATION_INVALID',
 
   ADMIN_FORBIDDEN: 'ADMIN_FORBIDDEN',
+
+  LANGUAGE_NOT_FOUND: 'LANGUAGE_NOT_FOUND',
+  STUDY_LANGUAGE_NOT_FOUND: 'STUDY_LANGUAGE_NOT_FOUND',
 } as const;
 
 export type ErrorCode = (typeof ErrorCodes)[keyof typeof ErrorCodes];

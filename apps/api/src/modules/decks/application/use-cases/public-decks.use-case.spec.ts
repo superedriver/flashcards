@@ -32,6 +32,7 @@ function createUseCase() {
     findPublicApprovedById: jest.fn(),
     searchPublicApproved,
     createCopiedDeck: jest.fn(),
+    countByOwnerAndTargetLanguage: jest.fn(),
   });
 
   return { useCase, searchPublicApproved };

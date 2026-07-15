@@ -10,6 +10,8 @@ type PrismaUserSettingsRecord = {
   timezone: string;
   audioAutoplayEnabled: boolean;
   lessonSize: number;
+  nativeLanguage: string;
+  activeTargetLanguage: string | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -27,6 +29,8 @@ export function toUserSettings(
     timezone: settings.timezone,
     audioAutoplayEnabled: settings.audioAutoplayEnabled,
     lessonSize: settings.lessonSize,
+    nativeLanguage: settings.nativeLanguage,
+    activeTargetLanguage: settings.activeTargetLanguage,
     createdAt: settings.createdAt,
     updatedAt: settings.updatedAt,
   };

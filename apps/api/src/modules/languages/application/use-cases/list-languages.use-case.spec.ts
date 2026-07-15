@@ -11,9 +11,11 @@ const spanish: Language = {
 
 function createUseCase() {
   const findAll = jest.fn().mockResolvedValue([spanish]);
+  const findByCode = jest.fn().mockResolvedValue(spanish);
 
   const useCase = new ListLanguagesUseCase({
     findAll,
+    findByCode,
   });
 
   return { useCase, findAll };

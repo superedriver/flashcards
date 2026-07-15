@@ -182,4 +182,17 @@ export class PrismaDeckRepository implements DeckRepositoryPort {
 
     return toDeck(deck);
   }
+
+  async countByOwnerAndTargetLanguage(
+    ownerId: string,
+    targetLanguage: string,
+  ): Promise<number> {
+    return this.prisma.deck.count({
+      where: {
+        ownerId,
+        targetLanguage,
+        deletedAt: null,
+      },
+    });
+  }
 }

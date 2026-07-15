@@ -11,6 +11,8 @@ export type UpdateUserSettingsInput = {
   timezone?: string;
   audioAutoplayEnabled?: boolean;
   lessonSize?: number;
+  nativeLanguage?: string;
+  activeTargetLanguage?: string | null;
 };
 
 export type UserSettingsRepositoryPort = {

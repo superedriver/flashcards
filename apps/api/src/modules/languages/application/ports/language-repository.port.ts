@@ -8,4 +8,5 @@ export type ListLanguagesInput = {
 
 export type LanguageRepositoryPort = {
   findAll(input: ListLanguagesInput): Promise<Language[]>;
+  findByCode(code: string): Promise<Language | null>;
 };

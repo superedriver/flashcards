@@ -45,6 +45,8 @@ const settings: UserSettings = {
   timezone: 'UTC',
   audioAutoplayEnabled: false,
   lessonSize: 20,
+  nativeLanguage: 'en',
+  activeTargetLanguage: null,
   createdAt: new Date('2026-01-01T00:00:00.000Z'),
   updatedAt: new Date('2026-01-01T00:00:00.000Z'),
 };
@@ -154,6 +156,7 @@ function createUseCase(options?: {
       findPublicApprovedById: jest.fn(),
       searchPublicApproved: jest.fn(),
       createCopiedDeck: jest.fn(),
+      countByOwnerAndTargetLanguage: jest.fn(),
       create: jest.fn(),
     },
     {

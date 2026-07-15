@@ -10,6 +10,8 @@ export type UserSettings = {
   timezone: string;
   audioAutoplayEnabled: boolean;
   lessonSize: number;
+  nativeLanguage: string;
+  activeTargetLanguage: string | null;
   createdAt: Date;
   updatedAt: Date;
 };

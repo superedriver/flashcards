@@ -62,6 +62,7 @@ function createUseCase(options?: { user?: SafeUser | null }) {
       findPublicApprovedById: jest.fn(),
       searchPublicApproved: jest.fn(),
       createCopiedDeck: jest.fn(),
+      countByOwnerAndTargetLanguage: jest.fn(),
     },
   );
 

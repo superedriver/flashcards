@@ -36,6 +36,8 @@ export class PrismaUserSettingsRepository implements UserSettingsRepositoryPort 
       timezone?: string;
       audioAutoplayEnabled?: boolean;
       lessonSize?: number;
+      nativeLanguage?: string;
+      activeTargetLanguage?: string | null;
     } = {};
 
     if (input.interfaceLocale !== undefined) {
@@ -64,6 +66,14 @@ export class PrismaUserSettingsRepository implements UserSettingsRepositoryPort 
 
     if (input.lessonSize !== undefined) {
       data.lessonSize = input.lessonSize;
+    }
+
+    if (input.nativeLanguage !== undefined) {
+      data.nativeLanguage = input.nativeLanguage;
+    }
+
+    if (input.activeTargetLanguage !== undefined) {
+      data.activeTargetLanguage = input.activeTargetLanguage;
     }
 
     const settings = await this.prisma.userSettings.update({

@@ -31,6 +31,7 @@ function createUseCase(deck: Deck | null) {
     findPublicApprovedById,
     searchPublicApproved: jest.fn(),
     createCopiedDeck: jest.fn(),
+    countByOwnerAndTargetLanguage: jest.fn(),
   });
 
   return { useCase, findById, findPublicApprovedById };

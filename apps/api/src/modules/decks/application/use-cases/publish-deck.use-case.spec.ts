@@ -52,6 +52,7 @@ function createUseCase(deck: Deck | null, cardCount = 1) {
       findPublicApprovedById: jest.fn(),
       searchPublicApproved: jest.fn(),
       createCopiedDeck: jest.fn(),
+      countByOwnerAndTargetLanguage: jest.fn(),
     },
     {
       create: jest.fn(),
