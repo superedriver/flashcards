@@ -3,10 +3,12 @@ import { AuthModule } from '../auth/auth.module';
 import { AccountModule } from '../account/account.module';
 import { DecksModule } from '../decks/decks.module';
 import { EmailModule } from '../email/email.module';
+import { LanguagesModule } from '../languages/languages.module';
 import { DECK_GROUP_SHARE_REPOSITORY } from './application/ports/deck-group-share-repository.port';
 import { GROUP_INVITATION_REPOSITORY } from './application/ports/group-invitation-repository.port';
 import { GROUP_REPOSITORY } from './application/ports/group-repository.port';
 import { AcceptGroupInvitationUseCase } from './application/use-cases/accept-group-invitation.use-case';
+import { CopyGroupDeckUseCase } from './application/use-cases/copy-group-deck.use-case';
 import { CreateGroupUseCase } from './application/use-cases/create-group.use-case';
 import { DeclineGroupInvitationUseCase } from './application/use-cases/decline-group-invitation.use-case';
 import { GroupDetailUseCase } from './application/use-cases/group-detail.use-case';
@@ -26,6 +28,7 @@ import { GroupsResolver } from './presentation/graphql/resolvers/groups.resolver
     EmailModule,
     forwardRef(() => AccountModule),
     forwardRef(() => DecksModule),
+    forwardRef(() => LanguagesModule),
   ],
   providers: [
     {
@@ -49,6 +52,7 @@ import { GroupsResolver } from './presentation/graphql/resolvers/groups.resolver
     DeclineGroupInvitationUseCase,
     ShareDeckWithGroupUseCase,
     GroupSharedDecksUseCase,
+    CopyGroupDeckUseCase,
     GroupsResolver,
   ],
   exports: [
@@ -62,6 +66,7 @@ import { GroupsResolver } from './presentation/graphql/resolvers/groups.resolver
     DeclineGroupInvitationUseCase,
     ShareDeckWithGroupUseCase,
     GroupSharedDecksUseCase,
+    CopyGroupDeckUseCase,
   ],
 })
 export class GroupsModule {}

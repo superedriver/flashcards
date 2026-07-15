@@ -5,8 +5,15 @@ import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/cu
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
 import { DeckModerationStatus } from '../../../../decks/presentation/graphql/types/deck-moderation-status.type';
 import { DeckVisibility } from '../../../../decks/presentation/graphql/types/deck-visibility.type';
+import {
+  DeckPreviewSessionStatusEnum,
+  DeckPreviewSessionType,
+  DeckPreviewSessionTypeEnum,
+} from '../../../../decks/presentation/graphql/types/deck-preview-session.type';
 import { DeckType } from '../../../../decks/presentation/graphql/types/deck.type';
+import { StartDeckPreviewUseCase } from '../../../../languages/application/use-cases/start-deck-preview.use-case';
 import { AcceptGroupInvitationUseCase } from '../../../application/use-cases/accept-group-invitation.use-case';
+import { CopyGroupDeckUseCase } from '../../../application/use-cases/copy-group-deck.use-case';
 import { CreateGroupUseCase } from '../../../application/use-cases/create-group.use-case';
 import { DeclineGroupInvitationUseCase } from '../../../application/use-cases/decline-group-invitation.use-case';
 import { GroupDetailUseCase } from '../../../application/use-cases/group-detail.use-case';
@@ -24,7 +31,9 @@ import {
 import { CreateGroupInput } from '../inputs/create-group.input';
 import { InviteUserToGroupInput } from '../inputs/invite-user-to-group.input';
 import { ShareDeckWithGroupInput } from '../inputs/share-deck-with-group.input';
+import { StartGroupDeckCopyPreviewInput } from '../inputs/start-group-deck-copy-preview.input';
 import { AcceptGroupInvitationPayloadType } from '../types/accept-group-invitation-payload.type';
+import { CopyGroupDeckPayloadType } from '../types/copy-group-deck-payload.type';
 import { DeckGroupSharePermission } from '../types/deck-group-share-permission.type';
 import { DeckGroupShareType } from '../types/deck-group-share.type';
 import { GroupInvitationStatus } from '../types/group-invitation-status.type';
@@ -46,6 +55,8 @@ export class GroupsResolver {
     private readonly declineGroupInvitationUseCase: DeclineGroupInvitationUseCase,
     private readonly shareDeckWithGroupUseCase: ShareDeckWithGroupUseCase,
     private readonly groupSharedDecksUseCase: GroupSharedDecksUseCase,
+    private readonly copyGroupDeckUseCase: CopyGroupDeckUseCase,
+    private readonly startDeckPreviewUseCase: StartDeckPreviewUseCase,
   ) {}
 
   @Mutation(() => GroupType)
@@ -178,6 +189,48 @@ export class GroupsResolver {
       visibility: deck.visibility as DeckVisibility,
       moderationStatus: deck.moderationStatus as DeckModerationStatus,
     }));
+  }
+
+  @Mutation(() => CopyGroupDeckPayloadType)
+  @UseGuards(GqlAuthGuard)
+  async copyGroupDeck(
+    @CurrentUser() user: AuthUser,
+    @Args('sourceDeckId') sourceDeckId: string,
+  ): Promise<CopyGroupDeckPayloadType> {
+    const result = await this.copyGroupDeckUseCase.execute({
+      currentUser: user,
+      sourceDeckId,
+    });
+
+    return {
+      deck: {
+        ...result.deck,
+        visibility: result.deck.visibility as DeckVisibility,
+        moderationStatus: result.deck.moderationStatus as DeckModerationStatus,
+      },
+      cards: result.cards,
+    };
+  }
+
+  @Mutation(() => DeckPreviewSessionType)
+  @UseGuards(GqlAuthGuard)
+  async startGroupDeckCopyPreview(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: StartGroupDeckCopyPreviewInput,
+  ): Promise<DeckPreviewSessionType> {
+    const session = await this.startDeckPreviewUseCase.execute({
+      currentUser: user,
+      type: 'COPY_GROUP',
+      sourceDeckId: input.sourceDeckId,
+      chosenSourceLanguage: input.chosenSourceLanguage,
+      discardActive: input.discardActive,
+    });
+
+    return {
+      ...session,
+      type: session.type as DeckPreviewSessionTypeEnum,
+      status: session.status as DeckPreviewSessionStatusEnum,
+    };
   }
 }
 
