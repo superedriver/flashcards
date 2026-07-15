@@ -6,6 +6,8 @@ import {
   AiProviderPort,
   GenerateCardExamplesInput,
   GenerateCardExamplesResult,
+  TranslateCardBackInput,
+  TranslateCardBackResult,
 } from '../../application/ports/ai-provider.port';
 
 const OUTPUT_PREVIEW_MAX_LENGTH = 1000;
@@ -49,6 +51,56 @@ export class GeminiAiProvider implements AiProviderPort {
       );
     }
   }
+
+  async translateCardBack(
+    input: TranslateCardBackInput,
+  ): Promise<TranslateCardBackResult> {
+    const apiKey = this.configService.get<string>('ai.apiKey', '');
+
+    if (!apiKey) {
+      throw new ApplicationError(
+        ErrorCodes.VALIDATION_ERROR,
+        'AI provider is not configured',
+      );
+    }
+
+    const prompt = buildTranslateCardBackPrompt(input);
+
+    try {
+      const client = new GoogleGenerativeAI(apiKey);
+      const model = client.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      const response = await model.generateContent(prompt);
+      const rawText = response.response.text().trim();
+
+      return {
+        back: rawText,
+        rawOutputPreview: truncatePreview(rawText, OUTPUT_PREVIEW_MAX_LENGTH),
+      };
+    } catch {
+      throw new ApplicationError(
+        ErrorCodes.INTERNAL_ERROR,
+        'Failed to translate card back',
+      );
+    }
+  }
+}
+
+function buildTranslateCardBackPrompt(input: TranslateCardBackInput): string {
+  const lines = [
+    'Translate the flashcard front text into the source language for the back side.',
+    'Return plain text only: the translated back text with no markdown or quotes.',
+    `Target language code: ${input.targetLanguage.trim()}`,
+    `Source language code: ${input.sourceLanguage.trim()}`,
+    `Front: ${input.front.trim()}`,
+  ];
+
+  if (input.targetLanguage.trim() === input.sourceLanguage.trim()) {
+    lines.push(
+      'The target and source languages are the same. Provide a definition or synonym in that language.',
+    );
+  }
+
+  return lines.join('\n');
 }
 
 function buildGeminiPrompt(input: GenerateCardExamplesInput): string {

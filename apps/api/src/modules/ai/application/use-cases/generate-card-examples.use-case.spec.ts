@@ -99,6 +99,7 @@ function createUseCase(options?: {
   const aiProvider: AiProviderPort = {
     providerName: 'MOCK',
     generateCardExamples,
+    translateCardBack: jest.fn(),
     ...options?.aiProvider,
   };
 

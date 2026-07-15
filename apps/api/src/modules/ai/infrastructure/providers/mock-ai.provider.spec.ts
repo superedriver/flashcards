@@ -36,4 +36,15 @@ describe('MockAiProvider', () => {
 
     expect(result.rawOutputPreview).toBe('mock output');
   });
+
+  it('translateCardBack returns source-language mock translation for es→uk', async () => {
+    const result = await provider.translateCardBack({
+      front: 'hola',
+      targetLanguage: 'es',
+      sourceLanguage: 'uk',
+    });
+
+    expect(result.back).toBe('[uk] hola');
+    expect(result.rawOutputPreview).toBe('mock translate');
+  });
 });

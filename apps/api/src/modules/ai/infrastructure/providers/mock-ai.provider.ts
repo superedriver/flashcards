@@ -3,6 +3,8 @@ import {
   AiProviderPort,
   GenerateCardExamplesInput,
   GenerateCardExamplesResult,
+  TranslateCardBackInput,
+  TranslateCardBackResult,
 } from '../../application/ports/ai-provider.port';
 
 @Injectable()
@@ -24,6 +26,18 @@ export class MockAiProvider implements AiProviderPort {
         },
       ],
       rawOutputPreview: 'mock output',
+    });
+  }
+
+  translateCardBack(
+    input: TranslateCardBackInput,
+  ): Promise<TranslateCardBackResult> {
+    const front = input.front.trim();
+    const sourceLanguage = input.sourceLanguage.trim();
+
+    return Promise.resolve({
+      back: `[${sourceLanguage}] ${front}`,
+      rawOutputPreview: 'mock translate',
     });
   }
 }

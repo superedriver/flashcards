@@ -224,7 +224,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 - [x] TASK-24.07 Extend Deck with targetLanguage and sourceLanguage
 - [x] TASK-24.08 Add deck language validation (soft same-language warning)
 - [x] TASK-24.09 Add DeckPreviewSession persistence + TTL cleanup
-- [ ] TASK-24.10 Add AI translate card back use case
+- [x] TASK-24.10 Add AI translate card back use case
 - [ ] TASK-24.11 Add AI generate example for language pair use case
 - [ ] TASK-24.12 Add deck preview use cases (start/update/confirm/cancel/resume)
 - [ ] TASK-24.13 Extend copy public deck (1:1 vs preview path)
@@ -789,7 +789,7 @@ TASK-24.09 Add DeckPreviewSession persistence + TTL cleanup
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
