@@ -20,6 +20,7 @@ import { DecksModule } from './modules/decks/decks.module';
 import { LessonsModule } from './modules/lessons/lessons.module';
 import { CsvImportModule } from './modules/csv-import/csv-import.module';
 import { GroupsModule } from './modules/groups/groups.module';
+import { LanguagesModule } from './modules/languages/languages.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AiModule } from './modules/ai/ai.module';
@@ -54,6 +55,7 @@ import { PrismaModule } from './infrastructure/prisma';
     LessonsModule,
     CsvImportModule,
     GroupsModule,
+    LanguagesModule,
     NotificationsModule,
     AdminModule,
     AiModule,
