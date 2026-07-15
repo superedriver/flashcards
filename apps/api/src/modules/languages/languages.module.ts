@@ -2,18 +2,23 @@ import { Module, forwardRef } from '@nestjs/common';
 import { AccountModule } from '../account/account.module';
 import { AuthModule } from '../auth/auth.module';
 import { DecksModule } from '../decks/decks.module';
+import { InternalJobGuard } from '../../common/guards/internal-job.guard';
+import { DECK_PREVIEW_SESSION_REPOSITORY } from './application/ports/deck-preview-session-repository.port';
 import { LANGUAGE_REPOSITORY } from './application/ports/language-repository.port';
 import { USER_STUDY_LANGUAGE_REPOSITORY } from './application/ports/user-study-language-repository.port';
 import { AddStudyLanguageUseCase } from './application/use-cases/add-study-language.use-case';
+import { CleanupExpiredDeckPreviewSessionsUseCase } from './application/use-cases/cleanup-expired-deck-preview-sessions.use-case';
 import { ListLanguagesUseCase } from './application/use-cases/list-languages.use-case';
 import { MyStudyLanguagesUseCase } from './application/use-cases/my-study-languages.use-case';
 import { RemoveStudyLanguageUseCase } from './application/use-cases/remove-study-language.use-case';
 import { SetActiveTargetLanguageUseCase } from './application/use-cases/set-active-target-language.use-case';
 import { StudyLanguageRemovalImpactUseCase } from './application/use-cases/study-language-removal-impact.use-case';
+import { PrismaDeckPreviewSessionRepository } from './infrastructure/persistence/prisma-deck-preview-session.repository';
 import { PrismaLanguageRepository } from './infrastructure/persistence/prisma-language.repository';
 import { PrismaUserStudyLanguageRepository } from './infrastructure/persistence/prisma-user-study-language.repository';
 import { LanguagesResolver } from './presentation/graphql/resolvers/languages.resolver';
 import { StudyLanguagesResolver } from './presentation/graphql/resolvers/study-languages.resolver';
+import { InternalDeckPreviewController } from './presentation/http/internal-deck-preview.controller';
 
 @Module({
   imports: [
@@ -21,7 +26,9 @@ import { StudyLanguagesResolver } from './presentation/graphql/resolvers/study-l
     forwardRef(() => AccountModule),
     forwardRef(() => DecksModule),
   ],
+  controllers: [InternalDeckPreviewController],
   providers: [
+    InternalJobGuard,
     {
       provide: LANGUAGE_REPOSITORY,
       useClass: PrismaLanguageRepository,
@@ -30,22 +37,29 @@ import { StudyLanguagesResolver } from './presentation/graphql/resolvers/study-l
       provide: USER_STUDY_LANGUAGE_REPOSITORY,
       useClass: PrismaUserStudyLanguageRepository,
     },
+    {
+      provide: DECK_PREVIEW_SESSION_REPOSITORY,
+      useClass: PrismaDeckPreviewSessionRepository,
+    },
     ListLanguagesUseCase,
     MyStudyLanguagesUseCase,
     AddStudyLanguageUseCase,
     StudyLanguageRemovalImpactUseCase,
     RemoveStudyLanguageUseCase,
     SetActiveTargetLanguageUseCase,
+    CleanupExpiredDeckPreviewSessionsUseCase,
     LanguagesResolver,
     StudyLanguagesResolver,
   ],
   exports: [
     LANGUAGE_REPOSITORY,
     USER_STUDY_LANGUAGE_REPOSITORY,
+    DECK_PREVIEW_SESSION_REPOSITORY,
     ListLanguagesUseCase,
     MyStudyLanguagesUseCase,
     AddStudyLanguageUseCase,
     SetActiveTargetLanguageUseCase,
+    CleanupExpiredDeckPreviewSessionsUseCase,
   ],
 })
 export class LanguagesModule {}
