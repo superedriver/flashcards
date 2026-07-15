@@ -823,6 +823,40 @@ curl -fsS -X POST "$INTERNAL_JOB_URL" \
 
 ---
 
+## 32. Study Languages
+
+**Goal:** Verify study/learning language onboarding, active target filtering, deck language pairs, copy/regenerate preview, and legacy assign gates on web and at least one native platform.
+
+**Detailed checklist:** [docs/smoke/study-languages.md](../smoke/study-languages.md)
+
+**Steps (web + native):**
+
+1. Sign in as a user **without** study languages and confirm blocking onboarding (target + native) before main tabs.
+2. Complete onboarding; confirm Decks shows Own → Group → Public → No language (when applicable).
+3. Switch active language via the top flag selector; confirm Own/Group/Public filter by target.
+4. Create a deck with language pair; start a lesson and confirm front/back semantics.
+5. Open a legacy (no-language) deck: lesson/CSV/publish should prompt assign; after assign it appears under Own.
+6. From Public section, copy a deck keeping original source (immediate) and again choosing native source (preview → approve).
+7. From an owned deck, run **Regenerate translations**, approve preview, confirm backs/examples updated.
+8. Start a preview and leave it unfinished; confirm resume banner Continue/Discard on Decks.
+9. In Settings, change **My language**; create a new deck and confirm default source changed; existing decks unchanged.
+10. Spot-check Ukrainian UI strings for onboarding, selector, preview, and assign flow.
+
+**Expected result:**
+
+```txt
+- Blocking onboarding works for users without study languages
+- Active target filters deck sections; Public tab removed
+- Copy/regenerate preview lifecycle works (approve/cancel/resume)
+- Legacy assign gates publish/CSV/lesson until languages set
+- nativeLanguage in settings only affects new-deck default source
+- en/uk study-language copy present on primary flows
+```
+
+**Result:** - [ ] PASS - [ ] FAIL - [ ] N/A
+
+---
+
 ## Final Sign-Off
 
 ```txt

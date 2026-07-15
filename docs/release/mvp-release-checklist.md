@@ -177,6 +177,7 @@ Complete [mvp-smoke-tests.md](./mvp-smoke-tests.md).
 - [ ] CSV import
 - [ ] Profile/settings
 - [ ] Interface language switching (en/uk) on web and native
+- [ ] Study languages (onboarding, selector, decks sections, copy/preview) — see docs/smoke/study-languages.md
 - [ ] Groups and admin (if enabled for release)
 ```
 

@@ -27,7 +27,7 @@ Study languages are **separate** from `interfaceLocale` (UI language from EPIC-2
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -243,7 +243,7 @@ AI failure in preview: field empty or failed status; user can edit manually or r
 - [x] TASK-24.26 Add copy/regenerate preview UI flows
 - [x] TASK-24.27 Extend settings UI for nativeLanguage
 - [x] TASK-24.28 Add study languages i18n strings (en/uk)
-- [ ] TASK-24.29 Study languages smoke checks + final epic checks
+- [x] TASK-24.29 Study languages smoke checks + final epic checks
 ```
 
 ---
@@ -1538,7 +1538,7 @@ TASK-24.28 Add study languages i18n strings (en/uk)
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
