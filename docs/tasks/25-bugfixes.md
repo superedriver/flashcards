@@ -82,6 +82,7 @@ Expected state:
 25.02   Web password field layout
 25.03   Match web password field colors to Tamagui Input
 25.04   Localize bottom tab titles (en/uk)
+25.05   Keep bottom tabs visible on deck detail stack
 (+ append new bugs in discovery order)
 ```
 
@@ -92,6 +93,7 @@ Expected state:
 - [x] TASK-25.02 Fix web password field layout in AppInput
 - [x] TASK-25.03 Match web password field colors to Tamagui Input
 - [x] TASK-25.04 Localize bottom tab navigation titles
+- [x] TASK-25.05 Keep bottom tabs visible on deck screens
 ```
 
 ---
@@ -411,4 +413,58 @@ cd apps/mobile && pnpm lint
 
 ```txt
 TASK-25.04 Localize bottom tab navigation titles
+```
+
+---
+
+# TASK-25.05 Keep bottom tabs visible on deck screens
+
+## Status
+
+DONE
+
+## Context
+
+After creating a deck, navigation goes to `/decks/[deckId]`. That stack lived outside `(tabs)`, so the bottom tab bar disappeared (and there was no in-app back header).
+
+## Goal
+
+Deck list, create, detail, edit, cards, CSV, and assign-languages screens stay inside the tabs navigator so Home / Decks / Profile remain visible.
+
+## Files to Modify
+
+```txt
+apps/mobile/app/_layout.tsx
+apps/mobile/app/(tabs)/decks/** (moved from apps/mobile/app/decks/**)
+docs/tasks/25-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Move app/decks/* under app/(tabs)/decks/ (index = former decks.tsx).
+2. Remove root Stack.Screen name="decks".
+3. Keep StudyLanguageProtectedStack as decks group layout.
+4. Keep existing hrefs (/decks/..., /(tabs)/decks) working.
+```
+
+## Acceptance Criteria
+
+```txt
+- Open deck detail from Decks tab → bottom tabs still visible.
+- Create deck → lands on detail with tabs still visible.
+- Can switch to Profile/Home from deck detail via tabs.
+```
+
+## Commands to Run
+
+```txt
+cd apps/mobile && pnpm typecheck
+cd apps/mobile && pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-25.05 Keep bottom tabs visible on deck screens
 ```
