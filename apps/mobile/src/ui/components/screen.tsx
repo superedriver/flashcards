@@ -23,7 +23,7 @@ export function Screen({
   const { width } = useWindowDimensions()
   const padding = getScreenPadding(width)
   const contentContainerStyle = getScreenContentContainerStyle(width, variant)
-  const content = <View style={contentContainerStyle}>{children}</View>
+  const content = <View style={[contentContainerStyle, { flex: 1 }]}>{children}</View>
 
   if (scrollable) {
     return (

@@ -51,7 +51,7 @@ export function CreateGroupScreen() {
   }
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title={t('groups.createGroup.title')} />
       <GroupForm
         errorMessage={errorMessage}

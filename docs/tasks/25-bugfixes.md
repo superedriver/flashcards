@@ -85,6 +85,7 @@ Expected state:
 25.05   Keep bottom tabs visible on deck detail stack
 25.06   Deck list vertical bordered cards
 25.07   Add bottom tab icons (keep full-width bar)
+25.08   Fix vertical scroll on My Decks, forms, and list screens
 (+ append new bugs in discovery order)
 ```
 
@@ -98,6 +99,7 @@ Expected state:
 - [x] TASK-25.05 Keep bottom tabs visible on deck screens
 - [x] TASK-25.06 Show decks as vertical bordered cards
 - [x] TASK-25.07 Add bottom tab icons (keep full-width bar)
+- [x] TASK-25.08 Fix vertical scroll on My Decks, forms, and list screens
 ```
 
 ---
@@ -579,4 +581,77 @@ cd apps/mobile && pnpm lint
 
 ```txt
 TASK-25.07 Add bottom tab icons (keep full-width bar)
+```
+
+---
+
+# TASK-25.08 Fix vertical scroll on My Decks, forms, and list screens
+
+## Status
+
+DONE
+
+## Context
+
+My Decks content is clipped by the bottom tab bar. Nested `ScrollView` inside non-scrollable `Screen` does not get a bounded height, so the page does not scroll (especially on web).
+
+The same overflow pattern appears on form/auth screens (`Screen` without `scrollable`) and on list screens that host `FlatList` without `flex: 1` (deck detail, public decks, deck preview).
+
+## Goal
+
+Restore vertical scrolling for long screens: `Screen scrollable` for form-style pages, and bounded `FlatList` for list pages.
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/screens/my-decks-screen.tsx
+apps/mobile/src/features/decks/screens/create-card-screen.tsx
+apps/mobile/src/features/decks/screens/edit-card-screen.tsx
+apps/mobile/src/features/decks/components/card-list.tsx
+apps/mobile/src/features/decks/components/deck-list.tsx
+apps/mobile/src/features/groups/screens/create-group-screen.tsx
+apps/mobile/src/features/public-decks/components/public-deck-list.tsx
+apps/mobile/src/features/study-languages/screens/deck-preview-session-screen.tsx
+apps/mobile/src/features/lessons/screens/lesson-summary-screen.tsx
+apps/mobile/src/ui/components/screen.tsx
+apps/mobile/app/(auth)/sign-in.tsx
+apps/mobile/app/(auth)/sign-up.tsx
+apps/mobile/src/features/auth/components/forgot-password-form.tsx
+apps/mobile/src/features/auth/components/reset-password-form.tsx
+apps/mobile/src/features/auth/components/verify-email-screen.tsx
+apps/mobile/src/features/auth/components/verify-email-prompt.tsx
+docs/tasks/25-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. My Decks: use Screen scrollable; remove nested vertical ScrollView.
+2. Forms/auth (create/edit card, create group, sign-in/up, forgot/reset, verify email, lesson summary): Screen scrollable on content paths.
+3. List hosts (CardList, PublicDeckList, DeckList, deck preview FlatList): style={{ flex: 1 }} so lists scroll inside Screen.
+4. Screen content wrapper uses flex: 1 so nested FlatLists get a bounded height.
+5. Prefer FlatList ListEmptyComponent over non-scrolling empty fragments when the screen uses a list.
+6. Keep horizontal deck section rails as-is.
+```
+
+## Acceptance Criteria
+
+```txt
+- Long My Decks content scrolls; last section reachable above the tab bar.
+- Card / group / auth forms scroll when content or keyboard overflows.
+- Deck detail, public decks, and deck preview lists scroll when long.
+- Horizontal deck rails still work.
+```
+
+## Commands to Run
+
+```txt
+cd apps/mobile && pnpm typecheck
+cd apps/mobile && pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-25.08 Fix vertical scroll on My Decks, forms, and list screens
 ```

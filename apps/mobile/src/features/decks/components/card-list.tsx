@@ -28,28 +28,23 @@ export function CardList({
 }: CardListProps) {
   const { t } = useTranslation()
 
-  if (cards.length === 0) {
-    return (
-      <>
-        {listHeader}
+  return (
+    <FlatList
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: 16 }}
+      data={cards}
+      keyExtractor={(item) => item.id}
+      ListEmptyComponent={
         <EmptyState
           actionLabel={onEmptyAction ? emptyActionLabel : undefined}
           message={t('decks.card.empty')}
           onAction={onEmptyAction}
         />
-      </>
-    )
-  }
-
-  return (
-    <FlatList
-      contentContainerStyle={{ paddingBottom: 16 }}
-      data={cards}
-      keyExtractor={(item) => item.id}
+      }
       ListHeaderComponent={listHeader ?? undefined}
       renderItem={({ item }) => (
         <CardListItem card={item} deckId={deckId} isOwner={isOwner} onDelete={onDeleteCard} />
       )}
+      style={{ flex: 1 }}
     />
   )
 }

@@ -95,9 +95,10 @@ export function DeckPreviewSessionScreen() {
     <Screen>
       <PageTitle title={t('studyLanguages.preview.title')} />
       <FlatList
-        contentContainerStyle={{ gap: 12, paddingBottom: 24 }}
+        contentContainerStyle={{ flexGrow: 1, gap: 12, paddingBottom: 24 }}
         data={session.cards}
         keyExtractor={(item, index) => item.sourceCardId ?? `${index}`}
+        style={{ flex: 1 }}
         ListHeaderComponent={
           <View style={{ gap: 12, marginBottom: 8 }}>
             <AppText style={{ color: '#666666' }}>

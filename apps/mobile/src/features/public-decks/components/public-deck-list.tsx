@@ -19,10 +19,14 @@ export function PublicDeckList({ decks, listHeader, searchQuery }: PublicDeckLis
   const { width } = useWindowDimensions()
   const numColumns = getListNumColumns(width)
 
-  if (decks.length === 0) {
-    return (
-      <>
-        {listHeader}
+  return (
+    <FlatList
+      columnWrapperStyle={numColumns > 1 ? { gap: 12 } : undefined}
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: 16 }}
+      data={decks}
+      key={`public-decks-${numColumns}`}
+      keyExtractor={(item) => item.id}
+      ListEmptyComponent={
         <EmptyState
           message={
             searchQuery
@@ -30,17 +34,7 @@ export function PublicDeckList({ decks, listHeader, searchQuery }: PublicDeckLis
               : t('publicDecks.empty')
           }
         />
-      </>
-    )
-  }
-
-  return (
-    <FlatList
-      columnWrapperStyle={numColumns > 1 ? { gap: 12 } : undefined}
-      contentContainerStyle={{ paddingBottom: 16 }}
-      data={decks}
-      key={`public-decks-${numColumns}`}
-      keyExtractor={(item) => item.id}
+      }
       ListHeaderComponent={listHeader ?? undefined}
       numColumns={numColumns}
       renderItem={({ item }) => (
@@ -48,6 +42,7 @@ export function PublicDeckList({ decks, listHeader, searchQuery }: PublicDeckLis
           <PublicDeckListItem deck={item} />
         </View>
       )}
+      style={{ flex: 1 }}
     />
   )
 }

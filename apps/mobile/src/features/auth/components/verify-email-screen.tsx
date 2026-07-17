@@ -65,7 +65,7 @@ export function VerifyEmailScreen() {
   }
 
   return (
-    <Screen variant="narrow">
+    <Screen scrollable variant="narrow">
       <PageTitle title={t('auth.verifyEmail.title')} />
       {status === 'loading' ? <LoadingState message={t('auth.verifyEmail.verifying')} /> : null}
       {status === 'success' ? (

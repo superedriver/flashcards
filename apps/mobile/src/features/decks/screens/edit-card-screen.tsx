@@ -77,7 +77,7 @@ export function EditCardScreen() {
   }
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title={t('decks.editCard.title')} />
       <CardForm
         cardId={cardId}

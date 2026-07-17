@@ -41,7 +41,7 @@ export function LessonSummaryScreen() {
         })
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title={t('lessons.summary.completeTitle')} />
       <AppCard style={{ gap: 12, marginBottom: 16, padding: 16 }}>
         <AppText style={{ fontSize: 20, fontWeight: '700' }}>

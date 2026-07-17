@@ -48,7 +48,7 @@ export function VerifyEmailPrompt() {
   }
 
   return (
-    <Screen variant="narrow">
+    <Screen scrollable variant="narrow">
       <PageTitle title={t('auth.verifyEmail.promptTitle')} />
       <AppText>
         {t('auth.verifyEmail.promptBody', {

@@ -24,7 +24,7 @@ export default function SignUpScreen() {
   }
 
   return (
-    <Screen variant="narrow">
+    <Screen scrollable variant="narrow">
       <PageTitle title={t('auth.signUp.title')} />
       {error ? <ErrorState message={error} /> : null}
       <SignUpForm />

@@ -20,26 +20,20 @@ export function DeckList({ decks, listHeader, onCreateDeck }: DeckListProps) {
   const { width } = useWindowDimensions()
   const numColumns = getListNumColumns(width)
 
-  if (decks.length === 0) {
-    return (
-      <>
-        {listHeader}
+  return (
+    <FlatList
+      columnWrapperStyle={numColumns > 1 ? { gap: 12 } : undefined}
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: 16 }}
+      data={decks}
+      key={`decks-${numColumns}`}
+      keyExtractor={(item) => item.id}
+      ListEmptyComponent={
         <EmptyState
           actionLabel={onCreateDeck ? t('decks.myDecks.emptyAction') : undefined}
           message={t('decks.myDecks.empty')}
           onAction={onCreateDeck}
         />
-      </>
-    )
-  }
-
-  return (
-    <FlatList
-      columnWrapperStyle={numColumns > 1 ? { gap: 12 } : undefined}
-      contentContainerStyle={{ paddingBottom: 16 }}
-      data={decks}
-      key={`decks-${numColumns}`}
-      keyExtractor={(item) => item.id}
+      }
       ListHeaderComponent={listHeader ?? undefined}
       numColumns={numColumns}
       renderItem={({ item }) => (
@@ -47,6 +41,7 @@ export function DeckList({ decks, listHeader, onCreateDeck }: DeckListProps) {
           <DeckListItem deck={{ ...item, origin: DeckOrigin.Own }} layout="fill" />
         </View>
       )}
+      style={{ flex: 1 }}
     />
   )
 }

@@ -100,7 +100,7 @@ export function ForgotPasswordScreen() {
   const { t } = useTranslation()
 
   return (
-    <Screen variant="narrow">
+    <Screen scrollable variant="narrow">
       <PageTitle title={t('auth.forgotPassword.title')} />
       <ForgotPasswordForm />
     </Screen>

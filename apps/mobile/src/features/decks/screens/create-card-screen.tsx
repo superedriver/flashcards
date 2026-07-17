@@ -17,7 +17,7 @@ export function CreateCardScreen() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   return (
-    <Screen>
+    <Screen scrollable>
       <PageTitle title={t('decks.createCard.title')} />
       <CardForm
         errorMessage={errorMessage}

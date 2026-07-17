@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
-import { ScrollView, View } from 'react-native'
+import { View } from 'react-native'
 
 import { DecksPageSections } from '@/features/decks/components/decks-page-sections'
 import { ActiveDeckPreviewBanner } from '@/features/study-languages/components/active-deck-preview-banner'
@@ -63,14 +63,12 @@ export function MyDecksScreen() {
   }
 
   return (
-    <Screen>
-      <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
-        <DecksPageSections
-          listHeader={listHeader}
-          page={data.decksPage}
-          onCreateDeck={() => router.push('/decks/new')}
-        />
-      </ScrollView>
+    <Screen scrollable>
+      <DecksPageSections
+        listHeader={listHeader}
+        page={data.decksPage}
+        onCreateDeck={() => router.push('/decks/new')}
+      />
     </Screen>
   )
 }

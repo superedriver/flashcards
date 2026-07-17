@@ -143,7 +143,7 @@ export function ResetPasswordScreen() {
   const { t } = useTranslation()
 
   return (
-    <Screen variant="narrow">
+    <Screen scrollable variant="narrow">
       <PageTitle title={t('auth.resetPassword.title')} />
       <ResetPasswordForm />
     </Screen>

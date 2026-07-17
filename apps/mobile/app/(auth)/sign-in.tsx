@@ -24,7 +24,7 @@ export default function SignInScreen() {
   }
 
   return (
-    <Screen variant="narrow">
+    <Screen scrollable variant="narrow">
       <PageTitle title={t('auth.signIn.title')} />
       {error ? <ErrorState message={error} /> : null}
       <SignInForm />
