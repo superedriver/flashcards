@@ -779,6 +779,22 @@ Implement study/learning languages: language catalog, onboarding, deck language 
 
 ---
 
+### 25 Bugfixes (post–EPIC-24 smoke)
+
+File:
+
+```txt
+docs/tasks/25-bugfixes.md
+```
+
+Purpose:
+
+```txt
+Fix bugs found during EPIC-24 manual smoke (auth GraphQL context/cookies, web password field layout, and follow-ups appended as discovered).
+```
+
+---
+
 ## Recommended Commit Style
 
 Use Conventional Commits.

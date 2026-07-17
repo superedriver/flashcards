@@ -47,6 +47,7 @@ import { PrismaModule } from './infrastructure/prisma';
       sortSchema: true,
       playground: process.env.NODE_ENV !== 'production',
       formatError: formatGraphQLError,
+      context: ({ req, res }: { req: unknown; res: unknown }) => ({ req, res }),
     }),
     HealthModule,
     AuthModule,
