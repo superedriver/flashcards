@@ -3,6 +3,7 @@ import { Platform } from 'react-native'
 
 import { env } from '@/config/env'
 import { RefreshTokenDocument } from '@/graphql/generated'
+import { applyGuestLocale } from '@/i18n/bootstrap-locale'
 import { syncLocaleFromBackend } from '@/i18n/sync-locale-from-backend'
 
 import { mapSafeUserToAuthUser, useAuthStore } from '../state/auth-store'
@@ -34,6 +35,7 @@ function authFetchInit(body: string): RequestInit {
 export async function clearAuthSession(): Promise<void> {
   await authTokenService.clearTokens()
   useAuthStore.getState().clearAuth()
+  await applyGuestLocale()
 }
 
 export async function performRefreshToken(): Promise<boolean> {

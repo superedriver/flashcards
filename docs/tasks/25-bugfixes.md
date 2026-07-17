@@ -90,6 +90,7 @@ Expected state:
 25.10   Modal close control: X icon instead of Cancel
 25.11   Keep bottom tabs on public deck + preview screens
 25.12   Show target/source flags on deck cards
+25.13   Guest UI locale always English
 (+ append new bugs in discovery order)
 ```
 
@@ -108,6 +109,7 @@ Expected state:
 - [x] TASK-25.10 Use X icon to close study-language modals
 - [x] TASK-25.11 Keep bottom tabs on public deck and preview screens
 - [x] TASK-25.12 Show target/source language flags on deck displays
+- [x] TASK-25.13 Force English UI locale when logged out
 ```
 
 ---
@@ -891,4 +893,60 @@ cd apps/mobile && pnpm lint
 
 ```txt
 TASK-25.12 Show target/source language flags on deck displays
+```
+
+---
+
+# TASK-25.13 Force English UI locale when logged out
+
+## Status
+
+DONE
+
+## Context
+
+Guest / logged-out screens followed device locale or a previously persisted `uk` locale. Product rule: unauthenticated UI must be English; after login, backend `interfaceLocale` still wins.
+
+## Goal
+
+Always use English for guest bootstrap and after logout; restore user locale only after successful auth sync.
+
+## Files to Modify
+
+```txt
+apps/mobile/src/i18n/bootstrap-locale.ts
+apps/mobile/src/i18n/index.ts
+apps/mobile/src/features/auth/services/auth-session.ts
+apps/mobile/src/features/auth/services/bootstrap-auth.ts
+docs/tasks/25-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. bootstrapLocale applies DEFAULT_LOCALE (en), not device locale / prior guest persistence of uk.
+2. clearAuthSession resets UI locale to English.
+3. Failed / missing auth bootstrap also applies guest English.
+4. Logged-in syncLocaleFromBackend / applyLocaleFromBackend unchanged.
+```
+
+## Acceptance Criteria
+
+```txt
+- Signed-out auth screens are English even on a uk device.
+- After logout, UI switches to English.
+- After login, interfaceLocale from settings still applies.
+```
+
+## Commands to Run
+
+```txt
+cd apps/mobile && pnpm typecheck
+cd apps/mobile && pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-25.13 Force English UI locale when logged out
 ```

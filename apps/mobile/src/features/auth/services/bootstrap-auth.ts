@@ -3,6 +3,7 @@ import { Platform } from 'react-native'
 import { performRefreshToken } from '@/features/auth/services/auth-session'
 import { authTokenService } from '@/features/auth/services/auth-token-service'
 import { useAuthStore } from '@/features/auth/state/auth-store'
+import { applyGuestLocale } from '@/i18n/bootstrap-locale'
 import { syncLocaleFromBackend } from '@/i18n/sync-locale-from-backend'
 
 export async function bootstrapAuth(): Promise<void> {
@@ -13,6 +14,7 @@ export async function bootstrapAuth(): Promise<void> {
     const refreshToken = await authTokenService.getRefreshToken()
 
     if (!refreshToken && Platform.OS !== 'web') {
+      await applyGuestLocale()
       return
     }
 
@@ -21,6 +23,7 @@ export async function bootstrapAuth(): Promise<void> {
     if (!success) {
       await authTokenService.clearTokens()
       store.clearAuth()
+      await applyGuestLocale()
       return
     }
 
