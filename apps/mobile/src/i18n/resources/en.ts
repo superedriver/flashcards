@@ -14,6 +14,7 @@ export const en = {
   common: {
     ok: 'OK',
     cancel: 'Cancel',
+    close: 'Close',
     confirm: 'Confirm',
     loading: 'Loading...',
     saving: 'Saving...',

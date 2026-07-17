@@ -87,6 +87,7 @@ Expected state:
 25.07   Add bottom tab icons (keep full-width bar)
 25.08   Fix vertical scroll on My Decks, forms, and list screens
 25.09   Rename “My language” to “My native language”
+25.10   Modal close control: X icon instead of Cancel
 (+ append new bugs in discovery order)
 ```
 
@@ -102,6 +103,7 @@ Expected state:
 - [x] TASK-25.07 Add bottom tab icons (keep full-width bar)
 - [x] TASK-25.08 Fix vertical scroll on My Decks, forms, and list screens
 - [x] TASK-25.09 Rename “My language” to “My native language”
+- [x] TASK-25.10 Use X icon to close study-language modals
 ```
 
 ---
@@ -712,4 +714,57 @@ cd apps/mobile && pnpm lint
 
 ```txt
 TASK-25.09 Rename “My language” to “My native language”
+```
+
+---
+
+# TASK-25.10 Use X icon to close study-language modals
+
+## Status
+
+DONE
+
+## Context
+
+Study language list/catalog modals used a text “Cancel” / “Скасувати” control. Elsewhere modals close with an X icon.
+
+## Goal
+
+Replace Cancel text with a close (X) icon on study-language modals.
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/study-languages/components/language-catalog-modal.tsx
+apps/mobile/src/features/study-languages/components/study-languages-list-modal.tsx
+apps/mobile/src/i18n/resources/en.ts
+apps/mobile/src/i18n/resources/uk.ts
+docs/tasks/25-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Both LanguageCatalogModal and StudyLanguagesListModal close via Ionicons close (X).
+2. Keep accessibility label via common.close (en/uk).
+```
+
+## Acceptance Criteria
+
+```txt
+- Modal headers show X instead of Cancel / Скасувати.
+- Tapping X closes the modal.
+```
+
+## Commands to Run
+
+```txt
+cd apps/mobile && pnpm typecheck
+cd apps/mobile && pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-25.10 Use X icon to close study-language modals
 ```

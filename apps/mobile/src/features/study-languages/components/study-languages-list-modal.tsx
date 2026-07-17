@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
@@ -127,10 +128,13 @@ export function StudyLanguagesListModal({ onClose, visible }: StudyLanguagesList
             <AppText style={{ fontSize: 18, fontWeight: '700' }}>
               {t('studyLanguages.studyList.title')}
             </AppText>
-            <Pressable accessibilityRole="button" onPress={onClose}>
-              <AppText style={{ color: '#1976d2', fontWeight: '600' }}>
-                {t('common.cancel')}
-              </AppText>
+            <Pressable
+              accessibilityLabel={t('common.close')}
+              accessibilityRole="button"
+              hitSlop={8}
+              onPress={onClose}
+            >
+              <Ionicons color="#666666" name="close" size={24} />
             </Pressable>
           </View>
 

@@ -14,6 +14,7 @@ export const uk = {
   common: {
     ok: 'Гаразд',
     cancel: 'Скасувати',
+    close: 'Закрити',
     confirm: 'Підтвердити',
     loading: 'Завантаження...',
     saving: 'Збереження...',
