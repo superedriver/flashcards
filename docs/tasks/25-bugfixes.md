@@ -80,6 +80,7 @@ Expected state:
 ```txt
 25.01   GraphQL context res (blocks register/login)
 25.02   Web password field layout
+25.03   Match web password field colors to Tamagui Input
 (+ append new bugs in discovery order)
 ```
 
@@ -88,6 +89,7 @@ Expected state:
 ```md
 - [x] TASK-25.01 Fix GraphQL context to expose Express res for auth cookies
 - [x] TASK-25.02 Fix web password field layout in AppInput
+- [x] TASK-25.03 Match web password field colors to Tamagui Input
 ```
 
 ---
@@ -297,4 +299,59 @@ Manual check:
 
 ```txt
 TASK-25.02 Fix web password field layout in AppInput
+```
+
+---
+
+# TASK-25.03 Match web password field colors to Tamagui Input
+
+## Status
+
+DONE
+
+## Context
+
+After TASK-25.02, web password fields have correct height/border but a white background, while Email (Tamagui `Input`) uses the light theme grey (`color2` ≈ `hsla(0, 0%, 95%, 1)`). Placeholder and border tokens also differ.
+
+## Goal
+
+Web `secureTextEntry` AppInput background, border, text, and placeholder colors match Tamagui light `Input` / Email field.
+
+## Files to Modify
+
+```txt
+apps/mobile/src/ui/primitives/app-input.tsx
+docs/tasks/25-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Align web password styles with Tamagui light theme tokens used by Input:
+   - background ≈ color2 (95% gray)
+   - border ≈ borderColor token
+   - placeholder ≈ placeholderColor token
+2. Keep masking and layout from TASK-25.02.
+3. Do not change native AppInput path.
+```
+
+## Acceptance Criteria
+
+```txt
+- On web Sign Up, Password / Confirm password background matches Email grey.
+- Placeholder tone matches Email.
+- Characters remain masked.
+```
+
+## Commands to Run
+
+```txt
+cd apps/mobile && pnpm typecheck
+cd apps/mobile && pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-25.03 Match web password field colors to Tamagui Input
 ```

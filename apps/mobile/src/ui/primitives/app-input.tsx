@@ -5,16 +5,17 @@ import { Input } from 'tamagui'
 type AppInputProps = ComponentProps<typeof Input>
 
 const webPasswordInputStyle = {
-  backgroundColor: '#ffffff',
-  borderColor: '#cccccc',
+  backgroundColor: 'hsla(0, 0%, 95%, 1)',
+  borderColor: 'hsla(0, 0%, 91%, 1)',
   borderRadius: 8,
   borderWidth: 1,
-  color: '#111111',
+  color: 'hsla(0, 0%, 9%, 1)',
   fontSize: 16,
   lineHeight: 22,
   minHeight: 44,
   paddingHorizontal: 12,
   paddingVertical: 10,
+  placeholderTextColor: 'hsla(0, 0%, 56%, 1)',
   width: '100%',
 } as const
 
@@ -25,11 +26,14 @@ export function AppInput({
   ...props
 }: AppInputProps) {
   if (Platform.OS === 'web' && secureTextEntry) {
+    const { placeholderTextColor, ...layoutStyle } = webPasswordInputStyle
+
     return (
       <RNTextInput
         accessibilityRole={accessibilityRole}
+        placeholderTextColor={placeholderTextColor}
         secureTextEntry
-        style={[webPasswordInputStyle, style as ComponentProps<typeof RNTextInput>['style']]}
+        style={[layoutStyle, style as ComponentProps<typeof RNTextInput>['style']]}
         {...(props as ComponentProps<typeof RNTextInput>)}
       />
     )
