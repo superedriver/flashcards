@@ -35,10 +35,10 @@ export default function TabsLayout() {
         headerTitle: () => <StudyLanguageSelector />,
       }}
     >
-      <Tabs.Screen name="index" options={{ title: 'Home' }} />
-      <Tabs.Screen name="decks" options={{ title: 'Decks' }} />
+      <Tabs.Screen name="index" options={{ title: t('common.tabs.home') }} />
+      <Tabs.Screen name="decks" options={{ title: t('common.tabs.decks') }} />
       <Tabs.Screen name="public" options={{ href: null }} />
-      <Tabs.Screen name="profile" options={{ title: 'Profile' }} />
+      <Tabs.Screen name="profile" options={{ title: t('common.tabs.profile') }} />
     </Tabs>
   )
 }

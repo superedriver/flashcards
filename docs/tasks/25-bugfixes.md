@@ -81,6 +81,7 @@ Expected state:
 25.01   GraphQL context res (blocks register/login)
 25.02   Web password field layout
 25.03   Match web password field colors to Tamagui Input
+25.04   Localize bottom tab titles (en/uk)
 (+ append new bugs in discovery order)
 ```
 
@@ -90,6 +91,7 @@ Expected state:
 - [x] TASK-25.01 Fix GraphQL context to expose Express res for auth cookies
 - [x] TASK-25.02 Fix web password field layout in AppInput
 - [x] TASK-25.03 Match web password field colors to Tamagui Input
+- [x] TASK-25.04 Localize bottom tab navigation titles
 ```
 
 ---
@@ -354,4 +356,59 @@ cd apps/mobile && pnpm lint
 
 ```txt
 TASK-25.03 Match web password field colors to Tamagui Input
+```
+
+---
+
+# TASK-25.04 Localize bottom tab navigation titles
+
+## Status
+
+DONE
+
+## Context
+
+During EPIC-24 smoke with `interfaceLocale=uk`, Decks content is Ukrainian but bottom tabs stay English (`Home`, `Decks`, `Profile`) because `app/(tabs)/_layout.tsx` hardcodes titles.
+
+## Goal
+
+Bottom tab titles follow `interfaceLocale` (en/uk).
+
+## Files to Modify
+
+```txt
+apps/mobile/app/(tabs)/_layout.tsx
+apps/mobile/app/(tabs)/index.tsx
+apps/mobile/src/i18n/resources/en.ts
+apps/mobile/src/i18n/resources/uk.ts
+docs/tasks/25-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Add common.tabs.home / decks / profile strings in en and uk.
+2. Use useTranslation in tabs layout for Tabs.Screen title options.
+3. Localize Home screen PageTitle the same way.
+4. Do not change tab routes or StudyLanguageSelector header.
+```
+
+## Acceptance Criteria
+
+```txt
+- With interface language Ukrainian, tabs show Ukrainian labels.
+- Switching back to English restores English tab labels.
+```
+
+## Commands to Run
+
+```txt
+cd apps/mobile && pnpm typecheck
+cd apps/mobile && pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-25.04 Localize bottom tab navigation titles
 ```

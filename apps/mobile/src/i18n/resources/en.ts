@@ -21,6 +21,12 @@ export const en = {
     save: 'Save',
     error: 'Something went wrong.',
     empty: 'Nothing here yet.',
+    tabs: {
+      home: 'Home',
+      decks: 'Decks',
+      profile: 'Profile',
+    },
+    homeWelcome: 'Welcome to Flashcards.',
   },
   admin: adminEn,
   auth: authEn,

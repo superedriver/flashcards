@@ -21,6 +21,12 @@ export const uk = {
     save: 'Зберегти',
     error: 'Щось пішло не так.',
     empty: 'Тут поки нічого немає.',
+    tabs: {
+      home: 'Головна',
+      decks: 'Колоди',
+      profile: 'Профіль',
+    },
+    homeWelcome: 'Ласкаво просимо до Flashcards.',
   },
   admin: adminUk,
   auth: authUk,
