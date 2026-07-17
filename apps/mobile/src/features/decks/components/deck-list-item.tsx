@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
 
 import { DeckOrigin, type DecksPageQuery } from '@/graphql/generated'
-import { AppCard, AppText } from '@/ui/primitives'
+import { AppText } from '@/ui/primitives'
 
 import { DeckStatusBadge } from './deck-status-badge'
 
@@ -20,26 +20,65 @@ type DeckListItemProps = {
         moderationStatus: DecksPageDeck['moderationStatus']
         origin?: DeckOrigin
       }
+  layout?: 'rail' | 'fill'
   showOriginBadge?: boolean
 }
 
-export function DeckListItem({ deck, showOriginBadge = false }: DeckListItemProps) {
+const CARD_ACCENTS = ['#dbe7f3', '#e4efe6', '#f3e9db', '#ebe4f2', '#e8ecef'] as const
+
+function accentForId(id: string): string {
+  let hash = 0
+
+  for (let index = 0; index < id.length; index += 1) {
+    hash = (hash + id.charCodeAt(index) * (index + 1)) % CARD_ACCENTS.length
+  }
+
+  return CARD_ACCENTS[hash] ?? CARD_ACCENTS[0]
+}
+
+export function DeckListItem({
+  deck,
+  layout = 'rail',
+  showOriginBadge = false,
+}: DeckListItemProps) {
   const { t } = useTranslation()
   const router = useRouter()
 
   const href = deck.origin === DeckOrigin.Public ? `/public/${deck.id}` : `/decks/${deck.id}`
+  const accent = accentForId(deck.id)
+  const isRail = layout === 'rail'
 
   return (
-    <Pressable onPress={() => router.push(href)}>
-      <AppCard style={{ gap: 8, marginBottom: 12, padding: 16 }}>
-        <View style={{ alignItems: 'center', flexDirection: 'row', gap: 8 }}>
-          <AppText style={{ flex: 1, fontSize: 18, fontWeight: '600' }}>{deck.title}</AppText>
+    <Pressable
+      accessibilityRole="button"
+      style={isRail ? { marginRight: 12, width: 168 } : { width: '100%' }}
+      onPress={() => router.push(href)}
+    >
+      <View
+        style={{
+          backgroundColor: '#ffffff',
+          borderColor: '#d7d7d7',
+          borderRadius: 12,
+          borderWidth: 1,
+          minHeight: 220,
+          overflow: 'hidden',
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: accent,
+            height: 96,
+            justifyContent: 'flex-end',
+            padding: 10,
+          }}
+        >
           {showOriginBadge && deck.origin ? (
             <AppText
               style={{
-                backgroundColor: '#eeeeee',
+                alignSelf: 'flex-start',
+                backgroundColor: 'rgba(255,255,255,0.9)',
                 borderRadius: 6,
-                color: '#555555',
+                color: '#444444',
                 fontSize: 11,
                 fontWeight: '700',
                 overflow: 'hidden',
@@ -51,11 +90,29 @@ export function DeckListItem({ deck, showOriginBadge = false }: DeckListItemProp
             </AppText>
           ) : null}
         </View>
-        {deck.description ? (
-          <AppText style={{ color: '#666666' }}>{deck.description}</AppText>
-        ) : null}
-        <DeckStatusBadge moderationStatus={deck.moderationStatus} visibility={deck.visibility} />
-      </AppCard>
+
+        <View
+          style={{
+            flexGrow: 1,
+            gap: 8,
+            justifyContent: 'space-between',
+            minHeight: 124,
+            padding: 12,
+          }}
+        >
+          <View style={{ gap: 8 }}>
+            <AppText numberOfLines={2} style={{ fontSize: 16, fontWeight: '700', lineHeight: 20 }}>
+              {deck.title}
+            </AppText>
+            {deck.description ? (
+              <AppText numberOfLines={2} style={{ color: '#666666', fontSize: 13, lineHeight: 18 }}>
+                {deck.description}
+              </AppText>
+            ) : null}
+          </View>
+          <DeckStatusBadge moderationStatus={deck.moderationStatus} visibility={deck.visibility} />
+        </View>
+      </View>
     </Pressable>
   )
 }

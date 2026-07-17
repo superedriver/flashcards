@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 
 import type { DecksPageQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
@@ -37,9 +37,15 @@ export function DeckSection({
           onAction={onEmptyAction}
         />
       ) : (
-        decks.map((deck) => (
-          <DeckListItem key={deck.id} deck={deck} showOriginBadge={showOriginBadge} />
-        ))
+        <ScrollView
+          horizontal
+          contentContainerStyle={{ paddingRight: 4 }}
+          showsHorizontalScrollIndicator={false}
+        >
+          {decks.map((deck) => (
+            <DeckListItem key={deck.id} deck={deck} showOriginBadge={showOriginBadge} />
+          ))}
+        </ScrollView>
       )}
     </View>
   )

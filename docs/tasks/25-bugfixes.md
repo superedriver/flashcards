@@ -83,6 +83,7 @@ Expected state:
 25.03   Match web password field colors to Tamagui Input
 25.04   Localize bottom tab titles (en/uk)
 25.05   Keep bottom tabs visible on deck detail stack
+25.06   Deck list vertical bordered cards
 (+ append new bugs in discovery order)
 ```
 
@@ -94,6 +95,7 @@ Expected state:
 - [x] TASK-25.03 Match web password field colors to Tamagui Input
 - [x] TASK-25.04 Localize bottom tab navigation titles
 - [x] TASK-25.05 Keep bottom tabs visible on deck screens
+- [x] TASK-25.06 Show decks as vertical bordered cards
 ```
 
 ---
@@ -467,4 +469,59 @@ cd apps/mobile && pnpm lint
 
 ```txt
 TASK-25.05 Keep bottom tabs visible on deck screens
+```
+
+---
+
+# TASK-25.06 Show decks as vertical bordered cards
+
+## Status
+
+DONE
+
+## Context
+
+During smoke, deck sections rendered as full-width list rows. Product feedback: show decks as vertical bordered cards (carousel/rail inspiration; not a 1:1 visual copy).
+
+## Goal
+
+Decks page sections show vertical bordered cards in a horizontal rail per section.
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+apps/mobile/src/features/decks/components/decks-page-sections.tsx
+apps/mobile/src/features/decks/components/deck-list.tsx
+docs/tasks/25-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Deck card: bordered tile, accent header band, title, optional description, status badges.
+2. Sections use horizontal ScrollView of cards.
+3. Keep DeckList grid usage working via layout="fill".
+4. No stock images; no purple/glow redesign of the whole app.
+```
+
+## Acceptance Criteria
+
+```txt
+- Decks tab sections show vertical bordered cards in a horizontal row.
+- Tap still opens deck detail / public deck.
+- Empty sections unchanged.
+```
+
+## Commands to Run
+
+```txt
+cd apps/mobile && pnpm typecheck
+cd apps/mobile && pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-25.06 Show decks as vertical bordered cards
 ```

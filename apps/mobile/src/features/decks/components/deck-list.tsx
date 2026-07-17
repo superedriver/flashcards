@@ -44,7 +44,7 @@ export function DeckList({ decks, listHeader, onCreateDeck }: DeckListProps) {
       numColumns={numColumns}
       renderItem={({ item }) => (
         <View style={numColumns > 1 ? { flex: 1 } : undefined}>
-          <DeckListItem deck={{ ...item, origin: DeckOrigin.Own }} />
+          <DeckListItem deck={{ ...item, origin: DeckOrigin.Own }} layout="fill" />
         </View>
       )}
     />
