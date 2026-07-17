@@ -18,7 +18,7 @@ New bugs found during smoke should be appended here as new TASK-25.XX items (one
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -87,7 +87,7 @@ Expected state:
 
 ```md
 - [x] TASK-25.01 Fix GraphQL context to expose Express res for auth cookies
-- [ ] TASK-25.02 Fix web password field layout in AppInput
+- [x] TASK-25.02 Fix web password field layout in AppInput
 ```
 
 ---
@@ -204,7 +204,7 @@ TASK-25.01 Fix GraphQL context to expose Express res for auth cookies
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
