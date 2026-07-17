@@ -9,6 +9,8 @@ query PublicDecks($input: PublicDecksInput) {
       moderationStatus
       isOfficial
       sourceDeckId
+      targetLanguage
+      sourceLanguage
       createdAt
       updatedAt
     }

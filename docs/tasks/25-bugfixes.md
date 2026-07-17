@@ -89,6 +89,7 @@ Expected state:
 25.09   Rename “My language” to “My native language”
 25.10   Modal close control: X icon instead of Cancel
 25.11   Keep bottom tabs on public deck + preview screens
+25.12   Show target/source flags on deck cards
 (+ append new bugs in discovery order)
 ```
 
@@ -106,6 +107,7 @@ Expected state:
 - [x] TASK-25.09 Rename “My language” to “My native language”
 - [x] TASK-25.10 Use X icon to close study-language modals
 - [x] TASK-25.11 Keep bottom tabs on public deck and preview screens
+- [x] TASK-25.12 Show target/source language flags on deck displays
 ```
 
 ---
@@ -826,4 +828,67 @@ cd apps/mobile && pnpm lint
 
 ```txt
 TASK-25.11 Keep bottom tabs on public deck and preview screens
+```
+
+---
+
+# TASK-25.12 Show target/source language flags on deck displays
+
+## Status
+
+DONE
+
+## Context
+
+Deck cards do not show which language pair they use. Flags should appear on deck list/detail surfaces only — not on word cards inside a deck.
+
+## Goal
+
+Show target → source language flags on deck list cards and deck headers.
+
+## Files to Create
+
+```txt
+apps/mobile/src/features/decks/components/deck-language-flags.tsx
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+apps/mobile/src/features/decks/components/deck-header.tsx
+apps/mobile/src/features/decks/components/index.ts
+apps/mobile/src/features/public-decks/components/public-deck-header.tsx
+apps/mobile/src/features/public-decks/components/public-deck-list-item.tsx
+docs/tasks/25-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Resolve flags via languages catalog (Apollo-cached useLanguagesQuery).
+2. Render target → source on deck list cards and deck/public headers.
+3. Hide flags when both languages are null (legacy / no-language decks).
+4. Do not add flags to card list items or preview word rows.
+```
+
+## Acceptance Criteria
+
+```txt
+- Decks page cards show target/source flags when languages are set.
+- Deck detail and public deck headers show the same pair.
+- Word cards inside a deck remain unchanged.
+```
+
+## Commands to Run
+
+```txt
+cd apps/mobile && pnpm typecheck
+cd apps/mobile && pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-25.12 Show target/source language flags on deck displays
 ```

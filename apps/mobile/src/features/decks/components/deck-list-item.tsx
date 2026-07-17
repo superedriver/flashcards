@@ -5,6 +5,7 @@ import { Pressable, View } from 'react-native'
 import { DeckOrigin, type DecksPageQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 
+import { DeckLanguageFlags } from './deck-language-flags'
 import { DeckStatusBadge } from './deck-status-badge'
 
 type DecksPageDeck = DecksPageQuery['decksPage']['ownDecks'][number]
@@ -19,6 +20,8 @@ type DeckListItemProps = {
         visibility: DecksPageDeck['visibility']
         moderationStatus: DecksPageDeck['moderationStatus']
         origin?: DeckOrigin
+        targetLanguage?: string | null
+        sourceLanguage?: string | null
       }
   layout?: 'rail' | 'fill'
   showOriginBadge?: boolean
@@ -68,7 +71,7 @@ export function DeckListItem({
           style={{
             backgroundColor: accent,
             height: 96,
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             padding: 10,
           }}
         >
@@ -88,7 +91,14 @@ export function DeckListItem({
             >
               {t(`decks.sections.origin.${deck.origin}`)}
             </AppText>
-          ) : null}
+          ) : (
+            <View />
+          )}
+          <DeckLanguageFlags
+            flagSize={22}
+            sourceLanguage={deck.sourceLanguage}
+            targetLanguage={deck.targetLanguage}
+          />
         </View>
 
         <View

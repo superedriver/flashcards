@@ -2136,6 +2136,8 @@ export type PublicDecksQuery = {
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
       sourceDeckId?: string | null
+      targetLanguage?: string | null
+      sourceLanguage?: string | null
       createdAt: any
       updatedAt: any
     }>
@@ -5693,6 +5695,8 @@ export const PublicDecksDocument = gql`
         moderationStatus
         isOfficial
         sourceDeckId
+        targetLanguage
+        sourceLanguage
         createdAt
         updatedAt
       }
