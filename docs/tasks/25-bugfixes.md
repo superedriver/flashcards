@@ -84,6 +84,7 @@ Expected state:
 25.04   Localize bottom tab titles (en/uk)
 25.05   Keep bottom tabs visible on deck detail stack
 25.06   Deck list vertical bordered cards
+25.07   Add bottom tab icons (keep full-width bar)
 (+ append new bugs in discovery order)
 ```
 
@@ -96,6 +97,7 @@ Expected state:
 - [x] TASK-25.04 Localize bottom tab navigation titles
 - [x] TASK-25.05 Keep bottom tabs visible on deck screens
 - [x] TASK-25.06 Show decks as vertical bordered cards
+- [x] TASK-25.07 Add bottom tab icons (keep full-width bar)
 ```
 
 ---
@@ -524,4 +526,57 @@ cd apps/mobile && pnpm lint
 
 ```txt
 TASK-25.06 Show decks as vertical bordered cards
+```
+
+---
+
+# TASK-25.07 Add bottom tab icons (keep full-width bar)
+
+## Status
+
+DONE
+
+## Context
+
+Bottom tabs were text-only. Compact/centered bar was rejected — the bar must stay full-width pinned to the bottom. Only icons were requested.
+
+## Goal
+
+Add Home / Decks / Profile icons without changing full-width tab bar layout.
+
+## Files to Modify
+
+```txt
+apps/mobile/app/(tabs)/_layout.tsx
+apps/mobile/package.json
+pnpm-lock.yaml
+docs/tasks/25-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Add Ionicons: home, albums (decks), person.
+2. Keep default full-width bottom tab bar (no maxWidth / centered compact bar).
+3. Keep localized titles.
+```
+
+## Acceptance Criteria
+
+```txt
+- Tabs show icons + labels.
+- Tab bar remains full width at the bottom of the screen.
+```
+
+## Commands to Run
+
+```txt
+cd apps/mobile && pnpm typecheck
+cd apps/mobile && pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-25.07 Add bottom tab icons (keep full-width bar)
 ```
