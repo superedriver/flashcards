@@ -88,6 +88,7 @@ Expected state:
 25.08   Fix vertical scroll on My Decks, forms, and list screens
 25.09   Rename “My language” to “My native language”
 25.10   Modal close control: X icon instead of Cancel
+25.11   Keep bottom tabs on public deck + preview screens
 (+ append new bugs in discovery order)
 ```
 
@@ -104,6 +105,7 @@ Expected state:
 - [x] TASK-25.08 Fix vertical scroll on My Decks, forms, and list screens
 - [x] TASK-25.09 Rename “My language” to “My native language”
 - [x] TASK-25.10 Use X icon to close study-language modals
+- [x] TASK-25.11 Keep bottom tabs on public deck and preview screens
 ```
 
 ---
@@ -767,4 +769,61 @@ cd apps/mobile && pnpm lint
 
 ```txt
 TASK-25.10 Use X icon to close study-language modals
+```
+
+---
+
+# TASK-25.11 Keep bottom tabs on public deck and preview screens
+
+## Status
+
+DONE
+
+## Context
+
+Public deck detail (`/public/[deckId]`) and deck preview (`/preview/[sessionId]`) live outside `(tabs)`, so the bottom tab bar disappears and there is no reliable way back to My Decks (same class of bug as TASK-25.05 for owned decks).
+
+## Goal
+
+Keep Home / Decks / Profile tabs visible on public deck detail and copy/regenerate preview screens.
+
+## Files to Modify
+
+```txt
+apps/mobile/app/_layout.tsx
+apps/mobile/app/(tabs)/_layout.tsx
+apps/mobile/app/(tabs)/public/** (from app/(tabs)/public.tsx + app/public/**)
+apps/mobile/app/(tabs)/preview/** (from app/preview/**)
+docs/tasks/25-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Move public deck routes under app/(tabs)/public/ (index + [deckId]).
+2. Move preview routes under app/(tabs)/preview/.
+3. Remove root Stack.Screen entries for public and preview.
+4. Register preview tab screen with href: null (hidden), same as public.
+5. Keep existing hrefs (/public/..., /preview/...) working.
+```
+
+## Acceptance Criteria
+
+```txt
+- Open public deck from Decks → bottom tabs still visible.
+- Open copy/regenerate preview → bottom tabs still visible.
+- Can switch to Decks / Home / Profile via tabs from those screens.
+```
+
+## Commands to Run
+
+```txt
+cd apps/mobile && pnpm typecheck
+cd apps/mobile && pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-25.11 Keep bottom tabs on public deck and preview screens
 ```
