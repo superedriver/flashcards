@@ -16,11 +16,11 @@ export const settingsEn = {
       accessibilityLabel: 'Interface language {{label}}',
     },
     nativeLanguage: {
-      label: 'My language',
+      label: 'My native language',
       description:
         'Default translation language for new decks only. Existing decks stay unchanged.',
-      placeholder: 'Select your language',
-      pickerTitle: 'Select your language',
+      placeholder: 'Select your native language',
+      pickerTitle: 'Select your native language',
       accessibilityLabel: 'Native language',
     },
     lessonSize: {
@@ -48,7 +48,7 @@ export const settingsEn = {
   },
   validation: {
     interfaceLocale: 'Select a supported interface language.',
-    nativeLanguageRequired: 'Select your language.',
+    nativeLanguageRequired: 'Select your native language.',
     lessonSizeNumber: 'Lesson size must be a number.',
     lessonSizeWhole: 'Lesson size must be a whole number.',
     lessonSizeMin: 'Lesson size must be at least 5 cards.',

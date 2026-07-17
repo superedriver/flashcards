@@ -16,11 +16,11 @@ export const settingsUk = {
       accessibilityLabel: 'Мова інтерфейсу {{label}}',
     },
     nativeLanguage: {
-      label: 'Моя мова',
+      label: 'Моя рідна мова',
       description:
         'Мова перекладу за замовчуванням лише для нових колод. Існуючі колоди не змінюються.',
-      placeholder: 'Оберіть вашу мову',
-      pickerTitle: 'Оберіть вашу мову',
+      placeholder: 'Оберіть рідну мову',
+      pickerTitle: 'Оберіть рідну мову',
       accessibilityLabel: 'Рідна мова',
     },
     lessonSize: {
@@ -48,7 +48,7 @@ export const settingsUk = {
   },
   validation: {
     interfaceLocale: 'Оберіть підтримувану мову інтерфейсу.',
-    nativeLanguageRequired: 'Оберіть вашу мову.',
+    nativeLanguageRequired: 'Оберіть рідну мову.',
     lessonSizeNumber: 'Розмір уроку має бути числом.',
     lessonSizeWhole: 'Розмір уроку має бути цілим числом.',
     lessonSizeMin: 'Розмір уроку має бути щонайменше 5 карток.',

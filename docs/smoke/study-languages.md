@@ -54,7 +54,7 @@ Run against a local or staging API with language seed applied.
 - [ ] Edit deck languages shows warning; no auto regeneration.
 - [ ] Publish blocked until languages assigned.
 - [ ] CSV import blocked on legacy deck until assign.
-- [ ] Settings **My language** (`nativeLanguage`) changes default source for **new** decks only.
+- [ ] Settings **My native language** (`nativeLanguage`) changes default source for **new** decks only.
 - [ ] en/uk study-language strings render (onboarding, selector, preview, assign).
 
 ## Sign-off

@@ -839,7 +839,7 @@ curl -fsS -X POST "$INTERNAL_JOB_URL" \
 6. From Public section, copy a deck keeping original source (immediate) and again choosing native source (preview → approve).
 7. From an owned deck, run **Regenerate translations**, approve preview, confirm backs/examples updated.
 8. Start a preview and leave it unfinished; confirm resume banner Continue/Discard on Decks.
-9. In Settings, change **My language**; create a new deck and confirm default source changed; existing decks unchanged.
+9. In Settings, change **My native language**; create a new deck and confirm default source changed; existing decks unchanged.
 10. Spot-check Ukrainian UI strings for onboarding, selector, preview, and assign flow.
 
 **Expected result:**

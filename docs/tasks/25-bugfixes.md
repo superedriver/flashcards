@@ -86,6 +86,7 @@ Expected state:
 25.06   Deck list vertical bordered cards
 25.07   Add bottom tab icons (keep full-width bar)
 25.08   Fix vertical scroll on My Decks, forms, and list screens
+25.09   Rename “My language” to “My native language”
 (+ append new bugs in discovery order)
 ```
 
@@ -100,6 +101,7 @@ Expected state:
 - [x] TASK-25.06 Show decks as vertical bordered cards
 - [x] TASK-25.07 Add bottom tab icons (keep full-width bar)
 - [x] TASK-25.08 Fix vertical scroll on My Decks, forms, and list screens
+- [x] TASK-25.09 Rename “My language” to “My native language”
 ```
 
 ---
@@ -654,4 +656,60 @@ cd apps/mobile && pnpm lint
 
 ```txt
 TASK-25.08 Fix vertical scroll on My Decks, forms, and list screens
+```
+
+---
+
+# TASK-25.09 Rename “My language” to “My native language”
+
+## Status
+
+DONE
+
+## Context
+
+Settings and onboarding label `My language` / `Моя мова` is ambiguous next to study languages. It should read as native language.
+
+## Goal
+
+Rename user-facing copy for `nativeLanguage` to “My native language” (EN) / “Моя рідна мова” (UK).
+
+## Files to Modify
+
+```txt
+apps/mobile/src/i18n/resources/en/settings.ts
+apps/mobile/src/i18n/resources/uk/settings.ts
+apps/mobile/src/i18n/resources/en/study-languages.ts
+apps/mobile/src/i18n/resources/uk/study-languages.ts
+docs/smoke/study-languages.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/25-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Settings field label: My native language / Моя рідна мова.
+2. Onboarding nativeLabel and related “use my language” actions use “native language” wording.
+3. Update smoke docs that mention Settings **My language**.
+```
+
+## Acceptance Criteria
+
+```txt
+- Settings and onboarding show “My native language” / “Моя рідна мова”.
+- Copy/preview action no longer says only “My language”.
+```
+
+## Commands to Run
+
+```txt
+cd apps/mobile && pnpm typecheck
+cd apps/mobile && pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-25.09 Rename “My language” to “My native language”
 ```
