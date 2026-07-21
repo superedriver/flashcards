@@ -857,6 +857,37 @@ curl -fsS -X POST "$INTERNAL_JOB_URL" \
 
 ---
 
+## 33. Learning Steps
+
+**Goal:** Verify learning-steps scheduling (replaces SM-2), Home multi-deck START, group counters/badges, and prompt direction.
+
+**Detailed checklist:** [docs/smoke/learning-steps.md](../smoke/learning-steps.md)
+
+**Prerequisite:** EPIC-26 implemented and migration applied.
+
+**Steps (web + native):**
+
+1. After migrate, confirm existing review states reset to step 0 / due now.
+2. Open Home: aggregate To learn / Practiced / Learned + START (no deck list).
+3. START a Home lesson with due cards from more than one own deck of the active target.
+4. Spot-check Know 0→1 schedules ~90s; Don't know on early steps keeps/requeues per algorithm.
+5. Confirm deck detail Start lesson remains single-deck; card rows show group badges.
+6. Confirm prompt side: front-first on early steps, back-first on 5–7; random on 3/4/8 across attempts.
+7. Confirm en/uk strings for groups and Home empty CTAs.
+
+**Expected result:**
+
+```txt
+- Scheduling follows docs/algorithms/learning-steps.md (backend only)
+- Home START scopes to own decks of active target
+- Counters/badges match learning groups; no group badge in lesson UI v1
+- Re-queue of due cards works without countdown UI
+```
+
+**Result:** - [ ] PASS - [ ] FAIL - [ ] N/A
+
+---
+
 ## Final Sign-Off
 
 ```txt

@@ -1,5 +1,7 @@
 # EPIC-16 Frontend Lessons
 
+> **Follow-up:** EPIC-26 updates lesson UI for learning steps, Home START, prompt direction, and group counters (`docs/tasks/26-learning-steps.md`). Historical SM-2 field wiring in this epic is obsolete after EPIC-26.
+
 ## Epic Goal
 
 Implement frontend lesson and review flow for Flashcards.

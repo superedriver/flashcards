@@ -1,5 +1,7 @@
 # EPIC-07 SRS & Lessons
 
+> **Superseded for scheduling:** EPIC-26 replaces SM-2 with learning steps (`docs/tasks/26-learning-steps.md`, `docs/algorithms/learning-steps.md`). Keep this epic for historical task logs; implement new review scheduling against EPIC-26.
+
 ## Epic Goal
 
 Implement backend spaced repetition and lesson flow for Flashcards.

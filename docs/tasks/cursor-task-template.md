@@ -51,7 +51,8 @@ Add task-specific documents when relevant:
 ```txt
 docs/domain/auth-token-strategy.md
 docs/domain/lesson-flow.md
-docs/algorithms/sm-2.md
+docs/algorithms/learning-steps.md
+docs/algorithms/sm-2.md (historical)
 docs/tasks/05-decks-cards.md
 ```
 

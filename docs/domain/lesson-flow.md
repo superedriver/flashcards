@@ -4,38 +4,48 @@
 
 This document defines how learning lessons work in Flashcards.
 
-It is a source-of-truth document for backend lesson logic, frontend lesson UI, and SRS integration.
+It is a source-of-truth document for backend lesson logic, frontend lesson UI, and learning-steps integration.
 
 Relevant task files:
 
 ```txt
-docs/tasks/07-srs-lessons.md
-docs/tasks/16-frontend-lessons.md
-docs/algorithms/sm-2.md
+docs/tasks/26-learning-steps.md
+docs/tasks/07-srs-lessons.md (historical SM-2 backend)
+docs/tasks/16-frontend-lessons.md (historical frontend)
+docs/algorithms/learning-steps.md
+docs/algorithms/sm-2.md (historical)
 docs/domain/permissions.md
 ```
 
 ## Core Concept
 
-A lesson is a short study session for one user and one deck.
+A lesson is a short study session for one user.
+
+Scopes:
+
+```txt
+DECK                — cards from one deck (deck detail Start lesson)
+HOME_ACTIVE_TARGET  — due cards across own decks of activeTargetLanguage (Home START)
+```
 
 The lesson flow is:
 
 ```txt
-User selects deck
-  -> Backend selects lesson cards
+User starts lesson (Home or deck)
+  -> Backend selects due cards for the scope
   -> User reviews cards one by one
   -> User answers KNOW or DONT_KNOW
-  -> Backend updates SRS state
-  -> User completes lesson
+  -> Backend updates learning-steps state
+  -> Backend may return another currently due card (re-queue)
+  -> User completes lesson when nothing due remains (or session rules say complete)
 ```
 
 The backend is the source of truth for:
 
 ```txt
 - which cards are in the lesson
-- review state
-- SRS scheduling
+- review state (learningStep, longReviewSuccessCount, dueAt)
+- prompt direction for each attempt
 - study session status
 - lesson completion
 ```
@@ -43,36 +53,38 @@ The backend is the source of truth for:
 The frontend is responsible for:
 
 ```txt
-- showing cards
-- revealing answers
+- showing the prompt side first (from promptDirection)
+- revealing the other side
 - collecting user answer
 - calling backend mutations
 - displaying progress
 ```
 
-The frontend must not calculate SRS.
+The frontend must not calculate learning steps or due times.
 
-## MVP Lesson Scope
+## Lesson Scope (current product)
 
-MVP lesson supports:
+Supports:
 
 ```txt
-- one deck per lesson
+- single-deck lessons (deck detail)
+- Home multi-deck lessons (own decks, active target language)
 - authenticated users only
-- due cards first
-- new cards after due cards
+- due cards (dueAt <= now)
 - configurable lesson size
 - KNOW / DONT_KNOW answers
-- backend SRS update after each answer
+- backend learning-steps update after each answer
+- re-query due cards within an active session (no countdown UI)
 - lesson completion summary
 ```
 
-MVP lesson does not support:
+Does not support (v1):
 
 ```txt
-- multi-deck lessons
+- studying public/group decks without copying into own decks
+- group badges inside the active lesson UI
+- waiting / countdown until a card becomes due
 - custom lesson filters
-- manual card ordering
 - advanced answer buttons
 - offline lesson mode
 - collaborative lessons
@@ -103,23 +115,39 @@ ABANDONED
 
 ## Review Answers
 
-MVP review answers:
+Review answers:
 
 ```txt
 KNOW
 DONT_KNOW
 ```
 
-Mapping to SM-2 quality:
+Frontend must not send quality scores or interval hints.
+
+Scheduling rules: `docs/algorithms/learning-steps.md`.
+
+## Prompt Direction
+
+Each lesson card payload includes `promptDirection`:
 
 ```txt
-KNOW      -> 4
-DONT_KNOW -> 1
+FRONT_TO_BACK
+BACK_TO_FRONT
 ```
 
-This mapping is defined by the backend.
+Derived from `learningStep` (random 50/50 on steps 3, 4, 8 per attempt). See algorithm doc.
 
-Frontend must not send SM-2 quality directly.
+## Learning Groups
+
+Derived from `learningStep` (API may also return `learningGroup`):
+
+```txt
+TO_LEARN:   steps 0–1
+PRACTICED:  steps 2–6
+LEARNED:    steps 7–8
+```
+
+Shown on Home aggregates, Decks counters, and deck detail card badges — not in the lesson UI in v1.
 
 ## Lesson Size
 
@@ -148,23 +176,13 @@ If input is outside this range, backend should reject it.
 
 ## Card Selection Rule
 
-When starting a lesson, backend selects cards in this order:
-
-```txt
-1. Due cards first.
-2. New cards after due cards.
-3. Stop when lessonSize is reached.
-```
-
-## Due Cards
-
-A due card is a card with existing `CardReviewState` where:
+When starting a lesson, backend selects cards where:
 
 ```txt
 dueAt <= now
 ```
 
-Due cards should be ordered by:
+Order:
 
 ```txt
 1. dueAt ascending
@@ -172,16 +190,33 @@ Due cards should be ordered by:
 3. card position ascending if needed
 ```
 
-## New Cards
+Limit: `lessonSize`.
 
-A new card is a card without `CardReviewState` for the current user.
+### Single-deck (DECK)
 
-New cards should be ordered by:
+Only cards belonging to that deck (and viewable by the user).
+
+### Home (HOME_ACTIVE_TARGET)
 
 ```txt
-1. card position ascending
-2. card createdAt ascending
+Own decks only
+targetLanguage = UserSettings.activeTargetLanguage
+due cards across those decks, dueAt ASC, limit lessonSize
 ```
+
+### Initial review state
+
+`CardReviewState` is created on card write paths (create / CSV / copy / preview approve) as:
+
+```txt
+learningStep = 0
+longReviewSuccessCount = 0
+dueAt = now
+```
+
+Safety net on lesson start: if missing for (userId, cardId), create the same initial state.
+
+There is no separate “new cards without state” queue after EPIC-26 — step-0 due cards cover first exposure.
 
 ## Excluded Cards
 
@@ -191,54 +226,51 @@ Lesson must not include:
 - deleted cards
 - cards from deleted decks
 - cards from decks the user cannot view
-- duplicate cards inside one lesson
+- cards from non-owned decks on Home START (public/group originals)
+- duplicate cardIds in the initial selection snapshot (re-queue later is allowed when due again)
 ```
 
 ## Empty Lesson
 
-If no due cards and no new cards exist:
+If no due cards exist for the scope:
 
 ```txt
-StartLessonUseCase should return an empty lesson payload or a domain error depending on chosen API design.
+Return a successful payload with empty cards / no session (or equivalent), consistently for deck and Home start.
 ```
 
-Recommended MVP behavior:
+Frontend:
 
 ```txt
-Return a successful payload with:
-- session = null or no active session
-- cards = []
-- message/state indicating no cards available
+Home: dedicated empty CTAs (no cards vs none due) — see EPIC-26
+Deck: No cards to review right now.
 ```
-
-Frontend should show:
-
-```txt
-No cards to review right now.
-```
-
-If the API requires a session, then backend may create no session and return empty result.
-
-This behavior must be consistent between backend and frontend.
 
 ## Starting a Lesson
 
-`StartLessonUseCase` must:
+### StartLessonUseCase (deck)
 
 ```txt
 1. Authenticate user.
-2. Load deck.
-3. Check deck visibility permission.
-4. Resolve lesson size.
-5. Select due cards.
-6. Select new cards if there is remaining capacity.
-7. Create StudySession if there are selected cards.
-8. Return lesson cards and session metadata.
+2. Load deck; check visibility permission.
+3. Resolve lesson size.
+4. Ensure CardReviewState safety net for deck cards as needed.
+5. Select due cards for that deck.
+6. Abandon existing ACTIVE session; create StudySession (scope=DECK, deckId set).
+7. Return cards with promptDirection + learning metadata.
+```
+
+### StartHomeLessonUseCase (Home)
+
+```txt
+1. Authenticate user.
+2. Require activeTargetLanguage.
+3. Resolve lesson size.
+4. Select due cards across own decks of that target.
+5. Abandon existing ACTIVE session; create StudySession (scope=HOME_ACTIVE_TARGET, deckId null).
+6. Return cards (each review still records deckId).
 ```
 
 ## Active Session Handling
-
-MVP rule:
 
 ```txt
 A user may have one ACTIVE session.
@@ -246,26 +278,9 @@ A user may have one ACTIVE session.
 
 When starting a new lesson:
 
-Recommended behavior:
-
-```txt
-- abandon existing ACTIVE session for this user
-- create a new ACTIVE session
-```
-
-Alternative behavior:
-
-```txt
-- reuse existing ACTIVE session
-```
-
-Chosen MVP behavior:
-
 ```txt
 Abandon existing ACTIVE session and create a new ACTIVE session.
 ```
-
-This keeps lesson state simple.
 
 ## StudySession Fields
 
@@ -274,14 +289,18 @@ Required fields:
 ```txt
 id
 userId
-deckId
 status
+scope (DECK | HOME_ACTIVE_TARGET)
 lessonSize
 startedAt
 completedAt
 abandonedAt
 createdAt
 updatedAt
+```
+
+```txt
+deckId — required when scope=DECK; null when scope=HOME_ACTIVE_TARGET
 ```
 
 Recommended optional fields:
@@ -293,192 +312,73 @@ knownCount
 dontKnowCount
 ```
 
-If counts can be derived from `StudySessionReview`, storing them is optional.
-
 ## StudySessionReview Fields
 
-Required fields:
+Each answer creates one `StudySessionReview` including `deckId` for the card’s deck (even in Home multi-deck sessions).
 
-```txt
-id
-sessionId
-userId
-deckId
-cardId
-answer
-quality
-reviewedAt
-createdAt
-```
-
-Optional fields:
-
-```txt
-previousEaseFactor
-previousIntervalDays
-previousRepetitions
-nextEaseFactor
-nextIntervalDays
-nextRepetitions
-nextDueAt
-```
-
-Storing previous/next values is useful for analytics and debugging, but not mandatory for MVP.
-
-## Lesson Card Payload
-
-Backend should return lesson cards with enough data for frontend display:
-
-```txt
-cardId
-front
-back
-example
-notes
-position
-reviewState optional
-```
-
-Frontend should not receive sensitive internal fields.
-
-## Frontend Lesson UI States
-
-Frontend lesson should support:
-
-```txt
-loading
-empty
-show front
-show answer
-submitting answer
-completed
-error
-```
-
-## Frontend Review Flow
-
-For each card:
-
-```txt
-1. Show front.
-2. User taps reveal answer.
-3. Show back/example/notes.
-4. User taps KNOW or DONT_KNOW.
-5. Frontend calls submitReview.
-6. Backend updates SRS state.
-7. Frontend moves to next card.
-```
-
-Frontend should disable buttons while submitReview is in progress.
-
-Frontend should not advance to next card if submitReview fails.
-
-## Submit Review
+## Submitting a Review
 
 `SubmitReviewUseCase` must:
 
 ```txt
 1. Authenticate user.
-2. Load study session.
-3. Check session belongs to user.
-4. Check session is ACTIVE.
-5. Load card.
-6. Check card belongs to session deck.
-7. Map answer to SM-2 quality.
-8. Load previous CardReviewState.
-9. Call calculateNextReview from packages/srs.
-10. Upsert CardReviewState.
-11. Create StudySessionReview.
-12. Return updated progress and next review data.
-```
-
-## Submit Review Idempotency
-
-MVP simple rule:
-
-```txt
-Each submitReview call creates one StudySessionReview.
+2. Load ACTIVE session owned by user.
+3. Validate card belongs to session scope.
+4. Reject duplicate review for same sessionId + cardId while still enforcing product re-queue rules (see Re-queue).
+5. Load CardReviewState; apply packages/srs learning-steps with KNOW/DONT_KNOW.
+6. Persist updated learningStep, longReviewSuccessCount, dueAt, lastReviewedAt.
+7. Create StudySessionReview.
+8. Return updated state / next-card hint as designed in EPIC-26.
 ```
 
 Frontend must avoid duplicate submits by disabling buttons while loading.
 
-Backend should defensively prevent obvious duplicate submission if practical.
-
-Optional backend protection:
+## Re-queue Inside an Active Session
 
 ```txt
-Reject duplicate review for same sessionId + cardId if already reviewed in session.
+After KNOW/DONT_KNOW, dueAt may be soon (e.g. +90 seconds).
+submitReview returns nextCard by re-querying due cards (dueAt <= now) for the session scope
+while reviewedCount < lessonSize.
+Do not block the UI waiting for timers; do not show a countdown.
+If no cards are due now or lessonSize is reached, nextCard is null.
+The same card may appear again in the same session once it is due again.
 ```
 
-Chosen MVP behavior:
+Persistence note:
 
 ```txt
-Reject duplicate review for same sessionId + cardId.
+StudySessionReview must allow multiple rows per (sessionId, cardId).
+Do not keep @@unique([sessionId, cardId]).
+Protect only against accidental double-submit of the same presentation, not against legitimate re-queue.
 ```
 
-This prevents double-click from corrupting SRS state.
-
-## DONT_KNOW Behavior Inside Lesson
-
-MVP rule:
-
-```txt
-DONT_KNOW updates SRS state immediately.
-```
-
-For repeating wrong cards inside the same lesson:
-
-Recommended MVP behavior:
-
-```txt
-Do not automatically repeat failed cards in the same lesson.
-```
-
-Reason:
-
-```txt
-- simpler backend
-- simpler frontend
-- SRS state is still updated
-- user can start another lesson later
-```
-
-Post-MVP behavior may add:
-
-```txt
-- repeat failed cards once at the end
-- Again/Hard/Good/Easy buttons
-- custom cram mode
-```
+Product note: this differs from the old MVP rule “do not repeat failed cards in the same lesson.” Re-appearance is driven only by `dueAt`, not by an explicit fail-repeat queue.
 
 ## Completing a Lesson
 
 Lesson can be completed when:
 
 ```txt
-- all lesson cards have a StudySessionReview
+- no due cards remain for the session scope at completion time, or
+- product chooses “initial snapshot exhausted and nothing due” — prefer due-based completion after EPIC-26
 ```
 
 `CompleteLessonUseCase` must:
 
 ```txt
 1. Authenticate user.
-2. Load session.
-3. Check session belongs to user.
-4. Check session is ACTIVE.
-5. Check reviewed count.
-6. Mark session COMPLETED.
-7. Set completedAt.
-8. Return summary.
+2. Load session; check ownership and ACTIVE.
+3. Mark session COMPLETED; set completedAt.
+4. Return summary.
 ```
 
 Recommended summary:
 
 ```txt
 sessionId
-deckId
-totalCards
-reviewedCards
+deckId (nullable for Home)
+scope
+totalCards / reviewedCards
 knownCount
 dontKnowCount
 completedAt
@@ -486,245 +386,41 @@ completedAt
 
 ## Abandoning a Lesson
 
-MVP may not expose a separate abandon mutation.
+Backend should expose abandon so the frontend can leave a lesson cleanly.
 
-Backend should expose an abandon mutation so frontend can abandon a lesson when the user leaves the lesson screen.
+Backend abandons previous ACTIVE sessions when starting a new lesson.
 
-Backend may abandon previous active sessions when starting a new lesson.
-
-`AbandonLessonUseCase` should:
+## Home UI (learning entry)
 
 ```txt
-- authenticate user
-- load session
-- check ownership
-- mark ACTIVE session as ABANDONED
-- set abandonedAt
+- Aggregate counters: To learn / Practiced / Learned (own decks, active target)
+- START → StartHomeLesson
+- No deck list on Home
+- Empty CTAs per EPIC-26
 ```
 
-## Deck Learning Stats
-
-Backend should expose deck learning stats for authenticated user.
-
-Recommended query:
+## Deck UI
 
 ```txt
-deckLearningStats(deckId)
-```
-
-Stats:
-
-```txt
-totalCards
-newCards
-dueCards
-learningCards
-reviewedCards
-nextDueAt
-```
-
-Definitions:
-
-```txt
-totalCards:
-- non-deleted cards in deck
-
-newCards:
-- cards without CardReviewState for user
-
-dueCards:
-- cards with CardReviewState.dueAt <= now
-
-reviewedCards:
-- cards with CardReviewState for user
-
-nextDueAt:
-- minimum dueAt in future for this user/deck
+- Per-deck counters on Decks tab / deck detail
+- Card row group badges on deck detail
+- Start lesson → single-deck StartLesson
 ```
 
 ## Permissions
 
-Lesson permissions must follow:
+```txt
+- Lessons require authentication.
+- Blocked users rejected.
+- Deck lesson: user must be allowed to view the deck (owner, or rules for shared view — Home START is own decks only).
+- Frontend visibility is UX only; backend enforces.
+```
+
+## Related Documents
 
 ```txt
+docs/algorithms/learning-steps.md
+docs/tasks/26-learning-steps.md
+docs/architecture.md
 docs/domain/permissions.md
 ```
-
-User can start lesson if:
-
-```txt
-- user is authenticated
-- user owns deck
-- deck is not deleted
-```
-
-User can submit review if:
-
-```txt
-- session belongs to user
-- session is active
-- card belongs to session deck
-```
-
-## SRS Integration
-
-SRS calculation must follow:
-
-```txt
-docs/algorithms/sm-2.md
-```
-
-Backend call flow:
-
-```txt
-SubmitReviewUseCase
-  -> map answer to quality
-  -> calculateNextReview()
-  -> save CardReviewState
-```
-
-Frontend must not calculate:
-
-```txt
-easeFactor
-intervalDays
-repetitions
-dueAt
-```
-
-## Error Cases
-
-Backend should handle:
-
-```txt
-UNAUTHORIZED:
-- user is not authenticated
-
-FORBIDDEN:
-- user cannot access deck/session
-
-DECK_NOT_FOUND:
-- deck does not exist or is hidden
-
-CARD_NOT_FOUND:
-- card does not exist or does not belong to deck
-
-LESSON_NOT_FOUND:
-- session does not exist
-
-LESSON_NOT_ACTIVE:
-- session is completed or abandoned
-
-LESSON_CARD_ALREADY_REVIEWED:
-- duplicate review for same session/card
-
-INVALID_REVIEW_ANSWER:
-- answer is not KNOW or DONT_KNOW
-
-NO_LESSON_CARDS_AVAILABLE:
-- optional, if empty lesson is treated as error
-```
-
-## GraphQL Operations
-
-Recommended backend operations:
-
-```txt
-startLesson(input): StartLessonPayload
-submitReview(input): SubmitReviewPayload
-completeLesson(input): CompleteLessonPayload
-deckLearningStats(deckId): DeckLearningStats
-```
-
-Recommended inputs:
-
-```ts
-export type StartLessonInput = {
-  deckId: string
-  lessonSize?: number
-}
-
-export type SubmitReviewInput = {
-  sessionId: string
-  cardId: string
-  answer: 'KNOW' | 'DONT_KNOW'
-}
-
-export type CompleteLessonInput = {
-  sessionId: string
-}
-```
-
-## Frontend Routing
-
-Recommended frontend routes:
-
-```txt
-/apps/mobile/app/(app)/lesson/[deckId].tsx
-/apps/mobile/app/(app)/lesson/session/[sessionId].tsx
-/apps/mobile/app/(app)/lesson/session/[sessionId]/summary.tsx
-```
-
-## Frontend State Rule
-
-Frontend may keep current lesson queue in memory while user is in lesson.
-
-Frontend should not persist full lesson queue to localStorage.
-
-If app reloads during lesson:
-
-```txt
-- MVP may require user to restart lesson
-- backend has already saved submitted reviews
-```
-
-## Testing Requirements
-
-Backend tests should cover:
-
-```txt
-- start lesson with due cards
-- start lesson with new cards
-- due cards come before new cards
-- lesson size limit is respected
-- cannot start lesson for inaccessible private deck
-- can start lesson for own deck
-- cannot start lesson for non-owned deck
-- submit KNOW updates CardReviewState
-- submit DONT_KNOW updates CardReviewState
-- duplicate submitReview is rejected
-- cannot submit review for another user's session
-- cannot submit review for completed session
-- complete lesson marks session completed
-- deckLearningStats returns correct counts
-```
-
-Frontend manual checks should cover:
-
-```txt
-- start lesson from deck detail
-- show front first
-- reveal answer
-- submit KNOW
-- submit DONT_KNOW
-- progress updates
-- completion summary appears
-- empty lesson state works
-- network error does not advance card
-```
-
-## Cursor Implementation Rules
-
-Cursor must read this document before implementing or modifying:
-
-```txt
-backend lesson use cases
-SRS integration
-CardReviewState logic
-StudySession logic
-lesson GraphQL operations
-frontend lesson screens
-deck learning stats
-```
-
-Implementation must follow this document exactly unless this document is explicitly updated.

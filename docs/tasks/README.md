@@ -373,6 +373,10 @@ Implement tasks in this order:
 20-deployment-mvp.md
 21-mvp-polish-and-release.md
 22-auth-security-hardening.md
+23-i18n.md
+24-study-languages.md
+25-bugfixes.md
+26-learning-steps.md
 ```
 
 ---
@@ -791,6 +795,22 @@ Purpose:
 
 ```txt
 Fix bugs found during EPIC-24 manual smoke (auth GraphQL context/cookies, web password field layout, and follow-ups appended as discovered).
+```
+
+---
+
+### 26 Learning Steps
+
+File:
+
+```txt
+docs/tasks/26-learning-steps.md
+```
+
+Purpose:
+
+```txt
+Replace SM-2 with learning steps 0–8, Home multi-deck START, learning group counters/badges, prompt direction, and CardReviewState migration.
 ```
 
 ---

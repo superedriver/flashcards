@@ -1,10 +1,14 @@
 # SuperMemo 2 Algorithm
 
+> **Historical (pre–EPIC-26).**  
+> Review scheduling is defined by **learning steps** in [`docs/algorithms/learning-steps.md`](./learning-steps.md).  
+> This SM-2 document is kept only for history and for reading EPIC-07 / EPIC-16 task logs. Do not implement new features against SM-2.
+
 ## Purpose
 
-This document defines the spaced repetition algorithm used by Flashcards.
+This document defined the spaced repetition algorithm used by Flashcards **before EPIC-26**.
 
-Flashcards uses a simplified SM-2 algorithm for MVP learning sessions.
+Flashcards used a simplified SM-2 algorithm for MVP learning sessions.
 
 The implementation must live in:
 

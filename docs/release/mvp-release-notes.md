@@ -51,7 +51,9 @@ Target stack: Neon PostgreSQL, Render API, Vercel web, GitHub Actions cron for d
 ### Learning
 
 ```txt
-- SM-2–based lesson flow (Know / Don't know)
+- SM-2–based lesson flow (Know / Don't know) — current shipped behavior
+- Planned EPIC-26: learning steps 0–8, Home multi-deck START, To learn / Practiced / Learned groups
+  (docs/tasks/26-learning-steps.md, docs/algorithms/learning-steps.md)
 - Lesson progress and summary
 - Per-deck learning stats
 - Daily due-card reminder backend job (push when configured)
@@ -111,7 +113,7 @@ Target stack: Neon PostgreSQL, Render API, Vercel web, GitHub Actions cron for d
 - AI examples use mock provider unless Gemini API key is configured
 - CSV import accepts pasted text only (no file upload)
 - Cards are plain text (no rich text, images, or audio)
-- Lessons cover one deck per session (no multi-deck lessons)
+- Lessons from deck detail cover one deck per session (Home multi-deck START: EPIC-26)
 - Reminder job uses hour-level matching; minute precision is stored but not fully used
 - Free-tier hosting may cold-start (Render) and has usage limits
 - Request correlation IDs are not implemented yet
@@ -124,7 +126,7 @@ Target stack: Neon PostgreSQL, Render API, Vercel web, GitHub Actions cron for d
 - Advanced analytics charts
 - Native app store release (iOS/Android)
 - Offline mode
-- Multi-deck lessons
+- Richer multi-deck filters / custom study modes (beyond Home START in EPIC-26)
 - Rich text cards
 - Images and audio on cards
 - Advanced AI workflows

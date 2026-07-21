@@ -595,7 +595,7 @@ All permission checks must be enforced in backend services/use cases, not only i
 
 ## 13. Spaced Repetition Architecture
 
-The app uses an adapted SM-2 algorithm.
+The app uses a fixed **learning steps** ladder (steps 0–8).
 
 The UI has two answers:
 
@@ -604,33 +604,28 @@ Know
 Don't know
 ```
 
-Mapping:
+Source of truth: `docs/algorithms/learning-steps.md`.
+
+(Historical SM-2 mapping and fields: `docs/algorithms/sm-2.md` — superseded by EPIC-26.)
+
+Learning groups (derived from step):
 
 ```txt
-Know       -> quality = 4
-Don't know -> quality = 1
+To learn:   0–1
+Practiced:  2–6
+Learned:    7–8
 ```
-
-Source of truth: `docs/algorithms/sm-2.md`.
 
 Per-user per-card review state:
 
 ```txt
-repetition
-interval
-easiness_factor
-due_date
-last_reviewed_at
-lapses
+learningStep
+longReviewSuccessCount
+dueAt
+lastReviewedAt
 ```
 
-MVP learned card definition:
-
-```txt
-A card is learned when card_review_state.repetition >= 2.
-```
-
-The SM-2 algorithm must live in:
+The learning-steps algorithm must live in:
 
 ```txt
 packages/srs
@@ -645,7 +640,7 @@ GraphQL
 React
 ```
 
-The backend uses this package when processing lesson reviews.
+The backend uses this package when processing lesson reviews. The frontend must not calculate scheduling.
 
 ---
 
