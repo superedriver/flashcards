@@ -18,7 +18,7 @@ docs/release/mvp-smoke-tests.md
 - API lesson / review / home-start / progress suites: PENDING
 - Mobile typecheck: PENDING
 - Mobile eslint: PENDING
-- TASK-26.01–26.18 statuses: PENDING
+- TASK-26.01–26.19 statuses: PENDING
 ```
 
 ## Manual checks (web + at least one native)
