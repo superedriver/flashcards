@@ -1,21 +1,15 @@
-import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('CardReviewState')
 export class CardReviewStateType {
   @Field()
   id: string;
 
-  @Field()
-  cardId: string;
-
-  @Field(() => Float)
-  easeFactor: number;
+  @Field(() => Int)
+  learningStep: number;
 
   @Field(() => Int)
-  intervalDays: number;
-
-  @Field(() => Int)
-  repetitions: number;
+  longReviewSuccessCount: number;
 
   @Field()
   dueAt: Date;

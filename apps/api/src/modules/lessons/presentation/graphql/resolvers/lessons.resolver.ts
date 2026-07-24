@@ -6,6 +6,7 @@ import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-a
 import { AbandonLessonUseCase } from '../../../application/use-cases/abandon-lesson.use-case';
 import { CompleteLessonUseCase } from '../../../application/use-cases/complete-lesson.use-case';
 import { DeckLearningStatsUseCase } from '../../../application/use-cases/deck-learning-stats.use-case';
+import { LessonCard } from '../../../application/use-cases/start-lesson.use-case';
 import { StartHomeLessonUseCase } from '../../../application/use-cases/start-home-lesson.use-case';
 import { StartLessonUseCase } from '../../../application/use-cases/start-lesson.use-case';
 import { SubmitReviewUseCase } from '../../../application/use-cases/submit-review.use-case';
@@ -19,6 +20,11 @@ import { AbandonLessonPayloadType } from '../types/abandon-lesson-payload.type';
 import { CardReviewStateType } from '../types/card-review-state.type';
 import { CompleteLessonPayloadType } from '../types/complete-lesson-payload.type';
 import { DeckLearningStatsType } from '../types/deck-learning-stats.type';
+import {
+  LearningGroupGql,
+  PromptDirectionGql,
+} from '../types/learning-enums.type';
+import { LessonCardType } from '../types/lesson-card.type';
 import {
   StartLessonPayloadType,
   StudySessionScopeGql,
@@ -64,18 +70,7 @@ export class LessonsResolver {
       sessionId: result.sessionId,
       deckId: result.deckId,
       scope: StudySessionScopeGql.DECK,
-      cards: result.cards.map((card) => ({
-        cardId: card.cardId,
-        deckId: card.deckId,
-        front: card.front,
-        back: card.back,
-        example: card.example,
-        notes: card.notes,
-        position: card.position,
-        reviewState: card.reviewState
-          ? toCardReviewStateType(card.reviewState)
-          : null,
-      })),
+      cards: result.cards.map(toLessonCardType),
       lessonSize: result.lessonSize,
       totalCards: result.totalCards,
     };
@@ -96,18 +91,7 @@ export class LessonsResolver {
       sessionId: result.sessionId,
       deckId: result.deckId,
       scope: StudySessionScopeGql.HOME_ACTIVE_TARGET,
-      cards: result.cards.map((card) => ({
-        cardId: card.cardId,
-        deckId: card.deckId,
-        front: card.front,
-        back: card.back,
-        example: card.example,
-        notes: card.notes,
-        position: card.position,
-        reviewState: card.reviewState
-          ? toCardReviewStateType(card.reviewState)
-          : null,
-      })),
+      cards: result.cards.map(toLessonCardType),
       lessonSize: result.lessonSize,
       totalCards: result.totalCards,
     };
@@ -131,18 +115,7 @@ export class LessonsResolver {
       cardId: result.cardId,
       reviewState: toCardReviewStateType(result.reviewState),
       reviewedCards: result.reviewedCards,
-      nextCard: result.nextCard
-        ? {
-            cardId: result.nextCard.cardId,
-            deckId: result.nextCard.deckId,
-            front: result.nextCard.front,
-            back: result.nextCard.back,
-            example: result.nextCard.example,
-            notes: result.nextCard.notes,
-            position: result.nextCard.position,
-            reviewState: toCardReviewStateType(result.nextCard.reviewState),
-          }
-        : null,
+      nextCard: result.nextCard ? toLessonCardType(result.nextCard) : null,
     };
   }
 
@@ -176,12 +149,25 @@ function toCardReviewStateType(
 ): CardReviewStateType {
   return {
     id: reviewState.id,
-    cardId: reviewState.cardId,
-    // Temporary GraphQL SM-2 placeholders until TASK-26.13.
-    easeFactor: 2.5,
-    intervalDays: 0,
-    repetitions: 0,
+    learningStep: reviewState.learningStep,
+    longReviewSuccessCount: reviewState.longReviewSuccessCount,
     dueAt: reviewState.dueAt,
     lastReviewedAt: reviewState.lastReviewedAt,
+  };
+}
+
+function toLessonCardType(card: LessonCard): LessonCardType {
+  return {
+    cardId: card.cardId,
+    deckId: card.deckId,
+    front: card.front,
+    back: card.back,
+    example: card.example,
+    notes: card.notes,
+    position: card.position,
+    learningStep: card.learningStep,
+    learningGroup: card.learningGroup as LearningGroupGql,
+    promptDirection: card.promptDirection as PromptDirectionGql,
+    reviewState: toCardReviewStateType(card.reviewState),
   };
 }
