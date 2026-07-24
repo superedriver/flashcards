@@ -69,6 +69,15 @@ export class CompleteLessonUseCase {
       );
     }
 
+    if (!session.deckId) {
+      throw new ApplicationError(
+        ErrorCodes.LESSON_NOT_FOUND,
+        'Lesson not found',
+      );
+    }
+
+    const deckId = session.deckId;
+
     const reviewedCards = await this.studySessionRepository.countReviews(
       input.sessionId,
     );
@@ -85,11 +94,11 @@ export class CompleteLessonUseCase {
 
     await this.studySessionRepository.complete(input.sessionId, completedAt);
 
-    const totalCards = await this.cardRepository.countByDeckId(session.deckId);
+    const totalCards = await this.cardRepository.countByDeckId(deckId);
 
     return {
       sessionId: input.sessionId,
-      deckId: session.deckId,
+      deckId,
       totalCards,
       reviewedCards,
       knownCount,

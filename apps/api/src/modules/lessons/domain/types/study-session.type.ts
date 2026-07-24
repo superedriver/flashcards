@@ -3,7 +3,7 @@ import { StudySessionStatus } from './study-session-status.type';
 export type StudySession = {
   id: string;
   userId: string;
-  deckId: string;
+  deckId: string | null;
   status: StudySessionStatus;
   lessonSize: number;
   startedAt: Date;

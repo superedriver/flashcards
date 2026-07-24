@@ -3,7 +3,7 @@ import { StudySession, StudySessionStatus } from '../../domain/types';
 type PrismaStudySessionRecord = {
   id: string;
   userId: string;
-  deckId: string;
+  deckId: string | null;
   status: string;
   lessonSize: number;
   startedAt: Date;

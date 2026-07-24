@@ -38,6 +38,11 @@ enum StudySessionStatus {
   ABANDONED
 }
 
+enum StudySessionScope {
+  DECK
+  HOME_ACTIVE_TARGET
+}
+
 enum ReviewAnswer {
   KNOW
   DONT_KNOW
@@ -287,14 +292,16 @@ model Card {
 }
 
 model CardReviewState {
-  id             String    @id @default(uuid())
-  userId         String
-  cardId         String
-  easeFactor     Float     @default(2.5)
-  intervalDays   Int       @default(0)
-  repetitions    Int       @default(0)
-  dueAt          DateTime
-  lastReviewedAt DateTime?
+  id                     String    @id @default(uuid())
+  userId                 String
+  cardId                 String
+  easeFactor             Float     @default(2.5)
+  intervalDays           Int       @default(0)
+  repetitions            Int       @default(0)
+  learningStep           Int       @default(0)
+  longReviewSuccessCount Int       @default(0)
+  dueAt                  DateTime
+  lastReviewedAt         DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -311,7 +318,8 @@ model CardReviewState {
 model StudySession {
   id          String             @id @default(uuid())
   userId      String
-  deckId      String
+  deckId      String?
+  scope       StudySessionScope  @default(DECK)
   status      StudySessionStatus @default(ACTIVE)
   lessonSize  Int
   startedAt   DateTime           @default(now())
@@ -322,30 +330,35 @@ model StudySession {
   updatedAt DateTime @updatedAt
 
   user    User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
-  deck    Deck                 @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  deck    Deck?                @relation(fields: [deckId], references: [id], onDelete: Cascade)
   reviews StudySessionReview[]
 
   @@index([userId])
   @@index([deckId])
   @@index([status])
+  @@index([scope])
 }
 
 model StudySessionReview {
-  id                   String       @id @default(uuid())
-  sessionId            String
-  userId               String
-  deckId               String
-  cardId               String
-  answer               ReviewAnswer
-  quality              Int
-  reviewedAt           DateTime
-  previousEaseFactor   Float?
-  previousIntervalDays Int?
-  previousRepetitions  Int?
-  nextEaseFactor       Float
-  nextIntervalDays     Int
-  nextRepetitions      Int
-  nextDueAt            DateTime
+  id                             String       @id @default(uuid())
+  sessionId                      String
+  userId                         String
+  deckId                         String
+  cardId                         String
+  answer                         ReviewAnswer
+  quality                        Int
+  reviewedAt                     DateTime
+  previousEaseFactor             Float?
+  previousIntervalDays           Int?
+  previousRepetitions            Int?
+  nextEaseFactor                 Float
+  nextIntervalDays               Int
+  nextRepetitions                Int
+  nextDueAt                      DateTime
+  previousLearningStep           Int?
+  previousLongReviewSuccessCount Int?
+  nextLearningStep               Int          @default(0)
+  nextLongReviewSuccessCount     Int          @default(0)
 
   createdAt DateTime @default(now())
 
@@ -354,7 +367,7 @@ model StudySessionReview {
   deck    Deck         @relation(fields: [deckId], references: [id], onDelete: Cascade)
   card    Card         @relation(fields: [cardId], references: [id], onDelete: Cascade)
 
-  @@unique([sessionId, cardId])
+  @@index([sessionId])
   @@index([userId])
   @@index([deckId])
   @@index([cardId])

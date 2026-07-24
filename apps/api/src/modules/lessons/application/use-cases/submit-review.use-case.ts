@@ -88,9 +88,18 @@ export class SubmitReviewUseCase {
       );
     }
 
+    if (!session.deckId) {
+      throw new ApplicationError(
+        ErrorCodes.LESSON_NOT_FOUND,
+        'Lesson not found',
+      );
+    }
+
+    const deckId = session.deckId;
+
     const card = await this.cardRepository.findById(input.cardId);
 
-    if (!card || card.deckId !== session.deckId) {
+    if (!card || card.deckId !== deckId) {
       throw new ApplicationError(ErrorCodes.CARD_NOT_FOUND, 'Card not found');
     }
 
@@ -134,7 +143,7 @@ export class SubmitReviewUseCase {
     await this.studySessionRepository.createReview({
       sessionId: input.sessionId,
       userId: input.currentUser.id,
-      deckId: session.deckId,
+      deckId,
       cardId: input.cardId,
       answer: input.answer,
       quality,
