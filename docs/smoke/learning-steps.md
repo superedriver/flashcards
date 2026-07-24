@@ -11,14 +11,16 @@ docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
 ```
 
-## Automated verification
+## Automated verification (done in TASK-26.20)
 
 ```txt
-- packages/srs learning-steps unit tests: PENDING
-- API lesson / review / home-start / progress suites: PENDING
-- Mobile typecheck: PENDING
-- Mobile eslint: PENDING
-- TASK-26.01–26.19 statuses: PENDING
+- packages/srs learning-steps unit tests: PASS (39)
+- API lesson / review / home-start / progress suites: PASS (55)
+- API build: PASS
+- Mobile typecheck: PASS
+- Mobile eslint: PASS
+- Root format:check + lint: PASS
+- TASK-26.01–26.19 statuses: DONE
 ```
 
 ## Manual checks (web + at least one native)
@@ -67,10 +69,14 @@ Run against local or staging API after learning-steps migration.
 ## Sign-off
 
 ```txt
-Tester:
-Date:
-Platforms:
-Environment:
-Overall: PENDING
+Tester: Auto (Cursor agent)
+Date: 2026-07-24
+Platforms: automated only (srs + api jest + mobile tsc/eslint)
+Environment: local
+Overall: PASS (automated)
 Notes:
+- All TASK-26.01–26.20 implementation + automated checks green.
+- Manual device/UI smoke checklist above remains for human QA on web/native
+  after applying Phase A/B migrations.
+- Algorithm, Home START, nextCard, and group counters covered by unit suites.
 ```

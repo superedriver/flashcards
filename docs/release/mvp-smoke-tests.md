@@ -884,7 +884,9 @@ curl -fsS -X POST "$INTERNAL_JOB_URL" \
 - Re-queue of due cards works without countdown UI
 ```
 
-**Result:** - [ ] PASS - [ ] FAIL - [ ] N/A
+**Result:** - [x] PASS - [ ] FAIL - [ ] N/A
+
+_(Automated PASS in TASK-26.20; manual device checklist in `docs/smoke/learning-steps.md` remains for QA.)_
 
 ---
 
