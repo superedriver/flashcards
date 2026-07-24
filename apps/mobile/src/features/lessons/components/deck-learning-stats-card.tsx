@@ -37,15 +37,16 @@ export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
     <AppCard style={{ gap: 8, marginBottom: 16, padding: 16 }}>
       <AppText style={{ fontSize: 16, fontWeight: '600' }}>{t('lessons.stats.title')}</AppText>
       <AppText>{t('lessons.stats.totalCards', { count: stats.totalCards })}</AppText>
-      <AppText>{t('lessons.stats.newCards', { count: stats.newCards })}</AppText>
-      <AppText style={{ fontWeight: stats.dueCards > 0 ? '600' : '400' }}>
-        {t('lessons.stats.dueNow', { count: stats.dueCards })}
+      <AppText>{t('lessons.stats.toLearn', { count: stats.toLearnCount })}</AppText>
+      <AppText>{t('lessons.stats.practiced', { count: stats.practicedCount })}</AppText>
+      <AppText>{t('lessons.stats.learned', { count: stats.learnedCount })}</AppText>
+      <AppText style={{ fontWeight: stats.dueCount > 0 ? '600' : '400' }}>
+        {t('lessons.stats.dueNow', { count: stats.dueCount })}
       </AppText>
-      <AppText>{t('lessons.stats.reviewed', { count: stats.reviewedCards })}</AppText>
       <AppText style={{ color: '#666666' }}>
         {t('lessons.stats.nextReview', { value: formatNextReview(stats.nextDueAt) })}
       </AppText>
-      {stats.dueCards === 0 && stats.totalCards > 0 ? (
+      {stats.dueCount === 0 && stats.totalCards > 0 ? (
         <AppText style={{ color: '#666666', fontSize: 14 }}>{t('lessons.stats.noneDue')}</AppText>
       ) : null}
     </AppCard>

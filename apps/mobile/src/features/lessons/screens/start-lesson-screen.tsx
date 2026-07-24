@@ -76,21 +76,28 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
         const cards: LessonCard[] = payload.cards.map((card) => ({
           back: card.back,
           cardId: card.cardId,
+          deckId: card.deckId,
           example: card.example,
           front: card.front,
+          learningGroup: card.learningGroup,
+          learningStep: card.learningStep,
           notes: card.notes,
           position: card.position,
+          promptDirection: card.promptDirection,
         }))
 
         setActiveLesson({
           cards,
           currentIndex: 0,
-          deckId: payload.deckId,
+          deckId: payload.deckId ?? null,
           reviewedCardIds: [],
+          scope: payload.scope,
           sessionId: payload.sessionId,
         })
 
-        router.replace(`/lessons/${payload.sessionId}?deckId=${payload.deckId}`)
+        router.replace(
+          `/lessons/${payload.sessionId}${payload.deckId ? `?deckId=${payload.deckId}` : ''}`,
+        )
       })
       .catch((error) => {
         setErrorMessage(getGraphqlErrorMessage(error, t('lessons.start.startError')))

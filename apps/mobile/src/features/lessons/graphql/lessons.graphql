@@ -1,24 +1,45 @@
+fragment LessonCardFields on LessonCard {
+  cardId
+  deckId
+  front
+  back
+  example
+  notes
+  position
+  learningStep
+  learningGroup
+  promptDirection
+  reviewState {
+    id
+    learningStep
+    longReviewSuccessCount
+    dueAt
+    lastReviewedAt
+  }
+}
+
 mutation StartLesson($input: StartLessonInput!) {
   startLesson(input: $input) {
     sessionId
     deckId
+    scope
     lessonSize
     totalCards
     cards {
-      cardId
-      front
-      back
-      example
-      notes
-      position
-      reviewState {
-        id
-        easeFactor
-        intervalDays
-        repetitions
-        dueAt
-        lastReviewedAt
-      }
+      ...LessonCardFields
+    }
+  }
+}
+
+mutation StartHomeLesson($input: StartHomeLessonInput!) {
+  startHomeLesson(input: $input) {
+    sessionId
+    deckId
+    scope
+    lessonSize
+    totalCards
+    cards {
+      ...LessonCardFields
     }
   }
 }
@@ -30,11 +51,13 @@ mutation SubmitReview($input: SubmitReviewInput!) {
     reviewedCards
     reviewState {
       id
-      easeFactor
-      intervalDays
-      repetitions
+      learningStep
+      longReviewSuccessCount
       dueAt
       lastReviewedAt
+    }
+    nextCard {
+      ...LessonCardFields
     }
   }
 }
@@ -55,9 +78,21 @@ query DeckLearningStats($deckId: String!) {
   deckLearningStats(deckId: $deckId) {
     deckId
     totalCards
-    newCards
-    dueCards
-    reviewedCards
+    toLearnCount
+    practicedCount
+    learnedCount
+    dueCount
     nextDueAt
+  }
+}
+
+query HomeLearningProgress {
+  homeLearningProgress {
+    activeTargetLanguage
+    toLearnCount
+    practicedCount
+    learnedCount
+    dueCount
+    totalCardCount
   }
 }

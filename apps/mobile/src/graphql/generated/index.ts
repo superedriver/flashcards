@@ -88,6 +88,7 @@ export type Card = {
   example?: Maybe<Scalars['String']['output']>
   front: Scalars['String']['output']
   id: Scalars['String']['output']
+  learningGroup?: Maybe<LearningGroup>
   notes?: Maybe<Scalars['String']['output']>
   position: Scalars['Int']['output']
   updatedAt: Scalars['DateTime']['output']
@@ -95,13 +96,11 @@ export type Card = {
 
 export type CardReviewState = {
   __typename?: 'CardReviewState'
-  cardId: Scalars['String']['output']
   dueAt: Scalars['DateTime']['output']
-  easeFactor: Scalars['Float']['output']
   id: Scalars['String']['output']
-  intervalDays: Scalars['Int']['output']
   lastReviewedAt?: Maybe<Scalars['DateTime']['output']>
-  repetitions: Scalars['Int']['output']
+  learningStep: Scalars['Int']['output']
+  longReviewSuccessCount: Scalars['Int']['output']
 }
 
 export type CompleteLessonInput = {
@@ -268,10 +267,11 @@ export enum DeckLanguageWarningCode {
 export type DeckLearningStats = {
   __typename?: 'DeckLearningStats'
   deckId: Scalars['String']['output']
-  dueCards: Scalars['Int']['output']
-  newCards: Scalars['Int']['output']
+  dueCount: Scalars['Int']['output']
+  learnedCount: Scalars['Int']['output']
   nextDueAt?: Maybe<Scalars['DateTime']['output']>
-  reviewedCards: Scalars['Int']['output']
+  practicedCount: Scalars['Int']['output']
+  toLearnCount: Scalars['Int']['output']
   totalCards: Scalars['Int']['output']
 }
 
@@ -421,6 +421,16 @@ export enum GroupRole {
   Owner = 'OWNER',
 }
 
+export type HomeLearningProgress = {
+  __typename?: 'HomeLearningProgress'
+  activeTargetLanguage?: Maybe<Scalars['String']['output']>
+  dueCount: Scalars['Int']['output']
+  learnedCount: Scalars['Int']['output']
+  practicedCount: Scalars['Int']['output']
+  toLearnCount: Scalars['Int']['output']
+  totalCardCount: Scalars['Int']['output']
+}
+
 export type InviteUserToGroupInput = {
   email: Scalars['String']['input']
   groupId: Scalars['String']['input']
@@ -435,15 +445,25 @@ export type Language = {
   popularSortOrder?: Maybe<Scalars['Int']['output']>
 }
 
+export enum LearningGroup {
+  Learned = 'LEARNED',
+  Practiced = 'PRACTICED',
+  ToLearn = 'TO_LEARN',
+}
+
 export type LessonCard = {
   __typename?: 'LessonCard'
   back: Scalars['String']['output']
   cardId: Scalars['String']['output']
+  deckId: Scalars['String']['output']
   example?: Maybe<Scalars['String']['output']>
   front: Scalars['String']['output']
+  learningGroup: LearningGroup
+  learningStep: Scalars['Int']['output']
   notes?: Maybe<Scalars['String']['output']>
   position: Scalars['Int']['output']
-  reviewState?: Maybe<CardReviewState>
+  promptDirection: PromptDirection
+  reviewState: CardReviewState
 }
 
 export type LoginInput = {
@@ -525,6 +545,7 @@ export type Mutation = {
   shareDeckWithGroup: ShareDeckWithGroupPayload
   startDeckRegeneratePreview: DeckPreviewSession
   startGroupDeckCopyPreview: DeckPreviewSession
+  startHomeLesson: StartLessonPayload
   startLesson: StartLessonPayload
   startPublicDeckCopyPreview: DeckPreviewSession
   submitReview: SubmitReviewPayload
@@ -695,6 +716,10 @@ export type MutationStartGroupDeckCopyPreviewArgs = {
   input: StartGroupDeckCopyPreviewInput
 }
 
+export type MutationStartHomeLessonArgs = {
+  input: StartHomeLessonInput
+}
+
 export type MutationStartLessonArgs = {
   input: StartLessonInput
 }
@@ -753,6 +778,11 @@ export type PreviewCsvImportInput = {
   deckId: Scalars['String']['input']
 }
 
+export enum PromptDirection {
+  BackToFront = 'BACK_TO_FRONT',
+  FrontToBack = 'FRONT_TO_BACK',
+}
+
 export type PublicDeckSearchResult = {
   __typename?: 'PublicDeckSearchResult'
   items: Array<Deck>
@@ -779,6 +809,7 @@ export type Query = {
   decksPage: DecksPageResult
   group: Group
   groupSharedDecks: Array<Deck>
+  homeLearningProgress: HomeLearningProgress
   languages: Array<Language>
   me: SafeUser
   moderationQueue: ModerationQueueResult
@@ -926,6 +957,10 @@ export type StartGroupDeckCopyPreviewInput = {
   sourceDeckId: Scalars['String']['input']
 }
 
+export type StartHomeLessonInput = {
+  lessonSize?: InputMaybe<Scalars['Int']['input']>
+}
+
 export type StartLessonInput = {
   deckId: Scalars['String']['input']
   lessonSize?: InputMaybe<Scalars['Int']['input']>
@@ -934,8 +969,9 @@ export type StartLessonInput = {
 export type StartLessonPayload = {
   __typename?: 'StartLessonPayload'
   cards: Array<LessonCard>
-  deckId: Scalars['String']['output']
+  deckId?: Maybe<Scalars['String']['output']>
   lessonSize: Scalars['Int']['output']
+  scope: StudySessionScope
   sessionId?: Maybe<Scalars['String']['output']>
   totalCards: Scalars['Int']['output']
 }
@@ -951,6 +987,11 @@ export type StudyLanguageRemovalImpact = {
   affectedDeckCount: Scalars['Int']['output']
 }
 
+export enum StudySessionScope {
+  Deck = 'DECK',
+  HomeActiveTarget = 'HOME_ACTIVE_TARGET',
+}
+
 export type SubmitReviewInput = {
   answer: ReviewAnswer
   cardId: Scalars['String']['input']
@@ -960,6 +1001,7 @@ export type SubmitReviewInput = {
 export type SubmitReviewPayload = {
   __typename?: 'SubmitReviewPayload'
   cardId: Scalars['String']['output']
+  nextCard?: Maybe<LessonCard>
   reviewState: CardReviewState
   reviewedCards: Scalars['Int']['output']
   sessionId: Scalars['String']['output']
@@ -1995,6 +2037,28 @@ export type CopyGroupDeckMutation = {
   }
 }
 
+export type LessonCardFieldsFragment = {
+  __typename?: 'LessonCard'
+  cardId: string
+  deckId: string
+  front: string
+  back: string
+  example?: string | null
+  notes?: string | null
+  position: number
+  learningStep: number
+  learningGroup: LearningGroup
+  promptDirection: PromptDirection
+  reviewState: {
+    __typename?: 'CardReviewState'
+    id: string
+    learningStep: number
+    longReviewSuccessCount: number
+    dueAt: any
+    lastReviewedAt?: any | null
+  }
+}
+
 export type StartLessonMutationVariables = Exact<{
   input: StartLessonInput
 }>
@@ -2004,26 +2068,67 @@ export type StartLessonMutation = {
   startLesson: {
     __typename?: 'StartLessonPayload'
     sessionId?: string | null
-    deckId: string
+    deckId?: string | null
+    scope: StudySessionScope
     lessonSize: number
     totalCards: number
     cards: Array<{
       __typename?: 'LessonCard'
       cardId: string
+      deckId: string
       front: string
       back: string
       example?: string | null
       notes?: string | null
       position: number
-      reviewState?: {
+      learningStep: number
+      learningGroup: LearningGroup
+      promptDirection: PromptDirection
+      reviewState: {
         __typename?: 'CardReviewState'
         id: string
-        easeFactor: number
-        intervalDays: number
-        repetitions: number
+        learningStep: number
+        longReviewSuccessCount: number
         dueAt: any
         lastReviewedAt?: any | null
-      } | null
+      }
+    }>
+  }
+}
+
+export type StartHomeLessonMutationVariables = Exact<{
+  input: StartHomeLessonInput
+}>
+
+export type StartHomeLessonMutation = {
+  __typename?: 'Mutation'
+  startHomeLesson: {
+    __typename?: 'StartLessonPayload'
+    sessionId?: string | null
+    deckId?: string | null
+    scope: StudySessionScope
+    lessonSize: number
+    totalCards: number
+    cards: Array<{
+      __typename?: 'LessonCard'
+      cardId: string
+      deckId: string
+      front: string
+      back: string
+      example?: string | null
+      notes?: string | null
+      position: number
+      learningStep: number
+      learningGroup: LearningGroup
+      promptDirection: PromptDirection
+      reviewState: {
+        __typename?: 'CardReviewState'
+        id: string
+        learningStep: number
+        longReviewSuccessCount: number
+        dueAt: any
+        lastReviewedAt?: any | null
+      }
     }>
   }
 }
@@ -2042,12 +2147,32 @@ export type SubmitReviewMutation = {
     reviewState: {
       __typename?: 'CardReviewState'
       id: string
-      easeFactor: number
-      intervalDays: number
-      repetitions: number
+      learningStep: number
+      longReviewSuccessCount: number
       dueAt: any
       lastReviewedAt?: any | null
     }
+    nextCard?: {
+      __typename?: 'LessonCard'
+      cardId: string
+      deckId: string
+      front: string
+      back: string
+      example?: string | null
+      notes?: string | null
+      position: number
+      learningStep: number
+      learningGroup: LearningGroup
+      promptDirection: PromptDirection
+      reviewState: {
+        __typename?: 'CardReviewState'
+        id: string
+        learningStep: number
+        longReviewSuccessCount: number
+        dueAt: any
+        lastReviewedAt?: any | null
+      }
+    } | null
   }
 }
 
@@ -2079,10 +2204,26 @@ export type DeckLearningStatsQuery = {
     __typename?: 'DeckLearningStats'
     deckId: string
     totalCards: number
-    newCards: number
-    dueCards: number
-    reviewedCards: number
+    toLearnCount: number
+    practicedCount: number
+    learnedCount: number
+    dueCount: number
     nextDueAt?: any | null
+  }
+}
+
+export type HomeLearningProgressQueryVariables = Exact<{ [key: string]: never }>
+
+export type HomeLearningProgressQuery = {
+  __typename?: 'Query'
+  homeLearningProgress: {
+    __typename?: 'HomeLearningProgress'
+    activeTargetLanguage?: string | null
+    toLearnCount: number
+    practicedCount: number
+    learnedCount: number
+    dueCount: number
+    totalCardCount: number
   }
 }
 
@@ -2630,6 +2771,27 @@ export type AccountLocaleQuery = {
   }
 }
 
+export const LessonCardFieldsFragmentDoc = gql`
+  fragment LessonCardFields on LessonCard {
+    cardId
+    deckId
+    front
+    back
+    example
+    notes
+    position
+    learningStep
+    learningGroup
+    promptDirection
+    reviewState {
+      id
+      learningStep
+      longReviewSuccessCount
+      dueAt
+      lastReviewedAt
+    }
+  }
+`
 export const AdminDashboardStatsDocument = gql`
   query AdminDashboardStats {
     adminDashboardStats {
@@ -5276,26 +5438,15 @@ export const StartLessonDocument = gql`
     startLesson(input: $input) {
       sessionId
       deckId
+      scope
       lessonSize
       totalCards
       cards {
-        cardId
-        front
-        back
-        example
-        notes
-        position
-        reviewState {
-          id
-          easeFactor
-          intervalDays
-          repetitions
-          dueAt
-          lastReviewedAt
-        }
+        ...LessonCardFields
       }
     }
   }
+  ${LessonCardFieldsFragmentDoc}
 `
 export type StartLessonMutationFn = Apollo.MutationFunction<
   StartLessonMutation,
@@ -5334,6 +5485,61 @@ export type StartLessonMutationOptions = Apollo.BaseMutationOptions<
   StartLessonMutation,
   StartLessonMutationVariables
 >
+export const StartHomeLessonDocument = gql`
+  mutation StartHomeLesson($input: StartHomeLessonInput!) {
+    startHomeLesson(input: $input) {
+      sessionId
+      deckId
+      scope
+      lessonSize
+      totalCards
+      cards {
+        ...LessonCardFields
+      }
+    }
+  }
+  ${LessonCardFieldsFragmentDoc}
+`
+export type StartHomeLessonMutationFn = Apollo.MutationFunction<
+  StartHomeLessonMutation,
+  StartHomeLessonMutationVariables
+>
+
+/**
+ * __useStartHomeLessonMutation__
+ *
+ * To run a mutation, you first call `useStartHomeLessonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStartHomeLessonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [startHomeLessonMutation, { data, loading, error }] = useStartHomeLessonMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useStartHomeLessonMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    StartHomeLessonMutation,
+    StartHomeLessonMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<StartHomeLessonMutation, StartHomeLessonMutationVariables>(
+    StartHomeLessonDocument,
+    options,
+  )
+}
+export type StartHomeLessonMutationHookResult = ReturnType<typeof useStartHomeLessonMutation>
+export type StartHomeLessonMutationResult = Apollo.MutationResult<StartHomeLessonMutation>
+export type StartHomeLessonMutationOptions = Apollo.BaseMutationOptions<
+  StartHomeLessonMutation,
+  StartHomeLessonMutationVariables
+>
 export const SubmitReviewDocument = gql`
   mutation SubmitReview($input: SubmitReviewInput!) {
     submitReview(input: $input) {
@@ -5342,14 +5548,17 @@ export const SubmitReviewDocument = gql`
       reviewedCards
       reviewState {
         id
-        easeFactor
-        intervalDays
-        repetitions
+        learningStep
+        longReviewSuccessCount
         dueAt
         lastReviewedAt
       }
+      nextCard {
+        ...LessonCardFields
+      }
     }
   }
+  ${LessonCardFieldsFragmentDoc}
 `
 export type SubmitReviewMutationFn = Apollo.MutationFunction<
   SubmitReviewMutation,
@@ -5443,9 +5652,10 @@ export const DeckLearningStatsDocument = gql`
     deckLearningStats(deckId: $deckId) {
       deckId
       totalCards
-      newCards
-      dueCards
-      reviewedCards
+      toLearnCount
+      practicedCount
+      learnedCount
+      dueCount
       nextDueAt
     }
   }
@@ -5524,6 +5734,102 @@ export type DeckLearningStatsSuspenseQueryHookResult = ReturnType<
 export type DeckLearningStatsQueryResult = Apollo.QueryResult<
   DeckLearningStatsQuery,
   DeckLearningStatsQueryVariables
+>
+export const HomeLearningProgressDocument = gql`
+  query HomeLearningProgress {
+    homeLearningProgress {
+      activeTargetLanguage
+      toLearnCount
+      practicedCount
+      learnedCount
+      dueCount
+      totalCardCount
+    }
+  }
+`
+
+/**
+ * __useHomeLearningProgressQuery__
+ *
+ * To run a query within a React component, call `useHomeLearningProgressQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHomeLearningProgressQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHomeLearningProgressQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useHomeLearningProgressQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    HomeLearningProgressQuery,
+    HomeLearningProgressQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<HomeLearningProgressQuery, HomeLearningProgressQueryVariables>(
+    HomeLearningProgressDocument,
+    options,
+  )
+}
+export function useHomeLearningProgressLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    HomeLearningProgressQuery,
+    HomeLearningProgressQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<HomeLearningProgressQuery, HomeLearningProgressQueryVariables>(
+    HomeLearningProgressDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useHomeLearningProgressSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    HomeLearningProgressQuery,
+    HomeLearningProgressQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<HomeLearningProgressQuery, HomeLearningProgressQueryVariables>
+export function useHomeLearningProgressSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        HomeLearningProgressQuery,
+        HomeLearningProgressQueryVariables
+      >,
+): Apollo.UseSuspenseQueryResult<
+  HomeLearningProgressQuery | undefined,
+  HomeLearningProgressQueryVariables
+>
+export function useHomeLearningProgressSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<
+        HomeLearningProgressQuery,
+        HomeLearningProgressQueryVariables
+      >,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<HomeLearningProgressQuery, HomeLearningProgressQueryVariables>(
+    HomeLearningProgressDocument,
+    options,
+  )
+}
+export type HomeLearningProgressQueryHookResult = ReturnType<typeof useHomeLearningProgressQuery>
+export type HomeLearningProgressLazyQueryHookResult = ReturnType<
+  typeof useHomeLearningProgressLazyQuery
+>
+export type HomeLearningProgressSuspenseQueryHookResult = ReturnType<
+  typeof useHomeLearningProgressSuspenseQuery
+>
+export type HomeLearningProgressQueryResult = Apollo.QueryResult<
+  HomeLearningProgressQuery,
+  HomeLearningProgressQueryVariables
 >
 export const RegisterPushTokenDocument = gql`
   mutation RegisterPushToken($input: RegisterPushTokenInput!) {

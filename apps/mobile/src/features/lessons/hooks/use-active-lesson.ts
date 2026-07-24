@@ -7,6 +7,7 @@ type ActiveLessonStore = {
   completion: LessonCompletion | null
   clearActiveLesson: () => void
   clearCompletion: () => void
+  enqueueNextCard: (card: LessonCard) => void
   getCurrentCard: () => LessonCard | null
   goToNextCard: () => void
   markCardReviewed: (cardId: string) => void
@@ -46,6 +47,35 @@ export const useActiveLessonStore = create<ActiveLessonStore>((set, get) => ({
       }
     }),
 
+  enqueueNextCard: (card: LessonCard) =>
+    set((state) => {
+      if (!state.activeLesson) {
+        return state
+      }
+
+      const existingIndex = state.activeLesson.cards.findIndex(
+        (existing) => existing.cardId === card.cardId,
+      )
+
+      if (existingIndex > state.activeLesson.currentIndex) {
+        return {
+          activeLesson: {
+            ...state.activeLesson,
+            cards: state.activeLesson.cards.map((existing, index) =>
+              index === existingIndex ? card : existing,
+            ),
+          },
+        }
+      }
+
+      return {
+        activeLesson: {
+          ...state.activeLesson,
+          cards: [...state.activeLesson.cards, card],
+        },
+      }
+    }),
+
   markCardReviewed: (cardId: string) =>
     set((state) => {
       if (!state.activeLesson) {
@@ -74,6 +104,7 @@ export function useActiveLesson(sessionId?: string) {
   const completion = useActiveLessonStore((state) => state.completion)
   const clearActiveLesson = useActiveLessonStore((state) => state.clearActiveLesson)
   const clearCompletion = useActiveLessonStore((state) => state.clearCompletion)
+  const enqueueNextCard = useActiveLessonStore((state) => state.enqueueNextCard)
   const getCurrentCard = useActiveLessonStore((state) => state.getCurrentCard)
   const goToNextCard = useActiveLessonStore((state) => state.goToNextCard)
   const markCardReviewed = useActiveLessonStore((state) => state.markCardReviewed)
@@ -98,6 +129,7 @@ export function useActiveLesson(sessionId?: string) {
     completion,
     currentCard,
     currentNumber,
+    enqueueNextCard,
     getCurrentCard,
     goToNextCard,
     hasMoreCards,

@@ -20,9 +20,9 @@ import { LessonsResolver } from './presentation/graphql/resolvers/lessons.resolv
 
 @Module({
   imports: [
-    AuthModule,
+    forwardRef(() => AuthModule),
     forwardRef(() => DecksModule),
-    AccountModule,
+    forwardRef(() => AccountModule),
     forwardRef(() => GroupsModule),
   ],
   providers: [
