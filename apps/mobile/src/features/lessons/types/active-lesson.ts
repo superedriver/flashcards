@@ -19,6 +19,7 @@ export type ActiveLesson = {
   cards: LessonCard[]
   currentIndex: number
   deckId: string | null
+  lessonSize: number
   reviewedCardIds: string[]
   sessionId: string
   scope?: 'DECK' | 'HOME_ACTIVE_TARGET'

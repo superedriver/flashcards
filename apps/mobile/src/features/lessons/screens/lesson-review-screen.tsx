@@ -7,6 +7,7 @@ import { LessonProgress } from '@/features/lessons/components/lesson-progress'
 import { ReviewAnswerActions } from '@/features/lessons/components/review-answer-actions'
 import { ReviewFlashcard } from '@/features/lessons/components/review-flashcard'
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
+import { mapGraphQlLessonCard } from '@/features/lessons/utils/map-lesson-card'
 import { confirmAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import {
@@ -25,6 +26,7 @@ export function LessonReviewScreen() {
     clearActiveLesson,
     currentCard,
     currentNumber,
+    enqueueNextCard,
     goToNextCard,
     lesson,
     markCardReviewed,
@@ -42,7 +44,7 @@ export function LessonReviewScreen() {
   useEffect(() => {
     setIsRevealed(false)
     setErrorMessage(null)
-  }, [currentCard?.cardId])
+  }, [currentCard?.cardId, currentCard?.promptDirection])
 
   if (!sessionId) {
     return (
@@ -69,7 +71,7 @@ export function LessonReviewScreen() {
               {t('lessons.review.backToDeck')}
             </AppButton>
           ) : null}
-          <AppButton onPress={() => router.replace('/(tabs)/decks')}>
+          <AppButton onPress={() => router.replace(deckId ? '/(tabs)/decks' : '/(tabs)')}>
             {t('lessons.review.backToDecks')}
           </AppButton>
         </View>
@@ -82,8 +84,37 @@ export function LessonReviewScreen() {
 
     confirmAction(t('lessons.review.leaveTitle'), t('lessons.review.leaveMessage'), () => {
       clearActiveLesson()
-      router.replace(targetDeckId ? `/decks/${targetDeckId}` : '/(tabs)/decks')
+      router.replace(targetDeckId ? `/decks/${targetDeckId}` : '/(tabs)')
     })
+  }
+
+  const finishLesson = async () => {
+    const completeResult = await completeLesson({
+      variables: {
+        input: { sessionId: lesson.sessionId },
+      },
+    })
+
+    const summary = completeResult.data?.completeLesson
+
+    if (!summary) {
+      setErrorMessage(t('lessons.review.completeError'))
+      return
+    }
+
+    setCompletion({
+      completedAt: summary.completedAt,
+      deckId: summary.deckId,
+      dontKnowCount: summary.dontKnowCount,
+      knownCount: summary.knownCount,
+      reviewedCards: summary.reviewedCards,
+      sessionId: summary.sessionId,
+      totalCards: summary.totalCards,
+    })
+    clearActiveLesson()
+    router.replace(
+      `/lessons/${sessionId}/summary${summary.deckId ? `?deckId=${summary.deckId}` : ''}`,
+    )
   }
 
   const handleAnswer = async (answer: ReviewAnswer) => {
@@ -106,7 +137,9 @@ export function LessonReviewScreen() {
         },
       })
 
-      if (!result.data?.submitReview) {
+      const payload = result.data?.submitReview
+
+      if (!payload) {
         setErrorMessage(t('lessons.review.submitError'))
         return
       }
@@ -114,37 +147,13 @@ export function LessonReviewScreen() {
       markCardReviewed(currentCard.cardId)
       setIsRevealed(false)
 
-      const isLastCard = lesson.currentIndex >= lesson.cards.length - 1
-
-      if (isLastCard) {
-        const completeResult = await completeLesson({
-          variables: {
-            input: { sessionId: lesson.sessionId },
-          },
-        })
-
-        const summary = completeResult.data?.completeLesson
-
-        if (!summary) {
-          setErrorMessage(t('lessons.review.completeError'))
-          return
-        }
-
-        setCompletion({
-          completedAt: summary.completedAt,
-          deckId: summary.deckId,
-          dontKnowCount: summary.dontKnowCount,
-          knownCount: summary.knownCount,
-          reviewedCards: summary.reviewedCards,
-          sessionId: summary.sessionId,
-          totalCards: summary.totalCards,
-        })
-        clearActiveLesson()
-        router.replace(`/lessons/${sessionId}/summary?deckId=${summary.deckId}`)
+      if (payload.nextCard) {
+        enqueueNextCard(mapGraphQlLessonCard(payload.nextCard))
+        goToNextCard()
         return
       }
 
-      goToNextCard()
+      await finishLesson()
     } catch (error) {
       setErrorMessage(getGraphqlErrorMessage(error, t('lessons.review.submitError')))
     } finally {
@@ -167,6 +176,7 @@ export function LessonReviewScreen() {
         front={currentCard.front}
         isRevealed={isRevealed}
         notes={currentCard.notes}
+        promptDirection={currentCard.promptDirection}
         onReveal={() => setIsRevealed(true)}
       />
       {errorMessage ? <ErrorState message={errorMessage} /> : null}

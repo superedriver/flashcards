@@ -6,7 +6,7 @@ import { View } from 'react-native'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { deckNeedsLanguageAssignment } from '@/features/decks/utils/deck-language-gate'
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
-import type { LessonCard } from '@/features/lessons/types/active-lesson'
+import { mapGraphQlLessonCard } from '@/features/lessons/utils/map-lesson-card'
 import { useDeckQuery, useStartLessonMutation } from '@/graphql/generated'
 import { AppButton } from '@/ui/primitives'
 import { EmptyState, ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
@@ -73,23 +73,13 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
           return
         }
 
-        const cards: LessonCard[] = payload.cards.map((card) => ({
-          back: card.back,
-          cardId: card.cardId,
-          deckId: card.deckId,
-          example: card.example,
-          front: card.front,
-          learningGroup: card.learningGroup,
-          learningStep: card.learningStep,
-          notes: card.notes,
-          position: card.position,
-          promptDirection: card.promptDirection,
-        }))
+        const cards = payload.cards.map(mapGraphQlLessonCard)
 
         setActiveLesson({
           cards,
           currentIndex: 0,
           deckId: payload.deckId ?? null,
+          lessonSize: payload.lessonSize,
           reviewedCardIds: [],
           scope: payload.scope,
           sessionId: payload.sessionId,

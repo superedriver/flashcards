@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { View, useWindowDimensions } from 'react-native'
 
+import type { PromptDirection } from '@/features/lessons/types/active-lesson'
 import { AppButton, AppCard, AppText } from '@/ui/primitives'
 import { getLessonCardContainerStyle } from '@/ui/utils/responsive'
 
@@ -11,6 +12,7 @@ export type ReviewFlashcardProps = {
   isRevealed: boolean
   notes?: string | null
   onReveal: () => void
+  promptDirection: PromptDirection
 }
 
 export function ReviewFlashcard({
@@ -20,10 +22,17 @@ export function ReviewFlashcard({
   isRevealed,
   notes,
   onReveal,
+  promptDirection,
 }: ReviewFlashcardProps) {
   const { t } = useTranslation()
   const { width } = useWindowDimensions()
   const containerStyle = getLessonCardContainerStyle(width)
+
+  const isBackToFront = promptDirection === 'BACK_TO_FRONT'
+  const promptText = isBackToFront ? back : front
+  const answerText = isBackToFront ? front : back
+  const promptLabel = isBackToFront ? t('lessons.flashcard.back') : t('lessons.flashcard.front')
+  const answerLabel = isBackToFront ? t('lessons.flashcard.front') : t('lessons.flashcard.back')
 
   return (
     <View style={containerStyle}>
@@ -38,10 +47,10 @@ export function ReviewFlashcard({
             textTransform: 'uppercase',
           }}
         >
-          {t('lessons.flashcard.front')}
+          {promptLabel}
         </AppText>
         <AppText style={{ fontSize: 28, fontWeight: '700', lineHeight: 36, textAlign: 'center' }}>
-          {front}
+          {promptText}
         </AppText>
 
         {!isRevealed ? (
@@ -67,9 +76,11 @@ export function ReviewFlashcard({
                 textTransform: 'uppercase',
               }}
             >
-              {t('lessons.flashcard.back')}
+              {answerLabel}
             </AppText>
-            <AppText style={{ fontSize: 24, lineHeight: 32, textAlign: 'center' }}>{back}</AppText>
+            <AppText style={{ fontSize: 24, lineHeight: 32, textAlign: 'center' }}>
+              {answerText}
+            </AppText>
             {example ? (
               <AppText style={{ color: '#666666', fontSize: 16, textAlign: 'center' }}>
                 {t('lessons.flashcard.example', { text: example })}

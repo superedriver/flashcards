@@ -115,10 +115,12 @@ export function useActiveLesson(sessionId?: string) {
     activeLesson && sessionId && activeLesson.sessionId === sessionId ? activeLesson : null
 
   const currentCard = lesson ? (lesson.cards[lesson.currentIndex] ?? null) : null
-  const totalCards = lesson?.cards.length ?? 0
+  const totalCards = lesson?.lessonSize ?? lesson?.cards.length ?? 0
   const reviewedCount = lesson?.reviewedCardIds.length ?? 0
   const currentNumber =
-    totalCards === 0 ? 0 : Math.min(lesson?.currentIndex ?? 0, totalCards - 1) + 1
+    reviewedCount >= totalCards && totalCards > 0
+      ? totalCards
+      : Math.min(reviewedCount + 1, Math.max(totalCards, 1))
   const isComplete =
     lesson !== null && lesson.currentIndex >= lesson.cards.length && lesson.cards.length > 0
   const hasMoreCards = lesson !== null && lesson.currentIndex < lesson.cards.length
