@@ -4,6 +4,7 @@ import { authEn } from './en/auth'
 import { csvImportEn } from './en/csv-import'
 import { decksEn } from './en/decks'
 import { groupsEn } from './en/groups'
+import { homeEn } from './en/home'
 import { lessonsEn } from './en/lessons'
 import { profileEn } from './en/profile'
 import { publicDecksEn } from './en/public-decks'
@@ -36,6 +37,7 @@ export const en = {
   settings: settingsEn,
   decks: decksEn,
   groups: groupsEn,
+  home: homeEn,
   lessons: lessonsEn,
   publicDecks: publicDecksEn,
   csvImport: csvImportEn,

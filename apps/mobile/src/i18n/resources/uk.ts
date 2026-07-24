@@ -4,6 +4,7 @@ import { authUk } from './uk/auth'
 import { csvImportUk } from './uk/csv-import'
 import { decksUk } from './uk/decks'
 import { groupsUk } from './uk/groups'
+import { homeUk } from './uk/home'
 import { lessonsUk } from './uk/lessons'
 import { profileUk } from './uk/profile'
 import { publicDecksUk } from './uk/public-decks'
@@ -36,6 +37,7 @@ export const uk = {
   settings: settingsUk,
   decks: decksUk,
   groups: groupsUk,
+  home: homeUk,
   lessons: lessonsUk,
   publicDecks: publicDecksUk,
   csvImport: csvImportUk,
