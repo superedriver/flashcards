@@ -152,6 +152,7 @@ export class StartLessonUseCase {
     const session = await this.studySessionRepository.create({
       userId: input.currentUser.id,
       deckId: input.deckId,
+      scope: 'DECK',
       lessonSize,
     });
 

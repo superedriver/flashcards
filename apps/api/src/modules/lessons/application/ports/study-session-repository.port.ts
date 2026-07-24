@@ -2,13 +2,15 @@ import {
   ReviewAnswer,
   StudySession,
   StudySessionReview,
+  StudySessionScope,
 } from '../../domain/types';
 
 export const STUDY_SESSION_REPOSITORY = Symbol('STUDY_SESSION_REPOSITORY');
 
 export type CreateStudySessionInput = {
   userId: string;
-  deckId: string;
+  deckId: string | null;
+  scope: StudySessionScope;
   lessonSize: number;
 };
 
@@ -18,14 +20,11 @@ export type CreateStudySessionReviewInput = {
   deckId: string;
   cardId: string;
   answer: ReviewAnswer;
-  quality: number;
   reviewedAt: Date;
-  previousEaseFactor?: number | null;
-  previousIntervalDays?: number | null;
-  previousRepetitions?: number | null;
-  nextEaseFactor: number;
-  nextIntervalDays: number;
-  nextRepetitions: number;
+  previousLearningStep: number | null;
+  previousLongReviewSuccessCount: number | null;
+  nextLearningStep: number;
+  nextLongReviewSuccessCount: number;
   nextDueAt: Date;
 };
 
@@ -34,6 +33,7 @@ export type StudySessionRepositoryPort = {
     userId: string;
     deckId: string;
   }): Promise<void>;
+  abandonActiveForUser(input: { userId: string }): Promise<void>;
   create(input: CreateStudySessionInput): Promise<StudySession>;
   findById(sessionId: string): Promise<StudySession | null>;
   createReview(

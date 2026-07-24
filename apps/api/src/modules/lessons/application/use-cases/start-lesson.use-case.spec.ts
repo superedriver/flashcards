@@ -175,14 +175,20 @@ function createUseCase(options?: {
     {
       findByUserAndCard,
       findDueCardIdsForDeck,
+      findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
       countReviewedForDeck: jest.fn(),
       countDueForDeck: jest.fn(),
       countDueForUser: jest.fn(),
+      countLearningGroupsForDeck: jest.fn(),
+      countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
       findNextDueAtForDeck: jest.fn(),
+      createInitialIfMissing: jest.fn(),
+      createInitialMany: jest.fn(),
       upsert: jest.fn(),
     },
     {
       abandonActiveForUserAndDeck,
+      abandonActiveForUser: jest.fn(),
       create: createSession,
       findById: jest.fn(),
       createReview: jest.fn(),
@@ -374,6 +380,7 @@ describe('StartLessonUseCase', () => {
     expect(createSession).toHaveBeenCalledWith({
       userId: 'owner-1',
       deckId: 'deck-1',
+      scope: 'DECK',
       lessonSize: 5,
     });
     expect(result.sessionId).toBe('session-1');

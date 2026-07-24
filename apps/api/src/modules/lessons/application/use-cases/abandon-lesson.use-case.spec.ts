@@ -61,6 +61,7 @@ function createUseCase(options?: {
     },
     {
       abandonActiveForUserAndDeck: jest.fn(),
+      abandonActiveForUser: jest.fn(),
       create: jest.fn(),
       findById: findSessionById,
       createReview: jest.fn(),

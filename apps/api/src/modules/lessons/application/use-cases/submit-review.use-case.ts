@@ -117,11 +117,11 @@ export class SubmitReviewUseCase {
 
     const reviewedAt = new Date();
     const quality = ANSWER_QUALITY_MAP[input.answer];
-    // Domain no longer exposes SM-2 fields (TASK-26.04); previous state is unused until TASK-26.08.
-    await this.cardReviewStateRepository.findByUserAndCard(
-      input.currentUser.id,
-      input.cardId,
-    );
+    const previousReviewState =
+      await this.cardReviewStateRepository.findByUserAndCard(
+        input.currentUser.id,
+        input.cardId,
+      );
     const nextReview = calculateNextReview({
       quality,
       previousEaseFactor: null,
@@ -130,12 +130,15 @@ export class SubmitReviewUseCase {
       reviewedAt,
     });
 
+    const learningStep = previousReviewState?.learningStep ?? 0;
+    const longReviewSuccessCount =
+      previousReviewState?.longReviewSuccessCount ?? 0;
+
     const reviewState = await this.cardReviewStateRepository.upsert({
       userId: input.currentUser.id,
       cardId: input.cardId,
-      easeFactor: nextReview.easeFactor,
-      intervalDays: nextReview.intervalDays,
-      repetitions: nextReview.repetitions,
+      learningStep,
+      longReviewSuccessCount,
       dueAt: nextReview.dueAt,
       lastReviewedAt: reviewedAt,
     });
@@ -146,14 +149,12 @@ export class SubmitReviewUseCase {
       deckId,
       cardId: input.cardId,
       answer: input.answer,
-      quality,
       reviewedAt,
-      previousEaseFactor: null,
-      previousIntervalDays: null,
-      previousRepetitions: null,
-      nextEaseFactor: nextReview.easeFactor,
-      nextIntervalDays: nextReview.intervalDays,
-      nextRepetitions: nextReview.repetitions,
+      previousLearningStep: previousReviewState?.learningStep ?? null,
+      previousLongReviewSuccessCount:
+        previousReviewState?.longReviewSuccessCount ?? null,
+      nextLearningStep: learningStep,
+      nextLongReviewSuccessCount: longReviewSuccessCount,
       nextDueAt: nextReview.dueAt,
     });
 

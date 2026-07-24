@@ -13,6 +13,16 @@ import {
 import { toStudySessionReview } from '../mappers/study-session-review.mapper';
 import { toStudySession } from '../mappers/study-session.mapper';
 
+const SM2_REVIEW_WRITE_DEFAULTS = {
+  quality: 0,
+  previousEaseFactor: null as number | null,
+  previousIntervalDays: null as number | null,
+  previousRepetitions: null as number | null,
+  nextEaseFactor: 2.5,
+  nextIntervalDays: 0,
+  nextRepetitions: 0,
+};
+
 @Injectable()
 export class PrismaStudySessionRepository implements StudySessionRepositoryPort {
   constructor(private readonly prisma: PrismaService) {}
@@ -34,11 +44,25 @@ export class PrismaStudySessionRepository implements StudySessionRepositoryPort 
     });
   }
 
+  async abandonActiveForUser(input: { userId: string }): Promise<void> {
+    await this.prisma.studySession.updateMany({
+      where: {
+        userId: input.userId,
+        status: 'ACTIVE',
+      },
+      data: {
+        status: 'ABANDONED',
+        abandonedAt: new Date(),
+      },
+    });
+  }
+
   async create(input: CreateStudySessionInput): Promise<StudySession> {
     const record = await this.prisma.studySession.create({
       data: {
         userId: input.userId,
         deckId: input.deckId,
+        scope: input.scope,
         lessonSize: input.lessonSize,
       },
     });
@@ -66,15 +90,13 @@ export class PrismaStudySessionRepository implements StudySessionRepositoryPort 
         deckId: input.deckId,
         cardId: input.cardId,
         answer: input.answer,
-        quality: input.quality,
         reviewedAt: input.reviewedAt,
-        previousEaseFactor: input.previousEaseFactor ?? null,
-        previousIntervalDays: input.previousIntervalDays ?? null,
-        previousRepetitions: input.previousRepetitions ?? null,
-        nextEaseFactor: input.nextEaseFactor,
-        nextIntervalDays: input.nextIntervalDays,
-        nextRepetitions: input.nextRepetitions,
+        previousLearningStep: input.previousLearningStep,
+        previousLongReviewSuccessCount: input.previousLongReviewSuccessCount,
+        nextLearningStep: input.nextLearningStep,
+        nextLongReviewSuccessCount: input.nextLongReviewSuccessCount,
         nextDueAt: input.nextDueAt,
+        ...SM2_REVIEW_WRITE_DEFAULTS,
       },
     });
 
