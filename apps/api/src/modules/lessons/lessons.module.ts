@@ -8,6 +8,7 @@ import { PromptDirectionRandomBitService } from './application/services/prompt-d
 import { AbandonLessonUseCase } from './application/use-cases/abandon-lesson.use-case';
 import { CompleteLessonUseCase } from './application/use-cases/complete-lesson.use-case';
 import { DeckLearningStatsUseCase } from './application/use-cases/deck-learning-stats.use-case';
+import { StartHomeLessonUseCase } from './application/use-cases/start-home-lesson.use-case';
 import { StartLessonUseCase } from './application/use-cases/start-lesson.use-case';
 import { SubmitReviewUseCase } from './application/use-cases/submit-review.use-case';
 import { CARD_REVIEW_STATE_REPOSITORY } from './application/ports/card-review-state-repository.port';
@@ -35,6 +36,7 @@ import { LessonsResolver } from './presentation/graphql/resolvers/lessons.resolv
     EnsureCardReviewStatesService,
     PromptDirectionRandomBitService,
     StartLessonUseCase,
+    StartHomeLessonUseCase,
     SubmitReviewUseCase,
     CompleteLessonUseCase,
     AbandonLessonUseCase,
@@ -47,6 +49,7 @@ import { LessonsResolver } from './presentation/graphql/resolvers/lessons.resolv
     EnsureCardReviewStatesService,
     PromptDirectionRandomBitService,
     StartLessonUseCase,
+    StartHomeLessonUseCase,
     SubmitReviewUseCase,
     CompleteLessonUseCase,
     AbandonLessonUseCase,

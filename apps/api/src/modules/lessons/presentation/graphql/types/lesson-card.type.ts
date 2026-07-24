@@ -7,6 +7,9 @@ export class LessonCardType {
   cardId: string;
 
   @Field()
+  deckId: string;
+
+  @Field()
   front: string;
 
   @Field()

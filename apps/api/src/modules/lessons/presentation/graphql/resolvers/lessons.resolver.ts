@@ -6,24 +6,30 @@ import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-a
 import { AbandonLessonUseCase } from '../../../application/use-cases/abandon-lesson.use-case';
 import { CompleteLessonUseCase } from '../../../application/use-cases/complete-lesson.use-case';
 import { DeckLearningStatsUseCase } from '../../../application/use-cases/deck-learning-stats.use-case';
+import { StartHomeLessonUseCase } from '../../../application/use-cases/start-home-lesson.use-case';
 import { StartLessonUseCase } from '../../../application/use-cases/start-lesson.use-case';
 import { SubmitReviewUseCase } from '../../../application/use-cases/submit-review.use-case';
 import { CardReviewState } from '../../../domain/types';
 import { AbandonLessonInput } from '../inputs/abandon-lesson.input';
 import { CompleteLessonInput } from '../inputs/complete-lesson.input';
+import { StartHomeLessonInput } from '../inputs/start-home-lesson.input';
 import { StartLessonInput } from '../inputs/start-lesson.input';
 import { SubmitReviewInput } from '../inputs/submit-review.input';
 import { AbandonLessonPayloadType } from '../types/abandon-lesson-payload.type';
 import { CardReviewStateType } from '../types/card-review-state.type';
 import { CompleteLessonPayloadType } from '../types/complete-lesson-payload.type';
 import { DeckLearningStatsType } from '../types/deck-learning-stats.type';
-import { StartLessonPayloadType } from '../types/start-lesson-payload.type';
+import {
+  StartLessonPayloadType,
+  StudySessionScopeGql,
+} from '../types/start-lesson-payload.type';
 import { SubmitReviewPayloadType } from '../types/submit-review-payload.type';
 
 @Resolver()
 export class LessonsResolver {
   constructor(
     private readonly startLessonUseCase: StartLessonUseCase,
+    private readonly startHomeLessonUseCase: StartHomeLessonUseCase,
     private readonly submitReviewUseCase: SubmitReviewUseCase,
     private readonly completeLessonUseCase: CompleteLessonUseCase,
     private readonly abandonLessonUseCase: AbandonLessonUseCase,
@@ -57,8 +63,42 @@ export class LessonsResolver {
     return {
       sessionId: result.sessionId,
       deckId: result.deckId,
+      scope: StudySessionScopeGql.DECK,
       cards: result.cards.map((card) => ({
         cardId: card.cardId,
+        deckId: card.deckId,
+        front: card.front,
+        back: card.back,
+        example: card.example,
+        notes: card.notes,
+        position: card.position,
+        reviewState: card.reviewState
+          ? toCardReviewStateType(card.reviewState)
+          : null,
+      })),
+      lessonSize: result.lessonSize,
+      totalCards: result.totalCards,
+    };
+  }
+
+  @Mutation(() => StartLessonPayloadType)
+  @UseGuards(GqlAuthGuard)
+  async startHomeLesson(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: StartHomeLessonInput,
+  ): Promise<StartLessonPayloadType> {
+    const result = await this.startHomeLessonUseCase.execute({
+      currentUser: user,
+      lessonSize: input.lessonSize,
+    });
+
+    return {
+      sessionId: result.sessionId,
+      deckId: result.deckId,
+      scope: StudySessionScopeGql.HOME_ACTIVE_TARGET,
+      cards: result.cards.map((card) => ({
+        cardId: card.cardId,
+        deckId: card.deckId,
         front: card.front,
         back: card.back,
         example: card.example,

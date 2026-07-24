@@ -44,6 +44,7 @@ import { PromptDirectionRandomBitService } from '../services/prompt-direction-ra
 
 export type LessonCard = {
   cardId: string;
+  deckId: string;
   front: string;
   back: string;
   example: string | null;
@@ -64,6 +65,7 @@ export type StartLessonUseCaseInput = {
 export type StartLessonUseCaseResult = {
   sessionId: string | null;
   deckId: string;
+  scope: 'DECK';
   cards: LessonCard[];
   lessonSize: number;
   totalCards: number;
@@ -151,6 +153,7 @@ export class StartLessonUseCase {
       return {
         sessionId: null,
         deckId: input.deckId,
+        scope: 'DECK',
         cards: [],
         lessonSize,
         totalCards,
@@ -171,6 +174,7 @@ export class StartLessonUseCase {
     return {
       sessionId: session.id,
       deckId: input.deckId,
+      scope: 'DECK',
       cards,
       lessonSize,
       totalCards,
@@ -241,6 +245,7 @@ export class StartLessonUseCase {
 
     return {
       cardId: card.id,
+      deckId: card.deckId,
       front: card.front,
       back: card.back,
       example: card.example,

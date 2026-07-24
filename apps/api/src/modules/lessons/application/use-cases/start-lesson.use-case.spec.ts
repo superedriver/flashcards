@@ -366,6 +366,7 @@ describe('StartLessonUseCase', () => {
     expect(result).toEqual({
       sessionId: null,
       deckId: 'deck-1',
+      scope: 'DECK',
       cards: [],
       lessonSize: 20,
       totalCards: 0,
