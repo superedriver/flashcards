@@ -15,6 +15,7 @@ type DeckSectionProps = {
   emptyMessage: string
   emptyActionLabel?: string
   onEmptyAction?: () => void
+  showLearningCounters?: boolean
   showOriginBadge?: boolean
   title: string
 }
@@ -24,6 +25,7 @@ export function DeckSection({
   emptyActionLabel,
   emptyMessage,
   onEmptyAction,
+  showLearningCounters = false,
   showOriginBadge = false,
   title,
 }: DeckSectionProps) {
@@ -43,7 +45,12 @@ export function DeckSection({
           showsHorizontalScrollIndicator={false}
         >
           {decks.map((deck) => (
-            <DeckListItem key={deck.id} deck={deck} showOriginBadge={showOriginBadge} />
+            <DeckListItem
+              key={deck.id}
+              deck={deck}
+              showLearningCounters={showLearningCounters}
+              showOriginBadge={showOriginBadge}
+            />
           ))}
         </ScrollView>
       )}
@@ -67,6 +74,7 @@ export function DecksPageSections({ listHeader, onCreateDeck, page }: DecksPageS
         decks={page.ownDecks}
         emptyActionLabel={onCreateDeck ? t('decks.myDecks.emptyAction') : undefined}
         emptyMessage={t('decks.sections.own.empty')}
+        showLearningCounters
         title={t('decks.sections.own.title')}
         onEmptyAction={onCreateDeck}
       />

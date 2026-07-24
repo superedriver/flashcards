@@ -115,6 +115,15 @@ export const decksEn = {
     deleteError: 'Could not delete card. Please try again.',
     empty: 'This deck has no cards yet.',
   },
+  learningGroup: {
+    TO_LEARN: 'To learn',
+    PRACTICED: 'Practiced',
+    LEARNED: 'Learned',
+  },
+  learningCounters: {
+    compact: 'To learn {{toLearn}} · Practiced {{practiced}} · Learned {{learned}}',
+    due: 'Due {{count}}',
+  },
   cardForm: {
     front: 'Front',
     back: 'Back',

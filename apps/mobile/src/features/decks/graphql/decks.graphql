@@ -106,6 +106,7 @@ query DeckCards($deckId: String!) {
     example
     notes
     position
+    learningGroup
     createdAt
     updatedAt
   }

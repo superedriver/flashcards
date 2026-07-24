@@ -115,6 +115,15 @@ export const decksUk = {
     deleteError: 'Не вдалося видалити картку. Спробуйте ще раз.',
     empty: 'У цій колоді ще немає карток.',
   },
+  learningGroup: {
+    TO_LEARN: 'Вивчити',
+    PRACTICED: 'У практиці',
+    LEARNED: 'Вивчено',
+  },
+  learningCounters: {
+    compact: 'Вивчити {{toLearn}} · Практика {{practiced}} · Вивчено {{learned}}',
+    due: 'До повторення {{count}}',
+  },
   cardForm: {
     front: 'Лицьова сторона',
     back: 'Зворотна сторона',

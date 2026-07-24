@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
+import { LearningGroupBadge } from '@/features/decks/components/learning-group-badge'
 import type { DeckCardsQuery } from '@/graphql/generated'
 import { AppButton, AppCard, AppText } from '@/ui/primitives'
 import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
@@ -19,7 +20,17 @@ export function CardListItem({ card, deckId, isOwner, onDelete }: CardListItemPr
 
   return (
     <AppCard style={{ gap: 8, marginBottom: 12, padding: 16 }}>
-      <AppText style={{ color: '#888888', fontSize: 12 }}>#{card.position}</AppText>
+      <View
+        style={{
+          alignItems: 'center',
+          flexDirection: 'row',
+          gap: 8,
+          justifyContent: 'space-between',
+        }}
+      >
+        <AppText style={{ color: '#888888', fontSize: 12 }}>#{card.position}</AppText>
+        <LearningGroupBadge learningGroup={card.learningGroup} />
+      </View>
       <AppText style={{ fontSize: 16, fontWeight: '600' }}>{card.front}</AppText>
       <AppText style={{ color: '#444444' }}>{card.back}</AppText>
       {card.example ? (

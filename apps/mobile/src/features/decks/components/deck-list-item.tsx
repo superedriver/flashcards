@@ -6,6 +6,7 @@ import { DeckOrigin, type DecksPageQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 
 import { DeckLanguageFlags } from './deck-language-flags'
+import { DeckLearningStatsCompact } from './deck-learning-stats-compact'
 import { DeckStatusBadge } from './deck-status-badge'
 
 type DecksPageDeck = DecksPageQuery['decksPage']['ownDecks'][number]
@@ -24,6 +25,7 @@ type DeckListItemProps = {
         sourceLanguage?: string | null
       }
   layout?: 'rail' | 'fill'
+  showLearningCounters?: boolean
   showOriginBadge?: boolean
 }
 
@@ -42,6 +44,7 @@ function accentForId(id: string): string {
 export function DeckListItem({
   deck,
   layout = 'rail',
+  showLearningCounters = false,
   showOriginBadge = false,
 }: DeckListItemProps) {
   const { t } = useTranslation()
@@ -120,7 +123,13 @@ export function DeckListItem({
               </AppText>
             ) : null}
           </View>
-          <DeckStatusBadge moderationStatus={deck.moderationStatus} visibility={deck.visibility} />
+          <View style={{ gap: 8 }}>
+            <DeckStatusBadge
+              moderationStatus={deck.moderationStatus}
+              visibility={deck.visibility}
+            />
+            {showLearningCounters ? <DeckLearningStatsCompact deckId={deck.id} /> : null}
+          </View>
         </View>
       </View>
     </Pressable>

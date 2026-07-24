@@ -1666,6 +1666,7 @@ export type DeckCardsQuery = {
     example?: string | null
     notes?: string | null
     position: number
+    learningGroup?: LearningGroup | null
     createdAt: any
     updatedAt: any
   }>
@@ -4316,6 +4317,7 @@ export const DeckCardsDocument = gql`
       example
       notes
       position
+      learningGroup
       createdAt
       updatedAt
     }
