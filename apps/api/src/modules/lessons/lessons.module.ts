@@ -4,6 +4,7 @@ import { AuthModule } from '../auth/auth.module';
 import { DecksModule } from '../decks/decks.module';
 import { GroupsModule } from '../groups/groups.module';
 import { EnsureCardReviewStatesService } from './application/services/ensure-card-review-states.service';
+import { PromptDirectionRandomBitService } from './application/services/prompt-direction-random-bit.service';
 import { AbandonLessonUseCase } from './application/use-cases/abandon-lesson.use-case';
 import { CompleteLessonUseCase } from './application/use-cases/complete-lesson.use-case';
 import { DeckLearningStatsUseCase } from './application/use-cases/deck-learning-stats.use-case';
@@ -32,6 +33,7 @@ import { LessonsResolver } from './presentation/graphql/resolvers/lessons.resolv
       useClass: PrismaStudySessionRepository,
     },
     EnsureCardReviewStatesService,
+    PromptDirectionRandomBitService,
     StartLessonUseCase,
     SubmitReviewUseCase,
     CompleteLessonUseCase,
@@ -43,6 +45,7 @@ import { LessonsResolver } from './presentation/graphql/resolvers/lessons.resolv
     CARD_REVIEW_STATE_REPOSITORY,
     STUDY_SESSION_REPOSITORY,
     EnsureCardReviewStatesService,
+    PromptDirectionRandomBitService,
     StartLessonUseCase,
     SubmitReviewUseCase,
     CompleteLessonUseCase,

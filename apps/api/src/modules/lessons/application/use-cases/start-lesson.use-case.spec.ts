@@ -4,6 +4,7 @@ import { AuthUser, SafeUser } from '../../../auth/domain/types';
 import { Card, Deck } from '../../../decks/domain/types';
 import { CardReviewState } from '../../domain/types';
 import { EnsureCardReviewStatesService } from '../services/ensure-card-review-states.service';
+import { PromptDirectionRandomBitService } from '../services/prompt-direction-random-bit.service';
 import { StartLessonUseCase } from './start-lesson.use-case';
 
 const authUser: AuthUser = {
@@ -130,7 +131,7 @@ function createUseCase(options?: {
       options?.settings === undefined ? settings : options.settings,
     );
   const createForUser = jest.fn().mockResolvedValue(settings);
-  const abandonActiveForUserAndDeck = jest.fn().mockResolvedValue(undefined);
+  const abandonActiveForUser = jest.fn().mockResolvedValue(undefined);
   const createSession = jest.fn().mockResolvedValue({
     id: 'session-1',
     userId: 'owner-1',
@@ -159,6 +160,9 @@ function createUseCase(options?: {
     createInitialMany,
     upsert: jest.fn(),
   });
+  const promptDirectionRandomBitService = {
+    nextBit: jest.fn().mockReturnValue(0 as const),
+  } as PromptDirectionRandomBitService;
 
   const useCase = new StartLessonUseCase(
     {
@@ -206,8 +210,8 @@ function createUseCase(options?: {
       upsert: jest.fn(),
     },
     {
-      abandonActiveForUserAndDeck,
-      abandonActiveForUser: jest.fn(),
+      abandonActiveForUserAndDeck: jest.fn(),
+      abandonActiveForUser,
       create: createSession,
       findById: jest.fn(),
       createReview: jest.fn(),
@@ -225,15 +229,17 @@ function createUseCase(options?: {
     },
     createDeckGroupShareRepository(options?.userHasGroupAccess ?? false),
     ensureCardReviewStatesService,
+    promptDirectionRandomBitService,
   );
 
   return {
     useCase,
-    abandonActiveForUserAndDeck,
+    abandonActiveForUser,
     createSession,
     createForUser,
     findDueCardIdsForDeck,
     createInitialMany,
+    promptDirectionRandomBitService,
   };
 }
 
@@ -367,26 +373,25 @@ describe('StartLessonUseCase', () => {
   });
 
   it('does not create session when no cards available', async () => {
-    const { useCase, createSession, abandonActiveForUserAndDeck } =
-      createUseCase({ cards: [] });
+    const { useCase, createSession, abandonActiveForUser } = createUseCase({
+      cards: [],
+    });
 
     await useCase.execute({ currentUser: authUser, deckId: 'deck-1' });
 
-    expect(abandonActiveForUserAndDeck).not.toHaveBeenCalled();
+    expect(abandonActiveForUser).not.toHaveBeenCalled();
     expect(createSession).not.toHaveBeenCalled();
   });
 
-  it('abandons existing ACTIVE session for user/deck before creating new session', async () => {
-    const { useCase, abandonActiveForUserAndDeck, createSession } =
-      createUseCase({
-        cards: [createCard('card-1', 1)],
-      });
+  it('abandons any ACTIVE session for user before creating new session', async () => {
+    const { useCase, abandonActiveForUser, createSession } = createUseCase({
+      cards: [createCard('card-1', 1)],
+    });
 
     await useCase.execute({ currentUser: authUser, deckId: 'deck-1' });
 
-    expect(abandonActiveForUserAndDeck).toHaveBeenCalledWith({
+    expect(abandonActiveForUser).toHaveBeenCalledWith({
       userId: 'owner-1',
-      deckId: 'deck-1',
     });
     expect(createSession).toHaveBeenCalled();
   });
@@ -430,6 +435,9 @@ describe('StartLessonUseCase', () => {
     expect(result.cards).toHaveLength(1);
     expect(result.cards[0]?.cardId).toBe('card-due');
     expect(result.cards[0]?.reviewState).toEqual(dueState);
+    expect(result.cards[0]?.learningStep).toBe(1);
+    expect(result.cards[0]?.learningGroup).toBe('TO_LEARN');
+    expect(result.cards[0]?.promptDirection).toBe('FRONT_TO_BACK');
   });
 
   it('creates user settings when missing', async () => {

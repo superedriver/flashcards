@@ -1,4 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
+import {
+  learningGroupForStep,
+  LearningGroup,
+  PromptDirection,
+  resolvePromptDirection,
+} from '@flashcards/srs';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import {
   USER_SETTINGS_REPOSITORY,
@@ -34,6 +40,7 @@ import {
   StudySessionRepositoryPort,
 } from '../ports/study-session-repository.port';
 import { EnsureCardReviewStatesService } from '../services/ensure-card-review-states.service';
+import { PromptDirectionRandomBitService } from '../services/prompt-direction-random-bit.service';
 
 export type LessonCard = {
   cardId: string;
@@ -42,7 +49,10 @@ export type LessonCard = {
   example: string | null;
   notes: string | null;
   position: number;
-  reviewState: CardReviewState | null;
+  learningStep: number;
+  learningGroup: LearningGroup;
+  promptDirection: PromptDirection;
+  reviewState: CardReviewState;
 };
 
 export type StartLessonUseCaseInput = {
@@ -83,6 +93,7 @@ export class StartLessonUseCase {
     @Inject(DECK_GROUP_SHARE_REPOSITORY)
     private readonly deckGroupShareRepository: DeckGroupShareRepositoryPort,
     private readonly ensureCardReviewStatesService: EnsureCardReviewStatesService,
+    private readonly promptDirectionRandomBitService: PromptDirectionRandomBitService,
   ) {}
 
   async execute(
@@ -146,9 +157,8 @@ export class StartLessonUseCase {
       };
     }
 
-    await this.studySessionRepository.abandonActiveForUserAndDeck({
+    await this.studySessionRepository.abandonActiveForUser({
       userId: input.currentUser.id,
-      deckId: input.deckId,
     });
 
     const session = await this.studySessionRepository.create({
@@ -214,6 +224,10 @@ export class StartLessonUseCase {
           cardId,
         );
 
+      if (!reviewState) {
+        continue;
+      }
+
       selectedCards.push(this.toLessonCard(card, reviewState));
       selectedCardIds.add(cardId);
     }
@@ -221,10 +235,10 @@ export class StartLessonUseCase {
     return selectedCards;
   }
 
-  private toLessonCard(
-    card: Card,
-    reviewState: CardReviewState | null,
-  ): LessonCard {
+  private toLessonCard(card: Card, reviewState: CardReviewState): LessonCard {
+    const learningStep = reviewState.learningStep;
+    const randomBit = this.promptDirectionRandomBitService.nextBit();
+
     return {
       cardId: card.id,
       front: card.front,
@@ -232,6 +246,9 @@ export class StartLessonUseCase {
       example: card.example,
       notes: card.notes,
       position: card.position,
+      learningStep,
+      learningGroup: learningGroupForStep(learningStep),
+      promptDirection: resolvePromptDirection({ learningStep, randomBit }),
       reviewState,
     };
   }
