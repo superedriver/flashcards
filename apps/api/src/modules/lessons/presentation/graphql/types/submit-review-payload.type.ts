@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { CardReviewStateType } from './card-review-state.type';
+import { LessonCardType } from './lesson-card.type';
 
 @ObjectType('SubmitReviewPayload')
 export class SubmitReviewPayloadType {
@@ -14,4 +15,7 @@ export class SubmitReviewPayloadType {
 
   @Field(() => Int)
   reviewedCards: number;
+
+  @Field(() => LessonCardType, { nullable: true })
+  nextCard: LessonCardType | null;
 }

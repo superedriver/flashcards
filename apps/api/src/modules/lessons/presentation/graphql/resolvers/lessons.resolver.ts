@@ -131,6 +131,18 @@ export class LessonsResolver {
       cardId: result.cardId,
       reviewState: toCardReviewStateType(result.reviewState),
       reviewedCards: result.reviewedCards,
+      nextCard: result.nextCard
+        ? {
+            cardId: result.nextCard.cardId,
+            deckId: result.nextCard.deckId,
+            front: result.nextCard.front,
+            back: result.nextCard.back,
+            example: result.nextCard.example,
+            notes: result.nextCard.notes,
+            position: result.nextCard.position,
+            reviewState: toCardReviewStateType(result.nextCard.reviewState),
+          }
+        : null,
     };
   }
 

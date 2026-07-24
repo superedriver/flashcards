@@ -1,6 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { calculateNextLearningState } from '@flashcards/srs';
+import {
+  calculateNextLearningState,
+  learningGroupForStep,
+  resolvePromptDirection,
+} from '@flashcards/srs';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
+import {
+  USER_SETTINGS_REPOSITORY,
+  UserSettingsRepositoryPort,
+} from '../../../account/application/ports/user-settings-repository.port';
 import {
   USER_REPOSITORY,
   UserRepositoryPort,
@@ -10,6 +18,10 @@ import {
   CARD_REPOSITORY,
   CardRepositoryPort,
 } from '../../../decks/application/ports/card-repository.port';
+import {
+  DECK_REPOSITORY,
+  DeckRepositoryPort,
+} from '../../../decks/application/ports/deck-repository.port';
 import { CardReviewState, ReviewAnswer } from '../../domain/types';
 import {
   CARD_REVIEW_STATE_REPOSITORY,
@@ -19,6 +31,8 @@ import {
   STUDY_SESSION_REPOSITORY,
   StudySessionRepositoryPort,
 } from '../ports/study-session-repository.port';
+import { PromptDirectionRandomBitService } from '../services/prompt-direction-random-bit.service';
+import { LessonCard } from './start-lesson.use-case';
 
 export type SubmitReviewUseCaseInput = {
   currentUser: AuthUser;
@@ -32,6 +46,7 @@ export type SubmitReviewUseCaseResult = {
   cardId: string;
   reviewState: CardReviewState;
   reviewedCards: number;
+  nextCard: LessonCard | null;
 };
 
 @Injectable()
@@ -41,10 +56,15 @@ export class SubmitReviewUseCase {
     private readonly userRepository: UserRepositoryPort,
     @Inject(CARD_REPOSITORY)
     private readonly cardRepository: CardRepositoryPort,
+    @Inject(DECK_REPOSITORY)
+    private readonly deckRepository: DeckRepositoryPort,
     @Inject(CARD_REVIEW_STATE_REPOSITORY)
     private readonly cardReviewStateRepository: CardReviewStateRepositoryPort,
     @Inject(STUDY_SESSION_REPOSITORY)
     private readonly studySessionRepository: StudySessionRepositoryPort,
+    @Inject(USER_SETTINGS_REPOSITORY)
+    private readonly userSettingsRepository: UserSettingsRepositoryPort,
+    private readonly promptDirectionRandomBitService: PromptDirectionRandomBitService,
   ) {}
 
   async execute(
@@ -83,31 +103,22 @@ export class SubmitReviewUseCase {
       );
     }
 
-    if (!session.deckId) {
-      throw new ApplicationError(
-        ErrorCodes.LESSON_NOT_FOUND,
-        'Lesson not found',
-      );
-    }
-
-    const deckId = session.deckId;
-
     const card = await this.cardRepository.findById(input.cardId);
 
-    if (!card || card.deckId !== deckId) {
+    if (!card) {
       throw new ApplicationError(ErrorCodes.CARD_NOT_FOUND, 'Card not found');
     }
 
-    const alreadyReviewed = await this.studySessionRepository.hasReviewForCard({
-      sessionId: input.sessionId,
-      cardId: input.cardId,
-    });
+    if (session.scope === 'DECK') {
+      if (!session.deckId || card.deckId !== session.deckId) {
+        throw new ApplicationError(ErrorCodes.CARD_NOT_FOUND, 'Card not found');
+      }
+    } else {
+      const deck = await this.deckRepository.findById(card.deckId);
 
-    if (alreadyReviewed) {
-      throw new ApplicationError(
-        ErrorCodes.LESSON_CARD_ALREADY_REVIEWED,
-        'Card already reviewed in this lesson',
-      );
+      if (!deck || deck.ownerId !== input.currentUser.id) {
+        throw new ApplicationError(ErrorCodes.CARD_NOT_FOUND, 'Card not found');
+      }
     }
 
     const reviewedAt = new Date();
@@ -138,7 +149,7 @@ export class SubmitReviewUseCase {
     await this.studySessionRepository.createReview({
       sessionId: input.sessionId,
       userId: input.currentUser.id,
-      deckId,
+      deckId: card.deckId,
       cardId: input.cardId,
       answer: input.answer,
       reviewedAt,
@@ -154,11 +165,92 @@ export class SubmitReviewUseCase {
       input.sessionId,
     );
 
+    const nextCard =
+      reviewedCards < session.lessonSize
+        ? await this.findNextDueLessonCard({
+            userId: input.currentUser.id,
+            sessionScope: session.scope,
+            sessionDeckId: session.deckId,
+            now: reviewedAt,
+          })
+        : null;
+
     return {
       sessionId: input.sessionId,
       cardId: input.cardId,
       reviewState,
       reviewedCards,
+      nextCard,
+    };
+  }
+
+  private async findNextDueLessonCard(input: {
+    userId: string;
+    sessionScope: 'DECK' | 'HOME_ACTIVE_TARGET';
+    sessionDeckId: string | null;
+    now: Date;
+  }): Promise<LessonCard | null> {
+    let dueCardIds: string[] = [];
+
+    if (input.sessionScope === 'DECK' && input.sessionDeckId) {
+      dueCardIds = await this.cardReviewStateRepository.findDueCardIdsForDeck({
+        userId: input.userId,
+        deckId: input.sessionDeckId,
+        now: input.now,
+        limit: 1,
+      });
+    } else {
+      const settings = await this.userSettingsRepository.findByUserId(
+        input.userId,
+      );
+      const targetLanguage = settings?.activeTargetLanguage;
+
+      if (!targetLanguage) {
+        return null;
+      }
+
+      dueCardIds =
+        await this.cardReviewStateRepository.findDueCardIdsForOwnDecksWithTargetLanguage(
+          {
+            userId: input.userId,
+            targetLanguage,
+            now: input.now,
+            limit: 1,
+          },
+        );
+    }
+
+    const cardId = dueCardIds[0];
+
+    if (!cardId) {
+      return null;
+    }
+
+    const card = await this.cardRepository.findById(cardId);
+    const reviewState = await this.cardReviewStateRepository.findByUserAndCard(
+      input.userId,
+      cardId,
+    );
+
+    if (!card || !reviewState) {
+      return null;
+    }
+
+    const learningStep = reviewState.learningStep;
+    const randomBit = this.promptDirectionRandomBitService.nextBit();
+
+    return {
+      cardId: card.id,
+      deckId: card.deckId,
+      front: card.front,
+      back: card.back,
+      example: card.example,
+      notes: card.notes,
+      position: card.position,
+      learningStep,
+      learningGroup: learningGroupForStep(learningStep),
+      promptDirection: resolvePromptDirection({ learningStep, randomBit }),
+      reviewState,
     };
   }
 }

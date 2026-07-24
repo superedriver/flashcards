@@ -271,7 +271,7 @@ Replace deckLearningStats newCards/reviewedCards with group counts in this epic.
 - [x] TASK-26.09 Prisma Phase B: drop SM-2 columns; remove SM-2 from @flashcards/srs
 - [x] TASK-26.10 Update StartLessonUseCase for due-only selection and promptDirection
 - [x] TASK-26.11 Add StartHomeLessonUseCase and startHomeLesson mutation
-- [ ] TASK-26.12 Return next due LessonCard from submitReview (session re-queue)
+- [x] TASK-26.12 Return next due LessonCard from submitReview (session re-queue)
 - [ ] TASK-26.13 Update GraphQL lesson/review types (drop SM-2 fields)
 - [ ] TASK-26.14 Add homeLearningProgress and replace deckLearningStats groups
 - [ ] TASK-26.15 Update mobile lessons GraphQL operations and regenerate types
@@ -1071,7 +1071,7 @@ TASK-26.11 Add StartHomeLessonUseCase and startHomeLesson mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
