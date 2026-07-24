@@ -33,6 +33,7 @@ import {
   STUDY_SESSION_REPOSITORY,
   StudySessionRepositoryPort,
 } from '../ports/study-session-repository.port';
+import { EnsureCardReviewStatesService } from '../services/ensure-card-review-states.service';
 
 export type LessonCard = {
   cardId: string;
@@ -81,6 +82,7 @@ export class StartLessonUseCase {
     private readonly userSettingsRepository: UserSettingsRepositoryPort,
     @Inject(DECK_GROUP_SHARE_REPOSITORY)
     private readonly deckGroupShareRepository: DeckGroupShareRepositoryPort,
+    private readonly ensureCardReviewStatesService: EnsureCardReviewStatesService,
   ) {}
 
   async execute(
@@ -181,6 +183,13 @@ export class StartLessonUseCase {
   }): Promise<LessonCard[]> {
     const now = new Date();
     const allCards = await this.cardRepository.findByDeckId(input.deckId);
+
+    await this.ensureCardReviewStatesService.ensureInitialForCards({
+      userId: input.userId,
+      cardIds: allCards.map((card) => card.id),
+      now,
+    });
+
     const cardsById = new Map(allCards.map((card) => [card.id, card]));
     const dueCardIds =
       await this.cardReviewStateRepository.findDueCardIdsForDeck({
@@ -207,35 +216,6 @@ export class StartLessonUseCase {
 
       selectedCards.push(this.toLessonCard(card, reviewState));
       selectedCardIds.add(cardId);
-    }
-
-    const remainingCapacity = input.lessonSize - selectedCards.length;
-
-    if (remainingCapacity <= 0) {
-      return selectedCards;
-    }
-
-    for (const card of allCards) {
-      if (selectedCardIds.has(card.id)) {
-        continue;
-      }
-
-      const reviewState =
-        await this.cardReviewStateRepository.findByUserAndCard(
-          input.userId,
-          card.id,
-        );
-
-      if (reviewState !== null) {
-        continue;
-      }
-
-      selectedCards.push(this.toLessonCard(card, null));
-      selectedCardIds.add(card.id);
-
-      if (selectedCards.length >= input.lessonSize) {
-        break;
-      }
     }
 
     return selectedCards;

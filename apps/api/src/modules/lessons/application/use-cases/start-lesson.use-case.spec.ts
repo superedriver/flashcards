@@ -3,6 +3,7 @@ import { UserSettings } from '../../../account/domain/types';
 import { AuthUser, SafeUser } from '../../../auth/domain/types';
 import { Card, Deck } from '../../../decks/domain/types';
 import { CardReviewState } from '../../domain/types';
+import { EnsureCardReviewStatesService } from '../services/ensure-card-review-states.service';
 import { StartLessonUseCase } from './start-lesson.use-case';
 
 const authUser: AuthUser = {
@@ -113,12 +114,15 @@ function createUseCase(options?: {
     .fn()
     .mockResolvedValue(options?.totalCards ?? options?.cards?.length ?? 0);
   const findByDeckId = jest.fn().mockResolvedValue(options?.cards ?? []);
+  const cards = options?.cards ?? [];
   const findDueCardIdsForDeck = jest
     .fn()
-    .mockResolvedValue(options?.dueCardIds ?? []);
+    .mockResolvedValue(options?.dueCardIds ?? cards.map((card) => card.id));
   const findByUserAndCard = jest.fn(
     (_userId: string, cardId: string): Promise<CardReviewState | null> =>
-      Promise.resolve(options?.reviewStatesByCardId?.[cardId] ?? null),
+      Promise.resolve(
+        options?.reviewStatesByCardId?.[cardId] ?? createReviewState(cardId),
+      ),
   );
   const findSettingsByUserId = jest
     .fn()
@@ -139,6 +143,21 @@ function createUseCase(options?: {
     abandonedAt: null,
     createdAt: new Date('2026-06-01T00:00:00.000Z'),
     updatedAt: new Date('2026-06-01T00:00:00.000Z'),
+  });
+  const createInitialMany = jest.fn().mockResolvedValue(undefined);
+  const ensureCardReviewStatesService = new EnsureCardReviewStatesService({
+    findByUserAndCard: jest.fn(),
+    findDueCardIdsForDeck: jest.fn(),
+    findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
+    countReviewedForDeck: jest.fn(),
+    countDueForDeck: jest.fn(),
+    countDueForUser: jest.fn(),
+    countLearningGroupsForDeck: jest.fn(),
+    countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
+    findNextDueAtForDeck: jest.fn(),
+    createInitialIfMissing: jest.fn(),
+    createInitialMany,
+    upsert: jest.fn(),
   });
 
   const useCase = new StartLessonUseCase(
@@ -183,7 +202,7 @@ function createUseCase(options?: {
       countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
       findNextDueAtForDeck: jest.fn(),
       createInitialIfMissing: jest.fn(),
-      createInitialMany: jest.fn(),
+      createInitialMany,
       upsert: jest.fn(),
     },
     {
@@ -205,6 +224,7 @@ function createUseCase(options?: {
       findWithNotificationsEnabled: jest.fn(),
     },
     createDeckGroupShareRepository(options?.userHasGroupAccess ?? false),
+    ensureCardReviewStatesService,
   );
 
   return {
@@ -213,6 +233,7 @@ function createUseCase(options?: {
     createSession,
     createForUser,
     findDueCardIdsForDeck,
+    createInitialMany,
   };
 }
 
@@ -300,9 +321,9 @@ describe('StartLessonUseCase', () => {
     expect(highResult.lessonSize).toBe(100);
   });
 
-  it('selects due cards before new cards', async () => {
+  it('selects due cards only after ensuring review state', async () => {
     const cards = [createCard('card-1', 1), createCard('card-2', 2)];
-    const { useCase } = createUseCase({
+    const { useCase, createInitialMany } = createUseCase({
       cards,
       dueCardIds: ['card-2'],
       reviewStatesByCardId: {
@@ -316,10 +337,13 @@ describe('StartLessonUseCase', () => {
       lessonSize: 5,
     });
 
-    expect(result.cards.map((card) => card.cardId)).toEqual([
-      'card-2',
-      'card-1',
-    ]);
+    expect(createInitialMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        userId: 'owner-1',
+        cardIds: ['card-1', 'card-2'],
+      }),
+    );
+    expect(result.cards.map((card) => card.cardId)).toEqual(['card-2']);
   });
 
   it('returns empty payload with sessionId null when no cards available', async () => {
@@ -387,7 +411,7 @@ describe('StartLessonUseCase', () => {
     expect(result.cards).toHaveLength(2);
   });
 
-  it('includes reviewState on due cards and null reviewState on new cards', async () => {
+  it('includes reviewState on selected due cards', async () => {
     const dueState = createReviewState('card-due');
     const { useCase } = createUseCase({
       cards: [createCard('card-new', 1), createCard('card-due', 2)],
@@ -403,11 +427,9 @@ describe('StartLessonUseCase', () => {
       lessonSize: 2,
     });
 
-    const dueCard = result.cards.find((card) => card.cardId === 'card-due');
-    const newCard = result.cards.find((card) => card.cardId === 'card-new');
-
-    expect(dueCard?.reviewState).toEqual(dueState);
-    expect(newCard?.reviewState).toBeNull();
+    expect(result.cards).toHaveLength(1);
+    expect(result.cards[0]?.cardId).toBe('card-due');
+    expect(result.cards[0]?.reviewState).toEqual(dueState);
   });
 
   it('creates user settings when missing', async () => {
