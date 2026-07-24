@@ -167,6 +167,29 @@ export class PrismaCardReviewStateRepository implements CardReviewStateRepositor
     });
   }
 
+  async countDueForOwnDecksWithTargetLanguage(input: {
+    userId: string;
+    targetLanguage: string;
+    now: Date;
+  }): Promise<number> {
+    return this.prisma.cardReviewState.count({
+      where: {
+        userId: input.userId,
+        dueAt: {
+          lte: input.now,
+        },
+        card: {
+          deletedAt: null,
+          deck: {
+            deletedAt: null,
+            ownerId: input.userId,
+            targetLanguage: input.targetLanguage,
+          },
+        },
+      },
+    });
+  }
+
   async countLearningGroupsForDeck(input: {
     userId: string;
     deckId: string;

@@ -29,6 +29,7 @@ import { StartPublicDeckCopyPreviewInput } from '../inputs/start-public-deck-cop
 import { UpdateDeckInput } from '../inputs/update-deck.input';
 import { UpdateCardInput } from '../inputs/update-card.input';
 import { CardType } from '../types/card.type';
+import { LearningGroupGql } from '../../../../lessons/presentation/graphql/types/learning-enums.type';
 import { CreateDeckPayloadType } from '../types/create-deck-payload.type';
 import { DeckLanguageWarningCode } from '../types/deck-language-warning.type';
 import { DeckModerationStatus } from '../types/deck-moderation-status.type';
@@ -192,10 +193,15 @@ export class DecksResolver {
     @Args('deckId') deckId: string,
     @Context() context: { req: GraphqlRequest },
   ): Promise<CardType[]> {
-    return this.deckCardsUseCase.execute({
+    const cards = await this.deckCardsUseCase.execute({
       currentUser: context.req.authUser ?? null,
       deckId,
     });
+
+    return cards.map((card) => ({
+      ...card,
+      learningGroup: card.learningGroup as LearningGroupGql | null,
+    }));
   }
 
   @Mutation(() => CreateDeckPayloadType)

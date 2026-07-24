@@ -56,8 +56,10 @@ function createUseCase(options?: {
   user?: SafeUser | null;
   deck?: Deck | null;
   totalCards?: number;
-  reviewedCards?: number;
-  dueCards?: number;
+  toLearnCount?: number;
+  practicedCount?: number;
+  learnedCount?: number;
+  dueCount?: number;
   nextDueAt?: Date | null;
   userHasGroupAccess?: boolean;
 }) {
@@ -68,12 +70,14 @@ function createUseCase(options?: {
     .fn()
     .mockResolvedValue(options?.deck === undefined ? deck : options.deck);
   const countByDeckId = jest.fn().mockResolvedValue(options?.totalCards ?? 20);
-  const countReviewedForDeck = jest
-    .fn()
-    .mockResolvedValue(options?.reviewedCards ?? 8);
+  const countLearningGroupsForDeck = jest.fn().mockResolvedValue({
+    toLearnCount: options?.toLearnCount ?? 5,
+    practicedCount: options?.practicedCount ?? 10,
+    learnedCount: options?.learnedCount ?? 5,
+  });
   const countDueForDeck = jest
     .fn<Promise<number>, [{ userId: string; deckId: string; now: Date }]>()
-    .mockResolvedValue(options?.dueCards ?? 3);
+    .mockResolvedValue(options?.dueCount ?? 3);
   const findNextDueAtForDeck = jest
     .fn<Promise<Date | null>, [{ userId: string; deckId: string; now: Date }]>()
     .mockResolvedValue(
@@ -117,10 +121,11 @@ function createUseCase(options?: {
       findByUserAndCard: jest.fn(),
       findDueCardIdsForDeck: jest.fn(),
       findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
-      countReviewedForDeck,
+      countReviewedForDeck: jest.fn(),
       countDueForDeck,
       countDueForUser: jest.fn(),
-      countLearningGroupsForDeck: jest.fn(),
+      countDueForOwnDecksWithTargetLanguage: jest.fn(),
+      countLearningGroupsForDeck,
       countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
       findNextDueAtForDeck,
       createInitialIfMissing: jest.fn(),
@@ -132,7 +137,7 @@ function createUseCase(options?: {
 
   return {
     useCase,
-    countReviewedForDeck,
+    countLearningGroupsForDeck,
     countDueForDeck,
     findNextDueAtForDeck,
   };
@@ -171,12 +176,14 @@ describe('DeckLearningStatsUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.DECK_NOT_FOUND });
   });
 
-  it('returns per-user stats for viewable deck', async () => {
+  it('returns per-user learning-group stats for viewable deck', async () => {
     const nextDueAt = new Date('2026-06-02T00:00:00.000Z');
     const { useCase } = createUseCase({
       totalCards: 20,
-      reviewedCards: 8,
-      dueCards: 3,
+      toLearnCount: 5,
+      practicedCount: 10,
+      learnedCount: 5,
+      dueCount: 3,
       nextDueAt,
     });
 
@@ -188,38 +195,25 @@ describe('DeckLearningStatsUseCase', () => {
     expect(result).toEqual({
       deckId: 'deck-1',
       totalCards: 20,
-      newCards: 12,
-      dueCards: 3,
-      reviewedCards: 8,
+      toLearnCount: 5,
+      practicedCount: 10,
+      learnedCount: 5,
+      dueCount: 3,
       nextDueAt,
     });
-  });
-
-  it('calculates newCards as totalCards - reviewedCards', async () => {
-    const { useCase } = createUseCase({
-      totalCards: 15,
-      reviewedCards: 6,
-    });
-
-    const result = await useCase.execute({
-      currentUser: authUser,
-      deckId: 'deck-1',
-    });
-
-    expect(result.newCards).toBe(9);
   });
 
   it('passes userId and deckId to review-state repository count methods', async () => {
     const {
       useCase,
-      countReviewedForDeck,
+      countLearningGroupsForDeck,
       countDueForDeck,
       findNextDueAtForDeck,
     } = createUseCase();
 
     await useCase.execute({ currentUser: authUser, deckId: 'deck-1' });
 
-    expect(countReviewedForDeck).toHaveBeenCalledWith({
+    expect(countLearningGroupsForDeck).toHaveBeenCalledWith({
       userId: 'owner-1',
       deckId: 'deck-1',
     });

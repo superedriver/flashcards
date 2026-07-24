@@ -81,12 +81,12 @@ export class DeckLearningStatsUseCase {
 
     const now = new Date();
     const totalCards = await this.cardRepository.countByDeckId(input.deckId);
-    const reviewedCards =
-      await this.cardReviewStateRepository.countReviewedForDeck({
+    const groups =
+      await this.cardReviewStateRepository.countLearningGroupsForDeck({
         userId: input.currentUser.id,
         deckId: input.deckId,
       });
-    const dueCards = await this.cardReviewStateRepository.countDueForDeck({
+    const dueCount = await this.cardReviewStateRepository.countDueForDeck({
       userId: input.currentUser.id,
       deckId: input.deckId,
       now,
@@ -102,9 +102,10 @@ export class DeckLearningStatsUseCase {
     return {
       deckId: input.deckId,
       totalCards,
-      newCards: totalCards - reviewedCards,
-      dueCards,
-      reviewedCards,
+      toLearnCount: groups.toLearnCount,
+      practicedCount: groups.practicedCount,
+      learnedCount: groups.learnedCount,
+      dueCount,
       nextDueAt,
     };
   }

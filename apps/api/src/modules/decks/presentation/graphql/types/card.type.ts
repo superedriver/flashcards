@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { LearningGroupGql } from '../../../../lessons/presentation/graphql/types/learning-enums.type';
 
 @ObjectType('Card')
 export class CardType {
@@ -22,6 +23,9 @@ export class CardType {
 
   @Field(() => Int)
   position: number;
+
+  @Field(() => LearningGroupGql, { nullable: true })
+  learningGroup?: LearningGroupGql | null;
 
   @Field()
   createdAt: Date;

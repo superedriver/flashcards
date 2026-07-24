@@ -91,6 +91,21 @@ function createUseCase(
       createMany: jest.fn(),
     },
     createDeckGroupShareRepository(options?.userHasGroupAccess ?? false),
+    {
+      findByUserAndCard: jest.fn().mockResolvedValue(null),
+      findDueCardIdsForDeck: jest.fn(),
+      findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
+      countReviewedForDeck: jest.fn(),
+      countDueForDeck: jest.fn(),
+      countDueForUser: jest.fn(),
+      countDueForOwnDecksWithTargetLanguage: jest.fn(),
+      countLearningGroupsForDeck: jest.fn(),
+      countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
+      findNextDueAtForDeck: jest.fn(),
+      createInitialIfMissing: jest.fn(),
+      createInitialMany: jest.fn(),
+      upsert: jest.fn(),
+    },
   );
 
   return { useCase, findByDeckId };
@@ -114,7 +129,9 @@ describe('DeckCardsUseCase', () => {
     });
 
     expect(findByDeckId).toHaveBeenCalledWith('deck-1');
-    expect(result).toEqual(cards);
+    expect(result).toEqual(
+      cards.map((card) => ({ ...card, learningGroup: null })),
+    );
   });
 
   it('anonymous user cannot list private deck cards (DECK_NOT_FOUND)', async () => {
@@ -140,7 +157,7 @@ describe('DeckCardsUseCase', () => {
 
     await expect(
       useCase.execute({ currentUser: null, deckId: 'deck-1' }),
-    ).resolves.toEqual(cards);
+    ).resolves.toEqual(cards.map((card) => ({ ...card, learningGroup: null })));
   });
 
   it('group member can list cards from deck shared via group', async () => {
@@ -154,6 +171,8 @@ describe('DeckCardsUseCase', () => {
     });
 
     expect(findByDeckId).toHaveBeenCalledWith('deck-1');
-    expect(result).toEqual(cards);
+    expect(result).toEqual(
+      cards.map((card) => ({ ...card, learningGroup: null })),
+    );
   });
 });

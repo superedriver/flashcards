@@ -6,6 +6,7 @@ import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-a
 import { AbandonLessonUseCase } from '../../../application/use-cases/abandon-lesson.use-case';
 import { CompleteLessonUseCase } from '../../../application/use-cases/complete-lesson.use-case';
 import { DeckLearningStatsUseCase } from '../../../application/use-cases/deck-learning-stats.use-case';
+import { HomeLearningProgressUseCase } from '../../../application/use-cases/home-learning-progress.use-case';
 import { LessonCard } from '../../../application/use-cases/start-lesson.use-case';
 import { StartHomeLessonUseCase } from '../../../application/use-cases/start-home-lesson.use-case';
 import { StartLessonUseCase } from '../../../application/use-cases/start-lesson.use-case';
@@ -20,6 +21,7 @@ import { AbandonLessonPayloadType } from '../types/abandon-lesson-payload.type';
 import { CardReviewStateType } from '../types/card-review-state.type';
 import { CompleteLessonPayloadType } from '../types/complete-lesson-payload.type';
 import { DeckLearningStatsType } from '../types/deck-learning-stats.type';
+import { HomeLearningProgressType } from '../types/home-learning-progress.type';
 import {
   LearningGroupGql,
   PromptDirectionGql,
@@ -40,6 +42,7 @@ export class LessonsResolver {
     private readonly completeLessonUseCase: CompleteLessonUseCase,
     private readonly abandonLessonUseCase: AbandonLessonUseCase,
     private readonly deckLearningStatsUseCase: DeckLearningStatsUseCase,
+    private readonly homeLearningProgressUseCase: HomeLearningProgressUseCase,
   ) {}
 
   @Query(() => DeckLearningStatsType)
@@ -51,6 +54,16 @@ export class LessonsResolver {
     return this.deckLearningStatsUseCase.execute({
       currentUser: user,
       deckId,
+    });
+  }
+
+  @Query(() => HomeLearningProgressType)
+  @UseGuards(GqlAuthGuard)
+  async homeLearningProgress(
+    @CurrentUser() user: AuthUser,
+  ): Promise<HomeLearningProgressType> {
+    return this.homeLearningProgressUseCase.execute({
+      currentUser: user,
     });
   }
 

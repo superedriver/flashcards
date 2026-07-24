@@ -273,7 +273,7 @@ Replace deckLearningStats newCards/reviewedCards with group counts in this epic.
 - [x] TASK-26.11 Add StartHomeLessonUseCase and startHomeLesson mutation
 - [x] TASK-26.12 Return next due LessonCard from submitReview (session re-queue)
 - [x] TASK-26.13 Update GraphQL lesson/review types (drop SM-2 fields)
-- [ ] TASK-26.14 Add homeLearningProgress and replace deckLearningStats groups
+- [x] TASK-26.14 Add homeLearningProgress and replace deckLearningStats groups
 - [ ] TASK-26.15 Update mobile lessons GraphQL operations and regenerate types
 - [ ] TASK-26.16 Redesign Home screen: counters, START, empty CTAs
 - [ ] TASK-26.17 Add Decks/deck-detail counters and card learningGroup badges
@@ -1184,7 +1184,7 @@ TASK-26.13 Update GraphQL lesson types for learning steps
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

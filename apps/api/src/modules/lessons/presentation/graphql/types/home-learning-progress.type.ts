@@ -1,12 +1,9 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
-@ObjectType('DeckLearningStats')
-export class DeckLearningStatsType {
-  @Field()
-  deckId: string;
-
-  @Field(() => Int)
-  totalCards: number;
+@ObjectType('HomeLearningProgress')
+export class HomeLearningProgressType {
+  @Field(() => String, { nullable: true })
+  activeTargetLanguage: string | null;
 
   @Field(() => Int)
   toLearnCount: number;
@@ -20,6 +17,6 @@ export class DeckLearningStatsType {
   @Field(() => Int)
   dueCount: number;
 
-  @Field(() => Date, { nullable: true })
-  nextDueAt: Date | null;
+  @Field(() => Int)
+  totalCardCount: number;
 }

@@ -46,6 +46,11 @@ export type CardReviewStateRepositoryPort = {
     now: Date;
   }): Promise<number>;
   countDueForUser(input: { userId: string; now: Date }): Promise<number>;
+  countDueForOwnDecksWithTargetLanguage(input: {
+    userId: string;
+    targetLanguage: string;
+    now: Date;
+  }): Promise<number>;
   countLearningGroupsForDeck(input: {
     userId: string;
     deckId: string;

@@ -1,8 +1,9 @@
 export type DeckLearningStats = {
   deckId: string;
   totalCards: number;
-  newCards: number;
-  dueCards: number;
-  reviewedCards: number;
+  toLearnCount: number;
+  practicedCount: number;
+  learnedCount: number;
+  dueCount: number;
   nextDueAt: Date | null;
 };

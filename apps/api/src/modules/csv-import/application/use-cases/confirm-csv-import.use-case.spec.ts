@@ -184,6 +184,7 @@ function createUseCase(options?: {
       countReviewedForDeck: jest.fn(),
       countDueForDeck: jest.fn(),
       countDueForUser: jest.fn(),
+      countDueForOwnDecksWithTargetLanguage: jest.fn(),
       countLearningGroupsForDeck: jest.fn(),
       countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
       findNextDueAtForDeck: jest.fn(),
