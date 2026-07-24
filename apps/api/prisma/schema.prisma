@@ -295,9 +295,6 @@ model CardReviewState {
   id                     String    @id @default(uuid())
   userId                 String
   cardId                 String
-  easeFactor             Float     @default(2.5)
-  intervalDays           Int       @default(0)
-  repetitions            Int       @default(0)
   learningStep           Int       @default(0)
   longReviewSuccessCount Int       @default(0)
   dueAt                  DateTime
@@ -346,19 +343,12 @@ model StudySessionReview {
   deckId                         String
   cardId                         String
   answer                         ReviewAnswer
-  quality                        Int
   reviewedAt                     DateTime
-  previousEaseFactor             Float?
-  previousIntervalDays           Int?
-  previousRepetitions            Int?
-  nextEaseFactor                 Float
-  nextIntervalDays               Int
-  nextRepetitions                Int
-  nextDueAt                      DateTime
   previousLearningStep           Int?
   previousLongReviewSuccessCount Int?
   nextLearningStep               Int          @default(0)
   nextLongReviewSuccessCount     Int          @default(0)
+  nextDueAt                      DateTime
 
   createdAt DateTime @default(now())
 

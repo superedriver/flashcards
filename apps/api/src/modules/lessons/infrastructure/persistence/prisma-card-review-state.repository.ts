@@ -9,12 +9,6 @@ import {
 import { CardReviewState } from '../../domain/types';
 import { toCardReviewState } from '../mappers/card-review-state.mapper';
 
-const SM2_WRITE_DEFAULTS = {
-  easeFactor: 2.5,
-  intervalDays: 0,
-  repetitions: 0,
-} as const;
-
 const activeCardWhere = {
   deletedAt: null,
   deck: {
@@ -266,7 +260,6 @@ export class PrismaCardReviewStateRepository implements CardReviewStateRepositor
           learningStep: 0,
           longReviewSuccessCount: 0,
           dueAt,
-          ...SM2_WRITE_DEFAULTS,
         },
       });
 
@@ -304,7 +297,6 @@ export class PrismaCardReviewStateRepository implements CardReviewStateRepositor
         learningStep: 0,
         longReviewSuccessCount: 0,
         dueAt,
-        ...SM2_WRITE_DEFAULTS,
       })),
       skipDuplicates: true,
     });
@@ -325,14 +317,12 @@ export class PrismaCardReviewStateRepository implements CardReviewStateRepositor
         longReviewSuccessCount: input.longReviewSuccessCount,
         dueAt: input.dueAt,
         lastReviewedAt: input.lastReviewedAt,
-        ...SM2_WRITE_DEFAULTS,
       },
       update: {
         learningStep: input.learningStep,
         longReviewSuccessCount: input.longReviewSuccessCount,
         dueAt: input.dueAt,
         lastReviewedAt: input.lastReviewedAt,
-        ...SM2_WRITE_DEFAULTS,
       },
     });
 

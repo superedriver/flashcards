@@ -13,16 +13,6 @@ import {
 import { toStudySessionReview } from '../mappers/study-session-review.mapper';
 import { toStudySession } from '../mappers/study-session.mapper';
 
-const SM2_REVIEW_WRITE_DEFAULTS = {
-  quality: 0,
-  previousEaseFactor: null as number | null,
-  previousIntervalDays: null as number | null,
-  previousRepetitions: null as number | null,
-  nextEaseFactor: 2.5,
-  nextIntervalDays: 0,
-  nextRepetitions: 0,
-};
-
 @Injectable()
 export class PrismaStudySessionRepository implements StudySessionRepositoryPort {
   constructor(private readonly prisma: PrismaService) {}
@@ -96,7 +86,6 @@ export class PrismaStudySessionRepository implements StudySessionRepositoryPort 
         nextLearningStep: input.nextLearningStep,
         nextLongReviewSuccessCount: input.nextLongReviewSuccessCount,
         nextDueAt: input.nextDueAt,
-        ...SM2_REVIEW_WRITE_DEFAULTS,
       },
     });
 
