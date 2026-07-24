@@ -1,6 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import { AuthUser } from '../../../auth/domain/types';
+import {
+  CARD_REVIEW_STATE_REPOSITORY,
+  CardReviewStateRepositoryPort,
+} from '../../../lessons/application/ports/card-review-state-repository.port';
 import { DeckPermissionService } from '../../domain/services/deck-permission.service';
 import { Card } from '../../domain/types';
 import {
@@ -37,6 +41,8 @@ export class CreateCardUseCase {
     private readonly deckRepository: DeckRepositoryPort,
     @Inject(CARD_REPOSITORY)
     private readonly cardRepository: CardRepositoryPort,
+    @Inject(CARD_REVIEW_STATE_REPOSITORY)
+    private readonly cardReviewStateRepository: CardReviewStateRepositoryPort,
   ) {}
 
   async execute(
@@ -123,7 +129,7 @@ export class CreateCardUseCase {
       );
     }
 
-    return this.cardRepository.create({
+    const card = await this.cardRepository.create({
       deckId: input.deckId,
       front,
       back,
@@ -131,5 +137,12 @@ export class CreateCardUseCase {
       notes,
       position,
     });
+
+    await this.cardReviewStateRepository.createInitialIfMissing({
+      userId: deck.ownerId,
+      cardId: card.id,
+    });
+
+    return card;
   }
 }

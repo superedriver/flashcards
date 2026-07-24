@@ -3,6 +3,7 @@ import { AccountModule } from '../account/account.module';
 import { AuthModule } from '../auth/auth.module';
 import { GroupsModule } from '../groups/groups.module';
 import { LanguagesModule } from '../languages/languages.module';
+import { LessonsModule } from '../lessons/lessons.module';
 import { CARD_REPOSITORY } from './application/ports/card-repository.port';
 import { DECK_REPOSITORY } from './application/ports/deck-repository.port';
 import { CopyPublicDeckUseCase } from './application/use-cases/copy-public-deck.use-case';
@@ -31,6 +32,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     forwardRef(() => AccountModule),
     forwardRef(() => LanguagesModule),
     forwardRef(() => GroupsModule),
+    forwardRef(() => LessonsModule),
   ],
   providers: [
     {

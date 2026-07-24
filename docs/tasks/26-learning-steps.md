@@ -265,7 +265,7 @@ Replace deckLearningStats newCards/reviewedCards with group counts in this epic.
 - [x] TASK-26.03 Prisma Phase A: add learning-step columns (keep SM-2 columns)
 - [x] TASK-26.04 Update lessons domain types and mappers for learning steps
 - [x] TASK-26.05 Update CardReviewState and StudySession repository ports/impl
-- [ ] TASK-26.06 Create CardReviewState on card create, CSV, copy, preview confirm
+- [x] TASK-26.06 Create CardReviewState on card create, CSV, copy, preview confirm
 - [ ] TASK-26.07 Ensure missing CardReviewState on lesson start (safety net)
 - [ ] TASK-26.08 Rewrite SubmitReviewUseCase for learning steps
 - [ ] TASK-26.09 Prisma Phase B: drop SM-2 columns; remove SM-2 from @flashcards/srs
@@ -675,7 +675,7 @@ TASK-26.05 Update review/session repositories for learning steps
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

@@ -122,7 +122,23 @@ function createUseCase(options?: {
     .mockResolvedValue(options?.existingCardCount ?? 3);
   const createMany = jest
     .fn<Promise<Card[]>, [CreateManyCardsInput]>()
-    .mockResolvedValue([]);
+    .mockImplementation((input) =>
+      Promise.resolve(
+        input.cards.map((card, index) => ({
+          id: `card-new-${index + 1}`,
+          deckId: card.deckId,
+          front: card.front,
+          back: card.back,
+          example: card.example ?? null,
+          notes: card.notes ?? null,
+          position: card.position,
+          createdAt: new Date('2026-06-01T12:00:00.000Z'),
+          updatedAt: new Date('2026-06-01T12:00:00.000Z'),
+          deletedAt: null,
+        })),
+      ),
+    );
+  const createInitialMany = jest.fn().mockResolvedValue(undefined);
 
   const useCase = new ConfirmCsvImportUseCase(
     {
@@ -161,9 +177,30 @@ function createUseCase(options?: {
       markConfirmed,
       markExpired,
     },
+    {
+      findByUserAndCard: jest.fn(),
+      findDueCardIdsForDeck: jest.fn(),
+      findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
+      countReviewedForDeck: jest.fn(),
+      countDueForDeck: jest.fn(),
+      countDueForUser: jest.fn(),
+      countLearningGroupsForDeck: jest.fn(),
+      countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
+      findNextDueAtForDeck: jest.fn(),
+      createInitialIfMissing: jest.fn(),
+      createInitialMany,
+      upsert: jest.fn(),
+    },
   );
 
-  return { useCase, createMany, markConfirmed, markExpired, countByDeckId };
+  return {
+    useCase,
+    createMany,
+    createInitialMany,
+    markConfirmed,
+    markExpired,
+    countByDeckId,
+  };
 }
 
 describe('ConfirmCsvImportUseCase', () => {
@@ -349,7 +386,7 @@ describe('ConfirmCsvImportUseCase', () => {
   });
 
   it('calls markConfirmed and returns createdCardsCount', async () => {
-    const { useCase, markConfirmed } = createUseCase({
+    const { useCase, markConfirmed, createInitialMany } = createUseCase({
       csvImport: createCsvImport({
         previewRows: [
           validRow({ rowNumber: 2 }),
@@ -370,6 +407,10 @@ describe('ConfirmCsvImportUseCase', () => {
       'import-1',
       new Date('2026-06-01T12:00:00.000Z'),
     );
+    expect(createInitialMany).toHaveBeenCalledWith({
+      userId: 'owner-1',
+      cardIds: ['card-new-1', 'card-new-2'],
+    });
     expect(result.createdCardsCount).toBe(2);
     expect(result.import.status).toBe('CONFIRMED');
   });

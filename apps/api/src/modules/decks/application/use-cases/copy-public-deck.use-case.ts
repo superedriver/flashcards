@@ -5,6 +5,10 @@ import {
   UserRepositoryPort,
 } from '../../../auth/application/ports/user-repository.port';
 import { AuthUser } from '../../../auth/domain/types';
+import {
+  CARD_REVIEW_STATE_REPOSITORY,
+  CardReviewStateRepositoryPort,
+} from '../../../lessons/application/ports/card-review-state-repository.port';
 import { Card, Deck } from '../../domain/types';
 import {
   CARD_REPOSITORY,
@@ -34,6 +38,8 @@ export class CopyPublicDeckUseCase {
     private readonly deckRepository: DeckRepositoryPort,
     @Inject(CARD_REPOSITORY)
     private readonly cardRepository: CardRepositoryPort,
+    @Inject(CARD_REVIEW_STATE_REPOSITORY)
+    private readonly cardReviewStateRepository: CardReviewStateRepositoryPort,
   ) {}
 
   async execute(
@@ -83,6 +89,13 @@ export class CopyPublicDeckUseCase {
             })),
           })
         : [];
+
+    if (copiedCards.length > 0) {
+      await this.cardReviewStateRepository.createInitialMany({
+        userId: copiedDeck.ownerId,
+        cardIds: copiedCards.map((card) => card.id),
+      });
+    }
 
     return {
       deck: copiedDeck,

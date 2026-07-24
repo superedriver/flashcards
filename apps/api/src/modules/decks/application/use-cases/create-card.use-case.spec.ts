@@ -60,6 +60,17 @@ function createUseCase(deck: Deck | null) {
         notes: input.notes ?? null,
       }),
     );
+  const createInitialIfMissing = jest.fn().mockResolvedValue({
+    id: 'review-1',
+    userId: 'owner-1',
+    cardId: 'card-1',
+    learningStep: 0,
+    longReviewSuccessCount: 0,
+    dueAt: new Date(),
+    lastReviewedAt: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
 
   const useCase = new CreateCardUseCase(
     {
@@ -85,9 +96,23 @@ function createUseCase(deck: Deck | null) {
       countByDeckId,
       createMany: jest.fn(),
     },
+    {
+      findByUserAndCard: jest.fn(),
+      findDueCardIdsForDeck: jest.fn(),
+      findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
+      countReviewedForDeck: jest.fn(),
+      countDueForDeck: jest.fn(),
+      countDueForUser: jest.fn(),
+      countLearningGroupsForDeck: jest.fn(),
+      countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
+      findNextDueAtForDeck: jest.fn(),
+      createInitialIfMissing,
+      createInitialMany: jest.fn(),
+      upsert: jest.fn(),
+    },
   );
 
-  return { useCase, create, countByDeckId };
+  return { useCase, create, countByDeckId, createInitialIfMissing };
 }
 
 describe('CreateCardUseCase', () => {
@@ -233,6 +258,22 @@ describe('CreateCardUseCase', () => {
       example: 'Hola!',
       notes: undefined,
       position: 2,
+    });
+  });
+
+  it('creates initial CardReviewState for deck owner', async () => {
+    const { useCase, createInitialIfMissing } = createUseCase(createDeck());
+
+    await useCase.execute({
+      currentUser: owner,
+      deckId: 'deck-1',
+      front: 'hola',
+      back: 'hello',
+    });
+
+    expect(createInitialIfMissing).toHaveBeenCalledWith({
+      userId: 'owner-1',
+      cardId: 'card-1',
     });
   });
 });

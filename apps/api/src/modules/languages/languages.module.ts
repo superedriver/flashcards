@@ -4,6 +4,7 @@ import { AiModule } from '../ai/ai.module';
 import { AuthModule } from '../auth/auth.module';
 import { DecksModule } from '../decks/decks.module';
 import { GroupsModule } from '../groups/groups.module';
+import { LessonsModule } from '../lessons/lessons.module';
 import { InternalJobGuard } from '../../common/guards/internal-job.guard';
 import { DECK_PREVIEW_SESSION_REPOSITORY } from './application/ports/deck-preview-session-repository.port';
 import { LANGUAGE_REPOSITORY } from './application/ports/language-repository.port';
@@ -36,6 +37,7 @@ import { InternalDeckPreviewController } from './presentation/http/internal-deck
     forwardRef(() => DecksModule),
     forwardRef(() => GroupsModule),
     forwardRef(() => AiModule),
+    forwardRef(() => LessonsModule),
   ],
   controllers: [InternalDeckPreviewController],
   providers: [

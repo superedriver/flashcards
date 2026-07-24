@@ -4,6 +4,7 @@ import { AccountModule } from '../account/account.module';
 import { DecksModule } from '../decks/decks.module';
 import { EmailModule } from '../email/email.module';
 import { LanguagesModule } from '../languages/languages.module';
+import { LessonsModule } from '../lessons/lessons.module';
 import { DECK_GROUP_SHARE_REPOSITORY } from './application/ports/deck-group-share-repository.port';
 import { GROUP_INVITATION_REPOSITORY } from './application/ports/group-invitation-repository.port';
 import { GROUP_REPOSITORY } from './application/ports/group-repository.port';
@@ -29,6 +30,7 @@ import { GroupsResolver } from './presentation/graphql/resolvers/groups.resolver
     forwardRef(() => AccountModule),
     forwardRef(() => DecksModule),
     forwardRef(() => LanguagesModule),
+    forwardRef(() => LessonsModule),
   ],
   providers: [
     {

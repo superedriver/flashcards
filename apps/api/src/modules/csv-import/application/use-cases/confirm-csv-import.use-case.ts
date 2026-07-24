@@ -14,6 +14,10 @@ import {
   DeckRepositoryPort,
 } from '../../../decks/application/ports/deck-repository.port';
 import { DeckPermissionService } from '../../../decks/domain/services/deck-permission.service';
+import {
+  CARD_REVIEW_STATE_REPOSITORY,
+  CardReviewStateRepositoryPort,
+} from '../../../lessons/application/ports/card-review-state-repository.port';
 import { CsvImport } from '../../domain/types';
 import {
   CSV_IMPORT_REPOSITORY,
@@ -43,6 +47,8 @@ export class ConfirmCsvImportUseCase {
     private readonly cardRepository: CardRepositoryPort,
     @Inject(CSV_IMPORT_REPOSITORY)
     private readonly csvImportRepository: CsvImportRepositoryPort,
+    @Inject(CARD_REVIEW_STATE_REPOSITORY)
+    private readonly cardReviewStateRepository: CardReviewStateRepositoryPort,
   ) {}
 
   async execute(
@@ -120,7 +126,7 @@ export class ConfirmCsvImportUseCase {
       csvImport.deckId,
     );
 
-    await this.cardRepository.createMany({
+    const createdCards = await this.cardRepository.createMany({
       cards: validRows.map((row, index) => ({
         deckId: csvImport.deckId,
         front: row.front,
@@ -131,6 +137,11 @@ export class ConfirmCsvImportUseCase {
       })),
     });
 
+    await this.cardReviewStateRepository.createInitialMany({
+      userId: deck.ownerId,
+      cardIds: createdCards.map((card) => card.id),
+    });
+
     const confirmedImport = await this.csvImportRepository.markConfirmed(
       csvImport.id,
       now,
@@ -138,7 +149,7 @@ export class ConfirmCsvImportUseCase {
 
     return {
       import: confirmedImport,
-      createdCardsCount: validRows.length,
+      createdCardsCount: createdCards.length,
     };
   }
 }

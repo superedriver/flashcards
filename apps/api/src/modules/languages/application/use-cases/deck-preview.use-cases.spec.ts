@@ -367,6 +367,20 @@ describe('Deck preview use cases lifecycle', () => {
         upsert,
         delete: jest.fn(),
       },
+      {
+        findByUserAndCard: jest.fn(),
+        findDueCardIdsForDeck: jest.fn(),
+        findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
+        countReviewedForDeck: jest.fn(),
+        countDueForDeck: jest.fn(),
+        countDueForUser: jest.fn(),
+        countLearningGroupsForDeck: jest.fn(),
+        countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
+        findNextDueAtForDeck: jest.fn(),
+        createInitialIfMissing: jest.fn(),
+        createInitialMany: jest.fn(),
+        upsert: jest.fn(),
+      },
     );
 
     const result = await useCase.execute({
@@ -449,6 +463,20 @@ describe('Deck preview use cases lifecycle', () => {
         findByUserIdAndCode: jest.fn(),
         upsert: jest.fn(),
         delete: jest.fn(),
+      },
+      {
+        findByUserAndCard: jest.fn(),
+        findDueCardIdsForDeck: jest.fn(),
+        findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
+        countReviewedForDeck: jest.fn(),
+        countDueForDeck: jest.fn(),
+        countDueForUser: jest.fn(),
+        countLearningGroupsForDeck: jest.fn(),
+        countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
+        findNextDueAtForDeck: jest.fn(),
+        createInitialIfMissing: jest.fn(),
+        createInitialMany: jest.fn(),
+        upsert: jest.fn(),
       },
     );
 

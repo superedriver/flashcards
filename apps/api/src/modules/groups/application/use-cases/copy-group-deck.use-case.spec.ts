@@ -118,6 +118,20 @@ function createUseCase(options?: {
         .fn()
         .mockResolvedValue(options?.hasAccess ?? true),
     },
+    {
+      findByUserAndCard: jest.fn(),
+      findDueCardIdsForDeck: jest.fn(),
+      findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
+      countReviewedForDeck: jest.fn(),
+      countDueForDeck: jest.fn(),
+      countDueForUser: jest.fn(),
+      countLearningGroupsForDeck: jest.fn(),
+      countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
+      findNextDueAtForDeck: jest.fn(),
+      createInitialIfMissing: jest.fn(),
+      createInitialMany: jest.fn(),
+      upsert: jest.fn(),
+    },
   );
 
   return { useCase, createCopiedDeck, createMany };

@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
 import { DecksModule } from '../decks/decks.module';
+import { LessonsModule } from '../lessons/lessons.module';
 import { CSV_IMPORT_REPOSITORY } from './application/ports/csv-import-repository.port';
 import { PreviewCsvImportUseCase } from './application/use-cases/preview-csv-import.use-case';
 import { ConfirmCsvImportUseCase } from './application/use-cases/confirm-csv-import.use-case';
@@ -8,7 +9,7 @@ import { PrismaCsvImportRepository } from './infrastructure/persistence/prisma-c
 import { CsvImportResolver } from './presentation/graphql/resolvers/csv-import.resolver';
 
 @Module({
-  imports: [AuthModule, DecksModule],
+  imports: [AuthModule, DecksModule, forwardRef(() => LessonsModule)],
   providers: [
     {
       provide: CSV_IMPORT_REPOSITORY,

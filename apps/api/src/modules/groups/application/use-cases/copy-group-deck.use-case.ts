@@ -15,6 +15,10 @@ import {
 } from '../../../decks/application/ports/deck-repository.port';
 import { Card, Deck } from '../../../decks/domain/types';
 import {
+  CARD_REVIEW_STATE_REPOSITORY,
+  CardReviewStateRepositoryPort,
+} from '../../../lessons/application/ports/card-review-state-repository.port';
+import {
   DECK_GROUP_SHARE_REPOSITORY,
   DeckGroupShareRepositoryPort,
 } from '../ports/deck-group-share-repository.port';
@@ -40,6 +44,8 @@ export class CopyGroupDeckUseCase {
     private readonly cardRepository: CardRepositoryPort,
     @Inject(DECK_GROUP_SHARE_REPOSITORY)
     private readonly deckGroupShareRepository: DeckGroupShareRepositoryPort,
+    @Inject(CARD_REVIEW_STATE_REPOSITORY)
+    private readonly cardReviewStateRepository: CardReviewStateRepositoryPort,
   ) {}
 
   async execute(
@@ -94,6 +100,13 @@ export class CopyGroupDeckUseCase {
             })),
           })
         : [];
+
+    if (copiedCards.length > 0) {
+      await this.cardReviewStateRepository.createInitialMany({
+        userId: copiedDeck.ownerId,
+        cardIds: copiedCards.map((card) => card.id),
+      });
+    }
 
     return {
       deck: copiedDeck,

@@ -16,6 +16,10 @@ import {
 import { DeckPermissionService } from '../../../decks/domain/services/deck-permission.service';
 import { Card, Deck } from '../../../decks/domain/types';
 import {
+  CARD_REVIEW_STATE_REPOSITORY,
+  CardReviewStateRepositoryPort,
+} from '../../../lessons/application/ports/card-review-state-repository.port';
+import {
   USER_STUDY_LANGUAGE_REPOSITORY,
   UserStudyLanguageRepositoryPort,
 } from '../ports/user-study-language-repository.port';
@@ -50,6 +54,8 @@ export class ConfirmDeckPreviewUseCase {
     private readonly deckPreviewSessionRepository: DeckPreviewSessionRepositoryPort,
     @Inject(USER_STUDY_LANGUAGE_REPOSITORY)
     private readonly userStudyLanguageRepository: UserStudyLanguageRepositoryPort,
+    @Inject(CARD_REVIEW_STATE_REPOSITORY)
+    private readonly cardReviewStateRepository: CardReviewStateRepositoryPort,
   ) {}
 
   async execute(
@@ -138,6 +144,13 @@ export class ConfirmDeckPreviewUseCase {
             })),
           })
         : [];
+
+    if (cards.length > 0) {
+      await this.cardReviewStateRepository.createInitialMany({
+        userId: deck.ownerId,
+        cardIds: cards.map((card) => card.id),
+      });
+    }
 
     await this.userStudyLanguageRepository.upsert(
       currentUser.id,
