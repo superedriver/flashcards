@@ -1,4 +1,4 @@
-import { calculateNextReview } from '@flashcards/srs';
+import { calculateNextLearningState } from '@flashcards/srs';
 import { ErrorCodes } from '../../../../common/errors';
 import { AuthUser, SafeUser } from '../../../auth/domain/types';
 import { Card } from '../../../decks/domain/types';
@@ -10,12 +10,13 @@ import {
 import { SubmitReviewUseCase } from './submit-review.use-case';
 
 jest.mock('@flashcards/srs', () => ({
-  calculateNextReview: jest.fn(),
+  calculateNextLearningState: jest.fn(),
 }));
 
-const mockedCalculateNextReview = calculateNextReview as jest.MockedFunction<
-  typeof calculateNextReview
->;
+const mockedCalculateNextLearningState =
+  calculateNextLearningState as jest.MockedFunction<
+    typeof calculateNextLearningState
+  >;
 
 const authUser: AuthUser = {
   id: 'owner-1',
@@ -60,11 +61,22 @@ const card: Card = {
   deletedAt: null,
 };
 
-const nextReviewResult = {
-  easeFactor: 2.5,
-  intervalDays: 1,
-  repetitions: 1,
-  dueAt: new Date('2026-06-02T00:00:00.000Z'),
+const initialReviewState: CardReviewState = {
+  id: 'review-1',
+  userId: 'owner-1',
+  cardId: 'card-1',
+  learningStep: 0,
+  longReviewSuccessCount: 0,
+  dueAt: new Date('2026-06-01T12:00:00.000Z'),
+  lastReviewedAt: null,
+  createdAt: new Date('2026-01-01T00:00:00.000Z'),
+  updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+};
+
+const nextLearningState = {
+  learningStep: 1,
+  longReviewSuccessCount: 0,
+  dueAt: new Date('2026-06-01T12:01:30.000Z'),
 };
 
 const upsertedReviewState: CardReviewState = {
@@ -73,7 +85,7 @@ const upsertedReviewState: CardReviewState = {
   cardId: 'card-1',
   learningStep: 1,
   longReviewSuccessCount: 0,
-  dueAt: new Date('2026-06-02T00:00:00.000Z'),
+  dueAt: nextLearningState.dueAt,
   lastReviewedAt: new Date('2026-06-01T12:00:00.000Z'),
   createdAt: new Date('2026-01-01T00:00:00.000Z'),
   updatedAt: new Date('2026-06-01T12:00:00.000Z'),
@@ -84,7 +96,7 @@ function createUseCase(options?: {
   session?: StudySession | null;
   card?: Card | null;
   alreadyReviewed?: boolean;
-  previousReviewState?: CardReviewState | null;
+  previousReviewState?: CardReviewState;
 }) {
   const findByIdUser = jest
     .fn()
@@ -100,9 +112,9 @@ function createUseCase(options?: {
   const hasReviewForCard = jest
     .fn()
     .mockResolvedValue(options?.alreadyReviewed ?? false);
-  const findByUserAndCard = jest
+  const createInitialIfMissing = jest
     .fn()
-    .mockResolvedValue(options?.previousReviewState ?? null);
+    .mockResolvedValue(options?.previousReviewState ?? initialReviewState);
   const upsert = jest.fn().mockResolvedValue(upsertedReviewState);
   const createReview = jest.fn().mockResolvedValue({
     id: 'session-review-1',
@@ -112,11 +124,11 @@ function createUseCase(options?: {
     cardId: 'card-1',
     answer: 'KNOW' as ReviewAnswer,
     reviewedAt: new Date('2026-06-01T12:00:00.000Z'),
-    previousLearningStep: null,
-    previousLongReviewSuccessCount: null,
+    previousLearningStep: 0,
+    previousLongReviewSuccessCount: 0,
     nextLearningStep: 1,
     nextLongReviewSuccessCount: 0,
-    nextDueAt: new Date('2026-06-02T00:00:00.000Z'),
+    nextDueAt: nextLearningState.dueAt,
     createdAt: new Date('2026-06-01T12:00:00.000Z'),
   });
   const countReviews = jest.fn().mockResolvedValue(1);
@@ -140,7 +152,7 @@ function createUseCase(options?: {
       createMany: jest.fn(),
     },
     {
-      findByUserAndCard,
+      findByUserAndCard: jest.fn(),
       findDueCardIdsForDeck: jest.fn(),
       findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
       countReviewedForDeck: jest.fn(),
@@ -149,7 +161,7 @@ function createUseCase(options?: {
       countLearningGroupsForDeck: jest.fn(),
       countLearningGroupsForOwnDecksWithTargetLanguage: jest.fn(),
       findNextDueAtForDeck: jest.fn(),
-      createInitialIfMissing: jest.fn(),
+      createInitialIfMissing,
       createInitialMany: jest.fn(),
       upsert,
     },
@@ -167,12 +179,18 @@ function createUseCase(options?: {
     },
   );
 
-  return { useCase, upsert, createReview, countReviews };
+  return {
+    useCase,
+    upsert,
+    createReview,
+    countReviews,
+    createInitialIfMissing,
+  };
 }
 
 describe('SubmitReviewUseCase', () => {
   beforeEach(() => {
-    mockedCalculateNextReview.mockReturnValue(nextReviewResult);
+    mockedCalculateNextLearningState.mockReturnValue(nextLearningState);
   });
 
   afterEach(() => {
@@ -293,7 +311,7 @@ describe('SubmitReviewUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.INVALID_REVIEW_ANSWER });
   });
 
-  it('KNOW maps to quality 4 and calls calculateNextReview', async () => {
+  it('calls calculateNextLearningState with KNOW and previous state', async () => {
     const { useCase } = createUseCase();
 
     await useCase.execute({
@@ -303,12 +321,16 @@ describe('SubmitReviewUseCase', () => {
       answer: 'KNOW',
     });
 
-    expect(mockedCalculateNextReview).toHaveBeenCalledWith(
-      expect.objectContaining({ quality: 4 }),
+    expect(mockedCalculateNextLearningState).toHaveBeenCalledWith(
+      expect.objectContaining({
+        answer: 'KNOW',
+        previousLearningStep: 0,
+        previousLongReviewSuccessCount: 0,
+      }),
     );
   });
 
-  it('DONT_KNOW maps to quality 1 and calls calculateNextReview', async () => {
+  it('calls calculateNextLearningState with DONT_KNOW', async () => {
     const { useCase } = createUseCase();
 
     await useCase.execute({
@@ -318,12 +340,12 @@ describe('SubmitReviewUseCase', () => {
       answer: 'DONT_KNOW',
     });
 
-    expect(mockedCalculateNextReview).toHaveBeenCalledWith(
-      expect.objectContaining({ quality: 1 }),
+    expect(mockedCalculateNextLearningState).toHaveBeenCalledWith(
+      expect.objectContaining({ answer: 'DONT_KNOW' }),
     );
   });
 
-  it('upserts CardReviewState with calculateNextReview result', async () => {
+  it('upserts CardReviewState with calculateNextLearningState result', async () => {
     const { useCase, upsert } = createUseCase();
 
     await useCase.execute({
@@ -337,16 +359,16 @@ describe('SubmitReviewUseCase', () => {
       expect.objectContaining({
         userId: 'owner-1',
         cardId: 'card-1',
-        learningStep: 0,
+        learningStep: 1,
         longReviewSuccessCount: 0,
-        dueAt: nextReviewResult.dueAt,
+        dueAt: nextLearningState.dueAt,
       }),
     );
   });
 
-  it('creates StudySessionReview with before/after SRS fields', async () => {
+  it('creates StudySessionReview with learning-step before/after fields', async () => {
     const previousReviewState: CardReviewState = {
-      ...upsertedReviewState,
+      ...initialReviewState,
       learningStep: 2,
       longReviewSuccessCount: 0,
     };
@@ -366,9 +388,9 @@ describe('SubmitReviewUseCase', () => {
         answer: 'KNOW',
         previousLearningStep: 2,
         previousLongReviewSuccessCount: 0,
-        nextLearningStep: 2,
+        nextLearningStep: 1,
         nextLongReviewSuccessCount: 0,
-        nextDueAt: nextReviewResult.dueAt,
+        nextDueAt: nextLearningState.dueAt,
       }),
     );
   });

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { calculateNextReview, Sm2Quality } from '@flashcards/srs';
+import { calculateNextLearningState } from '@flashcards/srs';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import {
   USER_REPOSITORY,
@@ -32,11 +32,6 @@ export type SubmitReviewUseCaseResult = {
   cardId: string;
   reviewState: CardReviewState;
   reviewedCards: number;
-};
-
-const ANSWER_QUALITY_MAP: Record<ReviewAnswer, Sm2Quality> = {
-  KNOW: 4,
-  DONT_KNOW: 1,
 };
 
 @Injectable()
@@ -116,30 +111,27 @@ export class SubmitReviewUseCase {
     }
 
     const reviewedAt = new Date();
-    const quality = ANSWER_QUALITY_MAP[input.answer];
     const previousReviewState =
-      await this.cardReviewStateRepository.findByUserAndCard(
-        input.currentUser.id,
-        input.cardId,
-      );
-    const nextReview = calculateNextReview({
-      quality,
-      previousEaseFactor: null,
-      previousIntervalDays: null,
-      previousRepetitions: null,
+      await this.cardReviewStateRepository.createInitialIfMissing({
+        userId: input.currentUser.id,
+        cardId: input.cardId,
+        now: reviewedAt,
+      });
+
+    const nextState = calculateNextLearningState({
+      answer: input.answer,
+      previousLearningStep: previousReviewState.learningStep,
+      previousLongReviewSuccessCount:
+        previousReviewState.longReviewSuccessCount,
       reviewedAt,
     });
-
-    const learningStep = previousReviewState?.learningStep ?? 0;
-    const longReviewSuccessCount =
-      previousReviewState?.longReviewSuccessCount ?? 0;
 
     const reviewState = await this.cardReviewStateRepository.upsert({
       userId: input.currentUser.id,
       cardId: input.cardId,
-      learningStep,
-      longReviewSuccessCount,
-      dueAt: nextReview.dueAt,
+      learningStep: nextState.learningStep,
+      longReviewSuccessCount: nextState.longReviewSuccessCount,
+      dueAt: nextState.dueAt,
       lastReviewedAt: reviewedAt,
     });
 
@@ -150,12 +142,12 @@ export class SubmitReviewUseCase {
       cardId: input.cardId,
       answer: input.answer,
       reviewedAt,
-      previousLearningStep: previousReviewState?.learningStep ?? null,
+      previousLearningStep: previousReviewState.learningStep,
       previousLongReviewSuccessCount:
-        previousReviewState?.longReviewSuccessCount ?? null,
-      nextLearningStep: learningStep,
-      nextLongReviewSuccessCount: longReviewSuccessCount,
-      nextDueAt: nextReview.dueAt,
+        previousReviewState.longReviewSuccessCount,
+      nextLearningStep: nextState.learningStep,
+      nextLongReviewSuccessCount: nextState.longReviewSuccessCount,
+      nextDueAt: nextState.dueAt,
     });
 
     const reviewedCards = await this.studySessionRepository.countReviews(
