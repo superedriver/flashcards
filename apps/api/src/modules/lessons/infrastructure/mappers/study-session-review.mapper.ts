@@ -7,14 +7,11 @@ type PrismaStudySessionReviewRecord = {
   deckId: string;
   cardId: string;
   answer: string;
-  quality: number;
   reviewedAt: Date;
-  previousEaseFactor: number | null;
-  previousIntervalDays: number | null;
-  previousRepetitions: number | null;
-  nextEaseFactor: number;
-  nextIntervalDays: number;
-  nextRepetitions: number;
+  previousLearningStep: number | null;
+  previousLongReviewSuccessCount: number | null;
+  nextLearningStep: number;
+  nextLongReviewSuccessCount: number;
   nextDueAt: Date;
   createdAt: Date;
 };
@@ -29,14 +26,11 @@ export function toStudySessionReview(
     deckId: record.deckId,
     cardId: record.cardId,
     answer: record.answer as ReviewAnswer,
-    quality: record.quality,
     reviewedAt: record.reviewedAt,
-    previousEaseFactor: record.previousEaseFactor,
-    previousIntervalDays: record.previousIntervalDays,
-    previousRepetitions: record.previousRepetitions,
-    nextEaseFactor: record.nextEaseFactor,
-    nextIntervalDays: record.nextIntervalDays,
-    nextRepetitions: record.nextRepetitions,
+    previousLearningStep: record.previousLearningStep,
+    previousLongReviewSuccessCount: record.previousLongReviewSuccessCount,
+    nextLearningStep: record.nextLearningStep,
+    nextLongReviewSuccessCount: record.nextLongReviewSuccessCount,
     nextDueAt: record.nextDueAt,
     createdAt: record.createdAt,
   };

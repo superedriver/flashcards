@@ -125,9 +125,10 @@ function toCardReviewStateType(
   return {
     id: reviewState.id,
     cardId: reviewState.cardId,
-    easeFactor: reviewState.easeFactor,
-    intervalDays: reviewState.intervalDays,
-    repetitions: reviewState.repetitions,
+    // Temporary GraphQL SM-2 placeholders until TASK-26.13.
+    easeFactor: 2.5,
+    intervalDays: 0,
+    repetitions: 0,
     dueAt: reviewState.dueAt,
     lastReviewedAt: reviewState.lastReviewedAt,
   };

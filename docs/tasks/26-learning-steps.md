@@ -263,7 +263,7 @@ Replace deckLearningStats newCards/reviewedCards with group counts in this epic.
 - [x] TASK-26.01 Add learning-steps types and calculator alongside SM-2
 - [x] TASK-26.02 Add learning-steps unit tests in @flashcards/srs
 - [x] TASK-26.03 Prisma Phase A: add learning-step columns (keep SM-2 columns)
-- [ ] TASK-26.04 Update lessons domain types and mappers for learning steps
+- [x] TASK-26.04 Update lessons domain types and mappers for learning steps
 - [ ] TASK-26.05 Update CardReviewState and StudySession repository ports/impl
 - [ ] TASK-26.06 Create CardReviewState on card create, CSV, copy, preview confirm
 - [ ] TASK-26.07 Ensure missing CardReviewState on lesson start (safety net)
@@ -543,7 +543,7 @@ TASK-26.03 Prisma Phase A add learning-step columns keep SM-2
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

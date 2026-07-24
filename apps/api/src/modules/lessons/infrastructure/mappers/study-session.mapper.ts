@@ -1,9 +1,14 @@
-import { StudySession, StudySessionStatus } from '../../domain/types';
+import {
+  StudySession,
+  StudySessionScope,
+  StudySessionStatus,
+} from '../../domain/types';
 
 type PrismaStudySessionRecord = {
   id: string;
   userId: string;
   deckId: string | null;
+  scope: string;
   status: string;
   lessonSize: number;
   startedAt: Date;
@@ -18,6 +23,7 @@ export function toStudySession(record: PrismaStudySessionRecord): StudySession {
     id: record.id,
     userId: record.userId,
     deckId: record.deckId,
+    scope: record.scope as StudySessionScope,
     status: record.status as StudySessionStatus,
     lessonSize: record.lessonSize,
     startedAt: record.startedAt,

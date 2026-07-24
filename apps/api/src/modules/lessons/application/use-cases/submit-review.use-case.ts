@@ -117,16 +117,16 @@ export class SubmitReviewUseCase {
 
     const reviewedAt = new Date();
     const quality = ANSWER_QUALITY_MAP[input.answer];
-    const previousReviewState =
-      await this.cardReviewStateRepository.findByUserAndCard(
-        input.currentUser.id,
-        input.cardId,
-      );
+    // Domain no longer exposes SM-2 fields (TASK-26.04); previous state is unused until TASK-26.08.
+    await this.cardReviewStateRepository.findByUserAndCard(
+      input.currentUser.id,
+      input.cardId,
+    );
     const nextReview = calculateNextReview({
       quality,
-      previousEaseFactor: previousReviewState?.easeFactor ?? null,
-      previousIntervalDays: previousReviewState?.intervalDays ?? null,
-      previousRepetitions: previousReviewState?.repetitions ?? null,
+      previousEaseFactor: null,
+      previousIntervalDays: null,
+      previousRepetitions: null,
       reviewedAt,
     });
 
@@ -148,9 +148,9 @@ export class SubmitReviewUseCase {
       answer: input.answer,
       quality,
       reviewedAt,
-      previousEaseFactor: previousReviewState?.easeFactor ?? null,
-      previousIntervalDays: previousReviewState?.intervalDays ?? null,
-      previousRepetitions: previousReviewState?.repetitions ?? null,
+      previousEaseFactor: null,
+      previousIntervalDays: null,
+      previousRepetitions: null,
       nextEaseFactor: nextReview.easeFactor,
       nextIntervalDays: nextReview.intervalDays,
       nextRepetitions: nextReview.repetitions,

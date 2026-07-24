@@ -4,9 +4,8 @@ type PrismaCardReviewStateRecord = {
   id: string;
   userId: string;
   cardId: string;
-  easeFactor: number;
-  intervalDays: number;
-  repetitions: number;
+  learningStep: number;
+  longReviewSuccessCount: number;
   dueAt: Date;
   lastReviewedAt: Date | null;
   createdAt: Date;
@@ -20,9 +19,8 @@ export function toCardReviewState(
     id: record.id,
     userId: record.userId,
     cardId: record.cardId,
-    easeFactor: record.easeFactor,
-    intervalDays: record.intervalDays,
-    repetitions: record.repetitions,
+    learningStep: record.learningStep,
+    longReviewSuccessCount: record.longReviewSuccessCount,
     dueAt: record.dueAt,
     lastReviewedAt: record.lastReviewedAt,
     createdAt: record.createdAt,

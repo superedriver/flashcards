@@ -23,6 +23,7 @@ const activeSession: StudySession = {
   id: 'session-1',
   userId: 'owner-1',
   deckId: 'deck-1',
+  scope: 'DECK',
   status: 'ACTIVE',
   lessonSize: 20,
   startedAt: new Date('2026-06-01T00:00:00.000Z'),
