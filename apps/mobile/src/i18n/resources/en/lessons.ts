@@ -61,7 +61,7 @@ export const lessonsEn = {
     front: 'Front',
     back: 'Back',
     recallHint: 'Try to recall the answer, then reveal it.',
-    revealHint: 'Shows the back of the card.',
+    revealHint: 'Shows the answer side of the card.',
     revealAnswer: 'Reveal answer',
     example: 'Example: {{text}}',
     notes: 'Notes: {{text}}',

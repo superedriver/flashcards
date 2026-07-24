@@ -15,7 +15,7 @@ export const homeEn = {
   },
   start: 'START',
   addCards: {
-    message: 'Add cards to start learning.',
+    message: 'Add cards for learning.',
     action: 'Go to decks',
   },
   noReviewNow: {

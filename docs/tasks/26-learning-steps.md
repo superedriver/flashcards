@@ -278,7 +278,7 @@ Replace deckLearningStats newCards/reviewedCards with group counts in this epic.
 - [x] TASK-26.16 Redesign Home screen: counters, START, empty CTAs
 - [x] TASK-26.17 Add Decks/deck-detail counters and card learningGroup badges
 - [x] TASK-26.18 Lesson UI: honor promptDirection; consume nextCard from submitReview
-- [ ] TASK-26.19 Add learning-steps i18n strings (en/uk)
+- [x] TASK-26.19 Add learning-steps i18n strings (en/uk)
 - [ ] TASK-26.20 Learning steps smoke checks + final epic checks
 ```
 
@@ -1475,7 +1475,7 @@ TASK-26.18 Honor promptDirection and nextCard in lesson UI
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
