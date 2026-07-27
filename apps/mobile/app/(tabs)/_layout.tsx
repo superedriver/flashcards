@@ -69,16 +69,13 @@ export default function TabsLayout() {
       />
       <Tabs.Screen
         name="decks"
-        listeners={({ navigation }) => ({
-          tabPress: () => {
-            // Nested stack (deck detail, edit, …): re-tapping Decks should return to the list.
-            if (!navigation.isFocused()) {
-              return
-            }
-
-            router.dismissTo('/decks')
+        listeners={{
+          tabPress: (event) => {
+            // Always open the decks list (do not restore a nested deck detail stack).
+            event.preventDefault()
+            router.navigate('/decks')
           },
-        })}
+        }}
         options={{
           title: t('common.tabs.decks'),
           tabBarIcon: ({ focused }) => (

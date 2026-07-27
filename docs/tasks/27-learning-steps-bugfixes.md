@@ -59,6 +59,8 @@ Expected state:
    - Actual lesson had only 3 cards
 3. Decks tab does not return to decks list from deck detail
    - On /decks/:deckId, tapping Decks tab leaves the user on the detail screen
+4. Decks tab restores previous deck after visiting Home
+   - Decks → deck detail → Home → Decks shows the old deck instead of the list
 ```
 
 ## Epic Rules
@@ -81,6 +83,7 @@ Expected state:
 27.01 Fix completeLesson for Home sessions (null deckId)
 27.02 Fix lesson progress bar when due cards < lessonSize
 27.03 Reset Decks tab stack to list on re-tap
+27.04 Always open decks list when selecting Decks tab
 ```
 
 ## Task Checklist
@@ -88,6 +91,7 @@ Expected state:
 - [x] TASK-27.01 Fix completeLesson for Home sessions with null deckId
 - [x] TASK-27.02 Fix lesson progress bar when due cards < lessonSize
 - [x] TASK-27.03 Reset Decks tab stack to list on re-tap
+- [x] TASK-27.04 Always open decks list when selecting Decks tab
 
 ---
 
@@ -342,4 +346,82 @@ pnpm lint
 
 ```txt
 TASK-27.03 Reset Decks tab stack to list on re-tap
+```
+
+---
+
+# TASK-27.04 Always open decks list when selecting Decks tab
+
+## Status
+
+DONE
+
+## Context
+
+After TASK-27.03, re-tapping Decks while already on the tab returned to the list, but switching away and back restored the nested stack:
+
+```txt
+Decks → open deck → Home → Decks → still on previous deck detail
+```
+
+Users expect the **Decks** tab to mean the decks list, not “resume last deck screen”.
+
+## Goal
+
+Every press of the Decks tab navigates to `/decks` (list), whether the tab was already focused or the user is coming from Home/Profile.
+
+## Related Documents
+
+```txt
+docs/tasks/27-learning-steps-bugfixes.md (TASK-27.03)
+docs/smoke/learning-steps.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/app/(tabs)/_layout.tsx
+docs/tasks/27-learning-steps-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Decks tabPress: preventDefault + router.navigate('/decks').
+2. Covers both re-tap on Decks and Home → Decks after visiting a deck.
+3. Do not change Home/Profile tab press behavior.
+```
+
+## Security Requirements
+
+```txt
+- No permission or auth changes.
+```
+
+## Acceptance Criteria
+
+```txt
+- Decks → deck → Home → Decks → decks list (not the previous deck).
+- On /decks/:deckId, tap Decks → decks list.
+- Mobile typecheck / lint / format pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-27.04 Always open decks list when selecting Decks tab
 ```
