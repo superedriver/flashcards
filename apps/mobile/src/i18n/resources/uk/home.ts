@@ -4,7 +4,6 @@ export const homeUk = {
   loadError: 'Не вдалося завантажити прогрес навчання.',
   startError: 'Не вдалося почати урок. Спробуйте ще раз.',
   starting: 'Початок уроку...',
-  activeTarget: 'Активна мова: {{language}}',
   noActiveTarget: 'Оберіть активну мову вивчення, щоб почати навчання.',
   setLanguages: 'Налаштувати мови',
   counters: {

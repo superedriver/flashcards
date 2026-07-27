@@ -65,6 +65,7 @@ Expected state:
    - Description shown in list; learning counters are one long line
 6. Deck rail cards still uneven after title-only change
    - Title 1 vs 2 lines; public status two labels; due line optional
+7. Home shows redundant "Active language: es" (already in header flag)
 ```
 
 ## Epic Rules
@@ -90,6 +91,7 @@ Expected state:
 27.04 Always open decks list when selecting Decks tab
 27.05 Deck list cards: title only + column learning counters
 27.06 Equalize deck rail card heights
+27.07 Remove active language label from Home
 ```
 
 ## Task Checklist
@@ -100,6 +102,7 @@ Expected state:
 - [x] TASK-27.04 Always open decks list when selecting Decks tab
 - [x] TASK-27.05 Deck list cards: title only + column learning counters
 - [x] TASK-27.06 Equalize deck rail card heights
+- [x] TASK-27.07 Remove active language label from Home
 
 ---
 
@@ -595,4 +598,79 @@ pnpm lint
 
 ```txt
 TASK-27.06 Equalize deck rail card heights
+```
+
+---
+
+# TASK-27.07 Remove active language label from Home
+
+## Status
+
+DONE
+
+## Context
+
+Home showed `Активна мова: es` / `Active language: es` while the header flag selector already indicates the active target language. The label is redundant.
+
+## Goal
+
+Remove the active-language text from Home. Keep empty-state when no active target is set. Keep header selector as the place to see/switch language.
+
+## Related Documents
+
+```txt
+docs/smoke/learning-steps.md
+docs/tasks/done/24-study-languages.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/home/screens/home-screen.tsx
+apps/mobile/src/i18n/resources/en/home.ts
+apps/mobile/src/i18n/resources/uk/home.ts
+docs/tasks/27-learning-steps-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Do not render home.activeTarget on Home.
+2. Keep noActiveTarget empty state + counters / START when language is set.
+3. Remove unused home.activeTarget i18n keys (en/uk).
+```
+
+## Security Requirements
+
+```txt
+- No permission or auth changes.
+```
+
+## Acceptance Criteria
+
+```txt
+- Home no longer shows "Active language: …" / "Активна мова: …".
+- Header flag selector still shows/switches active language.
+- Without active language, Home still shows the set-languages empty state.
+- Mobile typecheck / lint / format pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-27.07 Remove active language label from Home
 ```

@@ -4,7 +4,6 @@ export const homeEn = {
   loadError: 'Could not load learning progress.',
   startError: 'Could not start lesson. Please try again.',
   starting: 'Starting lesson...',
-  activeTarget: 'Active language: {{language}}',
   noActiveTarget: 'Choose an active study language to start learning.',
   setLanguages: 'Set study languages',
   counters: {

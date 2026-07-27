@@ -97,19 +97,13 @@ export function HomeScreen() {
       <PageTitle title={t('home.title')} />
 
       <View style={{ gap: 16 }}>
-        {progress.activeTargetLanguage ? (
-          <AppText style={{ color: '#666666' }}>
-            {t('home.activeTarget', { language: progress.activeTargetLanguage })}
-          </AppText>
-        ) : (
+        {!progress.activeTargetLanguage ? (
           <EmptyState
             actionLabel={t('home.setLanguages')}
             message={t('home.noActiveTarget')}
             onAction={() => router.push('/(tabs)/profile')}
           />
-        )}
-
-        {progress.activeTargetLanguage ? (
+        ) : (
           <>
             <HomeLearningCounters
               learnedCount={progress.learnedCount}
@@ -145,7 +139,7 @@ export function HomeScreen() {
 
             {startError ? <ErrorState message={startError} /> : null}
           </>
-        ) : null}
+        )}
       </View>
     </Screen>
   )
