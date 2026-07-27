@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
-import { Redirect, Tabs } from 'expo-router'
+import { Redirect, Tabs, router } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 
 import { useAuthGate } from '@/features/auth/hooks/use-auth-gate'
@@ -69,6 +69,16 @@ export default function TabsLayout() {
       />
       <Tabs.Screen
         name="decks"
+        listeners={({ navigation }) => ({
+          tabPress: () => {
+            // Nested stack (deck detail, edit, …): re-tapping Decks should return to the list.
+            if (!navigation.isFocused()) {
+              return
+            }
+
+            router.dismissTo('/decks')
+          },
+        })}
         options={{
           title: t('common.tabs.decks'),
           tabBarIcon: ({ focused }) => (

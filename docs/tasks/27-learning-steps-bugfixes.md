@@ -57,6 +57,8 @@ Expected state:
 2. Lesson progress bar uses lessonSize when fewer cards are in the lesson
    - Deck Start with 3 due cards and lessonSize=5 showed progress of 5
    - Actual lesson had only 3 cards
+3. Decks tab does not return to decks list from deck detail
+   - On /decks/:deckId, tapping Decks tab leaves the user on the detail screen
 ```
 
 ## Epic Rules
@@ -78,12 +80,14 @@ Expected state:
 ```txt
 27.01 Fix completeLesson for Home sessions (null deckId)
 27.02 Fix lesson progress bar when due cards < lessonSize
+27.03 Reset Decks tab stack to list on re-tap
 ```
 
 ## Task Checklist
 
 - [x] TASK-27.01 Fix completeLesson for Home sessions with null deckId
 - [x] TASK-27.02 Fix lesson progress bar when due cards < lessonSize
+- [x] TASK-27.03 Reset Decks tab stack to list on re-tap
 
 ---
 
@@ -264,4 +268,78 @@ pnpm lint
 
 ```txt
 TASK-27.02 Fix lesson progress bar when due cards < lessonSize
+```
+
+---
+
+# TASK-27.03 Reset Decks tab stack to list on re-tap
+
+## Status
+
+DONE
+
+## Context
+
+During manual smoke / deck navigation: on deck detail (`/decks/:deckId`), tapping the **Decks** tab in the bottom tab bar does nothing — the user stays on the detail screen instead of returning to the decks list.
+
+Cause: `decks` is a nested Stack inside Tabs. Re-selecting an already focused tab only focuses that tab route; it does not pop the nested stack to `decks/index`.
+
+## Goal
+
+When the Decks tab is already focused and the user taps Decks again, navigate to the decks list (`/decks`). Switching to Decks from another tab must keep the previous nested stack state (do not reset on first focus from elsewhere).
+
+## Related Documents
+
+```txt
+docs/tasks/done/05-decks-cards.md
+docs/smoke/learning-steps.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/app/(tabs)/_layout.tsx
+docs/tasks/27-learning-steps-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Add a Decks tabPress listener: if the Decks tab is already focused, router.dismissTo('/decks').
+2. Do not reset the decks stack when switching to Decks from Home/Profile (only when already focused).
+3. No other tab behavior changes required for this task.
+```
+
+## Security Requirements
+
+```txt
+- No permission or auth changes.
+```
+
+## Acceptance Criteria
+
+```txt
+- On /decks/:deckId, tap Decks tab → land on decks list.
+- From Home, tap Decks → still opens last decks stack state (or list if none); second tap on Decks while deep → list.
+- Mobile typecheck / lint / format pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-27.03 Reset Decks tab stack to list on re-tap
 ```
