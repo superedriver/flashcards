@@ -54,6 +54,9 @@ Expected state:
 1. completeLesson fails for Home sessions with LESSON_NOT_FOUND
    - HOME_ACTIVE_TARGET sessions have deckId = null
    - CompleteLessonUseCase rejected null deckId
+2. Lesson progress bar uses lessonSize when fewer cards are in the lesson
+   - Deck Start with 3 due cards and lessonSize=5 showed progress of 5
+   - Actual lesson had only 3 cards
 ```
 
 ## Epic Rules
@@ -74,11 +77,13 @@ Expected state:
 
 ```txt
 27.01 Fix completeLesson for Home sessions (null deckId)
+27.02 Fix lesson progress bar when due cards < lessonSize
 ```
 
 ## Task Checklist
 
 - [x] TASK-27.01 Fix completeLesson for Home sessions with null deckId
+- [x] TASK-27.02 Fix lesson progress bar when due cards < lessonSize
 
 ---
 
@@ -171,4 +176,92 @@ pnpm lint
 
 ```txt
 TASK-27.01 Fix completeLesson for Home sessions with null deckId
+```
+
+---
+
+# TASK-27.02 Fix lesson progress bar when due cards < lessonSize
+
+## Status
+
+DONE
+
+## Context
+
+During EPIC-26 manual smoke (Step 9 — Deck Start on **Demo Spanish Basics**):
+
+- Deck had **3** due cards (`hello` / `goodbye` / `thank you`).
+- User settings / session `lessonSize` was **5**.
+- Lesson review UI progress bar showed **of 5** (e.g. card 1 of 5) while only **3** cards were in the lesson.
+
+Likely cause in mobile `useActiveLesson`:
+
+```txt
+totalCards = lesson?.lessonSize ?? lesson?.cards.length ?? 0
+```
+
+Progress denominator prefers `lessonSize` over the actual cards in the active lesson. Deck `startLesson.totalCards` is also deck-wide `countByDeckId`, not the lesson queue size — do not use that for the in-lesson progress bar without clarifying semantics.
+
+## Goal
+
+Progress bar during an active lesson must reflect cards in **this** lesson session (e.g. 1/3 … 3/3 when only 3 cards are reviewed), not the settings cap when fewer cards are available.
+
+## Related Documents
+
+```txt
+docs/domain/lesson-flow.md
+docs/algorithms/learning-steps.md
+docs/smoke/learning-steps.md
+docs/tasks/done/26-learning-steps.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/hooks/use-active-lesson.ts
+(optional) apps/mobile tests / related lesson store if needed for the chosen denominator
+docs/tasks/27-learning-steps-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. In-lesson progress total must match the cards reviewed in the current session when due/available cards < lessonSize.
+2. When the session reaches lessonSize (or grows via nextCard re-queue up to lessonSize), progress total must still be coherent (never show a smaller total than reviewed; cap at lessonSize as the max lesson length).
+3. Do not change lesson selection / start algorithms — this is a progress UI (and only API totalCards semantics if required for a correct denominator).
+4. Keep accessibility labels / progressbar values consistent with the visible fraction.
+```
+
+## Security Requirements
+
+```txt
+- No permission or auth changes.
+```
+
+## Acceptance Criteria
+
+```txt
+- Smoke: Deck Start with 3 due cards and lessonSize=5 → progress shows of 3 (not of 5) through the lesson.
+- Home / fuller queues still show progress up to the actual lesson length (≤ lessonSize).
+- Mobile typecheck / lint / format pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-27.02 Fix lesson progress bar when due cards < lessonSize
 ```

@@ -115,8 +115,12 @@ export function useActiveLesson(sessionId?: string) {
     activeLesson && sessionId && activeLesson.sessionId === sessionId ? activeLesson : null
 
   const currentCard = lesson ? (lesson.cards[lesson.currentIndex] ?? null) : null
-  const totalCards = lesson?.lessonSize ?? lesson?.cards.length ?? 0
   const reviewedCount = lesson?.reviewedCardIds.length ?? 0
+  // Prefer the active queue length over settings lessonSize when fewer cards are available.
+  // Grow with re-queued nextCard entries; never show less than reviewed; never exceed lessonSize.
+  const totalCards = lesson
+    ? Math.min(lesson.lessonSize, Math.max(lesson.cards.length, reviewedCount))
+    : 0
   const currentNumber =
     reviewedCount >= totalCards && totalCards > 0
       ? totalCards
