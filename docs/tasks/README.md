@@ -381,6 +381,12 @@ done/25-bugfixes.md
 done/26-learning-steps.md
 ```
 
+Active epics:
+
+```txt
+27-learning-steps-bugfixes.md
+```
+
 ---
 
 ## Epic Index
@@ -813,6 +819,22 @@ Purpose:
 
 ```txt
 Replace SM-2 with learning steps 0–8, Home multi-deck START, learning group counters/badges, prompt direction, and CardReviewState migration.
+```
+
+---
+
+### 27 Learning Steps Bugfixes
+
+File:
+
+```txt
+docs/tasks/27-learning-steps-bugfixes.md
+```
+
+Purpose:
+
+```txt
+Fix bugs found during EPIC-26 learning-steps manual smoke (starting with Home completeLesson).
 ```
 
 ---
