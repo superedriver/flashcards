@@ -22,13 +22,13 @@ This epic covers:
 Public decks, publishing, public search, and copying public decks are handled in:
 
 ```txt
-docs/tasks/06-public-decks.md
+docs/tasks/done/06-public-decks.md
 ```
 
 Lessons and SRS are handled in:
 
 ```txt
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/07-srs-lessons.md
 ```
 
 ## Epic Status
@@ -46,7 +46,7 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/04-user-profile-settings.md
+docs/tasks/done/04-user-profile-settings.md
 ```
 
 ## Epic Prerequisites
@@ -3241,5 +3241,5 @@ EPIC-05 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/06-public-decks.md
+docs/tasks/done/06-public-decks.md
 ```

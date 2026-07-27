@@ -38,10 +38,10 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/02-auth.md
-docs/tasks/05-decks-cards.md
-docs/tasks/06-public-decks.md
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/02-auth.md
+docs/tasks/done/05-decks-cards.md
+docs/tasks/done/06-public-decks.md
+docs/tasks/done/07-srs-lessons.md
 ```
 
 ## Epic Prerequisites
@@ -2366,9 +2366,9 @@ Add unit tests for EPIC-12 admin permission service, use cases, and mappers.
 docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/backend-clean-architecture.md
-docs/tasks/12-admin-analytics.md
-docs/tasks/02-auth.md
-docs/tasks/06-public-decks.md
+docs/tasks/done/12-admin-analytics.md
+docs/tasks/done/02-auth.md
+docs/tasks/done/06-public-decks.md
 ```
 
 ## Files to Create
@@ -2650,5 +2650,5 @@ EPIC-12 is complete when:
 After EPIC-12 is complete (including TASK-12.24), move to:
 
 ```txt
-docs/tasks/13-frontend-foundation.md
+docs/tasks/done/13-frontend-foundation.md
 ```

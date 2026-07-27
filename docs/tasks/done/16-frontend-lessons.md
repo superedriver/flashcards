@@ -1,6 +1,6 @@
 # EPIC-16 Frontend Lessons
 
-> **Follow-up:** EPIC-26 updates lesson UI for learning steps, Home START, prompt direction, and group counters (`docs/tasks/26-learning-steps.md`). Historical SM-2 field wiring in this epic is obsolete after EPIC-26.
+> **Follow-up:** EPIC-26 updates lesson UI for learning steps, Home START, prompt direction, and group counters (`docs/tasks/done/26-learning-steps.md`). Historical SM-2 field wiring in this epic is obsolete after EPIC-26.
 
 ## Epic Goal
 
@@ -28,13 +28,13 @@ Backend is the source of truth for card selection, review state, intervals, due 
 Backend SRS and lesson flow are handled in:
 
 ```txt
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/07-srs-lessons.md
 ```
 
 Deck/card frontend screens are handled in:
 
 ```txt
-docs/tasks/15-frontend-decks-cards.md
+docs/tasks/done/15-frontend-decks-cards.md
 ```
 
 ## Epic Status
@@ -53,10 +53,10 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/07-srs-lessons.md
-docs/tasks/13-frontend-foundation.md
-docs/tasks/14-frontend-auth.md
-docs/tasks/15-frontend-decks-cards.md
+docs/tasks/done/07-srs-lessons.md
+docs/tasks/done/13-frontend-foundation.md
+docs/tasks/done/14-frontend-auth.md
+docs/tasks/done/15-frontend-decks-cards.md
 ```
 
 ## Epic Prerequisites
@@ -1438,5 +1438,5 @@ EPIC-16 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/17-frontend-public-csv-ai.md
+docs/tasks/done/17-frontend-public-csv-ai.md
 ```

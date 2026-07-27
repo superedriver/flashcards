@@ -42,10 +42,10 @@ docs/deployment/mvp-deployment.md
 docs/release/mvp-smoke-tests.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/02-auth.md
-docs/tasks/14-frontend-auth.md
-docs/tasks/20-deployment-mvp.md
-docs/tasks/21-mvp-polish-and-release.md
+docs/tasks/done/02-auth.md
+docs/tasks/done/14-frontend-auth.md
+docs/tasks/done/20-deployment-mvp.md
+docs/tasks/done/21-mvp-polish-and-release.md
 ```
 
 ## Epic Prerequisites
@@ -130,8 +130,8 @@ Ensure password inputs are masked on web.
 
 ```txt
 docs/security/security-checklist.md
-docs/tasks/14-frontend-auth.md
-docs/tasks/21-mvp-polish-and-release.md
+docs/tasks/done/14-frontend-auth.md
+docs/tasks/done/21-mvp-polish-and-release.md
 ```
 
 ## Files to Create
@@ -227,7 +227,7 @@ Verify and fix all password and confirm-password fields across auth forms.
 ## Related Documents
 
 ```txt
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 docs/security/security-checklist.md
 ```
 
@@ -864,7 +864,7 @@ Show loading state on auth screens until bootstrap completes.
 
 ```txt
 docs/domain/auth-token-strategy.md
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 apps/mobile/app/index.tsx
 apps/mobile/app/(auth)/sign-in.tsx
 ```
@@ -955,7 +955,7 @@ Centralize authenticated vs unauthenticated redirect behavior.
 ## Related Documents
 
 ```txt
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 apps/mobile/src/features/auth/utils/get-post-auth-redirect.ts
 ```
 
@@ -1063,7 +1063,7 @@ Set and rotate refresh tokens via httpOnly cookie for web clients while keeping 
 ```txt
 docs/domain/auth-token-strategy.md
 docs/security/security-checklist.md
-docs/tasks/02-auth.md
+docs/tasks/done/02-auth.md
 apps/api/src/modules/auth/presentation/graphql/resolvers/auth.resolver.ts
 ```
 
@@ -1194,7 +1194,7 @@ Restore web sessions across page reload using httpOnly refresh token cookie.
 ```txt
 docs/domain/auth-token-strategy.md
 docs/security/security-checklist.md
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 apps/mobile/src/features/auth/services/refresh-token-storage.ts
 apps/mobile/src/features/auth/services/bootstrap-auth.ts
 apps/mobile/src/features/auth/services/auth-session.ts
@@ -1310,7 +1310,7 @@ Update auth token strategy to document current web behavior.
 ```txt
 docs/domain/auth-token-strategy.md
 docs/security/security-checklist.md
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 ```
 
 ## Files to Create
@@ -1323,7 +1323,7 @@ None
 
 ```txt
 docs/domain/auth-token-strategy.md
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 ```
 
 Update EPIC-14 token storage section only if it still describes memory-only web refresh as current MVP behavior.

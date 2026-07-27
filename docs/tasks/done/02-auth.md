@@ -22,7 +22,7 @@ This epic covers:
 Email verification and password reset are handled in:
 
 ```txt
-docs/tasks/03-email-verification-password-reset.md
+docs/tasks/done/03-email-verification-password-reset.md
 ```
 
 ## Epic Status
@@ -41,7 +41,7 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/01-backend-foundation.md
+docs/tasks/done/01-backend-foundation.md
 ```
 
 ## Epic Prerequisites
@@ -2617,5 +2617,5 @@ EPIC-02 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/03-email-verification-password-reset.md
+docs/tasks/done/03-email-verification-password-reset.md
 ```

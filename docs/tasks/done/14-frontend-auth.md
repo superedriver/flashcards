@@ -42,9 +42,9 @@ docs/domain/auth-token-strategy.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/02-auth.md
-docs/tasks/03-email-verification-password-reset.md
-docs/tasks/13-frontend-foundation.md
+docs/tasks/done/02-auth.md
+docs/tasks/done/03-email-verification-password-reset.md
+docs/tasks/done/13-frontend-foundation.md
 ```
 
 ## Epic Prerequisites
@@ -1665,5 +1665,5 @@ EPIC-14 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/15-frontend-decks-cards.md
+docs/tasks/done/15-frontend-decks-cards.md
 ```

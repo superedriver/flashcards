@@ -290,7 +290,7 @@ Frontend may display `learningGroup` / `promptDirection` returned by the API.
 
 ```txt
 docs/domain/lesson-flow.md
-docs/tasks/26-learning-steps.md
+docs/tasks/done/26-learning-steps.md
 docs/algorithms/sm-2.md (historical)
-docs/tasks/07-srs-lessons.md (historical SM-2 implementation)
+docs/tasks/done/07-srs-lessons.md (historical SM-2 implementation)
 ```

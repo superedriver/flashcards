@@ -5,7 +5,7 @@ Manual + automated verification checklist for study languages.
 Related:
 
 ```txt
-docs/tasks/24-study-languages.md
+docs/tasks/done/24-study-languages.md
 docs/release/mvp-smoke-tests.md (section 32)
 ```
 

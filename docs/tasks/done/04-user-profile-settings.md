@@ -17,8 +17,8 @@ This epic covers:
 This epic builds on backend auth from:
 
 ```txt
-docs/tasks/02-auth.md
-docs/tasks/03-email-verification-password-reset.md
+docs/tasks/done/02-auth.md
+docs/tasks/done/03-email-verification-password-reset.md
 ```
 
 ## Epic Status
@@ -37,8 +37,8 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/02-auth.md
-docs/tasks/03-email-verification-password-reset.md
+docs/tasks/done/02-auth.md
+docs/tasks/done/03-email-verification-password-reset.md
 ```
 
 ## Epic Prerequisites
@@ -1730,5 +1730,5 @@ EPIC-04 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/05-decks-cards.md
+docs/tasks/done/05-decks-cards.md
 ```

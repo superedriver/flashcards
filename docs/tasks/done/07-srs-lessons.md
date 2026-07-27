@@ -1,6 +1,6 @@
 # EPIC-07 SRS & Lessons
 
-> **Superseded for scheduling:** EPIC-26 replaces SM-2 with learning steps (`docs/tasks/26-learning-steps.md`, `docs/algorithms/learning-steps.md`). Keep this epic for historical task logs; implement new review scheduling against EPIC-26.
+> **Superseded for scheduling:** EPIC-26 replaces SM-2 with learning steps (`docs/tasks/done/26-learning-steps.md`, `docs/algorithms/learning-steps.md`). Keep this epic for historical task logs; implement new review scheduling against EPIC-26.
 
 ## Epic Goal
 
@@ -45,8 +45,8 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/05-decks-cards.md
-docs/tasks/06-public-decks.md
+docs/tasks/done/05-decks-cards.md
+docs/tasks/done/06-public-decks.md
 ```
 
 ## Epic Prerequisites
@@ -2594,7 +2594,7 @@ docs/domain/lesson-flow.md
 docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/backend-clean-architecture.md
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/07-srs-lessons.md
 ```
 
 ## Files to Create
@@ -2809,5 +2809,5 @@ EPIC-07 is complete when:
 After EPIC-07 is complete (including TASK-07.22), move to:
 
 ```txt
-docs/tasks/08-csv-import.md
+docs/tasks/done/08-csv-import.md
 ```

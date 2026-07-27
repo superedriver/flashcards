@@ -9,11 +9,11 @@ This file is a source-of-truth document for auth implementation.
 Relevant task files:
 
 ```txt
-docs/tasks/02-auth.md
-docs/tasks/03-email-verification-password-reset.md
-docs/tasks/13-frontend-foundation.md
-docs/tasks/14-frontend-auth.md
-docs/tasks/20-deployment-mvp.md
+docs/tasks/done/02-auth.md
+docs/tasks/done/03-email-verification-password-reset.md
+docs/tasks/done/13-frontend-foundation.md
+docs/tasks/done/14-frontend-auth.md
+docs/tasks/done/20-deployment-mvp.md
 ```
 
 ## Core Principles

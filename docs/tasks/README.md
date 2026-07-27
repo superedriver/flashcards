@@ -4,6 +4,8 @@ This folder contains the implementation plan for the Flashcards MVP.
 
 Each file is an epic broken into small Cursor-friendly tasks.
 
+Completed epics live in `docs/tasks/done/`. Active epics stay in `docs/tasks/`.
+
 The goal of these task files is to make implementation predictable, reviewable, and safe.
 
 ---
@@ -347,36 +349,36 @@ docs/tasks/cursor-task-template.md
 
 ## Epic Order
 
-Implement tasks in this order:
+Completed epics (historical order):
 
 ```txt
-00-repository.md
-01-backend-foundation.md
-02-auth.md
-03-email-verification-password-reset.md
-04-user-profile-settings.md
-05-decks-cards.md
-06-public-decks.md
-07-srs-lessons.md
-08-csv-import.md
-09-ai-examples.md
-10-groups-sharing.md
-11-notifications.md
-12-admin-analytics.md
-13-frontend-foundation.md
-14-frontend-auth.md
-15-frontend-decks-cards.md
-16-frontend-lessons.md
-17-frontend-public-csv-ai.md
-18-frontend-profile-settings-notifications.md
-19-frontend-groups-admin.md
-20-deployment-mvp.md
-21-mvp-polish-and-release.md
-22-auth-security-hardening.md
-23-i18n.md
-24-study-languages.md
-25-bugfixes.md
-26-learning-steps.md
+done/00-repository.md
+done/01-backend-foundation.md
+done/02-auth.md
+done/03-email-verification-password-reset.md
+done/04-user-profile-settings.md
+done/05-decks-cards.md
+done/06-public-decks.md
+done/07-srs-lessons.md
+done/08-csv-import.md
+done/09-ai-examples.md
+done/10-groups-sharing.md
+done/11-notifications.md
+done/12-admin-analytics.md
+done/13-frontend-foundation.md
+done/14-frontend-auth.md
+done/15-frontend-decks-cards.md
+done/16-frontend-lessons.md
+done/17-frontend-public-csv-ai.md
+done/18-frontend-profile-settings-notifications.md
+done/19-frontend-groups-admin.md
+done/20-deployment-mvp.md
+done/21-mvp-polish-and-release.md
+done/22-auth-security-hardening.md
+done/23-i18n.md
+done/24-study-languages.md
+done/25-bugfixes.md
+done/26-learning-steps.md
 ```
 
 ---
@@ -388,7 +390,7 @@ Implement tasks in this order:
 File:
 
 ```txt
-docs/tasks/00-repository.md
+docs/tasks/done/00-repository.md
 ```
 
 Purpose:
@@ -404,7 +406,7 @@ Set up the monorepo, workspace scripts, base TypeScript config, formatting, lint
 File:
 
 ```txt
-docs/tasks/01-backend-foundation.md
+docs/tasks/done/01-backend-foundation.md
 ```
 
 Purpose:
@@ -420,7 +422,7 @@ Set up NestJS API, GraphQL, Prisma, PostgreSQL, config validation, and Clean Arc
 File:
 
 ```txt
-docs/tasks/02-auth.md
+docs/tasks/done/02-auth.md
 ```
 
 Purpose:
@@ -436,7 +438,7 @@ Implement email/password auth, safe user output, access tokens, refresh token ro
 File:
 
 ```txt
-docs/tasks/03-email-verification-password-reset.md
+docs/tasks/done/03-email-verification-password-reset.md
 ```
 
 Purpose:
@@ -452,7 +454,7 @@ Implement email verification, resend verification, password reset request, passw
 File:
 
 ```txt
-docs/tasks/04-user-profile-settings.md
+docs/tasks/done/04-user-profile-settings.md
 ```
 
 Purpose:
@@ -468,7 +470,7 @@ Implement user profile and settings such as lesson size, notification preference
 File:
 
 ```txt
-docs/tasks/05-decks-cards.md
+docs/tasks/done/05-decks-cards.md
 ```
 
 Purpose:
@@ -484,7 +486,7 @@ Implement private deck and card CRUD with backend ownership and permission check
 File:
 
 ```txt
-docs/tasks/06-public-decks.md
+docs/tasks/done/06-public-decks.md
 ```
 
 Purpose:
@@ -500,7 +502,7 @@ Implement public deck publishing, search, public deck detail, and copying public
 File:
 
 ```txt
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/07-srs-lessons.md
 ```
 
 Purpose:
@@ -516,7 +518,7 @@ Implement SM-2 package, review state, lesson creation, review submission, lesson
 File:
 
 ```txt
-docs/tasks/08-csv-import.md
+docs/tasks/done/08-csv-import.md
 ```
 
 Purpose:
@@ -532,7 +534,7 @@ Implement CSV preview and confirmation flow for importing cards into a deck.
 File:
 
 ```txt
-docs/tasks/09-ai-examples.md
+docs/tasks/done/09-ai-examples.md
 ```
 
 Purpose:
@@ -548,7 +550,7 @@ Implement AI provider abstraction, mock/Gemini provider, example generation, and
 File:
 
 ```txt
-docs/tasks/10-groups-sharing.md
+docs/tasks/done/10-groups-sharing.md
 ```
 
 Purpose:
@@ -564,7 +566,7 @@ Implement groups, group invitations, group membership, and view-only deck sharin
 File:
 
 ```txt
-docs/tasks/11-notifications.md
+docs/tasks/done/11-notifications.md
 ```
 
 Purpose:
@@ -580,7 +582,7 @@ Implement push token registration, Expo push provider, due-card reminder job, an
 File:
 
 ```txt
-docs/tasks/12-admin-analytics.md
+docs/tasks/done/12-admin-analytics.md
 ```
 
 Purpose:
@@ -596,7 +598,7 @@ Implement admin dashboard stats, user search, user blocking, moderation queue, d
 File:
 
 ```txt
-docs/tasks/13-frontend-foundation.md
+docs/tasks/done/13-frontend-foundation.md
 ```
 
 Purpose:
@@ -612,7 +614,7 @@ Create Expo app foundation with Expo Router, Tamagui, Apollo Client, GraphQL Cod
 File:
 
 ```txt
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 ```
 
 Purpose:
@@ -628,7 +630,7 @@ Implement frontend auth state, token storage, Apollo auth link, sign in, sign up
 File:
 
 ```txt
-docs/tasks/15-frontend-decks-cards.md
+docs/tasks/done/15-frontend-decks-cards.md
 ```
 
 Purpose:
@@ -644,7 +646,7 @@ Implement frontend deck and card management screens.
 File:
 
 ```txt
-docs/tasks/16-frontend-lessons.md
+docs/tasks/done/16-frontend-lessons.md
 ```
 
 Purpose:
@@ -660,7 +662,7 @@ Implement frontend lesson start, review, answer, progress, and summary flow.
 File:
 
 ```txt
-docs/tasks/17-frontend-public-csv-ai.md
+docs/tasks/done/17-frontend-public-csv-ai.md
 ```
 
 Purpose:
@@ -676,7 +678,7 @@ Implement public deck browsing, public deck copy, CSV import preview/confirm, an
 File:
 
 ```txt
-docs/tasks/18-frontend-profile-settings-notifications.md
+docs/tasks/done/18-frontend-profile-settings-notifications.md
 ```
 
 Purpose:
@@ -692,7 +694,7 @@ Implement profile screen, settings form, notification permission flow, push toke
 File:
 
 ```txt
-docs/tasks/19-frontend-groups-admin.md
+docs/tasks/done/19-frontend-groups-admin.md
 ```
 
 Purpose:
@@ -708,7 +710,7 @@ Implement frontend groups, invitations, deck sharing, admin dashboard, user mana
 File:
 
 ```txt
-docs/tasks/20-deployment-mvp.md
+docs/tasks/done/20-deployment-mvp.md
 ```
 
 Purpose:
@@ -724,7 +726,7 @@ Deploy backend, web app, database migrations, CI, cron jobs, CORS, and productio
 File:
 
 ```txt
-docs/tasks/21-mvp-polish-and-release.md
+docs/tasks/done/21-mvp-polish-and-release.md
 ```
 
 Purpose:
@@ -740,7 +742,7 @@ Polish MVP UX, add smoke tests, seed data, release notes, release checklist, and
 File:
 
 ```txt
-docs/tasks/22-auth-security-hardening.md
+docs/tasks/done/22-auth-security-hardening.md
 ```
 
 Purpose:
@@ -756,7 +758,7 @@ Fix password masking on web, harden auth transport and logging, improve auth rou
 File:
 
 ```txt
-docs/tasks/23-i18n.md
+docs/tasks/done/23-i18n.md
 ```
 
 Purpose:
@@ -772,7 +774,7 @@ Implement UI translations (en/uk), interfaceLocale persistence, locale formatter
 File:
 
 ```txt
-docs/tasks/24-study-languages.md
+docs/tasks/done/24-study-languages.md
 ```
 
 Purpose:
@@ -788,7 +790,7 @@ Implement study/learning languages: language catalog, onboarding, deck language 
 File:
 
 ```txt
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 Purpose:
@@ -804,7 +806,7 @@ Fix bugs found during EPIC-24 manual smoke (auth GraphQL context/cookies, web pa
 File:
 
 ```txt
-docs/tasks/26-learning-steps.md
+docs/tasks/done/26-learning-steps.md
 ```
 
 Purpose:

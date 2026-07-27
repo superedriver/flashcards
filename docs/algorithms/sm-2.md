@@ -474,7 +474,7 @@ When implementing SRS tasks, Cursor must read this file first.
 Relevant tasks:
 
 ```txt
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/07-srs-lessons.md
 TASK-07.01 Create packages/srs package
 TASK-07.02 Implement SM-2 pure function
 TASK-07.03 Add SRS unit tests

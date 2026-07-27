@@ -25,7 +25,7 @@ This epic does not add major new product features.
 Deployment is handled in:
 
 ```txt
-docs/tasks/20-deployment-mvp.md
+docs/tasks/done/20-deployment-mvp.md
 ```
 
 ## Epic Status
@@ -45,27 +45,27 @@ docs/algorithms/sm-2.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/00-repository.md
-docs/tasks/01-backend-foundation.md
-docs/tasks/02-auth.md
-docs/tasks/03-email-verification-password-reset.md
-docs/tasks/04-user-profile-settings.md
-docs/tasks/05-decks-cards.md
-docs/tasks/06-public-decks.md
-docs/tasks/07-srs-lessons.md
-docs/tasks/08-csv-import.md
-docs/tasks/09-ai-examples.md
-docs/tasks/10-groups-sharing.md
-docs/tasks/11-notifications.md
-docs/tasks/12-admin-analytics.md
-docs/tasks/13-frontend-foundation.md
-docs/tasks/14-frontend-auth.md
-docs/tasks/15-frontend-decks-cards.md
-docs/tasks/16-frontend-lessons.md
-docs/tasks/17-frontend-public-csv-ai.md
-docs/tasks/18-frontend-profile-settings-notifications.md
-docs/tasks/19-frontend-groups-admin.md
-docs/tasks/20-deployment-mvp.md
+docs/tasks/done/00-repository.md
+docs/tasks/done/01-backend-foundation.md
+docs/tasks/done/02-auth.md
+docs/tasks/done/03-email-verification-password-reset.md
+docs/tasks/done/04-user-profile-settings.md
+docs/tasks/done/05-decks-cards.md
+docs/tasks/done/06-public-decks.md
+docs/tasks/done/07-srs-lessons.md
+docs/tasks/done/08-csv-import.md
+docs/tasks/done/09-ai-examples.md
+docs/tasks/done/10-groups-sharing.md
+docs/tasks/done/11-notifications.md
+docs/tasks/done/12-admin-analytics.md
+docs/tasks/done/13-frontend-foundation.md
+docs/tasks/done/14-frontend-auth.md
+docs/tasks/done/15-frontend-decks-cards.md
+docs/tasks/done/16-frontend-lessons.md
+docs/tasks/done/17-frontend-public-csv-ai.md
+docs/tasks/done/18-frontend-profile-settings-notifications.md
+docs/tasks/done/19-frontend-groups-admin.md
+docs/tasks/done/20-deployment-mvp.md
 ```
 
 ## Epic Prerequisites

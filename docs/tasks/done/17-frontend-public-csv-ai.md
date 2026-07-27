@@ -20,9 +20,9 @@ This epic covers:
 Backend features are handled in:
 
 ```txt
-docs/tasks/06-public-decks.md
-docs/tasks/08-csv-import.md
-docs/tasks/09-ai-examples.md
+docs/tasks/done/06-public-decks.md
+docs/tasks/done/08-csv-import.md
+docs/tasks/done/09-ai-examples.md
 ```
 
 ## Epic Status
@@ -39,12 +39,12 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/06-public-decks.md
-docs/tasks/08-csv-import.md
-docs/tasks/09-ai-examples.md
-docs/tasks/13-frontend-foundation.md
-docs/tasks/14-frontend-auth.md
-docs/tasks/15-frontend-decks-cards.md
+docs/tasks/done/06-public-decks.md
+docs/tasks/done/08-csv-import.md
+docs/tasks/done/09-ai-examples.md
+docs/tasks/done/13-frontend-foundation.md
+docs/tasks/done/14-frontend-auth.md
+docs/tasks/done/15-frontend-decks-cards.md
 ```
 
 ## Epic Prerequisites
@@ -1640,5 +1640,5 @@ EPIC-17 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/18-frontend-profile-settings-notifications.md
+docs/tasks/done/18-frontend-profile-settings-notifications.md
 ```

@@ -24,19 +24,19 @@ This epic does not implement product screens yet.
 Auth screens are handled in:
 
 ```txt
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 ```
 
 Deck/card screens are handled in:
 
 ```txt
-docs/tasks/15-frontend-decks-cards.md
+docs/tasks/done/15-frontend-decks-cards.md
 ```
 
 Lesson screens are handled in:
 
 ```txt
-docs/tasks/16-frontend-lessons.md
+docs/tasks/done/16-frontend-lessons.md
 ```
 
 ## Epic Status
@@ -51,8 +51,8 @@ Cursor must read these documents before working on this epic:
 docs/architecture.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/00-repository.md
-docs/tasks/01-backend-foundation.md
+docs/tasks/done/00-repository.md
+docs/tasks/done/01-backend-foundation.md
 ```
 
 ## Epic Prerequisites
@@ -401,7 +401,7 @@ Use simple placeholder components for now.
 Auth gating is implemented later in:
 
 ```txt
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 ```
 
 For this epic, routes can be accessible without real auth logic.
@@ -654,7 +654,7 @@ For this epic:
 Auth link will be added in:
 
 ```txt
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 ```
 
 ## Security Requirements
@@ -1125,5 +1125,5 @@ EPIC-13 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 ```

@@ -40,14 +40,14 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/04-user-profile-settings.md
-docs/tasks/05-decks-cards.md
-docs/tasks/06-public-decks.md
-docs/tasks/08-csv-import.md
-docs/tasks/09-ai-examples.md
-docs/tasks/10-groups-sharing.md
-docs/tasks/17-frontend-public-csv-ai.md
-docs/tasks/23-i18n.md
+docs/tasks/done/04-user-profile-settings.md
+docs/tasks/done/05-decks-cards.md
+docs/tasks/done/06-public-decks.md
+docs/tasks/done/08-csv-import.md
+docs/tasks/done/09-ai-examples.md
+docs/tasks/done/10-groups-sharing.md
+docs/tasks/done/17-frontend-public-csv-ai.md
+docs/tasks/done/23-i18n.md
 ```
 
 ## Epic Prerequisites

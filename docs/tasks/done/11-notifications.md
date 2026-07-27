@@ -19,13 +19,13 @@ This epic covers:
 Frontend notification permission UI is handled in:
 
 ```txt
-docs/tasks/18-frontend-profile-settings-notifications.md
+docs/tasks/done/18-frontend-profile-settings-notifications.md
 ```
 
 Deployment cron configuration is handled in:
 
 ```txt
-docs/tasks/20-deployment-mvp.md
+docs/tasks/done/20-deployment-mvp.md
 ```
 
 ## Epic Status
@@ -45,8 +45,8 @@ docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/04-user-profile-settings.md
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/04-user-profile-settings.md
+docs/tasks/done/07-srs-lessons.md
 ```
 
 ## Epic Prerequisites
@@ -1719,9 +1719,9 @@ Add unit tests for EPIC-11 notification use cases, push providers, mapper, and i
 ```txt
 docs/security/security-checklist.md
 docs/backend-clean-architecture.md
-docs/tasks/11-notifications.md
-docs/tasks/04-user-profile-settings.md
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/11-notifications.md
+docs/tasks/done/04-user-profile-settings.md
+docs/tasks/done/07-srs-lessons.md
 ```
 
 ## Files to Create
@@ -1941,5 +1941,5 @@ EPIC-11 is complete when:
 After EPIC-11 is complete (including TASK-11.17), move to:
 
 ```txt
-docs/tasks/12-admin-analytics.md
+docs/tasks/done/12-admin-analytics.md
 ```

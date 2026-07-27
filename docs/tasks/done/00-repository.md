@@ -1004,5 +1004,5 @@ EPIC-00 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/01-backend-foundation.md
+docs/tasks/done/01-backend-foundation.md
 ```

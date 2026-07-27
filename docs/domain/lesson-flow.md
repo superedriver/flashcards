@@ -9,9 +9,9 @@ It is a source-of-truth document for backend lesson logic, frontend lesson UI, a
 Relevant task files:
 
 ```txt
-docs/tasks/26-learning-steps.md
-docs/tasks/07-srs-lessons.md (historical SM-2 backend)
-docs/tasks/16-frontend-lessons.md (historical frontend)
+docs/tasks/done/26-learning-steps.md
+docs/tasks/done/07-srs-lessons.md (historical SM-2 backend)
+docs/tasks/done/16-frontend-lessons.md (historical frontend)
 docs/algorithms/learning-steps.md
 docs/algorithms/sm-2.md (historical)
 docs/domain/permissions.md
@@ -420,7 +420,7 @@ Backend abandons previous ACTIVE sessions when starting a new lesson.
 
 ```txt
 docs/algorithms/learning-steps.md
-docs/tasks/26-learning-steps.md
+docs/tasks/done/26-learning-steps.md
 docs/architecture.md
 docs/domain/permissions.md
 ```

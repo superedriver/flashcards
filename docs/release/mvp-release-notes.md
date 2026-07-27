@@ -53,7 +53,7 @@ Target stack: Neon PostgreSQL, Render API, Vercel web, GitHub Actions cron for d
 ```txt
 - SM-2–based lesson flow (Know / Don't know) — current shipped behavior
 - Planned EPIC-26: learning steps 0–8, Home multi-deck START, To learn / Practiced / Learned groups
-  (docs/tasks/26-learning-steps.md, docs/algorithms/learning-steps.md)
+  (docs/tasks/done/26-learning-steps.md, docs/algorithms/learning-steps.md)
 - Lesson progress and summary
 - Per-deck learning stats
 - Daily due-card reminder backend job (push when configured)

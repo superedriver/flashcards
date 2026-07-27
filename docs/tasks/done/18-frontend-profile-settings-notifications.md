@@ -21,14 +21,14 @@ This epic covers:
 Backend features are handled in:
 
 ```txt
-docs/tasks/04-user-profile-settings.md
-docs/tasks/11-notifications.md
+docs/tasks/done/04-user-profile-settings.md
+docs/tasks/done/11-notifications.md
 ```
 
 Frontend auth is handled in:
 
 ```txt
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/14-frontend-auth.md
 ```
 
 ## Epic Status
@@ -45,10 +45,10 @@ docs/domain/auth-token-strategy.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/04-user-profile-settings.md
-docs/tasks/11-notifications.md
-docs/tasks/13-frontend-foundation.md
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/04-user-profile-settings.md
+docs/tasks/done/11-notifications.md
+docs/tasks/done/13-frontend-foundation.md
+docs/tasks/done/14-frontend-auth.md
 ```
 
 ## Epic Prerequisites
@@ -1389,5 +1389,5 @@ EPIC-18 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/19-frontend-groups-admin.md
+docs/tasks/done/19-frontend-groups-admin.md
 ```

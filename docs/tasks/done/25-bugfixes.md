@@ -31,10 +31,10 @@ docs/domain/auth-token-strategy.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/02-auth.md
-docs/tasks/14-frontend-auth.md
-docs/tasks/22-auth-security-hardening.md
-docs/tasks/24-study-languages.md
+docs/tasks/done/02-auth.md
+docs/tasks/done/14-frontend-auth.md
+docs/tasks/done/22-auth-security-hardening.md
+docs/tasks/done/24-study-languages.md
 docs/smoke/study-languages.md
 docs/release/mvp-smoke-tests.md
 ```
@@ -142,7 +142,7 @@ GraphQL context always includes Express `req` and `res` so auth cookie set/clear
 
 ```txt
 docs/domain/auth-token-strategy.md
-docs/tasks/22-auth-security-hardening.md
+docs/tasks/done/22-auth-security-hardening.md
 apps/api/src/app.module.ts
 apps/api/src/modules/auth/presentation/graphql/resolvers/auth.resolver.ts
 apps/api/src/modules/auth/presentation/http/refresh-token-cookie.service.ts
@@ -246,8 +246,8 @@ Password fields on web match Email field height, padding, and border while remai
 ## Related Documents
 
 ```txt
-docs/tasks/22-auth-security-hardening.md
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/22-auth-security-hardening.md
+docs/tasks/done/14-frontend-auth.md
 apps/mobile/src/ui/primitives/app-input.tsx
 ```
 
@@ -341,7 +341,7 @@ Web `secureTextEntry` AppInput background, border, text, and placeholder colors 
 
 ```txt
 apps/mobile/src/ui/primitives/app-input.tsx
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 ## Requirements
@@ -399,7 +399,7 @@ apps/mobile/app/(tabs)/_layout.tsx
 apps/mobile/app/(tabs)/index.tsx
 apps/mobile/src/i18n/resources/en.ts
 apps/mobile/src/i18n/resources/uk.ts
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 ## Requirements
@@ -452,7 +452,7 @@ Deck list, create, detail, edit, cards, CSV, and assign-languages screens stay i
 ```txt
 apps/mobile/app/_layout.tsx
 apps/mobile/app/(tabs)/decks/** (moved from apps/mobile/app/decks/**)
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 ## Requirements
@@ -507,7 +507,7 @@ Decks page sections show vertical bordered cards in a horizontal rail per sectio
 apps/mobile/src/features/decks/components/deck-list-item.tsx
 apps/mobile/src/features/decks/components/decks-page-sections.tsx
 apps/mobile/src/features/decks/components/deck-list.tsx
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 ## Requirements
@@ -562,7 +562,7 @@ Add Home / Decks / Profile icons without changing full-width tab bar layout.
 apps/mobile/app/(tabs)/_layout.tsx
 apps/mobile/package.json
 pnpm-lock.yaml
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 ## Requirements
@@ -630,7 +630,7 @@ apps/mobile/src/features/auth/components/forgot-password-form.tsx
 apps/mobile/src/features/auth/components/reset-password-form.tsx
 apps/mobile/src/features/auth/components/verify-email-screen.tsx
 apps/mobile/src/features/auth/components/verify-email-prompt.tsx
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 ## Requirements
@@ -691,7 +691,7 @@ apps/mobile/src/i18n/resources/en/study-languages.ts
 apps/mobile/src/i18n/resources/uk/study-languages.ts
 docs/smoke/study-languages.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 ## Requirements
@@ -745,7 +745,7 @@ apps/mobile/src/features/study-languages/components/language-catalog-modal.tsx
 apps/mobile/src/features/study-languages/components/study-languages-list-modal.tsx
 apps/mobile/src/i18n/resources/en.ts
 apps/mobile/src/i18n/resources/uk.ts
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 ## Requirements
@@ -798,7 +798,7 @@ apps/mobile/app/_layout.tsx
 apps/mobile/app/(tabs)/_layout.tsx
 apps/mobile/app/(tabs)/public/** (from app/(tabs)/public.tsx + app/public/**)
 apps/mobile/app/(tabs)/preview/** (from app/preview/**)
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 ## Requirements
@@ -862,7 +862,7 @@ apps/mobile/src/features/decks/components/deck-header.tsx
 apps/mobile/src/features/decks/components/index.ts
 apps/mobile/src/features/public-decks/components/public-deck-header.tsx
 apps/mobile/src/features/public-decks/components/public-deck-list-item.tsx
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 ## Requirements
@@ -918,7 +918,7 @@ apps/mobile/src/i18n/bootstrap-locale.ts
 apps/mobile/src/i18n/index.ts
 apps/mobile/src/features/auth/services/auth-session.ts
 apps/mobile/src/features/auth/services/bootstrap-auth.ts
-docs/tasks/25-bugfixes.md
+docs/tasks/done/25-bugfixes.md
 ```
 
 ## Requirements

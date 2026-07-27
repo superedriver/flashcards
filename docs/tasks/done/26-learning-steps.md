@@ -47,9 +47,9 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/07-srs-lessons.md
-docs/tasks/16-frontend-lessons.md
-docs/tasks/24-study-languages.md
+docs/tasks/done/07-srs-lessons.md
+docs/tasks/done/16-frontend-lessons.md
+docs/tasks/done/24-study-languages.md
 docs/algorithms/sm-2.md
 docs/smoke/learning-steps.md
 ```
@@ -1549,7 +1549,7 @@ docs/release/mvp-smoke-tests.md
 
 ```txt
 docs/smoke/learning-steps.md
-docs/tasks/26-learning-steps.md (statuses → DONE)
+docs/tasks/done/26-learning-steps.md (statuses → DONE)
 ```
 
 ## Requirements

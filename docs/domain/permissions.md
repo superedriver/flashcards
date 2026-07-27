@@ -13,14 +13,14 @@ Frontend permission checks are only for UX.
 Relevant task files:
 
 ```txt
-docs/tasks/05-decks-cards.md
-docs/tasks/06-public-decks.md
-docs/tasks/07-srs-lessons.md
-docs/tasks/10-groups-sharing.md
-docs/tasks/12-admin-analytics.md
-docs/tasks/15-frontend-decks-cards.md
-docs/tasks/16-frontend-lessons.md
-docs/tasks/19-frontend-groups-admin.md
+docs/tasks/done/05-decks-cards.md
+docs/tasks/done/06-public-decks.md
+docs/tasks/done/07-srs-lessons.md
+docs/tasks/done/10-groups-sharing.md
+docs/tasks/done/12-admin-analytics.md
+docs/tasks/done/15-frontend-decks-cards.md
+docs/tasks/done/16-frontend-lessons.md
+docs/tasks/done/19-frontend-groups-admin.md
 ```
 
 ## Core Principles

@@ -44,12 +44,12 @@ docs/domain/auth-token-strategy.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/01-backend-foundation.md
-docs/tasks/02-auth.md
-docs/tasks/03-email-verification-password-reset.md
-docs/tasks/11-notifications.md
-docs/tasks/13-frontend-foundation.md
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/01-backend-foundation.md
+docs/tasks/done/02-auth.md
+docs/tasks/done/03-email-verification-password-reset.md
+docs/tasks/done/11-notifications.md
+docs/tasks/done/13-frontend-foundation.md
+docs/tasks/done/14-frontend-auth.md
 ```
 
 ## Epic Prerequisites
@@ -1275,5 +1275,5 @@ EPIC-20 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/21-mvp-polish-and-release.md
+docs/tasks/done/21-mvp-polish-and-release.md
 ```

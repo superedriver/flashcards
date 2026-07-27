@@ -36,7 +36,7 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/05-decks-cards.md
+docs/tasks/done/05-decks-cards.md
 ```
 
 ## Epic Prerequisites
@@ -46,9 +46,9 @@ EPIC-05 should be complete.
 Recommended but not strictly required:
 
 ```txt
-docs/tasks/06-public-decks.md
-docs/tasks/07-srs-lessons.md
-docs/tasks/08-csv-import.md
+docs/tasks/done/06-public-decks.md
+docs/tasks/done/07-srs-lessons.md
+docs/tasks/done/08-csv-import.md
 ```
 
 Expected state:
@@ -1729,7 +1729,7 @@ Add unit tests for EPIC-09 AI prompt builder, mock provider, use cases, and mapp
 docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/backend-clean-architecture.md
-docs/tasks/09-ai-examples.md
+docs/tasks/done/09-ai-examples.md
 ```
 
 ## Files to Create
@@ -1917,5 +1917,5 @@ EPIC-09 is complete when:
 After EPIC-09 is complete (including TASK-09.16), move to:
 
 ```txt
-docs/tasks/10-groups-sharing.md
+docs/tasks/done/10-groups-sharing.md
 ```

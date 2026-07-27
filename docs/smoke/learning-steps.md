@@ -5,7 +5,7 @@ Manual + automated verification checklist for learning steps (replaces SM-2 revi
 Related:
 
 ```txt
-docs/tasks/26-learning-steps.md
+docs/tasks/done/26-learning-steps.md
 docs/algorithms/learning-steps.md
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md

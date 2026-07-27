@@ -21,7 +21,7 @@ This epic covers:
 This epic builds on backend auth from:
 
 ```txt
-docs/tasks/02-auth.md
+docs/tasks/done/02-auth.md
 ```
 
 ## Epic Status
@@ -39,7 +39,7 @@ docs/domain/auth-token-strategy.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/02-auth.md
+docs/tasks/done/02-auth.md
 ```
 
 ## Epic Prerequisites
@@ -2128,5 +2128,5 @@ EPIC-03 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/04-user-profile-settings.md
+docs/tasks/done/04-user-profile-settings.md
 ```

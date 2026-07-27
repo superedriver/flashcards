@@ -34,7 +34,7 @@ docs/backend-clean-architecture.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/00-repository.md
+docs/tasks/done/00-repository.md
 ```
 
 Future backend feature work must also follow:
@@ -1788,5 +1788,5 @@ EPIC-01 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/02-auth.md
+docs/tasks/done/02-auth.md
 ```

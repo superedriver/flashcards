@@ -23,13 +23,13 @@ This epic covers:
 Public browsing, CSV import, and AI examples are handled in:
 
 ```txt
-docs/tasks/17-frontend-public-csv-ai.md
+docs/tasks/done/17-frontend-public-csv-ai.md
 ```
 
 Lessons are handled in:
 
 ```txt
-docs/tasks/16-frontend-lessons.md
+docs/tasks/done/16-frontend-lessons.md
 ```
 
 ## Epic Status
@@ -46,10 +46,10 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/05-decks-cards.md
-docs/tasks/06-public-decks.md
-docs/tasks/13-frontend-foundation.md
-docs/tasks/14-frontend-auth.md
+docs/tasks/done/05-decks-cards.md
+docs/tasks/done/06-public-decks.md
+docs/tasks/done/13-frontend-foundation.md
+docs/tasks/done/14-frontend-auth.md
 ```
 
 ## Epic Prerequisites
@@ -1714,5 +1714,5 @@ EPIC-15 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/16-frontend-lessons.md
+docs/tasks/done/16-frontend-lessons.md
 ```

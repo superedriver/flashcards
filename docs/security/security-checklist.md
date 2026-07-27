@@ -9,19 +9,19 @@ It is a source-of-truth document for backend, frontend, deployment, and release 
 Relevant task files:
 
 ```txt
-docs/tasks/02-auth.md
-docs/tasks/03-email-verification-password-reset.md
-docs/tasks/05-decks-cards.md
-docs/tasks/06-public-decks.md
-docs/tasks/07-srs-lessons.md
-docs/tasks/10-groups-sharing.md
-docs/tasks/11-notifications.md
-docs/tasks/12-admin-analytics.md
-docs/tasks/14-frontend-auth.md
-docs/tasks/18-frontend-profile-settings-notifications.md
-docs/tasks/19-frontend-groups-admin.md
-docs/tasks/20-deployment-mvp.md
-docs/tasks/21-mvp-polish-and-release.md
+docs/tasks/done/02-auth.md
+docs/tasks/done/03-email-verification-password-reset.md
+docs/tasks/done/05-decks-cards.md
+docs/tasks/done/06-public-decks.md
+docs/tasks/done/07-srs-lessons.md
+docs/tasks/done/10-groups-sharing.md
+docs/tasks/done/11-notifications.md
+docs/tasks/done/12-admin-analytics.md
+docs/tasks/done/14-frontend-auth.md
+docs/tasks/done/18-frontend-profile-settings-notifications.md
+docs/tasks/done/19-frontend-groups-admin.md
+docs/tasks/done/20-deployment-mvp.md
+docs/tasks/done/21-mvp-polish-and-release.md
 ```
 
 ## Core Security Principles

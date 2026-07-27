@@ -19,19 +19,19 @@ This epic covers:
 Deck/card owner CRUD is handled in:
 
 ```txt
-docs/tasks/05-decks-cards.md
+docs/tasks/done/05-decks-cards.md
 ```
 
 Lessons and SRS are handled in:
 
 ```txt
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/07-srs-lessons.md
 ```
 
 Admin moderation is handled in:
 
 ```txt
-docs/tasks/12-admin-analytics.md
+docs/tasks/done/12-admin-analytics.md
 ```
 
 ## Epic Status
@@ -49,7 +49,7 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/05-decks-cards.md
+docs/tasks/done/05-decks-cards.md
 ```
 
 ## Epic Prerequisites
@@ -109,8 +109,8 @@ If that policy changes later, update:
 
 ```txt
 docs/domain/permissions.md
-docs/tasks/06-public-decks.md
-docs/tasks/12-admin-analytics.md
+docs/tasks/done/06-public-decks.md
+docs/tasks/done/12-admin-analytics.md
 ```
 
 ## Public Deck Visibility Rule
@@ -1793,7 +1793,7 @@ Add unit tests for EPIC-06 public deck use cases.
 docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/backend-clean-architecture.md
-docs/tasks/06-public-decks.md
+docs/tasks/done/06-public-decks.md
 ```
 
 ## Files to Create
@@ -1978,5 +1978,5 @@ EPIC-06 is complete when:
 After this epic is complete, move to:
 
 ```txt
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/07-srs-lessons.md
 ```

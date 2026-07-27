@@ -37,9 +37,9 @@ docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/05-decks-cards.md
-docs/tasks/06-public-decks.md
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/05-decks-cards.md
+docs/tasks/done/06-public-decks.md
+docs/tasks/done/07-srs-lessons.md
 ```
 
 ## Epic Prerequisites
@@ -2997,9 +2997,9 @@ Add unit tests for EPIC-10 group permission service, use cases, mappers, email n
 docs/domain/permissions.md
 docs/security/security-checklist.md
 docs/backend-clean-architecture.md
-docs/tasks/10-groups-sharing.md
-docs/tasks/05-decks-cards.md
-docs/tasks/07-srs-lessons.md
+docs/tasks/done/10-groups-sharing.md
+docs/tasks/done/05-decks-cards.md
+docs/tasks/done/07-srs-lessons.md
 ```
 
 ## Files to Create
@@ -3313,5 +3313,5 @@ EPIC-10 is complete when:
 After EPIC-10 is complete (including TASK-10.30), move to:
 
 ```txt
-docs/tasks/11-notifications.md
+docs/tasks/done/11-notifications.md
 ```
