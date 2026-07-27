@@ -65,29 +65,42 @@ export function LessonSummaryScreen() {
         </View>
       </AppCard>
       <View style={{ gap: 12 }}>
+        {targetDeckId ? (
+          <>
+            <AppButton
+              onPress={() => {
+                clearCompletion()
+                router.replace(`/lessons/start?deckId=${targetDeckId}`)
+              }}
+            >
+              {t('lessons.summary.startAnother')}
+            </AppButton>
+            <AppButton
+              onPress={() => {
+                clearCompletion()
+                router.replace(`/decks/${targetDeckId}`)
+              }}
+            >
+              {t('lessons.summary.backToDeck')}
+            </AppButton>
+          </>
+        ) : (
+          <AppButton
+            onPress={() => {
+              clearCompletion()
+              router.replace('/(tabs)')
+            }}
+          >
+            {t('lessons.summary.startAnother')}
+          </AppButton>
+        )}
         <AppButton
           onPress={() => {
             clearCompletion()
-            router.replace(`/lessons/start?deckId=${targetDeckId}`)
+            router.replace(targetDeckId ? `/(tabs)/decks` : '/(tabs)')
           }}
         >
-          {t('lessons.summary.startAnother')}
-        </AppButton>
-        <AppButton
-          onPress={() => {
-            clearCompletion()
-            router.replace(`/decks/${targetDeckId}`)
-          }}
-        >
-          {t('lessons.summary.backToDeck')}
-        </AppButton>
-        <AppButton
-          onPress={() => {
-            clearCompletion()
-            router.replace('/(tabs)/decks')
-          }}
-        >
-          {t('lessons.summary.backToDecks')}
+          {t(targetDeckId ? 'lessons.summary.backToDecks' : 'common.tabs.home')}
         </AppButton>
       </View>
     </Screen>

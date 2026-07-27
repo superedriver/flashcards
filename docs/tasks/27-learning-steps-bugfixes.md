@@ -78,7 +78,7 @@ Expected state:
 
 ## Task Checklist
 
-- [ ] TASK-27.01 Fix completeLesson for Home sessions with null deckId
+- [x] TASK-27.01 Fix completeLesson for Home sessions with null deckId
 
 ---
 
@@ -86,7 +86,7 @@ Expected state:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

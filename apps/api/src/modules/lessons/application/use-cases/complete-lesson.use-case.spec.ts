@@ -188,4 +188,34 @@ describe('CompleteLessonUseCase', () => {
     expect(countByDeckId).toHaveBeenCalledWith('deck-1');
     expect(result.totalCards).toBe(42);
   });
+
+  it('completes HOME_ACTIVE_TARGET session with null deckId', async () => {
+    const { useCase, complete, countByDeckId } = createUseCase({
+      session: {
+        ...activeSession,
+        deckId: null,
+        scope: 'HOME_ACTIVE_TARGET',
+        lessonSize: 5,
+      },
+      reviewedCards: 5,
+      knownCount: 4,
+      dontKnowCount: 1,
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+    });
+
+    expect(complete).toHaveBeenCalledWith('session-1', expect.any(Date));
+    expect(countByDeckId).not.toHaveBeenCalled();
+    expect(result).toMatchObject({
+      sessionId: 'session-1',
+      deckId: null,
+      totalCards: 5,
+      reviewedCards: 5,
+      knownCount: 4,
+      dontKnowCount: 1,
+    });
+  });
 });

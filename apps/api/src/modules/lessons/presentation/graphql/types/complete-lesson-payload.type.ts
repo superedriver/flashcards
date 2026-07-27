@@ -5,8 +5,8 @@ export class CompleteLessonPayloadType {
   @Field()
   sessionId: string;
 
-  @Field()
-  deckId: string;
+  @Field(() => String, { nullable: true })
+  deckId: string | null;
 
   @Field(() => Int)
   totalCards: number;

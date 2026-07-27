@@ -21,7 +21,7 @@ export type CompleteLessonUseCaseInput = {
 
 export type CompleteLessonUseCaseResult = {
   sessionId: string;
-  deckId: string;
+  deckId: string | null;
   totalCards: number;
   reviewedCards: number;
   knownCount: number;
@@ -69,14 +69,12 @@ export class CompleteLessonUseCase {
       );
     }
 
-    if (!session.deckId) {
+    if (session.scope === 'DECK' && !session.deckId) {
       throw new ApplicationError(
         ErrorCodes.LESSON_NOT_FOUND,
         'Lesson not found',
       );
     }
-
-    const deckId = session.deckId;
 
     const reviewedCards = await this.studySessionRepository.countReviews(
       input.sessionId,
@@ -94,11 +92,14 @@ export class CompleteLessonUseCase {
 
     await this.studySessionRepository.complete(input.sessionId, completedAt);
 
-    const totalCards = await this.cardRepository.countByDeckId(deckId);
+    const totalCards =
+      session.scope === 'DECK' && session.deckId
+        ? await this.cardRepository.countByDeckId(session.deckId)
+        : reviewedCards;
 
     return {
       sessionId: input.sessionId,
-      deckId,
+      deckId: session.deckId,
       totalCards,
       reviewedCards,
       knownCount,
