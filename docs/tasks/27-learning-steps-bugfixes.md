@@ -63,6 +63,8 @@ Expected state:
    - Decks → deck detail → Home → Decks shows the old deck instead of the list
 5. Deck list cards uneven height / cluttered body
    - Description shown in list; learning counters are one long line
+6. Deck rail cards still uneven after title-only change
+   - Title 1 vs 2 lines; public status two labels; due line optional
 ```
 
 ## Epic Rules
@@ -87,6 +89,7 @@ Expected state:
 27.03 Reset Decks tab stack to list on re-tap
 27.04 Always open decks list when selecting Decks tab
 27.05 Deck list cards: title only + column learning counters
+27.06 Equalize deck rail card heights
 ```
 
 ## Task Checklist
@@ -96,6 +99,7 @@ Expected state:
 - [x] TASK-27.03 Reset Decks tab stack to list on re-tap
 - [x] TASK-27.04 Always open decks list when selecting Decks tab
 - [x] TASK-27.05 Deck list cards: title only + column learning counters
+- [x] TASK-27.06 Equalize deck rail card heights
 
 ---
 
@@ -513,4 +517,82 @@ pnpm lint
 
 ```txt
 TASK-27.05 Deck list cards: title only + column learning counters
+```
+
+---
+
+# TASK-27.06 Equalize deck rail card heights
+
+## Status
+
+DONE
+
+## Context
+
+After TASK-27.05, Decks rail cards still had uneven bottoms because content height varied:
+
+- title wrapping to 1 vs 2 lines (web `AppText` also ignored `numberOfLines`);
+- public decks show two status labels vs one for private;
+- optional “due” counter line.
+
+## Goal
+
+All rail (`layout="rail"`) deck cards share one fixed height with reserved slots for title, status, and learning counters. Description stays off the list. No tooltips.
+
+## Related Documents
+
+```txt
+docs/tasks/27-learning-steps-bugfixes.md (TASK-27.05)
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+apps/mobile/src/features/decks/components/deck-status-badge.tsx
+apps/mobile/src/ui/primitives/app-text.tsx
+docs/tasks/27-learning-steps-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Rail DeckListItem: fixed height; reserved slots for title (2 lines), status, counters.
+2. Title: numberOfLines=2 + ellipsizeMode=tail; AppText must honor this on web.
+3. DeckStatusBadge: stack labels vertically (predictable height in narrow cards).
+4. fill layout may keep flexible height; do not break non-rail usages.
+```
+
+## Security Requirements
+
+```txt
+- No permission or auth changes.
+```
+
+## Acceptance Criteria
+
+```txt
+- Own decks rail: Spanish Food / Demo Spanish Basics / Demo Public Phrases share the same card height.
+- Long titles truncate; status and counters stay inside the card.
+- Mobile typecheck / lint / format pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-27.06 Equalize deck rail card heights
 ```

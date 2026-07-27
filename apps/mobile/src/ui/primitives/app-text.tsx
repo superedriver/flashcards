@@ -1,8 +1,8 @@
 import type { ComponentProps, ReactNode } from 'react'
-import { Platform, Text as RNText, type TextStyle } from 'react-native'
+import { Platform, Text as RNText, type TextProps, type TextStyle } from 'react-native'
 import { Text } from 'tamagui'
 
-type AppTextProps = ComponentProps<typeof Text>
+type AppTextProps = ComponentProps<typeof Text> & Pick<TextProps, 'ellipsizeMode' | 'numberOfLines'>
 
 const webTextStyle = {
   flexShrink: 1,
@@ -10,10 +10,17 @@ const webTextStyle = {
   wordBreak: 'break-word',
 } as TextStyle
 
+const webClampedTextStyle = {
+  flexShrink: 1,
+  overflow: 'hidden',
+} as TextStyle
+
 export function AppText({
   accessibilityLiveRegion,
   accessibilityRole,
   children,
+  ellipsizeMode,
+  numberOfLines,
   style,
   ...props
 }: AppTextProps) {
@@ -22,7 +29,12 @@ export function AppText({
       <RNText
         accessibilityRole={accessibilityRole}
         aria-live={accessibilityLiveRegion === 'polite' ? 'polite' : undefined}
-        style={[webTextStyle, style as ComponentProps<typeof RNText>['style']]}
+        ellipsizeMode={ellipsizeMode}
+        numberOfLines={numberOfLines}
+        style={[
+          numberOfLines != null ? webClampedTextStyle : webTextStyle,
+          style as ComponentProps<typeof RNText>['style'],
+        ]}
       >
         {children as ReactNode}
       </RNText>
@@ -33,6 +45,8 @@ export function AppText({
     <Text
       accessibilityLiveRegion={accessibilityLiveRegion}
       accessibilityRole={accessibilityRole}
+      ellipsizeMode={ellipsizeMode}
+      numberOfLines={numberOfLines}
       style={style}
       {...props}
     >

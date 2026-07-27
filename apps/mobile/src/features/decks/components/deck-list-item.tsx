@@ -31,6 +31,13 @@ type DeckListItemProps = {
 
 const CARD_ACCENTS = ['#dbe7f3', '#e4efe6', '#f3e9db', '#ebe4f2', '#e8ecef'] as const
 
+/** Fixed rail heights so titles/status/counters cannot stretch neighbors unevenly. */
+const RAIL_CARD_HEIGHT_WITH_COUNTERS = 292
+const RAIL_CARD_HEIGHT = 220
+const TITLE_SLOT_HEIGHT = 40
+const STATUS_SLOT_HEIGHT = 36
+const COUNTERS_SLOT_HEIGHT = 72
+
 function accentForId(id: string): string {
   let hash = 0
 
@@ -53,6 +60,7 @@ export function DeckListItem({
   const href = deck.origin === DeckOrigin.Public ? `/public/${deck.id}` : `/decks/${deck.id}`
   const accent = accentForId(deck.id)
   const isRail = layout === 'rail'
+  const railHeight = showLearningCounters ? RAIL_CARD_HEIGHT_WITH_COUNTERS : RAIL_CARD_HEIGHT
 
   return (
     <Pressable
@@ -66,7 +74,8 @@ export function DeckListItem({
           borderColor: '#d7d7d7',
           borderRadius: 12,
           borderWidth: 1,
-          minHeight: 220,
+          height: isRail ? railHeight : undefined,
+          minHeight: isRail ? undefined : 220,
           overflow: 'hidden',
         }}
       >
@@ -106,26 +115,47 @@ export function DeckListItem({
 
         <View
           style={{
-            flexGrow: 1,
+            flex: isRail ? 1 : undefined,
+            flexGrow: isRail ? undefined : 1,
             gap: 8,
             justifyContent: 'space-between',
-            minHeight: 124,
+            minHeight: isRail ? undefined : 124,
             padding: 12,
           }}
         >
-          <AppText
-            ellipsizeMode="tail"
-            numberOfLines={2}
-            style={{ fontSize: 16, fontWeight: '700', lineHeight: 20 }}
+          <View
+            style={isRail ? { height: TITLE_SLOT_HEIGHT, justifyContent: 'flex-start' } : undefined}
           >
-            {deck.title}
-          </AppText>
+            <AppText
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              style={{ fontSize: 16, fontWeight: '700', lineHeight: 20 }}
+            >
+              {deck.title}
+            </AppText>
+          </View>
           <View style={{ gap: 8 }}>
-            <DeckStatusBadge
-              moderationStatus={deck.moderationStatus}
-              visibility={deck.visibility}
-            />
-            {showLearningCounters ? <DeckLearningStatsCompact deckId={deck.id} /> : null}
+            <View
+              style={
+                isRail ? { height: STATUS_SLOT_HEIGHT, justifyContent: 'flex-start' } : undefined
+              }
+            >
+              <DeckStatusBadge
+                moderationStatus={deck.moderationStatus}
+                visibility={deck.visibility}
+              />
+            </View>
+            {showLearningCounters ? (
+              <View
+                style={
+                  isRail
+                    ? { height: COUNTERS_SLOT_HEIGHT, justifyContent: 'flex-start' }
+                    : undefined
+                }
+              >
+                <DeckLearningStatsCompact deckId={deck.id} />
+              </View>
+            ) : null}
           </View>
         </View>
       </View>

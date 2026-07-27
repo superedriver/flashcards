@@ -36,7 +36,7 @@ export function DeckStatusBadge({ moderationStatus, visibility }: DeckStatusBadg
   const moderationLabel = getModerationLabel(moderationStatus)
 
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+    <View style={{ flexDirection: 'column', gap: 2 }}>
       <AppText style={{ color: getVisibilityColor(visibility), fontSize: 12, fontWeight: '600' }}>
         {getVisibilityLabel(visibility)}
       </AppText>
