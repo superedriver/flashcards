@@ -113,16 +113,13 @@ export function DeckListItem({
             padding: 12,
           }}
         >
-          <View style={{ gap: 8 }}>
-            <AppText numberOfLines={2} style={{ fontSize: 16, fontWeight: '700', lineHeight: 20 }}>
-              {deck.title}
-            </AppText>
-            {deck.description ? (
-              <AppText numberOfLines={2} style={{ color: '#666666', fontSize: 13, lineHeight: 18 }}>
-                {deck.description}
-              </AppText>
-            ) : null}
-          </View>
+          <AppText
+            ellipsizeMode="tail"
+            numberOfLines={2}
+            style={{ fontSize: 16, fontWeight: '700', lineHeight: 20 }}
+          >
+            {deck.title}
+          </AppText>
           <View style={{ gap: 8 }}>
             <DeckStatusBadge
               moderationStatus={deck.moderationStatus}

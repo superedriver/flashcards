@@ -121,7 +121,9 @@ export const decksEn = {
     LEARNED: 'Learned',
   },
   learningCounters: {
-    compact: 'To learn {{toLearn}} · Practiced {{practiced}} · Learned {{learned}}',
+    toLearn: 'To learn {{count}}',
+    practiced: 'Practiced {{count}}',
+    learned: 'Learned {{count}}',
     due: 'Due {{count}}',
   },
   cardForm: {

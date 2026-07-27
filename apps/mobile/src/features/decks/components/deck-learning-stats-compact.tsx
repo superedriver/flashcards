@@ -27,11 +27,13 @@ export function DeckLearningStatsCompact({ deckId }: DeckLearningStatsCompactPro
   return (
     <View style={{ gap: 2 }}>
       <AppText style={{ color: '#555555', fontSize: 12 }}>
-        {t('decks.learningCounters.compact', {
-          toLearn: stats.toLearnCount,
-          practiced: stats.practicedCount,
-          learned: stats.learnedCount,
-        })}
+        {t('decks.learningCounters.toLearn', { count: stats.toLearnCount })}
+      </AppText>
+      <AppText style={{ color: '#555555', fontSize: 12 }}>
+        {t('decks.learningCounters.practiced', { count: stats.practicedCount })}
+      </AppText>
+      <AppText style={{ color: '#555555', fontSize: 12 }}>
+        {t('decks.learningCounters.learned', { count: stats.learnedCount })}
       </AppText>
       {stats.dueCount > 0 ? (
         <AppText style={{ color: '#1a56db', fontSize: 12, fontWeight: '600' }}>

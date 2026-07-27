@@ -121,7 +121,9 @@ export const decksUk = {
     LEARNED: 'Вивчено',
   },
   learningCounters: {
-    compact: 'Вивчити {{toLearn}} · У практиці {{practiced}} · Вивчено {{learned}}',
+    toLearn: 'Вивчити {{count}}',
+    practiced: 'У практиці {{count}}',
+    learned: 'Вивчено {{count}}',
     due: 'До повторення {{count}}',
   },
   cardForm: {
