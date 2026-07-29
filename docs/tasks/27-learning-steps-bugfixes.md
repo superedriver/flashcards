@@ -66,6 +66,8 @@ Expected state:
 6. Deck rail cards still uneven after title-only change
    - Title 1 vs 2 lines; public status two labels; due line optional
 7. Home shows redundant "Active language: es" (already in header flag)
+8. Expo start warns about incompatible package versions for SDK 53
+   - async-storage / expo-localization / expo-notifications / babel-preset-expo
 ```
 
 ## Epic Rules
@@ -92,6 +94,7 @@ Expected state:
 27.05 Deck list cards: title only + column learning counters
 27.06 Equalize deck rail card heights
 27.07 Remove active language label from Home
+27.08 Align Expo SDK 53 dependency versions
 ```
 
 ## Task Checklist
@@ -103,6 +106,7 @@ Expected state:
 - [x] TASK-27.05 Deck list cards: title only + column learning counters
 - [x] TASK-27.06 Equalize deck rail card heights
 - [x] TASK-27.07 Remove active language label from Home
+- [x] TASK-27.08 Align Expo SDK 53 dependency versions
 
 ---
 
@@ -673,4 +677,102 @@ pnpm lint
 
 ```txt
 TASK-27.07 Remove active language label from Home
+```
+
+---
+
+# TASK-27.08 Align Expo SDK 53 dependency versions
+
+## Status
+
+DONE
+
+## Context
+
+On `pnpm mobile:start` / `pnpm mobile:web`, Expo warns that several packages do not match the versions expected for installed Expo SDK 53:
+
+```txt
+@react-native-async-storage/async-storage@3.1.1  -> expected 2.1.2
+expo-localization@57.0.0                         -> expected ~16.1.6
+expo-notifications@57.0.3                        -> expected ~0.31.5
+babel-preset-expo@13.2.5                         -> expected ~13.0.0
+```
+
+Versions `57.x` for localization/notifications look like a newer SDK line and may break web/native compatibility.
+
+## Goal
+
+Install Expo SDK 53–compatible versions of the warned packages so Metro starts without the compatibility warning (for those packages).
+
+## Related Documents
+
+```txt
+docs/tasks/done/13-frontend-foundation.md
+docs/tasks/done/18-frontend-profile-settings-notifications.md
+docs/tasks/done/23-i18n.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/package.json
+apps/mobile/app.json
+pnpm-lock.yaml
+docs/tasks/27-learning-steps-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Align packages to Expo SDK 53 expected versions via `npx expo install` (or equivalent):
+   - @react-native-async-storage/async-storage@2.1.2
+   - expo-localization@~16.1.6
+   - expo-notifications@~0.31.5
+   - babel-preset-expo@~13.0.0
+2. Keep Expo SDK at 53; do not upgrade the whole app to a newer SDK.
+3. Do not change product features; only dependency versions (and lockfile).
+4. Verify existing usages still typecheck:
+   - AsyncStorage get/set/remove
+   - expo-localization getLocales
+   - expo-notifications permission / push token helpers
+5. Discard unrelated Expo CLI noise (e.g. accidental tsconfig include churn / deleted expo-env.d.ts) unless required for the install.
+```
+
+## Security Requirements
+
+```txt
+- No auth, token storage, or permission rule changes.
+- Do not weaken notification permission checks.
+- Do not commit secrets.
+```
+
+## Acceptance Criteria
+
+```txt
+- apps/mobile package.json lists Expo-expected versions for the four packages.
+- pnpm lockfile updated accordingly.
+- Mobile typecheck / lint / format pass.
+- Expo start no longer warns about those four packages (re-check manually if Metro is running).
+```
+
+## Commands to Run
+
+```bash
+cd apps/mobile && npx expo install @react-native-async-storage/async-storage expo-localization expo-notifications babel-preset-expo
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+```
+
+## Expected Commit Message
+
+```txt
+TASK-27.08 Align Expo SDK 53 dependency versions
 ```
