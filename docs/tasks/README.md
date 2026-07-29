@@ -379,12 +379,13 @@ done/23-i18n.md
 done/24-study-languages.md
 done/25-bugfixes.md
 done/26-learning-steps.md
+done/27-learning-steps-bugfixes.md
 ```
 
 Active epics:
 
 ```txt
-27-learning-steps-bugfixes.md
+(none)
 ```
 
 ---
@@ -828,7 +829,7 @@ Replace SM-2 with learning steps 0–8, Home multi-deck START, learning group co
 File:
 
 ```txt
-docs/tasks/27-learning-steps-bugfixes.md
+docs/tasks/done/27-learning-steps-bugfixes.md
 ```
 
 Purpose:

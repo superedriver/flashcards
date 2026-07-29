@@ -17,7 +17,7 @@ New bugs found during smoke should be appended here as new TASK-27.XX items (one
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -97,8 +97,9 @@ Expected state:
 27.08 Align Expo SDK 53 dependency versions
 ```
 
-## Task Checklist
+## Epic Summary
 
+```md
 - [x] TASK-27.01 Fix completeLesson for Home sessions with null deckId
 - [x] TASK-27.02 Fix lesson progress bar when due cards < lessonSize
 - [x] TASK-27.03 Reset Decks tab stack to list on re-tap
@@ -107,6 +108,7 @@ Expected state:
 - [x] TASK-27.06 Equalize deck rail card heights
 - [x] TASK-27.07 Remove active language label from Home
 - [x] TASK-27.08 Align Expo SDK 53 dependency versions
+```
 
 ---
 
@@ -150,7 +152,7 @@ apps/api/src/modules/lessons/application/use-cases/complete-lesson.use-case.ts
 apps/api/src/modules/lessons/application/use-cases/complete-lesson.use-case.spec.ts
 apps/api/src/modules/lessons/presentation/graphql/types/complete-lesson-payload.type.ts
 apps/mobile/src/features/lessons/screens/lesson-summary-screen.tsx
-docs/tasks/27-learning-steps-bugfixes.md
+docs/tasks/done/27-learning-steps-bugfixes.md
 ```
 
 ## Requirements
@@ -249,7 +251,7 @@ None
 ```txt
 apps/mobile/src/features/lessons/hooks/use-active-lesson.ts
 (optional) apps/mobile tests / related lesson store if needed for the chosen denominator
-docs/tasks/27-learning-steps-bugfixes.md
+docs/tasks/done/27-learning-steps-bugfixes.md
 ```
 
 ## Requirements
@@ -324,7 +326,7 @@ None
 
 ```txt
 apps/mobile/app/(tabs)/_layout.tsx
-docs/tasks/27-learning-steps-bugfixes.md
+docs/tasks/done/27-learning-steps-bugfixes.md
 ```
 
 ## Requirements
@@ -388,7 +390,7 @@ Every press of the Decks tab navigates to `/decks` (list), whether the tab was a
 ## Related Documents
 
 ```txt
-docs/tasks/27-learning-steps-bugfixes.md (TASK-27.03)
+docs/tasks/done/27-learning-steps-bugfixes.md (TASK-27.03)
 docs/smoke/learning-steps.md
 ```
 
@@ -402,7 +404,7 @@ None
 
 ```txt
 apps/mobile/app/(tabs)/_layout.tsx
-docs/tasks/27-learning-steps-bugfixes.md
+docs/tasks/done/27-learning-steps-bugfixes.md
 ```
 
 ## Requirements
@@ -484,7 +486,7 @@ apps/mobile/src/features/public-decks/components/public-deck-list-item.tsx
 apps/mobile/src/features/groups/components/group-shared-deck-list-item.tsx
 apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
-docs/tasks/27-learning-steps-bugfixes.md
+docs/tasks/done/27-learning-steps-bugfixes.md
 ```
 
 ## Requirements
@@ -549,7 +551,7 @@ All rail (`layout="rail"`) deck cards share one fixed height with reserved slots
 ## Related Documents
 
 ```txt
-docs/tasks/27-learning-steps-bugfixes.md (TASK-27.05)
+docs/tasks/done/27-learning-steps-bugfixes.md (TASK-27.05)
 ```
 
 ## Files to Create
@@ -564,7 +566,7 @@ None
 apps/mobile/src/features/decks/components/deck-list-item.tsx
 apps/mobile/src/features/decks/components/deck-status-badge.tsx
 apps/mobile/src/ui/primitives/app-text.tsx
-docs/tasks/27-learning-steps-bugfixes.md
+docs/tasks/done/27-learning-steps-bugfixes.md
 ```
 
 ## Requirements
@@ -639,7 +641,7 @@ None
 apps/mobile/src/features/home/screens/home-screen.tsx
 apps/mobile/src/i18n/resources/en/home.ts
 apps/mobile/src/i18n/resources/uk/home.ts
-docs/tasks/27-learning-steps-bugfixes.md
+docs/tasks/done/27-learning-steps-bugfixes.md
 ```
 
 ## Requirements
@@ -725,7 +727,7 @@ None
 apps/mobile/package.json
 apps/mobile/app.json
 pnpm-lock.yaml
-docs/tasks/27-learning-steps-bugfixes.md
+docs/tasks/done/27-learning-steps-bugfixes.md
 ```
 
 ## Requirements
