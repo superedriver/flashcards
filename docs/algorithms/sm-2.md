@@ -1,26 +1,19 @@
 # SuperMemo 2 Algorithm
 
-> **Historical (pre–EPIC-26).**  
-> Review scheduling is defined by **learning steps** in [`docs/algorithms/learning-steps.md`](./learning-steps.md).  
-> This SM-2 document is kept only for history and for reading EPIC-07 / EPIC-16 task logs. Do not implement new features against SM-2.
+> **Historical only (pre–EPIC-26). Do not implement.**  
+> The current review algorithm is **Learning Steps**: [`docs/algorithms/learning-steps.md`](./learning-steps.md).  
+> This file exists only to explain EPIC-07 / EPIC-16 task history and the pre-migration SM-2 model.  
+> Do not add SM-2 fields to Prisma, GraphQL, tests, or `packages/srs`. Do not treat this document as a live source of truth.
 
 ## Purpose
 
 This document defined the spaced repetition algorithm used by Flashcards **before EPIC-26**.
 
-Flashcards used a simplified SM-2 algorithm for MVP learning sessions.
+Flashcards used a simplified SM-2 algorithm for MVP learning sessions **until Learning Steps replaced it**.
 
-The implementation must live in:
+The historical implementation lived in `packages/srs` (`sm2.ts`). That module has been removed; `packages/srs` now exports Learning Steps only.
 
-```txt
-packages/srs
-```
-
-The backend calls this package when a user submits a review answer.
-
-The frontend must never calculate SRS scheduling.
-
-## Package Location
+## Package Location (historical)
 
 ```txt
 packages/srs/
@@ -32,9 +25,9 @@ packages/srs/
     types.ts
 ```
 
-## Core Rule
+## Core Rule (historical)
 
-The algorithm must be implemented as a pure deterministic function.
+The algorithm was implemented as a pure deterministic function.
 
 ```ts
 export function calculateNextReview(input: Sm2Input): Sm2Result
@@ -467,11 +460,19 @@ The SRS package must include unit tests for:
 - invalid quality throws an error
 ```
 
-## Cursor Implementation Rules
+## Cursor Implementation Rules (historical)
 
-When implementing SRS tasks, Cursor must read this file first.
+Do **not** implement new work from this file.
 
-Relevant tasks:
+For current scheduling, read and follow:
+
+```txt
+docs/algorithms/learning-steps.md
+docs/domain/lesson-flow.md
+docs/tasks/done/26-learning-steps.md
+```
+
+This SM-2 document is retained only for reading historical EPIC-07 / EPIC-16 task logs:
 
 ```txt
 docs/tasks/done/07-srs-lessons.md
@@ -479,5 +480,3 @@ TASK-07.01 Create packages/srs package
 TASK-07.02 Implement SM-2 pure function
 TASK-07.03 Add SRS unit tests
 ```
-
-Implementation must follow this document exactly unless this document is explicitly updated.

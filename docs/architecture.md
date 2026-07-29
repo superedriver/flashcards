@@ -23,7 +23,7 @@ The core product flow is:
    - Know
    - Don't know
 
-8. The backend updates the card review state using an adapted SM-2 spaced repetition algorithm.
+8. The backend updates the card review state using the Learning Steps spaced repetition algorithm.
 
 The backend is the source of truth for all learning progress and scheduling.
 
@@ -153,7 +153,7 @@ flashcards/
 
     srs/
       src/
-        sm2.ts
+        learning-steps.ts
         types.ts
         index.ts
 
@@ -324,7 +324,7 @@ Not allowed:
 Direct Prisma queries
 Business logic
 Permission logic implementation
-SM-2 calculations
+Learning-steps / scheduling calculations
 ```
 
 ### Application Layer
@@ -392,7 +392,7 @@ External SDK integrations
 6. External services must be accessed through ports.
 7. Prisma models must not be used as domain entities.
 8. GraphQL DTOs must not be used as domain entities.
-9. SM-2 logic must be implemented as pure TypeScript.
+9. Learning-steps logic must be implemented as pure TypeScript in packages/srs.
 10. The backend is the source of truth for spaced repetition state.
 ```
 
@@ -661,27 +661,27 @@ Lesson size:
 Flow:
 
 ```txt
-1. User starts a lesson from a deck.
+1. User starts a lesson from a deck (or Home multi-deck START).
 2. Backend creates a study session.
-3. Backend selects due cards first.
-4. Backend fills remaining slots with new cards.
-5. Frontend shows the English word.
-6. User taps to reveal Ukrainian translation.
-7. Example sentence is shown if available.
-8. User can press Listen to hear the word.
-9. User answers Know or Don't know.
-10. Backend saves the review.
-11. Backend updates card_review_state.
-12. Lesson is completed.
-13. Result screen is shown.
+3. Backend selects due cards (dueAt <= now) for the lesson scope, limit lessonSize.
+4. Frontend shows the prompt side first (from promptDirection).
+5. User taps to reveal the other side.
+6. Example sentence is shown if available.
+7. User can press Listen to hear the word.
+8. User answers Know or Don't know.
+9. Backend saves the review and updates learning-steps state.
+10. Backend may return another currently due card (re-queue).
+11. Lesson is completed when nothing due remains (or lessonSize reached).
+12. Result screen is shown.
 ```
 
 If the user answers Don't know:
 
 ```txt
-DONT_KNOW updates SRS state immediately.
-Failed cards are not automatically repeated in the same lesson (MVP).
-After the review, the card due date is set by the SM-2 algorithm (typically tomorrow for a failed review).
+DONT_KNOW updates learning-steps state immediately.
+dueAt is set by the learning-steps algorithm (see docs/algorithms/learning-steps.md).
+The same card may reappear later in the same session only when dueAt <= now again (re-queue).
+Do not show a countdown UI while waiting for dueAt.
 ```
 
 Source of truth: `docs/domain/lesson-flow.md`.
@@ -1040,7 +1040,7 @@ Private/public decks
 Public deck search
 Copy public deck
 Swipe lesson
-SM-2 scheduling
+Learning-steps scheduling
 Basic stats
 Text-to-speech in lessons
 AI example generation for manual cards
@@ -1089,7 +1089,7 @@ Recommended development order:
 8. Configure Apollo Client.
 9. Implement register/login/me flow.
 10. Implement decks and cards.
-11. Implement SM-2 package.
+11. Implement packages/srs learning-steps.
 12. Implement lessons.
 13. Implement public decks and copy deck.
 14. Implement CSV import.
@@ -1114,7 +1114,7 @@ A verified user can log in, create a deck, add cards, start a lesson, answer Kno
 This milestone proves the core product loop:
 
 ```txt
-User -> Deck -> Card -> Lesson -> Review -> SRS schedule
+User -> Deck -> Card -> Lesson -> Review -> learning-steps schedule
 ```
 
 Everything else should be built after this loop works reliably.

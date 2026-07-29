@@ -26,7 +26,7 @@ Public/private decks
 Group sharing
 Deck copying
 Lesson queue logic
-SM-2 spaced repetition
+Learning-steps spaced repetition
 CSV import validation
 AI example generation
 Notifications
@@ -196,7 +196,7 @@ Not allowed:
 Direct Prisma access
 Business rules
 Permission implementation
-SM-2 logic
+Learning-steps / scheduling logic
 External API calls
 Complex transactions
 ```
@@ -851,16 +851,20 @@ email_verified = true
 
 ---
 
-## 11. SRS and SM-2 Rules
+## 11. SRS and Learning Steps Rules
 
-SM-2 logic must be pure TypeScript.
+Learning-steps logic must be pure TypeScript.
+
+Source of truth: `docs/algorithms/learning-steps.md`.
+
+(Historical SM-2: `docs/algorithms/sm-2.md` — do not implement.)
 
 Location:
 
 ```txt
 packages/srs/
   src/
-    sm2.ts
+    learning-steps.ts
     types.ts
     index.ts
 ```
@@ -873,42 +877,39 @@ No Prisma imports.
 No GraphQL imports.
 No React imports.
 No database access.
+No current time lookup inside the calculator (caller passes reviewedAt).
 ```
 
 Function:
 
 ```ts
-export function calculateNextReview(
-  state: ReviewState,
-  answer: ReviewAnswer,
-  reviewedAt: Date,
-): ReviewResult {
-  // Pure SM-2 logic
+export function calculateNextLearningState(input: LearningStepsInput): LearningStepsResult {
+  // Pure learning-steps logic
 }
 ```
 
-Answer mapping:
+Answers:
 
 ```txt
-Know       -> quality = 5
-Don't know -> quality = 2
+KNOW
+DONT_KNOW
 ```
 
 The backend is the source of truth for:
 
 ```txt
-repetition
-interval
-easinessFactor
-dueDate
+learningStep
+longReviewSuccessCount
+dueAt
 lastReviewedAt
-lapses
 ```
 
-MVP learned card definition:
+Learning groups (derived from step, not stored as SoT):
 
 ```txt
-card_review_state.repetition >= 2
+To learn:   0–1
+Practiced:  2–6
+Learned:    7–8
 ```
 
 ---
@@ -919,6 +920,7 @@ Core lesson use cases:
 
 ```txt
 StartLessonUseCase
+StartHomeLessonUseCase
 SubmitReviewUseCase
 CompleteLessonUseCase
 GetLessonResultUseCase
@@ -927,24 +929,26 @@ GetLessonResultUseCase
 Lesson queue rules:
 
 ```txt
-Due cards first.
-New cards second.
-Maximum 20 cards in MVP.
-Only cards from accessible decks.
+Due cards only (dueAt <= now).
+Order dueAt ascending (optional tie-breaks per lesson-flow.md).
+Limit: UserSettings.lessonSize (5–100, default 20).
+Only cards from accessible decks / Home own-decks scope.
 Only non-deleted cards.
-Unknown cards are repeated once later in the same lesson.
-Unknown cards are not repeated infinitely.
+Same card may reappear in the same session when due again (re-queue).
+Do not block the UI waiting for future dueAt.
 ```
+
+Source of truth: `docs/domain/lesson-flow.md`.
 
 `SubmitReviewUseCase` is responsible for:
 
 ```txt
 Validating session ownership.
-Validating card belongs to the session.
-Mapping Know/Don't know to SM-2 quality.
-Saving study_session_review.
+Validating card belongs to the session scope.
+Applying packages/srs learning-steps for KNOW / DONT_KNOW.
+Saving study_session_review (learning-step snapshots; multiple rows per session+card allowed).
 Updating card_review_state.
-Adding one in-lesson repeat for Don't know.
+Returning next due card when applicable (re-queue).
 Tracking analytics.
 ```
 
@@ -1243,7 +1247,7 @@ to:
 Groups
 Public decks
 Lessons
-SM-2
+Learning steps
 CSV import
 AI generation
 Notifications

@@ -28,7 +28,7 @@ packages/srs/
     types.ts
 ```
 
-(Legacy `sm2.ts` remains exported until TASK-26.09, after SubmitReview migrates.)
+(`sm2.ts` was removed after EPIC-26 SubmitReview migration; see historical `docs/algorithms/sm-2.md`.)
 
 ## Core Rule
 

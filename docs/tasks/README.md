@@ -247,8 +247,7 @@ Frontend must not:
 - store auth tokens in sessionStorage;
 - expose backend secrets;
 - call AI providers directly;
-- calculate SM-2;
-- calculate due dates;
+- calculate learning steps or due dates;
 - select lesson cards;
 - treat hidden buttons as security.
 ```
@@ -336,7 +335,8 @@ Lessons and SRS:
 
 ```txt
 docs/domain/lesson-flow.md
-docs/algorithms/sm-2.md
+docs/algorithms/learning-steps.md
+docs/algorithms/sm-2.md (historical)
 ```
 
 Task format:
@@ -385,7 +385,7 @@ done/27-learning-steps-bugfixes.md
 Active epics:
 
 ```txt
-(none)
+28-requirements-ambiguities.md
 ```
 
 ---
@@ -515,7 +515,7 @@ docs/tasks/done/07-srs-lessons.md
 Purpose:
 
 ```txt
-Implement SM-2 package, review state, lesson creation, review submission, lesson completion, and deck learning stats.
+Implement SRS lessons package, review state, lesson creation, review submission, lesson completion, and deck learning stats (historical SM-2; superseded by EPIC-26 learning steps).
 ```
 
 ---
@@ -836,6 +836,22 @@ Purpose:
 
 ```txt
 Fix bugs found during EPIC-26 learning-steps manual smoke (starting with Home completeLesson).
+```
+
+---
+
+### 28 Requirements Ambiguities & Sources of Truth
+
+File:
+
+```txt
+docs/tasks/28-requirements-ambiguities.md
+```
+
+Purpose:
+
+```txt
+Resolve contradictions between requirements, live docs, and implemented behavior; keep one clear source of truth per area before new feature work.
 ```
 
 ---
