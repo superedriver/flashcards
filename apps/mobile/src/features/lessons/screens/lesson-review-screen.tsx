@@ -11,6 +11,7 @@ import { confirmAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import {
   ReviewAnswer,
+  useAbandonLessonMutation,
   useCompleteLessonMutation,
   useSubmitReviewMutation,
 } from '@/graphql/generated'
@@ -32,6 +33,7 @@ export function LessonReviewScreen() {
   } = useActiveLesson(sessionId)
   const [submitReview] = useSubmitReviewMutation()
   const [completeLesson] = useCompleteLessonMutation()
+  const [abandonLesson] = useAbandonLessonMutation()
   const [isRevealed, setIsRevealed] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -77,10 +79,23 @@ export function LessonReviewScreen() {
 
   const handleLeaveLesson = () => {
     const targetDeckId = deckId ?? lesson.deckId
+    const activeSessionId = lesson.sessionId
 
     confirmAction(t('lessons.review.leaveTitle'), t('lessons.review.leaveMessage'), () => {
-      clearActiveLesson()
-      router.replace(targetDeckId ? `/decks/${targetDeckId}` : '/(tabs)')
+      void (async () => {
+        try {
+          await abandonLesson({
+            variables: {
+              input: { sessionId: activeSessionId },
+            },
+          })
+        } catch {
+          // Local lesson still ends if the backend abandon fails.
+        } finally {
+          clearActiveLesson()
+          router.replace(targetDeckId ? `/decks/${targetDeckId}` : '/(tabs)')
+        }
+      })()
     })
   }
 

@@ -2195,6 +2195,18 @@ export type CompleteLessonMutation = {
   }
 }
 
+export type AbandonLessonMutationVariables = Exact<{
+  input: AbandonLessonInput
+}>
+
+export type AbandonLessonMutation = {
+  __typename?: 'Mutation'
+  abandonLesson: {
+    __typename?: 'AbandonLessonPayload'
+    success: boolean
+  }
+}
+
 export type DeckLearningStatsQueryVariables = Exact<{
   deckId: Scalars['String']['input']
 }>
@@ -5648,6 +5660,50 @@ export type CompleteLessonMutationResult = Apollo.MutationResult<CompleteLessonM
 export type CompleteLessonMutationOptions = Apollo.BaseMutationOptions<
   CompleteLessonMutation,
   CompleteLessonMutationVariables
+>
+export const AbandonLessonDocument = gql`
+  mutation AbandonLesson($input: AbandonLessonInput!) {
+    abandonLesson(input: $input) {
+      success
+    }
+  }
+`
+export type AbandonLessonMutationFn = Apollo.MutationFunction<
+  AbandonLessonMutation,
+  AbandonLessonMutationVariables
+>
+
+/**
+ * __useAbandonLessonMutation__
+ *
+ * To run a mutation, you first call `useAbandonLessonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAbandonLessonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [abandonLessonMutation, { data, loading, error }] = useAbandonLessonMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAbandonLessonMutation(
+  baseOptions?: Apollo.MutationHookOptions<AbandonLessonMutation, AbandonLessonMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<AbandonLessonMutation, AbandonLessonMutationVariables>(
+    AbandonLessonDocument,
+    options,
+  )
+}
+export type AbandonLessonMutationHookResult = ReturnType<typeof useAbandonLessonMutation>
+export type AbandonLessonMutationResult = Apollo.MutationResult<AbandonLessonMutation>
+export type AbandonLessonMutationOptions = Apollo.BaseMutationOptions<
+  AbandonLessonMutation,
+  AbandonLessonMutationVariables
 >
 export const DeckLearningStatsDocument = gql`
   query DeckLearningStats($deckId: String!) {

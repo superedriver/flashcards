@@ -224,7 +224,7 @@ Do not keep @@unique([sessionId, cardId]) on StudySessionReview (already dropped
 - [x] TASK-29.07 Update SubmitReviewUseCase to use the lesson-queue picker
 - [x] TASK-29.08 Remove in-lesson progress UI
 - [x] TASK-29.09 Hide Start when no due cards and for non-owned decks
-- [ ] TASK-29.10 Call abandonLesson when leaving an unfinished lesson
+- [x] TASK-29.10 Call abandonLesson when leaving an unfinished lesson
 - [ ] TASK-29.11 Add lesson-queue smoke checks
 ```
 
@@ -1181,7 +1181,7 @@ TASK-29.09 Hide Start when no due cards and for non-owned decks
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

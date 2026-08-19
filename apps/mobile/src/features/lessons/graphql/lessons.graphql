@@ -74,6 +74,12 @@ mutation CompleteLesson($input: CompleteLessonInput!) {
   }
 }
 
+mutation AbandonLesson($input: AbandonLessonInput!) {
+  abandonLesson(input: $input) {
+    success
+  }
+}
+
 query DeckLearningStats($deckId: String!) {
   deckLearningStats(deckId: $deckId) {
     deckId
