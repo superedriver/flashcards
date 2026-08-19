@@ -4,7 +4,7 @@ import { AuthUser, SafeUser } from '../../../auth/domain/types';
 import { Card, Deck } from '../../../decks/domain/types';
 import {
   createLessonQueueState,
-  recordLessonCardShowing,
+  recordLessonCardAnswer,
 } from '../../domain/services/select-next-lesson-card';
 import { CardReviewState, LessonQueueCandidate } from '../../domain/types';
 import { EnsureCardReviewStatesService } from '../services/ensure-card-review-states.service';
@@ -266,12 +266,12 @@ describe('StartHomeLessonUseCase', () => {
   it('creates HOME_ACTIVE_TARGET session with frozen snapshot and first card', async () => {
     const card = createCard('card-1', 'deck-1');
     const candidates = [createCandidate(card)];
-    const expectedQueueState = recordLessonCardShowing({
+    const expectedQueueState = recordLessonCardAnswer({
       state: createLessonQueueState({
         scope: 'HOME_ACTIVE_TARGET',
         snapshotCardIds: ['card-1'],
       }),
-      shownCardId: 'card-1',
+      answeredCardId: 'card-1',
       candidates,
     });
     const { useCase, createSession, abandonActiveForUser } = createUseCase();

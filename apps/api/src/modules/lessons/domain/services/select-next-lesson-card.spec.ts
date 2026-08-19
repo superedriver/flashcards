@@ -2,7 +2,7 @@ import {
   createLessonQueueState,
   LessonQueueCandidate,
   LessonQueueState,
-  recordLessonCardShowing,
+  recordLessonCardAnswer,
   selectNextLessonCard,
 } from './select-next-lesson-card';
 
@@ -18,6 +18,18 @@ function card(
   createdAt: Date = createdEarly,
 ): LessonQueueCandidate {
   return { cardId, dueAt, createdAt };
+}
+
+function answer(
+  state: LessonQueueState,
+  cardId: string,
+  candidates: LessonQueueCandidate[],
+): LessonQueueState {
+  return recordLessonCardAnswer({
+    state,
+    answeredCardId: cardId,
+    candidates,
+  });
 }
 
 describe('selectNextLessonCard', () => {
@@ -65,30 +77,18 @@ describe('selectNextLessonCard', () => {
     expect(selectNextLessonCard({ state, candidates })).toBe('k');
   });
 
-  it('excludes a card after 3 showings even if it is still ready', () => {
+  it('excludes a card after 3 answers even if it is still ready', () => {
     let state = createLessonQueueState({ scope: 'DECK' });
     const onlyA = [card('a', t0)];
 
-    state = recordLessonCardShowing({
-      state,
-      shownCardId: 'a',
-      candidates: [],
-    });
-    state = recordLessonCardShowing({
-      state,
-      shownCardId: 'a',
-      candidates: [],
-    });
-    state = recordLessonCardShowing({
-      state,
-      shownCardId: 'a',
-      candidates: [],
-    });
+    state = answer(state, 'a', []);
+    state = answer(state, 'a', []);
+    state = answer(state, 'a', []);
 
     expect(selectNextLessonCard({ state, candidates: onlyA })).toBeNull();
   });
 
-  it('does not pick a repeat until 3 other showings fill the frozen gap', () => {
+  it('does not pick a repeat until 3 other answers fill the frozen gap', () => {
     let state = createLessonQueueState({ scope: 'DECK' });
     const ready = [
       card('a', t0),
@@ -100,48 +100,84 @@ describe('selectNextLessonCard', () => {
 
     expect(selectNextLessonCard({ state, candidates: ready })).toBe('a');
 
-    state = recordLessonCardShowing({
+    state = answer(
       state,
-      shownCardId: 'a',
-      candidates: ready.filter((item) => item.cardId !== 'a'),
-    });
+      'a',
+      ready.filter((item) => item.cardId !== 'a'),
+    );
 
     expect(state.pendingRepeats.a).toEqual({ targetGap: 3, filled: 0 });
     expect(selectNextLessonCard({ state, candidates: ready })).toBe('b');
 
-    state = recordLessonCardShowing({
-      state,
-      shownCardId: 'b',
-      candidates: ready,
-    });
+    state = answer(state, 'b', ready);
     expect(state.pendingRepeats.a?.filled).toBe(1);
     expect(selectNextLessonCard({ state, candidates: ready })).toBe('c');
 
-    state = recordLessonCardShowing({
-      state,
-      shownCardId: 'c',
-      candidates: ready,
-    });
+    state = answer(state, 'c', ready);
     expect(selectNextLessonCard({ state, candidates: ready })).toBe('d');
 
-    state = recordLessonCardShowing({
-      state,
-      shownCardId: 'd',
-      candidates: ready,
-    });
+    state = answer(state, 'd', ready);
 
     expect(state.pendingRepeats.a?.filled).toBe(3);
     expect(selectNextLessonCard({ state, candidates: ready })).toBe('a');
   });
 
+  it('freezes N from late-due cards that are ready at answer time', () => {
+    let state = createLessonQueueState({ scope: 'DECK' });
+    const displayTime = [card('a', t0), card('b', t0)];
+    const answerTime = [card('b', t0), card('c', t0), card('d', t0)];
+    const afterAnswer = [
+      card('a', t0),
+      card('b', t0),
+      card('c', t0),
+      card('d', t0),
+    ];
+
+    expect(selectNextLessonCard({ state, candidates: displayTime })).toBe('a');
+
+    state = answer(state, 'a', answerTime);
+
+    expect(state.showCounts.a).toBe(1);
+    expect(state.pendingRepeats.a).toEqual({ targetGap: 3, filled: 0 });
+    expect(selectNextLessonCard({ state, candidates: afterAnswer })).toBe('b');
+
+    state = answer(state, 'b', afterAnswer);
+    expect(selectNextLessonCard({ state, candidates: afterAnswer })).toBe('c');
+
+    state = answer(state, 'c', afterAnswer);
+    expect(selectNextLessonCard({ state, candidates: afterAnswer })).toBe('d');
+
+    state = answer(state, 'd', afterAnswer);
+    expect(selectNextLessonCard({ state, candidates: afterAnswer })).toBe('a');
+  });
+
+  it('does not grow N when cards become ready after the answer freeze', () => {
+    let state = createLessonQueueState({ scope: 'DECK' });
+
+    state = answer(state, 'a', [card('b', t0)]);
+
+    expect(state.pendingRepeats.a).toEqual({ targetGap: 1, filled: 0 });
+
+    const laterReady = [
+      card('a', t0),
+      card('b', t0),
+      card('c', t0),
+      card('d', t0),
+    ];
+
+    expect(selectNextLessonCard({ state, candidates: laterReady })).toBe('b');
+
+    state = answer(state, 'b', laterReady);
+
+    expect(state.pendingRepeats.a?.targetGap).toBe(1);
+    expect(state.pendingRepeats.a?.filled).toBe(1);
+    expect(selectNextLessonCard({ state, candidates: laterReady })).toBe('a');
+  });
+
   it('shrinks the gap to 0 when no other ready showable cards exist', () => {
     let state = createLessonQueueState({ scope: 'DECK' });
 
-    state = recordLessonCardShowing({
-      state,
-      shownCardId: 'a',
-      candidates: [],
-    });
+    state = answer(state, 'a', []);
 
     expect(state.pendingRepeats.a).toEqual({ targetGap: 0, filled: 0 });
     expect(selectNextLessonCard({ state, candidates: [card('a', t0)] })).toBe(
@@ -153,27 +189,10 @@ describe('selectNextLessonCard', () => {
     let state = createLessonQueueState({ scope: 'DECK' });
     const afterA = [card('b', t0), card('c', t1), card('d', t2)];
 
-    state = recordLessonCardShowing({
-      state,
-      shownCardId: 'a',
-      candidates: afterA,
-    });
-
-    state = recordLessonCardShowing({
-      state,
-      shownCardId: 'b',
-      candidates: [card('a', t0), card('c', t1), card('d', t2)],
-    });
-    state = recordLessonCardShowing({
-      state,
-      shownCardId: 'c',
-      candidates: [card('a', t0), card('d', t2)],
-    });
-    state = recordLessonCardShowing({
-      state,
-      shownCardId: 'd',
-      candidates: [card('a', t0), card('e', t1)],
-    });
+    state = answer(state, 'a', afterA);
+    state = answer(state, 'b', [card('a', t0), card('c', t1), card('d', t2)]);
+    state = answer(state, 'c', [card('a', t0), card('d', t2)]);
+    state = answer(state, 'd', [card('a', t0), card('e', t1)]);
 
     expect(
       selectNextLessonCard({
@@ -203,13 +222,13 @@ describe('selectNextLessonCard', () => {
   });
 });
 
-describe('recordLessonCardShowing', () => {
+describe('recordLessonCardAnswer', () => {
   it('does not mutate the previous state', () => {
     const state = createLessonQueueState({ scope: 'DECK' });
 
-    recordLessonCardShowing({
+    recordLessonCardAnswer({
       state,
-      shownCardId: 'a',
+      answeredCardId: 'a',
       candidates: [card('b', t0)],
     });
 

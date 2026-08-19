@@ -23,9 +23,9 @@ export type SelectNextLessonCardInput = {
   candidates: LessonQueueCandidate[];
 };
 
-export type RecordLessonCardShowingInput = {
+export type RecordLessonCardAnswerInput = {
   state: LessonQueueState;
-  shownCardId: string;
+  answeredCardId: string;
   candidates: LessonQueueCandidate[];
 };
 
@@ -68,32 +68,34 @@ export function selectNextLessonCard(
   return sortPrimaries(primaries)[0]?.cardId ?? null;
 }
 
-export function recordLessonCardShowing(
-  input: RecordLessonCardShowingInput,
+// Records an answer, not a display. Freeze N from candidates at answer time.
+// selectNextLessonCard must not freeze N — picking a card is not an answer.
+export function recordLessonCardAnswer(
+  input: RecordLessonCardAnswerInput,
 ): LessonQueueState {
   const nextState = cloneState(input.state);
-  const shownCardId = input.shownCardId;
+  const answeredCardId = input.answeredCardId;
 
   for (const [cardId, pending] of Object.entries(nextState.pendingRepeats)) {
-    if (cardId !== shownCardId) {
+    if (cardId !== answeredCardId) {
       pending.filled += 1;
     }
   }
 
-  const showCount = getShowCount(nextState, shownCardId) + 1;
-  nextState.showCounts[shownCardId] = showCount;
+  const showCount = getShowCount(nextState, answeredCardId) + 1;
+  nextState.showCounts[answeredCardId] = showCount;
 
   if (showCount >= MAX_SHOWINGS) {
-    delete nextState.pendingRepeats[shownCardId];
+    delete nextState.pendingRepeats[answeredCardId];
     return nextState;
   }
 
   const eligible = getEligibleCandidates(nextState, input.candidates);
   const otherReadyShowableCount = eligible.filter(
-    (candidate) => candidate.cardId !== shownCardId,
+    (candidate) => candidate.cardId !== answeredCardId,
   ).length;
 
-  nextState.pendingRepeats[shownCardId] = {
+  nextState.pendingRepeats[answeredCardId] = {
     targetGap: Math.min(MAX_GAP, otherReadyShowableCount),
     filled: 0,
   };

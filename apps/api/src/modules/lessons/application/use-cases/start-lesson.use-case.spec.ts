@@ -3,7 +3,7 @@ import { AuthUser, SafeUser } from '../../../auth/domain/types';
 import { Card, Deck } from '../../../decks/domain/types';
 import {
   createLessonQueueState,
-  recordLessonCardShowing,
+  recordLessonCardAnswer,
 } from '../../domain/services/select-next-lesson-card';
 import { CardReviewState, LessonQueueCandidate } from '../../domain/types';
 import { EnsureCardReviewStatesService } from '../services/ensure-card-review-states.service';
@@ -409,9 +409,9 @@ describe('StartLessonUseCase', () => {
   it('creates a live deck session with empty snapshot and first-card queueState', async () => {
     const cards = [createCard('card-1', 1), createCard('card-2', 2)];
     const candidates = cards.map((card) => createCandidate(card));
-    const expectedQueueState = recordLessonCardShowing({
+    const expectedQueueState = recordLessonCardAnswer({
       state: createLessonQueueState({ scope: 'DECK' }),
-      shownCardId: 'card-1',
+      answeredCardId: 'card-1',
       candidates,
     });
     const { useCase, createSession } = createUseCase({ cards });

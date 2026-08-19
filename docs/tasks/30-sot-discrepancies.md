@@ -170,7 +170,7 @@ frontend / Prisma / GraphQL: none expected
 
 ```md
 - [x] TASK-30.01 Clarify show vs answer vs freeze-N in lesson-flow SoT
-- [ ] TASK-30.02 Freeze lesson-queue gap from answer-time candidates
+- [x] TASK-30.02 Freeze lesson-queue gap from answer-time candidates
 - [ ] TASK-30.03 Record queue showing after answer, not on display
 ```
 
@@ -302,7 +302,7 @@ TASK-30.01 Clarify show vs answer vs freeze-N in lesson-flow SoT
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

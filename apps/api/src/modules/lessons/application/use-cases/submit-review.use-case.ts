@@ -25,7 +25,7 @@ import {
 import { Card } from '../../../decks/domain/types';
 import {
   createLessonQueueState,
-  recordLessonCardShowing,
+  recordLessonCardAnswer,
   selectNextLessonCard,
 } from '../../domain/services/select-next-lesson-card';
 import {
@@ -252,9 +252,9 @@ export class SubmitReviewUseCase {
       return null;
     }
 
-    queueState = recordLessonCardShowing({
+    queueState = recordLessonCardAnswer({
       state: queueState,
-      shownCardId: nextCardId,
+      answeredCardId: nextCardId,
       candidates: accessibleCandidates.candidates,
     });
 

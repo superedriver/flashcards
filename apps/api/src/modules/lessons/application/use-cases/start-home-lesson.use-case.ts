@@ -21,7 +21,7 @@ import {
 import { Card } from '../../../decks/domain/types';
 import {
   createLessonQueueState,
-  recordLessonCardShowing,
+  recordLessonCardAnswer,
   selectNextLessonCard,
 } from '../../domain/services/select-next-lesson-card';
 import { CardReviewState, LessonQueueCandidate } from '../../domain/types';
@@ -194,9 +194,9 @@ export class StartHomeLessonUseCase {
       return emptyPayload;
     }
 
-    const queueState = recordLessonCardShowing({
+    const queueState = recordLessonCardAnswer({
       state: initialState,
-      shownCardId: firstCardId,
+      answeredCardId: firstCardId,
       candidates: snapshotCandidates,
     });
 

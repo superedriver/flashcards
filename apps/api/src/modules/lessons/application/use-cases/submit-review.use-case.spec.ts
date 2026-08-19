@@ -4,7 +4,7 @@ import { AuthUser, SafeUser } from '../../../auth/domain/types';
 import { Card, Deck } from '../../../decks/domain/types';
 import {
   createLessonQueueState,
-  recordLessonCardShowing,
+  recordLessonCardAnswer,
 } from '../../domain/services/select-next-lesson-card';
 import {
   CardReviewState,
@@ -92,9 +92,9 @@ const outsideSnapshotCard = createCard('card-outside', {
   deckId: 'deck-2',
 });
 
-const initialQueueState = recordLessonCardShowing({
+const initialQueueState = recordLessonCardAnswer({
   state: createLessonQueueState({ scope: 'DECK' }),
-  shownCardId: 'card-1',
+  answeredCardId: 'card-1',
   candidates: [createCandidate(card), createCandidate(nextCardEntity)],
 });
 
@@ -512,12 +512,12 @@ describe('SubmitReviewUseCase', () => {
   });
 
   it('does not return a Home nextCard outside the snapshot', async () => {
-    const homeQueueState = recordLessonCardShowing({
+    const homeQueueState = recordLessonCardAnswer({
       state: createLessonQueueState({
         scope: 'HOME_ACTIVE_TARGET',
         snapshotCardIds: ['card-1', 'card-2'],
       }),
-      shownCardId: 'card-1',
+      answeredCardId: 'card-1',
       candidates: [createCandidate(card), createCandidate(nextCardEntity)],
     });
     const { useCase, findDueCandidatesForOwnDecksWithTargetLanguage } =
