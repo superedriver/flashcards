@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
-import { LessonProgress } from '@/features/lessons/components/lesson-progress'
 import { ReviewAnswerActions } from '@/features/lessons/components/review-answer-actions'
 import { ReviewFlashcard } from '@/features/lessons/components/review-flashcard'
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
@@ -25,14 +24,11 @@ export function LessonReviewScreen() {
   const {
     clearActiveLesson,
     currentCard,
-    currentNumber,
     enqueueNextCard,
     goToNextCard,
     lesson,
     markCardReviewed,
-    reviewedCount,
     setCompletion,
-    totalCards,
   } = useActiveLesson(sessionId)
   const [submitReview] = useSubmitReviewMutation()
   const [completeLesson] = useCompleteLessonMutation()
@@ -165,11 +161,6 @@ export function LessonReviewScreen() {
   return (
     <Screen scrollable>
       <PageTitle title={t('lessons.review.pageTitle')} />
-      <LessonProgress
-        currentNumber={currentNumber}
-        reviewedCount={reviewedCount}
-        totalCards={totalCards}
-      />
       <ReviewFlashcard
         back={currentCard.back}
         example={currentCard.example}
