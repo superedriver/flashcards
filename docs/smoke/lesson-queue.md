@@ -5,7 +5,7 @@ Manual + automated verification for Home snapshot vs owned-deck live queue.
 Related:
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/tasks/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md

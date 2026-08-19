@@ -247,7 +247,7 @@ Rewrite live SoT so agents implement the new queue, not EPIC-26 lessonSize re-qu
 ## Related Documents
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 docs/backend-clean-architecture.md
@@ -353,7 +353,7 @@ Add a framework-free picker in the lessons domain with table-driven tests.
 ## Related Documents
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/domain/lesson-flow.md
 docs/backend-clean-architecture.md
 ```
@@ -464,7 +464,7 @@ Add Prisma fields on StudySession without changing use cases yet.
 ## Related Documents
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/domain/lesson-flow.md
 docs/backend-clean-architecture.md
 ```
@@ -564,7 +564,7 @@ Map new columns through domain types and repository; order due cards by dueAt, c
 ## Related Documents
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/domain/lesson-flow.md
 docs/backend-clean-architecture.md
 ```
@@ -674,7 +674,7 @@ Owner-only live deck start: all currently ready cards eligible; persist empty sn
 ## Related Documents
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/domain/lesson-flow.md
 docs/domain/permissions.md
 docs/security/security-checklist.md
@@ -788,7 +788,7 @@ Freeze unique snapshot of size lessonSize (from settings) and only serve those c
 ## Related Documents
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/domain/lesson-flow.md
 ```
 
@@ -889,7 +889,7 @@ Apply learning-steps as today, then pick nextCard via the domain picker and pers
 ## Related Documents
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/domain/lesson-flow.md
 docs/algorithms/learning-steps.md
 docs/security/security-checklist.md
@@ -998,7 +998,7 @@ Remove LessonProgress from the review screen.
 ## Related Documents
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/domain/lesson-flow.md
 ```
 
@@ -1095,7 +1095,7 @@ Deck Start only for owners when dueCount > 0.
 ## Related Documents
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/domain/lesson-flow.md
 docs/domain/permissions.md
 ```
@@ -1194,7 +1194,7 @@ Call abandonLesson on confirmed leave so the session is ABANDONED immediately.
 ## Related Documents
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/domain/lesson-flow.md
 docs/domain/auth-token-strategy.md
 ```
@@ -1293,7 +1293,7 @@ Add a smoke checklist and a section in MVP smoke tests.
 ## Related Documents
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
 docs/smoke/learning-steps.md
@@ -1309,7 +1309,7 @@ docs/smoke/lesson-queue.md
 
 ```txt
 docs/release/mvp-smoke-tests.md
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 ```
 
 ## Requirements

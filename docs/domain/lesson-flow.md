@@ -12,7 +12,7 @@ Relevant task files:
 
 ```txt
 docs/tasks/30-sot-discrepancies.md
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/tasks/done/26-learning-steps.md
 docs/tasks/done/07-srs-lessons.md (historical SM-2 backend)
 docs/tasks/done/16-frontend-lessons.md (historical frontend)
@@ -479,7 +479,7 @@ Backend also abandons previous ACTIVE sessions when starting a new lesson.
 ```txt
 docs/algorithms/learning-steps.md
 docs/tasks/30-sot-discrepancies.md
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/tasks/done/26-learning-steps.md
 docs/architecture.md
 docs/domain/permissions.md

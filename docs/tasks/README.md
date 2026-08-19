@@ -381,7 +381,7 @@ done/25-bugfixes.md
 done/26-learning-steps.md
 done/27-learning-steps-bugfixes.md
 done/28-requirements-ambiguities.md
-29-lesson-queue.md
+done/29-lesson-queue.md
 ```
 
 Active epics:
@@ -863,7 +863,7 @@ Resolve contradictions between requirements, live docs, and implemented behavior
 File:
 
 ```txt
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 ```
 
 Purpose:

@@ -39,7 +39,7 @@ docs/algorithms/learning-steps.md
 docs/security/security-checklist.md
 docs/tasks/README.md
 docs/tasks/cursor-task-template.md
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 docs/smoke/lesson-queue.md
 ```
 
@@ -198,7 +198,7 @@ docs/domain/lesson-flow.md
 docs/architecture.md
 docs/backend-clean-architecture.md
 docs/smoke/lesson-queue.md
-docs/tasks/29-lesson-queue.md
+docs/tasks/done/29-lesson-queue.md
 ```
 
 ## Files to Create
