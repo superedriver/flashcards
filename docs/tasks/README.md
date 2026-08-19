@@ -386,7 +386,7 @@ done/28-requirements-ambiguities.md
 Active epics:
 
 ```txt
-None
+29-lesson-queue.md
 ```
 
 ---
@@ -853,6 +853,22 @@ Purpose:
 
 ```txt
 Resolve contradictions between requirements, live docs, and implemented behavior; keep one clear source of truth per area before new feature work.
+```
+
+---
+
+### 29 Lesson Queue
+
+File:
+
+```txt
+docs/tasks/29-lesson-queue.md
+```
+
+Purpose:
+
+```txt
+Replace shared lessonSize caps with Home unique-card snapshot and Deck live ready queue, bounded repeats, owner-only deck lessons, and no in-lesson progress.
 ```
 
 ---
