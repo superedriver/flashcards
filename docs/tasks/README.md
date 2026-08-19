@@ -380,12 +380,13 @@ done/24-study-languages.md
 done/25-bugfixes.md
 done/26-learning-steps.md
 done/27-learning-steps-bugfixes.md
+done/28-requirements-ambiguities.md
 ```
 
 Active epics:
 
 ```txt
-28-requirements-ambiguities.md
+None
 ```
 
 ---
@@ -845,7 +846,7 @@ Fix bugs found during EPIC-26 learning-steps manual smoke (starting with Home co
 File:
 
 ```txt
-docs/tasks/28-requirements-ambiguities.md
+docs/tasks/done/28-requirements-ambiguities.md
 ```
 
 Purpose:

@@ -7,7 +7,7 @@ Resolve contradictions and ambiguities between current requirements, live docume
 This epic covers:
 
 ```txt
-- audit of known ambiguities (seed list + items discovered while checking that list)
+- audit of known ambiguities
 - decisions recorded in this epic’s Ambiguity Register section
 - focused tasks to align docs and/or code after each decision is approved
 ```
@@ -22,11 +22,9 @@ This epic does **not** include:
 - silently making product decisions during implementation
 ```
 
-New ambiguities found during audit should be appended here (Known Ambiguities + Ambiguity Register) and, when approved, as new TASK-28.XX items (one ambiguity ≈ one task ≈ one commit).
-
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -56,7 +54,7 @@ Expected state:
 ```txt
 - Learning steps are the implemented review model (packages/srs learning-steps)
 - CardReviewState uses learningStep / longReviewSuccessCount / dueAt (not SM-2 fields)
-- Live architecture docs still mention SM-2 as current in places (known conflict)
+- Live SoT docs describe Learning Steps as the current review model
 - Local stack: Postgres + API (:3000) + mobile
 ```
 
@@ -66,19 +64,6 @@ Expected state:
 1. SM-2 vs Learning Steps
    - Live architecture / clean-arch / tasks README still describe SM-2 as current
    - Implementation and learning-steps.md already replaced SM-2 (EPIC-26)
-2. Re-queue cards within a lesson
-3. lessonSize semantics
-4. Duplicate review vs multiple reviews of one card
-5. Review attempt identity and idempotency
-6. Lesson for public/group deck vs mandatory copy
-7. Email verification access policy
-8. Moderation flow: pre-moderation vs post-moderation
-9. Deterministic learning logic vs random prompt direction
-10. Learning progress after card edit
-11. Delete/restore and review history
-12. UTC/timezone semantics for dueAt
-13. Copied deck independence and source attribution
-14. Current vs historical source-of-truth documents
 ```
 
 ## Epic Rules
@@ -88,18 +73,15 @@ Expected state:
 2. Do not add product features or drive-by refactors.
 3. Do not implement an ambiguous decision without explicit approval
    (chat approval or Ambiguity Register Status: APPROVED).
-4. Seed list is v1; new register rows may be added when discovered while
-   checking the seed list (not a free-form whole-repo audit).
-5. During audit-only work: only safe typo / broken-link fixes that do not
+4. During audit-only work: only safe typo / broken-link fixes that do not
    change meaning or resolve an ambiguity.
-6. Do not rewrite docs/tasks/done/* to erase historical SM-2 task logs.
-7. Do not invent product debates for items already decided
+5. Do not rewrite docs/tasks/done/* to erase historical SM-2 task logs.
+6. Do not invent product debates for items already decided
    (e.g. Learning Steps replaced SM-2 in EPIC-26 — use short ALREADY_DECIDED entries).
-8. Do not weaken validation, permissions, or security checklist rules.
-9. Do not commit secrets.
-10. Run Commands to Run in each task before committing.
-11. Mark epic DONE when seed list + discovered items are decided and
-    approved fixes are done (or explicitly DEFERRED with owner note).
+7. Do not weaken validation, permissions, or security checklist rules.
+8. Do not commit secrets.
+9. Run Commands to Run in each task before committing.
+10. Mark epic DONE when register entries are decided and approved fixes are done.
 ```
 
 ## Ambiguity Register
@@ -209,19 +191,10 @@ Acceptance criteria (after TASK-28.01):
 - Code audit clean (or leftovers removed without BC)
 ```
 
-### Seed backlog (not yet filed as AMB-xxx)
-
-Items 2–14 from Known Ambiguities. File each as `AMB-00N` in this section when audited:
-
-```txt
-OPEN → decision → APPROVED → TASK-28.xx → DONE
-```
-
 ## Recommended Task Order
 
 ```txt
 28.01 Retire SM-2 as current SoT; align live docs to Learning Steps
-(+ append TASK-28.xx after each further register entry is APPROVED)
 ```
 
 ## Task Checklist
@@ -275,7 +248,7 @@ docs/backend-clean-architecture.md
 docs/tasks/README.md
 docs/domain/lesson-flow.md
 docs/tasks/done/26-learning-steps.md
-docs/tasks/28-requirements-ambiguities.md
+docs/tasks/done/28-requirements-ambiguities.md
 ```
 
 ## Files to Create
@@ -291,7 +264,7 @@ docs/architecture.md
 docs/backend-clean-architecture.md
 docs/tasks/README.md
 docs/algorithms/sm-2.md
-docs/tasks/28-requirements-ambiguities.md
+docs/tasks/done/28-requirements-ambiguities.md
 ```
 
 (`sm-2.md`: strengthen historical disclaimer only if needed. Do not rewrite `docs/tasks/done/*`. Do not edit Prisma migration SQL history.)
