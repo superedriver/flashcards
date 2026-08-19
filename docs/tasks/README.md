@@ -381,12 +381,13 @@ done/25-bugfixes.md
 done/26-learning-steps.md
 done/27-learning-steps-bugfixes.md
 done/28-requirements-ambiguities.md
+29-lesson-queue.md
 ```
 
 Active epics:
 
 ```txt
-29-lesson-queue.md
+30-sot-discrepancies.md
 ```
 
 ---
@@ -869,6 +870,22 @@ Purpose:
 
 ```txt
 Replace shared lessonSize caps with Home unique-card snapshot and Deck live ready queue, bounded repeats, owner-only deck lessons, and no in-lesson progress.
+```
+
+---
+
+### 30 SoT Discrepancies
+
+File:
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+```
+
+Purpose:
+
+```txt
+Fix mismatches between live sources of truth and implementation; standing register for later drift (starting with repeat gap frozen at display vs after answer).
 ```
 
 ---
