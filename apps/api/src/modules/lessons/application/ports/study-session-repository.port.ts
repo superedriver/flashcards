@@ -1,4 +1,5 @@
 import {
+  LessonQueueState,
   ReviewAnswer,
   StudySession,
   StudySessionReview,
@@ -12,6 +13,14 @@ export type CreateStudySessionInput = {
   deckId: string | null;
   scope: StudySessionScope;
   lessonSize: number;
+  snapshotCardIds?: string[];
+  queueState?: LessonQueueState | null;
+};
+
+export type UpdateStudySessionInput = {
+  sessionId: string;
+  snapshotCardIds?: string[];
+  queueState?: LessonQueueState | null;
 };
 
 export type CreateStudySessionReviewInput = {
@@ -35,6 +44,7 @@ export type StudySessionRepositoryPort = {
   }): Promise<void>;
   abandonActiveForUser(input: { userId: string }): Promise<void>;
   create(input: CreateStudySessionInput): Promise<StudySession>;
+  update(input: UpdateStudySessionInput): Promise<StudySession>;
   findById(sessionId: string): Promise<StudySession | null>;
   createReview(
     input: CreateStudySessionReviewInput,

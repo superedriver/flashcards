@@ -163,6 +163,8 @@ function createUseCase(options?: {
       findByUserAndCard: jest.fn(),
       findDueCardIdsForDeck: jest.fn(),
       findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
+      findDueCandidatesForDeck: jest.fn(),
+      findDueCandidatesForOwnDecksWithTargetLanguage: jest.fn(),
       countReviewedForDeck: jest.fn(),
       countDueForDeck: jest.fn(),
       countDueForUser: jest.fn(),

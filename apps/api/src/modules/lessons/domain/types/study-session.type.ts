@@ -1,3 +1,4 @@
+import { LessonQueueState } from '../services/select-next-lesson-card';
 import { StudySessionScope } from './study-session-scope.type';
 import { StudySessionStatus } from './study-session-status.type';
 
@@ -8,6 +9,8 @@ export type StudySession = {
   scope: StudySessionScope;
   status: StudySessionStatus;
   lessonSize: number;
+  snapshotCardIds: string[];
+  queueState: LessonQueueState | null;
   startedAt: Date;
   completedAt: Date | null;
   abandonedAt: Date | null;

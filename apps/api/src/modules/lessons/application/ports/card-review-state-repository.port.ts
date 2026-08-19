@@ -1,4 +1,4 @@
-import { CardReviewState } from '../../domain/types';
+import { CardReviewState, LessonQueueCandidate } from '../../domain/types';
 
 export const CARD_REVIEW_STATE_REPOSITORY = Symbol(
   'CARD_REVIEW_STATE_REPOSITORY',
@@ -36,6 +36,18 @@ export type CardReviewStateRepositoryPort = {
     now: Date;
     limit: number;
   }): Promise<string[]>;
+  findDueCandidatesForDeck(input: {
+    userId: string;
+    deckId: string;
+    now: Date;
+    limit?: number;
+  }): Promise<LessonQueueCandidate[]>;
+  findDueCandidatesForOwnDecksWithTargetLanguage(input: {
+    userId: string;
+    targetLanguage: string;
+    now: Date;
+    limit?: number;
+  }): Promise<LessonQueueCandidate[]>;
   countReviewedForDeck(input: {
     userId: string;
     deckId: string;

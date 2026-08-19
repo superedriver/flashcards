@@ -6,13 +6,29 @@ import {
   LearningGroupCounts,
   UpsertCardReviewStateInput,
 } from '../../application/ports/card-review-state-repository.port';
-import { CardReviewState } from '../../domain/types';
+import { CardReviewState, LessonQueueCandidate } from '../../domain/types';
 import { toCardReviewState } from '../mappers/card-review-state.mapper';
 
 const activeCardWhere = {
   deletedAt: null,
   deck: {
     deletedAt: null,
+  },
+} as const;
+
+const dueCandidateOrderBy = [
+  { dueAt: 'asc' as const },
+  { card: { createdAt: 'asc' as const } },
+  { cardId: 'asc' as const },
+];
+
+const dueCandidateSelect = {
+  cardId: true,
+  dueAt: true,
+  card: {
+    select: {
+      createdAt: true,
+    },
   },
 } as const;
 
@@ -65,6 +81,29 @@ export class PrismaCardReviewStateRepository implements CardReviewStateRepositor
     now: Date;
     limit: number;
   }): Promise<string[]> {
+    const candidates = await this.findDueCandidatesForDeck(input);
+
+    return candidates.map((candidate) => candidate.cardId);
+  }
+
+  async findDueCardIdsForOwnDecksWithTargetLanguage(input: {
+    userId: string;
+    targetLanguage: string;
+    now: Date;
+    limit: number;
+  }): Promise<string[]> {
+    const candidates =
+      await this.findDueCandidatesForOwnDecksWithTargetLanguage(input);
+
+    return candidates.map((candidate) => candidate.cardId);
+  }
+
+  async findDueCandidatesForDeck(input: {
+    userId: string;
+    deckId: string;
+    now: Date;
+    limit?: number;
+  }): Promise<LessonQueueCandidate[]> {
     const records = await this.prisma.cardReviewState.findMany({
       where: {
         userId: input.userId,
@@ -76,24 +115,20 @@ export class PrismaCardReviewStateRepository implements CardReviewStateRepositor
           ...activeCardWhere,
         },
       },
-      orderBy: {
-        dueAt: 'asc',
-      },
+      orderBy: dueCandidateOrderBy,
       take: input.limit,
-      select: {
-        cardId: true,
-      },
+      select: dueCandidateSelect,
     });
 
-    return records.map((record) => record.cardId);
+    return records.map(toLessonQueueCandidate);
   }
 
-  async findDueCardIdsForOwnDecksWithTargetLanguage(input: {
+  async findDueCandidatesForOwnDecksWithTargetLanguage(input: {
     userId: string;
     targetLanguage: string;
     now: Date;
-    limit: number;
-  }): Promise<string[]> {
+    limit?: number;
+  }): Promise<LessonQueueCandidate[]> {
     const records = await this.prisma.cardReviewState.findMany({
       where: {
         userId: input.userId,
@@ -109,16 +144,12 @@ export class PrismaCardReviewStateRepository implements CardReviewStateRepositor
           },
         },
       },
-      orderBy: {
-        dueAt: 'asc',
-      },
+      orderBy: dueCandidateOrderBy,
       take: input.limit,
-      select: {
-        cardId: true,
-      },
+      select: dueCandidateSelect,
     });
 
-    return records.map((record) => record.cardId);
+    return records.map(toLessonQueueCandidate);
   }
 
   async countReviewedForDeck(input: {
@@ -351,4 +382,16 @@ export class PrismaCardReviewStateRepository implements CardReviewStateRepositor
 
     return toCardReviewState(record);
   }
+}
+
+function toLessonQueueCandidate(record: {
+  cardId: string;
+  dueAt: Date;
+  card: { createdAt: Date };
+}): LessonQueueCandidate {
+  return {
+    cardId: record.cardId,
+    dueAt: record.dueAt,
+    createdAt: record.card.createdAt,
+  };
 }

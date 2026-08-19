@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '../../../../generated/prisma/client';
 import { PrismaService } from '../../../../infrastructure/prisma';
 import {
   CreateStudySessionInput,
   CreateStudySessionReviewInput,
   StudySessionRepositoryPort,
+  UpdateStudySessionInput,
 } from '../../application/ports/study-session-repository.port';
 import {
+  LessonQueueState,
   ReviewAnswer,
   StudySession,
   StudySessionReview,
@@ -54,6 +57,26 @@ export class PrismaStudySessionRepository implements StudySessionRepositoryPort 
         deckId: input.deckId,
         scope: input.scope,
         lessonSize: input.lessonSize,
+        snapshotCardIds: input.snapshotCardIds ?? [],
+        queueState: toPrismaQueueState(input.queueState),
+      },
+    });
+
+    return toStudySession(record);
+  }
+
+  async update(input: UpdateStudySessionInput): Promise<StudySession> {
+    const record = await this.prisma.studySession.update({
+      where: {
+        id: input.sessionId,
+      },
+      data: {
+        ...(input.snapshotCardIds !== undefined && {
+          snapshotCardIds: input.snapshotCardIds,
+        }),
+        ...(input.queueState !== undefined && {
+          queueState: toPrismaQueueState(input.queueState),
+        }),
       },
     });
 
@@ -153,4 +176,18 @@ export class PrismaStudySessionRepository implements StudySessionRepositoryPort 
 
     return toStudySession(record);
   }
+}
+
+function toPrismaQueueState(
+  queueState: LessonQueueState | null | undefined,
+): LessonQueueState | typeof Prisma.DbNull | undefined {
+  if (queueState === undefined) {
+    return undefined;
+  }
+
+  if (queueState === null) {
+    return Prisma.DbNull;
+  }
+
+  return queueState;
 }
