@@ -2,7 +2,11 @@ import { ErrorCodes } from '../../../../common/errors';
 import { UserSettings } from '../../../account/domain/types';
 import { AuthUser, SafeUser } from '../../../auth/domain/types';
 import { Card, Deck } from '../../../decks/domain/types';
-import { CardReviewState } from '../../domain/types';
+import {
+  createLessonQueueState,
+  recordLessonCardShowing,
+} from '../../domain/services/select-next-lesson-card';
+import { CardReviewState, LessonQueueCandidate } from '../../domain/types';
 import { EnsureCardReviewStatesService } from '../services/ensure-card-review-states.service';
 import { StartHomeLessonUseCase } from './start-home-lesson.use-case';
 
@@ -57,7 +61,11 @@ function createDeck(overrides: Partial<Deck> = {}): Deck {
   };
 }
 
-function createCard(id: string, deckId: string): Card {
+function createCard(
+  id: string,
+  deckId: string,
+  createdAt = new Date('2026-01-01T00:00:00.000Z'),
+): Card {
   return {
     id,
     deckId,
@@ -66,8 +74,8 @@ function createCard(id: string, deckId: string): Card {
     example: null,
     notes: null,
     position: 1,
-    createdAt: new Date('2026-01-01T00:00:00.000Z'),
-    updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+    createdAt,
+    updatedAt: createdAt,
     deletedAt: null,
   };
 }
@@ -86,12 +94,23 @@ function createReviewState(cardId: string): CardReviewState {
   };
 }
 
+function createCandidate(
+  card: Card,
+  dueAt = new Date('2026-06-01T00:00:00.000Z'),
+): LessonQueueCandidate {
+  return {
+    cardId: card.id,
+    dueAt,
+    createdAt: card.createdAt,
+  };
+}
+
 function createUseCase(options?: {
   user?: SafeUser | null;
   settings?: UserSettings | null;
   decks?: Deck[];
   cardsByDeckId?: Record<string, Card[]>;
-  dueCardIds?: string[];
+  dueCandidates?: LessonQueueCandidate[];
 }) {
   const decks = options?.decks ?? [createDeck()];
   const cardsByDeckId = options?.cardsByDeckId ?? {
@@ -100,6 +119,11 @@ function createUseCase(options?: {
   const allCards = Object.values(cardsByDeckId).flat();
   const createInitialMany = jest.fn().mockResolvedValue(undefined);
   const abandonActiveForUser = jest.fn().mockResolvedValue(undefined);
+  const findDueCandidatesForOwnDecksWithTargetLanguage = jest
+    .fn()
+    .mockResolvedValue(
+      options?.dueCandidates ?? allCards.map((card) => createCandidate(card)),
+    );
   const createSession = jest.fn().mockResolvedValue({
     id: 'session-home-1',
     userId: 'owner-1',
@@ -107,6 +131,8 @@ function createUseCase(options?: {
     scope: 'HOME_ACTIVE_TARGET' as const,
     status: 'ACTIVE' as const,
     lessonSize: 20,
+    snapshotCardIds: ['card-1'],
+    queueState: null,
     startedAt: new Date('2026-06-01T00:00:00.000Z'),
     completedAt: null,
     abandonedAt: null,
@@ -158,13 +184,9 @@ function createUseCase(options?: {
         Promise.resolve(createReviewState(cardId)),
       ),
       findDueCardIdsForDeck: jest.fn(),
-      findDueCardIdsForOwnDecksWithTargetLanguage: jest
-        .fn()
-        .mockResolvedValue(
-          options?.dueCardIds ?? allCards.map((card) => card.id),
-        ),
+      findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
       findDueCandidatesForDeck: jest.fn(),
-      findDueCandidatesForOwnDecksWithTargetLanguage: jest.fn(),
+      findDueCandidatesForOwnDecksWithTargetLanguage,
       countReviewedForDeck: jest.fn(),
       countDueForDeck: jest.fn(),
       countDueForUser: jest.fn(),
@@ -221,7 +243,13 @@ function createUseCase(options?: {
     },
   );
 
-  return { useCase, createSession, abandonActiveForUser, createInitialMany };
+  return {
+    useCase,
+    createSession,
+    abandonActiveForUser,
+    createInitialMany,
+    findDueCandidatesForOwnDecksWithTargetLanguage,
+  };
 }
 
 describe('StartHomeLessonUseCase', () => {
@@ -235,7 +263,17 @@ describe('StartHomeLessonUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.LANGUAGES_REQUIRED });
   });
 
-  it('creates HOME_ACTIVE_TARGET session with null deckId', async () => {
+  it('creates HOME_ACTIVE_TARGET session with frozen snapshot and first card', async () => {
+    const card = createCard('card-1', 'deck-1');
+    const candidates = [createCandidate(card)];
+    const expectedQueueState = recordLessonCardShowing({
+      state: createLessonQueueState({
+        scope: 'HOME_ACTIVE_TARGET',
+        snapshotCardIds: ['card-1'],
+      }),
+      shownCardId: 'card-1',
+      candidates,
+    });
     const { useCase, createSession, abandonActiveForUser } = createUseCase();
 
     const result = await useCase.execute({ currentUser: authUser });
@@ -246,15 +284,97 @@ describe('StartHomeLessonUseCase', () => {
       deckId: null,
       scope: 'HOME_ACTIVE_TARGET',
       lessonSize: 20,
+      snapshotCardIds: ['card-1'],
+      queueState: expectedQueueState,
     });
     expect(result.scope).toBe('HOME_ACTIVE_TARGET');
     expect(result.deckId).toBeNull();
     expect(result.sessionId).toBe('session-home-1');
+    expect(result.cards).toHaveLength(1);
     expect(result.cards[0]?.deckId).toBe('deck-1');
   });
 
+  it('stores at most lessonSize unique snapshot ids in dueAt/createdAt/cardId order', async () => {
+    const cardLater = createCard(
+      'card-later',
+      'deck-1',
+      new Date('2026-01-01T00:00:00.000Z'),
+    );
+    const cardEarlier = createCard(
+      'card-earlier',
+      'deck-1',
+      new Date('2026-02-01T00:00:00.000Z'),
+    );
+    const cardThird = createCard('card-third', 'deck-1');
+    const { useCase, createSession } = createUseCase({
+      settings: { ...settings, lessonSize: 5 },
+      cardsByDeckId: {
+        'deck-1': [cardLater, cardEarlier, cardThird],
+      },
+      dueCandidates: [
+        createCandidate(cardLater, new Date('2026-06-02T00:00:00.000Z')),
+        createCandidate(cardEarlier, new Date('2026-06-01T00:00:00.000Z')),
+        createCandidate(cardThird, new Date('2026-06-03T00:00:00.000Z')),
+      ],
+    });
+
+    const result = await useCase.execute({ currentUser: authUser });
+
+    expect(createSession).toHaveBeenCalledWith(
+      expect.objectContaining({
+        snapshotCardIds: ['card-earlier', 'card-later', 'card-third'],
+        lessonSize: 5,
+      }),
+    );
+    expect(result.cards.map((card) => card.cardId)).toEqual(['card-earlier']);
+  });
+
+  it('caps snapshot length at lessonSize', async () => {
+    const cards = [
+      createCard('card-1', 'deck-1'),
+      createCard('card-2', 'deck-1'),
+      createCard('card-3', 'deck-1'),
+      createCard('card-4', 'deck-1'),
+      createCard('card-5', 'deck-1'),
+      createCard('card-6', 'deck-1'),
+    ];
+    const { useCase, createSession } = createUseCase({
+      settings: { ...settings, lessonSize: 5 },
+      cardsByDeckId: { 'deck-1': cards },
+      dueCandidates: cards.map((card) => createCandidate(card)),
+    });
+
+    await useCase.execute({ currentUser: authUser });
+
+    expect(createSession).toHaveBeenCalledWith(
+      expect.objectContaining({
+        snapshotCardIds: ['card-1', 'card-2', 'card-3', 'card-4', 'card-5'],
+        lessonSize: 5,
+      }),
+    );
+  });
+
+  it('does not include cards from decks the user does not own', async () => {
+    const ownCard = createCard('own-card', 'deck-1');
+    const foreignCard = createCard('foreign-card', 'deck-foreign');
+    const { useCase, createSession } = createUseCase({
+      decks: [createDeck()],
+      cardsByDeckId: { 'deck-1': [ownCard] },
+      dueCandidates: [createCandidate(foreignCard), createCandidate(ownCard)],
+    });
+
+    const result = await useCase.execute({ currentUser: authUser });
+
+    expect(createSession).toHaveBeenCalledWith(
+      expect.objectContaining({
+        snapshotCardIds: ['own-card'],
+      }),
+    );
+    expect(result.cards.map((card) => card.cardId)).toEqual(['own-card']);
+  });
+
   it('returns empty payload when no due cards', async () => {
-    const { useCase, createSession } = createUseCase({ dueCardIds: [] });
+    const { useCase, createSession } = createUseCase({ dueCandidates: [] });
 
     const result = await useCase.execute({ currentUser: authUser });
 

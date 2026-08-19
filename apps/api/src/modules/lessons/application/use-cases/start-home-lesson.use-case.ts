@@ -18,6 +18,13 @@ import {
   DECK_REPOSITORY,
   DeckRepositoryPort,
 } from '../../../decks/application/ports/deck-repository.port';
+import { Card } from '../../../decks/domain/types';
+import {
+  createLessonQueueState,
+  recordLessonCardShowing,
+  selectNextLessonCard,
+} from '../../domain/services/select-next-lesson-card';
+import { CardReviewState, LessonQueueCandidate } from '../../domain/types';
 import {
   CARD_REVIEW_STATE_REPOSITORY,
   CardReviewStateRepositoryPort,
@@ -108,12 +115,17 @@ export class StartHomeLessonUseCase {
     ).filter((deck) => deck.targetLanguage === targetLanguage);
 
     let totalCards = 0;
+    const cardsById = new Map<string, Card>();
     const allCardIds: string[] = [];
 
     for (const deck of ownedDecks) {
       const cards = await this.cardRepository.findByDeckId(deck.id);
       totalCards += cards.length;
-      allCardIds.push(...cards.map((card) => card.id));
+
+      for (const card of cards) {
+        cardsById.set(card.id, card);
+        allCardIds.push(card.id);
+      }
     }
 
     const now = new Date();
@@ -124,69 +136,69 @@ export class StartHomeLessonUseCase {
       now,
     });
 
-    const dueCardIds =
-      await this.cardReviewStateRepository.findDueCardIdsForOwnDecksWithTargetLanguage(
-        {
-          userId: input.currentUser.id,
-          targetLanguage,
-          now,
-          limit: lessonSize,
-        },
-      );
+    const snapshotCandidates = this.takeUniqueSnapshotCandidates(
+      (
+        await this.cardReviewStateRepository.findDueCandidatesForOwnDecksWithTargetLanguage(
+          {
+            userId: input.currentUser.id,
+            targetLanguage,
+            now,
+            limit: lessonSize,
+          },
+        )
+      ).filter((candidate) => cardsById.has(candidate.cardId)),
+      lessonSize,
+    );
+    const snapshotCardIds = snapshotCandidates.map(
+      (candidate) => candidate.cardId,
+    );
 
-    const cards: LessonCard[] = [];
-    const selectedCardIds = new Set<string>();
+    const emptyPayload: StartHomeLessonUseCaseResult = {
+      sessionId: null,
+      deckId: null,
+      scope: 'HOME_ACTIVE_TARGET',
+      cards: [],
+      lessonSize,
+      totalCards,
+    };
 
-    for (const cardId of dueCardIds) {
-      if (selectedCardIds.has(cardId)) {
-        continue;
-      }
-
-      const card = await this.cardRepository.findById(cardId);
-
-      if (!card) {
-        continue;
-      }
-
-      const reviewState =
-        await this.cardReviewStateRepository.findByUserAndCard(
-          input.currentUser.id,
-          cardId,
-        );
-
-      if (!reviewState) {
-        continue;
-      }
-
-      const learningStep = reviewState.learningStep;
-      const randomBit = this.promptDirectionRandomBitService.nextBit();
-
-      cards.push({
-        cardId: card.id,
-        deckId: card.deckId,
-        front: card.front,
-        back: card.back,
-        example: card.example,
-        notes: card.notes,
-        position: card.position,
-        learningStep,
-        learningGroup: learningGroupForStep(learningStep),
-        promptDirection: resolvePromptDirection({ learningStep, randomBit }),
-        reviewState,
-      });
-      selectedCardIds.add(cardId);
+    if (snapshotCardIds.length === 0) {
+      return emptyPayload;
     }
 
-    if (cards.length === 0) {
-      return {
-        sessionId: null,
-        deckId: null,
-        scope: 'HOME_ACTIVE_TARGET',
-        cards: [],
-        lessonSize,
-        totalCards,
-      };
+    const initialState = createLessonQueueState({
+      scope: 'HOME_ACTIVE_TARGET',
+      snapshotCardIds,
+    });
+    const firstCardId = selectNextLessonCard({
+      state: initialState,
+      candidates: snapshotCandidates,
+    });
+
+    if (!firstCardId) {
+      return emptyPayload;
     }
+
+    const card = cardsById.get(firstCardId);
+
+    if (!card) {
+      return emptyPayload;
+    }
+
+    const reviewState = await this.cardReviewStateRepository.findByUserAndCard(
+      input.currentUser.id,
+      firstCardId,
+    );
+
+    if (!reviewState) {
+      return emptyPayload;
+    }
+
+    const queueState = recordLessonCardShowing({
+      state: initialState,
+      shownCardId: firstCardId,
+      candidates: snapshotCandidates,
+    });
 
     await this.studySessionRepository.abandonActiveForUser({
       userId: input.currentUser.id,
@@ -197,15 +209,79 @@ export class StartHomeLessonUseCase {
       deckId: null,
       scope: 'HOME_ACTIVE_TARGET',
       lessonSize,
+      snapshotCardIds,
+      queueState,
     });
 
     return {
       sessionId: session.id,
       deckId: null,
       scope: 'HOME_ACTIVE_TARGET',
-      cards,
+      cards: [this.toLessonCard(card, reviewState)],
       lessonSize,
       totalCards,
+    };
+  }
+
+  private takeUniqueSnapshotCandidates(
+    candidates: LessonQueueCandidate[],
+    lessonSize: number,
+  ): LessonQueueCandidate[] {
+    const unique: LessonQueueCandidate[] = [];
+    const seen = new Set<string>();
+
+    for (const candidate of this.sortCandidates(candidates)) {
+      if (seen.has(candidate.cardId)) {
+        continue;
+      }
+
+      seen.add(candidate.cardId);
+      unique.push(candidate);
+
+      if (unique.length >= lessonSize) {
+        break;
+      }
+    }
+
+    return unique;
+  }
+
+  private sortCandidates(
+    candidates: LessonQueueCandidate[],
+  ): LessonQueueCandidate[] {
+    return [...candidates].sort((left, right) => {
+      const dueDiff = left.dueAt.getTime() - right.dueAt.getTime();
+
+      if (dueDiff !== 0) {
+        return dueDiff;
+      }
+
+      const createdDiff = left.createdAt.getTime() - right.createdAt.getTime();
+
+      if (createdDiff !== 0) {
+        return createdDiff;
+      }
+
+      return left.cardId.localeCompare(right.cardId);
+    });
+  }
+
+  private toLessonCard(card: Card, reviewState: CardReviewState): LessonCard {
+    const learningStep = reviewState.learningStep;
+    const randomBit = this.promptDirectionRandomBitService.nextBit();
+
+    return {
+      cardId: card.id,
+      deckId: card.deckId,
+      front: card.front,
+      back: card.back,
+      example: card.example,
+      notes: card.notes,
+      position: card.position,
+      learningStep,
+      learningGroup: learningGroupForStep(learningStep),
+      promptDirection: resolvePromptDirection({ learningStep, randomBit }),
+      reviewState,
     };
   }
 
