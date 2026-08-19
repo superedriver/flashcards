@@ -1,8 +1,11 @@
 import { ErrorCodes } from '../../../../common/errors';
-import { UserSettings } from '../../../account/domain/types';
 import { AuthUser, SafeUser } from '../../../auth/domain/types';
 import { Card, Deck } from '../../../decks/domain/types';
-import { CardReviewState } from '../../domain/types';
+import {
+  createLessonQueueState,
+  recordLessonCardShowing,
+} from '../../domain/services/select-next-lesson-card';
+import { CardReviewState, LessonQueueCandidate } from '../../domain/types';
 import { EnsureCardReviewStatesService } from '../services/ensure-card-review-states.service';
 import { PromptDirectionRandomBitService } from '../services/prompt-direction-random-bit.service';
 import { StartLessonUseCase } from './start-lesson.use-case';
@@ -39,23 +42,18 @@ const deck: Deck = {
   deletedAt: null,
 };
 
-const settings: UserSettings = {
-  id: 'settings-1',
-  userId: 'owner-1',
-  interfaceLocale: 'en',
-  themePreference: 'SYSTEM',
-  notificationsEnabled: false,
-  reminderTime: '18:00',
-  timezone: 'UTC',
-  audioAutoplayEnabled: false,
-  lessonSize: 20,
-  nativeLanguage: 'en',
-  activeTargetLanguage: null,
-  createdAt: new Date('2026-01-01T00:00:00.000Z'),
-  updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+const publicDeck: Deck = {
+  ...deck,
+  ownerId: 'other-user',
+  visibility: 'PUBLIC',
+  moderationStatus: 'APPROVED',
 };
 
-function createCard(id: string, position: number): Card {
+function createCard(
+  id: string,
+  position: number,
+  createdAt = new Date('2026-01-01T00:00:00.000Z'),
+): Card {
   return {
     id,
     deckId: 'deck-1',
@@ -64,8 +62,8 @@ function createCard(id: string, position: number): Card {
     example: null,
     notes: null,
     position,
-    createdAt: new Date('2026-01-01T00:00:00.000Z'),
-    updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+    createdAt,
+    updatedAt: createdAt,
     deletedAt: null,
   };
 }
@@ -84,26 +82,24 @@ function createReviewState(cardId: string): CardReviewState {
   };
 }
 
-function createDeckGroupShareRepository(userHasAccess = false) {
+function createCandidate(
+  card: Card,
+  dueAt = new Date('2026-06-01T00:00:00.000Z'),
+): LessonQueueCandidate {
   return {
-    create: jest.fn(),
-    findByDeckAndGroup: jest.fn(),
-    findActiveGroupsForDeck: jest.fn(),
-    findSharedDecksForGroup: jest.fn(),
-    findSharedDecksForUser: jest.fn(),
-    userHasAccessToDeck: jest.fn().mockResolvedValue(userHasAccess),
+    cardId: card.id,
+    dueAt,
+    createdAt: card.createdAt,
   };
 }
 
 function createUseCase(options?: {
   user?: SafeUser | null;
   deck?: Deck | null;
-  settings?: UserSettings | null;
   cards?: Card[];
-  dueCardIds?: string[];
+  dueCandidates?: LessonQueueCandidate[];
   reviewStatesByCardId?: Record<string, CardReviewState | null>;
   totalCards?: number;
-  userHasGroupAccess?: boolean;
 }) {
   const findByIdUser = jest
     .fn()
@@ -111,26 +107,22 @@ function createUseCase(options?: {
   const findDeckById = jest
     .fn()
     .mockResolvedValue(options?.deck === undefined ? deck : options.deck);
+  const cards = options?.cards ?? [];
   const countByDeckId = jest
     .fn()
-    .mockResolvedValue(options?.totalCards ?? options?.cards?.length ?? 0);
-  const findByDeckId = jest.fn().mockResolvedValue(options?.cards ?? []);
-  const cards = options?.cards ?? [];
-  const findDueCardIdsForDeck = jest
+    .mockResolvedValue(options?.totalCards ?? cards.length);
+  const findByDeckId = jest.fn().mockResolvedValue(cards);
+  const findDueCandidatesForDeck = jest
     .fn()
-    .mockResolvedValue(options?.dueCardIds ?? cards.map((card) => card.id));
+    .mockResolvedValue(
+      options?.dueCandidates ?? cards.map((card) => createCandidate(card)),
+    );
   const findByUserAndCard = jest.fn(
     (_userId: string, cardId: string): Promise<CardReviewState | null> =>
       Promise.resolve(
         options?.reviewStatesByCardId?.[cardId] ?? createReviewState(cardId),
       ),
   );
-  const findSettingsByUserId = jest
-    .fn()
-    .mockResolvedValue(
-      options?.settings === undefined ? settings : options.settings,
-    );
-  const createForUser = jest.fn().mockResolvedValue(settings);
   const abandonActiveForUser = jest.fn().mockResolvedValue(undefined);
   const createSession = jest.fn().mockResolvedValue({
     id: 'session-1',
@@ -138,7 +130,9 @@ function createUseCase(options?: {
     deckId: 'deck-1',
     scope: 'DECK' as const,
     status: 'ACTIVE' as const,
-    lessonSize: 20,
+    lessonSize: 0,
+    snapshotCardIds: [],
+    queueState: null,
     startedAt: new Date('2026-06-01T00:00:00.000Z'),
     completedAt: null,
     abandonedAt: null,
@@ -200,9 +194,9 @@ function createUseCase(options?: {
     },
     {
       findByUserAndCard,
-      findDueCardIdsForDeck,
+      findDueCardIdsForDeck: jest.fn(),
       findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
-      findDueCandidatesForDeck: jest.fn(),
+      findDueCandidatesForDeck,
       findDueCandidatesForOwnDecksWithTargetLanguage: jest.fn(),
       countReviewedForDeck: jest.fn(),
       countDueForDeck: jest.fn(),
@@ -228,13 +222,6 @@ function createUseCase(options?: {
       complete: jest.fn(),
       abandon: jest.fn(),
     },
-    {
-      findByUserId: findSettingsByUserId,
-      createForUser,
-      update: jest.fn(),
-      findWithNotificationsEnabled: jest.fn(),
-    },
-    createDeckGroupShareRepository(options?.userHasGroupAccess ?? false),
     ensureCardReviewStatesService,
     promptDirectionRandomBitService,
   );
@@ -243,8 +230,7 @@ function createUseCase(options?: {
     useCase,
     abandonActiveForUser,
     createSession,
-    createForUser,
-    findDueCardIdsForDeck,
+    findDueCandidatesForDeck,
     createInitialMany,
     promptDirectionRandomBitService,
   };
@@ -269,7 +255,7 @@ describe('StartLessonUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.DECK_NOT_FOUND });
   });
 
-  it('throws DECK_NOT_FOUND for non-viewable deck', async () => {
+  it('throws DECK_NOT_FOUND for a non-owner', async () => {
     const { useCase } = createUseCase({
       deck: { ...deck, ownerId: 'other-user' },
     });
@@ -279,66 +265,55 @@ describe('StartLessonUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.DECK_NOT_FOUND });
   });
 
-  it('allows lesson on deck shared via group', async () => {
+  it('throws DECK_NOT_FOUND for a public-deck viewer', async () => {
     const { useCase, createSession } = createUseCase({
-      deck: { ...deck, ownerId: 'other-user' },
+      deck: publicDeck,
       cards: [createCard('card-1', 1)],
-      userHasGroupAccess: true,
     });
 
-    const result = await useCase.execute({
-      currentUser: authUser,
-      deckId: 'deck-1',
-    });
-
-    expect(createSession).toHaveBeenCalled();
-    expect(result.sessionId).toBe('session-1');
+    await expect(
+      useCase.execute({ currentUser: authUser, deckId: 'deck-1' }),
+    ).rejects.toMatchObject({ code: ErrorCodes.DECK_NOT_FOUND });
+    expect(createSession).not.toHaveBeenCalled();
   });
 
-  it('resolves lessonSize from user settings when omitted', async () => {
+  it('throws DECK_NOT_FOUND for a group-shared deck viewer', async () => {
+    const { useCase, createSession } = createUseCase({
+      deck: { ...deck, ownerId: 'other-user', visibility: 'PRIVATE' },
+      cards: [createCard('card-1', 1)],
+    });
+
+    await expect(
+      useCase.execute({ currentUser: authUser, deckId: 'deck-1' }),
+    ).rejects.toMatchObject({ code: ErrorCodes.DECK_NOT_FOUND });
+    expect(createSession).not.toHaveBeenCalled();
+  });
+
+  it('ignores requested lessonSize and persists 0', async () => {
     const { useCase, createSession } = createUseCase({
       cards: [createCard('card-1', 1)],
-      settings: { ...settings, lessonSize: 15 },
     });
 
     const result = await useCase.execute({
       currentUser: authUser,
       deckId: 'deck-1',
+      lessonSize: 50,
     });
 
-    expect(result.lessonSize).toBe(15);
+    expect(result.lessonSize).toBe(0);
     expect(createSession).toHaveBeenCalledWith(
-      expect.objectContaining({ lessonSize: 15 }),
+      expect.objectContaining({
+        lessonSize: 0,
+        snapshotCardIds: [],
+      }),
     );
   });
 
-  it('clamps lessonSize to min 5 and max 100', async () => {
-    const { useCase: lowUseCase } = createUseCase({
-      cards: [createCard('card-1', 1)],
-    });
-    const lowResult = await lowUseCase.execute({
-      currentUser: authUser,
-      deckId: 'deck-1',
-      lessonSize: 3,
-    });
-    expect(lowResult.lessonSize).toBe(5);
-
-    const { useCase: highUseCase } = createUseCase({
-      cards: [createCard('card-1', 1)],
-    });
-    const highResult = await highUseCase.execute({
-      currentUser: authUser,
-      deckId: 'deck-1',
-      lessonSize: 200,
-    });
-    expect(highResult.lessonSize).toBe(100);
-  });
-
-  it('selects due cards only after ensuring review state', async () => {
+  it('selects the first due card after ensuring review state', async () => {
     const cards = [createCard('card-1', 1), createCard('card-2', 2)];
     const { useCase, createInitialMany } = createUseCase({
       cards,
-      dueCardIds: ['card-2'],
+      dueCandidates: [createCandidate(cards[1]!)],
       reviewStatesByCardId: {
         'card-2': createReviewState('card-2'),
       },
@@ -347,7 +322,6 @@ describe('StartLessonUseCase', () => {
     const result = await useCase.execute({
       currentUser: authUser,
       deckId: 'deck-1',
-      lessonSize: 5,
     });
 
     expect(createInitialMany).toHaveBeenCalledWith(
@@ -359,10 +333,38 @@ describe('StartLessonUseCase', () => {
     expect(result.cards.map((card) => card.cardId)).toEqual(['card-2']);
   });
 
-  it('returns empty payload with sessionId null when no cards available', async () => {
+  it('returns the first card by dueAt, createdAt, then cardId', async () => {
+    const laterDue = createCard(
+      'card-later',
+      1,
+      new Date('2026-01-01T00:00:00.000Z'),
+    );
+    const earlierDue = createCard(
+      'card-earlier',
+      2,
+      new Date('2026-02-01T00:00:00.000Z'),
+    );
     const { useCase } = createUseCase({
-      cards: [],
-      totalCards: 0,
+      cards: [laterDue, earlierDue],
+      dueCandidates: [
+        createCandidate(laterDue, new Date('2026-06-02T00:00:00.000Z')),
+        createCandidate(earlierDue, new Date('2026-06-01T00:00:00.000Z')),
+      ],
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      deckId: 'deck-1',
+    });
+
+    expect(result.cards.map((card) => card.cardId)).toEqual(['card-earlier']);
+  });
+
+  it('returns empty payload with sessionId null when no due cards', async () => {
+    const { useCase } = createUseCase({
+      cards: [createCard('card-1', 1)],
+      dueCandidates: [],
+      totalCards: 1,
     });
 
     const result = await useCase.execute({
@@ -375,12 +377,12 @@ describe('StartLessonUseCase', () => {
       deckId: 'deck-1',
       scope: 'DECK',
       cards: [],
-      lessonSize: 20,
-      totalCards: 0,
+      lessonSize: 0,
+      totalCards: 1,
     });
   });
 
-  it('does not create session when no cards available', async () => {
+  it('does not create session when no due cards', async () => {
     const { useCase, createSession, abandonActiveForUser } = createUseCase({
       cards: [],
     });
@@ -404,8 +406,14 @@ describe('StartLessonUseCase', () => {
     expect(createSession).toHaveBeenCalled();
   });
 
-  it('creates session and returns selected cards when cards exist', async () => {
+  it('creates a live deck session with empty snapshot and first-card queueState', async () => {
     const cards = [createCard('card-1', 1), createCard('card-2', 2)];
+    const candidates = cards.map((card) => createCandidate(card));
+    const expectedQueueState = recordLessonCardShowing({
+      state: createLessonQueueState({ scope: 'DECK' }),
+      shownCardId: 'card-1',
+      candidates,
+    });
     const { useCase, createSession } = createUseCase({ cards });
 
     const result = await useCase.execute({
@@ -418,17 +426,21 @@ describe('StartLessonUseCase', () => {
       userId: 'owner-1',
       deckId: 'deck-1',
       scope: 'DECK',
-      lessonSize: 5,
+      lessonSize: 0,
+      snapshotCardIds: [],
+      queueState: expectedQueueState,
     });
     expect(result.sessionId).toBe('session-1');
-    expect(result.cards).toHaveLength(2);
+    expect(result.cards).toHaveLength(1);
+    expect(result.cards[0]?.cardId).toBe('card-1');
   });
 
-  it('includes reviewState on selected due cards', async () => {
+  it('includes reviewState on the first due card', async () => {
     const dueState = createReviewState('card-due');
+    const dueCard = createCard('card-due', 2);
     const { useCase } = createUseCase({
-      cards: [createCard('card-new', 1), createCard('card-due', 2)],
-      dueCardIds: ['card-due'],
+      cards: [createCard('card-new', 1), dueCard],
+      dueCandidates: [createCandidate(dueCard)],
       reviewStatesByCardId: {
         'card-due': dueState,
       },
@@ -437,7 +449,6 @@ describe('StartLessonUseCase', () => {
     const result = await useCase.execute({
       currentUser: authUser,
       deckId: 'deck-1',
-      lessonSize: 2,
     });
 
     expect(result.cards).toHaveLength(1);
@@ -446,16 +457,5 @@ describe('StartLessonUseCase', () => {
     expect(result.cards[0]?.learningStep).toBe(1);
     expect(result.cards[0]?.learningGroup).toBe('TO_LEARN');
     expect(result.cards[0]?.promptDirection).toBe('FRONT_TO_BACK');
-  });
-
-  it('creates user settings when missing', async () => {
-    const { useCase, createForUser } = createUseCase({
-      cards: [createCard('card-1', 1)],
-      settings: null,
-    });
-
-    await useCase.execute({ currentUser: authUser, deckId: 'deck-1' });
-
-    expect(createForUser).toHaveBeenCalledWith('owner-1');
   });
 });

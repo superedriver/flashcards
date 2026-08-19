@@ -7,10 +7,6 @@ import {
 } from '@flashcards/srs';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import {
-  USER_SETTINGS_REPOSITORY,
-  UserSettingsRepositoryPort,
-} from '../../../account/application/ports/user-settings-repository.port';
-import {
   USER_REPOSITORY,
   UserRepositoryPort,
 } from '../../../auth/application/ports/user-repository.port';
@@ -23,14 +19,14 @@ import {
   DECK_REPOSITORY,
   DeckRepositoryPort,
 } from '../../../decks/application/ports/deck-repository.port';
-import { canViewDeck } from '../../../decks/application/services/deck-view-access.service';
 import { DeckPermissionService } from '../../../decks/domain/services/deck-permission.service';
 import { Card } from '../../../decks/domain/types';
 import {
-  DECK_GROUP_SHARE_REPOSITORY,
-  DeckGroupShareRepositoryPort,
-} from '../../../groups/application/ports/deck-group-share-repository.port';
-import { CardReviewState } from '../../domain/types';
+  createLessonQueueState,
+  recordLessonCardShowing,
+  selectNextLessonCard,
+} from '../../domain/services/select-next-lesson-card';
+import { CardReviewState, LessonQueueState } from '../../domain/types';
 import {
   CARD_REVIEW_STATE_REPOSITORY,
   CardReviewStateRepositoryPort,
@@ -71,9 +67,7 @@ export type StartLessonUseCaseResult = {
   totalCards: number;
 };
 
-const LESSON_SIZE_DEFAULT = 20;
-const LESSON_SIZE_MIN = 5;
-const LESSON_SIZE_MAX = 100;
+const UNUSED_DECK_LESSON_SIZE = 0;
 
 @Injectable()
 export class StartLessonUseCase {
@@ -90,10 +84,6 @@ export class StartLessonUseCase {
     private readonly cardReviewStateRepository: CardReviewStateRepositoryPort,
     @Inject(STUDY_SESSION_REPOSITORY)
     private readonly studySessionRepository: StudySessionRepositoryPort,
-    @Inject(USER_SETTINGS_REPOSITORY)
-    private readonly userSettingsRepository: UserSettingsRepositoryPort,
-    @Inject(DECK_GROUP_SHARE_REPOSITORY)
-    private readonly deckGroupShareRepository: DeckGroupShareRepositoryPort,
     private readonly ensureCardReviewStatesService: EnsureCardReviewStatesService,
     private readonly promptDirectionRandomBitService: PromptDirectionRandomBitService,
   ) {}
@@ -117,47 +107,32 @@ export class StartLessonUseCase {
       throw new ApplicationError(ErrorCodes.DECK_NOT_FOUND, 'Deck not found');
     }
 
-    const canStudy = await canViewDeck({
+    const canStudy = this.deckPermissionService.canManageDeck({
       user: input.currentUser,
       deck,
-      deckPermissionService: this.deckPermissionService,
-      deckGroupShareRepository: this.deckGroupShareRepository,
     });
 
     if (!canStudy) {
       throw new ApplicationError(ErrorCodes.DECK_NOT_FOUND, 'Deck not found');
     }
 
-    let settings = await this.userSettingsRepository.findByUserId(
-      input.currentUser.id,
-    );
-
-    if (!settings) {
-      settings = await this.userSettingsRepository.createForUser(
-        input.currentUser.id,
-      );
-    }
-
-    const lessonSize = this.resolveLessonSize(
-      input.lessonSize,
-      settings.lessonSize,
-    );
     const totalCards = await this.cardRepository.countByDeckId(input.deckId);
-    const cards = await this.selectLessonCards({
+    const emptyPayload: StartLessonUseCaseResult = {
+      sessionId: null,
+      deckId: input.deckId,
+      scope: 'DECK',
+      cards: [],
+      lessonSize: UNUSED_DECK_LESSON_SIZE,
+      totalCards,
+    };
+
+    const selection = await this.selectFirstLessonCard({
       userId: input.currentUser.id,
       deckId: input.deckId,
-      lessonSize,
     });
 
-    if (cards.length === 0) {
-      return {
-        sessionId: null,
-        deckId: input.deckId,
-        scope: 'DECK',
-        cards: [],
-        lessonSize,
-        totalCards,
-      };
+    if (!selection) {
+      return emptyPayload;
     }
 
     await this.studySessionRepository.abandonActiveForUser({
@@ -168,33 +143,28 @@ export class StartLessonUseCase {
       userId: input.currentUser.id,
       deckId: input.deckId,
       scope: 'DECK',
-      lessonSize,
+      lessonSize: UNUSED_DECK_LESSON_SIZE,
+      snapshotCardIds: [],
+      queueState: selection.queueState,
     });
 
     return {
       sessionId: session.id,
       deckId: input.deckId,
       scope: 'DECK',
-      cards,
-      lessonSize,
+      cards: [selection.card],
+      lessonSize: UNUSED_DECK_LESSON_SIZE,
       totalCards,
     };
   }
 
-  private resolveLessonSize(
-    requested: number | undefined,
-    userDefault: number,
-  ): number {
-    const raw = requested ?? userDefault ?? LESSON_SIZE_DEFAULT;
-
-    return Math.min(LESSON_SIZE_MAX, Math.max(LESSON_SIZE_MIN, raw));
-  }
-
-  private async selectLessonCards(input: {
+  private async selectFirstLessonCard(input: {
     userId: string;
     deckId: string;
-    lessonSize: number;
-  }): Promise<LessonCard[]> {
+  }): Promise<{
+    card: LessonCard;
+    queueState: LessonQueueState;
+  } | null> {
     const now = new Date();
     const allCards = await this.cardRepository.findByDeckId(input.deckId);
 
@@ -205,38 +175,51 @@ export class StartLessonUseCase {
     });
 
     const cardsById = new Map(allCards.map((card) => [card.id, card]));
-    const dueCardIds =
-      await this.cardReviewStateRepository.findDueCardIdsForDeck({
+    const candidates = (
+      await this.cardReviewStateRepository.findDueCandidatesForDeck({
         userId: input.userId,
         deckId: input.deckId,
         now,
-        limit: input.lessonSize,
-      });
-    const selectedCards: LessonCard[] = [];
-    const selectedCardIds = new Set<string>();
+      })
+    ).filter((candidate) => cardsById.has(candidate.cardId));
 
-    for (const cardId of dueCardIds) {
-      const card = cardsById.get(cardId);
+    const initialState = createLessonQueueState({
+      scope: 'DECK',
+    });
+    const firstCardId = selectNextLessonCard({
+      state: initialState,
+      candidates,
+    });
 
-      if (!card || selectedCardIds.has(cardId)) {
-        continue;
-      }
-
-      const reviewState =
-        await this.cardReviewStateRepository.findByUserAndCard(
-          input.userId,
-          cardId,
-        );
-
-      if (!reviewState) {
-        continue;
-      }
-
-      selectedCards.push(this.toLessonCard(card, reviewState));
-      selectedCardIds.add(cardId);
+    if (!firstCardId) {
+      return null;
     }
 
-    return selectedCards;
+    const card = cardsById.get(firstCardId);
+
+    if (!card) {
+      return null;
+    }
+
+    const reviewState = await this.cardReviewStateRepository.findByUserAndCard(
+      input.userId,
+      firstCardId,
+    );
+
+    if (!reviewState) {
+      return null;
+    }
+
+    const queueState = recordLessonCardShowing({
+      state: initialState,
+      shownCardId: firstCardId,
+      candidates,
+    });
+
+    return {
+      card: this.toLessonCard(card, reviewState),
+      queueState,
+    };
   }
 
   private toLessonCard(card: Card, reviewState: CardReviewState): LessonCard {

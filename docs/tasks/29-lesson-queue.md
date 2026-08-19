@@ -219,7 +219,7 @@ Do not keep @@unique([sessionId, cardId]) on StudySessionReview (already dropped
 - [x] TASK-29.02 Add lesson-queue picker and unit tests
 - [x] TASK-29.03 Add StudySession snapshot and queueState columns
 - [x] TASK-29.04 Persist snapshot and queueState in the lessons repository
-- [ ] TASK-29.05 Update StartLessonUseCase for owner-only live deck queue
+- [x] TASK-29.05 Update StartLessonUseCase for owner-only live deck queue
 - [ ] TASK-29.06 Update StartHomeLessonUseCase for unique-card snapshot
 - [ ] TASK-29.07 Update SubmitReviewUseCase to use the lesson-queue picker
 - [ ] TASK-29.08 Remove in-lesson progress UI
@@ -661,7 +661,7 @@ TASK-29.04 Persist snapshot and queueState in the lessons repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
