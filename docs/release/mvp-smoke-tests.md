@@ -890,6 +890,39 @@ _(Automated PASS in TASK-26.20; manual device checklist in `docs/smoke/learning-
 
 ---
 
+## 34. Lesson Queue
+
+**Goal:** Verify Home unique-card snapshot, owned-deck live queue, max 3 shows, gap shrink, owner-only Start, and abandon-on-leave.
+
+**Detailed checklist:** [docs/smoke/lesson-queue.md](../smoke/lesson-queue.md)
+
+**Prerequisite:** EPIC-29 implemented and `StudySession` snapshot/queueState migration applied.
+
+**Steps (web + native):**
+
+1. Home: set lessonSize, have more ready cards than that; START and confirm extras never join; hide START when dueCount = 0.
+2. Owned deck: Start with due cards; make another card of that deck due mid-lesson and confirm it can join.
+3. Confirm Start is hidden for non-owners and for owners with dueCount = 0.
+4. Show the same card at most 3 times; confirm gap shrink when no other ready cards remain.
+5. Confirm the review screen has no progress bar / “card X of Y”.
+6. Leave mid-lesson: no summary; next Start is a new session.
+7. Finish a lesson with repeats; summary Know / Don't know counts include attempts.
+
+**Expected result:**
+
+```txt
+- Home snapshot is frozen at lessonSize unique ready cards
+- Deck queue is live for the owner only
+- Max 3 showings; repeats follow the frozen gap (see lesson-flow.md)
+- Leave abandons; summary counts attempts
+```
+
+**Result:** - [x] PASS - [ ] FAIL - [ ] N/A
+
+_(Automated PASS in TASK-29.11; manual device checklist in `docs/smoke/lesson-queue.md` remains for QA.)_
+
+---
+
 ## Final Sign-Off
 
 ```txt

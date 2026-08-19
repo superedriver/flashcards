@@ -33,7 +33,7 @@ This epic does **not** include:
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -225,7 +225,7 @@ Do not keep @@unique([sessionId, cardId]) on StudySessionReview (already dropped
 - [x] TASK-29.08 Remove in-lesson progress UI
 - [x] TASK-29.09 Hide Start when no due cards and for non-owned decks
 - [x] TASK-29.10 Call abandonLesson when leaving an unfinished lesson
-- [ ] TASK-29.11 Add lesson-queue smoke checks
+- [x] TASK-29.11 Add lesson-queue smoke checks
 ```
 
 ---
@@ -1280,7 +1280,7 @@ TASK-29.10 Call abandonLesson when leaving an unfinished lesson
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
