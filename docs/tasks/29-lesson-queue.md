@@ -216,7 +216,7 @@ Do not keep @@unique([sessionId, cardId]) on StudySessionReview (already dropped
 
 ```md
 - [x] TASK-29.01 Update live lesson-flow source of truth
-- [ ] TASK-29.02 Add lesson-queue picker and unit tests
+- [x] TASK-29.02 Add lesson-queue picker and unit tests
 - [ ] TASK-29.03 Add StudySession snapshot and queueState columns
 - [ ] TASK-29.04 Persist snapshot and queueState in the lessons repository
 - [ ] TASK-29.05 Update StartLessonUseCase for owner-only live deck queue
@@ -340,7 +340,7 @@ TASK-29.01 Update live lesson-flow source of truth
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
