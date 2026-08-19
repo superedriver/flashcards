@@ -22,7 +22,19 @@ import {
   DECK_REPOSITORY,
   DeckRepositoryPort,
 } from '../../../decks/application/ports/deck-repository.port';
-import { CardReviewState, ReviewAnswer } from '../../domain/types';
+import { Card } from '../../../decks/domain/types';
+import {
+  createLessonQueueState,
+  recordLessonCardShowing,
+  selectNextLessonCard,
+} from '../../domain/services/select-next-lesson-card';
+import {
+  CardReviewState,
+  LessonQueueCandidate,
+  LessonQueueState,
+  ReviewAnswer,
+  StudySession,
+} from '../../domain/types';
 import {
   CARD_REVIEW_STATE_REPOSITORY,
   CardReviewStateRepositoryPort,
@@ -48,6 +60,8 @@ export type SubmitReviewUseCaseResult = {
   reviewedCards: number;
   nextCard: LessonCard | null;
 };
+
+const MAX_SHOWINGS = 3;
 
 @Injectable()
 export class SubmitReviewUseCase {
@@ -105,21 +119,11 @@ export class SubmitReviewUseCase {
 
     const card = await this.cardRepository.findById(input.cardId);
 
-    if (!card) {
+    if (!card || card.deletedAt !== null) {
       throw new ApplicationError(ErrorCodes.CARD_NOT_FOUND, 'Card not found');
     }
 
-    if (session.scope === 'DECK') {
-      if (!session.deckId || card.deckId !== session.deckId) {
-        throw new ApplicationError(ErrorCodes.CARD_NOT_FOUND, 'Card not found');
-      }
-    } else {
-      const deck = await this.deckRepository.findById(card.deckId);
-
-      if (!deck || deck.ownerId !== input.currentUser.id) {
-        throw new ApplicationError(ErrorCodes.CARD_NOT_FOUND, 'Card not found');
-      }
-    }
+    await this.assertCardBelongsToSession(session, card, input.currentUser.id);
 
     const reviewedAt = new Date();
     const previousReviewState =
@@ -165,15 +169,11 @@ export class SubmitReviewUseCase {
       input.sessionId,
     );
 
-    const nextCard =
-      reviewedCards < session.lessonSize
-        ? await this.findNextDueLessonCard({
-            userId: input.currentUser.id,
-            sessionScope: session.scope,
-            sessionDeckId: session.deckId,
-            now: reviewedAt,
-          })
-        : null;
+    const nextCard = await this.selectAndPersistNextCard({
+      userId: input.currentUser.id,
+      session,
+      now: reviewedAt,
+    });
 
     return {
       sessionId: input.sessionId,
@@ -184,58 +184,209 @@ export class SubmitReviewUseCase {
     };
   }
 
-  private async findNextDueLessonCard(input: {
-    userId: string;
-    sessionScope: 'DECK' | 'HOME_ACTIVE_TARGET';
-    sessionDeckId: string | null;
-    now: Date;
-  }): Promise<LessonCard | null> {
-    let dueCardIds: string[] = [];
-
-    if (input.sessionScope === 'DECK' && input.sessionDeckId) {
-      dueCardIds = await this.cardReviewStateRepository.findDueCardIdsForDeck({
-        userId: input.userId,
-        deckId: input.sessionDeckId,
-        now: input.now,
-        limit: 1,
-      });
-    } else {
-      const settings = await this.userSettingsRepository.findByUserId(
-        input.userId,
-      );
-      const targetLanguage = settings?.activeTargetLanguage;
-
-      if (!targetLanguage) {
-        return null;
+  private async assertCardBelongsToSession(
+    session: StudySession,
+    card: Card,
+    userId: string,
+  ): Promise<void> {
+    if (session.scope === 'DECK') {
+      if (!session.deckId || card.deckId !== session.deckId) {
+        throw new ApplicationError(ErrorCodes.CARD_NOT_FOUND, 'Card not found');
       }
 
-      dueCardIds =
-        await this.cardReviewStateRepository.findDueCardIdsForOwnDecksWithTargetLanguage(
-          {
-            userId: input.userId,
-            targetLanguage,
-            now: input.now,
-            limit: 1,
-          },
-        );
+      return;
     }
 
-    const cardId = dueCardIds[0];
+    const snapshotCardIds =
+      session.queueState?.snapshotCardIds ?? session.snapshotCardIds;
 
-    if (!cardId) {
+    if (!snapshotCardIds.includes(card.id)) {
+      throw new ApplicationError(ErrorCodes.CARD_NOT_FOUND, 'Card not found');
+    }
+
+    const deck = await this.deckRepository.findById(card.deckId);
+
+    if (!deck || deck.ownerId !== userId || deck.deletedAt !== null) {
+      throw new ApplicationError(ErrorCodes.CARD_NOT_FOUND, 'Card not found');
+    }
+  }
+
+  private async selectAndPersistNextCard(input: {
+    userId: string;
+    session: StudySession;
+    now: Date;
+  }): Promise<LessonCard | null> {
+    let queueState =
+      input.session.queueState ??
+      createLessonQueueState({
+        scope: input.session.scope,
+        snapshotCardIds: input.session.snapshotCardIds,
+      });
+
+    const accessibleCandidates = await this.loadAccessibleCandidates({
+      userId: input.userId,
+      session: { ...input.session, queueState },
+      now: input.now,
+    });
+
+    queueState = accessibleCandidates.queueState;
+    const nextCardId = selectNextLessonCard({
+      state: queueState,
+      candidates: accessibleCandidates.candidates,
+    });
+
+    if (!nextCardId) {
+      await this.persistQueueState(input.session.id, queueState);
       return null;
     }
 
-    const card = await this.cardRepository.findById(cardId);
+    const nextCard = await this.cardRepository.findById(nextCardId);
     const reviewState = await this.cardReviewStateRepository.findByUserAndCard(
       input.userId,
-      cardId,
+      nextCardId,
     );
 
-    if (!card || !reviewState) {
+    if (!nextCard || !reviewState) {
+      queueState = excludeCardFromQueue(queueState, nextCardId);
+      await this.persistQueueState(input.session.id, queueState);
       return null;
     }
 
+    queueState = recordLessonCardShowing({
+      state: queueState,
+      shownCardId: nextCardId,
+      candidates: accessibleCandidates.candidates,
+    });
+
+    await this.persistQueueState(input.session.id, queueState);
+
+    return this.toLessonCard(nextCard, reviewState);
+  }
+
+  private async loadAccessibleCandidates(input: {
+    userId: string;
+    session: StudySession;
+    now: Date;
+  }): Promise<{
+    candidates: LessonQueueCandidate[];
+    queueState: LessonQueueState;
+  }> {
+    let queueState =
+      input.session.queueState ??
+      createLessonQueueState({
+        scope: input.session.scope,
+        snapshotCardIds: input.session.snapshotCardIds,
+      });
+
+    const rawCandidates = await this.loadDueCandidates({
+      userId: input.userId,
+      session: { ...input.session, queueState },
+      now: input.now,
+    });
+
+    const candidates: LessonQueueCandidate[] = [];
+
+    for (const candidate of rawCandidates) {
+      const isAccessible = await this.isCandidateAccessible({
+        userId: input.userId,
+        session: { ...input.session, queueState },
+        cardId: candidate.cardId,
+      });
+
+      if (!isAccessible) {
+        queueState = excludeCardFromQueue(queueState, candidate.cardId);
+        continue;
+      }
+
+      candidates.push(candidate);
+    }
+
+    return { candidates, queueState };
+  }
+
+  private async loadDueCandidates(input: {
+    userId: string;
+    session: StudySession;
+    now: Date;
+  }): Promise<LessonQueueCandidate[]> {
+    if (input.session.scope === 'DECK' && input.session.deckId) {
+      return this.cardReviewStateRepository.findDueCandidatesForDeck({
+        userId: input.userId,
+        deckId: input.session.deckId,
+        now: input.now,
+      });
+    }
+
+    const settings = await this.userSettingsRepository.findByUserId(
+      input.userId,
+    );
+    const targetLanguage = settings?.activeTargetLanguage;
+
+    if (!targetLanguage) {
+      return [];
+    }
+
+    const snapshotCardIds =
+      input.session.queueState?.snapshotCardIds ??
+      input.session.snapshotCardIds;
+    const snapshot = new Set(snapshotCardIds);
+
+    const due =
+      await this.cardReviewStateRepository.findDueCandidatesForOwnDecksWithTargetLanguage(
+        {
+          userId: input.userId,
+          targetLanguage,
+          now: input.now,
+        },
+      );
+
+    return due.filter((candidate) => snapshot.has(candidate.cardId));
+  }
+
+  private async isCandidateAccessible(input: {
+    userId: string;
+    session: StudySession;
+    cardId: string;
+  }): Promise<boolean> {
+    const card = await this.cardRepository.findById(input.cardId);
+
+    if (!card || card.deletedAt !== null) {
+      return false;
+    }
+
+    if (input.session.scope === 'DECK') {
+      return Boolean(
+        input.session.deckId && card.deckId === input.session.deckId,
+      );
+    }
+
+    const snapshotCardIds =
+      input.session.queueState?.snapshotCardIds ??
+      input.session.snapshotCardIds;
+
+    if (!snapshotCardIds.includes(card.id)) {
+      return false;
+    }
+
+    const deck = await this.deckRepository.findById(card.deckId);
+
+    return Boolean(
+      deck && deck.ownerId === input.userId && deck.deletedAt === null,
+    );
+  }
+
+  private async persistQueueState(
+    sessionId: string,
+    queueState: LessonQueueState,
+  ): Promise<void> {
+    await this.studySessionRepository.update({
+      sessionId,
+      snapshotCardIds: queueState.snapshotCardIds,
+      queueState,
+    });
+  }
+
+  private toLessonCard(card: Card, reviewState: CardReviewState): LessonCard {
     const learningStep = reviewState.learningStep;
     const randomBit = this.promptDirectionRandomBitService.nextBit();
 
@@ -253,4 +404,22 @@ export class SubmitReviewUseCase {
       reviewState,
     };
   }
+}
+
+function excludeCardFromQueue(
+  state: LessonQueueState,
+  cardId: string,
+): LessonQueueState {
+  const pendingRepeats = { ...state.pendingRepeats };
+  delete pendingRepeats[cardId];
+
+  return {
+    scope: state.scope,
+    snapshotCardIds: state.snapshotCardIds.filter((id) => id !== cardId),
+    showCounts: {
+      ...state.showCounts,
+      [cardId]: MAX_SHOWINGS,
+    },
+    pendingRepeats,
+  };
 }

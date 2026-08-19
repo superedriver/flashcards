@@ -1,12 +1,18 @@
 import { calculateNextLearningState } from '@flashcards/srs';
 import { ErrorCodes } from '../../../../common/errors';
 import { AuthUser, SafeUser } from '../../../auth/domain/types';
-import { Card } from '../../../decks/domain/types';
+import { Card, Deck } from '../../../decks/domain/types';
+import {
+  createLessonQueueState,
+  recordLessonCardShowing,
+} from '../../domain/services/select-next-lesson-card';
 import {
   CardReviewState,
+  LessonQueueCandidate,
   ReviewAnswer,
   StudySession,
 } from '../../domain/types';
+import { UpdateStudySessionInput } from '../ports/study-session-repository.port';
 import { SubmitReviewUseCase } from './submit-review.use-case';
 
 jest.mock('@flashcards/srs', () => ({
@@ -36,46 +42,76 @@ const safeUser: SafeUser = {
   updatedAt: new Date('2026-01-01T00:00:00.000Z'),
 };
 
+const ownedDeck: Deck = {
+  id: 'deck-1',
+  ownerId: 'owner-1',
+  title: 'Spanish',
+  description: null,
+  visibility: 'PRIVATE',
+  moderationStatus: 'NONE',
+  isOfficial: false,
+  sourceDeckId: null,
+  targetLanguage: 'es',
+  sourceLanguage: 'en',
+  createdAt: new Date('2026-01-01T00:00:00.000Z'),
+  updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+  deletedAt: null,
+};
+
+function createCard(id: string, overrides: Partial<Card> = {}): Card {
+  return {
+    id,
+    deckId: 'deck-1',
+    front: `front-${id}`,
+    back: `back-${id}`,
+    example: null,
+    notes: null,
+    position: 1,
+    createdAt: new Date('2026-01-01T00:00:00.000Z'),
+    updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+    deletedAt: null,
+    ...overrides,
+  };
+}
+
+function createCandidate(
+  card: Card,
+  dueAt = new Date('2026-06-01T12:00:00.000Z'),
+): LessonQueueCandidate {
+  return {
+    cardId: card.id,
+    dueAt,
+    createdAt: card.createdAt,
+  };
+}
+
+const card = createCard('card-1');
+const nextCardEntity = createCard('card-2', { position: 2 });
+const thirdCardEntity = createCard('card-3', { position: 3 });
+const outsideSnapshotCard = createCard('card-outside', {
+  deckId: 'deck-2',
+});
+
+const initialQueueState = recordLessonCardShowing({
+  state: createLessonQueueState({ scope: 'DECK' }),
+  shownCardId: 'card-1',
+  candidates: [createCandidate(card), createCandidate(nextCardEntity)],
+});
+
 const activeSession: StudySession = {
   id: 'session-1',
   userId: 'owner-1',
   deckId: 'deck-1',
   scope: 'DECK',
   status: 'ACTIVE',
-  lessonSize: 20,
+  lessonSize: 0,
   snapshotCardIds: [],
-  queueState: null,
+  queueState: initialQueueState,
   startedAt: new Date('2026-06-01T00:00:00.000Z'),
   completedAt: null,
   abandonedAt: null,
   createdAt: new Date('2026-06-01T00:00:00.000Z'),
   updatedAt: new Date('2026-06-01T00:00:00.000Z'),
-};
-
-const card: Card = {
-  id: 'card-1',
-  deckId: 'deck-1',
-  front: 'hola',
-  back: 'hello',
-  example: null,
-  notes: null,
-  position: 1,
-  createdAt: new Date('2026-01-01T00:00:00.000Z'),
-  updatedAt: new Date('2026-01-01T00:00:00.000Z'),
-  deletedAt: null,
-};
-
-const nextCardEntity: Card = {
-  id: 'card-2',
-  deckId: 'deck-1',
-  front: 'adios',
-  back: 'bye',
-  example: null,
-  notes: null,
-  position: 2,
-  createdAt: new Date('2026-01-01T00:00:00.000Z'),
-  updatedAt: new Date('2026-01-01T00:00:00.000Z'),
-  deletedAt: null,
 };
 
 const initialReviewState: CardReviewState = {
@@ -112,21 +148,28 @@ function createUseCase(options?: {
   user?: SafeUser | null;
   session?: StudySession | null;
   card?: Card | null;
+  cardsById?: Record<string, Card | null>;
   previousReviewState?: CardReviewState;
-  dueCardIds?: string[];
+  dueCandidates?: LessonQueueCandidate[];
+  homeDueCandidates?: LessonQueueCandidate[];
   reviewedCount?: number;
 }) {
+  const cardsById: Record<string, Card | null> = {
+    'card-1': options?.card === undefined ? card : options.card,
+    'card-2': nextCardEntity,
+    'card-3': thirdCardEntity,
+    'card-outside': outsideSnapshotCard,
+    ...options?.cardsById,
+  };
   const findByIdUser = jest
     .fn()
     .mockResolvedValue(options?.user === undefined ? safeUser : options.user);
   const findCardById = jest.fn((cardId: string) => {
-    if (options?.card === null) {
+    if (options?.card === null && cardId !== 'card-2' && cardId !== 'card-3') {
       return Promise.resolve(null);
     }
-    if (cardId === 'card-2') {
-      return Promise.resolve(nextCardEntity);
-    }
-    return Promise.resolve(options?.card === undefined ? card : options.card);
+
+    return Promise.resolve(cardsById[cardId] ?? null);
   });
   const findSessionById = jest
     .fn()
@@ -153,9 +196,12 @@ function createUseCase(options?: {
     createdAt: new Date('2026-06-01T12:00:00.000Z'),
   });
   const countReviews = jest.fn().mockResolvedValue(options?.reviewedCount ?? 1);
-  const findDueCardIdsForDeck = jest
+  const findDueCandidatesForDeck = jest
     .fn()
-    .mockResolvedValue(options?.dueCardIds ?? []);
+    .mockResolvedValue(options?.dueCandidates ?? []);
+  const findDueCandidatesForOwnDecksWithTargetLanguage = jest
+    .fn()
+    .mockResolvedValue(options?.homeDueCandidates ?? []);
   const findByUserAndCard = jest.fn((_userId: string, cardId: string) =>
     Promise.resolve({
       ...initialReviewState,
@@ -164,6 +210,9 @@ function createUseCase(options?: {
       learningStep: 0,
     }),
   );
+  const updateSession: jest.MockedFunction<
+    (input: UpdateStudySessionInput) => Promise<StudySession>
+  > = jest.fn().mockResolvedValue(activeSession);
 
   const useCase = new SubmitReviewUseCase(
     {
@@ -185,7 +234,7 @@ function createUseCase(options?: {
     },
     {
       create: jest.fn(),
-      findById: jest.fn(),
+      findById: jest.fn().mockResolvedValue(ownedDeck),
       findByOwner: jest.fn(),
       update: jest.fn(),
       softDelete: jest.fn(),
@@ -198,10 +247,10 @@ function createUseCase(options?: {
     },
     {
       findByUserAndCard,
-      findDueCardIdsForDeck,
+      findDueCardIdsForDeck: jest.fn(),
       findDueCardIdsForOwnDecksWithTargetLanguage: jest.fn(),
-      findDueCandidatesForDeck: jest.fn(),
-      findDueCandidatesForOwnDecksWithTargetLanguage: jest.fn(),
+      findDueCandidatesForDeck,
+      findDueCandidatesForOwnDecksWithTargetLanguage,
       countReviewedForDeck: jest.fn(),
       countDueForDeck: jest.fn(),
       countDueForUser: jest.fn(),
@@ -217,7 +266,7 @@ function createUseCase(options?: {
       abandonActiveForUserAndDeck: jest.fn(),
       abandonActiveForUser: jest.fn(),
       create: jest.fn(),
-      update: jest.fn(),
+      update: updateSession,
       findById: findSessionById,
       createReview,
       hasReviewForCard: jest.fn(),
@@ -244,7 +293,9 @@ function createUseCase(options?: {
     upsert,
     createReview,
     countReviews,
-    findDueCardIdsForDeck,
+    findDueCandidatesForDeck,
+    findDueCandidatesForOwnDecksWithTargetLanguage,
+    updateSession,
   };
 }
 
@@ -328,6 +379,33 @@ describe('SubmitReviewUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.CARD_NOT_FOUND });
   });
 
+  it('throws CARD_NOT_FOUND for a Home card outside the snapshot', async () => {
+    const homeSession: StudySession = {
+      ...activeSession,
+      deckId: null,
+      scope: 'HOME_ACTIVE_TARGET',
+      lessonSize: 20,
+      snapshotCardIds: ['card-1', 'card-2'],
+      queueState: createLessonQueueState({
+        scope: 'HOME_ACTIVE_TARGET',
+        snapshotCardIds: ['card-1', 'card-2'],
+      }),
+    };
+    const { useCase } = createUseCase({
+      session: homeSession,
+      card: outsideSnapshotCard,
+    });
+
+    await expect(
+      useCase.execute({
+        currentUser: authUser,
+        sessionId: 'session-1',
+        cardId: 'card-outside',
+        answer: 'KNOW',
+      }),
+    ).rejects.toMatchObject({ code: ErrorCodes.CARD_NOT_FOUND });
+  });
+
   it('throws INVALID_REVIEW_ANSWER for invalid answer value', async () => {
     const { useCase } = createUseCase();
 
@@ -381,27 +459,28 @@ describe('SubmitReviewUseCase', () => {
     );
   });
 
-  it('returns nextCard when another card is due and lessonSize not reached', async () => {
-    const { useCase, findDueCardIdsForDeck } = createUseCase({
-      dueCardIds: ['card-2'],
-      reviewedCount: 1,
-    });
+  it('allows multiple reviews of the same cardId', async () => {
+    const { useCase, createReview } = createUseCase();
 
-    const result = await useCase.execute({
+    await useCase.execute({
       currentUser: authUser,
       sessionId: 'session-1',
       cardId: 'card-1',
       answer: 'KNOW',
     });
+    await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+      cardId: 'card-1',
+      answer: 'DONT_KNOW',
+    });
 
-    expect(findDueCardIdsForDeck).toHaveBeenCalled();
-    expect(result.nextCard?.cardId).toBe('card-2');
-    expect(result.nextCard?.promptDirection).toBe('FRONT_TO_BACK');
+    expect(createReview).toHaveBeenCalledTimes(2);
   });
 
-  it('returns nextCard null when lessonSize is reached', async () => {
-    const { useCase, findDueCardIdsForDeck } = createUseCase({
-      dueCardIds: ['card-2'],
+  it('returns nextCard from the picker even after many reviews', async () => {
+    const { useCase, findDueCandidatesForDeck } = createUseCase({
+      dueCandidates: [createCandidate(nextCardEntity)],
       reviewedCount: 20,
     });
 
@@ -412,7 +491,118 @@ describe('SubmitReviewUseCase', () => {
       answer: 'KNOW',
     });
 
-    expect(findDueCardIdsForDeck).not.toHaveBeenCalled();
+    expect(findDueCandidatesForDeck).toHaveBeenCalled();
+    expect(result.nextCard?.cardId).toBe('card-2');
+    expect(result.nextCard?.promptDirection).toBe('FRONT_TO_BACK');
+  });
+
+  it('lets a newly ready deck card join the live queue', async () => {
+    const { useCase } = createUseCase({
+      dueCandidates: [createCandidate(thirdCardEntity)],
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+      cardId: 'card-1',
+      answer: 'KNOW',
+    });
+
+    expect(result.nextCard?.cardId).toBe('card-3');
+  });
+
+  it('does not return a Home nextCard outside the snapshot', async () => {
+    const homeQueueState = recordLessonCardShowing({
+      state: createLessonQueueState({
+        scope: 'HOME_ACTIVE_TARGET',
+        snapshotCardIds: ['card-1', 'card-2'],
+      }),
+      shownCardId: 'card-1',
+      candidates: [createCandidate(card), createCandidate(nextCardEntity)],
+    });
+    const { useCase, findDueCandidatesForOwnDecksWithTargetLanguage } =
+      createUseCase({
+        session: {
+          ...activeSession,
+          deckId: null,
+          scope: 'HOME_ACTIVE_TARGET',
+          lessonSize: 20,
+          snapshotCardIds: ['card-1', 'card-2'],
+          queueState: homeQueueState,
+        },
+        homeDueCandidates: [
+          createCandidate(outsideSnapshotCard),
+          createCandidate(nextCardEntity),
+        ],
+      });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+      cardId: 'card-1',
+      answer: 'KNOW',
+    });
+
+    expect(findDueCandidatesForOwnDecksWithTargetLanguage).toHaveBeenCalled();
+    expect(result.nextCard?.cardId).toBe('card-2');
+  });
+
+  it('skips a deleted next card and never returns it again', async () => {
+    const deletedNext = createCard('card-2', { deletedAt: new Date() });
+    const { useCase, updateSession } = createUseCase({
+      dueCandidates: [
+        createCandidate(deletedNext),
+        createCandidate(thirdCardEntity),
+      ],
+      cardsById: { 'card-2': deletedNext },
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+      cardId: 'card-1',
+      answer: 'KNOW',
+    });
+
+    expect(result.nextCard?.cardId).toBe('card-3');
+    expect(
+      updateSession.mock.calls[0]?.[0].queueState?.showCounts['card-2'],
+    ).toBe(3);
+  });
+
+  it('returns a repeat when the gap shrinks to no other ready cards', async () => {
+    const { useCase } = createUseCase({
+      dueCandidates: [createCandidate(card)],
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+      cardId: 'card-1',
+      answer: 'DONT_KNOW',
+    });
+
+    expect(result.nextCard?.cardId).toBe('card-1');
+  });
+
+  it('returns nextCard null when nothing is showable', async () => {
+    const maxedQueueState = {
+      ...initialQueueState,
+      showCounts: { 'card-1': 3, 'card-2': 3 },
+      pendingRepeats: {},
+    };
+    const { useCase } = createUseCase({
+      session: { ...activeSession, queueState: maxedQueueState },
+      dueCandidates: [createCandidate(card), createCandidate(nextCardEntity)],
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+      cardId: 'card-1',
+      answer: 'KNOW',
+    });
+
     expect(result.nextCard).toBeNull();
   });
 
