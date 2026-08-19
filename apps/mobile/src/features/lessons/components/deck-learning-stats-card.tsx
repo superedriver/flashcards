@@ -2,14 +2,20 @@ import { useTranslation } from 'react-i18next'
 
 import { useDeckLearningStatsQuery } from '@/graphql/generated'
 import { formatDateTime } from '@/i18n/formatters'
-import { AppCard, AppText } from '@/ui/primitives'
+import { AppButton, AppCard, AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState } from '@/ui/components'
 
 type DeckLearningStatsCardProps = {
   deckId: string
+  isOwner?: boolean
+  onStartLesson?: () => void
 }
 
-export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
+export function DeckLearningStatsCard({
+  deckId,
+  isOwner = false,
+  onStartLesson,
+}: DeckLearningStatsCardProps) {
   const { t } = useTranslation()
   const { data, error, loading, refetch } = useDeckLearningStatsQuery({
     variables: { deckId },
@@ -32,6 +38,7 @@ export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
   }
 
   const stats = data.deckLearningStats
+  const canStart = isOwner && stats.dueCount > 0 && onStartLesson
 
   return (
     <AppCard style={{ gap: 8, marginBottom: 16, padding: 16 }}>
@@ -48,6 +55,9 @@ export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
       </AppText>
       {stats.dueCount === 0 && stats.totalCards > 0 ? (
         <AppText style={{ color: '#666666', fontSize: 14 }}>{t('lessons.stats.noneDue')}</AppText>
+      ) : null}
+      {canStart ? (
+        <AppButton onPress={onStartLesson}>{t('decks.deckDetail.startLesson')}</AppButton>
       ) : null}
     </AppCard>
   )

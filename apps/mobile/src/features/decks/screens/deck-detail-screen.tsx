@@ -15,7 +15,7 @@ import { useAuth } from '@/features/auth/hooks/use-auth'
 import { DeckLearningStatsCard } from '@/features/lessons/components/deck-learning-stats-card'
 import { useRouter } from 'expo-router'
 import { useDeckCardsQuery, useDeckQuery, useDeleteCardMutation } from '@/graphql/generated'
-import { AppButton, AppText } from '@/ui/primitives'
+import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function DeckDetailScreen() {
@@ -80,10 +80,10 @@ export function DeckDetailScreen() {
     !loading && !error && deck && deckId ? (
       <>
         <DeckHeader cardCount={cards.length} deck={deck} />
-        <DeckLearningStatsCard deckId={deckId} />
-        <AppButton
-          disabled={cards.length === 0}
-          onPress={() => {
+        <DeckLearningStatsCard
+          deckId={deckId}
+          isOwner={isOwner}
+          onStartLesson={() => {
             if (deckNeedsLanguageAssignment(deck)) {
               promptAssignLanguages(() => router.push(`/decks/${deckId}/assign-languages`))
               return
@@ -91,9 +91,7 @@ export function DeckDetailScreen() {
 
             router.push(`/lessons/start?deckId=${deckId}`)
           }}
-        >
-          {t('decks.deckDetail.startLesson')}
-        </AppButton>
+        />
         <DeckActions deck={deck} isOwner={isOwner} />
       </>
     ) : null
