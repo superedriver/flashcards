@@ -6,6 +6,7 @@ Related:
 
 ```txt
 docs/tasks/29-lesson-queue.md
+docs/tasks/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
 ```
@@ -43,8 +44,13 @@ Apply `StudySession` snapshot/queueState migration first. Use own decks only; do
 
 ### Queue rules
 
-- [ ] A cardId is shown at most 3 times in one session.
-- [ ] After answering A, other cards fill the frozen gap; if no other ready/showable cards exist, the gap shrinks and A can show again if still ready.
+- [ ] A cardId is answered at most 3 times in one session (display without an answer does not count).
+- [ ] Display, answer, and freeze N are separate: showing A does not freeze N; answering A does.
+- [ ] Cards that become due between display of A and the answer of A count toward N
+      (example: show A with only B ready; C and D due before the answer → N = 3 → A, B, C, D, A).
+- [ ] After answering A, other **answered** cards fill the frozen gap; display without an answer
+      does not fill it. If no other ready/showable cards exist, the gap shrinks and A can show
+      again if still ready.
 - [ ] Review screen has no progress bar and no “card X of Y”.
 
 ### Leave and summary

@@ -11,6 +11,7 @@ Scheduling intervals and prompt direction stay in `docs/algorithms/learning-step
 Relevant task files:
 
 ```txt
+docs/tasks/30-sot-discrepancies.md
 docs/tasks/29-lesson-queue.md
 docs/tasks/done/26-learning-steps.md
 docs/tasks/done/07-srs-lessons.md (historical SM-2 backend)
@@ -36,12 +37,14 @@ The lesson flow is:
 ```txt
 User starts lesson (Home or owned deck)
   -> Backend selects ready cards for the scope (snapshot or live)
-  -> User reviews cards one by one
+  -> Backend returns the first card for display (not an answer; no showCount / no freeze N)
   -> User answers KNOW or DONT_KNOW
   -> Backend updates learning-steps state
-  -> Backend returns nextCard from the queue picker (or null)
+  -> Backend records that answer on the queue (showCount + freeze N), then returns nextCard
   -> Lesson completes when nothing is showable now
 ```
+
+Display, answer, and planning a repeat are separate. Returning a card for the UI is not an answer.
 
 The backend is the source of truth for:
 
@@ -80,7 +83,7 @@ Supports:
 - Home snapshot sized by UserSettings.lessonSize
 - KNOW / DONT_KNOW answers
 - backend learning-steps update after each answer
-- bounded repeats in the same session (max 3 showings per cardId)
+- bounded repeats in the same session (max 3 answers per cardId)
 - no countdown UI
 - lesson completion summary
 ```
@@ -194,12 +197,37 @@ Persist `StudySession.snapshotCardIds` for Home. Deck sessions store an empty sn
 - If ready = 0 at start: do not create a session; hide the Start button.
 ```
 
+## Display vs answer vs freeze N
+
+These are three distinct steps:
+
+```txt
+1. Display — backend returns a card (start or nextCard). The user sees it.
+   No answer yet, no new dueAt. Do not increment showCount. Do not freeze gap N.
+2. Answer — user taps Know or Don’t know.
+3. Plan the repeat — persist learning-steps, then increment showCount for the answered
+   cardId, then freeze N from other cards that are ready AND showable at answer time.
+```
+
+A display without an answer does not fill anyone’s gap.
+
+Example (N frozen at answer time, not at display):
+
+```txt
+18:00:00  Show A. Only B is ready. Do not freeze N yet.
+18:00:20  C becomes due.
+18:00:35  D becomes due.
+18:00:40  User answers A. Others ready AND showable: B, C, D → N = 3.
+          Sequence: A → B → C → D → A repeat.
+```
+
 ## Primary vs repeat
 
 ```txt
-- Primary = first showing of a cardId in this session (showCount = 0).
-- Repeat = 2nd or 3rd showing of that cardId.
-- Max 3 showings per cardId per session. After that the card is excluded even if due.
+- showCount counts answers in this session, not displays.
+- Primary = first answer of a cardId in this session (showCount = 0).
+- Repeat = 2nd or 3rd answer of that cardId.
+- Max 3 answers per cardId per session. After that the card is excluded even if due.
 ```
 
 ## Next primary order
@@ -210,16 +238,18 @@ When no showable repeat exists, pick the next primary:
 dueAt ASC, then card.createdAt ASC, then cardId ASC
 ```
 
-Same order for Home (among unshown snapshot members that are ready) and Deck.
+Same order for Home (among unanswered snapshot members that are ready) and Deck.
 
 ## Repeat gap
 
 ```txt
-After answering card A, freeze
+After answering card A (not when A is displayed), freeze
   N = min(3, count of other cards that are currently ready AND still showable in this session).
-N is a target for that pending repeat.
+N is a target for that pending repeat. Cards that became due between display of A and the
+answer of A count toward N (see the 18:00 timeline above).
 
-Gap counts every showing of another card (a repeat of B counts as +1 for A).
+Gap fill = another card was answered (a completed showing). A repeat answer of B counts as +1
+for A. Displaying B without answering does not fill A’s gap.
 
 If N cannot be reached because no other ready/showable cards exist, shrink the remaining gap
 to what is actually possible (including 0). Then A may show immediately if it is ready.
@@ -266,7 +296,7 @@ Lesson must not include:
 - cards from deleted decks
 - cards from decks the user does not own (deck lessons and Home)
 - Home: cardIds outside the session snapshot
-- cardIds already shown 3 times in this session
+- cardIds already answered 3 times in this session
 ```
 
 ## Empty Lesson
@@ -288,8 +318,10 @@ Frontend hides the Start button.
 2. Load deck; require ownership (not merely view).
 3. Ensure CardReviewState safety net for deck cards as needed.
 4. If no ready cards: return empty payload, no session.
-5. Abandon existing ACTIVE session; create StudySession (scope=DECK, deckId set, lessonSize 0, empty snapshot).
+5. Abandon existing ACTIVE session; create StudySession (scope=DECK, deckId set, lessonSize 0,
+   empty snapshot, empty showCounts).
 6. Return the first showable card (promptDirection + learning metadata).
+   This display does not increment showCount and does not freeze N.
 ```
 
 ### StartHomeLessonUseCase (Home)
@@ -300,8 +332,10 @@ Frontend hides the Start button.
 3. Resolve lessonSize from UserSettings (5–100, default 20).
 4. Snapshot unique ready cards across own decks of that target (order above, limit lessonSize).
 5. If snapshot empty: return empty payload, no session.
-6. Abandon existing ACTIVE session; create StudySession (scope=HOME_ACTIVE_TARGET, deckId null).
+6. Abandon existing ACTIVE session; create StudySession (scope=HOME_ACTIVE_TARGET, deckId null,
+   empty showCounts).
 7. Return the first showable card (each later review still records the card’s deckId).
+   This display does not increment showCount and does not freeze N.
 ```
 
 ## Active Session Handling
@@ -358,8 +392,10 @@ Multiple rows per `(sessionId, cardId)` are required (repeats). Do not keep `@@u
 4. Load CardReviewState; apply packages/srs learning-steps with KNOW/DONT_KNOW.
 5. Persist updated learningStep, longReviewSuccessCount, dueAt, lastReviewedAt.
 6. Create StudySessionReview (attempts, not unique cards).
-7. Update queueState; select nextCard with the domain picker.
-8. Return nextCard or null. lessonSize must not stop the queue.
+7. Record the answered card on queueState (increment showCount, freeze N from other
+   ready+showable cards at this moment, fill other cards’ gaps).
+8. Select nextCard with the domain picker. Do not record that next card as a showing.
+9. Return nextCard or null. lessonSize must not stop the queue.
 ```
 
 Frontend must avoid duplicate submits by disabling buttons while loading.
@@ -391,7 +427,7 @@ dontKnowCount
 completedAt
 ```
 
-`knownCount` and `dontKnowCount` are numbers of answers (attempts). If card A was shown 3 times, all 3 answers count.
+`knownCount` and `dontKnowCount` are numbers of answers (attempts). If card A was answered 3 times, all 3 answers count.
 
 ## Abandoning a Lesson
 
@@ -442,6 +478,7 @@ Backend also abandons previous ACTIVE sessions when starting a new lesson.
 
 ```txt
 docs/algorithms/learning-steps.md
+docs/tasks/30-sot-discrepancies.md
 docs/tasks/29-lesson-queue.md
 docs/tasks/done/26-learning-steps.md
 docs/architecture.md

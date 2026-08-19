@@ -933,7 +933,9 @@ Ready cards only (dueAt <= now, not deleted).
 Home: frozen unique snapshot, size UserSettings.lessonSize (5–100, default 20).
 Deck: live queue of the owned deck; lessonSize unused (store 0).
 Order primaries: dueAt ASC, card.createdAt ASC, cardId ASC.
-Max 3 showings per cardId; repeats use a frozen gap (see lesson-flow.md).
+Display is not an answer: returning a card does not increment showCount or freeze N.
+After an answer, freeze N from other ready+showable cards at that moment (see lesson-flow.md).
+Max 3 answers per cardId; repeats use that frozen gap.
 Do not stop the queue because reviewedCards reached lessonSize.
 Do not block the UI waiting for future dueAt.
 Queue picker is pure TypeScript in the lessons domain, not packages/srs.
@@ -948,8 +950,9 @@ Validating session ownership.
 Validating card belongs to the session scope (Deck: that deck; Home: snapshot).
 Applying packages/srs learning-steps for KNOW / DONT_KNOW.
 Saving study_session_review (multiple rows per session+card allowed).
-Updating card_review_state and queueState.
-Returning nextCard from the domain picker (or null).
+Updating card_review_state.
+Recording the answered card on queueState (showCount + freeze N), then picking nextCard.
+Returning nextCard from the domain picker without recording that display (or null).
 Tracking analytics.
 ```
 
