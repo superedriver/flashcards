@@ -88,15 +88,12 @@ function createCandidate(
 const card = createCard('card-1');
 const nextCardEntity = createCard('card-2', { position: 2 });
 const thirdCardEntity = createCard('card-3', { position: 3 });
+const fourthCardEntity = createCard('card-4', { position: 4 });
 const outsideSnapshotCard = createCard('card-outside', {
   deckId: 'deck-2',
 });
 
-const initialQueueState = recordLessonCardAnswer({
-  state: createLessonQueueState({ scope: 'DECK' }),
-  answeredCardId: 'card-1',
-  candidates: [createCandidate(card), createCandidate(nextCardEntity)],
-});
+const initialQueueState = createLessonQueueState({ scope: 'DECK' });
 
 const activeSession: StudySession = {
   id: 'session-1',
@@ -158,6 +155,7 @@ function createUseCase(options?: {
     'card-1': options?.card === undefined ? card : options.card,
     'card-2': nextCardEntity,
     'card-3': thirdCardEntity,
+    'card-4': fourthCardEntity,
     'card-outside': outsideSnapshotCard,
     ...options?.cardsById,
   };
@@ -511,14 +509,90 @@ describe('SubmitReviewUseCase', () => {
     expect(result.nextCard?.cardId).toBe('card-3');
   });
 
-  it('does not return a Home nextCard outside the snapshot', async () => {
-    const homeQueueState = recordLessonCardAnswer({
-      state: createLessonQueueState({
-        scope: 'HOME_ACTIVE_TARGET',
-        snapshotCardIds: ['card-1', 'card-2'],
-      }),
+  it('records the answered card and does not record the displayed nextCard', async () => {
+    const { useCase, updateSession } = createUseCase({
+      dueCandidates: [createCandidate(nextCardEntity)],
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+      cardId: 'card-1',
+      answer: 'KNOW',
+    });
+
+    const queueState = updateSession.mock.calls[0]?.[0].queueState;
+
+    expect(result.nextCard?.cardId).toBe('card-2');
+    expect(queueState?.showCounts['card-1']).toBe(1);
+    expect(queueState?.showCounts['card-2']).toBeUndefined();
+  });
+
+  it('freezes N from other ready cards at answer time including late-due C and D', async () => {
+    const { useCase, updateSession } = createUseCase({
+      dueCandidates: [
+        createCandidate(nextCardEntity),
+        createCandidate(thirdCardEntity),
+        createCandidate(fourthCardEntity),
+      ],
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+      cardId: 'card-1',
+      answer: 'KNOW',
+    });
+
+    const queueState = updateSession.mock.calls[0]?.[0].queueState;
+
+    expect(result.nextCard?.cardId).toBe('card-2');
+    expect(queueState?.pendingRepeats['card-1']).toEqual({
+      targetGap: 3,
+      filled: 0,
+    });
+    expect(queueState?.showCounts['card-2']).toBeUndefined();
+  });
+
+  it('fills the frozen gap when another card is answered, not when it is displayed', async () => {
+    const afterAnsweringA = recordLessonCardAnswer({
+      state: createLessonQueueState({ scope: 'DECK' }),
       answeredCardId: 'card-1',
-      candidates: [createCandidate(card), createCandidate(nextCardEntity)],
+      candidates: [
+        createCandidate(nextCardEntity),
+        createCandidate(thirdCardEntity),
+        createCandidate(fourthCardEntity),
+      ],
+    });
+    const { useCase, updateSession } = createUseCase({
+      session: { ...activeSession, queueState: afterAnsweringA },
+      dueCandidates: [
+        createCandidate(nextCardEntity),
+        createCandidate(thirdCardEntity),
+        createCandidate(fourthCardEntity),
+      ],
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+      cardId: 'card-2',
+      answer: 'KNOW',
+    });
+
+    const queueState = updateSession.mock.calls[0]?.[0].queueState;
+
+    expect(afterAnsweringA.pendingRepeats['card-1']?.filled).toBe(0);
+    expect(queueState?.pendingRepeats['card-1']?.filled).toBe(1);
+    expect(result.nextCard?.cardId).toBe('card-3');
+    expect(queueState?.showCounts['card-2']).toBe(1);
+    expect(queueState?.showCounts['card-3']).toBeUndefined();
+  });
+
+  it('does not return a Home nextCard outside the snapshot', async () => {
+    const homeQueueState = createLessonQueueState({
+      scope: 'HOME_ACTIVE_TARGET',
+      snapshotCardIds: ['card-1', 'card-2'],
     });
     const { useCase, findDueCandidatesForOwnDecksWithTargetLanguage } =
       createUseCase({
@@ -571,7 +645,7 @@ describe('SubmitReviewUseCase', () => {
   });
 
   it('returns a repeat when the gap shrinks to no other ready cards', async () => {
-    const { useCase } = createUseCase({
+    const { useCase, updateSession } = createUseCase({
       dueCandidates: [createCandidate(card)],
     });
 
@@ -583,6 +657,9 @@ describe('SubmitReviewUseCase', () => {
     });
 
     expect(result.nextCard?.cardId).toBe('card-1');
+    expect(
+      updateSession.mock.calls[0]?.[0].queueState?.showCounts['card-1'],
+    ).toBe(1);
   });
 
   it('returns nextCard null when nothing is showable', async () => {

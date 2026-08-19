@@ -25,7 +25,7 @@ New discrepancies found later should be appended here as new register entries an
 
 ## Epic Status
 
-IN PROGRESS
+DONE
 
 ## Related Documents
 
@@ -87,7 +87,7 @@ DEFERRED   — explicitly postponed with owner note
 Status:
 
 ```txt
-APPROVED
+DONE
 ```
 
 Conflicting sources:
@@ -171,7 +171,7 @@ frontend / Prisma / GraphQL: none expected
 ```md
 - [x] TASK-30.01 Clarify show vs answer vs freeze-N in lesson-flow SoT
 - [x] TASK-30.02 Freeze lesson-queue gap from answer-time candidates
-- [ ] TASK-30.03 Record queue showing after answer, not on display
+- [x] TASK-30.03 Record queue showing after answer, not on display
 ```
 
 ---
@@ -426,7 +426,7 @@ TASK-30.02 Freeze lesson-queue gap from answer-time candidates
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

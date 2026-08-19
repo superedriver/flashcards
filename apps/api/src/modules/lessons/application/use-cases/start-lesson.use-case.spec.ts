@@ -1,10 +1,7 @@
 import { ErrorCodes } from '../../../../common/errors';
 import { AuthUser, SafeUser } from '../../../auth/domain/types';
 import { Card, Deck } from '../../../decks/domain/types';
-import {
-  createLessonQueueState,
-  recordLessonCardAnswer,
-} from '../../domain/services/select-next-lesson-card';
+import { createLessonQueueState } from '../../domain/services/select-next-lesson-card';
 import { CardReviewState, LessonQueueCandidate } from '../../domain/types';
 import { EnsureCardReviewStatesService } from '../services/ensure-card-review-states.service';
 import { PromptDirectionRandomBitService } from '../services/prompt-direction-random-bit.service';
@@ -406,14 +403,9 @@ describe('StartLessonUseCase', () => {
     expect(createSession).toHaveBeenCalled();
   });
 
-  it('creates a live deck session with empty snapshot and first-card queueState', async () => {
+  it('creates a live deck session with empty snapshot and unanswered first-card queueState', async () => {
     const cards = [createCard('card-1', 1), createCard('card-2', 2)];
-    const candidates = cards.map((card) => createCandidate(card));
-    const expectedQueueState = recordLessonCardAnswer({
-      state: createLessonQueueState({ scope: 'DECK' }),
-      answeredCardId: 'card-1',
-      candidates,
-    });
+    const expectedQueueState = createLessonQueueState({ scope: 'DECK' });
     const { useCase, createSession } = createUseCase({ cards });
 
     const result = await useCase.execute({
@@ -433,6 +425,7 @@ describe('StartLessonUseCase', () => {
     expect(result.sessionId).toBe('session-1');
     expect(result.cards).toHaveLength(1);
     expect(result.cards[0]?.cardId).toBe('card-1');
+    expect(expectedQueueState.showCounts).toEqual({});
   });
 
   it('includes reviewState on the first due card', async () => {

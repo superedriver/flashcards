@@ -23,7 +23,6 @@ import { DeckPermissionService } from '../../../decks/domain/services/deck-permi
 import { Card } from '../../../decks/domain/types';
 import {
   createLessonQueueState,
-  recordLessonCardAnswer,
   selectNextLessonCard,
 } from '../../domain/services/select-next-lesson-card';
 import { CardReviewState, LessonQueueState } from '../../domain/types';
@@ -210,15 +209,9 @@ export class StartLessonUseCase {
       return null;
     }
 
-    const queueState = recordLessonCardAnswer({
-      state: initialState,
-      answeredCardId: firstCardId,
-      candidates,
-    });
-
     return {
       card: this.toLessonCard(card, reviewState),
-      queueState,
+      queueState: initialState,
     };
   }
 

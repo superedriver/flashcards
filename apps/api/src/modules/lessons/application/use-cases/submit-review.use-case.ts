@@ -172,6 +172,7 @@ export class SubmitReviewUseCase {
     const nextCard = await this.selectAndPersistNextCard({
       userId: input.currentUser.id,
       session,
+      answeredCardId: input.cardId,
       now: reviewedAt,
     });
 
@@ -214,6 +215,7 @@ export class SubmitReviewUseCase {
   private async selectAndPersistNextCard(input: {
     userId: string;
     session: StudySession;
+    answeredCardId: string;
     now: Date;
   }): Promise<LessonCard | null> {
     let queueState =
@@ -229,7 +231,12 @@ export class SubmitReviewUseCase {
       now: input.now,
     });
 
-    queueState = accessibleCandidates.queueState;
+    queueState = recordLessonCardAnswer({
+      state: accessibleCandidates.queueState,
+      answeredCardId: input.answeredCardId,
+      candidates: accessibleCandidates.candidates,
+    });
+
     const nextCardId = selectNextLessonCard({
       state: queueState,
       candidates: accessibleCandidates.candidates,
@@ -251,12 +258,6 @@ export class SubmitReviewUseCase {
       await this.persistQueueState(input.session.id, queueState);
       return null;
     }
-
-    queueState = recordLessonCardAnswer({
-      state: queueState,
-      answeredCardId: nextCardId,
-      candidates: accessibleCandidates.candidates,
-    });
 
     await this.persistQueueState(input.session.id, queueState);
 

@@ -2,10 +2,7 @@ import { ErrorCodes } from '../../../../common/errors';
 import { UserSettings } from '../../../account/domain/types';
 import { AuthUser, SafeUser } from '../../../auth/domain/types';
 import { Card, Deck } from '../../../decks/domain/types';
-import {
-  createLessonQueueState,
-  recordLessonCardAnswer,
-} from '../../domain/services/select-next-lesson-card';
+import { createLessonQueueState } from '../../domain/services/select-next-lesson-card';
 import { CardReviewState, LessonQueueCandidate } from '../../domain/types';
 import { EnsureCardReviewStatesService } from '../services/ensure-card-review-states.service';
 import { StartHomeLessonUseCase } from './start-home-lesson.use-case';
@@ -264,15 +261,9 @@ describe('StartHomeLessonUseCase', () => {
   });
 
   it('creates HOME_ACTIVE_TARGET session with frozen snapshot and first card', async () => {
-    const card = createCard('card-1', 'deck-1');
-    const candidates = [createCandidate(card)];
-    const expectedQueueState = recordLessonCardAnswer({
-      state: createLessonQueueState({
-        scope: 'HOME_ACTIVE_TARGET',
-        snapshotCardIds: ['card-1'],
-      }),
-      answeredCardId: 'card-1',
-      candidates,
+    const expectedQueueState = createLessonQueueState({
+      scope: 'HOME_ACTIVE_TARGET',
+      snapshotCardIds: ['card-1'],
     });
     const { useCase, createSession, abandonActiveForUser } = createUseCase();
 
@@ -292,6 +283,7 @@ describe('StartHomeLessonUseCase', () => {
     expect(result.sessionId).toBe('session-home-1');
     expect(result.cards).toHaveLength(1);
     expect(result.cards[0]?.deckId).toBe('deck-1');
+    expect(expectedQueueState.showCounts).toEqual({});
   });
 
   it('stores at most lessonSize unique snapshot ids in dueAt/createdAt/cardId order', async () => {

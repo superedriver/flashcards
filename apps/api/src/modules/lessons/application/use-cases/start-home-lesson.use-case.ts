@@ -21,7 +21,6 @@ import {
 import { Card } from '../../../decks/domain/types';
 import {
   createLessonQueueState,
-  recordLessonCardAnswer,
   selectNextLessonCard,
 } from '../../domain/services/select-next-lesson-card';
 import { CardReviewState, LessonQueueCandidate } from '../../domain/types';
@@ -194,12 +193,6 @@ export class StartHomeLessonUseCase {
       return emptyPayload;
     }
 
-    const queueState = recordLessonCardAnswer({
-      state: initialState,
-      answeredCardId: firstCardId,
-      candidates: snapshotCandidates,
-    });
-
     await this.studySessionRepository.abandonActiveForUser({
       userId: input.currentUser.id,
     });
@@ -210,7 +203,7 @@ export class StartHomeLessonUseCase {
       scope: 'HOME_ACTIVE_TARGET',
       lessonSize,
       snapshotCardIds,
-      queueState,
+      queueState: initialState,
     });
 
     return {
