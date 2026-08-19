@@ -652,35 +652,37 @@ MVP lesson type:
 Swipe-based flashcard lesson
 ```
 
-Lesson size:
+Queue modes:
 
 ```txt
-20 cards
+Home: frozen snapshot of up to UserSettings.lessonSize unique ready cards (own decks, active target).
+Deck: live ready queue of one owned deck; no lessonSize cap.
 ```
 
 Flow:
 
 ```txt
-1. User starts a lesson from a deck (or Home multi-deck START).
-2. Backend creates a study session.
-3. Backend selects due cards (dueAt <= now) for the lesson scope, limit lessonSize.
+1. User starts a lesson from an owned deck or Home START.
+2. Backend creates a study session (or returns empty if nothing is ready).
+3. Backend picks the next showable card (primary vs bounded repeat).
 4. Frontend shows the prompt side first (from promptDirection).
 5. User taps to reveal the other side.
 6. Example sentence is shown if available.
 7. User can press Listen to hear the word.
 8. User answers Know or Don't know.
 9. Backend saves the review and updates learning-steps state.
-10. Backend may return another currently due card (re-queue).
-11. Lesson is completed when nothing due remains (or lessonSize reached).
-12. Result screen is shown.
+10. Backend returns nextCard from the domain queue picker, or null.
+11. Lesson is completed when nothing is showable now (no countdown).
+12. Result screen is shown. Know/Don't know counts are attempts.
 ```
 
-If the user answers Don't know:
+Repeats:
 
 ```txt
-DONT_KNOW updates learning-steps state immediately.
-dueAt is set by the learning-steps algorithm (see docs/algorithms/learning-steps.md).
-The same card may reappear later in the same session only when dueAt <= now again (re-queue).
+Max 3 showings per cardId per session.
+After an answer, freeze gap N = min(3, other currently ready showable cards).
+A showing of another card counts toward that gap.
+If N cannot be reached, shrink the remaining gap (including to 0).
 Do not show a countdown UI while waiting for dueAt.
 ```
 

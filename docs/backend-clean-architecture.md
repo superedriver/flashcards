@@ -929,13 +929,14 @@ GetLessonResultUseCase
 Lesson queue rules:
 
 ```txt
-Due cards only (dueAt <= now).
-Order dueAt ascending (optional tie-breaks per lesson-flow.md).
-Limit: UserSettings.lessonSize (5–100, default 20).
-Only cards from accessible decks / Home own-decks scope.
-Only non-deleted cards.
-Same card may reappear in the same session when due again (re-queue).
+Ready cards only (dueAt <= now, not deleted).
+Home: frozen unique snapshot, size UserSettings.lessonSize (5–100, default 20).
+Deck: live queue of the owned deck; lessonSize unused (store 0).
+Order primaries: dueAt ASC, card.createdAt ASC, cardId ASC.
+Max 3 showings per cardId; repeats use a frozen gap (see lesson-flow.md).
+Do not stop the queue because reviewedCards reached lessonSize.
 Do not block the UI waiting for future dueAt.
+Queue picker is pure TypeScript in the lessons domain, not packages/srs.
 ```
 
 Source of truth: `docs/domain/lesson-flow.md`.
@@ -944,11 +945,11 @@ Source of truth: `docs/domain/lesson-flow.md`.
 
 ```txt
 Validating session ownership.
-Validating card belongs to the session scope.
+Validating card belongs to the session scope (Deck: that deck; Home: snapshot).
 Applying packages/srs learning-steps for KNOW / DONT_KNOW.
-Saving study_session_review (learning-step snapshots; multiple rows per session+card allowed).
-Updating card_review_state.
-Returning next due card when applicable (re-queue).
+Saving study_session_review (multiple rows per session+card allowed).
+Updating card_review_state and queueState.
+Returning nextCard from the domain picker (or null).
 Tracking analytics.
 ```
 

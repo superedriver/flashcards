@@ -72,7 +72,7 @@ Expected state:
 
 ## Agreed Decisions (Source of Truth)
 
-After TASK-29.01, `docs/domain/lesson-flow.md` is the live SoT. Until that task lands, this section is the decision record.
+`docs/domain/lesson-flow.md` is the live SoT. This section is the decision record used to write that document.
 
 ### Ready
 
@@ -215,7 +215,7 @@ Do not keep @@unique([sessionId, cardId]) on StudySessionReview (already dropped
 ## Epic Summary
 
 ```md
-- [ ] TASK-29.01 Update live lesson-flow source of truth
+- [x] TASK-29.01 Update live lesson-flow source of truth
 - [ ] TASK-29.02 Add lesson-queue picker and unit tests
 - [ ] TASK-29.03 Add StudySession snapshot and queueState columns
 - [ ] TASK-29.04 Persist snapshot and queueState in the lessons repository
@@ -234,7 +234,7 @@ Do not keep @@unique([sessionId, cardId]) on StudySessionReview (already dropped
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

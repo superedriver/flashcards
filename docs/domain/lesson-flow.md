@@ -4,11 +4,14 @@
 
 This document defines how learning lessons work in Flashcards.
 
-It is a source-of-truth document for backend lesson logic, frontend lesson UI, and learning-steps integration.
+It is the live source of truth for backend lesson queue logic, frontend lesson UI, and learning-steps integration.
+
+Scheduling intervals and prompt direction stay in `docs/algorithms/learning-steps.md`.
 
 Relevant task files:
 
 ```txt
+docs/tasks/29-lesson-queue.md
 docs/tasks/done/26-learning-steps.md
 docs/tasks/done/07-srs-lessons.md (historical SM-2 backend)
 docs/tasks/done/16-frontend-lessons.md (historical frontend)
@@ -24,26 +27,27 @@ A lesson is a short study session for one user.
 Scopes:
 
 ```txt
-DECK                — cards from one deck (deck detail Start lesson)
-HOME_ACTIVE_TARGET  — due cards across own decks of activeTargetLanguage (Home START)
+DECK                — live ready queue of one owned deck (deck detail Start)
+HOME_ACTIVE_TARGET  — frozen unique-card snapshot across own decks of activeTargetLanguage (Home START)
 ```
 
 The lesson flow is:
 
 ```txt
-User starts lesson (Home or deck)
-  -> Backend selects due cards for the scope
+User starts lesson (Home or owned deck)
+  -> Backend selects ready cards for the scope (snapshot or live)
   -> User reviews cards one by one
   -> User answers KNOW or DONT_KNOW
   -> Backend updates learning-steps state
-  -> Backend may return another currently due card (re-queue)
-  -> User completes lesson when nothing due remains (or session rules say complete)
+  -> Backend returns nextCard from the queue picker (or null)
+  -> Lesson completes when nothing is showable now
 ```
 
 The backend is the source of truth for:
 
 ```txt
-- which cards are in the lesson
+- which cards may appear (snapshot vs live membership)
+- queue state (show counts, repeat gaps)
 - review state (learningStep, longReviewSuccessCount, dueAt)
 - prompt direction for each attempt
 - study session status
@@ -57,24 +61,27 @@ The frontend is responsible for:
 - revealing the other side
 - collecting user answer
 - calling backend mutations
-- displaying progress
+- showing summary after COMPLETED
 ```
 
-The frontend must not calculate learning steps or due times.
+The frontend must not calculate learning steps, due times, gap, or show limits.
+
+The lesson UI must not show progress or remaining-card counters.
 
 ## Lesson Scope (current product)
 
 Supports:
 
 ```txt
-- single-deck lessons (deck detail)
+- single-deck lessons on owned decks
 - Home multi-deck lessons (own decks, active target language)
 - authenticated users only
-- due cards (dueAt <= now)
-- configurable lesson size
+- ready cards (dueAt <= now, card and deck not deleted)
+- Home snapshot sized by UserSettings.lessonSize
 - KNOW / DONT_KNOW answers
 - backend learning-steps update after each answer
-- re-query due cards within an active session (no countdown UI)
+- bounded repeats in the same session (max 3 showings per cardId)
+- no countdown UI
 - lesson completion summary
 ```
 
@@ -84,6 +91,8 @@ Does not support (v1):
 - studying public/group decks without copying into own decks
 - group badges inside the active lesson UI
 - waiting / countdown until a card becomes due
+- in-lesson remaining counters (new / due / repeats)
+- resume of an abandoned or crashed session
 - custom lesson filters
 - advanced answer buttons
 - offline lesson mode
@@ -147,64 +156,94 @@ PRACTICED:  steps 2–6
 LEARNED:    steps 7–8
 ```
 
-Shown on Home aggregates, Decks counters, and deck detail card badges — not in the lesson UI in v1.
+Shown on Home aggregates, Decks counters, and deck detail card badges — not in the lesson UI.
 
-## Lesson Size
+## Ready
 
-Lesson size is determined in this order:
-
-```txt
-1. Explicit lessonSize input if provided.
-2. UserSettings.lessonSize if available.
-3. Default lesson size.
-```
-
-Default lesson size:
-
-```txt
-20
-```
-
-Allowed lesson size range:
-
-```txt
-min = 5
-max = 100
-```
-
-If input is outside this range, backend should reject it.
-
-## Card Selection Rule
-
-When starting a lesson, backend selects cards where:
+A card is ready when:
 
 ```txt
 dueAt <= now
+card.deletedAt is null
+deck.deletedAt is null
 ```
 
-Order:
+Do not wait for a future `dueAt`. If nothing is showable now, the lesson ends.
+
+## Home queue (snapshot)
 
 ```txt
-1. dueAt ascending
-2. lastReviewedAt ascending if needed
-3. card position ascending if needed
+- lessonSize comes from UserSettings (5–100, default 20). No extra field on the start screen.
+- On start, take a snapshot of up to lessonSize unique ready cards from own decks
+  where targetLanguage = activeTargetLanguage.
+- If more ready cards exist, take:
+  dueAt ASC, then card.createdAt ASC, then cardId ASC.
+- Snapshot is frozen: cardIds that become due later and are not in the snapshot never join.
+- Cards in the snapshot may repeat in this session if they become ready again.
+- If ready = 0 at start: do not create a session; hide the Start button.
 ```
 
-Limit: `lessonSize`.
+Persist `StudySession.snapshotCardIds` for Home. Deck sessions store an empty snapshot.
 
-### Single-deck (DECK)
-
-Only cards belonging to that deck (and viewable by the user).
-
-### Home (HOME_ACTIVE_TARGET)
+## Deck queue (live)
 
 ```txt
-Own decks only
-targetLanguage = UserSettings.activeTargetLanguage
-due cards across those decks, dueAt ASC, limit lessonSize
+- No lessonSize cap. StudySession.lessonSize may be stored as 0 (unused).
+- Live queue of the owned deck: newly ready cards of this deck may join during the session.
+- Only the deck owner may start a lesson. Public/group decks must be copied first.
+- If ready = 0 at start: do not create a session; hide the Start button.
 ```
 
-### Initial review state
+## Primary vs repeat
+
+```txt
+- Primary = first showing of a cardId in this session (showCount = 0).
+- Repeat = 2nd or 3rd showing of that cardId.
+- Max 3 showings per cardId per session. After that the card is excluded even if due.
+```
+
+## Next primary order
+
+When no showable repeat exists, pick the next primary:
+
+```txt
+dueAt ASC, then card.createdAt ASC, then cardId ASC
+```
+
+Same order for Home (among unshown snapshot members that are ready) and Deck.
+
+## Repeat gap
+
+```txt
+After answering card A, freeze
+  N = min(3, count of other cards that are currently ready AND still showable in this session).
+N is a target for that pending repeat.
+
+Gap counts every showing of another card (a repeat of B counts as +1 for A).
+
+If N cannot be reached because no other ready/showable cards exist, shrink the remaining gap
+to what is actually possible (including 0). Then A may show immediately if it is ready.
+
+When a pending repeat’s gap is satisfied (or shrunk) and the card is ready and showCount < 3,
+that repeat beats the next primary.
+
+If several showable repeats exist: dueAt ASC, then cardId ASC.
+```
+
+Queue picker lives in the lessons domain (pure TypeScript). It must not live in `packages/srs`.
+
+Persist show counts and pending repeats on `StudySession.queueState`.
+
+## Skip
+
+```txt
+- Deleted or no access: drop that cardId from this session forever.
+  Home does not replace it with a card outside the snapshot.
+- Temporarily not ready (dueAt > now): keep the card in the session; it may become showable later
+  under the usual rules.
+```
+
+## Initial review state
 
 `CardReviewState` is created on card write paths (create / CSV / copy / preview approve) as:
 
@@ -216,7 +255,7 @@ dueAt = now
 
 Safety net on lesson start: if missing for (userId, cardId), create the same initial state.
 
-There is no separate “new cards without state” queue after EPIC-26 — step-0 due cards cover first exposure.
+There is no separate “new cards without state” queue — step-0 due cards cover first exposure.
 
 ## Excluded Cards
 
@@ -225,24 +264,19 @@ Lesson must not include:
 ```txt
 - deleted cards
 - cards from deleted decks
-- cards from decks the user cannot view
-- cards from non-owned decks on Home START (public/group originals)
-- duplicate cardIds in the initial selection snapshot (re-queue later is allowed when due again)
+- cards from decks the user does not own (deck lessons and Home)
+- Home: cardIds outside the session snapshot
+- cardIds already shown 3 times in this session
 ```
 
 ## Empty Lesson
 
-If no due cards exist for the scope:
+If no ready cards exist for the scope at start:
 
 ```txt
-Return a successful payload with empty cards / no session (or equivalent), consistently for deck and Home start.
-```
-
-Frontend:
-
-```txt
-Home: dedicated empty CTAs (no cards vs none due) — see EPIC-26
-Deck: No cards to review right now.
+Do not create a session.
+Return a successful payload with empty cards / sessionId null.
+Frontend hides the Start button.
 ```
 
 ## Starting a Lesson
@@ -250,24 +284,24 @@ Deck: No cards to review right now.
 ### StartLessonUseCase (deck)
 
 ```txt
-1. Authenticate user.
-2. Load deck; check visibility permission.
-3. Resolve lesson size.
-4. Ensure CardReviewState safety net for deck cards as needed.
-5. Select due cards for that deck.
-6. Abandon existing ACTIVE session; create StudySession (scope=DECK, deckId set).
-7. Return cards with promptDirection + learning metadata.
+1. Authenticate user; reject blocked users.
+2. Load deck; require ownership (not merely view).
+3. Ensure CardReviewState safety net for deck cards as needed.
+4. If no ready cards: return empty payload, no session.
+5. Abandon existing ACTIVE session; create StudySession (scope=DECK, deckId set, lessonSize 0, empty snapshot).
+6. Return the first showable card (promptDirection + learning metadata).
 ```
 
 ### StartHomeLessonUseCase (Home)
 
 ```txt
-1. Authenticate user.
+1. Authenticate user; reject blocked users.
 2. Require activeTargetLanguage.
-3. Resolve lesson size.
-4. Select due cards across own decks of that target.
-5. Abandon existing ACTIVE session; create StudySession (scope=HOME_ACTIVE_TARGET, deckId null).
-6. Return cards (each review still records deckId).
+3. Resolve lessonSize from UserSettings (5–100, default 20).
+4. Snapshot unique ready cards across own decks of that target (order above, limit lessonSize).
+5. If snapshot empty: return empty payload, no session.
+6. Abandon existing ACTIVE session; create StudySession (scope=HOME_ACTIVE_TARGET, deckId null).
+7. Return the first showable card (each later review still records the card’s deckId).
 ```
 
 ## Active Session Handling
@@ -282,6 +316,8 @@ When starting a new lesson:
 Abandon existing ACTIVE session and create a new ACTIVE session.
 ```
 
+Leftover ACTIVE sessions (app killed) are abandoned on the next Start.
+
 ## StudySession Fields
 
 Required fields:
@@ -291,7 +327,9 @@ id
 userId
 status
 scope (DECK | HOME_ACTIVE_TARGET)
-lessonSize
+lessonSize          — Home: settings value; Deck: 0 (unused)
+snapshotCardIds     — Home: frozen ids; Deck: empty
+queueState          — showCounts + pendingRepeats
 startedAt
 completedAt
 abandonedAt
@@ -303,18 +341,11 @@ updatedAt
 deckId — required when scope=DECK; null when scope=HOME_ACTIVE_TARGET
 ```
 
-Recommended optional fields:
-
-```txt
-totalCards
-reviewedCards
-knownCount
-dontKnowCount
-```
-
 ## StudySessionReview Fields
 
 Each answer creates one `StudySessionReview` including `deckId` for the card’s deck (even in Home multi-deck sessions).
+
+Multiple rows per `(sessionId, cardId)` are required (repeats). Do not keep `@@unique([sessionId, cardId])`.
 
 ## Submitting a Review
 
@@ -323,45 +354,21 @@ Each answer creates one `StudySessionReview` including `deckId` for the card’s
 ```txt
 1. Authenticate user.
 2. Load ACTIVE session owned by user.
-3. Validate card belongs to session scope.
-4. Reject duplicate review for same sessionId + cardId while still enforcing product re-queue rules (see Re-queue).
-5. Load CardReviewState; apply packages/srs learning-steps with KNOW/DONT_KNOW.
-6. Persist updated learningStep, longReviewSuccessCount, dueAt, lastReviewedAt.
-7. Create StudySessionReview.
-8. Return updated state / next-card hint as designed in EPIC-26.
+3. Validate the card belongs to the session scope (Deck: that deck; Home: snapshot).
+4. Load CardReviewState; apply packages/srs learning-steps with KNOW/DONT_KNOW.
+5. Persist updated learningStep, longReviewSuccessCount, dueAt, lastReviewedAt.
+6. Create StudySessionReview (attempts, not unique cards).
+7. Update queueState; select nextCard with the domain picker.
+8. Return nextCard or null. lessonSize must not stop the queue.
 ```
 
 Frontend must avoid duplicate submits by disabling buttons while loading.
 
-## Re-queue Inside an Active Session
-
-```txt
-After KNOW/DONT_KNOW, dueAt may be soon (e.g. +90 seconds).
-submitReview returns nextCard by re-querying due cards (dueAt <= now) for the session scope
-while reviewedCount < lessonSize.
-Do not block the UI waiting for timers; do not show a countdown.
-If no cards are due now or lessonSize is reached, nextCard is null.
-The same card may appear again in the same session once it is due again.
-```
-
-Persistence note:
-
-```txt
-StudySessionReview must allow multiple rows per (sessionId, cardId).
-Do not keep @@unique([sessionId, cardId]).
-Protect only against accidental double-submit of the same presentation, not against legitimate re-queue.
-```
-
-Product note: this differs from the old MVP rule “do not repeat failed cards in the same lesson.” Re-appearance is driven only by `dueAt`, not by an explicit fail-repeat queue.
+Frontend must not compute the next card.
 
 ## Completing a Lesson
 
-Lesson can be completed when:
-
-```txt
-- no due cards remain for the session scope at completion time, or
-- product chooses “initial snapshot exhausted and nothing due” — prefer due-based completion after EPIC-26
-```
+Lesson is completed when there is no ready primary and no showable repeat.
 
 `CompleteLessonUseCase` must:
 
@@ -372,31 +379,44 @@ Lesson can be completed when:
 4. Return summary.
 ```
 
-Recommended summary:
+Summary:
 
 ```txt
 sessionId
 deckId (nullable for Home)
 scope
-totalCards / reviewedCards
+reviewedCards
 knownCount
 dontKnowCount
 completedAt
 ```
 
+`knownCount` and `dontKnowCount` are numbers of answers (attempts). If card A was shown 3 times, all 3 answers count.
+
 ## Abandoning a Lesson
 
-Backend should expose abandon so the frontend can leave a lesson cleanly.
+If the user leaves while cards remain:
 
-Backend abandons previous ACTIVE sessions when starting a new lesson.
+```txt
+- session → ABANDONED
+- reviews already saved stay saved
+- no summary
+- no resume
+- next Start always creates a new session
+```
+
+Frontend must call `abandonLesson` on confirmed leave.
+
+Backend also abandons previous ACTIVE sessions when starting a new lesson.
 
 ## Home UI (learning entry)
 
 ```txt
 - Aggregate counters: To learn / Practiced / Learned (own decks, active target)
-- START → StartHomeLesson
+- START → StartHomeLesson when dueCount > 0
+- Hide START when dueCount = 0
 - No deck list on Home
-- Empty CTAs per EPIC-26
+- Do not add a new ready-count UI
 ```
 
 ## Deck UI
@@ -404,7 +424,8 @@ Backend abandons previous ACTIVE sessions when starting a new lesson.
 ```txt
 - Per-deck counters on Decks tab / deck detail
 - Card row group badges on deck detail
-- Start lesson → single-deck StartLesson
+- Start lesson only for the owner when dueCount > 0
+- Non-owners must copy public/group decks before studying
 ```
 
 ## Permissions
@@ -412,7 +433,8 @@ Backend abandons previous ACTIVE sessions when starting a new lesson.
 ```txt
 - Lessons require authentication.
 - Blocked users rejected.
-- Deck lesson: user must be allowed to view the deck (owner, or rules for shared view — Home START is own decks only).
+- Deck lesson: user must own the deck.
+- Home lesson: own decks of activeTargetLanguage only.
 - Frontend visibility is UX only; backend enforces.
 ```
 
@@ -420,6 +442,7 @@ Backend abandons previous ACTIVE sessions when starting a new lesson.
 
 ```txt
 docs/algorithms/learning-steps.md
+docs/tasks/29-lesson-queue.md
 docs/tasks/done/26-learning-steps.md
 docs/architecture.md
 docs/domain/permissions.md

@@ -372,14 +372,24 @@ For anonymous users:
 
 ## Lesson Permissions
 
-User can start a lesson if:
+User can start a **deck** lesson if:
 
 ```txt
 - user is authenticated
-- user owns deck
+- user owns the deck
 - deck is not deleted
-- deck has available cards
+- the deck has at least one ready card (dueAt <= now)
 ```
+
+User can start a **Home** lesson if:
+
+```txt
+- user is authenticated
+- user has activeTargetLanguage
+- at least one ready card exists in own decks of that target
+```
+
+Public and group-shared decks cannot be studied until copied into the user’s own decks.
 
 User can submit review if:
 
@@ -387,7 +397,7 @@ User can submit review if:
 - user is authenticated
 - study session belongs to user
 - study session is active
-- card belongs to session deck
+- card belongs to the session scope (owned deck, or Home snapshot)
 ```
 
 User cannot submit review if:
@@ -396,7 +406,7 @@ User cannot submit review if:
 - session belongs to another user
 - session is completed
 - session is abandoned
-- card is not part of deck/session
+- card is not part of the session scope
 ```
 
 ## CSV Import Permissions
