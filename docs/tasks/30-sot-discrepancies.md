@@ -211,6 +211,7 @@ frontend / Prisma / GraphQL: none expected
 30.02                            picker tests (answer-time freeze)
 30.03                            Start + SubmitReview call timing
 30.04                            review session / Повторення in UI and live docs
+30.05                            local demo seed for queue QA
 ```
 
 ## Epic Summary
@@ -220,6 +221,7 @@ frontend / Prisma / GraphQL: none expected
 - [x] TASK-30.02 Freeze lesson-queue gap from answer-time candidates
 - [x] TASK-30.03 Record queue showing after answer, not on display
 - [x] TASK-30.04 Use review session and Повторення in UI and live docs
+- [x] TASK-30.05 Seed lesson-queue QA decks for local demo
 ```
 
 ---
@@ -730,6 +732,120 @@ None (smoke i18n checklist updated for human QA).
 
 ```txt
 TASK-30.04 Use review session and Повторення in UI and live docs
+```
+
+---
+
+# TASK-30.05 Seed lesson-queue QA decks for local demo
+
+## Status
+
+DONE
+
+## Context
+
+Local QA of the lesson queue needs G1 / G2 / Q / S, lessonSize 5, active target es, and CardReviewState so Home and deck Start are visible. The previous demo seed only created language-less Demo Spanish Basics / Demo Public Phrases.
+
+This is a local fixture follow-up, not a SoT discrepancy. Keep it in this epic so queue QA work stays in one place.
+
+## Goal
+
+`pnpm --filter @flashcards/api db:seed` leaves the demo user ready for Home snapshot and deck-queue checks.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/smoke/lesson-queue.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/api/prisma/seed.ts
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Keep demo@example.com and the two language-less demo decks (they must not
+   join the Spanish Home snapshot).
+2. Seed private decks G1, G2, Q, S with targetLanguage es and sourceLanguage en.
+3. G1 cards in createdAt order: apple, bread, cheese, milk, wine, oil, salt.
+4. G2: dog/perro. Q: river/río and forest/bosque only. S: one/uno.
+5. Demo settings: lessonSize 5, nativeLanguage en, activeTargetLanguage es,
+   plus UserStudyLanguage es.
+6. Create initial CardReviewState (step 0, due in the past) for those decks so
+   dueCount > 0 and Start is shown.
+7. Keep the existing production seed guard. Do not add migrate reset as a script.
+8. Mark TASK-30.05 DONE in this file’s Epic Summary.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit real secrets or DATABASE_URL.
+- Demo password may stay as the existing local-only seed credential.
+- Do not add prisma migrate reset as a package script.
+```
+
+## Architecture Constraints
+
+```txt
+- Seed may use Prisma directly (it is not a GraphQL/use-case path).
+- Do not change queue picker, StartLesson, or learning-steps.
+```
+
+## Implementation Notes
+
+```txt
+- Stagger G1–S card createdAt so Home snapshot of 5 is apple…wine.
+- createMany CardReviewState with skipDuplicates so re-seed is safe.
+```
+
+## Acceptance Criteria
+
+```txt
+- After seed, Мої for Spanish shows G1, G2, Q, S with due counts 7 / 1 / 2 / 1.
+- Demo decks remain under Без мови.
+- format:check and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+- Local: pnpm --filter @flashcards/api db:seed, then Мої shows G1–S for es.
+```
+
+## Do Not Do
+
+```txt
+- Do not seed mountain/sea on Q.
+- Do not run migrate reset against any non-local database.
+- Do not change GraphQL or Prisma schema.
+- Do not start a new epic for this fixture.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.05 Seed lesson-queue QA decks for local demo
 ```
 
 ---

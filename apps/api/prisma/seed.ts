@@ -12,6 +12,10 @@ const DEMO_DISPLAY_NAME = 'Demo User';
 const PRIVATE_DECK_TITLE = 'Demo Spanish Basics';
 const PUBLIC_DECK_TITLE = 'Demo Public Phrases';
 
+const TARGET_LANGUAGE = 'es';
+const SOURCE_LANGUAGE = 'en';
+const LESSON_SIZE = 5;
+
 const PRIVATE_DECK_CARDS = [
   { front: 'hello', back: 'hola', example: 'Hello, how are you?' },
   { front: 'goodbye', back: 'adiós', example: 'Goodbye, see you tomorrow.' },
@@ -21,6 +25,41 @@ const PRIVATE_DECK_CARDS = [
 const PUBLIC_DECK_CARDS = [
   { front: 'water', back: 'agua', example: 'I need water.' },
   { front: 'food', back: 'comida', example: 'The food is good.' },
+] as const;
+
+const QUEUE_DECKS = [
+  {
+    title: 'G1',
+    description:
+      'Home snapshot deck: first five cards in session, last two extras.',
+    cards: [
+      { front: 'apple', back: 'manzana' },
+      { front: 'bread', back: 'pan' },
+      { front: 'cheese', back: 'queso' },
+      { front: 'milk', back: 'leche' },
+      { front: 'wine', back: 'vino' },
+      { front: 'oil', back: 'aceite' },
+      { front: 'salt', back: 'sal' },
+    ],
+  },
+  {
+    title: 'G2',
+    description: 'Second Home deck.',
+    cards: [{ front: 'dog', back: 'perro' }],
+  },
+  {
+    title: 'Q',
+    description: 'Queue/gap deck. Start with river and forest only.',
+    cards: [
+      { front: 'river', back: 'río' },
+      { front: 'forest', back: 'bosque' },
+    ],
+  },
+  {
+    title: 'S',
+    description: 'Shrink and Start visibility deck.',
+    cards: [{ front: 'one', back: 'uno' }],
+  },
 ] as const;
 
 function assertSafeToSeed(): void {
@@ -65,7 +104,11 @@ async function upsertDemoUser(prisma: PrismaClient) {
         },
       },
       settings: {
-        create: {},
+        create: {
+          lessonSize: LESSON_SIZE,
+          nativeLanguage: SOURCE_LANGUAGE,
+          activeTargetLanguage: TARGET_LANGUAGE,
+        },
       },
     },
     update: {
@@ -96,9 +139,37 @@ async function upsertDemoUser(prisma: PrismaClient) {
 
   if (!user.settings) {
     await prisma.userSettings.create({
-      data: { userId: user.id },
+      data: {
+        userId: user.id,
+        lessonSize: LESSON_SIZE,
+        nativeLanguage: SOURCE_LANGUAGE,
+        activeTargetLanguage: TARGET_LANGUAGE,
+      },
+    });
+  } else {
+    await prisma.userSettings.update({
+      where: { userId: user.id },
+      data: {
+        lessonSize: LESSON_SIZE,
+        nativeLanguage: SOURCE_LANGUAGE,
+        activeTargetLanguage: TARGET_LANGUAGE,
+      },
     });
   }
+
+  await prisma.userStudyLanguage.upsert({
+    where: {
+      userId_languageCode: {
+        userId: user.id,
+        languageCode: TARGET_LANGUAGE,
+      },
+    },
+    create: {
+      userId: user.id,
+      languageCode: TARGET_LANGUAGE,
+    },
+    update: {},
+  });
 
   return user;
 }
@@ -111,10 +182,13 @@ async function ensureDeckWithCards(
     description: string;
     visibility: 'PRIVATE' | 'PUBLIC';
     moderationStatus: 'NONE' | 'APPROVED';
+    targetLanguage?: string;
+    sourceLanguage?: string;
     cards: ReadonlyArray<{
       front: string;
       back: string;
       example?: string;
+      createdAt?: Date;
     }>;
   },
 ) {
@@ -126,6 +200,11 @@ async function ensureDeckWithCards(
     },
   });
 
+  const languageData = {
+    targetLanguage: input.targetLanguage ?? null,
+    sourceLanguage: input.sourceLanguage ?? null,
+  };
+
   if (!deck) {
     deck = await prisma.deck.create({
       data: {
@@ -134,6 +213,7 @@ async function ensureDeckWithCards(
         description: input.description,
         visibility: input.visibility,
         moderationStatus: input.moderationStatus,
+        ...languageData,
       },
     });
   } else {
@@ -144,6 +224,7 @@ async function ensureDeckWithCards(
         visibility: input.visibility,
         moderationStatus: input.moderationStatus,
         deletedAt: null,
+        ...languageData,
       },
     });
   }
@@ -169,6 +250,7 @@ async function ensureDeckWithCards(
         back: card.back,
         example: card.example,
         position: index,
+        ...(card.createdAt ? { createdAt: card.createdAt } : {}),
       },
     });
   }
@@ -207,11 +289,63 @@ async function main() {
       cards: PUBLIC_DECK_CARDS,
     });
 
+    let cardCreatedAtMs = Date.parse('2026-08-01T00:00:00.000Z');
+
+    for (const queueDeck of QUEUE_DECKS) {
+      const cards = queueDeck.cards.map((card) => {
+        const createdAt = new Date(cardCreatedAtMs);
+        cardCreatedAtMs += 1000;
+        return { ...card, createdAt };
+      });
+
+      await ensureDeckWithCards(prisma, {
+        ownerId: user.id,
+        title: queueDeck.title,
+        description: queueDeck.description,
+        visibility: 'PRIVATE',
+        moderationStatus: 'NONE',
+        targetLanguage: TARGET_LANGUAGE,
+        sourceLanguage: SOURCE_LANGUAGE,
+        cards,
+      });
+    }
+
+    const queueCards = await prisma.card.findMany({
+      where: {
+        deletedAt: null,
+        deck: {
+          ownerId: user.id,
+          deletedAt: null,
+          title: {
+            in: QUEUE_DECKS.map((deck) => deck.title),
+          },
+        },
+      },
+      select: { id: true },
+    });
+
+    await prisma.cardReviewState.createMany({
+      data: queueCards.map((card) => ({
+        userId: user.id,
+        cardId: card.id,
+        learningStep: 0,
+        longReviewSuccessCount: 0,
+        dueAt: new Date('2026-08-01T00:00:00.000Z'),
+      })),
+      skipDuplicates: true,
+    });
+
     console.log('Demo seed completed (local development only).');
     console.log(`Demo user email: ${DEMO_EMAIL}`);
     console.log(`Demo user password: ${DEMO_PASSWORD}`);
     console.log(`Private demo deck: ${privateDeck.title}`);
     console.log(`Public demo deck: ${publicDeck.title}`);
+    console.log(
+      `Queue decks: ${QUEUE_DECKS.map((deck) => deck.title).join(', ')}`,
+    );
+    console.log(
+      `Settings: lessonSize=${LESSON_SIZE} activeTarget=${TARGET_LANGUAGE} native=${SOURCE_LANGUAGE}`,
+    );
   } finally {
     await prisma.$disconnect();
     await pool.end();
