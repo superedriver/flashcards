@@ -1,6 +1,6 @@
 export const settingsEn = {
   title: 'Settings',
-  description: 'Lesson preferences and reminder schedule. Notification delivery is managed below.',
+  description: 'Review preferences and reminder schedule. Notification delivery is managed below.',
   loading: 'Loading settings...',
   loadError: 'Could not load settings.',
   save: 'Save settings',
@@ -24,9 +24,9 @@ export const settingsEn = {
       accessibilityLabel: 'Native language',
     },
     lessonSize: {
-      label: 'Lesson size',
-      description: 'Number of cards per lesson session (5–100).',
-      accessibilityLabel: 'Lesson size',
+      label: 'Review size',
+      description: 'Number of cards in a Home review session (5–100).',
+      accessibilityLabel: 'Review size',
       placeholder: 'e.g. 20',
     },
     reminderTime: {
@@ -49,10 +49,10 @@ export const settingsEn = {
   validation: {
     interfaceLocale: 'Select a supported interface language.',
     nativeLanguageRequired: 'Select your native language.',
-    lessonSizeNumber: 'Lesson size must be a number.',
-    lessonSizeWhole: 'Lesson size must be a whole number.',
-    lessonSizeMin: 'Lesson size must be at least 5 cards.',
-    lessonSizeMax: 'Lesson size must be at most 100 cards.',
+    lessonSizeNumber: 'Review size must be a number.',
+    lessonSizeWhole: 'Review size must be a whole number.',
+    lessonSizeMin: 'Review size must be at least 5 cards.',
+    lessonSizeMax: 'Review size must be at most 100 cards.',
     reminderTimeFormat: 'Use 24-hour time in HH:mm format (e.g. 09:00).',
     timezoneRequired: 'Timezone is required.',
     timezoneTooLong: 'Timezone is too long.',

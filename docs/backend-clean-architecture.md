@@ -941,7 +941,7 @@ Do not block the UI waiting for future dueAt.
 Queue picker is pure TypeScript in the lessons domain, not packages/srs.
 ```
 
-Source of truth: `docs/domain/lesson-flow.md`.
+Source of truth: `docs/domain/lesson-flow.md` (product: review session / Повторення).
 
 `SubmitReviewUseCase` is responsible for:
 

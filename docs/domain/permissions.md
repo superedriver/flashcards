@@ -203,7 +203,7 @@ Deck owner can:
 - create cards in own deck
 - update cards in own deck
 - delete cards in own deck
-- start lessons from own deck
+- start review sessions from own deck
 - publish own deck
 - unpublish own deck
 - import CSV into own deck
@@ -370,9 +370,9 @@ For anonymous users:
 - can view cards only for public approved decks
 ```
 
-## Lesson Permissions
+## Review session permissions
 
-User can start a **deck** lesson if:
+User can start a **deck** review session if:
 
 ```txt
 - user is authenticated
@@ -381,7 +381,7 @@ User can start a **deck** lesson if:
 - the deck has at least one ready card (dueAt <= now)
 ```
 
-User can start a **Home** lesson if:
+User can start a **Home** review session if:
 
 ```txt
 - user is authenticated
@@ -832,7 +832,7 @@ Cursor must read this document before implementing or modifying:
 ```txt
 deck permissions
 card permissions
-lesson permissions
+review-session permissions
 CSV import permissions
 AI example permissions
 group permissions

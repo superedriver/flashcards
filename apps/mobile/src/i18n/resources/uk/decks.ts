@@ -34,7 +34,7 @@ export const decksUk = {
     title: 'Деталі колоди',
     loading: 'Завантаження колоди...',
     loadError: 'Не вдалося завантажити колоду.',
-    startLesson: 'Почати урок',
+    startLesson: 'Почати повторення',
     addCard: 'Додати картку',
   },
   createDeck: {

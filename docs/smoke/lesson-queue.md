@@ -11,7 +11,7 @@ docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
 ```
 
-## Automated verification (done in TASK-29.02–29.10)
+## Automated verification (done in TASK-29.02–29.10, TASK-30.02–30.03)
 
 ```txt
 - Lesson-queue picker unit tests: PASS
@@ -19,7 +19,7 @@ docs/release/mvp-smoke-tests.md
 - API build: PASS
 - Mobile typecheck: PASS
 - Root format:check + lint: PASS
-- TASK-29.01–29.10 statuses: DONE
+- TASK-29.01–29.11 and TASK-30.01–30.03 statuses: DONE
 ```
 
 Picker, start, and submit-review rules are covered by Jest. UI still needs human QA on web and at least one native build.
@@ -32,7 +32,7 @@ Apply `StudySession` snapshot/queueState migration first. Use own decks only; do
 
 - [ ] Home START uses `UserSettings.lessonSize` unique ready cards from own decks of the active target.
 - [ ] Extra ready cards that were not in the snapshot never appear in that session.
-- [ ] Cards in the snapshot may repeat if they become ready again (max 3 shows).
+- [ ] Cards in the snapshot may repeat if they become ready again (max 3 answers).
 - [ ] Home START is hidden when `dueCount = 0`.
 
 ### Deck live join
@@ -60,7 +60,8 @@ Apply `StudySession` snapshot/queueState migration first. Use own decks only; do
 
 ### i18n
 
-- [ ] en/uk Start / leave / summary strings still present on Home and deck detail.
+- [ ] en/uk Start / leave / summary use Review / Повторення, not Lesson / Урок.
+- [ ] Summary completion title is "Review complete" / "Повторення завершено".
 
 ## Sign-off
 
@@ -71,7 +72,7 @@ Platforms: automated only (api jest + mobile tsc)
 Environment: local
 Overall: PASS (automated)
 Notes:
-- TASK-29.01–29.11 implementation + automated checks green.
+- TASK-29.01–29.11 and TASK-30.01–30.03 implementation + automated checks green.
 - Manual UI checklist above remains for human QA on web/native
   after applying the lesson-queue Prisma migration.
 ```

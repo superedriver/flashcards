@@ -2,9 +2,9 @@
 
 ## Purpose
 
-This document defines how learning lessons work in Flashcards.
+This document defines how **review sessions** work in Flashcards.
 
-It is the live source of truth for backend lesson queue logic, frontend lesson UI, and learning-steps integration.
+It is the live source of truth for backend queue logic, frontend review UI, and learning-steps integration.
 
 Scheduling intervals and prompt direction stay in `docs/algorithms/learning-steps.md`.
 
@@ -21,9 +21,24 @@ docs/algorithms/sm-2.md (historical)
 docs/domain/permissions.md
 ```
 
+## Product terminology
+
+```txt
+User-facing (UI and live product docs):
+  Review session / Повторення — one study session from Start until complete or abandon.
+  Completion title: "Review complete" / "Повторення завершено".
+  Do not say Lesson / Урок in the UI.
+
+Technical identifiers (keep in code, GraphQL, Prisma):
+  Lesson, StudySession, lessonSize, startLesson, completeLesson, abandonLesson.
+
+Queue algorithm (keep; not the product name of the session):
+  Repeat = 2nd or 3rd answer of the same cardId in this session.
+```
+
 ## Core Concept
 
-A lesson is a short study session for one user.
+A review session is a short study session for one user.
 
 Scopes:
 
@@ -32,16 +47,16 @@ DECK                — live ready queue of one owned deck (deck detail Start)
 HOME_ACTIVE_TARGET  — frozen unique-card snapshot across own decks of activeTargetLanguage (Home START)
 ```
 
-The lesson flow is:
+The review-session flow is:
 
 ```txt
-User starts lesson (Home or owned deck)
+User starts a review session (Home or owned deck)
   -> Backend selects ready cards for the scope (snapshot or live)
   -> Backend returns the first card for display (not an answer; no showCount / no freeze N)
   -> User answers KNOW or DONT_KNOW
   -> Backend updates learning-steps state
   -> Backend records that answer on the queue (showCount + freeze N), then returns nextCard
-  -> Lesson completes when nothing is showable now
+  -> The review session completes when nothing is showable now
 ```
 
 Display, answer, and planning a repeat are separate. Returning a card for the UI is not an answer.
@@ -54,7 +69,7 @@ The backend is the source of truth for:
 - review state (learningStep, longReviewSuccessCount, dueAt)
 - prompt direction for each attempt
 - study session status
-- lesson completion
+- review-session completion
 ```
 
 The frontend is responsible for:
@@ -69,15 +84,15 @@ The frontend is responsible for:
 
 The frontend must not calculate learning steps, due times, gap, or show limits.
 
-The lesson UI must not show progress or remaining-card counters.
+The review UI must not show progress or remaining-card counters.
 
-## Lesson Scope (current product)
+## Review session scope (current product)
 
 Supports:
 
 ```txt
-- single-deck lessons on owned decks
-- Home multi-deck lessons (own decks, active target language)
+- single-deck review sessions on owned decks
+- Home multi-deck review sessions (own decks, active target language)
 - authenticated users only
 - ready cards (dueAt <= now, card and deck not deleted)
 - Home snapshot sized by UserSettings.lessonSize
@@ -85,21 +100,21 @@ Supports:
 - backend learning-steps update after each answer
 - bounded repeats in the same session (max 3 answers per cardId)
 - no countdown UI
-- lesson completion summary
+- review completion summary
 ```
 
 Does not support (v1):
 
 ```txt
 - studying public/group decks without copying into own decks
-- group badges inside the active lesson UI
+- group badges inside the active review UI
 - waiting / countdown until a card becomes due
-- in-lesson remaining counters (new / due / repeats)
+- in-session remaining counters (new / due / repeats)
 - resume of an abandoned or crashed session
-- custom lesson filters
+- custom review-session filters
 - advanced answer buttons
 - offline lesson mode
-- collaborative lessons
+- collaborative review sessions
 ```
 
 ## Entities
@@ -159,7 +174,7 @@ PRACTICED:  steps 2–6
 LEARNED:    steps 7–8
 ```
 
-Shown on Home aggregates, Decks counters, and deck detail card badges — not in the lesson UI.
+Shown on Home aggregates, Decks counters, and deck detail card badges — not in the review UI.
 
 ## Ready
 
@@ -171,7 +186,7 @@ card.deletedAt is null
 deck.deletedAt is null
 ```
 
-Do not wait for a future `dueAt`. If nothing is showable now, the lesson ends.
+Do not wait for a future `dueAt`. If nothing is showable now, the review session ends.
 
 ## Home queue (snapshot)
 
@@ -193,7 +208,7 @@ Persist `StudySession.snapshotCardIds` for Home. Deck sessions store an empty sn
 ```txt
 - No lessonSize cap. StudySession.lessonSize may be stored as 0 (unused).
 - Live queue of the owned deck: newly ready cards of this deck may join during the session.
-- Only the deck owner may start a lesson. Public/group decks must be copied first.
+- Only the deck owner may start a review session. Public/group decks must be copied first.
 - If ready = 0 at start: do not create a session; hide the Start button.
 ```
 
@@ -283,13 +298,13 @@ longReviewSuccessCount = 0
 dueAt = now
 ```
 
-Safety net on lesson start: if missing for (userId, cardId), create the same initial state.
+Safety net on review-session start: if missing for (userId, cardId), create the same initial state.
 
 There is no separate “new cards without state” queue — step-0 due cards cover first exposure.
 
 ## Excluded Cards
 
-Lesson must not include:
+The session must not include:
 
 ```txt
 - deleted cards
@@ -299,7 +314,7 @@ Lesson must not include:
 - cardIds already answered 3 times in this session
 ```
 
-## Empty Lesson
+## Empty review session
 
 If no ready cards exist for the scope at start:
 
@@ -309,7 +324,7 @@ Return a successful payload with empty cards / sessionId null.
 Frontend hides the Start button.
 ```
 
-## Starting a Lesson
+## Starting a review session
 
 ### StartLessonUseCase (deck)
 
@@ -402,9 +417,9 @@ Frontend must avoid duplicate submits by disabling buttons while loading.
 
 Frontend must not compute the next card.
 
-## Completing a Lesson
+## Completing a review session
 
-Lesson is completed when there is no ready primary and no showable repeat.
+The review session is completed when there is no ready primary and no showable repeat.
 
 `CompleteLessonUseCase` must:
 
@@ -429,7 +444,7 @@ completedAt
 
 `knownCount` and `dontKnowCount` are numbers of answers (attempts). If card A was answered 3 times, all 3 answers count.
 
-## Abandoning a Lesson
+## Abandoning a review session
 
 If the user leaves while cards remain:
 
@@ -443,7 +458,7 @@ If the user leaves while cards remain:
 
 Frontend must call `abandonLesson` on confirmed leave.
 
-Backend also abandons previous ACTIVE sessions when starting a new lesson.
+Backend also abandons previous ACTIVE sessions when starting a new review session.
 
 ## Home UI (learning entry)
 
@@ -460,17 +475,17 @@ Backend also abandons previous ACTIVE sessions when starting a new lesson.
 ```txt
 - Per-deck counters on Decks tab / deck detail
 - Card row group badges on deck detail
-- Start lesson only for the owner when dueCount > 0
+- Start review only for the owner when dueCount > 0
 - Non-owners must copy public/group decks before studying
 ```
 
 ## Permissions
 
 ```txt
-- Lessons require authentication.
+- Review sessions require authentication.
 - Blocked users rejected.
-- Deck lesson: user must own the deck.
-- Home lesson: own decks of activeTargetLanguage only.
+- Deck review session: user must own the deck.
+- Home review session: own decks of activeTargetLanguage only.
 - Frontend visibility is UX only; backend enforces.
 ```
 

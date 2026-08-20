@@ -60,13 +60,9 @@ Expected state:
 
 ```txt
 1. Repeat gap frozen at display time vs SoT “after answering”
-   - docs/domain/lesson-flow.md: freeze N after answering card A
-   - Code: recordLessonCardShowing runs when a card is returned for display
-     (StartLesson / StartHomeLesson for the first card; SubmitReview for nextCard)
-   - Product: Show, answer, and planning a repeat are separate.
-     Display does not increment showCount and does not freeze gap N.
-     After Know / Don’t know, persist learning-steps, then increment showCount
-     and freeze N from other cards that are ready AND showable at answer time.
+   - Fixed in TASK-30.01–30.03
+2. Product says review session / Повторення; UI and live docs still said Lesson / Урок
+   - Technical identifiers Lesson, StudySession, lessonSize stay in code
 ```
 
 ## Discrepancy Register
@@ -90,18 +86,68 @@ Status:
 DONE
 ```
 
-Conflicting sources:
+Conflicting sources (as found; fixed in TASK-30.01–30.03):
 
 ```txt
-SoT (already closer to product):
-  - docs/domain/lesson-flow.md Repeat gap: “After answering card A, freeze N = …”
-  - docs/architecture.md: “After an answer, freeze gap N = …”
+SoT after TASK-30.01:
+  - docs/domain/lesson-flow.md: display ≠ answer ≠ freeze N; N at answer time
+  - docs/architecture.md and backend-clean-architecture.md match that timing
 
-Implementation (wrong timing):
-  - recordLessonCardShowing in
-    apps/api/src/modules/lessons/domain/services/select-next-lesson-card.ts
-  - StartLessonUseCase / StartHomeLessonUseCase call it when returning the first card
-  - SubmitReviewUseCase calls it when returning nextCard (records the next card, not the answered one)
+Implementation after TASK-30.03:
+  - recordLessonCardAnswer in select-next-lesson-card.ts (answer event, not display)
+  - Start persists empty showCounts; first card is display only
+  - SubmitReview records the answered card, then returns nextCard without recording that display
+
+Was wrong (before 30.03):
+  - recordLessonCardShowing at Start (first card) and SubmitReview (nextCard)
+```
+
+---
+
+### DISC-002 UI and live docs say Lesson / Урок
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.04):
+
+```txt
+Product:
+  - Review session / Повторення
+  - Completion title: "Review complete" / "Повторення завершено"
+
+Was wrong:
+  - UI en/uk: Lesson / Урок (start, leave, summary, settings lessonSize)
+  - Live docs described a “lesson” as the product session name
+```
+
+Product decision (approved in chat):
+
+```txt
+User-facing: Повторення, not Урок.
+Live docs: review session / repeat session as the product model.
+Technical names in code (Lesson, StudySession, lessonSize, GraphQL) stay
+if they do not change logic.
+
+Queue “repeat” (2nd/3rd answer of the same cardId) is not the product name
+of the session.
+```
+
+Action:
+
+```txt
+TASK-30.04 Use review session and Повторення in UI and live docs
+```
+
+Impact:
+
+```txt
+docs: lesson-flow.md, architecture.md, permissions.md, smoke, mvp-smoke-tests
+frontend i18n: lessons, home, decks, settings (en/uk)
+backend / Prisma / GraphQL identifiers: unchanged
 ```
 
 Product decision (approved in chat):
@@ -164,6 +210,7 @@ frontend / Prisma / GraphQL: none expected
 30.01                            SoT wording (docs + smoke)
 30.02                            picker tests (answer-time freeze)
 30.03                            Start + SubmitReview call timing
+30.04                            review session / Повторення in UI and live docs
 ```
 
 ## Epic Summary
@@ -172,6 +219,7 @@ frontend / Prisma / GraphQL: none expected
 - [x] TASK-30.01 Clarify show vs answer vs freeze-N in lesson-flow SoT
 - [x] TASK-30.02 Freeze lesson-queue gap from answer-time candidates
 - [x] TASK-30.03 Record queue showing after answer, not on display
+- [x] TASK-30.04 Use review session and Повторення in UI and live docs
 ```
 
 ---
@@ -559,6 +607,129 @@ None (human smoke stays in docs/smoke/lesson-queue.md after 30.01).
 
 ```txt
 TASK-30.03 Record queue showing after answer, not on display
+```
+
+---
+
+# TASK-30.04 Use review session and Повторення in UI and live docs
+
+## Status
+
+DONE
+
+## Context
+
+DISC-002: product name is review session / Повторення. UI and live docs still said Lesson / Урок. Queue “repeat” (another answer of the same cardId) must stay distinct from the session name.
+
+## Goal
+
+User-facing copy and live SoT say review session / Повторення. Code identifiers stay Lesson / StudySession / lessonSize.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/domain/permissions.md
+docs/smoke/lesson-queue.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/i18n/resources/en/lessons.ts
+apps/mobile/src/i18n/resources/uk/lessons.ts
+apps/mobile/src/i18n/resources/en/home.ts
+apps/mobile/src/i18n/resources/uk/home.ts
+apps/mobile/src/i18n/resources/en/decks.ts
+apps/mobile/src/i18n/resources/uk/decks.ts
+apps/mobile/src/i18n/resources/en/settings.ts
+apps/mobile/src/i18n/resources/uk/settings.ts
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/backend-clean-architecture.md
+docs/domain/permissions.md
+docs/smoke/lesson-queue.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. UI uk: Повторення, not Урок. Completion title exactly: Повторення завершено.
+2. UI en: Review / review session, not Lesson. Completion title: Review complete.
+3. Settings lessonSize label: Розмір повторення / Review size (field name stays lessonSize).
+4. Live SoT: product model is review session / Повторення. Add a terminology note
+   that technical Lesson* names stay, and queue repeat ≠ session name.
+5. Do not rename GraphQL, Prisma, use cases, or routes.
+6. Do not rewrite docs/tasks/done/*.
+7. Mark TASK-30.04 and DISC-002 DONE in this epic file.
+```
+
+## Security Requirements
+
+```txt
+- Copy-only / docs. Do not weaken permissions.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Frontend must not start calculating the queue.
+- Backend identifiers may stay Lesson / StudySession.
+```
+
+## Implementation Notes
+
+```txt
+- Keep i18n keys (lessons.summary.completeTitle, decks.deckDetail.startLesson).
+- Change values only.
+```
+
+## Acceptance Criteria
+
+```txt
+- No user-facing Урок / Lesson for the session (en/uk i18n).
+- Summary title is Повторення завершено / Review complete.
+- lesson-flow.md states the product terminology.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (smoke i18n checklist updated for human QA).
+```
+
+## Do Not Do
+
+```txt
+- Do not rename Lesson / StudySession / lessonSize in code.
+- Do not change queue repeat-gap rules.
+- Do not change learning-steps formulas.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.04 Use review session and Повторення in UI and live docs
 ```
 
 ---

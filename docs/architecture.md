@@ -646,10 +646,12 @@ The backend uses this package when processing lesson reviews. The frontend must 
 
 ## 14. Lesson Flow
 
-MVP lesson type:
+Product name: review session (UI: Review / Повторення). Technical identifiers stay Lesson / StudySession.
+
+MVP type:
 
 ```txt
-Swipe-based flashcard lesson
+Swipe-based flashcard review session
 ```
 
 Queue modes:
@@ -662,7 +664,7 @@ Deck: live ready queue of one owned deck; no lessonSize cap.
 Flow:
 
 ```txt
-1. User starts a lesson from an owned deck or Home START.
+1. User starts a review session from an owned deck or Home START.
 2. Backend creates a study session (or returns empty if nothing is ready).
 3. Backend picks the next showable card (primary vs bounded repeat) and returns it for display.
    Display is not an answer: do not increment showCount; do not freeze gap N.
@@ -673,8 +675,9 @@ Flow:
 8. User answers Know or Don't know.
 9. Backend saves the review, updates learning-steps state, then records that answer on the
    queue (showCount + freeze N at answer time) and returns nextCard, or null.
-10. Lesson is completed when nothing is showable now (no countdown).
-11. Result screen is shown. Know/Don't know counts are attempts.
+10. The review session is completed when nothing is showable now (no countdown).
+11. Result screen is shown (title: "Review complete" / "Повторення завершено").
+    Know/Don't know counts are attempts.
 ```
 
 Repeats:

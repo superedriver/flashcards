@@ -1,6 +1,6 @@
 export const settingsUk = {
   title: 'Налаштування',
-  description: 'Параметри уроків і розклад нагадувань. Доставку сповіщень налаштовуйте нижче.',
+  description: 'Параметри повторення і розклад нагадувань. Доставку сповіщень налаштовуйте нижче.',
   loading: 'Завантаження налаштувань...',
   loadError: 'Не вдалося завантажити налаштування.',
   save: 'Зберегти налаштування',
@@ -24,9 +24,9 @@ export const settingsUk = {
       accessibilityLabel: 'Рідна мова',
     },
     lessonSize: {
-      label: 'Розмір уроку',
-      description: 'Кількість карток за одну сесію уроку (5–100).',
-      accessibilityLabel: 'Розмір уроку',
+      label: 'Розмір повторення',
+      description: 'Кількість карток за одну сесію повторення з головної (5–100).',
+      accessibilityLabel: 'Розмір повторення',
       placeholder: 'напр. 20',
     },
     reminderTime: {
@@ -49,10 +49,10 @@ export const settingsUk = {
   validation: {
     interfaceLocale: 'Оберіть підтримувану мову інтерфейсу.',
     nativeLanguageRequired: 'Оберіть рідну мову.',
-    lessonSizeNumber: 'Розмір уроку має бути числом.',
-    lessonSizeWhole: 'Розмір уроку має бути цілим числом.',
-    lessonSizeMin: 'Розмір уроку має бути щонайменше 5 карток.',
-    lessonSizeMax: 'Розмір уроку має бути не більше 100 карток.',
+    lessonSizeNumber: 'Розмір повторення має бути числом.',
+    lessonSizeWhole: 'Розмір повторення має бути цілим числом.',
+    lessonSizeMin: 'Розмір повторення має бути щонайменше 5 карток.',
+    lessonSizeMax: 'Розмір повторення має бути не більше 100 карток.',
     reminderTimeFormat: 'Використовуйте 24-годинний формат ГГ:хх (напр. 09:00).',
     timezoneRequired: 'Часовий пояс обовʼязковий.',
     timezoneTooLong: 'Часовий пояс занадто довгий.',

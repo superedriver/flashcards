@@ -566,20 +566,21 @@ query {
 
 ---
 
-## 21. Start Lesson
+## 21. Start Review Session
 
-**Goal:** Verify lesson session can begin for a deck.
+**Goal:** Verify a review session can begin for a deck.
 
 **Steps:**
 
 1. Open an owned deck with cards.
-2. Start a lesson.
+2. Start a review session.
 
 **Expected result:**
 
 ```txt
-- Lesson session is created
+- Study session is created
 - First review card is shown
+- UI says Start review / Почати повторення, not Lesson / Урок
 ```
 
 **Result:** - [ ] PASS - [ ] FAIL
@@ -592,7 +593,7 @@ query {
 
 **Steps:**
 
-1. During an active lesson, submit `KNOW` for the current card.
+1. During an active review session, submit `KNOW` for the current card.
 
 **Expected result:**
 
@@ -626,19 +627,20 @@ query {
 
 ---
 
-## 24. Complete Lesson
+## 24. Complete Review Session
 
-**Goal:** Verify lesson completion summary.
+**Goal:** Verify review-session completion summary.
 
 **Steps:**
 
-1. Finish all cards in a lesson session.
-2. Open lesson summary/completion screen.
+1. Finish all cards in a review session.
+2. Open the summary/completion screen.
 
 **Expected result:**
 
 ```txt
-- Lesson completes successfully
+- Review session completes successfully
+- Title is "Review complete" / "Повторення завершено"
 - Summary/stats screen loads
 - Session is no longer active
 ```
@@ -892,18 +894,18 @@ _(Automated PASS in TASK-26.20; manual device checklist in `docs/smoke/learning-
 
 ## 34. Lesson Queue
 
-**Goal:** Verify Home unique-card snapshot, owned-deck live queue, max 3 shows, gap shrink, owner-only Start, and abandon-on-leave.
+**Goal:** Verify Home unique-card snapshot, owned-deck live queue, max 3 answers, gap freeze at answer time, owner-only Start, and abandon-on-leave.
 
 **Detailed checklist:** [docs/smoke/lesson-queue.md](../smoke/lesson-queue.md)
 
-**Prerequisite:** EPIC-29 implemented and `StudySession` snapshot/queueState migration applied.
+**Prerequisite:** EPIC-29 and EPIC-30 implemented and `StudySession` snapshot/queueState migration applied.
 
 **Steps (web + native):**
 
 1. Home: set lessonSize, have more ready cards than that; START and confirm extras never join; hide START when dueCount = 0.
 2. Owned deck: Start with due cards; make another card of that deck due mid-lesson and confirm it can join.
 3. Confirm Start is hidden for non-owners and for owners with dueCount = 0.
-4. Show the same card at most 3 times; confirm gap shrink when no other ready cards remain.
+4. Answer the same card at most 3 times (display without an answer does not count); confirm N is frozen at answer time and the gap shrinks when no other ready cards remain.
 5. Confirm the review screen has no progress bar / “card X of Y”.
 6. Leave mid-lesson: no summary; next Start is a new session.
 7. Finish a lesson with repeats; summary Know / Don't know counts include attempts.
@@ -913,13 +915,13 @@ _(Automated PASS in TASK-26.20; manual device checklist in `docs/smoke/learning-
 ```txt
 - Home snapshot is frozen at lessonSize unique ready cards
 - Deck queue is live for the owner only
-- Max 3 showings; repeats follow the frozen gap (see lesson-flow.md)
+- Max 3 answers (not displays); repeats follow the gap frozen at answer time (see lesson-flow.md)
 - Leave abandons; summary counts attempts
 ```
 
 **Result:** - [x] PASS - [ ] FAIL - [ ] N/A
 
-_(Automated PASS in TASK-29.11; manual device checklist in `docs/smoke/lesson-queue.md` remains for QA.)_
+_(Automated PASS in TASK-29.11 and TASK-30.02–30.03; manual device checklist in `docs/smoke/lesson-queue.md` remains for QA.)_
 
 ---
 
