@@ -106,6 +106,8 @@ Expected state:
     - Fixed in TASK-30.20
 18. My Decks sections stay a horizontal rail, so extra cards clip
     - Fixed in TASK-30.21
+19. Wrapped My Decks cards stay 228px and leave a gap on the right
+    - Fixed in TASK-30.22
 ```
 
 ## Discrepancy Register
@@ -880,6 +882,41 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-019 My Decks card row does not fill the content column
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.22):
+
+```txt
+Product (approved in chat after 30.21):
+  - The deck row uses the full content width
+  - Cards share the row equally (3-across on default web) and wrap
+
+Was wrong:
+  - Fixed 228px cards left leftover space on the right of a 720px column
+```
+
+Action:
+
+```txt
+TASK-30.22 Stretch My Decks cards to fill the row
+```
+
+Impact:
+
+```txt
+frontend: DeckSection grid, DeckListItem width, responsive helpers
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -920,6 +957,7 @@ backend / Prisma / GraphQL: unchanged
 30.19                            My Decks cards by section + group/public seed
 30.20                            narrow rail cards to fit three
 30.21                            wrap My Decks section cards into a grid
+30.22                            stretch My Decks cards to fill the row
 ```
 
 ## Epic Summary
@@ -946,6 +984,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.19 Differentiate My Decks cards by section
 - [x] TASK-30.20 Narrow My Decks rail cards to fit three
 - [x] TASK-30.21 Wrap My Decks section cards into a grid
+- [x] TASK-30.22 Stretch My Decks cards to fill the row
 ```
 
 ---
@@ -3418,6 +3457,111 @@ None (human: My Decks Own — 4th card on the next row).
 
 ```txt
 TASK-30.21 Wrap My Decks section cards into a grid
+```
+
+---
+
+# TASK-30.22 Stretch My Decks cards to fill the row
+
+## Status
+
+DONE
+
+## Context
+
+DISC-019: after wrapping, cards stay 228px so a 3-card row does not fill the 720px column.
+
+## Goal
+
+Each My Decks section row uses the full content width. Cards in a row share that width equally.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/ui/utils/responsive.ts
+apps/mobile/src/features/decks/components/decks-page-sections.tsx
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Section grid is 100% wide. Default web: 3 equal columns, then wrap.
+2. Drop fixed RAIL_WIDTH. Cards fill their grid cell.
+3. Do not change inner fonts, padding, or Start review.
+4. Update live SoT. Do not rewrite docs/tasks/done/*.
+5. Mark TASK-30.22 and DISC-019 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Full-width wrap row. Item width is 1/N of the row (3 on default web).
+- Drop to 2 then 1 column when the content width cannot fit ~228px cards.
+```
+
+## Acceptance Criteria
+
+```txt
+- A 3-card Own row fills the default web column with no leftover gap.
+- Extra cards wrap to the next row.
+- Inner typography and Start review size unchanged.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: My Decks Own — row fills the column).
+```
+
+## Do Not Do
+
+```txt
+- Do not change fonts, padding, or Start review.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.22 Stretch My Decks cards to fill the row
 ```
 
 ---

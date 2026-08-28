@@ -5,7 +5,7 @@ import { View } from 'react-native'
 import type { DecksPageQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 import { EmptyState } from '@/ui/components'
-import { responsiveGridStyle } from '@/ui/utils/responsive'
+import { getDeckSectionGridStyle } from '@/ui/utils/responsive'
 
 import { DeckListItem, type DeckCardSection } from './deck-list-item'
 
@@ -38,7 +38,7 @@ export function DeckSection({
           onAction={onEmptyAction}
         />
       ) : (
-        <View style={responsiveGridStyle}>
+        <View style={getDeckSectionGridStyle()}>
           {decks.map((deck) => (
             <DeckListItem key={deck.id} deck={deck} section={section} />
           ))}

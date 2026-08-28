@@ -1,9 +1,10 @@
 import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
-import { Pressable, View } from 'react-native'
+import { Pressable, useWindowDimensions, View } from 'react-native'
 
 import { DeckOrigin, type DecksPageQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
+import { getDeckSectionGridItemStyle } from '@/ui/utils/responsive'
 
 import { DeckLanguageFlags } from './deck-language-flags'
 import { DeckLearningStatsCompact, useDeckDueCount } from './deck-learning-stats-compact'
@@ -31,8 +32,6 @@ type DeckListItemProps = {
   layout?: 'rail' | 'fill'
   section?: DeckCardSection
 }
-
-const RAIL_WIDTH = 228
 
 function CardBadge({
   deck,
@@ -104,6 +103,7 @@ function ViewFooter() {
 export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckListItemProps) {
   const { t } = useTranslation()
   const router = useRouter()
+  const { width } = useWindowDimensions()
 
   const href = deck.origin === DeckOrigin.Public ? `/public/${deck.id}` : `/decks/${deck.id}`
   const isRail = layout === 'rail'
@@ -111,9 +111,7 @@ export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckLis
 
   return (
     <View
-      style={
-        isRail ? { maxWidth: '100%', width: RAIL_WIDTH } : { position: 'relative', width: '100%' }
-      }
+      style={isRail ? getDeckSectionGridItemStyle(width) : { position: 'relative', width: '100%' }}
     >
       <Pressable accessibilityRole="button" onPress={() => router.push(href)}>
         <View

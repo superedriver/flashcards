@@ -93,3 +93,48 @@ export const responsiveGridItemStyle: ViewStyle = {
   flexGrow: 1,
   minWidth: 140,
 }
+
+export const DECK_SECTION_GRID_GAP = 12
+const DECK_SECTION_CARD_MIN_WIDTH = 228
+
+export function getDeckSectionColumnCount(windowWidth: number): number {
+  const padding = getScreenPadding(windowWidth) * 2
+  const innerWidth =
+    Platform.OS === 'web'
+      ? Math.min(CONTENT_MAX_WIDTH.default, Math.max(0, windowWidth - padding))
+      : Math.max(0, windowWidth - padding)
+
+  if (innerWidth >= DECK_SECTION_CARD_MIN_WIDTH * 3 + DECK_SECTION_GRID_GAP * 2) {
+    return 3
+  }
+
+  if (innerWidth >= DECK_SECTION_CARD_MIN_WIDTH * 2 + DECK_SECTION_GRID_GAP) {
+    return 2
+  }
+
+  return 1
+}
+
+export function getDeckSectionGridStyle(): ViewStyle {
+  return {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: DECK_SECTION_GRID_GAP,
+    width: '100%',
+  }
+}
+
+export function getDeckSectionGridItemStyle(windowWidth: number): ViewStyle {
+  const columns = getDeckSectionColumnCount(windowWidth)
+
+  if (columns === 1) {
+    return { width: '100%' }
+  }
+
+  const gapTotal = DECK_SECTION_GRID_GAP * (columns - 1)
+
+  return {
+    maxWidth: '100%',
+    width: `calc((100% - ${gapTotal}px) / ${columns})`,
+  } as unknown as ViewStyle
+}
