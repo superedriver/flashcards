@@ -43,6 +43,8 @@ export const lessonsUk = {
     loading: 'Завантаження статистики навчання...',
     loadError: 'Не вдалося завантажити статистику навчання.',
     title: 'Статистика навчання',
+    totalLabel: 'Усього',
+    dueNowLabel: 'Зараз',
     totalCards: 'Усього карток: {{count}}',
     toLearn: 'Вивчити: {{count}}',
     practiced: 'У практиці: {{count}}',

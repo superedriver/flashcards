@@ -1,8 +1,10 @@
+import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 
+import { DeckMoreMenu } from '@/features/decks/components/deck-more-menu'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import {
   deckNeedsLanguageAssignment,
@@ -14,11 +16,18 @@ import type { DeckQuery } from '@/graphql/generated'
 import { useDeleteDeckMutation } from '@/graphql/generated'
 import { AppButton, AppText } from '@/ui/primitives'
 import { ErrorState } from '@/ui/components'
-import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
+import { buttonA11yProps, destructiveButtonA11yProps } from '@/ui/utils/accessibility'
 
 type DeckActionsProps = {
   deck: NonNullable<DeckQuery['deck']>
   isOwner: boolean
+}
+
+const ICON_BUTTON_STYLE = {
+  alignItems: 'center' as const,
+  height: 36,
+  justifyContent: 'center' as const,
+  width: 36,
 }
 
 export function DeckActions({ deck, isOwner }: DeckActionsProps) {
@@ -76,41 +85,50 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
       ) : null}
 
       <View style={{ flexDirection: 'row', gap: 8 }}>
-        <View style={{ flex: 1 }}>
-          <AppButton disabled={isDeleting} onPress={() => router.push(`/decks/${deck.id}/edit`)}>
-            {t('decks.actions.editDeck')}
-          </AppButton>
-        </View>
-        <View style={{ flex: 1 }}>
-          <AppButton
-            disabled={isDeleting}
-            onPress={() => {
-              if (needsLanguages) {
-                promptAssignLanguages(goAssignLanguages)
-                return
-              }
+        <Pressable
+          {...buttonA11yProps(t('decks.actions.editDeck'))}
+          disabled={isDeleting}
+          hitSlop={8}
+          style={ICON_BUTTON_STYLE}
+          onPress={() => router.push(`/decks/${deck.id}/edit`)}
+        >
+          <Ionicons color="#333333" name="create-outline" size={22} />
+        </Pressable>
+        <Pressable
+          {...buttonA11yProps(t('decks.actions.addCard'))}
+          disabled={isDeleting}
+          hitSlop={8}
+          style={ICON_BUTTON_STYLE}
+          onPress={() => {
+            if (needsLanguages) {
+              promptAssignLanguages(goAssignLanguages)
+              return
+            }
 
-              router.push(`/decks/${deck.id}/cards/new`)
-            }}
-          >
-            {t('decks.actions.addCard')}
-          </AppButton>
-        </View>
+            router.push(`/decks/${deck.id}/cards/new`)
+          }}
+        >
+          <Ionicons color="#333333" name="add-outline" size={26} />
+        </Pressable>
+        <DeckMoreMenu deck={deck} />
       </View>
 
       <View style={{ gap: 8 }}>
         <AppText style={{ color: '#666666', fontSize: 14, fontWeight: '600' }}>
           {t('decks.actions.dangerZone')}
         </AppText>
-        <AppButton
+        <Pressable
           {...destructiveButtonA11yProps(t('decks.actions.deleteDeckTitle'))}
-          background="#b00020"
-          color="white"
           disabled={isDeleting}
+          hitSlop={8}
+          style={{ alignItems: 'center', alignSelf: 'flex-start', flexDirection: 'row', gap: 8 }}
           onPress={handleDelete}
         >
-          {isDeleting ? t('decks.actions.deleting') : t('decks.actions.deleteDeck')}
-        </AppButton>
+          <Ionicons color="#b00020" name="trash-outline" size={22} />
+          <AppText style={{ color: '#b00020', fontSize: 16, fontWeight: '600' }}>
+            {isDeleting ? t('decks.actions.deleting') : t('decks.actions.deleteDeck')}
+          </AppText>
+        </Pressable>
       </View>
 
       {actionError ? <ErrorState message={actionError} /> : null}

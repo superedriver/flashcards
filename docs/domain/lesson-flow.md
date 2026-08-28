@@ -494,12 +494,12 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - No Play when dueCount = 0
 - No Play on Group, Public, or No language cards
 - Deck detail (owner):
-  Header (title, language pair, visibility badge, More ⋯)
-  Stats (total / to learn / practiced / learned / due)
+  Header (title, language pair, visibility badge)
+  Stats: Total left / Due now right; To learn, Practiced, Learned in one row
   Primary: Start review when dueCount > 0
-  Quick: Edit, Add card (labeled)
+  Quick icons: Edit, Add card, More ⋯ (a11y labels)
   More: Import CSV, Regenerate translations, Publish / Make private
-  Danger zone: Delete deck
+  Danger zone: compact Delete deck row (icon + label), still confirms
   Assign languages stays visible when the deck has no languages
 - Deck detail Start review only for the owner when dueCount > 0
 - Non-owners must copy public/group decks before studying

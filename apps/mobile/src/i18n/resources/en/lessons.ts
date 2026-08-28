@@ -42,6 +42,8 @@ export const lessonsEn = {
     loading: 'Loading learning stats...',
     loadError: 'Could not load learning stats.',
     title: 'Learning stats',
+    totalLabel: 'Total',
+    dueNowLabel: 'Due now',
     totalCards: 'Total cards: {{count}}',
     toLearn: 'To learn: {{count}}',
     practiced: 'Practiced: {{count}}',

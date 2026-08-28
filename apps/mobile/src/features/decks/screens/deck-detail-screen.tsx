@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { CardList } from '@/features/decks/components/card-list'
 import { DeckActions } from '@/features/decks/components/deck-actions'
 import { DeckHeader } from '@/features/decks/components/deck-header'
-import { DeckMoreMenu } from '@/features/decks/components/deck-more-menu'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import {
   deckNeedsLanguageAssignment,
@@ -80,7 +79,7 @@ export function DeckDetailScreen() {
   const listHeader =
     !loading && !error && deck && deckId ? (
       <>
-        <DeckHeader deck={deck} trailing={isOwner ? <DeckMoreMenu deck={deck} /> : null} />
+        <DeckHeader deck={deck} />
         <DeckLearningStatsCard
           deckId={deckId}
           isOwner={isOwner}

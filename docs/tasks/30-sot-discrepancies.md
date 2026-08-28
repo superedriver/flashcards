@@ -71,6 +71,9 @@ Expected state:
    - Fixed in TASK-30.08
 6. Card rows show 0-based #, bulky Edit/Delete, flush to the scrollbar
    - Fixed in TASK-30.09
+7. Owner deck detail stats are a stacked list; Edit/Add are labeled buttons;
+   Delete is a large red button in the middle of the screen
+   - Fixed in TASK-30.10
 ```
 
 ## Discrepancy Register
@@ -359,6 +362,49 @@ docs: lesson-flow card row note
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-007 Deck detail stats and secondary actions still too heavy
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.10):
+
+```txt
+Product (approved in chat after 30.08/30.09):
+  - Stats: Total left, Due now right (space-between), with emoji
+  - To learn / Practiced / Learned on one row: number on top, short label below, emoji
+  - Start review stays the only large primary
+  - Edit / Add card / More are icon buttons (a11y labels)
+  - Delete deck is a compact Danger zone row (icon + label), not a large red button
+  - Delete stays out of More; still confirm-destructive
+  - Assign languages stays a visible CTA when the deck has no languages
+
+Was wrong:
+  - Stats were five stacked lines plus a title
+  - Edit / Add card were labeled full-width-in-row buttons
+  - More lived in the header
+  - Delete was a large red button
+```
+
+Action:
+
+```txt
+TASK-30.10 Compact deck detail stats and secondary actions
+```
+
+Impact:
+
+```txt
+frontend: DeckLearningStatsCard, DeckActions, deck-detail header More placement
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -387,6 +433,7 @@ backend / Prisma / GraphQL: unchanged
 30.07                            Play start on own deck cards when due
 30.08                            owner deck detail action hierarchy
 30.09                            compact card rows, 1-based index, scrollbar inset
+30.10                            compact deck detail stats and secondary actions
 ```
 
 ## Epic Summary
@@ -401,6 +448,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.07 Add Play start on own deck cards when due
 - [x] TASK-30.08 Restructure owner deck detail actions
 - [x] TASK-30.09 Compact card rows with 1-based index
+- [x] TASK-30.10 Compact deck detail stats and secondary actions
 ```
 
 ---
@@ -1500,6 +1548,128 @@ None (human: G1 card list #1… and icons).
 
 ```txt
 TASK-30.09 Compact card rows with 1-based index
+```
+
+---
+
+# TASK-30.10 Compact deck detail stats and secondary actions
+
+## Status
+
+DONE
+
+## Context
+
+DISC-007: after 30.08 the owner deck detail still shows stacked stat lines, labeled Edit/Add, header More, and a large red Delete. Product wants a compact stats layout and icon secondary actions, with Delete as a compact Danger zone row.
+
+## Goal
+
+Owner deck detail: compact stats (Total | Due now; three learning groups in one row), Start review as the only large primary, Edit / Add / More as icon buttons, Delete as a compact labeled Danger zone row.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
+apps/mobile/src/features/decks/components/deck-actions.tsx
+apps/mobile/src/features/decks/screens/deck-detail-screen.tsx
+apps/mobile/src/i18n/resources/en/lessons.ts
+apps/mobile/src/i18n/resources/uk/lessons.ts
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Stats card layout:
+   - Top: Total left, Due now right (space-between), emoji + count + short label
+   - Bottom: To learn, Practiced, Learned in one row; emoji + count on top, short
+     label below (reuse learning-group names)
+   - Keep next-review / none-due as a footer under the grid
+2. Start review stays a full-width primary below stats, owner + dueCount > 0 only.
+3. Owner secondary row: icon Edit, icon Add card, icon More (move More off the header).
+   Accessibility labels required. More menu items stay labeled (CSV, regenerate, publish).
+4. Delete deck: compact Danger zone row (trash icon + label), not a large red button.
+   Keep confirmDestructiveAction. Do not put Delete in More.
+5. Assign languages stays a visible labeled CTA when the deck has no languages.
+6. Non-owner copy flow unchanged. Public deck detail unchanged. GraphQL unchanged.
+7. Update live SoT Deck UI. Code is SoT. Do not rewrite docs/tasks/done/*.
+8. Mark TASK-30.10 and DISC-007 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Hidden icon labels are UX only. Backend still enforces owner/publish/delete.
+- Delete still confirms. Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+- Frontend must not calculate the lesson queue.
+```
+
+## Implementation Notes
+
+```txt
+- Short labels: Total / Due now (en) and Усього / Зараз (uk). Full sentences stay
+  on accessibilityLabel.
+- Group emojis: Total 📚, Due now ⏰, To learn 🌱, Practiced 🔁, Learned ✅.
+```
+
+## Acceptance Criteria
+
+```txt
+- Stats are not a stacked five-line list.
+- Start review is the only large primary.
+- Edit / Add / More are icons; More items stay labeled.
+- Delete is a compact Danger zone row with confirm.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: owner G1 detail — stats, Start, icons, compact Delete).
+```
+
+## Do Not Do
+
+```txt
+- Do not put Delete in More.
+- Do not change public deck detail or Home START.
+- Do not change the backend.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.10 Compact deck detail stats and secondary actions
 ```
 
 ---
