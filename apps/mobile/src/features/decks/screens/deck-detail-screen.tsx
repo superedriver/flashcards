@@ -6,6 +6,7 @@ import { CardList } from '@/features/decks/components/card-list'
 import { DeckActions } from '@/features/decks/components/deck-actions'
 import { DeckHeader } from '@/features/decks/components/deck-header'
 import { DeckLanguageFlags } from '@/features/decks/components/deck-language-flags'
+import { DeckStartReviewButton } from '@/features/decks/components/deck-start-review-button'
 import { DeckStatusBadge } from '@/features/decks/components/deck-status-badge'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import {
@@ -81,19 +82,25 @@ export function DeckDetailScreen() {
   const listHeader =
     !loading && !error && deck && deckId ? (
       <>
-        <DeckHeader deck={deck} />
-        <DeckLearningStatsCard
-          deckId={deckId}
-          isOwner={isOwner}
-          onStartLesson={() => {
-            if (deckNeedsLanguageAssignment(deck)) {
-              promptAssignLanguages(() => router.push(`/decks/${deckId}/assign-languages`))
-              return
-            }
+        <DeckHeader
+          deck={deck}
+          trailing={
+            isOwner ? (
+              <DeckStartReviewButton
+                deckId={deckId}
+                onPress={() => {
+                  if (deckNeedsLanguageAssignment(deck)) {
+                    promptAssignLanguages(() => router.push(`/decks/${deckId}/assign-languages`))
+                    return
+                  }
 
-            router.push(`/lessons/start?deckId=${deckId}`)
-          }}
+                  router.push(`/lessons/start?deckId=${deckId}`)
+                }}
+              />
+            ) : null
+          }
         />
+        <DeckLearningStatsCard deckId={deckId} />
         <DeckActions deck={deck} isOwner={isOwner} />
       </>
     ) : null

@@ -93,6 +93,9 @@ Expected state:
 13. Private sits under the deck name; stats group labels are not pills;
     More actions are still live
     - Fixed in TASK-30.16
+14. Stats group icon and count are split; Start is a circled Play under stats;
+    status pills are capsules
+    - Fixed in TASK-30.17
 ```
 
 ## Discrepancy Register
@@ -665,6 +668,48 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-014 Stats group tiles, header Start, status pill radius
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.17):
+
+```txt
+Product (approved in chat after 30.16):
+  - Stats group: emoji + count share one group-colored tile; label pill below
+  - Total / Due now stay as today
+  - Start review is a filled #1a56db button (white play + label) top-right
+    of the deck header; owner + dueCount > 0 only
+  - Status pills use borderRadius 8 (same as chips), not 999
+  - Use existing group/status colors, not the mock palette
+  - Do not change word rows
+
+Was wrong:
+  - Group emoji in a 36×36 chip, count beside it
+  - Circled Play under stats
+  - Status pills were fully rounded capsules
+```
+
+Action:
+
+```txt
+TASK-30.17 Restyle stats tiles, header Start, status pill radius
+```
+
+Impact:
+
+```txt
+frontend: stats cells, DeckHeader trailing Start, DeckStatusBadge radius
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -700,6 +745,7 @@ backend / Prisma / GraphQL: unchanged
 30.14                            stats center, Play hit, word inset, status pills
 30.15                            group chrome, word inset 8px, bordered status pills
 30.16                            status after title, stats label pills, More disabled
+30.17                            stats tiles, header Start, status pill radius
 ```
 
 ## Epic Summary
@@ -721,6 +767,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.14 Center stats, isolate Play, inset words, pill badges
 - [x] TASK-30.15 Align group chrome, tighten word inset, border status pills
 - [x] TASK-30.16 Move status pills, pill stats labels, disable More
+- [x] TASK-30.17 Restyle stats tiles, header Start, status pill radius
 ```
 
 ---
@@ -2624,6 +2671,120 @@ None (human: G1 title row, stats pills, More disabled).
 
 ```txt
 TASK-30.16 Move status pills, pill stats labels, disable More
+```
+
+---
+
+# TASK-30.17 Restyle stats tiles, header Start, status pill radius
+
+## Status
+
+DONE
+
+## Context
+
+DISC-014: group stats should put emoji and count in one colored tile; Start review belongs beside the deck title as a filled button; status pills should use the 8px radius used elsewhere.
+
+## Goal
+
+Owner deck detail shows group emoji+count tiles, a filled Start review on the header, and 8px status pills. Word rows and More stay as after 30.16.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+apps/mobile/src/features/decks/components/deck-start-review-button.tsx
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
+apps/mobile/src/features/decks/screens/deck-detail-screen.tsx
+apps/mobile/src/features/decks/components/deck-header.tsx
+apps/mobile/src/features/decks/components/deck-status-badge.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Stats To learn / Practiced / Learned: emoji and count share one rounded
+   tile using LEARNING_GROUP_STYLE background and count color. Label pill
+   stays below (LearningGroupBadge, showEmoji false). Total / Due now unchanged.
+2. Start review: filled #1a56db, white play + white label, trailing on
+   DeckHeader (beside deck title). Owner + dueCount > 0 only. Keep language
+   gate on press. Remove circled Play from stats. noneDue copy may stay.
+3. Status pills: borderRadius 8. Keep colors, icons, 1px border.
+4. Do not change word rows, More disabled, or pills-after-title.
+5. Update live SoT. Do not rewrite docs/tasks/done/*.
+6. Mark TASK-30.17 and DISC-014 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Start remains owner + dueCount > 0; backend still enforces deck ownership.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Reuse existing group/status colors. Do not copy the mock palette.
+```
+
+## Acceptance Criteria
+
+```txt
+- Group stats show emoji+count in one colored tile with a pill below.
+- Start review is a filled header button when due; hidden when due is 0.
+- Status pills are 8px rounded, not capsules.
+- Word rows unchanged.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: G1 header Start, group tiles, Private radius).
+```
+
+## Do Not Do
+
+```txt
+- Do not restyle word rows.
+- Do not re-enable More.
+- Do not move status pills off the page title.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.17 Restyle stats tiles, header Start, status pill radius
 ```
 
 ---

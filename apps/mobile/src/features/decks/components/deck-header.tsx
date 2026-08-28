@@ -25,7 +25,7 @@ export function DeckHeader({ deck, trailing }: DeckHeaderProps) {
     <View style={{ gap: 8, marginBottom: 16 }}>
       <View
         style={{
-          alignItems: 'flex-start',
+          alignItems: 'center',
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}

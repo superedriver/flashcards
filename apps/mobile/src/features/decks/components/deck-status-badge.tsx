@@ -67,7 +67,7 @@ function StatusPill({ background, border, color, icon, label }: PillStyle & { la
         alignSelf: 'flex-start',
         backgroundColor: background,
         borderColor: border,
-        borderRadius: 999,
+        borderRadius: 8,
         borderWidth: 1,
         flexDirection: 'row',
         gap: 6,

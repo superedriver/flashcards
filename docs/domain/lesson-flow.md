@@ -497,15 +497,16 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - No Play on Group, Public, or No language cards
 - Deck detail (owner):
   Page title “Deck Detail” + visibility/moderation pills, flags on the right
-  Header (deck title, description)
+  Header (deck title, description; filled Start review top-right when due)
   Stats: two white bordered cards — Total cards | Due now, then To learn | Practiced | Learned
-  (centered icon chip + count; group labels are the same pills as word badges; no Next review)
-  Primary: circled Play (tappable) with muted Start review caption (not tappable)
+  (Total / Due now: gray icon chip + count; groups: emoji + count in one group-colored
+  tile, label pills matching word badges; no Next review)
+  Primary: filled #1a56db Start review (white play + label) beside the deck title
   Quick icons: Edit, Add card, More ⋯ (a11y labels)
   More items (CSV, regenerate, publish/unpublish) are disabled for now
   Danger zone: label left, Delete deck button right, still confirms
   Cards heading + word list in a bordered box; each word row has a border and 8px inset
-  Visibility/moderation pills have an accent border
+  Visibility/moderation pills have an accent border and 8px radius
   Assign languages stays visible when the deck has no languages
 - Deck detail Start review only for the owner when dueCount > 0
 - Non-owners must copy public/group decks before studying
