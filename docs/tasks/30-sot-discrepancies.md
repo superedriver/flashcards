@@ -67,6 +67,8 @@ Expected state:
    - Fixed in TASK-30.06 (UI only; GraphQL completeLesson payload unchanged)
 4. Own deck cards had no Start when due > 0 (only deck detail)
    - Fixed in TASK-30.07
+5. Owner deck detail is a flat stack of equally weighted buttons
+   - Fixed in TASK-30.08
 ```
 
 ## Discrepancy Register
@@ -276,6 +278,47 @@ docs: live SoT for deck start entry points (code is SoT)
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-005 Owner deck detail has no action hierarchy
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.08):
+
+```txt
+Product (approved in chat):
+  - One primary: Start review (owner + dueCount > 0)
+  - Quick: Edit, Add card (labeled, not icon-only)
+  - More ⋯: Import CSV, Regenerate translations, Publish / Make private
+  - Danger zone: Delete deck
+  - Assign languages stays visible when the deck has no languages
+  - Non-owner copy flow unchanged
+  - Rare actions stay labeled in a menu, not mystery icons
+
+Was wrong:
+  - Deck detail listed Edit, Add card, CSV, Regenerate, Publish, Delete
+    as equal full-width buttons
+```
+
+Action:
+
+```txt
+TASK-30.08 Restructure owner deck detail actions
+```
+
+Impact:
+
+```txt
+frontend: deck header More, stats Start below card, DeckActions, DeckMoreMenu
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -302,6 +345,7 @@ backend / Prisma / GraphQL: unchanged
 30.05                            local demo seed for queue QA
 30.06                            unique card count on review summary (no attempt stats)
 30.07                            Play start on own deck cards when due
+30.08                            owner deck detail action hierarchy
 ```
 
 ## Epic Summary
@@ -314,6 +358,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.05 Seed lesson-queue QA decks for local demo
 - [x] TASK-30.06 Show unique card count on review summary
 - [x] TASK-30.07 Add Play start on own deck cards when due
+- [x] TASK-30.08 Restructure owner deck detail actions
 ```
 
 ---
@@ -1182,6 +1227,127 @@ None (human: Own G1 with Due → Play; tap card vs tap Play).
 
 ```txt
 TASK-30.07 Add Play start on own deck cards when due
+```
+
+---
+
+# TASK-30.08 Restructure owner deck detail actions
+
+## Status
+
+DONE
+
+## Context
+
+DISC-005: owner deck detail is a stack of equally weighted buttons. Product wants one primary Start review, labeled quick actions, rare actions in More, and Delete in a danger zone. Not icon-only for Publish / CSV / Regenerate.
+
+## Goal
+
+Owner deck detail: Header + More, stats, Start review, Edit / Add card, Danger zone Delete. More holds CSV, regenerate, publish/unpublish. Non-owner copy flow unchanged.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/domain/permissions.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+apps/mobile/src/features/decks/components/deck-more-menu.tsx
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-header.tsx
+apps/mobile/src/features/decks/components/deck-actions.tsx
+apps/mobile/src/features/decks/screens/deck-detail-screen.tsx
+apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
+apps/mobile/src/i18n/resources/en/decks.ts
+apps/mobile/src/i18n/resources/uk/decks.ts
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Header: title, language pair, Private/Public badge, ⋯ More (owner only).
+2. Drop duplicate cardCount from header (total stays on stats).
+3. Stats card is stats only. Start review is the primary below it, owner + dueCount > 0.
+4. Quick actions: Edit and Add card, labeled (icon+label ok). Not icon-only.
+5. More menu (labeled items): Import CSV, Regenerate translations (when languages exist),
+   Publish / Make private. Same confirms and language gate as today.
+6. Assign languages remains a visible CTA when the deck has no languages. Not in More.
+7. Delete deck in a Danger zone at the bottom of owner actions, still confirm-destructive.
+8. Non-owner: GroupDeckCopyActions only. No More / Delete / Start.
+9. Keep pending-moderation copy visible when relevant.
+10. Update live SoT Deck UI to this hierarchy. Code is SoT. Do not rewrite docs/tasks/done/*.
+11. Mark TASK-30.08 and DISC-005 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Hidden More items are UX only. Backend still enforces owner/publish/delete.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Do not change GraphQL or use cases.
+- Frontend must not calculate the lesson queue.
+```
+
+## Implementation Notes
+
+```txt
+- Use a Modal or equivalent so More is not clipped by the card list.
+- Reuse existing publish / unpublish / regenerate / CSV handlers.
+```
+
+## Acceptance Criteria
+
+```txt
+- Owner detail is not a flat button stack.
+- Start is the only primary; hidden when dueCount = 0.
+- CSV / regenerate / publish are in More with labels.
+- Delete is separate from More and quick actions.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: owner G1 detail — Start, Edit, Add card, More, Delete).
+```
+
+## Do Not Do
+
+```txt
+- Do not replace rare actions with unlabeled icons.
+- Do not change public deck detail or Home START.
+- Do not change the backend.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.08 Restructure owner deck detail actions
 ```
 
 ---

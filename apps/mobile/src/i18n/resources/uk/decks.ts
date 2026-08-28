@@ -83,9 +83,12 @@ export const decksUk = {
   },
   actions: {
     status: 'Статус: {{status}}',
-    editDeck: 'Редагувати колоду',
+    editDeck: 'Редагувати',
     addCard: 'Додати картку',
     importCsv: 'Імпорт CSV',
+    more: 'Більше',
+    moreA11y: 'Інші дії',
+    dangerZone: 'Небезпечна зона',
     publish: 'Опублікувати колоду',
     publishing: 'Публікація...',
     unpublish: 'Зняти з публікації',
