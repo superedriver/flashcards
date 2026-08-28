@@ -6,7 +6,7 @@ import type { DecksPageQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 import { EmptyState } from '@/ui/components'
 
-import { DeckListItem } from './deck-list-item'
+import { DeckListItem, type DeckCardSection } from './deck-list-item'
 
 type DecksPageDeck = DecksPageQuery['decksPage']['ownDecks'][number]
 
@@ -15,8 +15,7 @@ type DeckSectionProps = {
   emptyMessage: string
   emptyActionLabel?: string
   onEmptyAction?: () => void
-  showLearningCounters?: boolean
-  showOriginBadge?: boolean
+  section: DeckCardSection
   title: string
 }
 
@@ -25,8 +24,7 @@ export function DeckSection({
   emptyActionLabel,
   emptyMessage,
   onEmptyAction,
-  showLearningCounters = false,
-  showOriginBadge = false,
+  section,
   title,
 }: DeckSectionProps) {
   return (
@@ -45,12 +43,7 @@ export function DeckSection({
           showsHorizontalScrollIndicator={false}
         >
           {decks.map((deck) => (
-            <DeckListItem
-              key={deck.id}
-              deck={deck}
-              showLearningCounters={showLearningCounters}
-              showOriginBadge={showOriginBadge}
-            />
+            <DeckListItem key={deck.id} deck={deck} section={section} />
           ))}
         </ScrollView>
       )}
@@ -74,25 +67,27 @@ export function DecksPageSections({ listHeader, onCreateDeck, page }: DecksPageS
         decks={page.ownDecks}
         emptyActionLabel={onCreateDeck ? t('decks.myDecks.emptyAction') : undefined}
         emptyMessage={t('decks.sections.own.empty')}
-        showLearningCounters
+        section="own"
         title={t('decks.sections.own.title')}
         onEmptyAction={onCreateDeck}
       />
       <DeckSection
         decks={page.groupDecks}
         emptyMessage={t('decks.sections.group.empty')}
+        section="group"
         title={t('decks.sections.group.title')}
       />
       <DeckSection
         decks={page.publicDecks}
         emptyMessage={t('decks.sections.public.empty')}
+        section="public"
         title={t('decks.sections.public.title')}
       />
       {page.noLanguageDecks.length > 0 ? (
         <DeckSection
           decks={page.noLanguageDecks}
           emptyMessage={t('decks.sections.noLanguage.empty')}
-          showOriginBadge
+          section="noLanguage"
           title={t('decks.sections.noLanguage.title')}
         />
       ) : null}

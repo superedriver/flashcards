@@ -235,7 +235,7 @@ Home snapshot size: `UserSettings.lessonSize` (5–100, default 20). Deck sessio
 
 ### Single-deck review
 
-Entry: owner Play on My Decks when dueCount > 0, or deck detail Start review. Live ready queue of that owned deck only.
+Entry: owner Start review on My Decks when dueCount > 0, or deck detail Start review. Live ready queue of that owned deck only.
 
 ### Home START (multi-deck)
 

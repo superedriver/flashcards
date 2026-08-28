@@ -99,6 +99,9 @@ Expected state:
 15. Stats group labels are left-aligned; Own counters are plain text; rail
     cards clip two pills; Create Deck is full-width; deck card caps are 96px
     - Fixed in TASK-30.18
+16. My Decks cards use one chrome for Own/Group/Public; Approved noise;
+    no Group/Public seed fixtures
+    - Fixed in TASK-30.19
 ```
 
 ## Discrepancy Register
@@ -757,6 +760,52 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-016 My Decks cards should match section purpose
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.19):
+
+```txt
+Product (approved in chat after 30.18, Own mock + variant A):
+  - Same shell: width, radius, border, flags/title/footer
+  - Own: flags + visibility top, title, divider, 3-col group stats
+    (🌱🔁✅), Due + filled Start review; hide Approved; show
+    Pending/Rejected/Hidden; no colored cap; no Play overlay
+  - Group: Shared (not Private), View; no stats
+  - Public: Official if isOfficial else Public; no Approved; View; no stats
+  - No language: origin + visibility + Language not selected; keep section name
+  - Create Deck: outline blue +
+  - Seed Group + Public fixtures so demo user can see those sections
+
+Was wrong:
+  - One card chrome (pastel cap, full status pills, stats only on Own)
+  - Approved shown on list cards
+  - Group looked Private; Public catalog empty because demo owned the only
+    public deck and it had no language
+```
+
+Action:
+
+```txt
+TASK-30.19 Differentiate My Decks cards by section
+```
+
+Impact:
+
+```txt
+frontend: DeckListItem, compact stats, status badge hideApproved, MyDecks Create
+seed: catalog owner, group share, official public es deck
+docs: lesson-flow Deck UI, smoke Play label
+GraphQL / Prisma schema / use cases: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -794,6 +843,7 @@ backend / Prisma / GraphQL: unchanged
 30.16                            status after title, stats label pills, More disabled
 30.17                            stats tiles, header Start, status pill radius
 30.18                            compact My Decks cards, center stats labels
+30.19                            My Decks cards by section + group/public seed
 ```
 
 ## Epic Summary
@@ -817,6 +867,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.16 Move status pills, pill stats labels, disable More
 - [x] TASK-30.17 Restyle stats tiles, header Start, status pill radius
 - [x] TASK-30.18 Compact My Decks cards and center stats labels
+- [x] TASK-30.19 Differentiate My Decks cards by section
 ```
 
 ---
@@ -2950,6 +3001,140 @@ None (human: My Decks Own + No language, G1 stats labels, Create Deck row).
 
 ```txt
 TASK-30.18 Compact My Decks cards and center stats labels
+```
+
+---
+
+# TASK-30.19 Differentiate My Decks cards by section
+
+## Status
+
+DONE
+
+## Context
+
+DISC-016: Own cards should match the My Decks mock (white shell, flags+Private, 3-col stats, Due + Start review). Group/Public/No language need different mid-content. Demo seed has no other-owner Group/Public decks for es.
+
+## Goal
+
+My Decks list cards follow variant A. Demo seed shows a Group card and a Public card for `demo@example.com`.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/smoke/lesson-queue.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+apps/mobile/src/features/decks/components/decks-page-sections.tsx
+apps/mobile/src/features/decks/components/deck-learning-stats-compact.tsx
+apps/mobile/src/features/decks/components/deck-status-badge.tsx
+apps/mobile/src/features/decks/components/deck-start-play-button.tsx
+apps/mobile/src/features/decks/screens/my-decks-screen.tsx
+apps/mobile/src/i18n/resources/en/decks.ts
+apps/mobile/src/i18n/resources/uk/decks.ts
+apps/api/prisma/seed.ts
+docs/domain/lesson-flow.md
+docs/smoke/lesson-queue.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Shared shell: ~260px rail width, white card, 12 radius, border, light
+   shadow. No pastel accent cap. Flags top-left, badge top-right, title,
+   then section body, then footer.
+2. Own: Private/Public; hide Approved; show Pending/Rejected/Hidden.
+   3-col 🌱🔁✅ stats (our colors). Footer Due + filled Start review when
+   dueCount > 0. Tap card → detail; Start → /lessons/start?deckId=.
+   Remove Play overlay.
+3. Group: Shared badge (not Private). Hint “Shared with your group”.
+   Footer View. No stats/Start.
+4. Public: Official if isOfficial else Public. No Approved. Footer View.
+   Copy stays on public detail. No stats/Start.
+5. No language: origin + visibility; “Language not selected”. Keep section
+   title. No stats/Start.
+6. Create Deck: outline #1a56db with +.
+7. Seed: second local catalog user; PRIVATE es “Business Spanish” shared
+   to a group where demo is MEMBER; PUBLIC APPROVED isOfficial es
+   “Spanish Basics”. Keep G1–S and language-less decks. Production seed
+   guard stays. Demo user does not own the new Group/Public decks.
+8. Update live SoT. Do not rewrite docs/tasks/done/*.
+9. Mark TASK-30.19 and DISC-016 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Catalog user is local seed only. Do not commit real secrets.
+- Demo password may stay as the existing local-only credential.
+- Frontend visibility is UX only; backend still enforces.
+```
+
+## Architecture Constraints
+
+```txt
+- Do not change Prisma schema, GraphQL, or decksPage use case.
+- Seed may use Prisma directly.
+```
+
+## Implementation Notes
+
+```txt
+- Hide Approved only on list cards. Detail and admin badges unchanged.
+- Do not copy mock mortarboard/pencil icons.
+```
+
+## Acceptance Criteria
+
+```txt
+- Own cards match the mock layout with our group chrome.
+- Group shows Shared; Public shows Official or Public; Approved is absent
+  on those list cards.
+- After seed, demo My Decks (es) shows Group and Public sections.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: re-seed, My Decks Own/Group/Public/No language).
+```
+
+## Do Not Do
+
+```txt
+- Do not rename the No language section.
+- Do not add cardCount/author (not in DecksPage).
+- Do not copy on the Public list card.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.19 Differentiate My Decks cards by section
 ```
 
 ---

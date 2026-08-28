@@ -36,8 +36,8 @@ export function MyDecksScreen() {
             {...buttonA11yProps(t('decks.myDecks.createDeck'))}
             style={{
               alignItems: 'center',
-              backgroundColor: '#f2f4f7',
-              borderColor: '#d0d5dd',
+              backgroundColor: '#ffffff',
+              borderColor: '#1a56db',
               borderRadius: 8,
               borderWidth: 1,
               flexDirection: 'row',
@@ -48,8 +48,8 @@ export function MyDecksScreen() {
             }}
             onPress={goCreateDeck}
           >
-            <Ionicons color="#344054" name="add" size={18} />
-            <AppText style={{ color: '#344054', fontSize: 14, fontWeight: '600' }}>
+            <Ionicons color="#1a56db" name="add" size={18} />
+            <AppText style={{ color: '#1a56db', fontSize: 14, fontWeight: '600' }}>
               {t('decks.myDecks.createDeck')}
             </AppText>
           </Pressable>

@@ -5,12 +5,16 @@ import {
   DeckVisibility as Visibility,
 } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
+import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { getModerationLabel, getVisibilityLabel } from '@/features/decks/utils/format-deck-status'
 
 type DeckStatusBadgeProps = {
+  hideApproved?: boolean
+  isOfficial?: boolean
   moderationStatus: DeckModerationStatus
+  presentation?: 'default' | 'shared' | 'catalog'
   visibility: DeckVisibility
 }
 
@@ -70,26 +74,70 @@ function StatusPill({ background, border, color, icon, label }: PillStyle & { la
         borderRadius: 8,
         borderWidth: 1,
         flexDirection: 'row',
-        gap: 6,
-        paddingHorizontal: 10,
-        paddingVertical: 4,
+        gap: 4,
+        paddingHorizontal: 8,
+        paddingVertical: 3,
       }}
     >
-      <Ionicons color={color} name={icon} size={14} />
-      <AppText style={{ color, fontSize: 12, fontWeight: '600' }}>{label}</AppText>
+      <Ionicons color={color} name={icon} size={13} />
+      <AppText style={{ color, fontSize: 11, fontWeight: '600' }}>{label}</AppText>
     </View>
   )
 }
 
-export function DeckStatusBadge({ moderationStatus, visibility }: DeckStatusBadgeProps) {
+export function DeckStatusBadge({
+  hideApproved = false,
+  isOfficial = false,
+  moderationStatus,
+  presentation = 'default',
+  visibility,
+}: DeckStatusBadgeProps) {
+  const { t } = useTranslation()
+
+  if (presentation === 'shared') {
+    return (
+      <StatusPill
+        background="#e8f0fe"
+        border="#b2ccff"
+        color="#1a56db"
+        icon="people-outline"
+        label={t('decks.sections.shared')}
+      />
+    )
+  }
+
+  if (presentation === 'catalog') {
+    if (isOfficial) {
+      return (
+        <StatusPill
+          background="#ecfdf3"
+          border="#abefc6"
+          color="#067647"
+          icon="star-outline"
+          label={t('decks.status.official')}
+        />
+      )
+    }
+
+    return (
+      <StatusPill
+        {...getVisibilityStyle(Visibility.Public)}
+        label={getVisibilityLabel(Visibility.Public)}
+      />
+    )
+  }
+
   const moderationLabel = getModerationLabel(moderationStatus)
   const visibilityStyle = getVisibilityStyle(visibility)
   const moderationStyle = getModerationStyle(moderationStatus)
+  const showModeration =
+    Boolean(moderationLabel && moderationStyle) &&
+    !(hideApproved && moderationStatus === ModerationStatus.Approved)
 
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'flex-end' }}>
       <StatusPill {...visibilityStyle} label={getVisibilityLabel(visibility)} />
-      {moderationLabel && moderationStyle ? (
+      {showModeration && moderationLabel && moderationStyle ? (
         <StatusPill {...moderationStyle} label={moderationLabel} />
       ) : null}
     </View>

@@ -3,7 +3,10 @@ import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 import { Pressable } from 'react-native'
 
-import { useDeckLearningStatsQuery } from '@/graphql/generated'
+import { AppText } from '@/ui/primitives'
+import { buttonA11yProps } from '@/ui/utils/accessibility'
+
+import { useDeckDueCount } from './deck-learning-stats-compact'
 
 type DeckStartPlayButtonProps = {
   deckId: string
@@ -12,11 +15,7 @@ type DeckStartPlayButtonProps = {
 export function DeckStartPlayButton({ deckId }: DeckStartPlayButtonProps) {
   const { t } = useTranslation()
   const router = useRouter()
-  const { data } = useDeckLearningStatsQuery({
-    variables: { deckId },
-  })
-
-  const dueCount = data?.deckLearningStats?.dueCount ?? 0
+  const dueCount = useDeckDueCount(deckId)
 
   if (dueCount <= 0) {
     return null
@@ -24,22 +23,23 @@ export function DeckStartPlayButton({ deckId }: DeckStartPlayButtonProps) {
 
   return (
     <Pressable
-      accessibilityLabel={t('decks.deckDetail.startLesson')}
-      accessibilityRole="button"
-      hitSlop={8}
+      {...buttonA11yProps(t('decks.deckDetail.startLesson'))}
       style={{
         alignItems: 'center',
-        bottom: 8,
-        height: 36,
-        justifyContent: 'center',
-        position: 'absolute',
-        right: 8,
-        width: 36,
-        zIndex: 1,
+        backgroundColor: '#1a56db',
+        borderRadius: 8,
+        flexDirection: 'row',
+        flexShrink: 0,
+        gap: 4,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
       }}
       onPress={() => router.push(`/lessons/start?deckId=${deckId}`)}
     >
-      <Ionicons color="#1a56db" name="play" size={22} />
+      <AppText style={{ color: '#ffffff', fontSize: 12, fontWeight: '700' }}>
+        {t('decks.deckDetail.startLesson')}
+      </AppText>
+      <Ionicons color="#ffffff" name="chevron-forward" size={14} />
     </Pressable>
   )
 }

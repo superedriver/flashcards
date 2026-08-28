@@ -29,6 +29,10 @@ export const decksEn = {
       GROUP: 'Group',
       PUBLIC: 'Public',
     },
+    shared: 'Shared',
+    sharedHint: 'Shared with your group',
+    view: 'View →',
+    languageNotSelected: 'Language not selected',
   },
   deckDetail: {
     title: 'Deck Detail',
@@ -157,6 +161,7 @@ export const decksEn = {
   status: {
     public: 'Public',
     private: 'Private',
+    official: 'Official',
     published: 'Published',
     hidden: 'Hidden',
     pendingReview: 'Pending review',

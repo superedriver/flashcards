@@ -38,10 +38,10 @@ Apply `StudySession` snapshot/queueState migration first. Use own decks only; do
 ### Deck live join
 
 - [ ] Owned deck Start has no lessonSize cap; newly ready cards of that deck can join mid-session.
-- [ ] Own My Decks cards show Play (bottom-right) when `dueCount > 0`; Play starts the owned-deck review without opening detail. Tap card still opens detail.
-- [ ] Start is shown only for the owner when `dueCount > 0` (Play on Own cards + deck detail).
-- [ ] Owner with zero due cards does not see Start / Play.
-- [ ] Non-owner of a public/group deck does not see Start (copy remains the study path). No Play on Group / Public / No language cards.
+- [ ] Own My Decks cards show Start review in the footer when `dueCount > 0`; Start review starts the owned-deck review without opening detail. Tap card still opens detail.
+- [ ] Start is shown only for the owner when `dueCount > 0` (Own cards + deck detail).
+- [ ] Owner with zero due cards does not see Start.
+- [ ] Non-owner of a public/group deck does not see Start (copy remains the study path). No Start on Group / Public / No language cards.
 
 ### Queue rules
 

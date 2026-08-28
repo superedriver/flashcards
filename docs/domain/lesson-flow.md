@@ -484,21 +484,25 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 ## Deck UI
 
 ```txt
-- Per-deck counters on Decks tab / deck detail. Own My Decks cards show
-  To learn / Practiced / Learned as group-colored emoji pills; Due stays blue text.
-- My Decks title row: “My Decks” left, compact + Create Deck right
-- Deck list cards: short accent cap (~56px) with language flags (origin badge on
-  No language in the same cap). Rail height fits two wrapping status pills.
+- Per-deck counters on Decks tab / deck detail.
+- My Decks title row: “My Decks” left, compact outline + Create Deck right
+- Deck list cards share one white shell (~260px, radius 12, light shadow).
+  No pastel cap. Flags top-left, badge top-right, title, divider, section body, footer.
+  Own: Private/Public (hide Approved; show Pending/Rejected/Hidden), 3-col 🌱🔁✅
+  stats, Due + filled Start review when dueCount > 0
+  Group: Shared + “Shared with your group”, View. No stats/Start
+  Public: Official if isOfficial else Public (no Approved), View. Copy on detail
+  No language: origin + visibility + “Language not selected”. Section name unchanged
+- Own My Decks cards: Start review in the card footer when dueCount > 0
+- Tap Own card → deck detail; tap Start review → startLesson (/lessons/start?deckId=),
+  same as deck detail Start (no extra visit to detail)
+- No Start when dueCount = 0
+- No Start on Group, Public, or No language cards
 - Card row group badges on deck detail
 - Card rows display #{position + 1} (storage stays 0-based). Owner Edit/Delete are
   icons on the right with accessibility labels; delete still confirms.
   Even/odd rows use alternating backgrounds; each row has a border and 8px inner inset.
   Word group badges show 🌱 / 🔁 / ✅ with the same colors as the stats group cells.
-- Own My Decks cards: Play (bottom-right) when dueCount > 0
-- Tap Own card → deck detail; tap Play → startLesson (/lessons/start?deckId=), same as
-  deck detail Start (no extra visit to detail)
-- No Play when dueCount = 0
-- No Play on Group, Public, or No language cards
 - Deck detail (owner):
   Page title “Deck Detail” + visibility/moderation pills, flags on the right
   Header (deck title, description; filled Start review top-right when due)

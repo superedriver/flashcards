@@ -29,6 +29,10 @@ export const decksUk = {
       GROUP: 'Група',
       PUBLIC: 'Публічна',
     },
+    shared: 'Спільна',
+    sharedHint: 'Поширена у вашій групі',
+    view: 'Відкрити →',
+    languageNotSelected: 'Мову не вибрано',
   },
   deckDetail: {
     title: 'Деталі колоди',
@@ -159,6 +163,7 @@ export const decksUk = {
   status: {
     public: 'Публічна',
     private: 'Приватна',
+    official: 'Офіційна',
     published: 'Опублікована',
     hidden: 'Прихована',
     pendingReview: 'На перевірці',

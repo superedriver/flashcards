@@ -10,6 +10,11 @@ const DEMO_EMAIL = 'demo@example.com';
 const DEMO_PASSWORD = 'demo-password-123';
 const DEMO_DISPLAY_NAME = 'Demo User';
 const PRIVATE_DECK_TITLE = 'Demo Spanish Basics';
+const CATALOG_EMAIL = 'catalog@example.com';
+const CATALOG_DISPLAY_NAME = 'Catalog Owner';
+const GROUP_NAME = 'Demo Study Group';
+const GROUP_DECK_TITLE = 'Business Spanish';
+const CATALOG_PUBLIC_DECK_TITLE = 'Spanish Basics';
 const PUBLIC_DECK_TITLE = 'Demo Public Phrases';
 
 const TARGET_LANGUAGE = 'es';
@@ -25,6 +30,16 @@ const PRIVATE_DECK_CARDS = [
 const PUBLIC_DECK_CARDS = [
   { front: 'water', back: 'agua', example: 'I need water.' },
   { front: 'food', back: 'comida', example: 'The food is good.' },
+] as const;
+
+const GROUP_DECK_CARDS = [
+  { front: 'meeting', back: 'reunión' },
+  { front: 'invoice', back: 'factura' },
+] as const;
+
+const CATALOG_PUBLIC_CARDS = [
+  { front: 'house', back: 'casa' },
+  { front: 'city', back: 'ciudad' },
 ] as const;
 
 const QUEUE_DECKS = [
@@ -174,6 +189,108 @@ async function upsertDemoUser(prisma: PrismaClient) {
   return user;
 }
 
+async function upsertCatalogUser(prisma: PrismaClient) {
+  const passwordHash = await argon2.hash(DEMO_PASSWORD);
+  const now = new Date();
+
+  return prisma.user.upsert({
+    where: { email: CATALOG_EMAIL },
+    create: {
+      email: CATALOG_EMAIL,
+      passwordHash,
+      emailVerifiedAt: now,
+      termsAcceptedAt: now,
+      privacyAcceptedAt: now,
+      profile: {
+        create: {
+          displayName: CATALOG_DISPLAY_NAME,
+        },
+      },
+    },
+    update: {
+      passwordHash,
+      emailVerifiedAt: now,
+      blockedAt: null,
+      deletedAt: null,
+    },
+  });
+}
+
+async function ensureSharedGroupDeck(
+  prisma: PrismaClient,
+  input: {
+    catalogUserId: string;
+    demoUserId: string;
+    deckId: string;
+  },
+) {
+  let group = await prisma.group.findFirst({
+    where: {
+      name: GROUP_NAME,
+      createdById: input.catalogUserId,
+      deletedAt: null,
+    },
+  });
+
+  if (!group) {
+    group = await prisma.group.create({
+      data: {
+        name: GROUP_NAME,
+        description: 'Local-only group so the demo user can see a shared deck.',
+        createdById: input.catalogUserId,
+      },
+    });
+  }
+
+  await prisma.groupMember.upsert({
+    where: {
+      groupId_userId: {
+        groupId: group.id,
+        userId: input.catalogUserId,
+      },
+    },
+    create: {
+      groupId: group.id,
+      userId: input.catalogUserId,
+      role: 'OWNER',
+    },
+    update: {},
+  });
+
+  await prisma.groupMember.upsert({
+    where: {
+      groupId_userId: {
+        groupId: group.id,
+        userId: input.demoUserId,
+      },
+    },
+    create: {
+      groupId: group.id,
+      userId: input.demoUserId,
+      role: 'MEMBER',
+    },
+    update: {},
+  });
+
+  await prisma.deckGroupShare.upsert({
+    where: {
+      deckId_groupId: {
+        deckId: input.deckId,
+        groupId: group.id,
+      },
+    },
+    create: {
+      deckId: input.deckId,
+      groupId: group.id,
+      createdById: input.catalogUserId,
+      permission: 'VIEW',
+    },
+    update: {
+      deletedAt: null,
+    },
+  });
+}
+
 async function ensureDeckWithCards(
   prisma: PrismaClient,
   input: {
@@ -182,6 +299,7 @@ async function ensureDeckWithCards(
     description: string;
     visibility: 'PRIVATE' | 'PUBLIC';
     moderationStatus: 'NONE' | 'APPROVED';
+    isOfficial?: boolean;
     targetLanguage?: string;
     sourceLanguage?: string;
     cards: ReadonlyArray<{
@@ -204,6 +322,9 @@ async function ensureDeckWithCards(
     targetLanguage: input.targetLanguage ?? null,
     sourceLanguage: input.sourceLanguage ?? null,
   };
+  const officialData = {
+    isOfficial: input.isOfficial ?? false,
+  };
 
   if (!deck) {
     deck = await prisma.deck.create({
@@ -214,6 +335,7 @@ async function ensureDeckWithCards(
         visibility: input.visibility,
         moderationStatus: input.moderationStatus,
         ...languageData,
+        ...officialData,
       },
     });
   } else {
@@ -225,6 +347,7 @@ async function ensureDeckWithCards(
         moderationStatus: input.moderationStatus,
         deletedAt: null,
         ...languageData,
+        ...officialData,
       },
     });
   }
@@ -335,6 +458,37 @@ async function main() {
       skipDuplicates: true,
     });
 
+    const catalogUser = await upsertCatalogUser(prisma);
+
+    const groupDeck = await ensureDeckWithCards(prisma, {
+      ownerId: catalogUser.id,
+      title: GROUP_DECK_TITLE,
+      description: 'Local-only private deck shared with the demo group.',
+      visibility: 'PRIVATE',
+      moderationStatus: 'NONE',
+      targetLanguage: TARGET_LANGUAGE,
+      sourceLanguage: SOURCE_LANGUAGE,
+      cards: GROUP_DECK_CARDS,
+    });
+
+    await ensureSharedGroupDeck(prisma, {
+      catalogUserId: catalogUser.id,
+      demoUserId: user.id,
+      deckId: groupDeck.id,
+    });
+
+    const catalogPublicDeck = await ensureDeckWithCards(prisma, {
+      ownerId: catalogUser.id,
+      title: CATALOG_PUBLIC_DECK_TITLE,
+      description: 'Local-only official public deck for the Public section.',
+      visibility: 'PUBLIC',
+      moderationStatus: 'APPROVED',
+      isOfficial: true,
+      targetLanguage: TARGET_LANGUAGE,
+      sourceLanguage: SOURCE_LANGUAGE,
+      cards: CATALOG_PUBLIC_CARDS,
+    });
+
     console.log('Demo seed completed (local development only).');
     console.log(`Demo user email: ${DEMO_EMAIL}`);
     console.log(`Demo user password: ${DEMO_PASSWORD}`);
@@ -343,6 +497,8 @@ async function main() {
     console.log(
       `Queue decks: ${QUEUE_DECKS.map((deck) => deck.title).join(', ')}`,
     );
+    console.log(`Group fixture: ${groupDeck.title}`);
+    console.log(`Public catalog fixture: ${catalogPublicDeck.title}`);
     console.log(
       `Settings: lessonSize=${LESSON_SIZE} activeTarget=${TARGET_LANGUAGE} native=${SOURCE_LANGUAGE}`,
     );
