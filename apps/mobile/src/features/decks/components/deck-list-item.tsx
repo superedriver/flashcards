@@ -7,6 +7,7 @@ import { AppText } from '@/ui/primitives'
 
 import { DeckLanguageFlags } from './deck-language-flags'
 import { DeckLearningStatsCompact } from './deck-learning-stats-compact'
+import { DeckStartPlayButton } from './deck-start-play-button'
 import { DeckStatusBadge } from './deck-status-badge'
 
 type DecksPageDeck = DecksPageQuery['decksPage']['ownDecks'][number]
@@ -63,102 +64,109 @@ export function DeckListItem({
   const railHeight = showLearningCounters ? RAIL_CARD_HEIGHT_WITH_COUNTERS : RAIL_CARD_HEIGHT
 
   return (
-    <Pressable
-      accessibilityRole="button"
-      style={isRail ? { marginRight: 12, width: 168 } : { width: '100%' }}
-      onPress={() => router.push(href)}
+    <View
+      style={
+        isRail
+          ? { marginRight: 12, position: 'relative', width: 168 }
+          : { position: 'relative', width: '100%' }
+      }
     >
-      <View
-        style={{
-          backgroundColor: '#ffffff',
-          borderColor: '#d7d7d7',
-          borderRadius: 12,
-          borderWidth: 1,
-          height: isRail ? railHeight : undefined,
-          minHeight: isRail ? undefined : 220,
-          overflow: 'hidden',
-        }}
-      >
+      <Pressable accessibilityRole="button" onPress={() => router.push(href)}>
         <View
           style={{
-            backgroundColor: accent,
-            height: 96,
-            justifyContent: 'space-between',
-            padding: 10,
-          }}
-        >
-          {showOriginBadge && deck.origin ? (
-            <AppText
-              style={{
-                alignSelf: 'flex-start',
-                backgroundColor: 'rgba(255,255,255,0.9)',
-                borderRadius: 6,
-                color: '#444444',
-                fontSize: 11,
-                fontWeight: '700',
-                overflow: 'hidden',
-                paddingHorizontal: 8,
-                paddingVertical: 2,
-              }}
-            >
-              {t(`decks.sections.origin.${deck.origin}`)}
-            </AppText>
-          ) : (
-            <View />
-          )}
-          <DeckLanguageFlags
-            flagSize={22}
-            sourceLanguage={deck.sourceLanguage}
-            targetLanguage={deck.targetLanguage}
-          />
-        </View>
-
-        <View
-          style={{
-            flex: isRail ? 1 : undefined,
-            flexGrow: isRail ? undefined : 1,
-            gap: 8,
-            justifyContent: 'space-between',
-            minHeight: isRail ? undefined : 124,
-            padding: 12,
+            backgroundColor: '#ffffff',
+            borderColor: '#d7d7d7',
+            borderRadius: 12,
+            borderWidth: 1,
+            height: isRail ? railHeight : undefined,
+            minHeight: isRail ? undefined : 220,
+            overflow: 'hidden',
           }}
         >
           <View
-            style={isRail ? { height: TITLE_SLOT_HEIGHT, justifyContent: 'flex-start' } : undefined}
+            style={{
+              backgroundColor: accent,
+              height: 96,
+              justifyContent: 'space-between',
+              padding: 10,
+            }}
           >
-            <AppText
-              ellipsizeMode="tail"
-              numberOfLines={2}
-              style={{ fontSize: 16, fontWeight: '700', lineHeight: 20 }}
-            >
-              {deck.title}
-            </AppText>
+            {showOriginBadge && deck.origin ? (
+              <AppText
+                style={{
+                  alignSelf: 'flex-start',
+                  backgroundColor: 'rgba(255,255,255,0.9)',
+                  borderRadius: 6,
+                  color: '#444444',
+                  fontSize: 11,
+                  fontWeight: '700',
+                  overflow: 'hidden',
+                  paddingHorizontal: 8,
+                  paddingVertical: 2,
+                }}
+              >
+                {t(`decks.sections.origin.${deck.origin}`)}
+              </AppText>
+            ) : (
+              <View />
+            )}
+            <DeckLanguageFlags
+              flagSize={22}
+              sourceLanguage={deck.sourceLanguage}
+              targetLanguage={deck.targetLanguage}
+            />
           </View>
-          <View style={{ gap: 8 }}>
+
+          <View
+            style={{
+              flex: isRail ? 1 : undefined,
+              flexGrow: isRail ? undefined : 1,
+              gap: 8,
+              justifyContent: 'space-between',
+              minHeight: isRail ? undefined : 124,
+              padding: 12,
+            }}
+          >
             <View
               style={
-                isRail ? { height: STATUS_SLOT_HEIGHT, justifyContent: 'flex-start' } : undefined
+                isRail ? { height: TITLE_SLOT_HEIGHT, justifyContent: 'flex-start' } : undefined
               }
             >
-              <DeckStatusBadge
-                moderationStatus={deck.moderationStatus}
-                visibility={deck.visibility}
-              />
+              <AppText
+                ellipsizeMode="tail"
+                numberOfLines={2}
+                style={{ fontSize: 16, fontWeight: '700', lineHeight: 20 }}
+              >
+                {deck.title}
+              </AppText>
             </View>
-            {showLearningCounters ? (
+            <View style={{ gap: 8 }}>
               <View
                 style={
-                  isRail
-                    ? { height: COUNTERS_SLOT_HEIGHT, justifyContent: 'flex-start' }
-                    : undefined
+                  isRail ? { height: STATUS_SLOT_HEIGHT, justifyContent: 'flex-start' } : undefined
                 }
               >
-                <DeckLearningStatsCompact deckId={deck.id} />
+                <DeckStatusBadge
+                  moderationStatus={deck.moderationStatus}
+                  visibility={deck.visibility}
+                />
               </View>
-            ) : null}
+              {showLearningCounters ? (
+                <View
+                  style={
+                    isRail
+                      ? { height: COUNTERS_SLOT_HEIGHT, justifyContent: 'flex-start' }
+                      : undefined
+                  }
+                >
+                  <DeckLearningStatsCompact deckId={deck.id} />
+                </View>
+              ) : null}
+            </View>
           </View>
         </View>
-      </View>
-    </Pressable>
+      </Pressable>
+      {showLearningCounters ? <DeckStartPlayButton deckId={deck.id} /> : null}
+    </View>
   )
 }

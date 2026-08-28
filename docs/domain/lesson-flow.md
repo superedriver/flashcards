@@ -43,7 +43,7 @@ A review session is a short study session for one user.
 Scopes:
 
 ```txt
-DECK                — live ready queue of one owned deck (deck detail Start)
+DECK                — live ready queue of one owned deck (Own Play or deck detail Start)
 HOME_ACTIVE_TARGET  — frozen unique-card snapshot across own decks of activeTargetLanguage (Home START)
 ```
 
@@ -486,7 +486,12 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 ```txt
 - Per-deck counters on Decks tab / deck detail
 - Card row group badges on deck detail
-- Start review only for the owner when dueCount > 0
+- Own My Decks cards: Play (bottom-right) when dueCount > 0
+- Tap Own card → deck detail; tap Play → startLesson (/lessons/start?deckId=), same as
+  deck detail Start (no extra visit to detail)
+- No Play when dueCount = 0
+- No Play on Group, Public, or No language cards
+- Deck detail Start review only for the owner when dueCount > 0
 - Non-owners must copy public/group decks before studying
 ```
 

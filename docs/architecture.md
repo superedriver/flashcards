@@ -664,7 +664,7 @@ Deck: live ready queue of one owned deck; no lessonSize cap.
 Flow:
 
 ```txt
-1. User starts a review session from an owned deck or Home START.
+1. User starts a review session from Home START, Own-deck Play (dueCount > 0), or deck detail Start.
 2. Backend creates a study session (or returns empty if nothing is ready).
 3. Backend picks the next showable card (primary vs bounded repeat) and returns it for display.
    Display is not an answer: do not increment showCount; do not freeze gap N.

@@ -221,47 +221,38 @@ Drop easeFactor, intervalDays, repetitions (or stop writing them; prefer drop).
 
 ## Lesson Selection
 
+Queue membership (Home snapshot vs owned-deck live queue, max 3 answers, gap N):
+`docs/domain/lesson-flow.md`. This file does not select the next card.
+
 Due card:
 
 ```txt
 dueAt <= now
+card and deck not deleted
 ```
 
-Order:
+Home snapshot size: `UserSettings.lessonSize` (5–100, default 20). Deck sessions have no lessonSize cap.
 
-```txt
-dueAt ascending
-(optional tie-break: lastReviewedAt ascending, card position ascending)
-```
+### Single-deck review
 
-Limit: `UserSettings.lessonSize` (5–100, default 20).
-
-### Single-deck lesson
-
-Unchanged entry point from deck detail: only cards of that deck.
+Entry: owner Play on My Decks when dueCount > 0, or deck detail Start review. Live ready queue of that owned deck only.
 
 ### Home START (multi-deck)
 
 ```txt
 Own decks only where targetLanguage = activeTargetLanguage
-All due cards across those decks, dueAt ASC, limit lessonSize
+Frozen snapshot of up to lessonSize unique ready cards
 ```
 
 Public/group decks are not included directly; users study them only after copy into own decks.
 
-## Re-queue Inside an Active Lesson Session
+## Repeats in an Active Review Session
+
+Bounded repeats, freeze N at answer time, and when nextCard is null: `docs/domain/lesson-flow.md`.
 
 ```txt
-After Know/Don't know, a card may become due again soon (e.g. +90 sec).
-When picking the next card in the same session, re-query due cards (dueAt <= now)
-for the lesson scope (one deck or multi-deck home scope).
-Session continues while reviewedCount < lessonSize and a due card exists.
-Same cardId may be reviewed again in the same session when due again
-(StudySessionReview must NOT enforce @@unique([sessionId, cardId])).
-submitReview returns nextCard (or null).
 Do NOT block the UI waiting for timers.
 Do NOT show a countdown.
-If no due cards remain now (or lessonSize reached), nextCard is null.
 ```
 
 ## StudySessionReview Snapshots

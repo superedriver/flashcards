@@ -65,6 +65,8 @@ Expected state:
    - Technical identifiers Lesson, StudySession, lessonSize stay in code
 3. Summary showed Know / Don't know / % as attempts; product wants unique cards only
    - Fixed in TASK-30.06 (UI only; GraphQL completeLesson payload unchanged)
+4. Own deck cards had no Start when due > 0 (only deck detail)
+   - Fixed in TASK-30.07
 ```
 
 ## Discrepancy Register
@@ -236,6 +238,44 @@ docs: lesson-flow.md, architecture.md, smoke/lesson-queue.md, mvp-smoke-tests
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-004 Own deck cards have no Start when due > 0
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.07):
+
+```txt
+Product (approved in chat during EPIC-29 QA):
+  - Own My Decks cards: Play bottom-right when dueCount > 0
+  - Tap card → deck detail
+  - Tap Play → startLesson (same path as deck detail Start), no extra visit to detail
+  - dueCount = 0 → no Play
+  - Group / Public / No language cards: no Play
+
+Was wrong:
+  - Start existed only on deck detail for the owner
+```
+
+Action:
+
+```txt
+TASK-30.07 Add Play start on own deck cards when due
+```
+
+Impact:
+
+```txt
+frontend: DeckListItem + Play control; /lessons/start?deckId=
+docs: live SoT for deck start entry points (code is SoT)
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -261,6 +301,7 @@ backend / Prisma / GraphQL: unchanged
 30.04                            review session / Повторення in UI and live docs
 30.05                            local demo seed for queue QA
 30.06                            unique card count on review summary (no attempt stats)
+30.07                            Play start on own deck cards when due
 ```
 
 ## Epic Summary
@@ -272,6 +313,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.04 Use review session and Повторення in UI and live docs
 - [x] TASK-30.05 Seed lesson-queue QA decks for local demo
 - [x] TASK-30.06 Show unique card count on review summary
+- [x] TASK-30.07 Add Play start on own deck cards when due
 ```
 
 ---
@@ -1020,6 +1062,126 @@ None (human QA after this commit: Home snapshot of 5 with repeats → N is 5).
 
 ```txt
 TASK-30.06 Show unique card count on review summary
+```
+
+---
+
+# TASK-30.07 Add Play start on own deck cards when due
+
+## Status
+
+DONE
+
+## Context
+
+DISC-004: Own cards on My Decks show Due but Start exists only on deck detail. Product: Play bottom-right when dueCount > 0; tap card still opens detail; Play starts the same owner deck review as deck detail.
+
+## Goal
+
+Own deck cards with dueCount > 0 show a Play control that starts `/lessons/start?deckId=`. Group, Public, and No language cards do not. Live SoT matches this code.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/algorithms/learning-steps.md
+docs/smoke/lesson-queue.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+apps/mobile/src/features/decks/components/deck-start-play-button.tsx
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/algorithms/learning-steps.md
+docs/smoke/lesson-queue.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Own section only (showLearningCounters). Play bottom-right when dueCount > 0.
+2. Tap card → existing deck detail href. Tap Play → /lessons/start?deckId= (same as
+   deck detail Start). Play must not open detail.
+3. dueCount = 0 → no Play. Group / Public / No language → no Play.
+4. Reuse deckLearningStats dueCount (Apollo cache ok). Accessibility label = startLesson i18n.
+5. Do not change StartLessonUseCase, GraphQL, or deck detail Start rules.
+6. After implementation, update live SoT that contradicts this entry point. Code is SoT.
+   Point lesson-steps lesson-selection leftovers at lesson-flow.md if they still say
+   deck sessions stop at lessonSize. Do not rewrite docs/tasks/done/*.
+7. Mark TASK-30.07 and DISC-004 DONE in this epic file.
+```
+
+## Security Requirements
+
+```txt
+- Play is UX only. Backend still requires ownership for startLesson.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Frontend must not calculate the queue or learning-steps.
+- Do not start public/group originals from this control.
+```
+
+## Implementation Notes
+
+```txt
+- Keep Play a sibling of the card Pressable (absolute), not a nested child, so taps do not
+  bubble to detail.
+- Ionicons play; match due-count blue if possible.
+```
+
+## Acceptance Criteria
+
+```txt
+- Own + due > 0 shows Play; due = 0 does not.
+- Play starts the deck review without opening detail first.
+- Card tap still opens detail.
+- Live docs describe both Play and deck-detail Start.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: Own G1 with Due → Play; tap card vs tap Play).
+```
+
+## Do Not Do
+
+```txt
+- Do not add Play to Group, Public, or No language cards.
+- Do not change Home START.
+- Do not change the backend.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.07 Add Play start on own deck cards when due
 ```
 
 ---
