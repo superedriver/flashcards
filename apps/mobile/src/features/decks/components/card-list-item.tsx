@@ -37,7 +37,7 @@ export function CardListItem({
         marginBottom: 6,
       }}
     >
-      <View style={{ flexDirection: 'row', gap: 12, paddingHorizontal: 14, paddingVertical: 14 }}>
+      <View style={{ flexDirection: 'row', gap: 12, paddingHorizontal: 8, paddingVertical: 8 }}>
         <View style={{ flex: 1, gap: 4, minWidth: 0 }}>
           <AppText style={{ color: '#888888', fontSize: 12 }}>#{displayIndex}</AppText>
           <AppText style={{ fontSize: 16, fontWeight: '600' }}>{card.front}</AppText>

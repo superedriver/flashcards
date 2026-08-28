@@ -1,16 +1,12 @@
 import { useTranslation } from 'react-i18next'
+import { View } from 'react-native'
 
+import { LEARNING_GROUP_STYLE } from '@/features/decks/utils/learning-group-style'
 import { LearningGroup } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 
 type LearningGroupBadgeProps = {
   learningGroup?: LearningGroup | null
-}
-
-const BADGE_COLORS: Record<LearningGroup, { background: string; color: string }> = {
-  [LearningGroup.ToLearn]: { background: '#e8f0fe', color: '#1a56db' },
-  [LearningGroup.Practiced]: { background: '#fef3c7', color: '#92400e' },
-  [LearningGroup.Learned]: { background: '#dcfce7', color: '#166534' },
 }
 
 export function LearningGroupBadge({ learningGroup }: LearningGroupBadgeProps) {
@@ -20,23 +16,25 @@ export function LearningGroupBadge({ learningGroup }: LearningGroupBadgeProps) {
     return null
   }
 
-  const colors = BADGE_COLORS[learningGroup]
+  const style = LEARNING_GROUP_STYLE[learningGroup]
 
   return (
-    <AppText
+    <View
       style={{
+        alignItems: 'center',
         alignSelf: 'flex-start',
-        backgroundColor: colors.background,
+        backgroundColor: style.background,
         borderRadius: 6,
-        color: colors.color,
-        fontSize: 12,
-        fontWeight: '600',
-        overflow: 'hidden',
+        flexDirection: 'row',
+        gap: 4,
         paddingHorizontal: 8,
         paddingVertical: 2,
       }}
     >
-      {t(`decks.learningGroup.${learningGroup}`)}
-    </AppText>
+      <AppText style={{ fontSize: 12 }}>{style.emoji}</AppText>
+      <AppText style={{ color: style.color, fontSize: 12, fontWeight: '600' }}>
+        {t(`decks.learningGroup.${learningGroup}`)}
+      </AppText>
+    </View>
   )
 }

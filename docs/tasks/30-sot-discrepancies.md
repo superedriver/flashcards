@@ -87,6 +87,9 @@ Expected state:
 11. Play caption is part of the hit target; stats items are left-aligned on
     gray; word padding ignored; status is plain text
     - Fixed in TASK-30.14
+12. Word inset too large; group badges have no icons; stats groups do not
+    match word-badge colors; Private pill blends into the page
+    - Fixed in TASK-30.15
 ```
 
 ## Discrepancy Register
@@ -579,6 +582,47 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-012 Learning-group chrome, tighter word inset, bordered status pills
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.15):
+
+```txt
+Product (approved in chat after 30.14):
+  - Word row inner padding 8px
+  - Word badges: 🌱 To learn, 🔁 Practiced, ✅ Learned
+  - Stats To learn / Practiced / Learned use the same badge colors/backgrounds
+  - Status pills have a 1px accent border; Private bg #e8edf2 / border #98a2b3
+    Public/Pending/Published/Rejected/Hidden get matching borders
+
+Was wrong:
+  - 14px word inset
+  - Group badges were text-only
+  - Stats group chips were generic gray
+  - Private pill had no border and blended with the page
+```
+
+Action:
+
+```txt
+TASK-30.15 Align group chrome, tighten word inset, border status pills
+```
+
+Impact:
+
+```txt
+frontend: learning-group style, LearningGroupBadge, stats cells, DeckStatusBadge, CardListItem
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -612,6 +656,7 @@ backend / Prisma / GraphQL: unchanged
 30.12                            Play start, Delete button, Cards frame
 30.13                            stats tiles, circled Play, word row borders
 30.14                            stats center, Play hit, word inset, status pills
+30.15                            group chrome, word inset 8px, bordered status pills
 ```
 
 ## Epic Summary
@@ -631,6 +676,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.12 Play start, Delete button, and Cards frame
 - [x] TASK-30.13 Restyle stats tiles, circled Play, and word borders
 - [x] TASK-30.14 Center stats, isolate Play, inset words, pill badges
+- [x] TASK-30.15 Align group chrome, tighten word inset, border status pills
 ```
 
 ---
@@ -2307,6 +2353,119 @@ None (human: G1 — stats, Play hit, word inset, Private pill).
 
 ```txt
 TASK-30.14 Center stats, isolate Play, inset words, pill badges
+```
+
+---
+
+# TASK-30.15 Align group chrome, tighten word inset, border status pills
+
+## Status
+
+DONE
+
+## Context
+
+DISC-012: word inset is too large; learning-group badges need the same emojis as stats; stats group cells must share badge colors; status pills need borders and a distinct Private background.
+
+## Goal
+
+Word rows use 8px inset. To learn / Practiced / Learned share emoji + colors between stats and word badges. Status pills are bordered; Private does not blend into the page.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+apps/mobile/src/features/decks/utils/learning-group-style.ts
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/learning-group-badge.tsx
+apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
+apps/mobile/src/features/decks/components/deck-status-badge.tsx
+apps/mobile/src/features/decks/components/card-list-item.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Word row inner padding 8px.
+2. Shared learning-group style: emoji 🌱 / 🔁 / ✅ and badge colors
+   To learn #e8f0fe/#1a56db, Practiced #fef3c7/#92400e, Learned #dcfce7/#166534.
+   Word badges show emoji + label. Stats group chips use the same background;
+   group labels use the same text color.
+3. Status pills: 1px border. Private #e8edf2 / #98a2b3 / #344054 lock.
+   Public #eff4ff / #b2ccff / #1565c0 globe.
+   Pending #fff4e5 / #f7c48a / #b54708 time.
+   Published #ecfdf3 / #abefc6 / #067647 check.
+   Rejected #fef3f2 / #fecdca / #b42318 close.
+   Hidden #f5f0eb / #d6c4b4 / #6d4c41 eye-off.
+4. Update live SoT. Do not rewrite docs/tasks/done/*.
+5. Mark TASK-30.15 and DISC-012 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Badges are UX only. Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Keep Total / Due now chips on the generic gray tile.
+```
+
+## Acceptance Criteria
+
+```txt
+- Word content is closer to the border (8px) but not flush.
+- Group badges and stats group cells match in emoji and color.
+- Private (and other status pills) have a visible border.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: G1 — word inset, group icons/colors, Private border).
+```
+
+## Do Not Do
+
+```txt
+- Do not change Play hit target or stats layout.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.15 Align group chrome, tighten word inset, border status pills
 ```
 
 ---

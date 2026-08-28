@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
 
+import { LEARNING_GROUP_STYLE } from '@/features/decks/utils/learning-group-style'
 import { LearningGroup, useDeckLearningStatsQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState } from '@/ui/components'
@@ -15,9 +16,11 @@ type DeckLearningStatsCardProps = {
 
 type StatCellProps = {
   accessibilityLabel: string
+  chipBackground?: string
   count: number
   emoji: string
   label: string
+  labelColor?: string
 }
 
 const STAT_CARD = {
@@ -35,7 +38,14 @@ const STAT_DIVIDER = {
   width: 1,
 }
 
-function StatCell({ accessibilityLabel, count, emoji, label }: StatCellProps) {
+function StatCell({
+  accessibilityLabel,
+  chipBackground = '#f2f4f7',
+  count,
+  emoji,
+  label,
+  labelColor = '#667085',
+}: StatCellProps) {
   return (
     <View
       accessible
@@ -46,7 +56,7 @@ function StatCell({ accessibilityLabel, count, emoji, label }: StatCellProps) {
         <View
           style={{
             alignItems: 'center',
-            backgroundColor: '#f2f4f7',
+            backgroundColor: chipBackground,
             borderRadius: 8,
             height: 36,
             justifyContent: 'center',
@@ -57,7 +67,7 @@ function StatCell({ accessibilityLabel, count, emoji, label }: StatCellProps) {
         </View>
         <View>
           <AppText style={{ fontSize: 24, fontWeight: '700' }}>{count}</AppText>
-          <AppText style={{ color: '#667085', fontSize: 12 }}>{label}</AppText>
+          <AppText style={{ color: labelColor, fontSize: 12 }}>{label}</AppText>
         </View>
       </View>
     </View>
@@ -108,23 +118,29 @@ export function DeckLearningStatsCard({
         <View style={{ flexDirection: 'row', gap: 12 }}>
           <StatCell
             accessibilityLabel={t('lessons.stats.toLearn', { count: stats.toLearnCount })}
+            chipBackground={LEARNING_GROUP_STYLE[LearningGroup.ToLearn].background}
             count={stats.toLearnCount}
-            emoji="🌱"
+            emoji={LEARNING_GROUP_STYLE[LearningGroup.ToLearn].emoji}
             label={t(`decks.learningGroup.${LearningGroup.ToLearn}`)}
+            labelColor={LEARNING_GROUP_STYLE[LearningGroup.ToLearn].color}
           />
           <View style={STAT_DIVIDER} />
           <StatCell
             accessibilityLabel={t('lessons.stats.practiced', { count: stats.practicedCount })}
+            chipBackground={LEARNING_GROUP_STYLE[LearningGroup.Practiced].background}
             count={stats.practicedCount}
-            emoji="🔁"
+            emoji={LEARNING_GROUP_STYLE[LearningGroup.Practiced].emoji}
             label={t(`decks.learningGroup.${LearningGroup.Practiced}`)}
+            labelColor={LEARNING_GROUP_STYLE[LearningGroup.Practiced].color}
           />
           <View style={STAT_DIVIDER} />
           <StatCell
             accessibilityLabel={t('lessons.stats.learned', { count: stats.learnedCount })}
+            chipBackground={LEARNING_GROUP_STYLE[LearningGroup.Learned].background}
             count={stats.learnedCount}
-            emoji="✅"
+            emoji={LEARNING_GROUP_STYLE[LearningGroup.Learned].emoji}
             label={t(`decks.learningGroup.${LearningGroup.Learned}`)}
+            labelColor={LEARNING_GROUP_STYLE[LearningGroup.Learned].color}
           />
         </View>
       </View>
