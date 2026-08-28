@@ -7,9 +7,10 @@ import { AppText } from '@/ui/primitives'
 
 type LearningGroupBadgeProps = {
   learningGroup?: LearningGroup | null
+  showEmoji?: boolean
 }
 
-export function LearningGroupBadge({ learningGroup }: LearningGroupBadgeProps) {
+export function LearningGroupBadge({ learningGroup, showEmoji = true }: LearningGroupBadgeProps) {
   const { t } = useTranslation()
 
   if (!learningGroup) {
@@ -31,7 +32,7 @@ export function LearningGroupBadge({ learningGroup }: LearningGroupBadgeProps) {
         paddingVertical: 2,
       }}
     >
-      <AppText style={{ fontSize: 12 }}>{style.emoji}</AppText>
+      {showEmoji ? <AppText style={{ fontSize: 12 }}>{style.emoji}</AppText> : null}
       <AppText style={{ color: style.color, fontSize: 12, fontWeight: '600' }}>
         {t(`decks.learningGroup.${learningGroup}`)}
       </AppText>

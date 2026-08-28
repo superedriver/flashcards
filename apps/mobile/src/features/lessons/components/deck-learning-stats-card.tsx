@@ -1,7 +1,9 @@
 import { Ionicons } from '@expo/vector-icons'
+import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
 
+import { LearningGroupBadge } from '@/features/decks/components/learning-group-badge'
 import { LEARNING_GROUP_STYLE } from '@/features/decks/utils/learning-group-style'
 import { LearningGroup, useDeckLearningStatsQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
@@ -19,8 +21,7 @@ type StatCellProps = {
   chipBackground?: string
   count: number
   emoji: string
-  label: string
-  labelColor?: string
+  label: ReactNode
 }
 
 const STAT_CARD = {
@@ -44,7 +45,6 @@ function StatCell({
   count,
   emoji,
   label,
-  labelColor = '#667085',
 }: StatCellProps) {
   return (
     <View
@@ -65,9 +65,13 @@ function StatCell({
         >
           <AppText>{emoji}</AppText>
         </View>
-        <View>
+        <View style={{ gap: 2 }}>
           <AppText style={{ fontSize: 24, fontWeight: '700' }}>{count}</AppText>
-          <AppText style={{ color: labelColor, fontSize: 12 }}>{label}</AppText>
+          {typeof label === 'string' ? (
+            <AppText style={{ color: '#667085', fontSize: 12 }}>{label}</AppText>
+          ) : (
+            label
+          )}
         </View>
       </View>
     </View>
@@ -121,8 +125,7 @@ export function DeckLearningStatsCard({
             chipBackground={LEARNING_GROUP_STYLE[LearningGroup.ToLearn].background}
             count={stats.toLearnCount}
             emoji={LEARNING_GROUP_STYLE[LearningGroup.ToLearn].emoji}
-            label={t(`decks.learningGroup.${LearningGroup.ToLearn}`)}
-            labelColor={LEARNING_GROUP_STYLE[LearningGroup.ToLearn].color}
+            label={<LearningGroupBadge learningGroup={LearningGroup.ToLearn} showEmoji={false} />}
           />
           <View style={STAT_DIVIDER} />
           <StatCell
@@ -130,8 +133,7 @@ export function DeckLearningStatsCard({
             chipBackground={LEARNING_GROUP_STYLE[LearningGroup.Practiced].background}
             count={stats.practicedCount}
             emoji={LEARNING_GROUP_STYLE[LearningGroup.Practiced].emoji}
-            label={t(`decks.learningGroup.${LearningGroup.Practiced}`)}
-            labelColor={LEARNING_GROUP_STYLE[LearningGroup.Practiced].color}
+            label={<LearningGroupBadge learningGroup={LearningGroup.Practiced} showEmoji={false} />}
           />
           <View style={STAT_DIVIDER} />
           <StatCell
@@ -139,8 +141,7 @@ export function DeckLearningStatsCard({
             chipBackground={LEARNING_GROUP_STYLE[LearningGroup.Learned].background}
             count={stats.learnedCount}
             emoji={LEARNING_GROUP_STYLE[LearningGroup.Learned].emoji}
-            label={t(`decks.learningGroup.${LearningGroup.Learned}`)}
-            labelColor={LEARNING_GROUP_STYLE[LearningGroup.Learned].color}
+            label={<LearningGroupBadge learningGroup={LearningGroup.Learned} showEmoji={false} />}
           />
         </View>
       </View>

@@ -6,6 +6,7 @@ import { CardList } from '@/features/decks/components/card-list'
 import { DeckActions } from '@/features/decks/components/deck-actions'
 import { DeckHeader } from '@/features/decks/components/deck-header'
 import { DeckLanguageFlags } from '@/features/decks/components/deck-language-flags'
+import { DeckStatusBadge } from '@/features/decks/components/deck-status-badge'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import {
   deckNeedsLanguageAssignment,
@@ -100,6 +101,14 @@ export function DeckDetailScreen() {
   return (
     <Screen>
       <PageTitle
+        afterTitle={
+          deck ? (
+            <DeckStatusBadge
+              moderationStatus={deck.moderationStatus}
+              visibility={deck.visibility}
+            />
+          ) : null
+        }
         title={t('decks.deckDetail.title')}
         trailing={
           deck ? (

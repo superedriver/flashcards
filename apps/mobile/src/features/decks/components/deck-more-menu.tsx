@@ -30,6 +30,8 @@ type MenuItem = {
   onPress: () => void
 }
 
+const MORE_ACTIONS_ENABLED = false
+
 function notify(message: string): void {
   if (Platform.OS === 'web') {
     globalThis.alert(message)
@@ -159,7 +161,7 @@ export function DeckMoreMenu({ deck }: DeckMoreMenuProps) {
 
   const items: MenuItem[] = [
     {
-      disabled: isBusy,
+      disabled: !MORE_ACTIONS_ENABLED || isBusy,
       label: t('decks.actions.importCsv'),
       onPress: () => {
         if (needsLanguages) {
@@ -174,7 +176,7 @@ export function DeckMoreMenu({ deck }: DeckMoreMenuProps) {
 
   if (!needsLanguages && deck.sourceLanguage) {
     items.push({
-      disabled: isBusy,
+      disabled: !MORE_ACTIONS_ENABLED || isBusy,
       label: isRegenerating
         ? t('studyLanguages.preview.regenerating')
         : t('studyLanguages.preview.regenerate'),
@@ -191,7 +193,7 @@ export function DeckMoreMenu({ deck }: DeckMoreMenuProps) {
   }
 
   items.push({
-    disabled: isBusy,
+    disabled: !MORE_ACTIONS_ENABLED || isBusy,
     label: isPrivate
       ? isPublishing
         ? t('decks.actions.publishing')
@@ -246,6 +248,10 @@ export function DeckMoreMenu({ deck }: DeckMoreMenuProps) {
                 key={item.label}
                 style={{ paddingHorizontal: 16, paddingVertical: 14 }}
                 onPress={() => {
+                  if (item.disabled) {
+                    return
+                  }
+
                   setOpen(false)
                   item.onPress()
                 }}

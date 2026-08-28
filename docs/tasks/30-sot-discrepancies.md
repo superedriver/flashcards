@@ -90,6 +90,9 @@ Expected state:
 12. Word inset too large; group badges have no icons; stats groups do not
     match word-badge colors; Private pill blends into the page
     - Fixed in TASK-30.15
+13. Private sits under the deck name; stats group labels are not pills;
+    More actions are still live
+    - Fixed in TASK-30.16
 ```
 
 ## Discrepancy Register
@@ -623,6 +626,45 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-013 Status pill placement, stats label pills, More disabled
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.16):
+
+```txt
+Product (approved in chat after 30.15):
+  - Visibility/moderation pills sit after “Deck Detail”; flags stay right
+  - Stats To learn / Practiced / Learned labels use the same pill background
+    as word badges
+  - More menu items (CSV, regenerate, publish/unpublish) are disabled for now
+
+Was wrong:
+  - Pills were under the deck title (G1)
+  - Stats group labels were colored text without a pill fill
+  - More actions were still tappable
+```
+
+Action:
+
+```txt
+TASK-30.16 Move status pills, pill stats labels, disable More
+```
+
+Impact:
+
+```txt
+frontend: PageTitle, deck-detail, DeckHeader, stats labels, DeckMoreMenu
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -657,6 +699,7 @@ backend / Prisma / GraphQL: unchanged
 30.13                            stats tiles, circled Play, word row borders
 30.14                            stats center, Play hit, word inset, status pills
 30.15                            group chrome, word inset 8px, bordered status pills
+30.16                            status after title, stats label pills, More disabled
 ```
 
 ## Epic Summary
@@ -677,6 +720,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.13 Restyle stats tiles, circled Play, and word borders
 - [x] TASK-30.14 Center stats, isolate Play, inset words, pill badges
 - [x] TASK-30.15 Align group chrome, tighten word inset, border status pills
+- [x] TASK-30.16 Move status pills, pill stats labels, disable More
 ```
 
 ---
@@ -2466,6 +2510,120 @@ None (human: G1 — word inset, group icons/colors, Private border).
 
 ```txt
 TASK-30.15 Align group chrome, tighten word inset, border status pills
+```
+
+---
+
+# TASK-30.16 Move status pills, pill stats labels, disable More
+
+## Status
+
+DONE
+
+## Context
+
+DISC-013: Private should sit after the page title; stats group words need the same pill fill as word badges; More actions should be blocked for now.
+
+## Goal
+
+Deck detail title row is “Deck Detail” + status pills + flags. Stats group labels are pills. More items are disabled (menu still opens).
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/ui/components/page-title.tsx
+apps/mobile/src/features/decks/screens/deck-detail-screen.tsx
+apps/mobile/src/features/decks/components/deck-header.tsx
+apps/mobile/src/features/decks/components/learning-group-badge.tsx
+apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
+apps/mobile/src/features/decks/components/deck-more-menu.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Status pills immediately after “Deck Detail”. Flags remain on the right.
+   Remove pills from DeckHeader. Keep pending-moderation copy under the header
+   if relevant. List/admin badges unchanged.
+2. Stats To learn / Practiced / Learned labels use the same pill background as
+   word badges (reuse LearningGroupBadge without a second emoji if needed).
+   Total / Due now stay as today.
+3. More items disabled: Import CSV, Regenerate, Publish / Unpublish. ⋯ still
+   opens; Cancel still works. Do not delete the handlers.
+4. Update live SoT. Do not rewrite docs/tasks/done/*.
+5. Mark TASK-30.16 and DISC-013 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Disabled More is UX only. Backend still enforces owner/publish.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Gate More with a local MORE_ACTIONS_ENABLED = false so it is easy to restore.
+```
+
+## Acceptance Criteria
+
+```txt
+- Private sits after Deck Detail, not under G1.
+- Stats group words have pill fills matching word badges.
+- More actions cannot be triggered; Cancel still closes the sheet.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: G1 title row, stats pills, More disabled).
+```
+
+## Do Not Do
+
+```txt
+- Do not remove More or its handlers.
+- Do not disable Edit / Add / Delete / Play.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.16 Move status pills, pill stats labels, disable More
 ```
 
 ---

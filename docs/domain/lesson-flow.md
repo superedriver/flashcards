@@ -496,13 +496,13 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - No Play when dueCount = 0
 - No Play on Group, Public, or No language cards
 - Deck detail (owner):
-  Page title “Deck Detail” with language flags on the same row
-  Header (deck title, description, visibility/moderation pill badges)
+  Page title “Deck Detail” + visibility/moderation pills, flags on the right
+  Header (deck title, description)
   Stats: two white bordered cards — Total cards | Due now, then To learn | Practiced | Learned
-  (centered icon chip + count + label; group cells share word-badge colors; no Next review)
+  (centered icon chip + count; group labels are the same pills as word badges; no Next review)
   Primary: circled Play (tappable) with muted Start review caption (not tappable)
   Quick icons: Edit, Add card, More ⋯ (a11y labels)
-  More: Import CSV, Regenerate translations, Publish / Make private
+  More items (CSV, regenerate, publish/unpublish) are disabled for now
   Danger zone: label left, Delete deck button right, still confirms
   Cards heading + word list in a bordered box; each word row has a border and 8px inset
   Visibility/moderation pills have an accent border

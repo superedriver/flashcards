@@ -4,11 +4,12 @@ import { View } from 'react-native'
 import { AppText } from '@/ui/primitives'
 
 type PageTitleProps = {
+  afterTitle?: ReactNode
   title: string
   trailing?: ReactNode
 }
 
-export function PageTitle({ title, trailing }: PageTitleProps) {
+export function PageTitle({ afterTitle, title, trailing }: PageTitleProps) {
   return (
     <View
       accessibilityRole="header"
@@ -19,12 +20,14 @@ export function PageTitle({ title, trailing }: PageTitleProps) {
         marginBottom: 8,
       }}
     >
-      <AppText
-        accessibilityRole="header"
-        style={{ flex: 1, fontSize: 24, fontWeight: '700', paddingRight: 8 }}
+      <View
+        style={{ alignItems: 'center', flex: 1, flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}
       >
-        {title}
-      </AppText>
+        <AppText accessibilityRole="header" style={{ fontSize: 24, fontWeight: '700' }}>
+          {title}
+        </AppText>
+        {afterTitle}
+      </View>
       {trailing}
     </View>
   )

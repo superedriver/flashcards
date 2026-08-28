@@ -5,8 +5,6 @@ import { AppText } from '@/ui/primitives'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
-import { DeckStatusBadge } from './deck-status-badge'
-
 type DeckHeaderProps = {
   deck: DeckQuery['deck']
   trailing?: ReactNode
@@ -38,7 +36,6 @@ export function DeckHeader({ deck, trailing }: DeckHeaderProps) {
         {trailing}
       </View>
       {deck.description ? <AppText style={{ color: '#666666' }}>{deck.description}</AppText> : null}
-      <DeckStatusBadge moderationStatus={deck.moderationStatus} visibility={deck.visibility} />
       {isPendingPublic ? (
         <AppText style={{ color: '#ef6c00', fontSize: 14 }}>
           {t('decks.actions.pendingModeration')}
