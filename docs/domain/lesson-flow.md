@@ -442,7 +442,18 @@ dontKnowCount
 completedAt
 ```
 
-`knownCount` and `dontKnowCount` are numbers of answers (attempts). If card A was answered 3 times, all 3 answers count.
+API `knownCount` and `dontKnowCount` are numbers of answers (attempts). If card A was answered 3 times, all 3 answers count. The GraphQL payload is unchanged.
+
+UI summary (product):
+
+```txt
+Review complete / Повторення завершено
+Nice work
+completedAt
+Cards in this review: N   (unique answered cardIds; repeats of the same cardId count once)
+```
+
+Do not show Reviewed, Know, Don't know, or Known % on this screen. Attempt stats stay in the API only until a later product decision.
 
 ## Abandoning a review session
 

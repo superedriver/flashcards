@@ -33,12 +33,6 @@ export function LessonSummaryScreen() {
   }
 
   const targetDeckId = deckId ?? completion.deckId
-  const knownPercent =
-    completion.reviewedCards === 0
-      ? t('lessons.progress.percent', { percent: 0 })
-      : t('lessons.progress.percent', {
-          percent: Math.round((completion.knownCount / completion.reviewedCards) * 100),
-        })
 
   return (
     <Screen scrollable>
@@ -50,19 +44,9 @@ export function LessonSummaryScreen() {
         <AppText style={{ color: '#666666' }}>
           {t('lessons.summary.completedAt', { date: formatDateTime(completion.completedAt) })}
         </AppText>
-        <View style={{ gap: 6, marginTop: 8 }}>
-          <AppText>{t('lessons.summary.cardsInLesson', { count: completion.totalCards })}</AppText>
-          <AppText>{t('lessons.summary.reviewed', { count: completion.reviewedCards })}</AppText>
-          <AppText style={{ color: '#2e7d32' }}>
-            {t('lessons.summary.know', { count: completion.knownCount })}
-          </AppText>
-          <AppText style={{ color: '#c62828' }}>
-            {t('lessons.summary.dontKnow', { count: completion.dontKnowCount })}
-          </AppText>
-          <AppText style={{ fontWeight: '600' }}>
-            {t('lessons.summary.knownPercent', { percent: knownPercent })}
-          </AppText>
-        </View>
+        <AppText>
+          {t('lessons.summary.cardsInLesson', { count: completion.uniqueCardCount })}
+        </AppText>
       </AppCard>
       <View style={{ gap: 12 }}>
         {targetDeckId ? (

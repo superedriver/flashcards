@@ -63,6 +63,8 @@ Expected state:
    - Fixed in TASK-30.01–30.03
 2. Product says review session / Повторення; UI and live docs still said Lesson / Урок
    - Technical identifiers Lesson, StudySession, lessonSize stay in code
+3. Summary showed Know / Don't know / % as attempts; product wants unique cards only
+   - Fixed in TASK-30.06 (UI only; GraphQL completeLesson payload unchanged)
 ```
 
 ## Discrepancy Register
@@ -188,6 +190,52 @@ backend: picker tests; StartLesson, StartHomeLesson, SubmitReview
 frontend / Prisma / GraphQL: none expected
 ```
 
+---
+
+### DISC-003 Review summary shows attempt stats, not unique cards
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.06):
+
+```txt
+Product (approved in chat during EPIC-29 QA):
+  - Summary: title, Nice work, completedAt, “Cards in this review: N”
+  - N = unique answered cardIds in this session
+  - Do not show Reviewed, Know, Don't know, Known %
+
+Was wrong:
+  - UI showed cardsInLesson + reviewedCards + knownCount + dontKnowCount + %
+  - Home completeLesson.totalCards equals reviewedCards (attempts)
+  - Live SoT said Know / Don't know on the result screen are attempts
+```
+
+Product decision (approved in chat):
+
+```txt
+Hide attempt stats for now. Unique card count only.
+Keep Start another review / Home / Back to deck as today.
+Do not change CompleteLessonUseCase or GraphQL payload.
+```
+
+Action:
+
+```txt
+TASK-30.06 Show unique card count on review summary
+```
+
+Impact:
+
+```txt
+frontend: lesson summary screen, LessonCompletion uniqueCardCount
+docs: lesson-flow.md, architecture.md, smoke/lesson-queue.md, mvp-smoke-tests
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -212,6 +260,7 @@ frontend / Prisma / GraphQL: none expected
 30.03                            Start + SubmitReview call timing
 30.04                            review session / Повторення in UI and live docs
 30.05                            local demo seed for queue QA
+30.06                            unique card count on review summary (no attempt stats)
 ```
 
 ## Epic Summary
@@ -222,6 +271,7 @@ frontend / Prisma / GraphQL: none expected
 - [x] TASK-30.03 Record queue showing after answer, not on display
 - [x] TASK-30.04 Use review session and Повторення in UI and live docs
 - [x] TASK-30.05 Seed lesson-queue QA decks for local demo
+- [x] TASK-30.06 Show unique card count on review summary
 ```
 
 ---
@@ -846,6 +896,130 @@ pnpm docs:lint
 
 ```txt
 TASK-30.05 Seed lesson-queue QA decks for local demo
+```
+
+---
+
+# TASK-30.06 Show unique card count on review summary
+
+## Status
+
+DONE
+
+## Context
+
+DISC-003: after a Home review with 5 unique cards and repeats, the summary showed Cards in this review: 9, Reviewed: 9, Know / Don't know, and Known %. Those numbers are attempts. Product wants only unique answered cards and no attempt stats.
+
+## Goal
+
+Review complete shows title, Nice work, completedAt, and Cards in this review: N where N is unique answered cardIds. Buttons stay as today.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/smoke/lesson-queue.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/types/active-lesson.ts
+apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
+apps/mobile/src/features/lessons/screens/lesson-summary-screen.tsx
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/smoke/lesson-queue.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Persist uniqueCardCount on LessonCompletion from reviewedCardIds.length before
+   clearActiveLesson. Do not use completeLesson.totalCards or reviewedCards for N.
+2. Summary layout: completeTitle, then Nice work, then completedAt, then
+   Cards in this review: uniqueCardCount.
+3. Remove Reviewed, Know, Don't know, and Known % from the summary screen.
+4. Do not change Start another review / Home / Back to deck / Back to decks.
+5. Do not change CompleteLessonUseCase, Prisma, or GraphQL schema/resolvers.
+6. Live SoT: UI summary unique count; API knownCount/dontKnowCount remain attempts
+   but are not shown. Update architecture.md result-screen bullet and smoke checks.
+7. Do not rewrite docs/tasks/done/*.
+8. Mark TASK-30.06 and DISC-003 DONE in this epic file.
+```
+
+## Security Requirements
+
+```txt
+- Do not weaken permissions.
+- Do not commit secrets.
+- Frontend unique count is UX only; backend remains SoT for queue and reviews.
+```
+
+## Architecture Constraints
+
+```txt
+- Frontend must not calculate learning-steps, dueAt, or the lesson queue.
+- Unique card count may be derived from client reviewedCardIds for this screen.
+- Do not add a new GraphQL field in this task.
+```
+
+## Implementation Notes
+
+```txt
+- reviewedCardIds already skips duplicate cardIds.
+- Keep unused completeLesson fields in the GraphQL query if already requested.
+- Keep unused i18n keys unless this screen was their only use and removal is smaller.
+```
+
+## Acceptance Criteria
+
+```txt
+- Summary shows unique answered cards, not attempts.
+- Attempt stats are not on the summary screen.
+- Navigation buttons unchanged.
+- API is unchanged.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human QA after this commit: Home snapshot of 5 with repeats → N is 5).
+```
+
+## Do Not Do
+
+```txt
+- Do not change the backend completeLesson payload.
+- Do not add countdown, in-lesson progress, or new summary stats.
+- Do not change queue picker or learning-steps.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.06 Show unique card count on review summary
 ```
 
 ---

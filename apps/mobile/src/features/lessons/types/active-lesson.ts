@@ -28,9 +28,6 @@ export type ActiveLesson = {
 export type LessonCompletion = {
   completedAt: string
   deckId: string | null
-  dontKnowCount: number
-  knownCount: number
-  reviewedCards: number
   sessionId: string
-  totalCards: number
+  uniqueCardCount: number
 }
