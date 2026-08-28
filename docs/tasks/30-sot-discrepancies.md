@@ -74,6 +74,10 @@ Expected state:
 7. Owner deck detail stats are a stacked list; Edit/Add are labeled buttons;
    Delete is a large red button in the middle of the screen
    - Fixed in TASK-30.10
+8. Deck detail: Next review contradicts Due now; Danger zone looks like the
+   card-list header; flags sit under the deck title; card rows are same-color
+   with large gaps
+   - Fixed in TASK-30.11
 ```
 
 ## Discrepancy Register
@@ -405,6 +409,47 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-008 Deck detail Next review, Danger zone, flags, and card list
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.11):
+
+```txt
+Product (approved in chat after 30.10):
+  - Remove Next review from stats (including “No cards scheduled yet”)
+  - Danger zone is a distinct card so it is not a header for the word list
+  - Word list has a Cards / Картки heading
+  - Even/odd word rows have alternating backgrounds
+  - Tighter gap between word rows
+  - Language flags sit on the same row as the page title “Deck Detail”
+
+Was wrong:
+  - Next review showed null as “No cards scheduled yet” while Due now > 0
+  - Danger zone label sat directly above card #1
+  - Flags were under the deck title (G1)
+```
+
+Action:
+
+```txt
+TASK-30.11 Separate deck detail sections and tighten the card list
+```
+
+Impact:
+
+```txt
+frontend: stats card, DeckActions, PageTitle row, CardList/CardListItem, DeckHeader
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged (nextDueAt may remain unused in this UI)
+```
+
 ## Epic Rules
 
 ```txt
@@ -434,6 +479,7 @@ backend / Prisma / GraphQL: unchanged
 30.08                            owner deck detail action hierarchy
 30.09                            compact card rows, 1-based index, scrollbar inset
 30.10                            compact deck detail stats and secondary actions
+30.11                            deck detail sections, flags, zebra card list
 ```
 
 ## Epic Summary
@@ -449,6 +495,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.08 Restructure owner deck detail actions
 - [x] TASK-30.09 Compact card rows with 1-based index
 - [x] TASK-30.10 Compact deck detail stats and secondary actions
+- [x] TASK-30.11 Separate deck detail sections and tighten the card list
 ```
 
 ---
@@ -1670,6 +1717,125 @@ None (human: owner G1 detail — stats, Start, icons, compact Delete).
 
 ```txt
 TASK-30.10 Compact deck detail stats and secondary actions
+```
+
+---
+
+# TASK-30.11 Separate deck detail sections and tighten the card list
+
+## Status
+
+DONE
+
+## Context
+
+DISC-008: Next review contradicts Due now; Danger zone reads as the word-list header; flags sit under the deck title; card rows look identical with large gaps.
+
+## Goal
+
+Owner deck detail: no Next review line; flags beside “Deck Detail”; Danger zone in its own tinted card; Cards heading; even/odd zebra rows with tighter spacing.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
+apps/mobile/src/features/decks/components/deck-actions.tsx
+apps/mobile/src/features/decks/components/deck-header.tsx
+apps/mobile/src/features/decks/components/card-list.tsx
+apps/mobile/src/features/decks/components/card-list-item.tsx
+apps/mobile/src/features/decks/screens/deck-detail-screen.tsx
+apps/mobile/src/ui/components/page-title.tsx
+apps/mobile/src/i18n/resources/en/decks.ts
+apps/mobile/src/i18n/resources/uk/decks.ts
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Remove Next review (and “No cards scheduled yet”) from the stats card. Keep
+   none-due copy when dueCount = 0. Do not change GraphQL nextDueAt.
+2. Language flags on the same row as the page title “Deck Detail”, not under the
+   deck name. Remove flags from DeckHeader.
+3. Wrap Danger zone + Delete in a distinct tinted card. Keep confirm. Do not
+   put Delete in More.
+4. Show a Cards / Картки heading above the word list.
+5. Alternate even/odd row backgrounds. Reduce vertical gap between rows.
+6. Update live SoT Deck UI. Do not rewrite docs/tasks/done/*.
+7. Mark TASK-30.11 and DISC-008 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Hidden labels are UX only. Delete still confirms. Backend still enforces owner.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Odd/even from list index (0 = first word).
+- PageTitle may take an optional trailing slot for flags.
+```
+
+## Acceptance Criteria
+
+```txt
+- Next review is gone from owner deck detail.
+- Flags sit after “Deck Detail”.
+- Danger zone is visually a boxed unit, not a list header.
+- Word list has a heading, zebra rows, and tighter spacing.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: G1 detail — flags, stats, danger card, zebra list).
+```
+
+## Do Not Do
+
+```txt
+- Do not remove nextDueAt from the API.
+- Do not change public deck detail unless required to share CardListItem.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.11 Separate deck detail sections and tighten the card list
 ```
 
 ---

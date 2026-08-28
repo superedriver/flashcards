@@ -5,7 +5,6 @@ import { AppText } from '@/ui/primitives'
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
-import { DeckLanguageFlags } from './deck-language-flags'
 import { DeckStatusBadge } from './deck-status-badge'
 
 type DeckHeaderProps = {
@@ -38,11 +37,6 @@ export function DeckHeader({ deck, trailing }: DeckHeaderProps) {
         </AppText>
         {trailing}
       </View>
-      <DeckLanguageFlags
-        flagSize={22}
-        sourceLanguage={deck.sourceLanguage}
-        targetLanguage={deck.targetLanguage}
-      />
       {deck.description ? <AppText style={{ color: '#666666' }}>{deck.description}</AppText> : null}
       <DeckStatusBadge moderationStatus={deck.moderationStatus} visibility={deck.visibility} />
       {isPendingPublic ? (

@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { LearningGroup, useDeckLearningStatsQuery } from '@/graphql/generated'
-import { formatDateTime } from '@/i18n/formatters'
 import { AppButton, AppCard, AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState } from '@/ui/components'
 
@@ -73,14 +72,6 @@ export function DeckLearningStatsCard({
     variables: { deckId },
   })
 
-  const formatNextReview = (value?: string | null): string => {
-    if (!value) {
-      return t('lessons.stats.noScheduled')
-    }
-
-    return formatDateTime(value)
-  }
-
   if (loading) {
     return <LoadingState message={t('lessons.stats.loading')} />
   }
@@ -130,9 +121,6 @@ export function DeckLearningStatsCard({
             label={t(`decks.learningGroup.${LearningGroup.Learned}`)}
           />
         </View>
-        <AppText style={{ color: '#666666' }}>
-          {t('lessons.stats.nextReview', { value: formatNextReview(stats.nextDueAt) })}
-        </AppText>
         {stats.dueCount === 0 && stats.totalCards > 0 ? (
           <AppText style={{ color: '#666666', fontSize: 14 }}>{t('lessons.stats.noneDue')}</AppText>
         ) : null}

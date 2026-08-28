@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { FlatList } from 'react-native'
 
 import type { DeckCardsQuery } from '@/graphql/generated'
+import { AppText } from '@/ui/primitives'
 import { EmptyState } from '@/ui/components'
 
 import { CardListItem } from './card-list-item'
@@ -15,6 +16,7 @@ type CardListProps = {
   listHeader?: ReactElement | null
   onDeleteCard?: (cardId: string) => void
   onEmptyAction?: () => void
+  sectionTitle?: string
 }
 
 export function CardList({
@@ -25,8 +27,21 @@ export function CardList({
   listHeader,
   onDeleteCard,
   onEmptyAction,
+  sectionTitle,
 }: CardListProps) {
   const { t } = useTranslation()
+
+  const header =
+    listHeader || sectionTitle ? (
+      <>
+        {listHeader}
+        {sectionTitle ? (
+          <AppText style={{ fontSize: 16, fontWeight: '600', marginBottom: 8, marginTop: 8 }}>
+            {sectionTitle}
+          </AppText>
+        ) : null}
+      </>
+    ) : undefined
 
   return (
     <FlatList
@@ -40,9 +55,15 @@ export function CardList({
           onAction={onEmptyAction}
         />
       }
-      ListHeaderComponent={listHeader ?? undefined}
-      renderItem={({ item }) => (
-        <CardListItem card={item} deckId={deckId} isOwner={isOwner} onDelete={onDeleteCard} />
+      ListHeaderComponent={header}
+      renderItem={({ item, index }) => (
+        <CardListItem
+          card={item}
+          deckId={deckId}
+          isOwner={isOwner}
+          isOdd={index % 2 === 1}
+          onDelete={onDeleteCard}
+        />
       )}
       style={{ flex: 1 }}
     />

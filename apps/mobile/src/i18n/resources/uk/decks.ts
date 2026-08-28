@@ -36,6 +36,7 @@ export const decksUk = {
     loadError: 'Не вдалося завантажити колоду.',
     startLesson: 'Почати повторення',
     addCard: 'Додати картку',
+    cardsHeading: 'Картки',
   },
   createDeck: {
     title: 'Створити колоду',

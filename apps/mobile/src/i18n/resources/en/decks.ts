@@ -36,6 +36,7 @@ export const decksEn = {
     loadError: 'Could not load deck.',
     startLesson: 'Start review',
     addCard: 'Add card',
+    cardsHeading: 'Cards',
   },
   createDeck: {
     title: 'Create Deck',

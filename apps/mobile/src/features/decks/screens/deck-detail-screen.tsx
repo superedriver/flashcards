@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { CardList } from '@/features/decks/components/card-list'
 import { DeckActions } from '@/features/decks/components/deck-actions'
 import { DeckHeader } from '@/features/decks/components/deck-header'
+import { DeckLanguageFlags } from '@/features/decks/components/deck-language-flags'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import {
   deckNeedsLanguageAssignment,
@@ -98,7 +99,18 @@ export function DeckDetailScreen() {
 
   return (
     <Screen>
-      <PageTitle title={t('decks.deckDetail.title')} />
+      <PageTitle
+        title={t('decks.deckDetail.title')}
+        trailing={
+          deck ? (
+            <DeckLanguageFlags
+              flagSize={22}
+              sourceLanguage={deck.sourceLanguage}
+              targetLanguage={deck.targetLanguage}
+            />
+          ) : null
+        }
+      />
 
       {loading ? <LoadingState message={t('decks.deckDetail.loading')} /> : null}
       {error ? (
@@ -116,6 +128,7 @@ export function DeckDetailScreen() {
           listHeader={listHeader}
           onDeleteCard={isOwner ? handleDeleteCard : undefined}
           onEmptyAction={isOwner ? () => router.push(`/decks/${deckId}/cards/new`) : undefined}
+          sectionTitle={t('decks.deckDetail.cardsHeading')}
         />
       ) : null}
     </Screen>

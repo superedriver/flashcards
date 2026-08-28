@@ -11,17 +11,32 @@ import { buttonA11yProps, destructiveButtonA11yProps } from '@/ui/utils/accessib
 type CardListItemProps = {
   card: DeckCardsQuery['deckCards'][number]
   deckId: string
+  isOdd?: boolean
   isOwner: boolean
   onDelete?: (cardId: string) => void
 }
 
-export function CardListItem({ card, deckId, isOwner, onDelete }: CardListItemProps) {
+export function CardListItem({
+  card,
+  deckId,
+  isOdd = false,
+  isOwner,
+  onDelete,
+}: CardListItemProps) {
   const { t } = useTranslation()
   const router = useRouter()
   const displayIndex = card.position + 1
 
   return (
-    <AppCard style={{ gap: 8, marginBottom: 12, padding: 16 }}>
+    <AppCard
+      style={{
+        backgroundColor: isOdd ? '#eef2f7' : '#ffffff',
+        gap: 6,
+        marginBottom: 4,
+        paddingHorizontal: 12,
+        paddingVertical: 10,
+      }}
+    >
       <View style={{ flexDirection: 'row', gap: 12 }}>
         <View style={{ flex: 1, gap: 4, minWidth: 0 }}>
           <AppText style={{ color: '#888888', fontSize: 12 }}>#{displayIndex}</AppText>

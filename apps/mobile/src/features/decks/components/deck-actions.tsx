@@ -113,8 +113,17 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
         <DeckMoreMenu deck={deck} />
       </View>
 
-      <View style={{ gap: 8 }}>
-        <AppText style={{ color: '#666666', fontSize: 14, fontWeight: '600' }}>
+      <View
+        style={{
+          backgroundColor: '#fdecea',
+          borderColor: '#f5c2c7',
+          borderRadius: 8,
+          borderWidth: 1,
+          gap: 8,
+          padding: 12,
+        }}
+      >
+        <AppText style={{ color: '#b00020', fontSize: 14, fontWeight: '600' }}>
           {t('decks.actions.dangerZone')}
         </AppText>
         <Pressable
