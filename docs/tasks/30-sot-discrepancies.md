@@ -102,6 +102,8 @@ Expected state:
 16. My Decks cards use one chrome for Own/Group/Public; Approved noise;
     no Group/Public seed fixtures
     - Fixed in TASK-30.19
+17. Own rail cards are 260px so only ~2 fit in the 720px column
+    - Fixed in TASK-30.20
 ```
 
 ## Discrepancy Register
@@ -806,6 +808,41 @@ docs: lesson-flow Deck UI, smoke Play label
 GraphQL / Prisma schema / use cases: unchanged
 ```
 
+---
+
+### DISC-017 Own rail cards do not fit three-across
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.20):
+
+```txt
+Product (approved in chat after 30.19):
+  - Three Own cards fully visible in the default 720px column
+  - Change only RAIL_WIDTH; keep inner fonts and control sizes
+
+Was wrong:
+  - RAIL_WIDTH 260 + 12px gap clipped the third card
+```
+
+Action:
+
+```txt
+TASK-30.20 Narrow My Decks rail cards to fit three
+```
+
+Impact:
+
+```txt
+frontend: DeckListItem RAIL_WIDTH only
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -844,6 +881,7 @@ GraphQL / Prisma schema / use cases: unchanged
 30.17                            stats tiles, header Start, status pill radius
 30.18                            compact My Decks cards, center stats labels
 30.19                            My Decks cards by section + group/public seed
+30.20                            narrow rail cards to fit three
 ```
 
 ## Epic Summary
@@ -868,6 +906,7 @@ GraphQL / Prisma schema / use cases: unchanged
 - [x] TASK-30.17 Restyle stats tiles, header Start, status pill radius
 - [x] TASK-30.18 Compact My Decks cards and center stats labels
 - [x] TASK-30.19 Differentiate My Decks cards by section
+- [x] TASK-30.20 Narrow My Decks rail cards to fit three
 ```
 
 ---
@@ -3135,6 +3174,107 @@ None (human: re-seed, My Decks Own/Group/Public/No language).
 
 ```txt
 TASK-30.19 Differentiate My Decks cards by section
+```
+
+---
+
+# TASK-30.20 Narrow My Decks rail cards to fit three
+
+## Status
+
+DONE
+
+## Context
+
+DISC-017: 260px rail cards plus gaps only show ~2.2 cards in the 720px My Decks column.
+
+## Goal
+
+Three rail cards fit fully in the default content column. Inner fonts and control sizes stay as after 30.19.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Set RAIL_WIDTH to 228 (3 × 228 + 2 × 12 = 708, within 720).
+2. Do not change inner font sizes, padding, or Start review.
+3. Update live SoT. Do not rewrite docs/tasks/done/*.
+4. Mark TASK-30.20 and DISC-017 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Only the rail width constant changes.
+```
+
+## Acceptance Criteria
+
+```txt
+- Three Own cards are fully visible in the default web column.
+- Inner typography and Start review size unchanged.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: My Decks Own — three full cards).
+```
+
+## Do Not Do
+
+```txt
+- Do not change fonts, padding, or Start review.
+- Do not wrap the rail into a grid.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.20 Narrow My Decks rail cards to fit three
 ```
 
 ---

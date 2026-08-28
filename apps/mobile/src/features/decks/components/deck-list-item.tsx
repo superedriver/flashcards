@@ -32,7 +32,7 @@ type DeckListItemProps = {
   section?: DeckCardSection
 }
 
-const RAIL_WIDTH = 260
+const RAIL_WIDTH = 228
 
 function CardBadge({
   deck,
