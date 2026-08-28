@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 
 import type { DeckCardsQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
@@ -19,6 +19,14 @@ type CardListProps = {
   sectionTitle?: string
 }
 
+const CARDS_BORDER = '#c5cdd8'
+
+const cardsBoxEdge = {
+  borderColor: CARDS_BORDER,
+  borderLeftWidth: 1,
+  borderRightWidth: 1,
+}
+
 export function CardList({
   cards,
   deckId,
@@ -30,15 +38,27 @@ export function CardList({
   sectionTitle,
 }: CardListProps) {
   const { t } = useTranslation()
+  const framed = Boolean(sectionTitle)
 
   const header =
-    listHeader || sectionTitle ? (
+    listHeader || framed ? (
       <>
         {listHeader}
-        {sectionTitle ? (
-          <AppText style={{ fontSize: 16, fontWeight: '600', marginBottom: 8, marginTop: 8 }}>
-            {sectionTitle}
-          </AppText>
+        {framed ? (
+          <View
+            style={{
+              ...cardsBoxEdge,
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+              borderTopWidth: 1,
+              paddingHorizontal: 8,
+              paddingTop: 8,
+            }}
+          >
+            <AppText style={{ fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
+              {sectionTitle}
+            </AppText>
+          </View>
         ) : null}
       </>
     ) : undefined
@@ -49,21 +69,51 @@ export function CardList({
       data={cards}
       keyExtractor={(item) => item.id}
       ListEmptyComponent={
-        <EmptyState
-          actionLabel={onEmptyAction ? emptyActionLabel : undefined}
-          message={t('decks.card.empty')}
-          onAction={onEmptyAction}
-        />
+        <View
+          style={
+            framed
+              ? {
+                  ...cardsBoxEdge,
+                  borderBottomLeftRadius: 8,
+                  borderBottomRightRadius: 8,
+                  borderBottomWidth: 1,
+                  paddingBottom: 8,
+                  paddingHorizontal: 8,
+                }
+              : undefined
+          }
+        >
+          <EmptyState
+            actionLabel={onEmptyAction ? emptyActionLabel : undefined}
+            message={t('decks.card.empty')}
+            onAction={onEmptyAction}
+          />
+        </View>
+      }
+      ListFooterComponent={
+        framed && cards.length > 0 ? (
+          <View
+            style={{
+              ...cardsBoxEdge,
+              borderBottomLeftRadius: 8,
+              borderBottomRightRadius: 8,
+              borderBottomWidth: 1,
+              height: 8,
+            }}
+          />
+        ) : null
       }
       ListHeaderComponent={header}
       renderItem={({ item, index }) => (
-        <CardListItem
-          card={item}
-          deckId={deckId}
-          isOwner={isOwner}
-          isOdd={index % 2 === 1}
-          onDelete={onDeleteCard}
-        />
+        <View style={framed ? { ...cardsBoxEdge, paddingHorizontal: 8 } : undefined}>
+          <CardListItem
+            card={item}
+            deckId={deckId}
+            isOwner={isOwner}
+            isOdd={index % 2 === 1}
+            onDelete={onDeleteCard}
+          />
+        </View>
       )}
       style={{ flex: 1 }}
     />

@@ -1,9 +1,11 @@
+import { Ionicons } from '@expo/vector-icons'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 
 import { LearningGroup, useDeckLearningStatsQuery } from '@/graphql/generated'
-import { AppButton, AppCard, AppText } from '@/ui/primitives'
+import { AppCard, AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState } from '@/ui/components'
+import { buttonA11yProps } from '@/ui/utils/accessibility'
 
 type DeckLearningStatsCardProps = {
   deckId: string
@@ -126,9 +128,20 @@ export function DeckLearningStatsCard({
         ) : null}
       </AppCard>
       {canStart ? (
-        <AppButton onPress={onStartLesson} style={{ marginBottom: 16 }}>
-          {t('decks.deckDetail.startLesson')}
-        </AppButton>
+        <Pressable
+          {...buttonA11yProps(t('decks.deckDetail.startLesson'))}
+          hitSlop={8}
+          style={{
+            alignItems: 'center',
+            alignSelf: 'center',
+            justifyContent: 'center',
+            marginBottom: 16,
+            padding: 8,
+          }}
+          onPress={onStartLesson}
+        >
+          <Ionicons color="#1a56db" name="play" size={64} />
+        </Pressable>
       ) : null}
     </>
   )

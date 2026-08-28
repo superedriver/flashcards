@@ -499,11 +499,11 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
   Header (deck title, description, visibility badge)
   Stats: Total left / Due now right; To learn, Practiced, Learned in one row
   (no Next review line)
-  Primary: Start review when dueCount > 0
+  Primary: large Play icon when dueCount > 0 (a11y Start review)
   Quick icons: Edit, Add card, More ⋯ (a11y labels)
   More: Import CSV, Regenerate translations, Publish / Make private
-  Danger zone: boxed Delete deck row (icon + label), still confirms
-  Cards heading, then the word list
+  Danger zone: label left, Delete deck button right, still confirms
+  Cards heading + word list in a bordered box with inner padding
   Assign languages stays visible when the deck has no languages
 - Deck detail Start review only for the owner when dueCount > 0
 - Non-owners must copy public/group decks before studying

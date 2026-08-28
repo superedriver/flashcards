@@ -78,6 +78,9 @@ Expected state:
    card-list header; flags sit under the deck title; card rows are same-color
    with large gaps
    - Fixed in TASK-30.11
+9. Delete Deck does not look like a button; Cards has no frame; Start review
+   is still a labeled primary button
+   - Fixed in TASK-30.12
 ```
 
 ## Discrepancy Register
@@ -450,6 +453,44 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged (nextDueAt may remain unused in this UI)
 ```
 
+---
+
+### DISC-009 Deck detail Play, Delete button, and Cards frame
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.12):
+
+```txt
+Product (approved in chat after 30.11):
+  - Start review is a large Play icon (a11y Start review), not a labeled button
+  - Delete Deck is a clear button on the right of the Danger zone
+  - Cards section has a border and inner padding
+
+Was wrong:
+  - Start was a full-width AppButton
+  - Delete Deck was icon+text without button chrome, left-aligned
+  - Cards heading sat flush above rows with no frame
+```
+
+Action:
+
+```txt
+TASK-30.12 Play start, Delete button, and Cards frame
+```
+
+Impact:
+
+```txt
+frontend: DeckLearningStatsCard, DeckActions, CardList
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -480,6 +521,7 @@ backend / Prisma / GraphQL: unchanged (nextDueAt may remain unused in this UI)
 30.09                            compact card rows, 1-based index, scrollbar inset
 30.10                            compact deck detail stats and secondary actions
 30.11                            deck detail sections, flags, zebra card list
+30.12                            Play start, Delete button, Cards frame
 ```
 
 ## Epic Summary
@@ -496,6 +538,7 @@ backend / Prisma / GraphQL: unchanged (nextDueAt may remain unused in this UI)
 - [x] TASK-30.09 Compact card rows with 1-based index
 - [x] TASK-30.10 Compact deck detail stats and secondary actions
 - [x] TASK-30.11 Separate deck detail sections and tighten the card list
+- [x] TASK-30.12 Play start, Delete button, and Cards frame
 ```
 
 ---
@@ -1836,6 +1879,116 @@ None (human: G1 detail — flags, stats, danger card, zebra list).
 
 ```txt
 TASK-30.11 Separate deck detail sections and tighten the card list
+```
+
+---
+
+# TASK-30.12 Play start, Delete button, and Cards frame
+
+## Status
+
+DONE
+
+## Context
+
+DISC-009: Start review is still a labeled button; Delete Deck does not look clickable; the Cards list has no frame.
+
+## Goal
+
+Owner deck detail: large Play icon to start (when due); Delete as a real button on the right of Danger zone; Cards heading + rows inside a bordered padded box.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
+apps/mobile/src/features/decks/components/deck-actions.tsx
+apps/mobile/src/features/decks/components/card-list.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Replace the Start review AppButton with a large Play icon. Same start path.
+   Accessibility label stays Start review. Owner + dueCount > 0 only.
+2. Danger zone: one row — label left, Delete Deck as a button on the right
+   (visible chrome: background/border). Keep confirmDestructiveAction.
+3. Wrap Cards heading + word rows in a border with inner padding so rows are
+   not flush against the frame.
+4. Update live SoT Deck UI. Do not rewrite docs/tasks/done/*.
+5. Mark TASK-30.12 and DISC-009 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Hidden Play label is UX only. Delete still confirms. Backend still enforces owner.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Play color matches Own-card Play (#1a56db). Size clearly larger than Edit/Add icons.
+- Delete button is compact, not full-width.
+```
+
+## Acceptance Criteria
+
+```txt
+- Start is a large Play icon, not a labeled primary button.
+- Delete Deck looks like a button and sits on the right of Danger zone.
+- Cards section is framed with padding.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: G1 detail — Play, Delete button, Cards frame).
+```
+
+## Do Not Do
+
+```txt
+- Do not put Delete in More.
+- Do not change Home START or Own-card Play size.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.12 Play start, Delete button, and Cards frame
 ```
 
 ---
