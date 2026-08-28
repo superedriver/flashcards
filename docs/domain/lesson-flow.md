@@ -487,6 +487,7 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Per-deck counters on Decks tab / deck detail.
 - My Decks title row: “My Decks” left, compact outline + Create Deck right
 - Deck list cards share one white shell (~228px, radius 12, light shadow).
+  My Decks sections wrap to the next row (3-across in the 720px column); no horizontal rail.
   No pastel cap. Flags top-left, badge top-right, title, divider, section body, footer.
   Own: Private/Public (hide Approved; show Pending/Rejected/Hidden), 3-col 🌱🔁✅
   stats, Due + filled Start review when dueCount > 0

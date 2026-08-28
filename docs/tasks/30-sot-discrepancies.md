@@ -104,6 +104,8 @@ Expected state:
     - Fixed in TASK-30.19
 17. Own rail cards are 260px so only ~2 fit in the 720px column
     - Fixed in TASK-30.20
+18. My Decks sections stay a horizontal rail, so extra cards clip
+    - Fixed in TASK-30.21
 ```
 
 ## Discrepancy Register
@@ -843,6 +845,41 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-018 My Decks extra cards clip in a horizontal rail
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.21):
+
+```txt
+Product (approved in chat after 30.20):
+  - Section cards wrap to the next row (grid), not a horizontal rail
+  - Keep ~228px card width and inner sizes
+
+Was wrong:
+  - Nested horizontal ScrollView clipped cards past the 720px column
+```
+
+Action:
+
+```txt
+TASK-30.21 Wrap My Decks section cards into a grid
+```
+
+Impact:
+
+```txt
+frontend: DeckSection layout (wrap grid), DeckListItem rail margin
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -882,6 +919,7 @@ backend / Prisma / GraphQL: unchanged
 30.18                            compact My Decks cards, center stats labels
 30.19                            My Decks cards by section + group/public seed
 30.20                            narrow rail cards to fit three
+30.21                            wrap My Decks section cards into a grid
 ```
 
 ## Epic Summary
@@ -907,6 +945,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.18 Compact My Decks cards and center stats labels
 - [x] TASK-30.19 Differentiate My Decks cards by section
 - [x] TASK-30.20 Narrow My Decks rail cards to fit three
+- [x] TASK-30.21 Wrap My Decks section cards into a grid
 ```
 
 ---
@@ -3275,6 +3314,110 @@ None (human: My Decks Own — three full cards).
 
 ```txt
 TASK-30.20 Narrow My Decks rail cards to fit three
+```
+
+---
+
+# TASK-30.21 Wrap My Decks section cards into a grid
+
+## Status
+
+DONE
+
+## Context
+
+DISC-018: after narrowing cards to 228px, extra Own decks still sit in a nested horizontal ScrollView and clip instead of wrapping.
+
+## Goal
+
+My Decks section cards wrap to the next row. Card width and inner sizes stay as after 30.20.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/decks-page-sections.tsx
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Replace the per-section horizontal ScrollView with a wrapping row grid
+   (reuse responsiveGridStyle: row, wrap, 12 gap).
+2. Keep RAIL_WIDTH 228. Drop rail marginRight; gap comes from the grid.
+3. Do not change inner fonts, padding, or Start review.
+4. Update live SoT. Do not rewrite docs/tasks/done/*.
+5. Mark TASK-30.21 and DISC-018 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Fourth Own card wraps under the first row. Page Screen still scrolls vertically.
+```
+
+## Acceptance Criteria
+
+```txt
+- Extra section cards appear on the next row instead of clipping.
+- Card chrome and inner sizes unchanged from 30.20.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: My Decks Own — 4th card on the next row).
+```
+
+## Do Not Do
+
+```txt
+- Do not change fonts, padding, or Start review.
+- Do not change RAIL_WIDTH.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.21 Wrap My Decks section cards into a grid
 ```
 
 ---

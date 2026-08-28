@@ -1,10 +1,11 @@
 import type { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
-import { ScrollView, View } from 'react-native'
+import { View } from 'react-native'
 
 import type { DecksPageQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 import { EmptyState } from '@/ui/components'
+import { responsiveGridStyle } from '@/ui/utils/responsive'
 
 import { DeckListItem, type DeckCardSection } from './deck-list-item'
 
@@ -37,15 +38,11 @@ export function DeckSection({
           onAction={onEmptyAction}
         />
       ) : (
-        <ScrollView
-          horizontal
-          contentContainerStyle={{ paddingRight: 4 }}
-          showsHorizontalScrollIndicator={false}
-        >
+        <View style={responsiveGridStyle}>
           {decks.map((deck) => (
             <DeckListItem key={deck.id} deck={deck} section={section} />
           ))}
-        </ScrollView>
+        </View>
       )}
     </View>
   )

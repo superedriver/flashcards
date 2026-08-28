@@ -112,7 +112,7 @@ export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckLis
   return (
     <View
       style={
-        isRail ? { marginRight: 12, width: RAIL_WIDTH } : { position: 'relative', width: '100%' }
+        isRail ? { maxWidth: '100%', width: RAIL_WIDTH } : { position: 'relative', width: '100%' }
       }
     >
       <Pressable accessibilityRole="button" onPress={() => router.push(href)}>
