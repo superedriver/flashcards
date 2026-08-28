@@ -1,13 +1,15 @@
+import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Pressable } from 'react-native'
 
 import { DecksPageSections } from '@/features/decks/components/decks-page-sections'
 import { ActiveDeckPreviewBanner } from '@/features/study-languages/components/active-deck-preview-banner'
 import { useStudyLanguageContext } from '@/features/study-languages/hooks/use-study-language-context'
 import { useDecksPageQuery } from '@/graphql/generated'
-import { AppButton } from '@/ui/primitives'
+import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
+import { buttonA11yProps } from '@/ui/utils/accessibility'
 
 export function MyDecksScreen() {
   const { t } = useTranslation()
@@ -23,15 +25,37 @@ export function MyDecksScreen() {
     },
   })
 
+  const goCreateDeck = () => router.push('/decks/new')
+
   const listHeader = (
     <>
-      <PageTitle title={t('decks.myDecks.title')} />
+      <PageTitle
+        title={t('decks.myDecks.title')}
+        trailing={
+          <Pressable
+            {...buttonA11yProps(t('decks.myDecks.createDeck'))}
+            style={{
+              alignItems: 'center',
+              backgroundColor: '#f2f4f7',
+              borderColor: '#d0d5dd',
+              borderRadius: 8,
+              borderWidth: 1,
+              flexDirection: 'row',
+              flexShrink: 0,
+              gap: 4,
+              paddingHorizontal: 10,
+              paddingVertical: 8,
+            }}
+            onPress={goCreateDeck}
+          >
+            <Ionicons color="#344054" name="add" size={18} />
+            <AppText style={{ color: '#344054', fontSize: 14, fontWeight: '600' }}>
+              {t('decks.myDecks.createDeck')}
+            </AppText>
+          </Pressable>
+        }
+      />
       <ActiveDeckPreviewBanner />
-      <View style={{ gap: 12, marginBottom: 16 }}>
-        <AppButton onPress={() => router.push('/decks/new')}>
-          {t('decks.myDecks.createDeck')}
-        </AppButton>
-      </View>
     </>
   )
 
@@ -67,7 +91,7 @@ export function MyDecksScreen() {
       <DecksPageSections
         listHeader={listHeader}
         page={data.decksPage}
-        onCreateDeck={() => router.push('/decks/new')}
+        onCreateDeck={goCreateDeck}
       />
     </Screen>
   )

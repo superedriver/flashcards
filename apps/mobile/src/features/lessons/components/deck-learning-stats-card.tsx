@@ -144,7 +144,13 @@ export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
             accessibilityLabel={t('lessons.stats.toLearn', { count: stats.toLearnCount })}
             count={stats.toLearnCount}
             emoji={toLearn.emoji}
-            label={<LearningGroupBadge learningGroup={LearningGroup.ToLearn} showEmoji={false} />}
+            label={
+              <LearningGroupBadge
+                learningGroup={LearningGroup.ToLearn}
+                alignSelf="center"
+                showEmoji={false}
+              />
+            }
             tile={{ background: toLearn.background, color: toLearn.color }}
           />
           <View style={STAT_DIVIDER} />
@@ -152,7 +158,13 @@ export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
             accessibilityLabel={t('lessons.stats.practiced', { count: stats.practicedCount })}
             count={stats.practicedCount}
             emoji={practiced.emoji}
-            label={<LearningGroupBadge learningGroup={LearningGroup.Practiced} showEmoji={false} />}
+            label={
+              <LearningGroupBadge
+                learningGroup={LearningGroup.Practiced}
+                alignSelf="center"
+                showEmoji={false}
+              />
+            }
             tile={{ background: practiced.background, color: practiced.color }}
           />
           <View style={STAT_DIVIDER} />
@@ -160,7 +172,13 @@ export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
             accessibilityLabel={t('lessons.stats.learned', { count: stats.learnedCount })}
             count={stats.learnedCount}
             emoji={learned.emoji}
-            label={<LearningGroupBadge learningGroup={LearningGroup.Learned} showEmoji={false} />}
+            label={
+              <LearningGroupBadge
+                learningGroup={LearningGroup.Learned}
+                alignSelf="center"
+                showEmoji={false}
+              />
+            }
             tile={{ background: learned.background, color: learned.color }}
           />
         </View>

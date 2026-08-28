@@ -6,11 +6,16 @@ import { LearningGroup } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 
 type LearningGroupBadgeProps = {
+  alignSelf?: 'center' | 'flex-start'
   learningGroup?: LearningGroup | null
   showEmoji?: boolean
 }
 
-export function LearningGroupBadge({ learningGroup, showEmoji = true }: LearningGroupBadgeProps) {
+export function LearningGroupBadge({
+  alignSelf = 'flex-start',
+  learningGroup,
+  showEmoji = true,
+}: LearningGroupBadgeProps) {
   const { t } = useTranslation()
 
   if (!learningGroup) {
@@ -23,7 +28,7 @@ export function LearningGroupBadge({ learningGroup, showEmoji = true }: Learning
     <View
       style={{
         alignItems: 'center',
-        alignSelf: 'flex-start',
+        alignSelf,
         backgroundColor: style.background,
         borderRadius: 6,
         flexDirection: 'row',

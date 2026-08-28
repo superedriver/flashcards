@@ -96,6 +96,9 @@ Expected state:
 14. Stats group icon and count are split; Start is a circled Play under stats;
     status pills are capsules
     - Fixed in TASK-30.17
+15. Stats group labels are left-aligned; Own counters are plain text; rail
+    cards clip two pills; Create Deck is full-width; deck card caps are 96px
+    - Fixed in TASK-30.18
 ```
 
 ## Discrepancy Register
@@ -710,6 +713,50 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-015 My Decks chrome and stats label alignment
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.18):
+
+```txt
+Product (approved in chat after 30.17):
+  - Stats group label pills centered under the tiles
+  - Own My Decks counters use the same group emoji + background pills
+  - Rail status slot fits two wrapping pills (Public + Published)
+  - Create Deck sits on the My Decks title row, right-aligned, with a +
+  - Deck card accent cap is shorter (~56px); flags (and origin on No language)
+    stay in the cap
+
+Was wrong:
+  - LearningGroupBadge alignSelf flex-start left-aligned the stats labels
+  - Compact counters were gray text
+  - STATUS_SLOT_HEIGHT 36 + overflow hidden clipped the second pill
+  - Create Deck was a full-width button under the title
+  - Accent cap was 96px for only flags
+```
+
+Action:
+
+```txt
+TASK-30.18 Compact My Decks cards and center stats labels
+```
+
+Impact:
+
+```txt
+frontend: LearningGroupBadge, stats labels, compact counters, deck list item,
+  MyDecks PageTitle trailing
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -746,6 +793,7 @@ backend / Prisma / GraphQL: unchanged
 30.15                            group chrome, word inset 8px, bordered status pills
 30.16                            status after title, stats label pills, More disabled
 30.17                            stats tiles, header Start, status pill radius
+30.18                            compact My Decks cards, center stats labels
 ```
 
 ## Epic Summary
@@ -768,6 +816,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.15 Align group chrome, tighten word inset, border status pills
 - [x] TASK-30.16 Move status pills, pill stats labels, disable More
 - [x] TASK-30.17 Restyle stats tiles, header Start, status pill radius
+- [x] TASK-30.18 Compact My Decks cards and center stats labels
 ```
 
 ---
@@ -2785,6 +2834,122 @@ None (human: G1 header Start, group tiles, Private radius).
 
 ```txt
 TASK-30.17 Restyle stats tiles, header Start, status pill radius
+```
+
+---
+
+# TASK-30.18 Compact My Decks cards and center stats labels
+
+## Status
+
+DONE
+
+## Context
+
+DISC-015: deck-detail group labels sit left; Own list counters are unstyled; No language cards clip dual pills; Create Deck is a full-width row; card caps are mostly empty.
+
+## Goal
+
+Stats group pills are centered. My Decks Own counters use group chrome. Rail cards fit two status pills. Create Deck is on the title row. Accent caps are shorter.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/learning-group-badge.tsx
+apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
+apps/mobile/src/features/decks/components/deck-learning-stats-compact.tsx
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+apps/mobile/src/features/decks/screens/my-decks-screen.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Stats To learn / Practiced / Learned label pills: alignSelf center.
+   Word-row badges stay flex-start.
+2. Own compact counters: emoji + LEARNING_GROUP_STYLE background/color pills.
+   Due line stays blue text.
+3. Raise rail STATUS_SLOT_HEIGHT so Public + Published are not clipped;
+   bump card heights as needed. overflow hidden may stay.
+4. Create Deck: PageTitle trailing, compact + label, right edge. Empty Own
+   “Create your first deck” unchanged.
+5. Accent cap ~56px. Flags remain. Origin badge on No language stays in the cap.
+6. Update live SoT. Do not rewrite docs/tasks/done/*.
+7. Mark TASK-30.18 and DISC-015 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not change who sees Create Deck / Play / counters.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Reuse LEARNING_GROUP_STYLE. Do not invent new group colors.
+```
+
+## Acceptance Criteria
+
+```txt
+- Stats group labels are centered under the tiles.
+- Own cards show group-colored counter pills with emoji.
+- Two status pills on a rail card are fully visible.
+- Create Deck is on the My Decks title row, right-aligned.
+- Accent cap is shorter than 96px and still shows flags.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: My Decks Own + No language, G1 stats labels, Create Deck row).
+```
+
+## Do Not Do
+
+```txt
+- Do not restyle word rows.
+- Do not re-enable More.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.18 Compact My Decks cards and center stats labels
 ```
 
 ---

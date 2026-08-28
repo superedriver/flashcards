@@ -33,11 +33,12 @@ type DeckListItemProps = {
 const CARD_ACCENTS = ['#dbe7f3', '#e4efe6', '#f3e9db', '#ebe4f2', '#e8ecef'] as const
 
 /** Fixed rail heights so titles/status/counters cannot stretch neighbors unevenly. */
-const RAIL_CARD_HEIGHT_WITH_COUNTERS = 292
-const RAIL_CARD_HEIGHT = 220
+const ACCENT_HEIGHT = 56
+const RAIL_CARD_HEIGHT_WITH_COUNTERS = 308
+const RAIL_CARD_HEIGHT = 200
 const TITLE_SLOT_HEIGHT = 40
-const STATUS_SLOT_HEIGHT = 36
-const COUNTERS_SLOT_HEIGHT = 72
+const STATUS_SLOT_HEIGHT = 64
+const COUNTERS_SLOT_HEIGHT = 96
 
 function accentForId(id: string): string {
   let hash = 0
@@ -79,25 +80,28 @@ export function DeckListItem({
             borderRadius: 12,
             borderWidth: 1,
             height: isRail ? railHeight : undefined,
-            minHeight: isRail ? undefined : 220,
+            minHeight: isRail ? undefined : 180,
             overflow: 'hidden',
           }}
         >
           <View
             style={{
+              alignItems: 'center',
               backgroundColor: accent,
-              height: 96,
-              justifyContent: 'space-between',
-              padding: 10,
+              flexDirection: 'row',
+              gap: 8,
+              height: ACCENT_HEIGHT,
+              paddingHorizontal: 10,
+              paddingVertical: 8,
             }}
           >
             {showOriginBadge && deck.origin ? (
               <AppText
                 style={{
-                  alignSelf: 'flex-start',
                   backgroundColor: 'rgba(255,255,255,0.9)',
                   borderRadius: 6,
                   color: '#444444',
+                  flexShrink: 0,
                   fontSize: 11,
                   fontWeight: '700',
                   overflow: 'hidden',
@@ -107,9 +111,7 @@ export function DeckListItem({
               >
                 {t(`decks.sections.origin.${deck.origin}`)}
               </AppText>
-            ) : (
-              <View />
-            )}
+            ) : null}
             <DeckLanguageFlags
               flagSize={22}
               sourceLanguage={deck.sourceLanguage}

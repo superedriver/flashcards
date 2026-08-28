@@ -484,7 +484,11 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 ## Deck UI
 
 ```txt
-- Per-deck counters on Decks tab / deck detail
+- Per-deck counters on Decks tab / deck detail. Own My Decks cards show
+  To learn / Practiced / Learned as group-colored emoji pills; Due stays blue text.
+- My Decks title row: “My Decks” left, compact + Create Deck right
+- Deck list cards: short accent cap (~56px) with language flags (origin badge on
+  No language in the same cap). Rail height fits two wrapping status pills.
 - Card row group badges on deck detail
 - Card rows display #{position + 1} (storage stays 0-based). Owner Edit/Delete are
   icons on the right with accessibility labels; delete still confirms.
@@ -500,7 +504,7 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
   Header (deck title, description; filled Start review top-right when due)
   Stats: two white bordered cards — Total cards | Due now, then To learn | Practiced | Learned
   (Total / Due now: gray icon chip + count; groups: emoji + count in one group-colored
-  tile, label pills matching word badges; no Next review)
+  tile, centered label pills matching word badges; no Next review)
   Primary: filled #1a56db Start review (white play + label) beside the deck title
   Quick icons: Edit, Add card, More ⋯ (a11y labels)
   More items (CSV, regenerate, publish/unpublish) are disabled for now
