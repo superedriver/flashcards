@@ -81,6 +81,9 @@ Expected state:
 9. Delete Deck does not look like a button; Cards has no frame; Start review
    is still a labeled primary button
    - Fixed in TASK-30.12
+10. Play has no label/circle; stats are a flat pair of rows; word rows lack
+    their own border
+    - Fixed in TASK-30.13
 ```
 
 ## Discrepancy Register
@@ -491,6 +494,46 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-010 Deck detail stats tiles, Play circle, and word borders
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.13):
+
+```txt
+Product (approved in chat after 30.12):
+  - Stats: two bordered cards. Top: Total cards | Due now. Bottom: To learn |
+    Practiced | Learned. Icon in a rounded square, large number, label below,
+    vertical dividers
+  - Play in a circle with Start review / Почати повторення under it
+  - Each word row has its own border and inner padding
+
+Was wrong:
+  - Stats were one card with inline Total/Due and a 3-up group row
+  - Play was a bare triangle
+  - Word rows used zebra fill without a per-row border
+```
+
+Action:
+
+```txt
+TASK-30.13 Restyle stats tiles, circled Play, and word borders
+```
+
+Impact:
+
+```txt
+frontend: DeckLearningStatsCard, CardListItem, i18n stats labels
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -522,6 +565,7 @@ backend / Prisma / GraphQL: unchanged
 30.10                            compact deck detail stats and secondary actions
 30.11                            deck detail sections, flags, zebra card list
 30.12                            Play start, Delete button, Cards frame
+30.13                            stats tiles, circled Play, word row borders
 ```
 
 ## Epic Summary
@@ -539,6 +583,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.10 Compact deck detail stats and secondary actions
 - [x] TASK-30.11 Separate deck detail sections and tighten the card list
 - [x] TASK-30.12 Play start, Delete button, and Cards frame
+- [x] TASK-30.13 Restyle stats tiles, circled Play, and word borders
 ```
 
 ---
@@ -1989,6 +2034,118 @@ None (human: G1 detail — Play, Delete button, Cards frame).
 
 ```txt
 TASK-30.12 Play start, Delete button, and Cards frame
+```
+
+---
+
+# TASK-30.13 Restyle stats tiles, circled Play, and word borders
+
+## Status
+
+DONE
+
+## Context
+
+DISC-010: product wants two stats cards (icon tile + number + label, dividers), Play in a labeled circle, and a border on each word row.
+
+## Goal
+
+Owner deck detail stats match the two-card tile layout. Play is a circled icon with caption. Each word row has a border and inner padding.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
+apps/mobile/src/features/decks/components/card-list-item.tsx
+apps/mobile/src/i18n/resources/en/lessons.ts
+apps/mobile/src/i18n/resources/uk/lessons.ts
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Stats: two bordered cards with inner padding.
+   Top: Total cards | Due now. Bottom: To learn | Practiced | Learned.
+   Each cell: emoji in a rounded-square chip, large count, short label below.
+   Vertical dividers between cells. Keep none-due copy when dueCount = 0.
+2. Play: circle border around the icon, caption Start review / Почати повторення
+   under it. Owner + dueCount > 0 only. Same start path.
+3. Each word row: visible border + inner padding. Keep zebra and 1-based index.
+4. Update live SoT Deck UI. Do not rewrite docs/tasks/done/*.
+5. Mark TASK-30.13 and DISC-010 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Play caption is UX. Backend still enforces owner start/delete.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Top-card labels: Total cards / Усього карток. Due now / Зараз (or Due now).
+- Group labels reuse decks.learningGroup.
+```
+
+## Acceptance Criteria
+
+```txt
+- Stats are two framed cards with icon chips, numbers, labels, dividers.
+- Play is circled with a caption.
+- Word rows have their own border and padding.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: G1 detail — stats tiles, Play circle, word borders).
+```
+
+## Do Not Do
+
+```txt
+- Do not change GraphQL nextDueAt.
+- Do not change public deck detail.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.13 Restyle stats tiles, circled Play, and word borders
 ```
 
 ---

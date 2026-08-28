@@ -31,10 +31,13 @@ export function CardListItem({
     <AppCard
       style={{
         backgroundColor: isOdd ? '#eef2f7' : '#ffffff',
+        borderColor: '#c5cdd8',
+        borderRadius: 8,
+        borderWidth: 1,
         gap: 6,
-        marginBottom: 4,
+        marginBottom: 6,
         paddingHorizontal: 12,
-        paddingVertical: 10,
+        paddingVertical: 12,
       }}
     >
       <View style={{ flexDirection: 'row', gap: 12 }}>

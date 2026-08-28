@@ -488,7 +488,7 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Card row group badges on deck detail
 - Card rows display #{position + 1} (storage stays 0-based). Owner Edit/Delete are
   icons on the right with accessibility labels; delete still confirms.
-  Even/odd rows use alternating backgrounds; tighter vertical spacing.
+  Even/odd rows use alternating backgrounds; each row has a border and inner padding.
 - Own My Decks cards: Play (bottom-right) when dueCount > 0
 - Tap Own card → deck detail; tap Play → startLesson (/lessons/start?deckId=), same as
   deck detail Start (no extra visit to detail)
@@ -497,13 +497,13 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Deck detail (owner):
   Page title “Deck Detail” with language flags on the same row
   Header (deck title, description, visibility badge)
-  Stats: Total left / Due now right; To learn, Practiced, Learned in one row
-  (no Next review line)
-  Primary: large Play icon when dueCount > 0 (a11y Start review)
+  Stats: two bordered cards — Total cards | Due now, then To learn | Practiced | Learned
+  (icon chip, large count, label below; no Next review line)
+  Primary: Play in a circle with Start review caption when dueCount > 0
   Quick icons: Edit, Add card, More ⋯ (a11y labels)
   More: Import CSV, Regenerate translations, Publish / Make private
   Danger zone: label left, Delete deck button right, still confirms
-  Cards heading + word list in a bordered box with inner padding
+  Cards heading + word list in a bordered box; each word row has its own border
   Assign languages stays visible when the deck has no languages
 - Deck detail Start review only for the owner when dueCount > 0
 - Non-owners must copy public/group decks before studying

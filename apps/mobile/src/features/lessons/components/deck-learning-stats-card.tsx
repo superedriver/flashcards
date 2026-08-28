@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
 
 import { LearningGroup, useDeckLearningStatsQuery } from '@/graphql/generated'
-import { AppCard, AppText } from '@/ui/primitives'
+import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState } from '@/ui/components'
 import { buttonA11yProps } from '@/ui/utils/accessibility'
 
@@ -13,53 +13,50 @@ type DeckLearningStatsCardProps = {
   onStartLesson?: () => void
 }
 
-type HeadlineStatProps = {
-  accessibilityLabel: string
-  count: number
-  emoji: string
-  emphasize?: boolean
-  label: string
-}
-
-type GroupStatProps = {
+type StatCellProps = {
   accessibilityLabel: string
   count: number
   emoji: string
   label: string
 }
 
-function HeadlineStat({
-  accessibilityLabel,
-  count,
-  emoji,
-  emphasize = false,
-  label,
-}: HeadlineStatProps) {
-  return (
-    <View
-      accessible
-      accessibilityLabel={accessibilityLabel}
-      style={{ alignItems: 'center', flexDirection: 'row', gap: 6 }}
-    >
-      <AppText>{emoji}</AppText>
-      <AppText style={{ fontSize: 20, fontWeight: emphasize ? '700' : '600' }}>{count}</AppText>
-      <AppText style={{ color: '#666666', fontSize: 14 }}>{label}</AppText>
-    </View>
-  )
+const STAT_CARD = {
+  borderColor: '#d0d5dd',
+  borderRadius: 12,
+  borderWidth: 1,
+  marginBottom: 12,
+  padding: 12,
 }
 
-function GroupStat({ accessibilityLabel, count, emoji, label }: GroupStatProps) {
+const STAT_DIVIDER = {
+  backgroundColor: '#e4e7ec',
+  marginVertical: 4,
+  width: 1,
+}
+
+function StatCell({ accessibilityLabel, count, emoji, label }: StatCellProps) {
   return (
     <View
       accessible
       accessibilityLabel={accessibilityLabel}
-      style={{ alignItems: 'center', flex: 1, gap: 2 }}
+      style={{ alignItems: 'center', flex: 1, flexDirection: 'row', gap: 10, minWidth: 0 }}
     >
-      <View style={{ alignItems: 'center', flexDirection: 'row', gap: 4 }}>
+      <View
+        style={{
+          alignItems: 'center',
+          backgroundColor: '#f2f4f7',
+          borderRadius: 8,
+          height: 36,
+          justifyContent: 'center',
+          width: 36,
+        }}
+      >
         <AppText>{emoji}</AppText>
-        <AppText style={{ fontSize: 20, fontWeight: '700' }}>{count}</AppText>
       </View>
-      <AppText style={{ color: '#666666', fontSize: 12, textAlign: 'center' }}>{label}</AppText>
+      <View style={{ flex: 1, minWidth: 0 }}>
+        <AppText style={{ fontSize: 24, fontWeight: '700' }}>{count}</AppText>
+        <AppText style={{ color: '#667085', fontSize: 12 }}>{label}</AppText>
+      </View>
     </View>
   )
 }
@@ -87,46 +84,52 @@ export function DeckLearningStatsCard({
 
   return (
     <>
-      <AppCard style={{ gap: 12, marginBottom: 16, padding: 16 }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <HeadlineStat
+      <View style={STAT_CARD}>
+        <View style={{ flexDirection: 'row', gap: 12 }}>
+          <StatCell
             accessibilityLabel={t('lessons.stats.totalCards', { count: stats.totalCards })}
             count={stats.totalCards}
             emoji="📚"
-            label={t('lessons.stats.totalLabel')}
+            label={t('lessons.stats.totalCardsLabel')}
           />
-          <HeadlineStat
+          <View style={STAT_DIVIDER} />
+          <StatCell
             accessibilityLabel={t('lessons.stats.dueNow', { count: stats.dueCount })}
             count={stats.dueCount}
             emoji="⏰"
-            emphasize={stats.dueCount > 0}
             label={t('lessons.stats.dueNowLabel')}
           />
         </View>
-        <View style={{ flexDirection: 'row' }}>
-          <GroupStat
+      </View>
+      <View style={STAT_CARD}>
+        <View style={{ flexDirection: 'row', gap: 12 }}>
+          <StatCell
             accessibilityLabel={t('lessons.stats.toLearn', { count: stats.toLearnCount })}
             count={stats.toLearnCount}
             emoji="🌱"
             label={t(`decks.learningGroup.${LearningGroup.ToLearn}`)}
           />
-          <GroupStat
+          <View style={STAT_DIVIDER} />
+          <StatCell
             accessibilityLabel={t('lessons.stats.practiced', { count: stats.practicedCount })}
             count={stats.practicedCount}
             emoji="🔁"
             label={t(`decks.learningGroup.${LearningGroup.Practiced}`)}
           />
-          <GroupStat
+          <View style={STAT_DIVIDER} />
+          <StatCell
             accessibilityLabel={t('lessons.stats.learned', { count: stats.learnedCount })}
             count={stats.learnedCount}
             emoji="✅"
             label={t(`decks.learningGroup.${LearningGroup.Learned}`)}
           />
         </View>
-        {stats.dueCount === 0 && stats.totalCards > 0 ? (
-          <AppText style={{ color: '#666666', fontSize: 14 }}>{t('lessons.stats.noneDue')}</AppText>
-        ) : null}
-      </AppCard>
+      </View>
+      {stats.dueCount === 0 && stats.totalCards > 0 ? (
+        <AppText style={{ color: '#666666', fontSize: 14, marginBottom: 16 }}>
+          {t('lessons.stats.noneDue')}
+        </AppText>
+      ) : null}
       {canStart ? (
         <Pressable
           {...buttonA11yProps(t('decks.deckDetail.startLesson'))}
@@ -134,13 +137,27 @@ export function DeckLearningStatsCard({
           style={{
             alignItems: 'center',
             alignSelf: 'center',
-            justifyContent: 'center',
+            gap: 8,
             marginBottom: 16,
-            padding: 8,
           }}
           onPress={onStartLesson}
         >
-          <Ionicons color="#1a56db" name="play" size={64} />
+          <View
+            style={{
+              alignItems: 'center',
+              borderColor: '#1a56db',
+              borderRadius: 40,
+              borderWidth: 2,
+              height: 72,
+              justifyContent: 'center',
+              width: 72,
+            }}
+          >
+            <Ionicons color="#1a56db" name="play" size={36} style={{ marginLeft: 4 }} />
+          </View>
+          <AppText style={{ color: '#1a56db', fontSize: 14, fontWeight: '600' }}>
+            {t('decks.deckDetail.startLesson')}
+          </AppText>
         </Pressable>
       ) : null}
     </>
