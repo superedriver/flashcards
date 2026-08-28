@@ -5,7 +5,7 @@ import { Pressable, View } from 'react-native'
 
 import { LearningGroupBadge } from '@/features/decks/components/learning-group-badge'
 import type { DeckCardsQuery } from '@/graphql/generated'
-import { AppCard, AppText } from '@/ui/primitives'
+import { AppText } from '@/ui/primitives'
 import { buttonA11yProps, destructiveButtonA11yProps } from '@/ui/utils/accessibility'
 
 type CardListItemProps = {
@@ -28,19 +28,16 @@ export function CardListItem({
   const displayIndex = card.position + 1
 
   return (
-    <AppCard
+    <View
       style={{
         backgroundColor: isOdd ? '#eef2f7' : '#ffffff',
         borderColor: '#c5cdd8',
         borderRadius: 8,
         borderWidth: 1,
-        gap: 6,
         marginBottom: 6,
-        paddingHorizontal: 12,
-        paddingVertical: 12,
       }}
     >
-      <View style={{ flexDirection: 'row', gap: 12 }}>
+      <View style={{ flexDirection: 'row', gap: 12, paddingHorizontal: 14, paddingVertical: 14 }}>
         <View style={{ flex: 1, gap: 4, minWidth: 0 }}>
           <AppText style={{ color: '#888888', fontSize: 12 }}>#{displayIndex}</AppText>
           <AppText style={{ fontSize: 16, fontWeight: '600' }}>{card.front}</AppText>
@@ -87,6 +84,6 @@ export function CardListItem({
           ) : null}
         </View>
       </View>
-    </AppCard>
+    </View>
   )
 }

@@ -84,6 +84,9 @@ Expected state:
 10. Play has no label/circle; stats are a flat pair of rows; word rows lack
     their own border
     - Fixed in TASK-30.13
+11. Play caption is part of the hit target; stats items are left-aligned on
+    gray; word padding ignored; status is plain text
+    - Fixed in TASK-30.14
 ```
 
 ## Discrepancy Register
@@ -534,6 +537,48 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-011 Deck detail Play hit target, stats centering, word inset, status pills
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.14):
+
+```txt
+Product (approved in chat after 30.13):
+  - Only the Play circle is tappable; caption is muted and not clickable
+  - Stats cards white; each item centered in its column
+  - Word row content inset from the border (Tamagui padding is not enough)
+  - Visibility/moderation as pill badges with icons:
+    Private lock gray, Public globe blue, Pending time amber,
+    Published check green, Rejected close red, Hidden eye-off brown
+
+Was wrong:
+  - Whole Play+caption Pressable, caption same blue
+  - Stat cells left-packed, card background not white
+  - Word text flush to the row border
+  - Status was colored text only
+```
+
+Action:
+
+```txt
+TASK-30.14 Center stats, isolate Play, inset words, pill badges
+```
+
+Impact:
+
+```txt
+frontend: DeckLearningStatsCard, CardListItem, DeckStatusBadge
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -566,6 +611,7 @@ backend / Prisma / GraphQL: unchanged
 30.11                            deck detail sections, flags, zebra card list
 30.12                            Play start, Delete button, Cards frame
 30.13                            stats tiles, circled Play, word row borders
+30.14                            stats center, Play hit, word inset, status pills
 ```
 
 ## Epic Summary
@@ -584,6 +630,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.11 Separate deck detail sections and tighten the card list
 - [x] TASK-30.12 Play start, Delete button, and Cards frame
 - [x] TASK-30.13 Restyle stats tiles, circled Play, and word borders
+- [x] TASK-30.14 Center stats, isolate Play, inset words, pill badges
 ```
 
 ---
@@ -2146,6 +2193,120 @@ None (human: G1 detail — stats tiles, Play circle, word borders).
 
 ```txt
 TASK-30.13 Restyle stats tiles, circled Play, and word borders
+```
+
+---
+
+# TASK-30.14 Center stats, isolate Play, inset words, pill badges
+
+## Status
+
+DONE
+
+## Context
+
+DISC-011: Play caption should not be tappable; stats need a white card and centered cells; word content must sit off the border; visibility/moderation should be icon pills.
+
+## Goal
+
+Owner deck detail: white centered stats tiles; Play circle only is the control; word rows have real inner padding; Private/Public/moderation are pill badges with icons.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
+apps/mobile/src/features/decks/components/card-list-item.tsx
+apps/mobile/src/features/decks/components/deck-status-badge.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Stats cards: white background. Each cell’s icon+count+label group is centered
+   in its column (screenshot layout). Keep two cards and dividers.
+2. Play: Pressable is the circle only. Caption under it is a different (muted)
+   color and not in the hit target. Same start rules.
+3. Word rows: inner padding that actually insets content from the border
+   (inner View; do not rely on Tamagui Card padding).
+4. Status pills (not clickable): Private lock-closed-outline gray; Public
+   globe-outline blue; Pending time-outline amber; Published
+   checkmark-circle-outline green; Rejected close-circle-outline red;
+   Hidden eye-off-outline brown. Keep existing labels.
+5. Update live SoT. Do not rewrite docs/tasks/done/*.
+6. Mark TASK-30.14 and DISC-011 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Pills and Play caption are UX. Backend still enforces owner start/delete.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- DeckStatusBadge is also used on list/admin/group rows — same pill look is OK.
+```
+
+## Acceptance Criteria
+
+```txt
+- Stats are white and centered in columns.
+- Tapping the Start review label does not start a review; tapping the circle does.
+- Word text is inset from the row border.
+- Private (and other statuses) render as icon pills.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: G1 — stats, Play hit, word inset, Private pill).
+```
+
+## Do Not Do
+
+```txt
+- Do not make status pills buttons.
+- Do not change Own/Group list origin chips.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.14 Center stats, isolate Play, inset words, pill badges
 ```
 
 ---

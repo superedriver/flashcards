@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons'
 import type { DeckModerationStatus, DeckVisibility } from '@/graphql/generated'
 import {
   DeckModerationStatus as ModerationStatus,
@@ -13,39 +14,75 @@ type DeckStatusBadgeProps = {
   visibility: DeckVisibility
 }
 
-function getVisibilityColor(visibility: DeckVisibility): string {
-  return visibility === Visibility.Public ? '#1565c0' : '#555555'
+type PillStyle = {
+  background: string
+  color: string
+  icon: keyof typeof Ionicons.glyphMap
 }
 
-function getModerationColor(moderationStatus: DeckModerationStatus): string {
+function getVisibilityStyle(visibility: DeckVisibility): PillStyle {
+  if (visibility === Visibility.Public) {
+    return { background: '#eff4ff', color: '#1565c0', icon: 'globe-outline' }
+  }
+
+  return { background: '#f2f4f7', color: '#344054', icon: 'lock-closed-outline' }
+}
+
+function getModerationStyle(moderationStatus: DeckModerationStatus): PillStyle | null {
   switch (moderationStatus) {
     case ModerationStatus.Approved:
-      return '#2e7d32'
+      return { background: '#ecfdf3', color: '#067647', icon: 'checkmark-circle-outline' }
     case ModerationStatus.Hidden:
-      return '#6d4c41'
+      return { background: '#f5f0eb', color: '#6d4c41', icon: 'eye-off-outline' }
     case ModerationStatus.Pending:
-      return '#ef6c00'
+      return { background: '#fff4e5', color: '#b54708', icon: 'time-outline' }
     case ModerationStatus.Rejected:
-      return '#c62828'
+      return { background: '#fef3f2', color: '#b42318', icon: 'close-circle-outline' }
     default:
-      return '#555555'
+      return null
   }
+}
+
+function StatusPill({ background, color, icon, label }: PillStyle & { label: string }) {
+  return (
+    <View
+      style={{
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+        backgroundColor: background,
+        borderRadius: 999,
+        flexDirection: 'row',
+        gap: 6,
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+      }}
+    >
+      <Ionicons color={color} name={icon} size={14} />
+      <AppText style={{ color, fontSize: 12, fontWeight: '600' }}>{label}</AppText>
+    </View>
+  )
 }
 
 export function DeckStatusBadge({ moderationStatus, visibility }: DeckStatusBadgeProps) {
   const moderationLabel = getModerationLabel(moderationStatus)
+  const visibilityStyle = getVisibilityStyle(visibility)
+  const moderationStyle = getModerationStyle(moderationStatus)
 
   return (
-    <View style={{ flexDirection: 'column', gap: 2 }}>
-      <AppText style={{ color: getVisibilityColor(visibility), fontSize: 12, fontWeight: '600' }}>
-        {getVisibilityLabel(visibility)}
-      </AppText>
-      {moderationLabel ? (
-        <AppText
-          style={{ color: getModerationColor(moderationStatus), fontSize: 12, fontWeight: '600' }}
-        >
-          {moderationLabel}
-        </AppText>
+    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+      <StatusPill
+        background={visibilityStyle.background}
+        color={visibilityStyle.color}
+        icon={visibilityStyle.icon}
+        label={getVisibilityLabel(visibility)}
+      />
+      {moderationLabel && moderationStyle ? (
+        <StatusPill
+          background={moderationStyle.background}
+          color={moderationStyle.color}
+          icon={moderationStyle.icon}
+          label={moderationLabel}
+        />
       ) : null}
     </View>
   )

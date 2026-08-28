@@ -21,6 +21,7 @@ type StatCellProps = {
 }
 
 const STAT_CARD = {
+  backgroundColor: '#ffffff',
   borderColor: '#d0d5dd',
   borderRadius: 12,
   borderWidth: 1,
@@ -39,23 +40,25 @@ function StatCell({ accessibilityLabel, count, emoji, label }: StatCellProps) {
     <View
       accessible
       accessibilityLabel={accessibilityLabel}
-      style={{ alignItems: 'center', flex: 1, flexDirection: 'row', gap: 10, minWidth: 0 }}
+      style={{ alignItems: 'center', flex: 1, justifyContent: 'center', minWidth: 0 }}
     >
-      <View
-        style={{
-          alignItems: 'center',
-          backgroundColor: '#f2f4f7',
-          borderRadius: 8,
-          height: 36,
-          justifyContent: 'center',
-          width: 36,
-        }}
-      >
-        <AppText>{emoji}</AppText>
-      </View>
-      <View style={{ flex: 1, minWidth: 0 }}>
-        <AppText style={{ fontSize: 24, fontWeight: '700' }}>{count}</AppText>
-        <AppText style={{ color: '#667085', fontSize: 12 }}>{label}</AppText>
+      <View style={{ alignItems: 'center', flexDirection: 'row', gap: 10 }}>
+        <View
+          style={{
+            alignItems: 'center',
+            backgroundColor: '#f2f4f7',
+            borderRadius: 8,
+            height: 36,
+            justifyContent: 'center',
+            width: 36,
+          }}
+        >
+          <AppText>{emoji}</AppText>
+        </View>
+        <View>
+          <AppText style={{ fontSize: 24, fontWeight: '700' }}>{count}</AppText>
+          <AppText style={{ color: '#667085', fontSize: 12 }}>{label}</AppText>
+        </View>
       </View>
     </View>
   )
@@ -131,18 +134,10 @@ export function DeckLearningStatsCard({
         </AppText>
       ) : null}
       {canStart ? (
-        <Pressable
-          {...buttonA11yProps(t('decks.deckDetail.startLesson'))}
-          hitSlop={8}
-          style={{
-            alignItems: 'center',
-            alignSelf: 'center',
-            gap: 8,
-            marginBottom: 16,
-          }}
-          onPress={onStartLesson}
-        >
-          <View
+        <View style={{ alignItems: 'center', alignSelf: 'center', gap: 8, marginBottom: 16 }}>
+          <Pressable
+            {...buttonA11yProps(t('decks.deckDetail.startLesson'))}
+            hitSlop={8}
             style={{
               alignItems: 'center',
               borderColor: '#1a56db',
@@ -152,13 +147,14 @@ export function DeckLearningStatsCard({
               justifyContent: 'center',
               width: 72,
             }}
+            onPress={onStartLesson}
           >
             <Ionicons color="#1a56db" name="play" size={36} style={{ marginLeft: 4 }} />
-          </View>
-          <AppText style={{ color: '#1a56db', fontSize: 14, fontWeight: '600' }}>
+          </Pressable>
+          <AppText style={{ color: '#667085', fontSize: 14, fontWeight: '600' }}>
             {t('decks.deckDetail.startLesson')}
           </AppText>
-        </Pressable>
+        </View>
       ) : null}
     </>
   )
