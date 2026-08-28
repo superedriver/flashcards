@@ -69,6 +69,8 @@ Expected state:
    - Fixed in TASK-30.07
 5. Owner deck detail is a flat stack of equally weighted buttons
    - Fixed in TASK-30.08
+6. Card rows show 0-based #, bulky Edit/Delete, flush to the scrollbar
+   - Fixed in TASK-30.09
 ```
 
 ## Discrepancy Register
@@ -319,6 +321,44 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-006 Card rows: 0-based index, bulky actions, flush scrollbar
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.09):
+
+```txt
+Product (approved in chat):
+  - Display index is 1-based (#{position + 1}); storage stays 0-based
+  - Owner Edit / Delete are icons on the right, with a11y labels
+  - List content has padding from the scrollbar
+  - UI only
+
+Was wrong:
+  - #{card.position} showed #0 for the first card
+  - Full-width Edit / Delete under the text
+```
+
+Action:
+
+```txt
+TASK-30.09 Compact card rows with 1-based index
+```
+
+Impact:
+
+```txt
+frontend: CardList, CardListItem, public deck card rows
+docs: lesson-flow card row note
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -346,6 +386,7 @@ backend / Prisma / GraphQL: unchanged
 30.06                            unique card count on review summary (no attempt stats)
 30.07                            Play start on own deck cards when due
 30.08                            owner deck detail action hierarchy
+30.09                            compact card rows, 1-based index, scrollbar inset
 ```
 
 ## Epic Summary
@@ -359,6 +400,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.06 Show unique card count on review summary
 - [x] TASK-30.07 Add Play start on own deck cards when due
 - [x] TASK-30.08 Restructure owner deck detail actions
+- [x] TASK-30.09 Compact card rows with 1-based index
 ```
 
 ---
@@ -1348,6 +1390,116 @@ None (human: owner G1 detail — Start, Edit, Add card, More, Delete).
 
 ```txt
 TASK-30.08 Restructure owner deck detail actions
+```
+
+---
+
+# TASK-30.09 Compact card rows with 1-based index
+
+## Status
+
+DONE
+
+## Context
+
+DISC-006: card rows show #0, Edit/Delete as large buttons under the text, and content sits against the scrollbar. Product: 1-based display, icon actions on the right, extra list inset. UI only.
+
+## Goal
+
+Owner (and public) card rows display #{position + 1}. Owner actions are edit/delete icons on the right. Card lists have padding away from the scrollbar.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/card-list.tsx
+apps/mobile/src/features/decks/components/card-list-item.tsx
+apps/mobile/src/features/public-decks/screens/public-deck-detail-screen.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Show #{card.position + 1}. Do not change stored position or GraphQL.
+2. Owner Edit / Delete: icons on the right (create-outline, trash-outline), a11y labels.
+   Delete still uses the existing confirm flow. Not unlabeled mystery for rare deck actions.
+3. Add paddingRight on the card list so badges/icons are not flush with the scrollbar.
+4. Public deck detail uses the same 1-based display (no owner icons there).
+5. Update live SoT card-row note if needed. Do not rewrite docs/tasks/done/*.
+6. Mark TASK-30.09 and DISC-006 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Hidden icon labels are UX only; delete still confirms. Backend enforces owner.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Keep example text under front/back on the left.
+- Badge stays top-right; icons under or beside it on the right column.
+```
+
+## Acceptance Criteria
+
+```txt
+- First card shows #1.
+- Owner rows use icon Edit/Delete on the right.
+- List is not flush against the scrollbar.
+- API unchanged.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: G1 card list #1… and icons).
+```
+
+## Do Not Do
+
+```txt
+- Do not reindex cards in the database.
+- Do not change Home START or deck More menu.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.09 Compact card rows with 1-based index
 ```
 
 ---

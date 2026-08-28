@@ -51,7 +51,7 @@ export function PublicDeckDetailScreen() {
           )}
           {cards.map((card) => (
             <AppCard key={card.id} style={{ gap: 6, marginBottom: 12, padding: 16 }}>
-              <AppText style={{ color: '#888888', fontSize: 12 }}>#{card.position}</AppText>
+              <AppText style={{ color: '#888888', fontSize: 12 }}>#{card.position + 1}</AppText>
               <AppText style={{ fontSize: 16, fontWeight: '600' }}>{card.front}</AppText>
               <AppText style={{ color: '#444444' }}>{card.back}</AppText>
               {card.example ? (

@@ -486,6 +486,8 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 ```txt
 - Per-deck counters on Decks tab / deck detail
 - Card row group badges on deck detail
+- Card rows display #{position + 1} (storage stays 0-based). Owner Edit/Delete are
+  icons on the right with accessibility labels; delete still confirms.
 - Own My Decks cards: Play (bottom-right) when dueCount > 0
 - Tap Own card → deck detail; tap Play → startLesson (/lessons/start?deckId=), same as
   deck detail Start (no extra visit to detail)

@@ -30,7 +30,7 @@ export function CardList({
 
   return (
     <FlatList
-      contentContainerStyle={{ flexGrow: 1, paddingBottom: 16 }}
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: 16, paddingRight: 16 }}
       data={cards}
       keyExtractor={(item) => item.id}
       ListEmptyComponent={

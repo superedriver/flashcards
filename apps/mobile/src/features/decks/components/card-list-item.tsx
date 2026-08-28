@@ -1,11 +1,12 @@
+import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 
 import { LearningGroupBadge } from '@/features/decks/components/learning-group-badge'
 import type { DeckCardsQuery } from '@/graphql/generated'
-import { AppButton, AppCard, AppText } from '@/ui/primitives'
-import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
+import { AppCard, AppText } from '@/ui/primitives'
+import { buttonA11yProps, destructiveButtonA11yProps } from '@/ui/utils/accessibility'
 
 type CardListItemProps = {
   card: DeckCardsQuery['deckCards'][number]
@@ -17,45 +18,57 @@ type CardListItemProps = {
 export function CardListItem({ card, deckId, isOwner, onDelete }: CardListItemProps) {
   const { t } = useTranslation()
   const router = useRouter()
+  const displayIndex = card.position + 1
 
   return (
     <AppCard style={{ gap: 8, marginBottom: 12, padding: 16 }}>
-      <View
-        style={{
-          alignItems: 'center',
-          flexDirection: 'row',
-          gap: 8,
-          justifyContent: 'space-between',
-        }}
-      >
-        <AppText style={{ color: '#888888', fontSize: 12 }}>#{card.position}</AppText>
-        <LearningGroupBadge learningGroup={card.learningGroup} />
-      </View>
-      <AppText style={{ fontSize: 16, fontWeight: '600' }}>{card.front}</AppText>
-      <AppText style={{ color: '#444444' }}>{card.back}</AppText>
-      {card.example ? (
-        <AppText style={{ color: '#666666' }}>
-          {t('decks.card.example', { text: card.example })}
-        </AppText>
-      ) : null}
-
-      {isOwner ? (
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 4 }}>
-          <AppButton onPress={() => router.push(`/decks/${deckId}/cards/${card.id}/edit`)}>
-            {t('decks.card.edit')}
-          </AppButton>
-          {onDelete ? (
-            <AppButton
-              {...destructiveButtonA11yProps(t('decks.card.deleteCardA11y'))}
-              background="#b00020"
-              color="white"
-              onPress={() => onDelete(card.id)}
-            >
-              {t('decks.card.delete')}
-            </AppButton>
+      <View style={{ flexDirection: 'row', gap: 12 }}>
+        <View style={{ flex: 1, gap: 4, minWidth: 0 }}>
+          <AppText style={{ color: '#888888', fontSize: 12 }}>#{displayIndex}</AppText>
+          <AppText style={{ fontSize: 16, fontWeight: '600' }}>{card.front}</AppText>
+          <AppText style={{ color: '#444444' }}>{card.back}</AppText>
+          {card.example ? (
+            <AppText style={{ color: '#666666' }}>
+              {t('decks.card.example', { text: card.example })}
+            </AppText>
           ) : null}
         </View>
-      ) : null}
+        <View style={{ alignItems: 'flex-end', gap: 8 }}>
+          <LearningGroupBadge learningGroup={card.learningGroup} />
+          {isOwner ? (
+            <View style={{ flexDirection: 'row', gap: 4 }}>
+              <Pressable
+                {...buttonA11yProps(t('decks.card.edit'))}
+                hitSlop={8}
+                style={{
+                  alignItems: 'center',
+                  height: 36,
+                  justifyContent: 'center',
+                  width: 36,
+                }}
+                onPress={() => router.push(`/decks/${deckId}/cards/${card.id}/edit`)}
+              >
+                <Ionicons color="#333333" name="create-outline" size={22} />
+              </Pressable>
+              {onDelete ? (
+                <Pressable
+                  {...destructiveButtonA11yProps(t('decks.card.deleteCardA11y'))}
+                  hitSlop={8}
+                  style={{
+                    alignItems: 'center',
+                    height: 36,
+                    justifyContent: 'center',
+                    width: 36,
+                  }}
+                  onPress={() => onDelete(card.id)}
+                >
+                  <Ionicons color="#b00020" name="trash-outline" size={22} />
+                </Pressable>
+              ) : null}
+            </View>
+          ) : null}
+        </View>
+      </View>
     </AppCard>
   )
 }
