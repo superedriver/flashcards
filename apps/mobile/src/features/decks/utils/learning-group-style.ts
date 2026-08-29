@@ -11,3 +11,9 @@ export const LEARNING_GROUP_STYLE: Record<LearningGroup, LearningGroupStyle> = {
   [LearningGroup.Practiced]: { background: '#fef3c7', color: '#92400e', emoji: '🔁' },
   [LearningGroup.Learned]: { background: '#dcfce7', color: '#166534', emoji: '✅' },
 }
+
+export const LEARNING_GROUP_STAT_EMOJI: Record<LearningGroup, string> = {
+  [LearningGroup.ToLearn]: '📖',
+  [LearningGroup.Practiced]: '✏️',
+  [LearningGroup.Learned]: '✅',
+}

@@ -138,6 +138,8 @@ Expected state:
     - Fixed in TASK-30.36
 34. Cards section is a bordered box with a duplicate Add card
     - Fixed in TASK-30.37
+35. Deck Detail stats icons differ from My Decks
+    - Fixed in TASK-30.38
 ```
 
 ## Discrepancy Register
@@ -1502,6 +1504,39 @@ frontend: CardList, DeckActions, deck detail
 docs: lesson-flow deck detail
 ```
 
+---
+
+### DISC-035 Deck Detail stats icons differ from My Decks
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.38):
+
+```txt
+Product (approved in chat after 30.37):
+  - Deck Detail group stats use the same icons as My Decks: 📖 / ✏️ / ✅
+
+Was wrong:
+  - Deck Detail group tiles used 🌱 / 🔁 / ✅
+```
+
+Action:
+
+```txt
+TASK-30.38 Align Deck Detail stats icons with My Decks
+```
+
+Impact:
+
+```txt
+frontend: deck detail stats emojis
+docs: lesson-flow deck detail
+```
+
 ## Epic Rules
 
 ```txt
@@ -1558,6 +1593,7 @@ docs: lesson-flow deck detail
 30.35                            restyle Edit Deck into a compact form with a language pair
 30.36                            remove the language pair arrow from deck forms
 30.37                            restyle deck Cards into a header, count, and empty state
+30.38                            align Deck Detail stats icons with My Decks
 ```
 
 ## Epic Summary
@@ -1600,6 +1636,7 @@ docs: lesson-flow deck detail
 - [x] TASK-30.35 Restyle Edit Deck into a compact form with a language pair
 - [x] TASK-30.36 Remove the language pair arrow from deck forms
 - [x] TASK-30.37 Restyle deck Cards into a header, count, and empty state
+- [x] TASK-30.38 Align Deck Detail stats icons with My Decks
 ```
 
 ---
@@ -5818,6 +5855,100 @@ None (human: empty and non-empty Cards on deck detail).
 
 ```txt
 TASK-30.37 Restyle deck Cards into a header, count, and empty state
+```
+
+---
+
+# TASK-30.38 Align Deck Detail stats icons with My Decks
+
+## Status
+
+DONE
+
+## Context
+
+DISC-035: Deck Detail group stats use 🌱 / 🔁, while My Decks cards use 📖 / ✏️ / ✅.
+
+## Goal
+
+To learn / Practiced / Learned on Deck Detail use the same icons as My Decks. Word-row badges stay 🌱 / 🔁 / ✅.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/utils/learning-group-style.ts
+apps/mobile/src/features/decks/components/learning-group-stats-row.tsx
+apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Share 📖 / ✏️ / ✅ for stats (My Decks and Deck Detail).
+2. Do not change word-row badge emojis.
+3. Update live SoT. Do not rewrite docs/tasks/done/*.
+4. Mark TASK-30.38 and DISC-035 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only.
+```
+
+## Implementation Notes
+
+```txt
+- Keep LEARNING_GROUP_STYLE.emoji for badges; add a shared stats-emoji map.
+```
+
+## Acceptance Criteria
+
+```txt
+- Deck Detail group stats show 📖 / ✏️ / ✅.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: Deck Detail stats vs My Decks cards).
+```
+
+## Do Not Do
+
+```txt
+- Do not restyle stats layout.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.38 Align Deck Detail stats icons with My Decks
 ```
 
 ---

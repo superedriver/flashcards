@@ -1,7 +1,10 @@
 import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
-import { LEARNING_GROUP_STYLE } from '@/features/decks/utils/learning-group-style'
+import {
+  LEARNING_GROUP_STAT_EMOJI,
+  LEARNING_GROUP_STYLE,
+} from '@/features/decks/utils/learning-group-style'
 import { LearningGroup } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 
@@ -9,12 +12,6 @@ type LearningGroupStatsRowProps = {
   learnedCount: number
   practicedCount: number
   toLearnCount: number
-}
-
-const STAT_EMOJI: Record<LearningGroup, string> = {
-  [LearningGroup.ToLearn]: '📖',
-  [LearningGroup.Practiced]: '✏️',
-  [LearningGroup.Learned]: '✅',
 }
 
 const STAT_LABEL: Record<LearningGroup, 'learn' | 'practiced' | 'learned'> = {
@@ -40,7 +37,7 @@ function GroupColumn({ count, group }: { count: number; group: LearningGroup }) 
       accessibilityLabel={t(`decks.learningCounters.${counterKey(group)}`, { count })}
       style={{ alignItems: 'center', flex: 1, gap: 1, minWidth: 0, paddingVertical: 6 }}
     >
-      <AppText style={{ fontSize: 13 }}>{STAT_EMOJI[group]}</AppText>
+      <AppText style={{ fontSize: 13 }}>{LEARNING_GROUP_STAT_EMOJI[group]}</AppText>
       <AppText style={{ color: style.color, fontSize: 24, fontWeight: '700', lineHeight: 28 }}>
         {count}
       </AppText>

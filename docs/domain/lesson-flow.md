@@ -516,8 +516,8 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
   Page title “Deck Detail” + visibility/moderation pills, flags on the right
   Header (deck title, description; filled Start review top-right when due)
   Stats: two white bordered cards — Total cards | Due now, then To learn | Practiced | Learned
-  (Total / Due now: gray icon chip + count; groups: emoji + count in one group-colored
-  tile, centered label pills matching word badges; no Next review)
+  (Total / Due now: gray icon chip + count; groups: 📖 / ✏️ / ✅ like My Decks, count in a
+  group-colored tile, centered label pills; no Next review)
   Primary: filled #1a56db Start review (white play + label) beside the deck title
   Quick icons: Edit, More ⋯ (a11y labels)
   More items (CSV, regenerate, publish/unpublish) are disabled for now

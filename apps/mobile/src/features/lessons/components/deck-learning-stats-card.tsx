@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { LearningGroupBadge } from '@/features/decks/components/learning-group-badge'
-import { LEARNING_GROUP_STYLE } from '@/features/decks/utils/learning-group-style'
+import {
+  LEARNING_GROUP_STAT_EMOJI,
+  LEARNING_GROUP_STYLE,
+} from '@/features/decks/utils/learning-group-style'
 import { LearningGroup, useDeckLearningStatsQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState } from '@/ui/components'
@@ -143,7 +146,7 @@ export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
           <StatCell
             accessibilityLabel={t('lessons.stats.toLearn', { count: stats.toLearnCount })}
             count={stats.toLearnCount}
-            emoji={toLearn.emoji}
+            emoji={LEARNING_GROUP_STAT_EMOJI[LearningGroup.ToLearn]}
             label={
               <LearningGroupBadge
                 learningGroup={LearningGroup.ToLearn}
@@ -157,7 +160,7 @@ export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
           <StatCell
             accessibilityLabel={t('lessons.stats.practiced', { count: stats.practicedCount })}
             count={stats.practicedCount}
-            emoji={practiced.emoji}
+            emoji={LEARNING_GROUP_STAT_EMOJI[LearningGroup.Practiced]}
             label={
               <LearningGroupBadge
                 learningGroup={LearningGroup.Practiced}
@@ -171,7 +174,7 @@ export function DeckLearningStatsCard({ deckId }: DeckLearningStatsCardProps) {
           <StatCell
             accessibilityLabel={t('lessons.stats.learned', { count: stats.learnedCount })}
             count={stats.learnedCount}
-            emoji={learned.emoji}
+            emoji={LEARNING_GROUP_STAT_EMOJI[LearningGroup.Learned]}
             label={
               <LearningGroupBadge
                 learningGroup={LearningGroup.Learned}
