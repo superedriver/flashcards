@@ -39,10 +39,10 @@ Run against local or staging API after learning-steps migration.
 - [ ] Decks list shows per-deck counters.
 - [ ] Deck detail card rows show group badges; lesson UI does **not** show group badges.
 
-### Home START
+### Home Start review
 
-- [ ] Home has counters + START (no deck list).
-- [ ] START pulls due cards across multiple own decks of active target (limit = lessonSize).
+- [ ] Home has Due now hero + 📖/✏️/✅ stats + Start review (no deck list).
+- [ ] Start review pulls due cards across multiple own decks of active target (limit = lessonSize).
 - [ ] Public/group decks are not included until copied into own.
 - [ ] Empty: zero cards → add-cards CTA; has cards but none due → no-review-now CTA.
 

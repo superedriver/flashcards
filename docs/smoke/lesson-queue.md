@@ -30,10 +30,10 @@ Apply `StudySession` snapshot/queueState migration first. Use own decks only; do
 
 ### Home snapshot cap
 
-- [ ] Home START uses `UserSettings.lessonSize` unique ready cards from own decks of the active target.
+- [ ] Home Start review uses `UserSettings.lessonSize` unique ready cards from own decks of the active target.
 - [ ] Extra ready cards that were not in the snapshot never appear in that session.
 - [ ] Cards in the snapshot may repeat if they become ready again (max 3 answers).
-- [ ] Home START is hidden when `dueCount = 0`.
+- [ ] Home Start review is hidden when `dueCount = 0`.
 
 ### Deck live join
 

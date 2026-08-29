@@ -4,6 +4,7 @@ export const homeUk = {
   loadError: 'Не вдалося завантажити прогрес навчання.',
   startError: 'Не вдалося почати повторення. Спробуйте ще раз.',
   starting: 'Початок повторення...',
+  todayReview: 'Сьогоднішнє повторення',
   noActiveTarget: 'Оберіть активну мову вивчення, щоб почати навчання.',
   setLanguages: 'Налаштувати мови',
   counters: {
@@ -11,8 +12,9 @@ export const homeUk = {
     practiced: 'У практиці',
     learned: 'Вивчено',
     due: 'До повторення зараз: {{count}}',
+    dueNowLabel: 'До повторення',
   },
-  start: 'СТАРТ',
+  start: 'Почати повторення',
   addCards: {
     message: 'Додайте картки для вивчення',
     action: 'До колод',

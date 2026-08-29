@@ -61,6 +61,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          headerShown: false,
           title: t('common.tabs.home'),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="home" outlineName="home-outline" />

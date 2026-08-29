@@ -1,15 +1,18 @@
+import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 
-import { HomeLearningCounters } from '@/features/home/components/home-learning-counters'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
+import { HomeLearningCounters } from '@/features/home/components/home-learning-counters'
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
 import { mapGraphQlLessonCard } from '@/features/lessons/utils/map-lesson-card'
+import { StudyLanguageSelector } from '@/features/study-languages/components/study-language-selector'
 import { useHomeLearningProgressQuery, useStartHomeLessonMutation } from '@/graphql/generated'
-import { AppButton, AppText } from '@/ui/primitives'
+import { AppText } from '@/ui/primitives'
 import { EmptyState, ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
+import { buttonA11yProps } from '@/ui/utils/accessibility'
 
 export function HomeScreen() {
   const { t } = useTranslation()
@@ -70,10 +73,12 @@ export function HomeScreen() {
     }
   }
 
+  const pageTitle = <PageTitle title={t('home.title')} trailing={<StudyLanguageSelector />} />
+
   if (loading && !progress) {
     return (
       <Screen>
-        <PageTitle title={t('home.title')} />
+        {pageTitle}
         <LoadingState message={t('home.loading')} />
       </Screen>
     )
@@ -82,7 +87,7 @@ export function HomeScreen() {
   if (error || !progress) {
     return (
       <Screen>
-        <PageTitle title={t('home.title')} />
+        {pageTitle}
         <ErrorState message={t('home.loadError')} onRetry={() => void refetch()} />
       </Screen>
     )
@@ -94,7 +99,7 @@ export function HomeScreen() {
 
   return (
     <Screen scrollable>
-      <PageTitle title={t('home.title')} />
+      {pageTitle}
 
       <View style={{ gap: 16 }}>
         {!progress.activeTargetLanguage ? (
@@ -106,14 +111,35 @@ export function HomeScreen() {
         ) : (
           <>
             <HomeLearningCounters
+              dueCount={progress.dueCount}
               learnedCount={progress.learnedCount}
               practicedCount={progress.practicedCount}
               toLearnCount={progress.toLearnCount}
             />
 
-            <AppText style={{ fontWeight: hasDue ? '600' : '400' }}>
-              {t('home.counters.due', { count: progress.dueCount })}
-            </AppText>
+            {canStart ? (
+              <Pressable
+                {...buttonA11yProps(t('home.start'))}
+                disabled={isStarting}
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: '#1a56db',
+                  borderRadius: 8,
+                  flexDirection: 'row',
+                  gap: 6,
+                  justifyContent: 'center',
+                  opacity: isStarting ? 0.7 : 1,
+                  paddingVertical: 12,
+                  width: '100%',
+                }}
+                onPress={() => void handleStart()}
+              >
+                <AppText style={{ color: '#ffffff', fontSize: 16, fontWeight: '700' }}>
+                  {isStarting ? t('home.starting') : t('home.start')}
+                </AppText>
+                {isStarting ? null : <Ionicons color="#ffffff" name="chevron-forward" size={18} />}
+              </Pressable>
+            ) : null}
 
             {!hasCards ? (
               <EmptyState
@@ -129,12 +155,6 @@ export function HomeScreen() {
                 message={t('home.noReviewNow.message')}
                 onAction={() => router.push('/(tabs)/decks')}
               />
-            ) : null}
-
-            {canStart ? (
-              <AppButton disabled={isStarting} onPress={() => void handleStart()}>
-                {isStarting ? t('home.starting') : t('home.start')}
-              </AppButton>
             ) : null}
 
             {startError ? <ErrorState message={startError} /> : null}

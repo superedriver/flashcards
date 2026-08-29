@@ -4,6 +4,7 @@ export const homeEn = {
   loadError: 'Could not load learning progress.',
   startError: 'Could not start review. Please try again.',
   starting: 'Starting review...',
+  todayReview: "Today's review",
   noActiveTarget: 'Choose an active study language to start learning.',
   setLanguages: 'Set study languages',
   counters: {
@@ -11,8 +12,9 @@ export const homeEn = {
     practiced: 'Practiced',
     learned: 'Learned',
     due: 'Due now: {{count}}',
+    dueNowLabel: 'Due now',
   },
-  start: 'START',
+  start: 'Start review',
   addCards: {
     message: 'Add cards for learning.',
     action: 'Go to decks',

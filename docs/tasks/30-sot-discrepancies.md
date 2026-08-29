@@ -116,6 +116,8 @@ Expected state:
     - Fixed in TASK-30.25
 23. Own footer wraps / sits too close to the stats box
     - Fixed in TASK-30.26
+24. Home is stretched; Due now is weak; START is a gray button labeled START
+    - Fixed in TASK-30.27
 ```
 
 ## Discrepancy Register
@@ -1075,6 +1077,44 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-024 Home Due now is weak and START is gray
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.27):
+
+```txt
+Product (approved in chat after 30.26):
+  - Home matches Own-card chrome: Due now is the hero metric
+  - One bordered 3-col 📖/✏️/✅ stats box
+  - Full-width primary Start review → when dueCount > 0
+  - Flag + add stay on the Home title row; same content width as other pages
+
+Was wrong:
+  - Three AppCards + “Due now: N” + gray START; extra native tab header
+  - SoT said do not add a ready-count UI
+```
+
+Action:
+
+```txt
+TASK-30.27 Restyle Home around Due now and Start review
+```
+
+Impact:
+
+```txt
+frontend: Home screen, shared stats row, Home tab header
+docs: lesson-flow Home UI, architecture flow, smoke Home labels
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -1120,6 +1160,7 @@ backend / Prisma / GraphQL: unchanged
 30.24                            restyle Own card stats into one bordered row
 30.25                            compact Own cards and lock the title slot
 30.26                            align Own card footer into one row
+30.27                            restyle Home around Due now and Start review
 ```
 
 ## Epic Summary
@@ -1151,6 +1192,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.24 Restyle Own card stats into one bordered row
 - [x] TASK-30.25 Compact Own cards and lock the title slot
 - [x] TASK-30.26 Align Own card footer into one row
+- [x] TASK-30.27 Restyle Home around Due now and Start review
 ```
 
 ---
@@ -4154,6 +4196,122 @@ None (human: My Decks Own footer row).
 
 ```txt
 TASK-30.26 Align Own card footer into one row
+```
+
+---
+
+# TASK-30.27 Restyle Home around Due now and Start review
+
+## Status
+
+DONE
+
+## Context
+
+DISC-024: Home is stretched, Due now is a small line, and START is a gray button. Product wants Own-card chrome with Due now as the hero.
+
+## Goal
+
+Home shows a compact review block: hero dueCount, 3-col stats, primary Start review →. Language flag + add sit on the Home title row.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/smoke/lesson-queue.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+apps/mobile/src/features/decks/components/learning-group-stats-row.tsx
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-learning-stats-compact.tsx
+apps/mobile/src/features/home/components/home-learning-counters.tsx
+apps/mobile/src/features/home/screens/home-screen.tsx
+apps/mobile/app/(tabs)/_layout.tsx
+apps/mobile/src/i18n/resources/en/home.ts
+apps/mobile/src/i18n/resources/uk/home.ts
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/smoke/lesson-queue.md
+docs/smoke/learning-steps.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Home title: Home left, StudyLanguageSelector right. Hide the Home native tab header.
+2. Hero dueCount + Due now label. Today’s review heading.
+3. Shared bordered 3-col stats (📖 Learn / ✏️ Practiced / ✅ Learned), same as Own cards.
+4. Full-width primary #1a56db Start review → when dueCount > 0; hide when 0.
+   Still calls startHomeLesson. Empty CTAs unchanged.
+5. Tighten vertical gaps. Same Screen content width as other pages.
+6. Update live SoT and smoke labels. Do not rewrite docs/tasks/done/*.
+7. Mark TASK-30.27 and DISC-024 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, startHomeLesson, or queue logic.
+```
+
+## Implementation Notes
+
+```txt
+- Extract LearningGroupStatsRow for Home and Own cards.
+- Other tabs keep the native header language selector.
+```
+
+## Acceptance Criteria
+
+```txt
+- Home Due now is the dominant number. Start review is a blue full-width button.
+- Start review is hidden when dueCount = 0. Home still starts a HOME_ACTIVE_TARGET session.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: Home Due now + Start review).
+```
+
+## Do Not Do
+
+```txt
+- Do not add a deck list on Home.
+- Do not change startHomeLesson or lessonSize.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.27 Restyle Home around Due now and Start review
 ```
 
 ---

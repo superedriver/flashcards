@@ -474,11 +474,14 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 ## Home UI (learning entry)
 
 ```txt
-- Aggregate counters: To learn / Practiced / Learned (own decks, active target)
-- START → StartHomeLesson when dueCount > 0
-- Hide START when dueCount = 0
+- Home title row: “Home” left, study-language flag + add right (no extra native tab header)
+- Today’s review heading, then hero dueCount (large) with Due now under it
+- One bordered 3-col stats box, same chrome as Own cards: 📖 Learn / ✏️ Practiced /
+  ✅ Learned (own decks, active target)
+- Start review → is a full-width primary #1a56db button when dueCount > 0
+- Hide Start review when dueCount = 0
 - No deck list on Home
-- Do not add a new ready-count UI
+- Same content column as other pages (Screen max width)
 ```
 
 ## Deck UI
