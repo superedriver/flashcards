@@ -2,11 +2,14 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRe
 import { useTranslation } from 'react-i18next'
 import { Animated, PanResponder, Pressable, View, useWindowDimensions } from 'react-native'
 
-import type { PromptDirection } from '@/features/lessons/types/active-lesson'
 import { ReviewAnswer } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 import { buttonA11yProps } from '@/ui/utils/accessibility'
-import { getLessonCardContainerStyle } from '@/ui/utils/responsive'
+import {
+  getLessonCardContainerStyle,
+  getReviewCardHeight,
+  getReviewCardWidth,
+} from '@/ui/utils/responsive'
 
 const FLIP_MS = 200
 const EXIT_MS = 200
@@ -18,39 +21,38 @@ export type ReviewFlashcardHandle = {
 }
 
 export type ReviewFlashcardProps = {
-  back: string
+  answer: string
   cardId: string
   example?: string | null
-  front: string
   isExiting?: boolean
   isRevealed: boolean
   notes?: string | null
   onAnswer: (answer: ReviewAnswer) => void
   onExitStart: () => void
   onReveal: () => void
-  promptDirection: PromptDirection
+  prompt: string
 }
 
 export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcardProps>(
   function ReviewFlashcard(
     {
-      back,
+      answer,
       cardId,
       example,
-      front,
       isExiting = false,
       isRevealed,
       notes,
       onAnswer,
       onExitStart,
       onReveal,
-      promptDirection,
+      prompt,
     },
     ref,
   ) {
     const { t } = useTranslation()
     const { width } = useWindowDimensions()
     const containerStyle = getLessonCardContainerStyle(width)
+    const cardHeight = getReviewCardHeight(getReviewCardWidth(width))
     const translateX = useRef(new Animated.Value(0)).current
     const scaleX = useRef(new Animated.Value(1)).current
     const isFlippingRef = useRef(false)
@@ -66,11 +68,7 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
     onExitStartRef.current = onExitStart
     onRevealRef.current = onReveal
 
-    const isBackToFront = promptDirection === 'BACK_TO_FRONT'
-    const promptText = isBackToFront ? back : front
-    const answerText = isBackToFront ? front : back
-    const promptLabel = isBackToFront ? t('lessons.flashcard.back') : t('lessons.flashcard.front')
-    const answerLabel = isBackToFront ? t('lessons.flashcard.front') : t('lessons.flashcard.back')
+    const displayedText = isRevealed ? answer : prompt
 
     const resetPosition = useCallback(() => {
       translateX.stopAnimation()
@@ -83,7 +81,7 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
 
     useEffect(() => {
       resetPosition()
-    }, [cardId, promptDirection, resetPosition])
+    }, [cardId, resetPosition])
 
     useEffect(() => {
       if (wasExitingRef.current && !isExiting) {
@@ -99,7 +97,7 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
     }, [isExiting, translateX])
 
     const playExit = useCallback(
-      (answer: ReviewAnswer) => {
+      (nextAnswer: ReviewAnswer) => {
         if (!isRevealedRef.current || isExitingRef.current || isFlippingRef.current) {
           return
         }
@@ -107,7 +105,7 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
         isExitingRef.current = true
         onExitStartRef.current()
 
-        const destination = answer === ReviewAnswer.Know ? width : -width
+        const destination = nextAnswer === ReviewAnswer.Know ? width : -width
 
         Animated.timing(translateX, {
           duration: EXIT_MS,
@@ -115,7 +113,7 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
           useNativeDriver: true,
         }).start(({ finished }) => {
           if (finished) {
-            onAnswerRef.current(answer)
+            onAnswerRef.current(nextAnswer)
             return
           }
 
@@ -221,7 +219,7 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
             borderColor: '#e4e7ec',
             borderRadius: 16,
             borderWidth: 1,
-            minHeight: 300,
+            height: cardHeight,
             transform: [{ translateX }, { rotate }, { scaleX }],
           }}
         >
@@ -237,11 +235,11 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
             pointerEvents={isRevealed ? 'none' : 'auto'}
             style={{
               flex: 1,
-              gap: 16,
+              height: cardHeight,
               justifyContent: 'center',
-              minHeight: 300,
               overflow: 'hidden',
-              padding: 24,
+              paddingHorizontal: 24,
+              paddingVertical: 28,
             }}
           >
             <Animated.View
@@ -270,53 +268,38 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
                 top: 0,
               }}
             />
-            <AppText
-              style={{
-                color: '#667085',
-                fontSize: 12,
-                textAlign: 'center',
-                textTransform: 'uppercase',
-              }}
-            >
-              {promptLabel}
-            </AppText>
-            <AppText
-              style={{ fontSize: 28, fontWeight: '700', lineHeight: 36, textAlign: 'center' }}
-            >
-              {promptText}
-            </AppText>
-
+            <View style={{ alignItems: 'center', gap: 12 }}>
+              <AppText
+                style={{ fontSize: 32, fontWeight: '700', lineHeight: 40, textAlign: 'center' }}
+              >
+                {displayedText}
+              </AppText>
+              {isRevealed && example ? (
+                <AppText style={{ color: '#667085', fontSize: 16, textAlign: 'center' }}>
+                  {t('lessons.flashcard.example', { text: example })}
+                </AppText>
+              ) : null}
+              {isRevealed && notes ? (
+                <AppText style={{ color: '#667085', fontSize: 14, textAlign: 'center' }}>
+                  {t('lessons.flashcard.notes', { text: notes })}
+                </AppText>
+              ) : null}
+            </View>
             {!isRevealed ? (
-              <AppText style={{ color: '#667085', fontSize: 14, textAlign: 'center' }}>
+              <AppText
+                style={{
+                  bottom: 20,
+                  color: '#98a2b3',
+                  fontSize: 13,
+                  left: 24,
+                  position: 'absolute',
+                  right: 24,
+                  textAlign: 'center',
+                }}
+              >
                 {t('lessons.flashcard.tapToReveal')}
               </AppText>
-            ) : (
-              <View style={{ gap: 12 }}>
-                <AppText
-                  style={{
-                    color: '#667085',
-                    fontSize: 12,
-                    textAlign: 'center',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {answerLabel}
-                </AppText>
-                <AppText style={{ fontSize: 24, lineHeight: 32, textAlign: 'center' }}>
-                  {answerText}
-                </AppText>
-                {example ? (
-                  <AppText style={{ color: '#667085', fontSize: 16, textAlign: 'center' }}>
-                    {t('lessons.flashcard.example', { text: example })}
-                  </AppText>
-                ) : null}
-                {notes ? (
-                  <AppText style={{ color: '#667085', fontSize: 14, textAlign: 'center' }}>
-                    {t('lessons.flashcard.notes', { text: notes })}
-                  </AppText>
-                ) : null}
-              </View>
-            )}
+            ) : null}
           </Pressable>
         </Animated.View>
       </View>

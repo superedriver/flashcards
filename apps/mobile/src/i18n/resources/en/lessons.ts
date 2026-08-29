@@ -54,15 +54,13 @@ export const lessonsEn = {
     noneDue: 'No cards are due right now. Check back later or add more cards.',
   },
   reviewActions: {
-    swipeHint: "Swipe left if you don't know · Swipe right if you know",
+    swipeHint: 'Swipe left  ·  Swipe right',
     dontKnow: "Don't know",
     dontKnowHint: 'Marks this card as not known.',
     know: 'Know',
     knowHint: 'Marks this card as known.',
   },
   flashcard: {
-    front: 'Front',
-    back: 'Back',
     tapToReveal: 'Tap to reveal',
     revealHint: 'Shows the answer side of the card.',
     example: 'Example: {{text}}',

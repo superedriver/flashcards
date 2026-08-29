@@ -668,9 +668,10 @@ Flow:
 2. Backend creates a study session (or returns empty if nothing is ready).
 3. Backend picks the next showable card (primary vs bounded repeat) and returns it for display.
    Display is not an answer: do not increment showCount; do not freeze gap N.
-4. Frontend shows the prompt side first (from promptDirection) on a centered flashcard.
-5. User taps/clicks the card to reveal the other side (fast flip, ~200ms).
-6. Example sentence is shown if available.
+4. Frontend shows only the question side (from promptDirection) on a flashcard under the header.
+   Do not label Front/Back.
+5. User taps/clicks the card to reveal the answer side only (fast flip, ~200ms).
+6. Example sentence is shown on the answer side if available.
 7. User can press Listen to hear the word.
 8. User answers Know (swipe right or button) or Don't know (swipe left or button).
    Swipes are disabled until the card is revealed. Compact fallback buttons stay visible.

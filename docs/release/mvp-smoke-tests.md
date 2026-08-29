@@ -585,7 +585,7 @@ query {
 
 ```txt
 - Study session is created
-- First review card is shown as a centered flashcard (prompt side)
+- First review card is shown under the header (question side only, no Front/Back)
 - UI says Start review / Почати повторення, not Lesson / Урок
 ```
 
@@ -609,6 +609,7 @@ query {
 - App advances to next card or lesson completion state
 - Reveal is tap/click on the card; Know is swipe right or the fallback button
 - There is no Reveal answer button
+- After flip the card shows the answer only, not both sides
 ```
 
 **Result:** - [ ] PASS - [ ] FAIL

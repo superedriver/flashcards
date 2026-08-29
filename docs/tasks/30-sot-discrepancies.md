@@ -142,6 +142,8 @@ Expected state:
     - Fixed in TASK-30.38
 36. Review is text plus Reveal / Know / Don't know buttons, not a card
     - Fixed in TASK-30.39
+37. Review card shows Front/Back, both sides after flip, and too much empty space
+    - Fixed in TASK-30.40
 ```
 
 ## Discrepancy Register
@@ -1575,6 +1577,43 @@ frontend: review flashcard, answer actions, review screen
 docs: lesson-flow Review UI, architecture lesson flow
 ```
 
+---
+
+### DISC-037 Review card shows Front/Back and too much empty space
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.40):
+
+```txt
+Product (approved in chat after 30.39):
+  - UI shows question then answer from promptDirection; no Front/Back labels
+  - After flip, only the opposite side (not both)
+  - Card sits under the header, taller (~1.5–1.7 width:height), actions close below
+  - Swipe hint under the card; hide after the first few answers
+
+Was wrong:
+  - Front/Back labels; prompt stayed visible after reveal
+  - Card vertically centered in the viewport with a large empty band above it
+```
+
+Action:
+
+```txt
+TASK-30.40 Show question/answer only and tighten the review layout
+```
+
+Impact:
+
+```txt
+frontend: review flashcard, review screen, swipe-hint storage
+docs: lesson-flow Review UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1633,6 +1672,7 @@ docs: lesson-flow Review UI, architecture lesson flow
 30.37                            restyle deck Cards into a header, count, and empty state
 30.38                            align Deck Detail stats icons with My Decks
 30.39                            make review a tap-to-flip card with swipe answers
+30.40                            show question/answer only and tighten the review layout
 ```
 
 ## Epic Summary
@@ -1677,6 +1717,7 @@ docs: lesson-flow Review UI, architecture lesson flow
 - [x] TASK-30.37 Restyle deck Cards into a header, count, and empty state
 - [x] TASK-30.38 Align Deck Detail stats icons with My Decks
 - [x] TASK-30.39 Make review a tap-to-flip card with swipe answers
+- [x] TASK-30.40 Show question/answer only and tighten the review layout
 ```
 
 ---
@@ -6094,6 +6135,115 @@ None (human: flip, swipe, fallback buttons, Leave review).
 
 ```txt
 TASK-30.39 Make review a tap-to-flip card with swipe answers
+```
+
+---
+
+# TASK-30.40 Show question/answer only and tighten the review layout
+
+## Status
+
+DONE
+
+## Context
+
+DISC-037: Review labels Front/Back, keeps both sides after flip, and vertically centers a short card so the top of the screen is empty.
+
+## Goal
+
+Show only the prompt side, then only the answer side, using promptDirection as question/answer. No Front/Back labels. Taller card packed under the header with actions close below. Hide the swipe hint after a few answers.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/components/review-flashcard.tsx
+apps/mobile/src/features/lessons/components/review-answer-actions.tsx
+apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
+apps/mobile/src/features/lessons/utils/get-review-sides.ts
+apps/mobile/src/features/lessons/storage/review-swipe-hint-storage.ts
+apps/mobile/src/features/lessons/hooks/use-review-swipe-hint.ts
+apps/mobile/src/i18n/resources/en/lessons.ts
+apps/mobile/src/i18n/resources/uk/lessons.ts
+apps/mobile/src/ui/utils/responsive.ts
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Map promptDirection to question/answer. Do not show Front/Back labels.
+2. Before tap: question only + Tap to reveal. After flip: answer only (example/notes if present).
+3. Pack header → card → hint → buttons. Do not vertically center the card in the viewport.
+4. Card height ~1.5–1.7 width:height, min ~360px. Word centered in the card.
+5. Swipe hint under the card after reveal; hide after 3 answers. Fallback buttons stay.
+6. Do not change submitReview, learning-steps, or queue picker.
+7. Update live SoT. Do not rewrite docs/tasks/done/*.
+8. Mark TASK-30.40 and DISC-037 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Presentation only. promptDirection still comes from the backend.
+```
+
+## Implementation Notes
+
+```txt
+- Derive question/answer from promptDirection in the UI layer.
+- Persist swipe-hint answer count in AsyncStorage.
+```
+
+## Acceptance Criteria
+
+```txt
+- No Front/Back labels. Flip replaces the question with the answer.
+- Card sits under the header; actions sit close under the card.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: both directions, layout on web and mobile, hint hides after a few answers).
+```
+
+## Do Not Do
+
+```txt
+- Do not change promptDirection rules or SRS.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.40 Show question/answer only and tighten the review layout
 ```
 
 ---

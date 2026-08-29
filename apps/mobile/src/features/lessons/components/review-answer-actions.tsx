@@ -10,6 +10,7 @@ type ReviewAnswerActionsProps = {
   isRevealed?: boolean
   isSubmitting?: boolean
   onAnswer: (answer: ReviewAnswer) => void
+  showSwipeHint?: boolean
 }
 
 export function ReviewAnswerActions({
@@ -17,6 +18,7 @@ export function ReviewAnswerActions({
   isRevealed = false,
   isSubmitting = false,
   onAnswer,
+  showSwipeHint = false,
 }: ReviewAnswerActionsProps) {
   const { t } = useTranslation()
   const isDisabled = disabled || isSubmitting || !isRevealed
@@ -24,9 +26,9 @@ export function ReviewAnswerActions({
   const knowLabel = t('lessons.reviewActions.know')
 
   return (
-    <View style={{ gap: 12 }}>
-      {isRevealed ? (
-        <AppText style={{ color: '#667085', fontSize: 13, textAlign: 'center' }}>
+    <View style={{ gap: 10 }}>
+      {isRevealed && showSwipeHint ? (
+        <AppText style={{ color: '#98a2b3', fontSize: 12, textAlign: 'center' }}>
           {t('lessons.reviewActions.swipeHint')}
         </AppText>
       ) : null}

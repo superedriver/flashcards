@@ -76,6 +76,36 @@ export function getLessonCardContainerStyle(windowWidth: number): ViewStyle {
   }
 }
 
+export const REVIEW_CARD_ASPECT_RATIO = 1.58
+export const REVIEW_CARD_MIN_HEIGHT = 360
+export const REVIEW_CARD_MAX_HEIGHT = 420
+
+export function getReviewCardWidth(windowWidth: number): number {
+  const padding = getScreenPadding(windowWidth) * 2
+  const innerWidth = Math.max(0, windowWidth - padding)
+
+  if (Platform.OS !== 'web') {
+    return innerWidth
+  }
+
+  const contentWidth = Math.min(CONTENT_MAX_WIDTH.default, innerWidth)
+
+  return Math.min(LESSON_CARD_MAX_WIDTH, contentWidth)
+}
+
+export function getReviewCardHeight(cardWidth: number): number {
+  if (cardWidth <= 0) {
+    return REVIEW_CARD_MIN_HEIGHT
+  }
+
+  return Math.round(
+    Math.min(
+      REVIEW_CARD_MAX_HEIGHT,
+      Math.max(REVIEW_CARD_MIN_HEIGHT, cardWidth / REVIEW_CARD_ASPECT_RATIO),
+    ),
+  )
+}
+
 export const buttonRowStyle: ViewStyle = {
   flexDirection: 'row',
   flexWrap: 'wrap',

@@ -75,8 +75,8 @@ The backend is the source of truth for:
 The frontend is responsible for:
 
 ```txt
-- showing the prompt side first (from promptDirection)
-- revealing the other side
+- showing the question side first (from promptDirection; no Front/Back labels)
+- flipping to the answer side only
 - collecting user answer
 - calling backend mutations
 - showing summary after COMPLETED
@@ -573,12 +573,13 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 ## Review UI
 
 ```txt
-- Centered visual flashcard. Prompt side first (promptDirection). No Reveal answer button
-- Tap/click the card to flip (~200ms). Swipes are off until revealed
-- After reveal: swipe right = Know, swipe left = Don't know; short swipe-out (~200ms)
-- Compact fallback Don't know / Know buttons for web and accessibility
-- Leave review is a secondary text action, not a large primary button
-- SRS, submitReview, and the queue are unchanged
+- Header → card → swipe hint → fallback buttons. Do not vertically center the card
+- Taller flashcard (~1.5–1.7 width:height). Word centered. No Front/Back labels
+- Question first from promptDirection; after flip, only the answer side
+- Tap to reveal only on the question side. Example/notes only on the answer side if present
+- After reveal: swipe right = Know, swipe left = Don't know; compact fallback buttons
+- Swipe hint under the card after reveal; hide after the first few answers
+- Leave review is a secondary text action. SRS, submitReview, and the queue are unchanged
 ```
 
 ## Edit Deck UI

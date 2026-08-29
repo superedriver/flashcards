@@ -9,6 +9,8 @@ import {
   type ReviewFlashcardHandle,
 } from '@/features/lessons/components/review-flashcard'
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
+import { useReviewSwipeHint } from '@/features/lessons/hooks/use-review-swipe-hint'
+import { getReviewSides } from '@/features/lessons/utils/get-review-sides'
 import { mapGraphQlLessonCard } from '@/features/lessons/utils/map-lesson-card'
 import { confirmAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
@@ -44,6 +46,7 @@ export function LessonReviewScreen() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const isSubmittingRef = useRef(false)
   const flashcardRef = useRef<ReviewFlashcardHandle>(null)
+  const { recordAnswer, showSwipeHint } = useReviewSwipeHint()
 
   useEffect(() => {
     setIsRevealed(false)
@@ -162,6 +165,7 @@ export function LessonReviewScreen() {
       }
 
       markCardReviewed(currentCard.cardId)
+      recordAnswer()
       setIsRevealed(false)
       setIsExiting(false)
 
@@ -181,6 +185,8 @@ export function LessonReviewScreen() {
     }
   }
 
+  const reviewSides = getReviewSides(currentCard)
+
   return (
     <Screen>
       <PageTitle
@@ -198,29 +204,27 @@ export function LessonReviewScreen() {
           </Pressable>
         }
       />
-      <View style={{ flex: 1, justifyContent: 'center' }}>
+      <View style={{ gap: 12, marginTop: 4 }}>
         <ReviewFlashcard
           ref={flashcardRef}
-          back={currentCard.back}
+          answer={reviewSides.answer}
           cardId={currentCard.cardId}
           example={currentCard.example}
-          front={currentCard.front}
           isExiting={isExiting}
           isRevealed={isRevealed}
           key={`${currentCard.cardId}-${currentCard.promptDirection}`}
           notes={currentCard.notes}
-          promptDirection={currentCard.promptDirection}
+          prompt={reviewSides.prompt}
           onAnswer={(answer) => void handleAnswer(answer)}
           onExitStart={() => setIsExiting(true)}
           onReveal={() => setIsRevealed(true)}
         />
-      </View>
-      {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      <View style={{ marginTop: 16 }}>
+        {errorMessage ? <ErrorState message={errorMessage} /> : null}
         <ReviewAnswerActions
           disabled={isSubmitting || isExiting}
           isRevealed={isRevealed}
           isSubmitting={isSubmitting}
+          showSwipeHint={showSwipeHint}
           onAnswer={(answer) => flashcardRef.current?.playExit(answer)}
         />
       </View>
