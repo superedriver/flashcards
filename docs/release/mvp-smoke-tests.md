@@ -356,7 +356,7 @@ query {
 **Expected result:**
 
 ```txt
-- Edit Deck is a compact form card; languages are one Target → Source pair
+- Edit Deck is a compact form card; languages are one Target / Source pair
 - Updated title persists after reload
 ```
 

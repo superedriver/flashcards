@@ -244,7 +244,7 @@ export function DeckForm({
               paddingVertical: 10,
             }}
           >
-            <View style={{ alignItems: 'center', flexDirection: 'row', gap: 8 }}>
+            <View style={{ alignItems: 'center', flexDirection: 'row', gap: 16 }}>
               <LanguageSelectorRow
                 accessibilityLabel={t('decks.deckForm.targetLanguage')}
                 caption={t('decks.deckForm.targetShort')}
@@ -252,7 +252,6 @@ export function DeckForm({
                 isEmpty={!targetLanguage}
                 onPress={() => openPicker('targetLanguage')}
               />
-              <AppText style={{ color: '#667085', fontSize: 16, fontWeight: '700' }}>→</AppText>
               <LanguageSelectorRow
                 accessibilityLabel={t('decks.deckForm.sourceLanguage')}
                 caption={t('decks.deckForm.sourceShort')}

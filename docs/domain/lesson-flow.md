@@ -573,7 +573,7 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 
 ```txt
 - Compact form card (~600–700px): Title single-line, Description textarea
-- Languages is one pair block: Target → Source (flag + name, chevron selectors)
+- Languages is one pair block: Target and Source (flag + name, chevron selectors)
 - Labels are Target / Source, not front/back
 - Same-language warning only when the pair becomes the same, not as a persistent banner
 - Changing languages on save still confirms that card text will not regenerate

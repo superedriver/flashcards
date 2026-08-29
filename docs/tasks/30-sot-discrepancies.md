@@ -134,6 +134,8 @@ Expected state:
     - Fixed in TASK-30.34
 32. Edit Deck is a long form with two huge language fields
     - Fixed in TASK-30.35
+33. Language pair arrow on deck forms is noise
+    - Fixed in TASK-30.36
 ```
 
 ## Discrepancy Register
@@ -1430,6 +1432,39 @@ frontend: DeckForm, Edit/Create/Assign deck screens
 docs: lesson-flow Edit Deck UI
 ```
 
+---
+
+### DISC-033 Language pair arrow on deck forms is noise
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.36):
+
+```txt
+Product (approved in chat after 30.35):
+  - Remove the → between Target and Source on Create/Edit Deck
+
+Was wrong:
+  - Decorative → sat between two chevron selectors
+```
+
+Action:
+
+```txt
+TASK-30.36 Remove the language pair arrow from deck forms
+```
+
+Impact:
+
+```txt
+frontend: DeckForm language block
+docs: lesson-flow Edit Deck UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1484,6 +1519,7 @@ docs: lesson-flow Edit Deck UI
 30.33                            restyle Edit Card into a compact form with AI helper
 30.34                            disable Groups and Invitations on Profile
 30.35                            restyle Edit Deck into a compact form with a language pair
+30.36                            remove the language pair arrow from deck forms
 ```
 
 ## Epic Summary
@@ -1524,6 +1560,7 @@ docs: lesson-flow Edit Deck UI
 - [x] TASK-30.33 Restyle Edit Card into a compact form with AI helper
 - [x] TASK-30.34 Disable Groups and Invitations on Profile
 - [x] TASK-30.35 Restyle Edit Deck into a compact form with a language pair
+- [x] TASK-30.36 Remove the language pair arrow from deck forms
 ```
 
 ---
@@ -5550,6 +5587,99 @@ None (human: Edit Deck layout and language pickers).
 
 ```txt
 TASK-30.35 Restyle Edit Deck into a compact form with a language pair
+```
+
+---
+
+# TASK-30.36 Remove the language pair arrow from deck forms
+
+## Status
+
+DONE
+
+## Context
+
+DISC-033: The → between Target and Source on Create/Edit Deck is decorative noise next to chevrons.
+
+## Goal
+
+Languages block shows Target and Source side by side with no arrow.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-form.tsx
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Remove the → between Target and Source.
+2. Keep the compact pair block and chevron selectors.
+3. Update live SoT. Do not rewrite docs/tasks/done/*.
+4. Mark TASK-30.36 and DISC-033 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only.
+```
+
+## Implementation Notes
+
+```txt
+- Keep a gap between the two selectors.
+```
+
+## Acceptance Criteria
+
+```txt
+- Create/Edit Deck language block has no →.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: language block on Create/Edit Deck).
+```
+
+## Do Not Do
+
+```txt
+- Do not restyle the rest of DeckForm.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.36 Remove the language pair arrow from deck forms
 ```
 
 ---
