@@ -557,6 +557,18 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Group screens stay inside the tab navigator; Home / Decks / Profile remain visible
 ```
 
+## Edit Card UI
+
+```txt
+- Compact form card (~600–700px): Front and Back are single-line; Example and Notes are textareas
+- Generate is a compact icon + text action next to the Example label
+- After generate: AI suggestions as a radio list, then Use selected (fills Example only)
+- Example is not persisted until Save changes. Generate does not auto-save
+- Save changes is a primary blue button, disabled when nothing changed or Front/Back invalid
+- Cancel is a text action. Delete card is a small Danger zone (still confirms)
+- Unsaved changes: confirm before leaving
+```
+
 ## Permissions
 
 ```txt

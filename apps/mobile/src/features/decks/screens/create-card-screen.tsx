@@ -1,6 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { View } from 'react-native'
 
 import { CardForm } from '@/features/decks/components/card-form'
 import { getGraphqlErrorMessage, optionalText } from '@/features/decks/utils/deck-form-utils'
@@ -18,45 +19,49 @@ export function CreateCardScreen() {
 
   return (
     <Screen scrollable>
-      <PageTitle title={t('decks.createCard.title')} />
-      <CardForm
-        errorMessage={errorMessage}
-        isSubmitting={loading}
-        submitLabel={t('decks.createCard.submit')}
-        submittingLabel={t('decks.createCard.submitting')}
-        onCancel={() => router.back()}
-        onClearError={() => setErrorMessage(null)}
-        onSubmit={async (values) => {
-          if (!deckId) {
-            return
-          }
-
-          setErrorMessage(null)
-
-          try {
-            const result = await createCard({
-              variables: {
-                input: {
-                  back: values.back,
-                  deckId,
-                  example: optionalText(values.example),
-                  front: values.front,
-                  notes: optionalText(values.notes),
-                },
-              },
-            })
-
-            if (!result.data?.createCard) {
-              setErrorMessage(t('decks.createCard.error'))
-              return
+      <View style={{ maxWidth: 640, width: '100%' }}>
+        <PageTitle title={t('decks.createCard.title')} />
+        <CardForm
+          errorMessage={errorMessage}
+          isSubmitting={loading}
+          submitLabel={t('decks.createCard.submit')}
+          submittingLabel={t('decks.createCard.submitting')}
+          onCancel={() => router.back()}
+          onClearError={() => setErrorMessage(null)}
+          onSubmit={async (values) => {
+            if (!deckId) {
+              return false
             }
 
-            router.replace(`/decks/${deckId}`)
-          } catch (error) {
-            setErrorMessage(getGraphqlErrorMessage(error, t('decks.createCard.error')))
-          }
-        }}
-      />
+            setErrorMessage(null)
+
+            try {
+              const result = await createCard({
+                variables: {
+                  input: {
+                    back: values.back,
+                    deckId,
+                    example: optionalText(values.example),
+                    front: values.front,
+                    notes: optionalText(values.notes),
+                  },
+                },
+              })
+
+              if (!result.data?.createCard) {
+                setErrorMessage(t('decks.createCard.error'))
+                return false
+              }
+
+              router.replace(`/decks/${deckId}`)
+              return true
+            } catch (error) {
+              setErrorMessage(getGraphqlErrorMessage(error, t('decks.createCard.error')))
+              return false
+            }
+          }}
+        />
+      </View>
     </Screen>
   )
 }

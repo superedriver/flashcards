@@ -1,3 +1,1 @@
-// Deck hooks are exported from this module as they are added.
-
-export {}
+export { useUnsavedChangesGuard } from './use-unsaved-changes-guard'

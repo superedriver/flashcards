@@ -752,14 +752,14 @@ Flow:
 
 ```txt
 1. User enters word and translation.
-2. User clicks Generate examples.
+2. User clicks Generate next to Example.
 3. Backend validates input.
 4. Backend checks rate limits.
 5. Backend calls AI provider.
 6. Backend returns exactly 3 example sentences.
-7. User selects one example.
+7. User selects one example and clicks Use selected (fills the Example field).
 8. User can manually edit the selected example.
-9. Selected example is saved to the card.
+9. Selected example is saved with Save changes. Generate does not auto-save the card.
 ```
 
 AI provider must be abstracted behind a port:

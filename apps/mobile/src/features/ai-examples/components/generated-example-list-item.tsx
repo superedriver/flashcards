@@ -1,51 +1,42 @@
-import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
+import { Pressable } from 'react-native'
 
-import { AppButton, AppCard, AppText } from '@/ui/primitives'
+import { AppText } from '@/ui/primitives'
+import { buttonA11yProps } from '@/ui/utils/accessibility'
 
 type GeneratedExampleListItemProps = {
   exampleText: string
-  isSaving?: boolean
   isSelected: boolean
-  onSave?: () => void
   onSelect: () => void
 }
 
 export function GeneratedExampleListItem({
   exampleText,
-  isSaving = false,
   isSelected,
-  onSave,
   onSelect,
 }: GeneratedExampleListItemProps) {
-  const { t } = useTranslation()
-
   return (
-    <AppCard
+    <Pressable
+      {...buttonA11yProps(exampleText)}
+      accessibilityRole="radio"
+      accessibilityState={{ selected: isSelected }}
+      onPress={onSelect}
       style={{
-        borderColor: isSelected ? '#1565c0' : '#cccccc',
-        borderWidth: isSelected ? 2 : 1,
+        alignItems: 'flex-start',
+        flexDirection: 'row',
         gap: 8,
-        marginBottom: 8,
-        padding: 12,
+        paddingVertical: 6,
       }}
     >
-      <AppText>{exampleText}</AppText>
-      {isSelected ? (
-        <AppText style={{ color: '#1565c0', fontSize: 12, fontWeight: '600' }}>
-          {t('aiExamples.selected')}
-        </AppText>
-      ) : null}
-      <View style={{ flexDirection: 'row', gap: 8 }}>
-        <AppButton disabled={isSaving} onPress={onSelect}>
-          {isSelected ? t('aiExamples.selected') : t('aiExamples.useInForm')}
-        </AppButton>
-        {onSave ? (
-          <AppButton disabled={!isSelected || isSaving} onPress={onSave}>
-            {isSaving ? t('common.saving') : t('aiExamples.saveToCard')}
-          </AppButton>
-        ) : null}
-      </View>
-    </AppCard>
+      <Ionicons
+        color={isSelected ? '#1a56db' : '#98a2b3'}
+        name={isSelected ? 'radio-button-on' : 'radio-button-off'}
+        size={18}
+        style={{ marginTop: 2 }}
+      />
+      <AppText style={{ color: '#1d2939', flex: 1, fontSize: 14, lineHeight: 20 }}>
+        {exampleText}
+      </AppText>
+    </Pressable>
   )
 }

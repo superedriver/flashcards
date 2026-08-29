@@ -148,6 +148,8 @@ export const decksUk = {
     notes: 'Нотатки',
     notesOptional: 'Нотатки (необовʼязково)',
     saveFirstForAi: 'Спочатку збережіть картку, щоб згенерувати приклади ШІ.',
+    unsavedTitle: 'Відхилити незбережені зміни?',
+    unsavedMessage: 'Якщо вийти, зміни буде втрачено.',
   },
   deckForm: {
     title: 'Назва',

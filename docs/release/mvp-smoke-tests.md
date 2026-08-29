@@ -415,6 +415,9 @@ query {
 **Expected result:**
 
 ```txt
+- Edit Card is a compact form card; Example/Notes are textareas
+- Save changes is primary; Cancel is text; Delete is a small Danger zone
+- Generate sits next to Example; suggestions use Use selected (not auto-saved)
 - Updated card content persists after reload
 ```
 
@@ -558,7 +561,8 @@ query {
 
 ```txt
 - Request succeeds
-- Example content is shown or safe mock behavior is used
+- Compact Generate next to Example; suggestions + Use selected fill the field
+- Example is not persisted until Save changes
 - No provider secrets appear in UI or errors
 ```
 

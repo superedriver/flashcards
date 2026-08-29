@@ -1,17 +1,22 @@
+import { Ionicons } from '@expo/vector-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMemo, useRef } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 
 import { AiExampleGenerator } from '@/features/ai-examples/components/ai-example-generator'
+import { useUnsavedChangesGuard } from '@/features/decks/hooks/use-unsaved-changes-guard'
+import { confirmAction, confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import {
   createCardFormSchema,
   type CardFormValues,
 } from '@/features/decks/validation/card-form.schema'
-import { AppButton, AppInput, AppText } from '@/ui/primitives'
+import { AppInput, AppText } from '@/ui/primitives'
 import { ErrorState, FieldLabel, FormFieldError } from '@/ui/components'
-import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
+import { buttonA11yProps, destructiveButtonA11yProps } from '@/ui/utils/accessibility'
+
+const CARD_FORM_MAX_WIDTH = 640
 
 type CardFormProps = {
   cancelLabel?: string
@@ -21,8 +26,8 @@ type CardFormProps = {
   isSubmitting?: boolean
   onCancel?: () => void
   onClearError?: () => void
-  onDelete?: () => void
-  onSubmit: (values: CardFormValues) => Promise<void>
+  onDelete?: () => Promise<boolean>
+  onSubmit: (values: CardFormValues) => Promise<boolean>
   showDelete?: boolean
   submitLabel: string
   submittingLabel?: string
@@ -49,10 +54,9 @@ export function CardForm({
 
   const {
     control,
-    formState: { errors },
+    formState: { errors, isDirty },
     handleSubmit,
     setValue,
-    watch,
   } = useForm<CardFormValues>({
     defaultValues: defaultValues ?? {
       back: '',
@@ -60,18 +64,44 @@ export function CardForm({
       front: '',
       notes: '',
     },
+    mode: 'onChange',
     resolver: zodResolver(cardFormSchema),
   })
 
+  const frontValue = useWatch({ control, name: 'front' })
+  const backValue = useWatch({ control, name: 'back' })
+  const canSubmit =
+    isDirty &&
+    Boolean(frontValue?.trim()) &&
+    Boolean(backValue?.trim()) &&
+    !errors.front &&
+    !errors.back &&
+    !errors.example &&
+    !errors.notes &&
+    !isSubmitting
+
+  const { allowLeave, resetLeaveGuard } = useUnsavedChangesGuard(
+    isDirty,
+    t('decks.cardForm.unsavedTitle'),
+    t('decks.cardForm.unsavedMessage'),
+  )
+
   const handleFormSubmit = handleSubmit(async (values) => {
-    if (isSubmittingRef.current || isSubmitting) {
+    if (isSubmittingRef.current || isSubmitting || !canSubmit) {
       return
     }
 
     isSubmittingRef.current = true
+    allowLeave()
 
     try {
-      await onSubmit(values)
+      const didSave = await onSubmit(values)
+
+      if (!didSave) {
+        resetLeaveGuard()
+      }
+    } catch {
+      resetLeaveGuard()
     } finally {
       isSubmittingRef.current = false
     }
@@ -81,126 +111,238 @@ export function CardForm({
     onClearError?.()
   }
 
-  return (
-    <View style={{ gap: 12 }}>
-      <FieldLabel>{t('decks.cardForm.front')}</FieldLabel>
-      <Controller
-        control={control}
-        name="front"
-        render={({ field: { onBlur, onChange, value } }) => (
-          <AppInput
-            accessibilityLabel={t('decks.cardForm.front')}
-            multiline
-            numberOfLines={3}
-            placeholder={t('decks.cardForm.front')}
-            value={value}
-            onBlur={onBlur}
-            onChangeText={(text) => {
-              clearError()
-              onChange(text)
-            }}
-          />
-        )}
-      />
-      <FormFieldError message={errors.front?.message} />
+  const handleCancel = () => {
+    if (!onCancel) {
+      return
+    }
 
-      <FieldLabel>{t('decks.cardForm.back')}</FieldLabel>
-      <Controller
-        control={control}
-        name="back"
-        render={({ field: { onBlur, onChange, value } }) => (
-          <AppInput
-            accessibilityLabel={t('decks.cardForm.back')}
-            multiline
-            numberOfLines={3}
-            placeholder={t('decks.cardForm.back')}
-            value={value}
-            onBlur={onBlur}
-            onChangeText={(text) => {
-              clearError()
-              onChange(text)
-            }}
-          />
-        )}
-      />
-      <FormFieldError message={errors.back?.message} />
+    if (!isDirty) {
+      onCancel()
+      return
+    }
 
-      <FieldLabel>{t('decks.cardForm.example')}</FieldLabel>
-      <Controller
-        control={control}
-        name="example"
-        render={({ field: { onBlur, onChange, value } }) => (
-          <AppInput
-            accessibilityLabel={t('decks.cardForm.exampleOptional')}
-            multiline
-            numberOfLines={3}
-            placeholder={t('decks.cardForm.exampleOptional')}
-            value={value ?? ''}
-            onBlur={onBlur}
-            onChangeText={(text) => {
-              clearError()
-              onChange(text)
-            }}
-          />
-        )}
-      />
-      <FormFieldError message={errors.example?.message} />
+    confirmAction(t('decks.cardForm.unsavedTitle'), t('decks.cardForm.unsavedMessage'), () => {
+      allowLeave()
+      onCancel()
+    })
+  }
 
-      {cardId ? (
-        <AiExampleGenerator
-          cardId={cardId}
-          currentExample={watch('example')}
-          onExampleSelected={(exampleText) =>
-            setValue('example', exampleText, { shouldDirty: true, shouldValidate: true })
+  const handleDelete = () => {
+    if (!onDelete) {
+      return
+    }
+
+    confirmDestructiveAction(t('decks.card.deleteTitle'), t('decks.card.deleteMessage'), () => {
+      void (async () => {
+        allowLeave()
+
+        try {
+          const didDelete = await onDelete()
+
+          if (!didDelete) {
+            resetLeaveGuard()
           }
+        } catch {
+          resetLeaveGuard()
+        }
+      })()
+    })
+  }
+
+  const exampleField = (
+    <Controller
+      control={control}
+      name="example"
+      render={({ field: { onBlur, onChange, value } }) => (
+        <AppInput
+          accessibilityLabel={t('decks.cardForm.exampleOptional')}
+          multiline
+          numberOfLines={4}
+          placeholder={t('decks.cardForm.exampleOptional')}
+          value={value ?? ''}
+          onBlur={onBlur}
+          onChangeText={(text) => {
+            clearError()
+            onChange(text)
+          }}
+          style={{ minHeight: 96 }}
         />
-      ) : (
-        <AppText style={{ color: '#666666' }}>{t('decks.cardForm.saveFirstForAi')}</AppText>
       )}
+    />
+  )
 
-      <FieldLabel>{t('decks.cardForm.notes')}</FieldLabel>
-      <Controller
-        control={control}
-        name="notes"
-        render={({ field: { onBlur, onChange, value } }) => (
-          <AppInput
-            accessibilityLabel={t('decks.cardForm.notesOptional')}
-            multiline
-            numberOfLines={3}
-            placeholder={t('decks.cardForm.notesOptional')}
-            value={value ?? ''}
-            onBlur={onBlur}
-            onChangeText={(text) => {
-              clearError()
-              onChange(text)
-            }}
+  return (
+    <View style={{ gap: 12, maxWidth: CARD_FORM_MAX_WIDTH, width: '100%' }}>
+      <View
+        style={{
+          backgroundColor: '#ffffff',
+          borderColor: '#e4e7ec',
+          borderRadius: 12,
+          borderWidth: 1,
+          gap: 12,
+          padding: 16,
+        }}
+      >
+        <View>
+          <FieldLabel>{t('decks.cardForm.front')}</FieldLabel>
+          <Controller
+            control={control}
+            name="front"
+            render={({ field: { onBlur, onChange, value } }) => (
+              <AppInput
+                accessibilityLabel={t('decks.cardForm.front')}
+                placeholder={t('decks.cardForm.front')}
+                value={value}
+                onBlur={onBlur}
+                onChangeText={(text) => {
+                  clearError()
+                  onChange(text)
+                }}
+              />
+            )}
           />
+          <FormFieldError message={errors.front?.message} />
+        </View>
+
+        <View>
+          <FieldLabel>{t('decks.cardForm.back')}</FieldLabel>
+          <Controller
+            control={control}
+            name="back"
+            render={({ field: { onBlur, onChange, value } }) => (
+              <AppInput
+                accessibilityLabel={t('decks.cardForm.back')}
+                placeholder={t('decks.cardForm.back')}
+                value={value}
+                onBlur={onBlur}
+                onChangeText={(text) => {
+                  clearError()
+                  onChange(text)
+                }}
+              />
+            )}
+          />
+          <FormFieldError message={errors.back?.message} />
+        </View>
+
+        {cardId ? (
+          <AiExampleGenerator
+            cardId={cardId}
+            onExampleSelected={(exampleText) =>
+              setValue('example', exampleText, { shouldDirty: true, shouldValidate: true })
+            }
+          >
+            {({ generateButton, suggestions }) => (
+              <View>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginBottom: 4,
+                  }}
+                >
+                  <AppText style={{ fontWeight: '600' }}>{t('decks.cardForm.example')}</AppText>
+                  {generateButton}
+                </View>
+                {exampleField}
+                <FormFieldError message={errors.example?.message} />
+                <View style={{ marginTop: 8 }}>{suggestions}</View>
+              </View>
+            )}
+          </AiExampleGenerator>
+        ) : (
+          <View>
+            <FieldLabel>{t('decks.cardForm.example')}</FieldLabel>
+            {exampleField}
+            <FormFieldError message={errors.example?.message} />
+            <AppText style={{ color: '#667085', fontSize: 13, marginTop: 6 }}>
+              {t('decks.cardForm.saveFirstForAi')}
+            </AppText>
+          </View>
         )}
-      />
-      <FormFieldError message={errors.notes?.message} />
 
-      {errorMessage ? <ErrorState message={errorMessage} /> : null}
+        <View>
+          <FieldLabel>{t('decks.cardForm.notes')}</FieldLabel>
+          <Controller
+            control={control}
+            name="notes"
+            render={({ field: { onBlur, onChange, value } }) => (
+              <AppInput
+                accessibilityLabel={t('decks.cardForm.notesOptional')}
+                multiline
+                numberOfLines={4}
+                placeholder={t('decks.cardForm.notesOptional')}
+                value={value ?? ''}
+                onBlur={onBlur}
+                onChangeText={(text) => {
+                  clearError()
+                  onChange(text)
+                }}
+                style={{ minHeight: 96 }}
+              />
+            )}
+          />
+          <FormFieldError message={errors.notes?.message} />
+        </View>
 
-      <AppButton disabled={isSubmitting} onPress={() => void handleFormSubmit()}>
-        {isSubmitting ? (submittingLabel ?? `${submitLabel}...`) : submitLabel}
-      </AppButton>
+        {errorMessage ? <ErrorState message={errorMessage} /> : null}
+      </View>
+
+      <Pressable
+        {...buttonA11yProps(submitLabel)}
+        disabled={!canSubmit}
+        onPress={() => void handleFormSubmit()}
+        style={{
+          alignItems: 'center',
+          backgroundColor: '#1a56db',
+          borderRadius: 8,
+          opacity: canSubmit ? 1 : 0.45,
+          paddingVertical: 12,
+        }}
+      >
+        <AppText style={{ color: '#ffffff', fontSize: 15, fontWeight: '700' }}>
+          {isSubmitting ? (submittingLabel ?? `${submitLabel}...`) : submitLabel}
+        </AppText>
+      </Pressable>
 
       {onCancel ? (
-        <AppButton disabled={isSubmitting} onPress={onCancel}>
-          {resolvedCancelLabel}
-        </AppButton>
+        <Pressable
+          {...buttonA11yProps(resolvedCancelLabel)}
+          disabled={isSubmitting}
+          onPress={handleCancel}
+          style={{ alignSelf: 'flex-start', opacity: isSubmitting ? 0.5 : 1, paddingVertical: 4 }}
+        >
+          <AppText style={{ color: '#667085', fontSize: 15, fontWeight: '600' }}>
+            {resolvedCancelLabel}
+          </AppText>
+        </Pressable>
       ) : null}
 
       {showDelete && onDelete ? (
-        <AppButton
-          {...destructiveButtonA11yProps(t('decks.card.deleteCardA11y'))}
-          background="#b00020"
-          color="white"
-          disabled={isSubmitting}
-          onPress={onDelete}
-        >
-          {t('decks.card.deleteCard')}
-        </AppButton>
+        <View style={{ gap: 8, marginTop: 8 }}>
+          <AppText style={{ color: '#b42318', fontSize: 13, fontWeight: '700' }}>
+            {t('decks.actions.dangerZone')}
+          </AppText>
+          <Pressable
+            {...destructiveButtonA11yProps(t('decks.card.deleteCardA11y'))}
+            disabled={isSubmitting}
+            onPress={handleDelete}
+            style={{
+              alignItems: 'center',
+              alignSelf: 'flex-start',
+              flexDirection: 'row',
+              gap: 6,
+              opacity: isSubmitting ? 0.5 : 1,
+              paddingVertical: 4,
+            }}
+          >
+            <Ionicons color="#b42318" name="trash-outline" size={16} />
+            <AppText style={{ color: '#b42318', fontSize: 14, fontWeight: '600' }}>
+              {t('decks.card.deleteCard')}
+            </AppText>
+          </Pressable>
+        </View>
       ) : null}
     </View>
   )

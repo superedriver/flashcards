@@ -128,6 +128,8 @@ Expected state:
     - Fixed in TASK-30.31
 29. Group screens leave the tab navigator, so Home/Decks/Profile disappear
     - Fixed in TASK-30.32
+30. Edit Card is a tall stack of equal inputs and full-width gray buttons
+    - Fixed in TASK-30.33
 ```
 
 ## Discrepancy Register
@@ -1314,6 +1316,44 @@ frontend: move groups routes under (tabs); hide groups as a tab
 docs: lesson-flow Groups UI
 ```
 
+---
+
+### DISC-030 Edit Card is a tall stack of equal inputs and full-width gray buttons
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.33):
+
+```txt
+Product (approved in chat after 30.32):
+  - Compact form card (~600–700px): Front/Back single-line; Example/Notes textarea
+  - Generate is a compact action next to Example; AI suggestions + Use selected
+  - Save changes is primary blue; Cancel is text; Delete is a small Danger zone
+  - Save disabled when nothing changed or Front/Back invalid
+  - Unsaved changes: confirm before leaving
+
+Was wrong:
+  - Four equal multiline inputs; large Generate examples block
+  - Save / Cancel / Delete Card as full-width gray/red buttons
+```
+
+Action:
+
+```txt
+TASK-30.33 Restyle Edit Card into a compact form with AI helper
+```
+
+Impact:
+
+```txt
+frontend: CardForm, AI example helper, Edit Card screen
+docs: lesson-flow Edit Card UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1365,6 +1405,7 @@ docs: lesson-flow Groups UI
 30.30                            restyle group invitations into pending cards and empty state
 30.31                            restyle Create Group into a compact form card
 30.32                            keep bottom tabs visible on group screens
+30.33                            restyle Edit Card into a compact form with AI helper
 ```
 
 ## Epic Summary
@@ -1402,6 +1443,7 @@ docs: lesson-flow Groups UI
 - [x] TASK-30.30 Restyle group invitations into pending cards and a clear empty state
 - [x] TASK-30.31 Restyle Create Group into a compact form card
 - [x] TASK-30.32 Keep bottom tabs visible on group screens
+- [x] TASK-30.33 Restyle Edit Card into a compact form with AI helper
 ```
 
 ---
@@ -5109,6 +5151,124 @@ None (human: tab bar on /groups and /groups/invitations).
 
 ```txt
 TASK-30.32 Keep bottom tabs visible on group screens
+```
+
+---
+
+# TASK-30.33 Restyle Edit Card into a compact form with AI helper
+
+## Status
+
+DONE
+
+## Context
+
+DISC-030: Edit Card is a tall stack of equal fields plus full-width gray Save/Cancel and a large Generate examples block.
+
+## Goal
+
+Compact Edit Card: main fields in a card, Generate next to Example, AI suggestions with Use selected, primary Save, text Cancel, small Danger zone Delete. Confirm unsaved leave. Save disabled when clean or Front/Back invalid.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/domain/permissions.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/hooks/use-unsaved-changes-guard.ts
+apps/mobile/src/features/decks/hooks/index.ts
+apps/mobile/src/features/decks/components/card-form.tsx
+apps/mobile/src/features/decks/screens/edit-card-screen.tsx
+apps/mobile/src/features/decks/screens/create-card-screen.tsx
+apps/mobile/src/features/ai-examples/components/ai-example-generator.tsx
+apps/mobile/src/features/ai-examples/components/generated-example-list.tsx
+apps/mobile/src/features/ai-examples/components/generated-example-list-item.tsx
+apps/mobile/src/i18n/resources/en/ai-examples.ts
+apps/mobile/src/i18n/resources/uk/ai-examples.ts
+apps/mobile/src/i18n/resources/en/decks.ts
+apps/mobile/src/i18n/resources/uk/decks.ts
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Compact form card, maxWidth 640. Front/Back single-line; Example/Notes textarea.
+2. Generate is compact icon+text next to Example. After generate: radio list + Use selected.
+3. Use selected fills Example only; persist on Save changes. Do not auto-save; drop Save to card from this UI.
+4. Save changes primary blue, disabled when not dirty or Front/Back empty/invalid.
+5. Cancel is text. Delete is a small Danger zone (still confirms).
+6. Confirm before leaving with unsaved changes (navigation + web beforeunload).
+7. CardForm stays shared; Add Card gets compact fields/actions without Generate/Delete.
+8. Update live SoT. Do not rewrite docs/tasks/done/*.
+9. Mark TASK-30.33 and DISC-030 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+- AI generate still requires card ownership (existing mutation).
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change generateCardExamples / saveGeneratedCardExample backend.
+- Generated examples must not auto-save onto the card.
+```
+
+## Implementation Notes
+
+```txt
+- Follow Create Group: bordered card, #1a56db primary, text Cancel.
+- Keep delete confirm. Skip leave-guard after successful save/delete.
+```
+
+## Acceptance Criteria
+
+```txt
+- Edit Card matches the compact layout; Generate is not a large section.
+- Save disabled until a valid change exists.
+- Leave with dirty form shows confirm.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: Edit Card layout, Generate, unsaved confirm).
+```
+
+## Do Not Do
+
+```txt
+- Do not restyle Edit Deck or deck detail.
+- Do not change AI rate limits or provider.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.33 Restyle Edit Card into a compact form with AI helper
 ```
 
 ---

@@ -124,7 +124,7 @@ export const decksEn = {
     deleteTitle: 'Delete card',
     deleteMessage: 'This card will be permanently deleted.',
     deleted: 'Card deleted.',
-    deleteCard: 'Delete Card',
+    deleteCard: 'Delete card',
     deleteCardA11y: 'Delete card',
     deleteError: 'Could not delete card. Please try again.',
     empty: 'This deck has no cards yet.',
@@ -148,6 +148,8 @@ export const decksEn = {
     notes: 'Notes',
     notesOptional: 'Notes (optional)',
     saveFirstForAi: 'Save the card first to generate AI examples.',
+    unsavedTitle: 'Discard unsaved changes?',
+    unsavedMessage: 'Your edits will be lost if you leave this page.',
   },
   deckForm: {
     title: 'Title',

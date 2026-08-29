@@ -1,50 +1,50 @@
-import { useRef, useState } from 'react'
+import { Ionicons } from '@expo/vector-icons'
+import { type ReactNode, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { getCurrentLocale } from '@/i18n'
-import {
-  useGenerateCardExamplesMutation,
-  useSaveGeneratedCardExampleMutation,
-} from '@/graphql/generated'
-import { AppButton, AppText } from '@/ui/primitives'
-import { ErrorState, LoadingState } from '@/ui/components'
+import { useGenerateCardExamplesMutation } from '@/graphql/generated'
+import { AppText } from '@/ui/primitives'
+import { ErrorState } from '@/ui/components'
+import { buttonA11yProps } from '@/ui/utils/accessibility'
 
 import { GeneratedExampleList } from './generated-example-list'
 
+export type AiExampleGeneratorRenderProps = {
+  generateButton: ReactNode
+  suggestions: ReactNode
+}
+
 export type AiExampleGeneratorProps = {
   cardId: string
-  currentExample?: string | null
+  children: (parts: AiExampleGeneratorRenderProps) => ReactNode
   onExampleSelected: (exampleText: string) => void
 }
 
 export function AiExampleGenerator({
   cardId,
-  currentExample,
+  children,
   onExampleSelected,
 }: AiExampleGeneratorProps) {
   const { t } = useTranslation()
   const [examples, setExamples] = useState<string[]>([])
-  const [selectedExample, setSelectedExample] = useState<string | null>(currentExample ?? null)
+  const [selectedExample, setSelectedExample] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [feedback, setFeedback] = useState<string | null>(null)
-  const [savingExample, setSavingExample] = useState<string | null>(null)
   const isGeneratingRef = useRef(false)
 
   const [generateCardExamples, { loading: isGenerating }] = useGenerateCardExamplesMutation()
-  const [saveGeneratedCardExample, { loading: isSaving }] = useSaveGeneratedCardExampleMutation({
-    refetchQueries: ['DeckCards'],
-  })
 
   const handleGenerate = async () => {
-    if (isGeneratingRef.current || isGenerating || isSaving) {
+    if (isGeneratingRef.current || isGenerating) {
       return
     }
 
     isGeneratingRef.current = true
     setErrorMessage(null)
-    setFeedback(null)
+    setSelectedExample(null)
+    setExamples([])
 
     try {
       const result = await generateCardExamples({
@@ -71,64 +71,45 @@ export function AiExampleGenerator({
     }
   }
 
-  const handleSelect = (exampleText: string) => {
-    setSelectedExample(exampleText)
-    onExampleSelected(exampleText)
-    setFeedback(t('aiExamples.selectedFeedback'))
-  }
-
-  const handleSave = async (exampleText: string) => {
-    if (isSaving) {
+  const handleUseSelected = () => {
+    if (!selectedExample) {
       return
     }
 
-    setSavingExample(exampleText)
-    setErrorMessage(null)
-    setFeedback(null)
-
-    try {
-      const result = await saveGeneratedCardExample({
-        variables: {
-          input: {
-            cardId,
-            exampleText,
-          },
-        },
-      })
-
-      if (!result.data?.saveGeneratedCardExample.card) {
-        setErrorMessage(t('aiExamples.saveError'))
-        return
-      }
-
-      setSelectedExample(exampleText)
-      onExampleSelected(exampleText)
-      setFeedback(t('aiExamples.savedFeedback'))
-    } catch (error) {
-      setErrorMessage(getGraphqlErrorMessage(error, t('aiExamples.saveError')))
-    } finally {
-      setSavingExample(null)
-    }
+    onExampleSelected(selectedExample)
   }
 
-  return (
-    <View style={{ gap: 12, marginBottom: 16 }}>
-      <AppText style={{ fontWeight: '600' }}>{t('aiExamples.title')}</AppText>
-      <AppText style={{ color: '#666666', fontSize: 14 }}>{t('aiExamples.description')}</AppText>
-      <AppButton disabled={isGenerating || isSaving} onPress={() => void handleGenerate()}>
+  const generateButton = (
+    <Pressable
+      {...buttonA11yProps(t('aiExamples.generate'))}
+      disabled={isGenerating}
+      onPress={() => void handleGenerate()}
+      style={{
+        alignItems: 'center',
+        flexDirection: 'row',
+        gap: 4,
+        opacity: isGenerating ? 0.5 : 1,
+        paddingVertical: 2,
+      }}
+    >
+      <Ionicons color="#1a56db" name="sparkles-outline" size={16} />
+      <AppText style={{ color: '#1a56db', fontSize: 14, fontWeight: '600' }}>
         {isGenerating ? t('aiExamples.generating') : t('aiExamples.generate')}
-      </AppButton>
-      {isGenerating ? <LoadingState message={t('aiExamples.generatingMessage')} /> : null}
+      </AppText>
+    </Pressable>
+  )
+
+  const suggestions = (
+    <View style={{ gap: 8 }}>
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      {feedback ? <AppText style={{ color: '#2e7d32' }}>{feedback}</AppText> : null}
       <GeneratedExampleList
         examples={examples}
-        isSaving={isSaving}
-        savingExample={savingExample}
         selectedExample={selectedExample}
-        onExampleSelected={handleSelect}
-        onSaveExample={(exampleText) => void handleSave(exampleText)}
+        onExampleSelected={setSelectedExample}
+        onUseSelected={handleUseSelected}
       />
     </View>
   )
+
+  return children({ generateButton, suggestions })
 }
