@@ -114,6 +114,8 @@ Expected state:
     - Fixed in TASK-30.24
 22. Own cards are tall, badges loud, titles shift stats, CTA says Start review
     - Fixed in TASK-30.25
+23. Own footer wraps / sits too close to the stats box
+    - Fixed in TASK-30.26
 ```
 
 ## Discrepancy Register
@@ -1038,6 +1040,41 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-023 Own footer is not one clear row
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.26):
+
+```txt
+Product (approved in chat after 30.25):
+  - Footer is one nowrap row: Due left, Review → right
+  - A bit more space between the stats box and the footer
+
+Was wrong:
+  - Footer sat tight under stats; Due and Review did not read as one line
+```
+
+Action:
+
+```txt
+TASK-30.26 Align Own card footer into one row
+```
+
+Impact:
+
+```txt
+frontend: Own footer row, stats-to-footer gap
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -1082,6 +1119,7 @@ backend / Prisma / GraphQL: unchanged
 30.23                            restyle Own compact stats tiles
 30.24                            restyle Own card stats into one bordered row
 30.25                            compact Own cards and lock the title slot
+30.26                            align Own card footer into one row
 ```
 
 ## Epic Summary
@@ -1112,6 +1150,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.23 Restyle Own compact stats tiles
 - [x] TASK-30.24 Restyle Own card stats into one bordered row
 - [x] TASK-30.25 Compact Own cards and lock the title slot
+- [x] TASK-30.26 Align Own card footer into one row
 ```
 
 ---
@@ -4014,6 +4053,107 @@ None (human: My Decks Own compact cards + long title).
 
 ```txt
 TASK-30.25 Compact Own cards and lock the title slot
+```
+
+---
+
+# TASK-30.26 Align Own card footer into one row
+
+## Status
+
+DONE
+
+## Context
+
+DISC-023: Own Due and Review should sit on one clear row with more space under the stats box.
+
+## Goal
+
+Own card footer is one nowrap row: Due left, Review → right. Gap above the footer is a bit larger.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Footer is one nowrap row, space-between: Due chip left, Review → right.
+2. Increase the gap between the stats box and the footer (8 → 12).
+3. Match Due chip height to Review so they read as one line.
+4. Update live SoT. Do not rewrite docs/tasks/done/*.
+5. Mark TASK-30.26 and DISC-023 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Keep Review hidden when dueCount = 0.
+```
+
+## Acceptance Criteria
+
+```txt
+- Own footer reads as Due … Review → on one row.
+- There is a visible gap between stats and footer.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: My Decks Own footer row).
+```
+
+## Do Not Do
+
+```txt
+- Do not change deck-detail Start review.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.26 Align Own card footer into one row
 ```
 
 ---

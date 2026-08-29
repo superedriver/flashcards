@@ -83,17 +83,20 @@ function OwnFooter({ deckId }: { deckId: string }) {
       style={{
         alignItems: 'center',
         flexDirection: 'row',
+        flexWrap: 'nowrap',
         justifyContent: 'space-between',
-        minHeight: 28,
+        minHeight: 30,
+        width: '100%',
       }}
     >
       {dueCount > 0 ? (
         <View
           style={{
             backgroundColor: '#e8f0fe',
-            borderRadius: 6,
+            borderRadius: 8,
+            flexShrink: 0,
             paddingHorizontal: 8,
-            paddingVertical: 3,
+            paddingVertical: 5,
           }}
         >
           <AppText style={{ color: '#1a56db', fontSize: 11, fontWeight: '600' }}>
@@ -212,7 +215,7 @@ export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckLis
           ) : null}
 
           {section === 'own' ? (
-            <View style={{ gap: 8 }}>
+            <View style={{ gap: 12, width: '100%' }}>
               <DeckLearningStatsCompact deckId={deck.id} />
               <OwnFooter deckId={deck.id} />
             </View>

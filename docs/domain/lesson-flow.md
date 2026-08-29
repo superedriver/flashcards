@@ -493,8 +493,9 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
   Own: Private/Public compact muted pill (hide Approved); title slot is 2 lines
   (ellipsis, web tooltip, no shrink/scroll); one bordered stats box with 3 equal
   columns (📖 / ✏️ / ✅, larger group-colored count, gray Learn / Practiced /
-  Learned), thin vertical dividers, no per-status fills; Due chip left + Review →
-  right when dueCount > 0. Cards in a row share height.
+  Learned), thin vertical dividers, no per-status fills; footer is one row
+  (Due chip left, Review → right when dueCount > 0) with a gap above the stats box.
+  Cards in a row share height.
   Group: Shared + “Shared with your group”, View. No stats/Start
   Public: Official if isOfficial else Public (no Approved), View. Copy on detail
   No language: origin + visibility + “Language not selected”. Section name unchanged
