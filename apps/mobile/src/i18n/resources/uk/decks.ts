@@ -34,6 +34,11 @@ export const decksUk = {
     view: 'Відкрити →',
     languageNotSelected: 'Мову не вибрано',
   },
+  cardStats: {
+    learn: 'Вивчити',
+    practiced: 'Практика',
+    learned: 'Вивчено',
+  },
   deckDetail: {
     title: 'Деталі колоди',
     loading: 'Завантаження колоди...',

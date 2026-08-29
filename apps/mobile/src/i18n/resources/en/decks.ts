@@ -34,6 +34,11 @@ export const decksEn = {
     view: 'View →',
     languageNotSelected: 'Language not selected',
   },
+  cardStats: {
+    learn: 'Learn',
+    practiced: 'Practiced',
+    learned: 'Learned',
+  },
   deckDetail: {
     title: 'Deck Detail',
     loading: 'Loading deck...',

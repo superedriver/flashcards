@@ -108,6 +108,8 @@ Expected state:
     - Fixed in TASK-30.21
 19. Wrapped My Decks cards stay 228px and leave a gap on the right
     - Fixed in TASK-30.22
+20. Own compact stats stack emoji above the count; cards still say To learn
+    - Fixed in TASK-30.23
 ```
 
 ## Discrepancy Register
@@ -917,6 +919,44 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-020 Own compact stats stack emoji above count
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.23):
+
+```txt
+Product (approved in chat after 30.22):
+  - Compact stats: emoji + count on one centered row, short label below
+  - Group tiles use LEARNING_GROUP_STYLE backgrounds
+  - Card icons 📖 / ✏️ / 🎓 and label Learn (not To learn)
+  - Deck detail and word badges keep 🌱🔁✅ and To learn
+
+Was wrong:
+  - Emoji stacked above the number with vertical dividers, no tile fill
+  - Card label To learn
+```
+
+Action:
+
+```txt
+TASK-30.23 Restyle Own compact stats tiles
+```
+
+Impact:
+
+```txt
+frontend: compact stats layout, card Learn i18n
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -958,6 +998,7 @@ backend / Prisma / GraphQL: unchanged
 30.20                            narrow rail cards to fit three
 30.21                            wrap My Decks section cards into a grid
 30.22                            stretch My Decks cards to fill the row
+30.23                            restyle Own compact stats tiles
 ```
 
 ## Epic Summary
@@ -985,6 +1026,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.20 Narrow My Decks rail cards to fit three
 - [x] TASK-30.21 Wrap My Decks section cards into a grid
 - [x] TASK-30.22 Stretch My Decks cards to fill the row
+- [x] TASK-30.23 Restyle Own compact stats tiles
 ```
 
 ---
@@ -3562,6 +3604,110 @@ None (human: My Decks Own — row fills the column).
 
 ```txt
 TASK-30.22 Stretch My Decks cards to fill the row
+```
+
+---
+
+# TASK-30.23 Restyle Own compact stats tiles
+
+## Status
+
+DONE
+
+## Context
+
+DISC-020: Own card stats stack 🌱 above the count. Product wants emoji + count on one centered row, group-colored tiles, 📖/✏️/🎓, and Learn.
+
+## Goal
+
+Own My Decks compact stats match the approved tile chrome. Deck detail and word badges stay as after 30.19.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-learning-stats-compact.tsx
+apps/mobile/src/i18n/resources/en/decks.ts
+apps/mobile/src/i18n/resources/uk/decks.ts
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Each group is a rounded tile with LEARNING_GROUP_STYLE background.
+   Centered row: card emoji + count. Short label below, centered.
+2. Card emojis 📖 / ✏️ / 🎓. Do not change LEARNING_GROUP_STYLE.emoji.
+3. Card label Learn / Practiced / Learned. Detail still says To learn.
+4. Update live SoT. Do not rewrite docs/tasks/done/*.
+5. Mark TASK-30.23 and DISC-020 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Do not restyle deck-detail StatCell or word badges.
+```
+
+## Acceptance Criteria
+
+```txt
+- Own cards show centered emoji+count on one row, label below, group fills.
+- Cards say Learn, not To learn. Detail still says To learn.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: My Decks Own compact stats).
+```
+
+## Do Not Do
+
+```txt
+- Do not change deck-detail group tiles or word-badge emojis.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.23 Restyle Own compact stats tiles
 ```
 
 ---
