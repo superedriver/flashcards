@@ -126,6 +126,8 @@ Expected state:
     - Fixed in TASK-30.30
 28. Create Group is two inputs and two full-width gray buttons
     - Fixed in TASK-30.31
+29. Group screens leave the tab navigator, so Home/Decks/Profile disappear
+    - Fixed in TASK-30.32
 ```
 
 ## Discrepancy Register
@@ -1277,6 +1279,41 @@ api: create-group name/description max 60/300 (validation only)
 docs: lesson-flow Groups UI
 ```
 
+---
+
+### DISC-029 Group screens hide Home / Decks / Profile tabs
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.32):
+
+```txt
+Product (approved in chat after 30.31):
+  - My Groups and Invitations keep the bottom tab bar
+  - Same class of fix as owned/public decks inside (tabs)
+
+Was wrong:
+  - app/groups lives on the root stack, so /groups and /groups/invitations
+    leave (tabs) and hide Home / Decks / Profile
+```
+
+Action:
+
+```txt
+TASK-30.32 Keep bottom tabs visible on group screens
+```
+
+Impact:
+
+```txt
+frontend: move groups routes under (tabs); hide groups as a tab
+docs: lesson-flow Groups UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1327,6 +1364,7 @@ docs: lesson-flow Groups UI
 30.29                            restyle My Groups into compact rows and seed demo groups
 30.30                            restyle group invitations into pending cards and empty state
 30.31                            restyle Create Group into a compact form card
+30.32                            keep bottom tabs visible on group screens
 ```
 
 ## Epic Summary
@@ -1363,6 +1401,7 @@ docs: lesson-flow Groups UI
 - [x] TASK-30.29 Restyle My Groups into compact rows and seed demo groups
 - [x] TASK-30.30 Restyle group invitations into pending cards and a clear empty state
 - [x] TASK-30.31 Restyle Create Group into a compact form card
+- [x] TASK-30.32 Keep bottom tabs visible on group screens
 ```
 
 ---
@@ -4961,6 +5000,115 @@ None (human: Create Group card + cancel).
 
 ```txt
 TASK-30.31 Restyle Create Group into a compact form card
+```
+
+---
+
+# TASK-30.32 Keep bottom tabs visible on group screens
+
+## Status
+
+DONE
+
+## Context
+
+DISC-029: `/groups` and `/groups/invitations` live on the root stack, so the bottom tab bar disappears. Same bug class as TASK-25.05 for decks.
+
+## Goal
+
+Group list, invitations, create, detail, and share-deck stay inside `(tabs)` so Home / Decks / Profile remain visible. URLs stay `/groups/...`.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/tasks/done/25-bugfixes.md
+```
+
+## Files to Create
+
+```txt
+apps/mobile/app/(tabs)/groups/_layout.tsx
+apps/mobile/app/(tabs)/groups/index.tsx
+apps/mobile/app/(tabs)/groups/new.tsx
+apps/mobile/app/(tabs)/groups/invitations.tsx
+apps/mobile/app/(tabs)/groups/[groupId]/index.tsx
+apps/mobile/app/(tabs)/groups/[groupId]/share-deck.tsx
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/app/_layout.tsx
+apps/mobile/app/(tabs)/_layout.tsx
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Move app/groups/* under app/(tabs)/groups/.
+2. Remove root Stack.Screen name="groups".
+3. Register groups in Tabs with href: null (not a fourth tab).
+4. Keep /groups, /groups/new, /groups/invitations, /groups/[groupId] working.
+5. Update live SoT. Do not rewrite docs/tasks/done/*.
+6. Mark TASK-30.32 and DISC-029 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI routing only. Do not change group permissions.
+```
+
+## Implementation Notes
+
+```txt
+- Follow public/preview: hidden tab, StudyLanguageProtectedStack layout.
+```
+
+## Acceptance Criteria
+
+```txt
+- My Groups and Invitations show Home / Decks / Profile tabs.
+- Create Group and Group Detail also keep the tab bar.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: tab bar on /groups and /groups/invitations).
+```
+
+## Do Not Do
+
+```txt
+- Do not add a Groups tab button.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.32 Keep bottom tabs visible on group screens
 ```
 
 ---

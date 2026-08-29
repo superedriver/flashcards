@@ -554,6 +554,7 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Empty invitations: envelope, short copy, Back to My Groups
 - Create Group: compact form card (name 1–60, description up to 300), primary Create,
   text Cancel. Short view-only line under the title. Success opens Group Detail
+- Group screens stay inside the tab navigator; Home / Decks / Profile remain visible
 ```
 
 ## Permissions

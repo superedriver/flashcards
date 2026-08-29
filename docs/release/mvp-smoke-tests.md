@@ -768,6 +768,7 @@ curl -fsS -X POST "$INTERNAL_JOB_URL" \
 - My Groups shows compact Create/Invitations cards and Your Groups rows
 - Invitations empty state offers Back to My Groups; Accept/Decline remove the card
 - Create Group is a compact form card; success opens Group Detail
+- Group screens keep Home / Decks / Profile tabs visible
 ```
 
 **Result:** - [ ] PASS - [ ] FAIL - [ ] N/A
