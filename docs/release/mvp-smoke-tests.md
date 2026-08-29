@@ -669,6 +669,7 @@ query {
 - Settings persist without a Save click
 - Reloaded Profile shows updated values
 - Invalid values are rejected safely
+- Groups and Invitations rows are visible but disabled
 ```
 
 **Result:** - [ ] PASS - [ ] FAIL

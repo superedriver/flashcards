@@ -130,6 +130,8 @@ Expected state:
     - Fixed in TASK-30.32
 30. Edit Card is a tall stack of equal inputs and full-width gray buttons
     - Fixed in TASK-30.33
+31. Temporarily disable Profile Groups and Invitations
+    - Fixed in TASK-30.34
 ```
 
 ## Discrepancy Register
@@ -1354,6 +1356,40 @@ frontend: CardForm, AI example helper, Edit Card screen
 docs: lesson-flow Edit Card UI
 ```
 
+---
+
+### DISC-031 Temporarily disable Profile Groups and Invitations
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.34):
+
+```txt
+Product (approved in chat after 30.33):
+  - Keep groups functionality
+  - Disable Groups and Invitations buttons on Profile for now
+
+Was wrong:
+  - Profile Groups / Invitations rows still navigate
+```
+
+Action:
+
+```txt
+TASK-30.34 Disable Groups and Invitations on Profile
+```
+
+Impact:
+
+```txt
+frontend: Profile Groups/Invitations rows disabled
+docs: lesson-flow Profile UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1406,6 +1442,7 @@ docs: lesson-flow Edit Card UI
 30.31                            restyle Create Group into a compact form card
 30.32                            keep bottom tabs visible on group screens
 30.33                            restyle Edit Card into a compact form with AI helper
+30.34                            disable Groups and Invitations on Profile
 ```
 
 ## Epic Summary
@@ -1444,6 +1481,7 @@ docs: lesson-flow Edit Card UI
 - [x] TASK-30.31 Restyle Create Group into a compact form card
 - [x] TASK-30.32 Keep bottom tabs visible on group screens
 - [x] TASK-30.33 Restyle Edit Card into a compact form with AI helper
+- [x] TASK-30.34 Disable Groups and Invitations on Profile
 ```
 
 ---
@@ -5269,6 +5307,101 @@ None (human: Edit Card layout, Generate, unsaved confirm).
 
 ```txt
 TASK-30.33 Restyle Edit Card into a compact form with AI helper
+```
+
+---
+
+# TASK-30.34 Disable Groups and Invitations on Profile
+
+## Status
+
+DONE
+
+## Context
+
+DISC-031: Groups and Invitations on Profile should be disabled for now. Keep groups screens and APIs as they are.
+
+## Goal
+
+Profile Groups and Invitations rows stay visible but do not navigate.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/settings/components/settings-nav-row.tsx
+apps/mobile/src/features/profile/screens/profile-screen.tsx
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Disable Groups and Invitations on Profile (visible, not tappable).
+2. Do not remove group screens, routes, or API.
+3. Update live SoT. Do not rewrite docs/tasks/done/*.
+4. Mark TASK-30.34 and DISC-031 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change group permissions or backend.
+```
+
+## Implementation Notes
+
+```txt
+- Add disabled to SettingsNavRow. Keep onPress wired for later re-enable.
+```
+
+## Acceptance Criteria
+
+```txt
+- Profile Groups and Invitations do not navigate.
+- Direct /groups URLs still work.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: disabled Groups/Invitations on Profile).
+```
+
+## Do Not Do
+
+```txt
+- Do not delete groups feature code.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.34 Disable Groups and Invitations on Profile
 ```
 
 ---

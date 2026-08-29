@@ -534,7 +534,7 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 ```txt
 - Four blocks: Profile card, Groups/Invitations rows, Preferences card, Reminders card, Account
 - Profile card: email, verified status, member since. Hide Role for USER.
-- Groups and Invitations are compact nav rows. Staff links stay compact rows.
+- Groups and Invitations are compact nav rows, currently disabled. Staff links stay compact rows.
 - Preferences: interface language, native language, review size stepper (5–100). Autosave.
 - Reminders: time, timezone, use-device switch, push row. No IANA / minute-implementation copy.
 - Web push: “Available in the mobile app”; no disabled Enable button.

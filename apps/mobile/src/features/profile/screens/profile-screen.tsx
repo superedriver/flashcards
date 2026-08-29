@@ -12,6 +12,8 @@ import { useProfileMeQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
+const PROFILE_GROUPS_ENABLED = false
+
 export function ProfileScreen() {
   const { t } = useTranslation()
   const router = useRouter()
@@ -39,12 +41,14 @@ export function ProfileScreen() {
           <View style={{ flexDirection: 'row', gap: 12 }}>
             <View style={{ flex: 1, minWidth: 0 }}>
               <SettingsNavRow
+                disabled={!PROFILE_GROUPS_ENABLED}
                 label={t('profile.myGroups')}
                 onPress={() => router.push('/groups')}
               />
             </View>
             <View style={{ flex: 1, minWidth: 0 }}>
               <SettingsNavRow
+                disabled={!PROFILE_GROUPS_ENABLED}
                 label={t('profile.groupInvitations')}
                 onPress={() => router.push('/groups/invitations')}
               />
