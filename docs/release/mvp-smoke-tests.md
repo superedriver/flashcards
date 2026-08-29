@@ -398,6 +398,7 @@ query {
 ```txt
 - Card appears in deck card list
 - Card detail/edit view shows saved values
+- Empty Cards is a header with count and + Add card; no gray full-width button
 ```
 
 **Result:** - [ ] PASS - [ ] FAIL

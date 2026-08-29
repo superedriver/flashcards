@@ -46,6 +46,7 @@ export const decksEn = {
     loadError: 'Could not load deck.',
     startLesson: 'Start review',
     addCard: 'Add card',
+    addCardAction: '+ Add card',
     cardsHeading: 'Cards',
   },
   createDeck: {
@@ -128,6 +129,8 @@ export const decksEn = {
     deleteCardA11y: 'Delete card',
     deleteError: 'Could not delete card. Please try again.',
     empty: 'This deck has no cards yet.',
+    emptyTitle: 'No cards yet',
+    emptyHint: 'Add your first card to this deck',
   },
   learningGroup: {
     TO_LEARN: 'To learn',

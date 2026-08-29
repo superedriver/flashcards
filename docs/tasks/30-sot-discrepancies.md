@@ -136,6 +136,8 @@ Expected state:
     - Fixed in TASK-30.35
 33. Language pair arrow on deck forms is noise
     - Fixed in TASK-30.36
+34. Cards section is a bordered box with a duplicate Add card
+    - Fixed in TASK-30.37
 ```
 
 ## Discrepancy Register
@@ -1465,6 +1467,41 @@ frontend: DeckForm language block
 docs: lesson-flow Edit Deck UI
 ```
 
+---
+
+### DISC-034 Cards section is a bordered box with a duplicate Add card
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.37):
+
+```txt
+Product (approved in chat after 30.36):
+  - Cards is a section header with count and + Add card on the right
+  - No outer border around the list; no full-width gray Add card
+  - Empty: icon + No cards yet + hint. Remove the + next to Edit
+
+Was wrong:
+  - Bordered Cards box plus gray empty-state button plus header +
+```
+
+Action:
+
+```txt
+TASK-30.37 Restyle deck Cards into a header, count, and empty state
+```
+
+Impact:
+
+```txt
+frontend: CardList, DeckActions, deck detail
+docs: lesson-flow deck detail
+```
+
 ## Epic Rules
 
 ```txt
@@ -1520,6 +1557,7 @@ docs: lesson-flow Edit Deck UI
 30.34                            disable Groups and Invitations on Profile
 30.35                            restyle Edit Deck into a compact form with a language pair
 30.36                            remove the language pair arrow from deck forms
+30.37                            restyle deck Cards into a header, count, and empty state
 ```
 
 ## Epic Summary
@@ -1561,6 +1599,7 @@ docs: lesson-flow Edit Deck UI
 - [x] TASK-30.34 Disable Groups and Invitations on Profile
 - [x] TASK-30.35 Restyle Edit Deck into a compact form with a language pair
 - [x] TASK-30.36 Remove the language pair arrow from deck forms
+- [x] TASK-30.37 Restyle deck Cards into a header, count, and empty state
 ```
 
 ---
@@ -5680,6 +5719,105 @@ None (human: language block on Create/Edit Deck).
 
 ```txt
 TASK-30.36 Remove the language pair arrow from deck forms
+```
+
+---
+
+# TASK-30.37 Restyle deck Cards into a header, count, and empty state
+
+## Status
+
+DONE
+
+## Context
+
+DISC-034: Cards on deck detail is a large bordered box with a full-width gray Add card, while + already sits next to Edit.
+
+## Goal
+
+Cards is a section header with a count and + Add card on the right. Empty state is icon + No cards yet. No outer box, no gray empty button, no + next to Edit.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/card-list.tsx
+apps/mobile/src/features/decks/components/deck-actions.tsx
+apps/mobile/src/features/decks/screens/deck-detail-screen.tsx
+apps/mobile/src/i18n/resources/en/decks.ts
+apps/mobile/src/i18n/resources/uk/decks.ts
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Remove the outer border around the Cards list.
+2. Header: Cards + count, owner + Add card on the right.
+3. Empty: 📇, No cards yet, owner hint. No full-width Add card button.
+4. Remove the + icon next to Edit. Keep language-gate on Add card.
+5. Update live SoT. Do not rewrite docs/tasks/done/*.
+6. Mark TASK-30.37 and DISC-034 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change card delete or permissions.
+```
+
+## Implementation Notes
+
+```txt
+- Word rows keep their own border and inset. Do not restyle deck stats or Danger zone.
+```
+
+## Acceptance Criteria
+
+```txt
+- Empty deck: section header with 0 cards and + Add card; no gray button; no + by Edit.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: empty and non-empty Cards on deck detail).
+```
+
+## Do Not Do
+
+```txt
+- Do not restyle card rows or Danger zone.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.37 Restyle deck Cards into a header, count, and empty state
 ```
 
 ---

@@ -139,11 +139,21 @@ export function DeckDetailScreen() {
         <CardList
           cards={cards}
           deckId={deckId}
-          emptyActionLabel={t('decks.deckDetail.addCard')}
           isOwner={isOwner}
           listHeader={listHeader}
+          onAddCard={
+            isOwner
+              ? () => {
+                  if (deckNeedsLanguageAssignment(deck)) {
+                    promptAssignLanguages(() => router.push(`/decks/${deckId}/assign-languages`))
+                    return
+                  }
+
+                  router.push(`/decks/${deckId}/cards/new`)
+                }
+              : undefined
+          }
           onDeleteCard={isOwner ? handleDeleteCard : undefined}
-          onEmptyAction={isOwner ? () => router.push(`/decks/${deckId}/cards/new`) : undefined}
           sectionTitle={t('decks.deckDetail.cardsHeading')}
         />
       ) : null}

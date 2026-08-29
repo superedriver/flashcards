@@ -1,65 +1,79 @@
 import type { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlatList, View } from 'react-native'
+import { FlatList, Pressable, View } from 'react-native'
 
 import type { DeckCardsQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
-import { EmptyState } from '@/ui/components'
+import { buttonA11yProps } from '@/ui/utils/accessibility'
 
 import { CardListItem } from './card-list-item'
 
 type CardListProps = {
   cards: DeckCardsQuery['deckCards']
   deckId: string
-  emptyActionLabel?: string
   isOwner: boolean
   listHeader?: ReactElement | null
+  onAddCard?: () => void
   onDeleteCard?: (cardId: string) => void
-  onEmptyAction?: () => void
   sectionTitle?: string
-}
-
-const CARDS_BORDER = '#c5cdd8'
-
-const cardsBoxEdge = {
-  borderColor: CARDS_BORDER,
-  borderLeftWidth: 1,
-  borderRightWidth: 1,
 }
 
 export function CardList({
   cards,
   deckId,
-  emptyActionLabel,
   isOwner,
   listHeader,
+  onAddCard,
   onDeleteCard,
-  onEmptyAction,
   sectionTitle,
 }: CardListProps) {
   const { t } = useTranslation()
-  const framed = Boolean(sectionTitle)
+
+  const sectionHeader = sectionTitle ? (
+    <View
+      style={{
+        alignItems: 'center',
+        flexDirection: 'row',
+        gap: 12,
+        justifyContent: 'space-between',
+        marginBottom: 12,
+        marginTop: 4,
+      }}
+    >
+      <View
+        style={{
+          alignItems: 'baseline',
+          flex: 1,
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: 8,
+          minWidth: 0,
+        }}
+      >
+        <AppText style={{ fontSize: 18, fontWeight: '700' }}>{sectionTitle}</AppText>
+        <AppText style={{ color: '#667085', fontSize: 14, fontWeight: '600' }}>
+          {t('decks.header.cardCount', { count: cards.length })}
+        </AppText>
+      </View>
+      {isOwner && onAddCard ? (
+        <Pressable
+          {...buttonA11yProps(t('decks.deckDetail.addCard'))}
+          onPress={onAddCard}
+          style={{ paddingVertical: 4 }}
+        >
+          <AppText style={{ color: '#1a56db', fontSize: 15, fontWeight: '700' }}>
+            {t('decks.deckDetail.addCardAction')}
+          </AppText>
+        </Pressable>
+      ) : null}
+    </View>
+  ) : null
 
   const header =
-    listHeader || framed ? (
+    listHeader || sectionHeader ? (
       <>
         {listHeader}
-        {framed ? (
-          <View
-            style={{
-              ...cardsBoxEdge,
-              borderTopLeftRadius: 8,
-              borderTopRightRadius: 8,
-              borderTopWidth: 1,
-              paddingHorizontal: 8,
-              paddingTop: 8,
-            }}
-          >
-            <AppText style={{ fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
-              {sectionTitle}
-            </AppText>
-          </View>
-        ) : null}
+        {sectionHeader}
       </>
     ) : undefined
 
@@ -69,51 +83,27 @@ export function CardList({
       data={cards}
       keyExtractor={(item) => item.id}
       ListEmptyComponent={
-        <View
-          style={
-            framed
-              ? {
-                  ...cardsBoxEdge,
-                  borderBottomLeftRadius: 8,
-                  borderBottomRightRadius: 8,
-                  borderBottomWidth: 1,
-                  paddingBottom: 8,
-                  paddingHorizontal: 8,
-                }
-              : undefined
-          }
-        >
-          <EmptyState
-            actionLabel={onEmptyAction ? emptyActionLabel : undefined}
-            message={t('decks.card.empty')}
-            onAction={onEmptyAction}
-          />
+        <View style={{ alignItems: 'center', gap: 8, paddingHorizontal: 16, paddingVertical: 28 }}>
+          <AppText style={{ fontSize: 28 }}>📇</AppText>
+          <AppText style={{ color: '#101828', fontSize: 16, fontWeight: '700' }}>
+            {t('decks.card.emptyTitle')}
+          </AppText>
+          {isOwner ? (
+            <AppText style={{ color: '#667085', fontSize: 14, textAlign: 'center' }}>
+              {t('decks.card.emptyHint')}
+            </AppText>
+          ) : null}
         </View>
-      }
-      ListFooterComponent={
-        framed && cards.length > 0 ? (
-          <View
-            style={{
-              ...cardsBoxEdge,
-              borderBottomLeftRadius: 8,
-              borderBottomRightRadius: 8,
-              borderBottomWidth: 1,
-              height: 8,
-            }}
-          />
-        ) : null
       }
       ListHeaderComponent={header}
       renderItem={({ item, index }) => (
-        <View style={framed ? { ...cardsBoxEdge, paddingHorizontal: 8 } : undefined}>
-          <CardListItem
-            card={item}
-            deckId={deckId}
-            isOwner={isOwner}
-            isOdd={index % 2 === 1}
-            onDelete={onDeleteCard}
-          />
-        </View>
+        <CardListItem
+          card={item}
+          deckId={deckId}
+          isOwner={isOwner}
+          isOdd={index % 2 === 1}
+          onDelete={onDeleteCard}
+        />
       )}
       style={{ flex: 1 }}
     />

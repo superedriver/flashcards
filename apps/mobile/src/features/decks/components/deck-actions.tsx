@@ -6,10 +6,7 @@ import { Pressable, View } from 'react-native'
 
 import { DeckMoreMenu } from '@/features/decks/components/deck-more-menu'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
-import {
-  deckNeedsLanguageAssignment,
-  promptAssignLanguages,
-} from '@/features/decks/utils/deck-language-gate'
+import { deckNeedsLanguageAssignment } from '@/features/decks/utils/deck-language-gate'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { GroupDeckCopyActions } from '@/features/study-languages/components/group-deck-copy-actions'
 import type { DeckQuery } from '@/graphql/generated'
@@ -93,22 +90,6 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
           onPress={() => router.push(`/decks/${deck.id}/edit`)}
         >
           <Ionicons color="#333333" name="create-outline" size={22} />
-        </Pressable>
-        <Pressable
-          {...buttonA11yProps(t('decks.actions.addCard'))}
-          disabled={isDeleting}
-          hitSlop={8}
-          style={ICON_BUTTON_STYLE}
-          onPress={() => {
-            if (needsLanguages) {
-              promptAssignLanguages(goAssignLanguages)
-              return
-            }
-
-            router.push(`/decks/${deck.id}/cards/new`)
-          }}
-        >
-          <Ionicons color="#333333" name="add-outline" size={26} />
         </Pressable>
         <DeckMoreMenu deck={deck} />
       </View>

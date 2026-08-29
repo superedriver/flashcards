@@ -46,6 +46,7 @@ export const decksUk = {
     loadError: 'Не вдалося завантажити колоду.',
     startLesson: 'Почати повторення',
     addCard: 'Додати картку',
+    addCardAction: '+ Додати картку',
     cardsHeading: 'Картки',
   },
   createDeck: {
@@ -128,6 +129,8 @@ export const decksUk = {
     deleteCardA11y: 'Видалити картку',
     deleteError: 'Не вдалося видалити картку. Спробуйте ще раз.',
     empty: 'У цій колоді ще немає карток.',
+    emptyTitle: 'Поки немає карток',
+    emptyHint: 'Додайте першу картку до цієї колоди',
   },
   learningGroup: {
     TO_LEARN: 'Вивчити',
