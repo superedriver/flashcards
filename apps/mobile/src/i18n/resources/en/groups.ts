@@ -17,7 +17,8 @@ export const groupsEn = {
   },
   createGroup: {
     title: 'Create Group',
-    submit: 'Create Group',
+    subtitle: 'Create a study group and invite others.',
+    submit: 'Create group',
     submitting: 'Creating group...',
     error: 'Could not create group.',
   },
@@ -31,10 +32,10 @@ export const groupsEn = {
     shareDeck: 'Share Deck',
   },
   groupForm: {
-    description: 'Groups let you invite others and share decks for view-only study.',
     name: 'Group name',
+    namePlaceholder: 'Spanish Learners',
     descriptionLabel: 'Description',
-    descriptionOptional: 'Description (optional)',
+    descriptionPlaceholder: 'Practice Spanish together...',
   },
   inviteUser: {
     title: 'Invite by email',
@@ -95,8 +96,8 @@ export const groupsEn = {
   },
   validation: {
     nameRequired: 'Name is required.',
-    nameTooLong: 'Name is too long.',
-    descriptionTooLong: 'Description is too long.',
+    nameTooLong: 'Name must be at most 60 characters.',
+    descriptionTooLong: 'Description must be at most 300 characters.',
     emailInvalid: 'Enter a valid email address.',
   },
 } as const

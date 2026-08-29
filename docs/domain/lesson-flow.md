@@ -552,6 +552,8 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Invitations: pending cards only (group name, invited by, member/deck counts)
 - Accept is primary; Decline is secondary. The card leaves the list immediately
 - Empty invitations: envelope, short copy, Back to My Groups
+- Create Group: compact form card (name 1–60, description up to 300), primary Create,
+  text Cancel. Short view-only line under the title. Success opens Group Detail
 ```
 
 ## Permissions

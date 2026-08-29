@@ -18,6 +18,7 @@ export const groupsUk = {
   },
   createGroup: {
     title: 'Створити групу',
+    subtitle: 'Створіть навчальну групу і запросіть інших.',
     submit: 'Створити групу',
     submitting: 'Створення групи...',
     error: 'Не вдалося створити групу.',
@@ -32,10 +33,10 @@ export const groupsUk = {
     shareDeck: 'Поділитися колодою',
   },
   groupForm: {
-    description: 'Групи дозволяють запрошувати інших і ділитися колодами для перегляду.',
     name: 'Назва групи',
+    namePlaceholder: 'Spanish Learners',
     descriptionLabel: 'Опис',
-    descriptionOptional: 'Опис (необовʼязково)',
+    descriptionPlaceholder: 'Практикуємо іспанську разом...',
   },
   inviteUser: {
     title: 'Запросити за email',
@@ -97,8 +98,8 @@ export const groupsUk = {
   },
   validation: {
     nameRequired: "Ім'я обовʼязкове.",
-    nameTooLong: "Ім'я задовге.",
-    descriptionTooLong: 'Опис задовгий.',
+    nameTooLong: 'Назва має бути не довша за 60 символів.',
+    descriptionTooLong: 'Опис має бути не довший за 300 символів.',
     emailInvalid: 'Введіть дійсну адресу email.',
   },
 } as const

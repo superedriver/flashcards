@@ -124,6 +124,8 @@ Expected state:
     - Fixed in TASK-30.29
 27. Group invitations is a verbose status card with a bare empty line
     - Fixed in TASK-30.30
+28. Create Group is two inputs and two full-width gray buttons
+    - Fixed in TASK-30.31
 ```
 
 ## Discrepancy Register
@@ -1237,6 +1239,44 @@ seed: pending invitation fixtures for the demo user
 docs: lesson-flow Groups UI
 ```
 
+---
+
+### DISC-028 Create Group is two inputs and two full-width gray buttons
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.31):
+
+```txt
+Product (approved in chat after 30.30):
+  - Compact bordered form card, ~500–600px on desktop
+  - Primary Create group; Cancel is text. Description is a textarea
+  - Name 1–60, description up to 300. Create disabled while name is empty
+  - Loading on submit; success goes to Group Detail
+  - Short view-only copy under the title, not inside the form
+
+Was wrong:
+  - Loose inputs plus two large gray AppButtons; long view-only copy in the form
+```
+
+Action:
+
+```txt
+TASK-30.31 Restyle Create Group into a compact form card
+```
+
+Impact:
+
+```txt
+frontend: Create Group screen and GroupForm
+api: create-group name/description max 60/300 (validation only)
+docs: lesson-flow Groups UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1286,6 +1326,7 @@ docs: lesson-flow Groups UI
 30.28                            group Profile into compact autosave settings
 30.29                            restyle My Groups into compact rows and seed demo groups
 30.30                            restyle group invitations into pending cards and empty state
+30.31                            restyle Create Group into a compact form card
 ```
 
 ## Epic Summary
@@ -1321,6 +1362,7 @@ docs: lesson-flow Groups UI
 - [x] TASK-30.28 Group Profile into compact autosave settings
 - [x] TASK-30.29 Restyle My Groups into compact rows and seed demo groups
 - [x] TASK-30.30 Restyle group invitations into pending cards and a clear empty state
+- [x] TASK-30.31 Restyle Create Group into a compact form card
 ```
 
 ---
@@ -4808,6 +4850,117 @@ None (human: invitations empty + accept/decline).
 
 ```txt
 TASK-30.30 Restyle group invitations into pending cards and a clear empty state
+```
+
+---
+
+# TASK-30.31 Restyle Create Group into a compact form card
+
+## Status
+
+DONE
+
+## Context
+
+DISC-028: Create Group is two loose inputs and two large gray buttons. Product wants a compact form card.
+
+## Goal
+
+Create Group is a narrow bordered form: primary Create, text Cancel, limits, loading, then Group Detail.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/groups/screens/create-group-screen.tsx
+apps/mobile/src/features/groups/components/group-form.tsx
+apps/mobile/src/features/groups/validation/group-form.schema.ts
+apps/mobile/src/i18n/resources/en/groups.ts
+apps/mobile/src/i18n/resources/uk/groups.ts
+apps/api/src/modules/groups/application/use-cases/create-group.use-case.ts
+apps/api/src/modules/groups/application/use-cases/create-group.use-case.spec.ts
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Wrap fields in a bordered rounded card. Desktop form width about 500–600px.
+2. Create group is a primary blue button. Cancel is a text action outside the card.
+3. Description is a multiline textarea. Name 1–60. Description up to 300.
+4. Create is disabled while name is empty. Show loading while submitting.
+5. Success navigates to Group Detail. Short view-only copy stays under the title.
+6. Align create-group backend max lengths with the form. Do not change permissions.
+7. Update live SoT. Do not rewrite docs/tasks/done/*. Mark TASK-30.31 and DISC-028 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Do not change who can create groups or become owner.
+```
+
+## Implementation Notes
+
+```txt
+- GroupForm is only used by Create Group.
+```
+
+## Acceptance Criteria
+
+```txt
+- Create Group has one primary button and a text Cancel.
+- Empty name cannot submit. Success opens Group Detail.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/api exec jest --watchman=false src/modules/groups/application/use-cases/create-group.use-case.spec.ts
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: Create Group card + cancel).
+```
+
+## Do Not Do
+
+```txt
+- Do not add extra settings fields.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.31 Restyle Create Group into a compact form card
 ```
 
 ---

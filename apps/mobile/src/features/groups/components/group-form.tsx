@@ -1,15 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMemo, useRef } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 
 import {
+  GROUP_DESCRIPTION_MAX_LENGTH,
+  GROUP_NAME_MAX_LENGTH,
   createGroupFormSchema,
   type GroupFormValues,
 } from '@/features/groups/validation/group-form.schema'
-import { AppButton, AppInput, AppText } from '@/ui/primitives'
+import { AppInput, AppText } from '@/ui/primitives'
 import { ErrorState, FieldLabel, FormFieldError } from '@/ui/components'
+import { buttonA11yProps } from '@/ui/utils/accessibility'
 
 type GroupFormProps = {
   cancelLabel?: string
@@ -51,8 +54,11 @@ export function GroupForm({
     resolver: zodResolver(groupFormSchema),
   })
 
+  const nameValue = useWatch({ control, name: 'name' })
+  const canSubmit = Boolean(nameValue?.trim()) && !isSubmitting
+
   const handleFormSubmit = handleSubmit(async (values) => {
-    if (isSubmittingRef.current || isSubmitting) {
+    if (isSubmittingRef.current || isSubmitting || !values.name.trim()) {
       return
     }
 
@@ -71,59 +77,96 @@ export function GroupForm({
 
   return (
     <View style={{ gap: 12 }}>
-      <AppText style={{ color: '#666666', fontSize: 14 }}>
-        {t('groups.groupForm.description')}
-      </AppText>
-      <FieldLabel>{t('groups.groupForm.name')}</FieldLabel>
-      <Controller
-        control={control}
-        name="name"
-        render={({ field: { onBlur, onChange, value } }) => (
-          <AppInput
-            accessibilityLabel={t('groups.groupForm.name')}
-            placeholder={t('groups.groupForm.name')}
-            value={value}
-            onBlur={onBlur}
-            onChangeText={(text) => {
-              clearError()
-              onChange(text)
-            }}
+      <View
+        style={{
+          backgroundColor: '#ffffff',
+          borderColor: '#e4e7ec',
+          borderRadius: 12,
+          borderWidth: 1,
+          gap: 12,
+          padding: 16,
+        }}
+      >
+        <View>
+          <FieldLabel>{t('groups.groupForm.name')}</FieldLabel>
+          <Controller
+            control={control}
+            name="name"
+            render={({ field: { onBlur, onChange, value } }) => (
+              <AppInput
+                accessibilityLabel={t('groups.groupForm.name')}
+                maxLength={GROUP_NAME_MAX_LENGTH}
+                placeholder={t('groups.groupForm.namePlaceholder')}
+                value={value}
+                onBlur={onBlur}
+                onChangeText={(text) => {
+                  clearError()
+                  onChange(text)
+                }}
+              />
+            )}
           />
-        )}
-      />
-      <FormFieldError message={errors.name?.message} />
+          <FormFieldError message={errors.name?.message} />
+        </View>
 
-      <FieldLabel>{t('groups.groupForm.descriptionLabel')}</FieldLabel>
-      <Controller
-        control={control}
-        name="description"
-        render={({ field: { onBlur, onChange, value } }) => (
-          <AppInput
-            accessibilityLabel={t('groups.groupForm.descriptionOptional')}
-            multiline
-            numberOfLines={4}
-            placeholder={t('groups.groupForm.descriptionOptional')}
-            value={value ?? ''}
-            onBlur={onBlur}
-            onChangeText={(text) => {
-              clearError()
-              onChange(text)
-            }}
+        <View>
+          <FieldLabel>{t('groups.groupForm.descriptionLabel')}</FieldLabel>
+          <Controller
+            control={control}
+            name="description"
+            render={({ field: { onBlur, onChange, value } }) => (
+              <AppInput
+                accessibilityLabel={t('groups.groupForm.descriptionLabel')}
+                maxLength={GROUP_DESCRIPTION_MAX_LENGTH}
+                multiline
+                numberOfLines={4}
+                placeholder={t('groups.groupForm.descriptionPlaceholder')}
+                value={value ?? ''}
+                onBlur={onBlur}
+                onChangeText={(text) => {
+                  clearError()
+                  onChange(text)
+                }}
+                style={{ minHeight: 96 }}
+              />
+            )}
           />
-        )}
-      />
-      <FormFieldError message={errors.description?.message} />
+          <FormFieldError message={errors.description?.message} />
+        </View>
 
-      {errorMessage ? <ErrorState message={errorMessage} /> : null}
+        {errorMessage ? <ErrorState message={errorMessage} /> : null}
 
-      <AppButton disabled={isSubmitting} onPress={() => void handleFormSubmit()}>
-        {isSubmitting ? (submittingLabel ?? `${submitLabel}...`) : submitLabel}
-      </AppButton>
+        <View style={{ alignItems: 'flex-end', marginTop: 4 }}>
+          <Pressable
+            {...buttonA11yProps(submitLabel)}
+            disabled={!canSubmit}
+            onPress={() => void handleFormSubmit()}
+            style={{
+              backgroundColor: '#1a56db',
+              borderRadius: 8,
+              opacity: canSubmit ? 1 : 0.45,
+              paddingHorizontal: 16,
+              paddingVertical: 10,
+            }}
+          >
+            <AppText style={{ color: '#ffffff', fontSize: 15, fontWeight: '700' }}>
+              {isSubmitting ? (submittingLabel ?? `${submitLabel}...`) : submitLabel}
+            </AppText>
+          </Pressable>
+        </View>
+      </View>
 
       {onCancel ? (
-        <AppButton disabled={isSubmitting} onPress={onCancel}>
-          {resolvedCancelLabel}
-        </AppButton>
+        <Pressable
+          {...buttonA11yProps(resolvedCancelLabel)}
+          disabled={isSubmitting}
+          onPress={onCancel}
+          style={{ alignSelf: 'flex-start', opacity: isSubmitting ? 0.5 : 1, paddingVertical: 4 }}
+        >
+          <AppText style={{ color: '#667085', fontSize: 15, fontWeight: '600' }}>
+            {resolvedCancelLabel}
+          </AppText>
+        </Pressable>
       ) : null}
     </View>
   )

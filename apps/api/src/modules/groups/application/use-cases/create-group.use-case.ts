@@ -19,8 +19,8 @@ export type CreateGroupUseCaseInput = {
 
 export type CreateGroupUseCaseResult = Group;
 
-const NAME_MAX_LENGTH = 120;
-const DESCRIPTION_MAX_LENGTH = 1000;
+const NAME_MAX_LENGTH = 60;
+const DESCRIPTION_MAX_LENGTH = 300;
 
 @Injectable()
 export class CreateGroupUseCase {
@@ -56,7 +56,7 @@ export class CreateGroupUseCase {
     if (name.length > NAME_MAX_LENGTH) {
       throw new ApplicationError(
         ErrorCodes.VALIDATION_ERROR,
-        'Name must be at most 120 characters',
+        'Name must be at most 60 characters',
       );
     }
 
@@ -68,7 +68,7 @@ export class CreateGroupUseCase {
       if (description !== null && description.length > DESCRIPTION_MAX_LENGTH) {
         throw new ApplicationError(
           ErrorCodes.VALIDATION_ERROR,
-          'Description must be at most 1000 characters',
+          'Description must be at most 300 characters',
         );
       }
     }

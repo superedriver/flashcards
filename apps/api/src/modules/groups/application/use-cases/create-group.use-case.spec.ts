@@ -83,22 +83,22 @@ describe('CreateGroupUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
   });
 
-  it('throws VALIDATION_ERROR when name exceeds 120 characters', async () => {
+  it('throws VALIDATION_ERROR when name exceeds 60 characters', async () => {
     const { useCase } = createUseCase();
 
     await expect(
-      useCase.execute({ currentUser: authUser, name: 'a'.repeat(121) }),
+      useCase.execute({ currentUser: authUser, name: 'a'.repeat(61) }),
     ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
   });
 
-  it('throws VALIDATION_ERROR when description exceeds 1000 characters', async () => {
+  it('throws VALIDATION_ERROR when description exceeds 300 characters', async () => {
     const { useCase } = createUseCase();
 
     await expect(
       useCase.execute({
         currentUser: authUser,
         name: 'Group',
-        description: 'a'.repeat(1001),
+        description: 'a'.repeat(301),
       }),
     ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
   });
