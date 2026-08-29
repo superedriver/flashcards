@@ -132,6 +132,8 @@ Expected state:
     - Fixed in TASK-30.33
 31. Temporarily disable Profile Groups and Invitations
     - Fixed in TASK-30.34
+32. Edit Deck is a long form with two huge language fields
+    - Fixed in TASK-30.35
 ```
 
 ## Discrepancy Register
@@ -1390,6 +1392,44 @@ frontend: Profile Groups/Invitations rows disabled
 docs: lesson-flow Profile UI
 ```
 
+---
+
+### DISC-032 Edit Deck is a long form with two huge language fields
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.35):
+
+```txt
+Product (approved in chat after 30.34):
+  - Compact form card like Edit Card (~600–700px)
+  - Description textarea; Languages is one pair block 🇪🇸 → 🇬🇧
+  - Labels Target / Source, no (front)/(back)
+  - Selector rows with chevron; language-change warning only when changing
+  - Save changes primary, disabled when clean; Cancel is text
+
+Was wrong:
+  - Two large language fields with native+english names
+  - Full-width gray Save/Cancel; same-language warning always on screen
+```
+
+Action:
+
+```txt
+TASK-30.35 Restyle Edit Deck into a compact form with a language pair
+```
+
+Impact:
+
+```txt
+frontend: DeckForm, Edit/Create/Assign deck screens
+docs: lesson-flow Edit Deck UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1443,6 +1483,7 @@ docs: lesson-flow Profile UI
 30.32                            keep bottom tabs visible on group screens
 30.33                            restyle Edit Card into a compact form with AI helper
 30.34                            disable Groups and Invitations on Profile
+30.35                            restyle Edit Deck into a compact form with a language pair
 ```
 
 ## Epic Summary
@@ -1482,6 +1523,7 @@ docs: lesson-flow Profile UI
 - [x] TASK-30.32 Keep bottom tabs visible on group screens
 - [x] TASK-30.33 Restyle Edit Card into a compact form with AI helper
 - [x] TASK-30.34 Disable Groups and Invitations on Profile
+- [x] TASK-30.35 Restyle Edit Deck into a compact form with a language pair
 ```
 
 ---
@@ -5402,6 +5444,112 @@ None (human: disabled Groups/Invitations on Profile).
 
 ```txt
 TASK-30.34 Disable Groups and Invitations on Profile
+```
+
+---
+
+# TASK-30.35 Restyle Edit Deck into a compact form with a language pair
+
+## Status
+
+DONE
+
+## Context
+
+DISC-032: Edit Deck is a long form. Two language fields dominate the page; Save/Cancel are full-width gray buttons.
+
+## Goal
+
+Compact Edit Deck card like Edit Card: textarea description, Languages as a Target → Source pair, primary Save (disabled when clean), text Cancel. Warn about language change only when changing, not as a persistent banner.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-form.tsx
+apps/mobile/src/features/decks/screens/edit-deck-screen.tsx
+apps/mobile/src/features/decks/screens/create-deck-screen.tsx
+apps/mobile/src/features/decks/screens/assign-deck-languages-screen.tsx
+apps/mobile/src/i18n/resources/en/decks.ts
+apps/mobile/src/i18n/resources/uk/decks.ts
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Compact form card, maxWidth 640. Description is a textarea.
+2. Languages is one pair block: flag + name → flag + name, Target/Source captions, chevrons.
+3. Drop (front)/(back) from labels. Modal titles stay Target language / Source language.
+4. Remove the always-on same-language banner; warn on pick/save only.
+5. Keep existing save-time confirm when editing languages of a deck with cards.
+6. Save changes primary blue, disabled when nothing changed or title/languages invalid.
+7. Cancel is text. DeckForm stays shared (Create/Assign inherit compact layout).
+8. Update live SoT. Do not rewrite docs/tasks/done/*.
+9. Mark TASK-30.35 and DISC-032 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change language validation or GraphQL.
+```
+
+## Implementation Notes
+
+```txt
+- Follow CardForm: bordered card, #1a56db primary, text Cancel.
+- Compact language label is flag + nativeName, not native + (english).
+```
+
+## Acceptance Criteria
+
+```txt
+- Edit Deck matches the compact layout; language pair is one block.
+- Save disabled until a valid change exists.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: Edit Deck layout and language pickers).
+```
+
+## Do Not Do
+
+```txt
+- Do not restyle deck detail.
+- Do not change which languages can be assigned.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.35 Restyle Edit Deck into a compact form with a language pair
 ```
 
 ---

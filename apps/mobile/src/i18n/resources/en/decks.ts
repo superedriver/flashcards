@@ -57,7 +57,7 @@ export const decksEn = {
   assignLanguages: {
     title: 'Assign languages',
     description:
-      'This deck has no languages yet. Choose a target language (front) and source language (back) to continue.',
+      'This deck has no languages yet. Choose a target language and source language to continue.',
     loading: 'Loading deck...',
     loadError: 'Could not load deck.',
     submit: 'Save languages',
@@ -155,8 +155,11 @@ export const decksEn = {
     title: 'Title',
     description: 'Description',
     descriptionOptional: 'Description (optional)',
-    targetLanguage: 'Target language (front)',
-    sourceLanguage: 'Source language (back)',
+    targetLanguage: 'Target language',
+    sourceLanguage: 'Source language',
+    targetShort: 'Target',
+    sourceShort: 'Source',
+    languages: 'Languages',
     languagePlaceholder: 'Select a language',
     sameLanguageTitle: 'Same language pair',
     sameLanguageWarning:

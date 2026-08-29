@@ -57,7 +57,7 @@ export const decksUk = {
   assignLanguages: {
     title: 'Призначити мови',
     description:
-      'У цієї колоди ще немає мов. Оберіть мову вивчення (лицьова сторона) і мову перекладу (зворотна), щоб продовжити.',
+      'У цієї колоди ще немає мов. Оберіть мову вивчення і мову перекладу, щоб продовжити.',
     loading: 'Завантаження колоди...',
     loadError: 'Не вдалося завантажити колоду.',
     submit: 'Зберегти мови',
@@ -155,8 +155,11 @@ export const decksUk = {
     title: 'Назва',
     description: 'Опис',
     descriptionOptional: 'Опис (необовʼязково)',
-    targetLanguage: 'Мова вивчення (лицьова сторона)',
-    sourceLanguage: 'Мова перекладу (зворотна сторона)',
+    targetLanguage: 'Мова вивчення',
+    sourceLanguage: 'Мова перекладу',
+    targetShort: 'Вивчення',
+    sourceShort: 'Переклад',
+    languages: 'Мови',
     languagePlaceholder: 'Оберіть мову',
     sameLanguageTitle: 'Однакові мови',
     sameLanguageWarning:

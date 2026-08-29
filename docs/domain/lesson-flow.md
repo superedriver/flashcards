@@ -569,6 +569,18 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Unsaved changes: confirm before leaving
 ```
 
+## Edit Deck UI
+
+```txt
+- Compact form card (~600–700px): Title single-line, Description textarea
+- Languages is one pair block: Target → Source (flag + name, chevron selectors)
+- Labels are Target / Source, not front/back
+- Same-language warning only when the pair becomes the same, not as a persistent banner
+- Changing languages on save still confirms that card text will not regenerate
+- Save changes is primary blue, disabled when nothing changed or title/languages invalid
+- Cancel is a text action
+```
+
 ## Permissions
 
 ```txt

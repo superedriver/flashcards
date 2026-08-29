@@ -1,6 +1,7 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { View } from 'react-native'
 
 import { DeckForm } from '@/features/decks/components/deck-form'
 import { getGraphqlErrorMessage, optionalText } from '@/features/decks/utils/deck-form-utils'
@@ -68,59 +69,61 @@ export function AssignDeckLanguagesScreen() {
 
   return (
     <Screen scrollable>
-      <PageTitle title={t('decks.assignLanguages.title')} />
-      <AppText style={{ color: '#666666', marginBottom: 16 }}>
-        {t('decks.assignLanguages.description')}
-      </AppText>
-      <DeckForm
-        defaultValues={defaultValues}
-        errorMessage={errorMessage}
-        isSubmitting={isSubmitting}
-        submitLabel={t('decks.assignLanguages.submit')}
-        submittingLabel={t('decks.assignLanguages.submitting')}
-        onCancel={() => router.back()}
-        onClearError={() => setErrorMessage(null)}
-        onSubmit={async (values) => {
-          if (!deckId) {
-            return
-          }
-
-          setErrorMessage(null)
-
-          try {
-            const result = await updateDeck({
-              variables: {
-                input: {
-                  deckId,
-                  description: optionalText(values.description),
-                  sourceLanguage: values.sourceLanguage,
-                  targetLanguage: values.targetLanguage,
-                  title: values.title,
-                },
-              },
-            })
-
-            if (!result.data?.updateDeck?.deck) {
-              setErrorMessage(t('decks.assignLanguages.error'))
+      <View style={{ maxWidth: 640, width: '100%' }}>
+        <PageTitle title={t('decks.assignLanguages.title')} />
+        <AppText style={{ color: '#666666', marginBottom: 16 }}>
+          {t('decks.assignLanguages.description')}
+        </AppText>
+        <DeckForm
+          defaultValues={defaultValues}
+          errorMessage={errorMessage}
+          isSubmitting={isSubmitting}
+          submitLabel={t('decks.assignLanguages.submit')}
+          submittingLabel={t('decks.assignLanguages.submitting')}
+          onCancel={() => router.back()}
+          onClearError={() => setErrorMessage(null)}
+          onSubmit={async (values) => {
+            if (!deckId) {
               return
             }
 
-            const alreadyStudying = studyLanguages.some(
-              (item) => item.languageCode === values.targetLanguage,
-            )
+            setErrorMessage(null)
 
-            if (!alreadyStudying) {
-              await addStudyLanguage({
-                variables: { languageCode: values.targetLanguage },
+            try {
+              const result = await updateDeck({
+                variables: {
+                  input: {
+                    deckId,
+                    description: optionalText(values.description),
+                    sourceLanguage: values.sourceLanguage,
+                    targetLanguage: values.targetLanguage,
+                    title: values.title,
+                  },
+                },
               })
-            }
 
-            router.replace(`/decks/${deckId}`)
-          } catch (submitError) {
-            setErrorMessage(getGraphqlErrorMessage(submitError, t('decks.assignLanguages.error')))
-          }
-        }}
-      />
+              if (!result.data?.updateDeck?.deck) {
+                setErrorMessage(t('decks.assignLanguages.error'))
+                return
+              }
+
+              const alreadyStudying = studyLanguages.some(
+                (item) => item.languageCode === values.targetLanguage,
+              )
+
+              if (!alreadyStudying) {
+                await addStudyLanguage({
+                  variables: { languageCode: values.targetLanguage },
+                })
+              }
+
+              router.replace(`/decks/${deckId}`)
+            } catch (submitError) {
+              setErrorMessage(getGraphqlErrorMessage(submitError, t('decks.assignLanguages.error')))
+            }
+          }}
+        />
+      </View>
     </Screen>
   )
 }
