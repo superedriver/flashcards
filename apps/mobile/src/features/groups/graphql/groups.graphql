@@ -6,6 +6,12 @@ query MyGroups {
     createdById
     createdAt
     updatedAt
+    myRole
+    memberCount
+    membersPreview {
+      userId
+      initials
+    }
   }
 }
 

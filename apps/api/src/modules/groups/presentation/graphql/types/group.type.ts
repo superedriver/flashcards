@@ -1,4 +1,6 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { GroupMemberPreviewType } from './group-member-preview.type';
+import { GroupRole } from './group-role.type';
 
 @ObjectType('Group')
 export class GroupType {
@@ -19,4 +21,13 @@ export class GroupType {
 
   @Field()
   updatedAt: Date;
+
+  @Field(() => GroupRole, { nullable: true })
+  myRole: GroupRole | null;
+
+  @Field(() => Int, { nullable: true })
+  memberCount: number | null;
+
+  @Field(() => [GroupMemberPreviewType])
+  membersPreview: GroupMemberPreviewType[];
 }

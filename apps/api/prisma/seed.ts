@@ -291,6 +291,220 @@ async function ensureSharedGroupDeck(
   });
 }
 
+const LAYOUT_FIXTURE_USERS = [
+  { email: 'maria.groups@example.com', displayName: 'Maria' },
+  { email: 'sofia.groups@example.com', displayName: 'Sofia' },
+  { email: 'alex.groups@example.com', displayName: 'Alex' },
+  { email: 'nina.groups@example.com', displayName: 'Nina' },
+  { email: 'dana.groups@example.com', displayName: 'Dana' },
+  { email: 'kate.groups@example.com', displayName: 'Kate' },
+  { email: 'liam.groups@example.com', displayName: 'Liam' },
+  { email: 'jordan.groups@example.com', displayName: 'Jordan' },
+  { email: 'morgan.groups@example.com', displayName: 'Morgan' },
+  { email: 'tom.groups@example.com', displayName: 'Tom' },
+  { email: 'emma.groups@example.com', displayName: 'Emma' },
+  { email: 'rita.groups@example.com', displayName: 'Rita' },
+  { email: 'pat.groups@example.com', displayName: 'Pat' },
+  { email: 'lisa.groups@example.com', displayName: 'Lisa' },
+  { email: 'omar.groups@example.com', displayName: 'Omar' },
+] as const;
+
+const LAYOUT_GROUPS = [
+  {
+    name: 'Spanish Learners',
+    description: 'Practice Spanish vocabulary together.',
+    ownerEmail: DEMO_EMAIL,
+    memberEmails: [
+      'maria.groups@example.com',
+      'sofia.groups@example.com',
+      'alex.groups@example.com',
+      'nina.groups@example.com',
+    ],
+  },
+  {
+    name: 'Exam Prep Group',
+    description: 'Cards and drills before the test.',
+    ownerEmail: DEMO_EMAIL,
+    memberEmails: [
+      'dana.groups@example.com',
+      'kate.groups@example.com',
+      'liam.groups@example.com',
+      'nina.groups@example.com',
+      'alex.groups@example.com',
+      'sofia.groups@example.com',
+      'maria.groups@example.com',
+    ],
+  },
+  {
+    name: 'Weekend Study Club',
+    description: 'Casual reviews on Saturday morning.',
+    ownerEmail: 'jordan.groups@example.com',
+    memberEmails: ['morgan.groups@example.com', DEMO_EMAIL],
+  },
+  {
+    name: 'German Basics',
+    description: 'Everyday words and short phrases.',
+    ownerEmail: 'tom.groups@example.com',
+    memberEmails: [
+      DEMO_EMAIL,
+      'emma.groups@example.com',
+      'rita.groups@example.com',
+      'dana.groups@example.com',
+      'kate.groups@example.com',
+      'liam.groups@example.com',
+      'jordan.groups@example.com',
+      'morgan.groups@example.com',
+      'maria.groups@example.com',
+      'sofia.groups@example.com',
+      'alex.groups@example.com',
+    ],
+  },
+  {
+    name: 'Work Terms',
+    description: 'Office vocabulary for meetings.',
+    ownerEmail: 'pat.groups@example.com',
+    memberEmails: [
+      DEMO_EMAIL,
+      'lisa.groups@example.com',
+      'omar.groups@example.com',
+    ],
+  },
+] as const;
+
+async function upsertLayoutFixtureUser(
+  prisma: PrismaClient,
+  input: {
+    email: string;
+    displayName: string;
+    passwordHash: string;
+  },
+) {
+  const now = new Date();
+
+  const user = await prisma.user.upsert({
+    where: { email: input.email },
+    create: {
+      email: input.email,
+      passwordHash: input.passwordHash,
+      emailVerifiedAt: now,
+      termsAcceptedAt: now,
+      privacyAcceptedAt: now,
+      profile: {
+        create: {
+          displayName: input.displayName,
+        },
+      },
+    },
+    update: {
+      blockedAt: null,
+      deletedAt: null,
+    },
+  });
+
+  await prisma.userProfile.upsert({
+    where: { userId: user.id },
+    create: {
+      userId: user.id,
+      displayName: input.displayName,
+    },
+    update: {
+      displayName: input.displayName,
+    },
+  });
+
+  return user;
+}
+
+async function ensureLayoutDemoGroups(
+  prisma: PrismaClient,
+  demoUserId: string,
+) {
+  const passwordHash = await argon2.hash(DEMO_PASSWORD);
+  const usersByEmail = new Map<string, string>([[DEMO_EMAIL, demoUserId]]);
+
+  for (const fixture of LAYOUT_FIXTURE_USERS) {
+    const user = await upsertLayoutFixtureUser(prisma, {
+      email: fixture.email,
+      displayName: fixture.displayName,
+      passwordHash,
+    });
+    usersByEmail.set(fixture.email, user.id);
+  }
+
+  for (const fixture of [...LAYOUT_GROUPS].reverse()) {
+    const ownerId = usersByEmail.get(fixture.ownerEmail);
+
+    if (!ownerId) {
+      throw new Error(`Missing layout group owner ${fixture.ownerEmail}`);
+    }
+
+    let group = await prisma.group.findFirst({
+      where: {
+        name: fixture.name,
+        createdById: ownerId,
+        deletedAt: null,
+      },
+    });
+
+    if (!group) {
+      group = await prisma.group.create({
+        data: {
+          name: fixture.name,
+          description: fixture.description,
+          createdById: ownerId,
+        },
+      });
+    } else {
+      group = await prisma.group.update({
+        where: { id: group.id },
+        data: {
+          description: fixture.description,
+        },
+      });
+    }
+
+    await prisma.groupMember.upsert({
+      where: {
+        groupId_userId: {
+          groupId: group.id,
+          userId: ownerId,
+        },
+      },
+      create: {
+        groupId: group.id,
+        userId: ownerId,
+        role: 'OWNER',
+      },
+      update: {
+        role: 'OWNER',
+      },
+    });
+
+    for (const email of fixture.memberEmails) {
+      const userId = usersByEmail.get(email);
+
+      if (!userId || userId === ownerId) {
+        continue;
+      }
+
+      await prisma.groupMember.upsert({
+        where: {
+          groupId_userId: {
+            groupId: group.id,
+            userId,
+          },
+        },
+        create: {
+          groupId: group.id,
+          userId,
+          role: 'MEMBER',
+        },
+        update: {},
+      });
+    }
+  }
+}
+
 async function ensureDeckWithCards(
   prisma: PrismaClient,
   input: {
@@ -477,6 +691,8 @@ async function main() {
       deckId: groupDeck.id,
     });
 
+    await ensureLayoutDemoGroups(prisma, user.id);
+
     const catalogPublicDeck = await ensureDeckWithCards(prisma, {
       ownerId: catalogUser.id,
       title: CATALOG_PUBLIC_DECK_TITLE,
@@ -498,6 +714,9 @@ async function main() {
       `Queue decks: ${QUEUE_DECKS.map((deck) => deck.title).join(', ')}`,
     );
     console.log(`Group fixture: ${groupDeck.title}`);
+    console.log(
+      `Layout groups: ${LAYOUT_GROUPS.map((group) => group.name).join(', ')}`,
+    );
     console.log(`Public catalog fixture: ${catalogPublicDeck.title}`);
     console.log(
       `Settings: lessonSize=${LESSON_SIZE} activeTarget=${TARGET_LANGUAGE} native=${SOURCE_LANGUAGE}`,

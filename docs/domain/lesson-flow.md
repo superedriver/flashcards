@@ -541,6 +541,16 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Log out is a secondary text action under Account. No Save settings button.
 ```
 
+## Groups UI
+
+```txt
+- My Groups: two compact action cards (Create Group, Invitations), then Your Groups
+- Each group is one equal-height row: icon, name, description, member count,
+  Owner/Member badge, member-initial avatars, chevron
+- Owner rows may show ⋯ for invite / share. No full-width gray action buttons
+- Groups stay view-only; owners add members and share decks
+```
+
 ## Permissions
 
 ```txt

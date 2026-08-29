@@ -381,6 +381,9 @@ export type Group = {
   createdById: Scalars['String']['output']
   description?: Maybe<Scalars['String']['output']>
   id: Scalars['String']['output']
+  memberCount?: Maybe<Scalars['Int']['output']>
+  membersPreview: Array<GroupMemberPreview>
+  myRole?: Maybe<GroupRole>
   name: Scalars['String']['output']
   updatedAt: Scalars['DateTime']['output']
 }
@@ -412,6 +415,12 @@ export type GroupMember = {
   groupId: Scalars['String']['output']
   id: Scalars['String']['output']
   role: GroupRole
+  userId: Scalars['String']['output']
+}
+
+export type GroupMemberPreview = {
+  __typename?: 'GroupMemberPreview'
+  initials: Scalars['String']['output']
   userId: Scalars['String']['output']
 }
 
@@ -1840,6 +1849,13 @@ export type MyGroupsQuery = {
     createdById: string
     createdAt: any
     updatedAt: any
+    myRole?: GroupRole | null
+    memberCount?: number | null
+    membersPreview: Array<{
+      __typename?: 'GroupMemberPreview'
+      userId: string
+      initials: string
+    }>
   }>
 }
 
@@ -4815,6 +4831,12 @@ export const MyGroupsDocument = gql`
       createdById
       createdAt
       updatedAt
+      myRole
+      memberCount
+      membersPreview {
+        userId
+        initials
+      }
     }
   }
 `

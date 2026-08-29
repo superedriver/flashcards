@@ -27,6 +27,7 @@ import {
   GroupInvitation as GroupInvitationDomain,
   GroupMember as GroupMemberDomain,
   Group as GroupDomain,
+  GroupWithMyRole,
 } from '../../../domain/types';
 import { CreateGroupInput } from '../inputs/create-group.input';
 import { InviteUserToGroupInput } from '../inputs/invite-user-to-group.input';
@@ -81,7 +82,7 @@ export class GroupsResolver {
       currentUser: user,
     });
 
-    return groups.map(toGroupType);
+    return groups.map((group) => toGroupType(group));
   }
 
   @Query(() => GroupType)
@@ -234,7 +235,9 @@ export class GroupsResolver {
   }
 }
 
-function toGroupType(group: GroupDomain): GroupType {
+function toGroupType(group: GroupDomain | GroupWithMyRole): GroupType {
+  const listGroup = group as GroupWithMyRole;
+
   return {
     id: group.id,
     name: group.name,
@@ -242,6 +245,12 @@ function toGroupType(group: GroupDomain): GroupType {
     createdById: group.createdById,
     createdAt: group.createdAt,
     updatedAt: group.updatedAt,
+    myRole: listGroup.myRole ? (listGroup.myRole as GroupRole) : null,
+    memberCount: listGroup.memberCount ?? null,
+    membersPreview: (listGroup.membersPreview ?? []).map((member) => ({
+      userId: member.userId,
+      initials: member.initials,
+    })),
   };
 }
 

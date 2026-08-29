@@ -120,6 +120,8 @@ Expected state:
     - Fixed in TASK-30.27
 25. Profile is one long form; settings need a save click; Role: User is noise
     - Fixed in TASK-30.28
+26. My Groups is two full-width buttons plus untitled name cards
+    - Fixed in TASK-30.29
 ```
 
 ## Discrepancy Register
@@ -1154,6 +1156,45 @@ docs: lesson-flow Profile UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-026 My Groups is two full-width buttons plus untitled cards
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.29):
+
+```txt
+Product (approved in chat after 30.28):
+  - Compact Create Group / Invitations action cards
+  - Your Groups list of equal-height rows: name, description, member count,
+    Owner/Member badge, avatar initials, chevron; ⋯ on owner rows
+  - Seed several demo groups with mixed roles and sizes
+  - Do not change group permission rules
+
+Was wrong:
+  - Two gray full-width AppButtons and a stack of name-only cards
+```
+
+Action:
+
+```txt
+TASK-30.29 Restyle My Groups into compact rows and seed demo groups
+```
+
+Impact:
+
+```txt
+frontend: My Groups screen, group list rows, action cards
+api: myGroups exposes myRole, memberCount, membersPreview (no permission change)
+seed: extra demo groups and fixture members
+docs: lesson-flow Groups UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1201,6 +1242,7 @@ backend / Prisma / GraphQL: unchanged
 30.26                            align Own card footer into one row
 30.27                            restyle Home around Due now and Start review
 30.28                            group Profile into compact autosave settings
+30.29                            restyle My Groups into compact rows and seed demo groups
 ```
 
 ## Epic Summary
@@ -1234,6 +1276,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.26 Align Own card footer into one row
 - [x] TASK-30.27 Restyle Home around Due now and Start review
 - [x] TASK-30.28 Group Profile into compact autosave settings
+- [x] TASK-30.29 Restyle My Groups into compact rows and seed demo groups
 ```
 
 ---
@@ -4471,6 +4514,135 @@ None (human: Profile four blocks + autosave).
 
 ```txt
 TASK-30.28 Group Profile into compact autosave settings
+```
+
+---
+
+# TASK-30.29 Restyle My Groups into compact rows and seed demo groups
+
+## Status
+
+DONE
+
+## Context
+
+DISC-026: My Groups is two full-width buttons and untitled cards. Product wants compact action cards, equal-height group rows, and seeded demo groups.
+
+## Goal
+
+My Groups matches the compact list mock. Local seed has several groups with mixed roles and member counts. Group permission rules stay the same.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+docs/domain/permissions.md
+```
+
+## Files to Create
+
+```txt
+apps/api/src/modules/groups/domain/utils/member-initials.ts
+apps/api/src/modules/groups/domain/utils/member-initials.spec.ts
+apps/api/src/modules/groups/presentation/graphql/types/group-member-preview.type.ts
+apps/mobile/src/features/groups/components/group-action-card.tsx
+apps/mobile/src/features/groups/components/group-member-avatars.tsx
+apps/mobile/src/features/groups/components/group-owner-menu.tsx
+apps/mobile/src/features/groups/components/group-role-badge.tsx
+apps/mobile/src/features/groups/components/group-row-icon.tsx
+```
+
+## Files to Modify
+
+```txt
+apps/api/src/modules/groups/domain/types/group.type.ts
+apps/api/src/modules/groups/infrastructure/persistence/prisma-group.repository.ts
+apps/api/src/modules/groups/presentation/graphql/types/group.type.ts
+apps/api/src/modules/groups/presentation/graphql/resolvers/groups.resolver.ts
+apps/api/src/modules/groups/application/use-cases/my-groups.use-case.spec.ts
+apps/api/prisma/seed.ts
+apps/mobile/src/features/groups/graphql/groups.graphql
+apps/mobile/src/graphql/generated/index.ts
+apps/mobile/src/features/groups/screens/my-groups-screen.tsx
+apps/mobile/src/features/groups/components/group-list.tsx
+apps/mobile/src/features/groups/components/group-list-item.tsx
+apps/mobile/src/features/groups/components/index.ts
+apps/mobile/src/i18n/resources/en/groups.ts
+apps/mobile/src/i18n/resources/uk/groups.ts
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Replace full-width Create/Invitations buttons with compact action cards.
+2. Your Groups: equal-height bordered rows with name, description, member count,
+   Owner/Member badge, avatar initials, chevron.
+3. Owner rows may show ⋯ for invite/share. Do not change permission rules.
+4. Seed several demo groups with mixed Owner/Member roles and sizes.
+5. myGroups may expose existing membership data for the list. No Prisma schema change.
+6. Update live SoT. Do not rewrite docs/tasks/done/*.
+7. Mark TASK-30.29 and DISC-026 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+- membersPreview exposes initials only, not emails.
+```
+
+## Architecture Constraints
+
+```txt
+- Do not change GroupPermissionService or invite/share rules.
+- Do not change learning-steps or queue behavior.
+```
+
+## Implementation Notes
+
+```txt
+- Keep the existing Demo Study Group share fixture. Add extra layout groups.
+```
+
+## Acceptance Criteria
+
+```txt
+- My Groups has no stacked full-width gray Create/Invitations buttons.
+- Demo user sees Owner and Member rows with different member counts.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/api test -- src/modules/groups/application/use-cases/my-groups.use-case.spec.ts src/modules/groups/domain/utils/member-initials.spec.ts
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: My Groups layout + re-seed).
+```
+
+## Do Not Do
+
+```txt
+- Do not change who can invite, share, or copy group decks.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.29 Restyle My Groups into compact rows and seed demo groups
 ```
 
 ---

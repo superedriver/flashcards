@@ -10,6 +10,13 @@ export type Group = {
   deletedAt: Date | null;
 };
 
+export type GroupMemberPreview = {
+  userId: string;
+  initials: string;
+};
+
 export type GroupWithMyRole = Group & {
   myRole: GroupRole;
+  memberCount: number;
+  membersPreview: GroupMemberPreview[];
 };

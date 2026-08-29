@@ -765,6 +765,7 @@ curl -fsS -X POST "$INTERNAL_JOB_URL" \
 - Group is created
 - Invitation can be accepted
 - Shared deck is visible to group member
+- My Groups shows compact Create/Invitations cards and Your Groups rows
 ```
 
 **Result:** - [ ] PASS - [ ] FAIL - [ ] N/A

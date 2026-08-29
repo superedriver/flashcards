@@ -3,7 +3,14 @@ export const groupsUk = {
     title: 'Мої групи',
     subtitle: 'Створюйте групи, запрошуйте учасників і діліться колодами для перегляду.',
     createGroup: 'Створити групу',
+    createGroupHint: 'Нова навчальна група',
     invitations: 'Запрошення',
+    invitationsHint: 'Переглянути та відповісти',
+    yourGroups: 'Ваші групи',
+    memberCount: '{{count}} учасників',
+    manageA11y: 'Керувати групою',
+    viewOnlyNote:
+      'Групи лише для перегляду. Лише власники можуть додавати учасників і ділитися колодами.',
     loading: 'Завантаження груп...',
     loadError: 'Не вдалося завантажити групи.',
     empty: 'Ви ще не в жодній групі.',
@@ -87,6 +94,11 @@ export const groupsUk = {
     accepted: 'Прийнято',
     declined: 'Відхилено',
     expired: 'Прострочено',
+  },
+  roles: {
+    owner: 'Власник',
+    admin: 'Адмін',
+    member: 'Учасник',
   },
   validation: {
     nameRequired: "Ім'я обовʼязкове.",

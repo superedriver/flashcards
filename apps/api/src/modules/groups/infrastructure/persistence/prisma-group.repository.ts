@@ -10,6 +10,7 @@ import {
   GroupRole,
   GroupWithMyRole,
 } from '../../domain/types';
+import { memberInitials } from '../../domain/utils/member-initials';
 import { toGroup } from '../mappers/group.mapper';
 import { toGroupMember } from '../mappers/group-member.mapper';
 
@@ -81,7 +82,28 @@ export class PrismaGroupRepository implements GroupRepositoryPort {
         },
       },
       include: {
-        group: true,
+        group: {
+          include: {
+            members: {
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    email: true,
+                    profile: {
+                      select: {
+                        displayName: true,
+                      },
+                    },
+                  },
+                },
+              },
+              orderBy: {
+                createdAt: 'asc',
+              },
+            },
+          },
+        },
       },
       orderBy: {
         group: {
@@ -90,10 +112,26 @@ export class PrismaGroupRepository implements GroupRepositoryPort {
       },
     });
 
-    return memberships.map((membership) => ({
-      ...toGroup(membership.group),
-      myRole: membership.role,
-    }));
+    return memberships.map((membership) => {
+      const others = membership.group.members.filter(
+        (member) => member.userId !== userId,
+      );
+      const previewSource =
+        others.length > 0 ? others : membership.group.members;
+
+      return {
+        ...toGroup(membership.group),
+        myRole: membership.role,
+        memberCount: membership.group.members.length,
+        membersPreview: previewSource.slice(0, 3).map((member) => ({
+          userId: member.userId,
+          initials: memberInitials(
+            member.user.profile?.displayName,
+            member.user.email,
+          ),
+        })),
+      };
+    });
   }
 
   async findMembers(groupId: string): Promise<GroupMember[]> {
