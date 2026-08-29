@@ -490,9 +490,10 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
   My Decks sections are a full-width wrap grid (3 equal columns in the 720px
   column, then wrap); no horizontal rail and no leftover gap on the row.
   No pastel cap. Flags top-left, badge top-right, title, divider, section body, footer.
-  Own: Private/Public (hide Approved; show Pending/Rejected/Hidden); compact stats
-  are group-colored tiles (📖 + count / Learn, ✏️ Practiced, 🎓 Learned, centered);
-  Due + filled Start review when dueCount > 0
+  Own: Private/Public (hide Approved; show Pending/Rejected/Hidden); one bordered
+  stats box with 3 equal columns (📖 / ✏️ / ✅, large group-colored count, gray
+  Learn / Practiced / Learned), thin vertical dividers, no per-status fills;
+  Due left + filled Start review right when dueCount > 0
   Group: Shared + “Shared with your group”, View. No stats/Start
   Public: Official if isOfficial else Public (no Approved), View. Copy on detail
   No language: origin + visibility + “Language not selected”. Section name unchanged

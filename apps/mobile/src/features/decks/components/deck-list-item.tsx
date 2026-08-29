@@ -168,12 +168,19 @@ export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckLis
           <AppText
             ellipsizeMode="tail"
             numberOfLines={2}
-            style={{ fontSize: 20, fontWeight: '700', lineHeight: 24, marginBottom: 10 }}
+            style={{
+              fontSize: 20,
+              fontWeight: '700',
+              lineHeight: 24,
+              marginBottom: section === 'own' ? 12 : 10,
+            }}
           >
             {deck.title}
           </AppText>
 
-          <View style={{ backgroundColor: '#e4e7ec', height: 1, marginBottom: 10 }} />
+          {section !== 'own' ? (
+            <View style={{ backgroundColor: '#e4e7ec', height: 1, marginBottom: 10 }} />
+          ) : null}
 
           {section === 'own' ? (
             <View style={{ gap: 12 }}>

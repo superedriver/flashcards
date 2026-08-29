@@ -110,6 +110,8 @@ Expected state:
     - Fixed in TASK-30.22
 20. Own compact stats stack emoji above the count; cards still say To learn
     - Fixed in TASK-30.23
+21. Own compact stats use per-group color tiles instead of one bordered row
+    - Fixed in TASK-30.24
 ```
 
 ## Discrepancy Register
@@ -957,6 +959,45 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-021 Own compact stats should be one bordered 3-column row
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.24):
+
+```txt
+Product (approved mock after 30.23):
+  - Keep flags, title, Private/Public
+  - One shared bordered stats container, 3 equal columns
+  - Column: emoji, large count, gray label under
+  - Thin vertical dividers; no per-status background fills
+  - Footer: Due left, Start review right only when dueCount > 0
+  - Card tap → deck detail. UI only
+
+Was wrong:
+  - Separate group-colored tiles, emoji+count on one row, 🎓 for Learned
+```
+
+Action:
+
+```txt
+TASK-30.24 Restyle Own card stats into one bordered row
+```
+
+Impact:
+
+```txt
+frontend: compact stats chrome, Own card divider
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -999,6 +1040,7 @@ backend / Prisma / GraphQL: unchanged
 30.21                            wrap My Decks section cards into a grid
 30.22                            stretch My Decks cards to fill the row
 30.23                            restyle Own compact stats tiles
+30.24                            restyle Own card stats into one bordered row
 ```
 
 ## Epic Summary
@@ -1027,6 +1069,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.21 Wrap My Decks section cards into a grid
 - [x] TASK-30.22 Stretch My Decks cards to fill the row
 - [x] TASK-30.23 Restyle Own compact stats tiles
+- [x] TASK-30.24 Restyle Own card stats into one bordered row
 ```
 
 ---
@@ -3708,6 +3751,114 @@ None (human: My Decks Own compact stats).
 
 ```txt
 TASK-30.23 Restyle Own compact stats tiles
+```
+
+---
+
+# TASK-30.24 Restyle Own card stats into one bordered row
+
+## Status
+
+DONE
+
+## Context
+
+DISC-021: Own cards still use per-group color tiles. The approved mock is one shared bordered stats box with three stacked columns and a Due / Start review footer.
+
+## Goal
+
+Own My Decks cards match the mock: flags + title + badge, one 3-column stats container, Due + Start review. Presentation only.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-learning-stats-compact.tsx
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Keep flags, title, Private/Public (hide Approved).
+2. One bordered stats container, 3 equal columns, thin vertical dividers.
+   Each column: emoji, large group-colored count, gray Learn/Practiced/Learned.
+3. No per-status background fills. Card emojis 📖 / ✏️ / ✅.
+4. Footer: Due left, Start review right only when dueCount > 0.
+   Card press still goes to deck detail.
+5. Do not change backend, GraphQL, or learning logic.
+6. Update live SoT. Do not rewrite docs/tasks/done/*.
+7. Mark TASK-30.24 and DISC-021 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Drop the extra title divider on Own cards; the stats box is the separator.
+- Group / Public / No language chrome stays as after 30.19.
+```
+
+## Acceptance Criteria
+
+```txt
+- Own cards show one bordered 3-column stats row with vertical dividers.
+- Start review only when dueCount > 0. Card tap opens deck detail.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: My Decks Own cards vs mock).
+```
+
+## Do Not Do
+
+```txt
+- Do not change deck-detail stats or word badges.
+- Do not change Prisma, GraphQL, or queue logic.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.24 Restyle Own card stats into one bordered row
 ```
 
 ---
