@@ -148,6 +148,8 @@ Expected state:
     - Fixed in TASK-30.41
 39. Adding a card does not update deck/My Decks counts until reload
     - Fixed in TASK-30.42
+40. Review complete is three equal buttons plus a card count
+    - Fixed in TASK-30.43
 ```
 
 ## Discrepancy Register
@@ -1687,6 +1689,41 @@ frontend: create/delete/CSV card cache refetch
 docs: lesson-flow Deck UI, architecture Apollo notes
 ```
 
+---
+
+### DISC-040 Review complete has three equal buttons and a card count
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.43):
+
+```txt
+Product (approved in chat after 30.42):
+  - Narrow centered completion: icon, Nice work, success line, muted date
+  - Start another review primary; Back to deck or Home secondary; All decks text
+  - No Cards in this review. Home vs deck from session scope
+
+Was wrong:
+  - Three full-width AppButtons and Cards in this review: N
+```
+
+Action:
+
+```txt
+TASK-30.43 Simplify the review complete screen
+```
+
+Impact:
+
+```txt
+frontend: lesson summary screen
+docs: lesson-flow summary UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1748,6 +1785,7 @@ docs: lesson-flow Deck UI, architecture Apollo notes
 30.40                            show question/answer only and tighten the review layout
 30.41                            use Learn / Practiced / Learned icons on deck card badges
 30.42                            refetch learning stats after card create and delete
+30.43                            simplify the review complete screen
 ```
 
 ## Epic Summary
@@ -1795,6 +1833,7 @@ docs: lesson-flow Deck UI, architecture Apollo notes
 - [x] TASK-30.40 Show question/answer only and tighten the review layout
 - [x] TASK-30.41 Use Learn / Practiced / Learned icons on deck card badges
 - [x] TASK-30.42 Refetch learning stats after card create and delete
+- [x] TASK-30.43 Simplify the review complete screen
 ```
 
 ---
@@ -6516,6 +6555,110 @@ None (human: add card, check deck detail + My Decks counts).
 
 ```txt
 TASK-30.42 Refetch learning stats after card create and delete
+```
+
+---
+
+# TASK-30.43 Simplify the review complete screen
+
+## Status
+
+DONE
+
+## Context
+
+DISC-040: Review complete uses three equal full-width buttons and still shows Cards in this review. Product wants a clear hierarchy, no card-count stats, and Home vs Back to deck from session scope.
+
+## Goal
+
+Narrow centered completion with an icon, muted date, primary Start another review, text Back to deck or Home, and All decks. Do not show Cards in this review.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/screens/lesson-summary-screen.tsx
+apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
+apps/mobile/src/features/lessons/types/active-lesson.ts
+apps/mobile/src/i18n/formatters.ts
+apps/mobile/src/i18n/resources/en/lessons.ts
+apps/mobile/src/i18n/resources/uk/lessons.ts
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/release/mvp-smoke-tests.md
+docs/smoke/lesson-queue.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Primary: Start another review. Deck session starts that deck; Home session starts Home review.
+2. Secondary text: Back to deck (deck) or Home (Home). All decks is a text link.
+3. No Cards in this review. Muted date. Completion icon. Column ~480px.
+4. Persist session scope on completion so Home vs deck is not guessed from URL alone.
+5. Update live SoT. Do not rewrite docs/tasks/done/*.
+6. Mark TASK-30.43 and DISC-040 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Presentation only. completeLesson payload unchanged.
+```
+
+## Implementation Notes
+
+```txt
+- Home Start another calls startHomeLesson; if empty, go Home.
+```
+
+## Acceptance Criteria
+
+```txt
+- Deck complete: Start another, Back to deck, All decks. No card count.
+- Home complete: Start another, Home, All decks.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: complete a deck review and a Home review).
+```
+
+## Do Not Do
+
+```txt
+- Do not change completeLesson GraphQL stats.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.43 Simplify the review complete screen
 ```
 
 ---

@@ -652,7 +652,7 @@ query {
 ```txt
 - Review session completes successfully
 - Title is "Review complete" / "Повторення завершено"
-- Summary/stats screen loads
+- Primary action is Start another review; no Cards in this review count
 - Session is no longer active
 ```
 
@@ -924,7 +924,7 @@ _(Automated PASS in TASK-26.20; manual device checklist in `docs/smoke/learning-
 4. Answer the same card at most 3 times (display without an answer does not count); confirm N is frozen at answer time and the gap shrinks when no other ready cards remain.
 5. Confirm the review screen has no progress bar / “card X of Y”.
 6. Leave mid-lesson: no summary; next Start is a new session.
-7. Finish a lesson with repeats; summary “Cards in this review” is unique cards (repeats of the same cardId count once).
+7. Finish a lesson with repeats; summary has no “Cards in this review” / Know / Don't know.
 
 **Expected result:**
 
@@ -932,7 +932,7 @@ _(Automated PASS in TASK-26.20; manual device checklist in `docs/smoke/learning-
 - Home snapshot is frozen at lessonSize unique ready cards
 - Deck queue is live for the owner only
 - Max 3 answers (not displays); repeats follow the gap frozen at answer time (see lesson-flow.md)
-- Leave abandons; summary unique card count excludes extra attempts on the same cardId
+- Leave abandons; summary has no card-count or attempt stats
 ```
 
 **Result:** - [x] PASS - [ ] FAIL - [ ] N/A

@@ -448,12 +448,14 @@ UI summary (product):
 
 ```txt
 Review complete / Повторення завершено
-Nice work
-completedAt
-Cards in this review: N   (unique answered cardIds; repeats of the same cardId count once)
+Nice work + short success line
+completedAt (muted)
+Start another review (primary)
+Back to deck if the session was a deck review; Home if it started from Home
+All decks (text link)
 ```
 
-Do not show Reviewed, Know, Don't know, or Known % on this screen. Attempt stats stay in the API only until a later product decision.
+Do not show Cards in this review, Reviewed, Know, Don't know, or Known %. Attempt stats stay in the API only.
 
 ## Abandoning a review session
 
@@ -582,6 +584,16 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - After reveal: swipe right = Know, swipe left = Don't know; compact fallback buttons
 - Swipe hint under the card after reveal; hide after the first few answers
 - Leave review is a secondary text action. SRS, submitReview, and the queue are unchanged
+```
+
+## Review complete UI
+
+```txt
+- Narrow centered column (~480px). Completion icon, Nice work, short success line, muted date
+- No Cards in this review or attempt stats
+- Start another review is the only primary button
+- Deck session: Back to deck (text). Home session: Home (text)
+- All decks is a text link
 ```
 
 ## Edit Deck UI

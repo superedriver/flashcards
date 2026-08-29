@@ -126,9 +126,9 @@ export function LessonReviewScreen() {
 
     setCompletion({
       completedAt: summary.completedAt,
-      deckId: summary.deckId,
+      deckId: summary.deckId ?? lesson.deckId,
+      scope: lesson.scope ?? 'DECK',
       sessionId: summary.sessionId,
-      uniqueCardCount: lesson.reviewedCardIds.length,
     })
     clearActiveLesson()
     router.replace(

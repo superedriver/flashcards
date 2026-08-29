@@ -57,7 +57,7 @@ Apply `StudySession` snapshot/queueState migration first. Use own decks only; do
 ### Leave and summary
 
 - [ ] Confirmed leave calls `abandonLesson`, does not open summary, and next Start is a new session.
-- [ ] Completing when nothing is showable opens summary; Cards in this review is unique answered cards (repeats of the same cardId count once). No Know / Don't know / Known % on that screen.
+- [ ] Completing when nothing is showable opens summary; no Cards in this review / Know / Don't know / Known % on that screen.
 
 ### i18n
 

@@ -679,7 +679,7 @@ Flow:
    queue (showCount + freeze N at answer time) and returns nextCard, or null.
 10. The review session is completed when nothing is showable now (no countdown).
 11. Result screen is shown (title: "Review complete" / "Повторення завершено").
-    UI shows unique answered cards ("Cards in this review"). Attempt counts stay in the API only.
+    No card-count or attempt stats on that screen. Attempt counts stay in the API only.
 ```
 
 Repeats:

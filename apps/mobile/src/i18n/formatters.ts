@@ -30,6 +30,13 @@ export function formatDateTime(value: Date | string | number, locale?: AppLocale
   )
 }
 
+export function formatDateTimeCompact(value: Date | string | number, locale?: AppLocale): string {
+  const datePart = formatDate(value, locale)
+  const timePart = formatWithLocale(value, { hour: 'numeric', minute: '2-digit' }, locale)
+
+  return `${datePart} · ${timePart}`
+}
+
 export function formatDate(value: Date | string | number, locale?: AppLocale): string {
   return formatWithLocale(
     value,

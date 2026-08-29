@@ -28,6 +28,6 @@ export type ActiveLesson = {
 export type LessonCompletion = {
   completedAt: string
   deckId: string | null
+  scope: 'DECK' | 'HOME_ACTIVE_TARGET'
   sessionId: string
-  uniqueCardCount: number
 }
