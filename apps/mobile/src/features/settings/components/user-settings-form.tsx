@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import type { ReactNode } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
@@ -9,42 +10,39 @@ import { InterfaceLocaleField } from '@/features/settings/components/interface-l
 import { LessonSizeField } from '@/features/settings/components/lesson-size-field'
 import { NativeLanguageField } from '@/features/settings/components/native-language-field'
 import { ReminderTimeField } from '@/features/settings/components/reminder-time-field'
+import { SettingsSectionCard } from '@/features/settings/components/settings-section-card'
 import { TimezoneField } from '@/features/settings/components/timezone-field'
 import {
   createSettingsFormSchema,
   getDeviceTimezone,
   type SettingsFormValues,
 } from '@/features/settings/validation/settings-form.schema'
+import type { UpdateSettingsInput } from '@/graphql/generated'
+import { useMySettingsQuery, useUpdateMySettingsMutation } from '@/graphql/generated'
 import { getCurrentLocale, setAppLocale } from '@/i18n'
 import { persistLocale } from '@/i18n/locale-storage'
-import { useMySettingsQuery, useUpdateMySettingsMutation } from '@/graphql/generated'
-import { AppButton, AppText } from '@/ui/primitives'
+import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState } from '@/ui/components'
 
 type UserSettingsFormProps = {
-  notificationsEnabled: boolean
-  onNotificationsEnabledChange: (value: boolean) => void
+  notificationsSlot?: ReactNode
 }
 
-export function UserSettingsForm({
-  notificationsEnabled,
-  onNotificationsEnabledChange,
-}: UserSettingsFormProps) {
+export function UserSettingsForm({ notificationsSlot }: UserSettingsFormProps) {
   const { t } = useTranslation()
-  const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const isSubmittingRef = useRef(false)
   const settingsFormSchema = useMemo(() => createSettingsFormSchema(t), [t])
 
   const { data, error, loading, refetch } = useMySettingsQuery()
-  const [updateSettings, { loading: isSaving }] = useUpdateMySettingsMutation({
+  const [updateSettings] = useUpdateMySettingsMutation({
     refetchQueries: ['MySettings', 'StudyLanguageBootstrap'],
   })
+  const pendingInputRef = useRef<UpdateSettingsInput>({})
 
   const {
     control,
     formState: { errors },
-    handleSubmit,
     reset,
   } = useForm<SettingsFormValues>({
     defaultValues: {
@@ -73,37 +71,26 @@ export function UserSettingsForm({
       reminderTime: settings.reminderTime,
       timezone: settings.timezone || getDeviceTimezone(),
     })
-    onNotificationsEnabledChange(settings.notificationsEnabled)
-  }, [data?.myAccount.settings, onNotificationsEnabledChange, reset])
+  }, [data?.myAccount.settings, reset])
 
-  useEffect(() => {
-    reset((current) => ({
-      ...current,
-      notificationsEnabled,
-    }))
-  }, [notificationsEnabled, reset])
+  const flush = async () => {
+    if (isSubmittingRef.current) {
+      return
+    }
 
-  const onSubmit = handleSubmit(async (values) => {
-    if (isSubmittingRef.current || isSaving) {
+    const input = pendingInputRef.current
+    pendingInputRef.current = {}
+
+    if (Object.keys(input).length === 0) {
       return
     }
 
     isSubmittingRef.current = true
     setErrorMessage(null)
-    setFeedback(null)
 
     try {
       const result = await updateSettings({
-        variables: {
-          input: {
-            interfaceLocale: values.interfaceLocale,
-            lessonSize: values.lessonSize,
-            nativeLanguage: values.nativeLanguage,
-            notificationsEnabled: values.notificationsEnabled,
-            reminderTime: values.reminderTime ?? undefined,
-            timezone: values.timezone,
-          },
-        },
+        variables: { input },
       })
 
       if (!result.data?.updateSettings) {
@@ -111,15 +98,25 @@ export function UserSettingsForm({
         return
       }
 
-      await setAppLocale(values.interfaceLocale)
-      await persistLocale(values.interfaceLocale)
-      setFeedback(t('settings.saved'))
+      if (input.interfaceLocale) {
+        await setAppLocale(input.interfaceLocale === 'uk' ? 'uk' : 'en')
+        await persistLocale(input.interfaceLocale === 'uk' ? 'uk' : 'en')
+      }
     } catch (submitError) {
       setErrorMessage(getGraphqlErrorMessage(submitError, t('settings.saveError')))
     } finally {
       isSubmittingRef.current = false
+
+      if (Object.keys(pendingInputRef.current).length > 0) {
+        void flush()
+      }
     }
-  })
+  }
+
+  const commit = (input: UpdateSettingsInput) => {
+    pendingInputRef.current = { ...pendingInputRef.current, ...input }
+    void flush()
+  }
 
   if (loading) {
     return <LoadingState message={t('settings.loading')} />
@@ -130,23 +127,50 @@ export function UserSettingsForm({
   }
 
   return (
-    <View style={{ gap: 12, marginBottom: 16 }}>
-      <AppText accessibilityRole="header" style={{ fontSize: 16, fontWeight: '600' }}>
-        {t('settings.title')}
-      </AppText>
-      <AppText style={{ color: '#666666', fontSize: 14 }}>{t('settings.description')}</AppText>
-      <InterfaceLocaleField control={control} errors={errors} />
-      <NativeLanguageField control={control} errors={errors} />
-      <LessonSizeField control={control} errors={errors} />
-      <ReminderTimeField control={control} errors={errors} />
-      <TimezoneField control={control} errors={errors} />
+    <View style={{ gap: 16 }}>
+      <View style={{ gap: 8 }}>
+        <AppText accessibilityRole="header" style={{ fontSize: 18, fontWeight: '700' }}>
+          {t('settings.preferences')}
+        </AppText>
+        <SettingsSectionCard>
+          <InterfaceLocaleField
+            control={control}
+            errors={errors}
+            onCommit={(value) => void commit({ interfaceLocale: value })}
+          />
+          <NativeLanguageField
+            control={control}
+            errors={errors}
+            onCommit={(value) => void commit({ nativeLanguage: value })}
+          />
+          <LessonSizeField
+            control={control}
+            errors={errors}
+            onCommit={(value) => void commit({ lessonSize: value })}
+          />
+        </SettingsSectionCard>
+      </View>
+
+      <View style={{ gap: 8 }}>
+        <AppText accessibilityRole="header" style={{ fontSize: 18, fontWeight: '700' }}>
+          {t('settings.reminders')}
+        </AppText>
+        <SettingsSectionCard>
+          <ReminderTimeField
+            control={control}
+            errors={errors}
+            onCommit={(value) => void commit({ reminderTime: value })}
+          />
+          <TimezoneField
+            control={control}
+            errors={errors}
+            onCommit={(value) => void commit({ timezone: value })}
+          />
+          {notificationsSlot}
+        </SettingsSectionCard>
+      </View>
+
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      {feedback ? (
-        <AppText style={{ color: '#2e7d32', fontWeight: '600' }}>{feedback}</AppText>
-      ) : null}
-      <AppButton disabled={isSaving} onPress={() => void onSubmit()}>
-        {isSaving ? t('settings.saving') : t('settings.save')}
-      </AppButton>
     </View>
   )
 }

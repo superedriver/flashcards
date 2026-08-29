@@ -655,15 +655,15 @@ query {
 
 **Steps:**
 
-1. Open settings.
-2. Update lesson size, timezone, and reminder hour.
-3. Save settings.
+1. Open Profile.
+2. Update review size, timezone, and reminder time.
+3. Leave the fields (settings save immediately; there is no Save settings button).
 
 **Expected result:**
 
 ```txt
-- Settings save successfully
-- Reloaded settings show updated values
+- Settings persist without a Save click
+- Reloaded Profile shows updated values
 - Invalid values are rejected safely
 ```
 

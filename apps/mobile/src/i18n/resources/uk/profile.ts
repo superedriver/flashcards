@@ -5,6 +5,8 @@ export const profileUk = {
   signedInAs: 'Ви увійшли як',
   role: 'Роль: {{role}}',
   joined: 'Приєднався {{date}}',
+  memberSince: 'Учасник з {{date}}',
+  account: 'Обліковий запис',
   roles: {
     admin: 'Адміністратор',
     moderator: 'Модератор',
@@ -13,6 +15,7 @@ export const profileUk = {
   accountStatus: {
     title: 'Статус облікового запису',
     emailVerified: 'Електронну пошту підтверджено',
+    emailVerifiedWithMark: '✅ Електронну пошту підтверджено',
     emailNotVerified: 'Електронну пошту не підтверджено',
     verifiedAt: 'Підтверджено {{date}}',
     verifyPrompt:
@@ -20,8 +23,8 @@ export const profileUk = {
     resendVerification: 'Надіслати лист підтвердження ще раз',
     blocked: 'Цей обліковий запис заблоковано. Зверніться до підтримки, якщо вважаєте це помилкою.',
   },
-  myGroups: 'Мої групи',
-  groupInvitations: 'Запрошення до груп',
+  myGroups: 'Групи',
+  groupInvitations: 'Запрошення',
   adminDashboard: 'Панель адміністратора',
   userManagement: 'Керування користувачами',
   moderationQueue: 'Черга модерації',

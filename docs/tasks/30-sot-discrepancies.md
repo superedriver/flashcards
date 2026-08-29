@@ -118,6 +118,8 @@ Expected state:
     - Fixed in TASK-30.26
 24. Home is stretched; Due now is weak; START is a gray button labeled START
     - Fixed in TASK-30.27
+25. Profile is one long form; settings need a save click; Role: User is noise
+    - Fixed in TASK-30.28
 ```
 
 ## Discrepancy Register
@@ -1115,6 +1117,43 @@ docs: lesson-flow Home UI, architecture flow, smoke Home labels
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-025 Profile is one long equal-weight form
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.28):
+
+```txt
+Product (approved in chat after 30.27):
+  - Four blocks: profile card, groups rows, preferences, reminders, account
+  - Hide Role for USER; compact Groups/Invitations; review-size stepper
+  - Autosave; no Save settings; no technical reminder/IANA copy
+  - Web push: available in the mobile app. Log out is secondary text.
+
+Was wrong:
+  - One long form; Role: User; gray Log Out; Save settings; verbose help text
+```
+
+Action:
+
+```txt
+TASK-30.28 Group Profile into compact autosave settings
+```
+
+Impact:
+
+```txt
+frontend: Profile screen, settings fields, notifications row
+docs: lesson-flow Profile UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -1161,6 +1200,7 @@ backend / Prisma / GraphQL: unchanged
 30.25                            compact Own cards and lock the title slot
 30.26                            align Own card footer into one row
 30.27                            restyle Home around Due now and Start review
+30.28                            group Profile into compact autosave settings
 ```
 
 ## Epic Summary
@@ -1193,6 +1233,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.25 Compact Own cards and lock the title slot
 - [x] TASK-30.26 Align Own card footer into one row
 - [x] TASK-30.27 Restyle Home around Due now and Start review
+- [x] TASK-30.28 Group Profile into compact autosave settings
 ```
 
 ---
@@ -4312,6 +4353,124 @@ None (human: Home Due now + Start review).
 
 ```txt
 TASK-30.27 Restyle Home around Due now and Start review
+```
+
+---
+
+# TASK-30.28 Group Profile into compact autosave settings
+
+## Status
+
+DONE
+
+## Context
+
+DISC-025: Profile is a long equal-weight form. Product wants four compact blocks, autosave, and no technical copy.
+
+## Goal
+
+Profile is grouped settings: identity card, nav rows, preferences, reminders, secondary log out. Changes save immediately.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+apps/mobile/src/features/settings/components/settings-section-card.tsx
+apps/mobile/src/features/settings/components/settings-nav-row.tsx
+apps/mobile/src/features/settings/components/settings-labeled-row.tsx
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/profile/screens/profile-screen.tsx
+apps/mobile/src/features/profile/components/profile-card.tsx
+apps/mobile/src/features/settings/components/user-settings-form.tsx
+apps/mobile/src/features/settings/components/interface-locale-field.tsx
+apps/mobile/src/features/settings/components/native-language-field.tsx
+apps/mobile/src/features/settings/components/lesson-size-field.tsx
+apps/mobile/src/features/settings/components/reminder-time-field.tsx
+apps/mobile/src/features/settings/components/timezone-field.tsx
+apps/mobile/src/features/notifications/components/notification-settings-card.tsx
+apps/mobile/src/i18n/resources/en/profile.ts
+apps/mobile/src/i18n/resources/uk/profile.ts
+apps/mobile/src/i18n/resources/en/settings.ts
+apps/mobile/src/i18n/resources/uk/settings.ts
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Profile card: email, verified, member since. Hide Role for USER.
+2. Groups / Invitations compact nav rows. Keep staff links compact.
+3. Preferences card: locale, native language, review-size stepper 5–100. Autosave.
+4. Reminders card: time, timezone, device switch, push. No technical help copy.
+5. Web push: available in the mobile app. Log out is secondary text under Account.
+6. No Save settings. Update live SoT. Do not rewrite docs/tasks/done/*.
+7. Mark TASK-30.28 and DISC-025 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Keep updateSettings GraphQL. Do not change Prisma or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- AccountStatusCard stays in the repo but is unused on Profile; identity lives in ProfileCard.
+```
+
+## Acceptance Criteria
+
+```txt
+- Regular users do not see Role: User. Settings persist without Save settings.
+- Web has no disabled Enable notifications button.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: Profile four blocks + autosave).
+```
+
+## Do Not Do
+
+```txt
+- Do not change updateSettings contract.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.28 Group Profile into compact autosave settings
 ```
 
 ---

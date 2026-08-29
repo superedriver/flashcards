@@ -1,25 +1,21 @@
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Platform, Pressable, View } from 'react-native'
 
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { usePushTokenRegistration } from '@/features/notifications/hooks/use-push-token-registration'
 import { getNotificationPermissionStatus } from '@/features/notifications/services/notification-permission.service'
-import { formatPermissionStatus } from '@/features/notifications/utils/format-permission-status'
-import { useUpdateMySettingsMutation } from '@/graphql/generated'
-import { AppButton, AppCard, AppText } from '@/ui/primitives'
+import { SettingsLabeledRow } from '@/features/settings/components/settings-labeled-row'
+import { useMySettingsQuery, useUpdateMySettingsMutation } from '@/graphql/generated'
+import { AppText } from '@/ui/primitives'
 import { ErrorState } from '@/ui/components'
 
-type NotificationSettingsCardProps = {
-  enabled: boolean
-  onEnabledChange: (value: boolean) => void
-}
-
-export function NotificationSettingsCard({
-  enabled,
-  onEnabledChange,
-}: NotificationSettingsCardProps) {
+export function NotificationSettingsCard() {
+  const { t } = useTranslation()
+  const { data } = useMySettingsQuery()
+  const enabled = Boolean(data?.myAccount.settings.notificationsEnabled)
   const [permissionStatus, setPermissionStatus] = useState<string>('unknown')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [feedback, setFeedback] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isSubmittingRef = useRef(false)
 
@@ -32,8 +28,6 @@ export function NotificationSettingsCard({
     void getNotificationPermissionStatus().then(setPermissionStatus)
   }, [enabled])
 
-  const permissionInfo = formatPermissionStatus(permissionStatus)
-
   const handleEnable = async () => {
     if (isSubmittingRef.current || isSubmitting) {
       return
@@ -42,23 +36,18 @@ export function NotificationSettingsCard({
     isSubmittingRef.current = true
     setIsSubmitting(true)
     setErrorMessage(null)
-    setFeedback(null)
 
     try {
       const registration = await registerCurrentDeviceToken()
 
       if (!registration.granted) {
         setPermissionStatus(registration.status)
-        const deniedInfo = formatPermissionStatus(registration.status)
-        setErrorMessage(
-          deniedInfo.description ??
-            'Notification permission was denied. Enable notifications in your device settings and try again.',
-        )
+        setErrorMessage(t('settings.notifications.permissionDenied'))
         return
       }
 
       if (!registration.success) {
-        setErrorMessage('Could not register this device for notifications. Please try again.')
+        setErrorMessage(t('settings.notifications.enableError'))
         return
       }
 
@@ -71,15 +60,13 @@ export function NotificationSettingsCard({
       })
 
       if (!result.data?.updateSettings) {
-        setErrorMessage('Could not enable notifications.')
+        setErrorMessage(t('settings.notifications.enableError'))
         return
       }
 
-      onEnabledChange(true)
-      setFeedback('Notifications enabled for this device.')
       setPermissionStatus(registration.status)
     } catch (error) {
-      setErrorMessage(getGraphqlErrorMessage(error, 'Could not enable notifications.'))
+      setErrorMessage(getGraphqlErrorMessage(error, t('settings.notifications.enableError')))
     } finally {
       isSubmittingRef.current = false
       setIsSubmitting(false)
@@ -94,7 +81,6 @@ export function NotificationSettingsCard({
     isSubmittingRef.current = true
     setIsSubmitting(true)
     setErrorMessage(null)
-    setFeedback(null)
 
     try {
       await removeCurrentDeviceToken()
@@ -108,59 +94,61 @@ export function NotificationSettingsCard({
       })
 
       if (!result.data?.updateSettings) {
-        setErrorMessage('Could not disable notifications.')
+        setErrorMessage(t('settings.notifications.disableError'))
         return
       }
 
-      onEnabledChange(false)
-      setFeedback('Notifications disabled.')
       setPermissionStatus(await getNotificationPermissionStatus())
     } catch (error) {
-      setErrorMessage(getGraphqlErrorMessage(error, 'Could not disable notifications.'))
+      setErrorMessage(getGraphqlErrorMessage(error, t('settings.notifications.disableError')))
     } finally {
       isSubmittingRef.current = false
       setIsSubmitting(false)
     }
   }
 
+  if (Platform.OS === 'web') {
+    return (
+      <SettingsLabeledRow
+        label={t('settings.notifications.title')}
+        trailing={
+          <AppText style={{ color: '#667085', fontSize: 13 }}>
+            {t('settings.notifications.webOnly')}
+          </AppText>
+        }
+      />
+    )
+  }
+
   return (
-    <AppCard style={{ gap: 12, marginBottom: 16, padding: 16 }}>
-      <AppText style={{ fontSize: 16, fontWeight: '600' }}>Push notifications</AppText>
-      <AppText style={{ color: '#666666', fontSize: 14 }}>
-        Receive due-card reminders on this device. Your push token is stored securely and never
-        shown here.
-      </AppText>
-      <AppText>
-        App setting:{' '}
-        <AppText style={{ fontWeight: '600' }}>{enabled ? 'Enabled' : 'Disabled'}</AppText>
-      </AppText>
-      <AppText>
-        Device permission:{' '}
-        <AppText style={{ color: permissionInfo.color, fontWeight: '600' }}>
-          {permissionInfo.label}
+    <View style={{ gap: 8 }}>
+      <SettingsLabeledRow
+        label={t('settings.notifications.title')}
+        trailing={
+          <AppText style={{ color: '#667085', fontSize: 13, fontWeight: '600' }}>
+            {enabled ? t('settings.notifications.enabled') : t('settings.notifications.disabled')}
+          </AppText>
+        }
+      />
+      <Pressable
+        accessibilityRole="button"
+        disabled={isSubmitting}
+        onPress={() => void (enabled ? handleDisable() : handleEnable())}
+      >
+        <AppText style={{ color: '#1a56db', fontSize: 14, fontWeight: '600' }}>
+          {isSubmitting
+            ? t('settings.notifications.updating')
+            : enabled
+              ? t('settings.notifications.disable')
+              : t('settings.notifications.enable')}
         </AppText>
-      </AppText>
-      {permissionInfo.description ? (
-        <AppText style={{ color: '#666666', fontSize: 14 }}>{permissionInfo.description}</AppText>
-      ) : null}
-
-      {enabled ? (
-        <AppButton disabled={isSubmitting} onPress={() => void handleDisable()}>
-          {isSubmitting ? 'Updating...' : 'Disable notifications'}
-        </AppButton>
-      ) : (
-        <AppButton
-          disabled={isSubmitting || permissionStatus === 'unsupported'}
-          onPress={() => void handleEnable()}
-        >
-          {isSubmitting ? 'Enabling...' : 'Enable notifications'}
-        </AppButton>
-      )}
-
-      {feedback ? (
-        <AppText style={{ color: '#2e7d32', fontWeight: '600' }}>{feedback}</AppText>
+      </Pressable>
+      {permissionStatus === 'denied' ? (
+        <AppText style={{ color: '#b54708', fontSize: 13 }}>
+          {t('settings.notifications.permissionDenied')}
+        </AppText>
       ) : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-    </AppCard>
+    </View>
   )
 }

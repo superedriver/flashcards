@@ -1,16 +1,15 @@
 import { useRouter } from 'expo-router'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import { useLogout } from '@/features/auth/hooks/use-logout'
 import { NotificationSettingsCard } from '@/features/notifications/components/notification-settings-card'
-import { AccountStatusCard } from '@/features/profile/components/account-status-card'
 import { ProfileCard } from '@/features/profile/components/profile-card'
+import { SettingsNavRow } from '@/features/settings/components/settings-nav-row'
 import { UserSettingsForm } from '@/features/settings/components/user-settings-form'
 import { useProfileMeQuery } from '@/graphql/generated'
-import { AppButton } from '@/ui/primitives'
+import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
 export function ProfileScreen() {
@@ -18,7 +17,6 @@ export function ProfileScreen() {
   const router = useRouter()
   const logout = useLogout()
   const { user: authUser } = useAuth()
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false)
   const { data, error, loading, refetch } = useProfileMeQuery()
 
   const user = data?.me
@@ -35,41 +33,57 @@ export function ProfileScreen() {
       ) : null}
 
       {user ? (
-        <View style={{ gap: 12 }}>
+        <View style={{ gap: 20 }}>
           <ProfileCard user={user} />
-          <AccountStatusCard user={user} />
-          <View style={{ gap: 12 }}>
-            <AppButton onPress={() => router.push('/groups')}>{t('profile.myGroups')}</AppButton>
-            <AppButton onPress={() => router.push('/groups/invitations')}>
-              {t('profile.groupInvitations')}
-            </AppButton>
+
+          <View style={{ flexDirection: 'row', gap: 12 }}>
+            <View style={{ flex: 1, minWidth: 0 }}>
+              <SettingsNavRow
+                label={t('profile.myGroups')}
+                onPress={() => router.push('/groups')}
+              />
+            </View>
+            <View style={{ flex: 1, minWidth: 0 }}>
+              <SettingsNavRow
+                label={t('profile.groupInvitations')}
+                onPress={() => router.push('/groups/invitations')}
+              />
+            </View>
           </View>
+
           {(isAdmin || isModerator) && (
-            <View style={{ gap: 12 }}>
+            <View style={{ gap: 8 }}>
               {isAdmin ? (
                 <>
-                  <AppButton onPress={() => router.push('/admin')}>
-                    {t('profile.adminDashboard')}
-                  </AppButton>
-                  <AppButton onPress={() => router.push('/admin/users')}>
-                    {t('profile.userManagement')}
-                  </AppButton>
+                  <SettingsNavRow
+                    label={t('profile.adminDashboard')}
+                    onPress={() => router.push('/admin')}
+                  />
+                  <SettingsNavRow
+                    label={t('profile.userManagement')}
+                    onPress={() => router.push('/admin/users')}
+                  />
                 </>
               ) : null}
-              <AppButton onPress={() => router.push('/admin/moderation')}>
-                {t('profile.moderationQueue')}
-              </AppButton>
+              <SettingsNavRow
+                label={t('profile.moderationQueue')}
+                onPress={() => router.push('/admin/moderation')}
+              />
             </View>
           )}
-          <UserSettingsForm
-            notificationsEnabled={notificationsEnabled}
-            onNotificationsEnabledChange={setNotificationsEnabled}
-          />
-          <NotificationSettingsCard
-            enabled={notificationsEnabled}
-            onEnabledChange={setNotificationsEnabled}
-          />
-          <AppButton onPress={() => void logout()}>{t('profile.logOut')}</AppButton>
+
+          <UserSettingsForm notificationsSlot={<NotificationSettingsCard />} />
+
+          <View style={{ gap: 8 }}>
+            <AppText accessibilityRole="header" style={{ fontSize: 18, fontWeight: '700' }}>
+              {t('profile.account')}
+            </AppText>
+            <Pressable accessibilityRole="button" onPress={() => void logout()}>
+              <AppText style={{ color: '#667085', fontSize: 16, fontWeight: '600' }}>
+                {t('profile.logOut')}
+              </AppText>
+            </Pressable>
+          </View>
         </View>
       ) : null}
     </Screen>
