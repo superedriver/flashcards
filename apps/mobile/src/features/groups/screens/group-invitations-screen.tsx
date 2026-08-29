@@ -1,117 +1,113 @@
+import type { ApolloCache } from '@apollo/client'
 import { useRouter } from 'expo-router'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { confirmAction, confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { GroupInvitationList } from '@/features/groups/components/group-invitation-list'
 import {
+  MyGroupInvitationsDocument,
   useAcceptGroupInvitationMutation,
   useDeclineGroupInvitationMutation,
   useMyGroupInvitationsQuery,
+  type MyGroupInvitationsQuery,
 } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
+function removeInvitationFromCache(cache: ApolloCache<unknown>, invitationId: string) {
+  const existing = cache.readQuery<MyGroupInvitationsQuery>({ query: MyGroupInvitationsDocument })
+
+  if (!existing) {
+    return
+  }
+
+  cache.writeQuery({
+    query: MyGroupInvitationsDocument,
+    data: {
+      myGroupInvitations: existing.myGroupInvitations.filter(
+        (invitation) => invitation.id !== invitationId,
+      ),
+    },
+  })
+}
+
 export function GroupInvitationsScreen() {
   const { t } = useTranslation()
   const router = useRouter()
-  const [feedback, setFeedback] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [submittingId, setSubmittingId] = useState<string | null>(null)
   const isSubmittingRef = useRef(false)
   const { data, error, loading, refetch } = useMyGroupInvitationsQuery()
-  const [acceptInvitation, { loading: isAccepting }] = useAcceptGroupInvitationMutation({
-    refetchQueries: ['MyGroupInvitations', 'MyGroups'],
+  const [acceptInvitation] = useAcceptGroupInvitationMutation({
+    refetchQueries: ['MyGroups'],
   })
-  const [declineInvitation, { loading: isDeclining }] = useDeclineGroupInvitationMutation({
-    refetchQueries: ['MyGroupInvitations'],
-  })
+  const [declineInvitation] = useDeclineGroupInvitationMutation()
 
-  const isSubmitting = isAccepting || isDeclining
+  const handleAccept = async (invitationId: string) => {
+    if (isSubmittingRef.current) {
+      return
+    }
 
-  const handleAccept = (invitationId: string) => {
-    confirmAction(
-      t('groups.invitations.acceptTitle'),
-      t('groups.invitations.acceptMessage'),
-      () => {
-        void (async () => {
-          if (isSubmittingRef.current || isSubmitting) {
-            return
-          }
+    isSubmittingRef.current = true
+    setSubmittingId(invitationId)
+    setErrorMessage(null)
 
-          isSubmittingRef.current = true
-          setErrorMessage(null)
-          setFeedback(null)
+    try {
+      const result = await acceptInvitation({
+        update(cache) {
+          removeInvitationFromCache(cache, invitationId)
+        },
+        variables: { invitationId },
+      })
 
-          try {
-            const result = await acceptInvitation({
-              variables: { invitationId },
-            })
-
-            const groupId = result.data?.acceptGroupInvitation.member.groupId
-
-            if (!groupId) {
-              setErrorMessage(t('groups.invitations.acceptError'))
-              return
-            }
-
-            setFeedback(t('groups.invitations.acceptSuccess'))
-            await refetch()
-            router.push(`/groups/${groupId}`)
-          } catch (acceptError) {
-            setErrorMessage(
-              getGraphqlErrorMessage(acceptError, t('groups.invitations.acceptError')),
-            )
-          } finally {
-            isSubmittingRef.current = false
-          }
-        })()
-      },
-    )
+      if (!result.data?.acceptGroupInvitation.member.groupId) {
+        setErrorMessage(t('groups.invitations.acceptError'))
+        await refetch()
+      }
+    } catch (acceptError) {
+      setErrorMessage(getGraphqlErrorMessage(acceptError, t('groups.invitations.acceptError')))
+      await refetch()
+    } finally {
+      isSubmittingRef.current = false
+      setSubmittingId(null)
+    }
   }
 
-  const handleDecline = (invitationId: string) => {
-    confirmDestructiveAction(
-      t('groups.invitations.declineTitle'),
-      t('groups.invitations.declineMessage'),
-      () => {
-        void (async () => {
-          if (isSubmittingRef.current || isSubmitting) {
-            return
-          }
+  const handleDecline = async (invitationId: string) => {
+    if (isSubmittingRef.current) {
+      return
+    }
 
-          isSubmittingRef.current = true
-          setErrorMessage(null)
-          setFeedback(null)
+    isSubmittingRef.current = true
+    setSubmittingId(invitationId)
+    setErrorMessage(null)
 
-          try {
-            const result = await declineInvitation({
-              variables: { invitationId },
-            })
+    try {
+      const result = await declineInvitation({
+        update(cache) {
+          removeInvitationFromCache(cache, invitationId)
+        },
+        variables: { invitationId },
+      })
 
-            if (!result.data?.declineGroupInvitation) {
-              setErrorMessage(t('groups.invitations.declineError'))
-              return
-            }
-
-            setFeedback(t('groups.invitations.declineSuccess'))
-            await refetch()
-          } catch (declineError) {
-            setErrorMessage(
-              getGraphqlErrorMessage(declineError, t('groups.invitations.declineError')),
-            )
-          } finally {
-            isSubmittingRef.current = false
-          }
-        })()
-      },
-    )
+      if (!result.data?.declineGroupInvitation) {
+        setErrorMessage(t('groups.invitations.declineError'))
+        await refetch()
+      }
+    } catch (declineError) {
+      setErrorMessage(getGraphqlErrorMessage(declineError, t('groups.invitations.declineError')))
+      await refetch()
+    } finally {
+      isSubmittingRef.current = false
+      setSubmittingId(null)
+    }
   }
 
   return (
     <Screen scrollable>
       <PageTitle title={t('groups.invitations.title')} />
-      <AppText style={{ color: '#666666', marginBottom: 12 }}>
+      <AppText style={{ color: '#667085', marginBottom: 16 }}>
         {t('groups.invitations.subtitle')}
       </AppText>
 
@@ -120,16 +116,14 @@ export function GroupInvitationsScreen() {
         <ErrorState message={t('groups.invitations.loadError')} onRetry={() => void refetch()} />
       ) : null}
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      {feedback ? (
-        <AppText style={{ color: '#2e7d32', fontWeight: '600' }}>{feedback}</AppText>
-      ) : null}
 
       {!loading && !error && data?.myGroupInvitations ? (
         <GroupInvitationList
           invitations={data.myGroupInvitations}
-          isSubmitting={isSubmitting}
-          onAccept={handleAccept}
-          onDecline={handleDecline}
+          isSubmittingId={submittingId}
+          onAccept={(invitationId) => void handleAccept(invitationId)}
+          onBackToGroups={() => router.push('/groups')}
+          onDecline={(invitationId) => void handleDecline(invitationId)}
         />
       ) : null}
     </Screen>

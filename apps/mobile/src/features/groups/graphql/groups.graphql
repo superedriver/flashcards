@@ -62,6 +62,10 @@ query MyGroupInvitations {
     createdAt
     acceptedAt
     declinedAt
+    groupName
+    invitedByEmail
+    memberCount
+    sharedDeckCount
   }
 }
 

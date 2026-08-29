@@ -4,7 +4,7 @@ import {
   CreateGroupInvitationInput,
   GroupInvitationRepositoryPort,
 } from '../../application/ports/group-invitation-repository.port';
-import { GroupInvitation } from '../../domain/types';
+import { GroupInvitation, GroupInvitationPreview } from '../../domain/types';
 import { normalizeGroupEmail } from '../../domain/utils/normalize-group-email';
 import { toGroupInvitation } from '../mappers/group-invitation.mapper';
 
@@ -37,7 +37,7 @@ export class PrismaGroupInvitationRepository implements GroupInvitationRepositor
     return invitation ? toGroupInvitation(invitation) : null;
   }
 
-  async findPendingForEmail(email: string): Promise<GroupInvitation[]> {
+  async findPendingForEmail(email: string): Promise<GroupInvitationPreview[]> {
     const normalizedEmail = normalizeGroupEmail(email);
 
     const invitations = await this.prisma.groupInvitation.findMany({
@@ -48,12 +48,40 @@ export class PrismaGroupInvitationRepository implements GroupInvitationRepositor
           gt: new Date(),
         },
       },
+      include: {
+        group: {
+          select: {
+            name: true,
+            _count: {
+              select: {
+                members: true,
+                deckShares: {
+                  where: {
+                    deletedAt: null,
+                  },
+                },
+              },
+            },
+          },
+        },
+        invitedBy: {
+          select: {
+            email: true,
+          },
+        },
+      },
       orderBy: {
         createdAt: 'desc',
       },
     });
 
-    return invitations.map(toGroupInvitation);
+    return invitations.map((invitation) => ({
+      ...toGroupInvitation(invitation),
+      groupName: invitation.group.name,
+      invitedByEmail: invitation.invitedBy.email,
+      memberCount: invitation.group._count.members,
+      sharedDeckCount: invitation.group._count.deckShares,
+    }));
   }
 
   async findPendingByGroupAndEmail(input: {

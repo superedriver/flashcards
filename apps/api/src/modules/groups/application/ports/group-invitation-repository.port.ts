@@ -1,4 +1,4 @@
-import { GroupInvitation } from '../../domain/types';
+import { GroupInvitation, GroupInvitationPreview } from '../../domain/types';
 
 export const GROUP_INVITATION_REPOSITORY = Symbol(
   'GROUP_INVITATION_REPOSITORY',
@@ -14,7 +14,7 @@ export type CreateGroupInvitationInput = {
 export type GroupInvitationRepositoryPort = {
   create(input: CreateGroupInvitationInput): Promise<GroupInvitation>;
   findById(invitationId: string): Promise<GroupInvitation | null>;
-  findPendingForEmail(email: string): Promise<GroupInvitation[]>;
+  findPendingForEmail(email: string): Promise<GroupInvitationPreview[]>;
   findPendingByGroupAndEmail(input: {
     groupId: string;
     email: string;

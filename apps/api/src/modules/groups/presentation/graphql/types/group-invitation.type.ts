@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { GroupInvitationStatus } from './group-invitation-status.type';
 
 @ObjectType('GroupInvitation')
@@ -29,4 +29,16 @@ export class GroupInvitationType {
 
   @Field(() => Date, { nullable: true })
   declinedAt: Date | null;
+
+  @Field(() => String, { nullable: true })
+  groupName: string | null;
+
+  @Field(() => String, { nullable: true })
+  invitedByEmail: string | null;
+
+  @Field(() => Int, { nullable: true })
+  memberCount: number | null;
+
+  @Field(() => Int, { nullable: true })
+  sharedDeckCount: number | null;
 }

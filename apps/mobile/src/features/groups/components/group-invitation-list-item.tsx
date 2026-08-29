@@ -1,12 +1,10 @@
-import type { MyGroupInvitationsQuery } from '@/graphql/generated'
-import { GroupInvitationStatus } from '@/graphql/generated'
+import { Ionicons } from '@expo/vector-icons'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 
-import { formatInvitationStatus } from '@/features/groups/utils/format-invitation-status'
-import { formatDateTime } from '@/i18n/formatters'
-import { AppButton, AppCard, AppText } from '@/ui/primitives'
-import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
+import type { MyGroupInvitationsQuery } from '@/graphql/generated'
+import { AppText } from '@/ui/primitives'
+import { buttonA11yProps } from '@/ui/utils/accessibility'
 
 type GroupInvitationListItemProps = {
   invitation: MyGroupInvitationsQuery['myGroupInvitations'][number]
@@ -22,42 +20,95 @@ export function GroupInvitationListItem({
   onDecline,
 }: GroupInvitationListItemProps) {
   const { t } = useTranslation()
-  const isPending = invitation.status === GroupInvitationStatus.Pending
-  const statusLabel = formatInvitationStatus(t, invitation.status)
-  const isExpired = invitation.status === GroupInvitationStatus.Expired
+  const groupName = invitation.groupName?.trim() || t('groups.invitations.unknownGroup')
+  const invitedBy = invitation.invitedByEmail?.trim()
+  const memberCount = invitation.memberCount
+  const sharedDeckCount = invitation.sharedDeckCount
+
+  const stats = [
+    memberCount != null ? t('groups.invitations.memberCount', { count: memberCount }) : null,
+    sharedDeckCount != null
+      ? t('groups.invitations.sharedDeckCount', { count: sharedDeckCount })
+      : null,
+  ]
+    .filter(Boolean)
+    .join(' · ')
 
   return (
-    <AppCard style={{ gap: 8, marginBottom: 12, padding: 16 }}>
-      <AppText style={{ fontSize: 16, fontWeight: '600' }}>
-        {t('groups.invitations.invitationTitle')}
-      </AppText>
-      <AppText style={{ color: '#666666' }}>
-        {t('groups.invitations.invitedAs', { email: invitation.email })}
-      </AppText>
-      <AppText style={{ color: isPending ? '#ef6c00' : '#666666', fontWeight: '600' }}>
-        {t('groups.invitations.status', { status: statusLabel })}
-      </AppText>
-      <AppText style={{ color: '#666666' }}>
-        {isExpired ? t('groups.invitations.expired') : t('groups.invitations.expires')}{' '}
-        {formatDateTime(invitation.expiresAt)}
-      </AppText>
+    <View
+      style={{
+        backgroundColor: '#ffffff',
+        borderColor: '#e4e7ec',
+        borderRadius: 12,
+        borderWidth: 1,
+        gap: 10,
+        padding: 14,
+      }}
+    >
+      <View style={{ alignItems: 'flex-start', flexDirection: 'row', gap: 10 }}>
+        <View
+          style={{
+            alignItems: 'center',
+            backgroundColor: '#e8f0fe',
+            borderRadius: 10,
+            height: 40,
+            justifyContent: 'center',
+            width: 40,
+          }}
+        >
+          <Ionicons color="#1a56db" name="people-outline" size={20} />
+        </View>
+        <View style={{ flex: 1, gap: 2, minWidth: 0 }}>
+          <AppText numberOfLines={1} style={{ fontSize: 16, fontWeight: '700' }}>
+            {groupName}
+          </AppText>
+          {invitedBy ? (
+            <AppText numberOfLines={1} style={{ color: '#667085', fontSize: 13 }}>
+              {t('groups.invitations.invitedBy', { email: invitedBy })}
+            </AppText>
+          ) : null}
+          {stats ? <AppText style={{ color: '#98a2b3', fontSize: 13 }}>{stats}</AppText> : null}
+        </View>
+      </View>
 
-      {isPending && onAccept && onDecline ? (
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 4 }}>
-          <AppButton disabled={isSubmitting} onPress={() => onAccept(invitation.id)}>
-            {isSubmitting ? t('groups.invitations.working') : t('groups.invitations.accept')}
-          </AppButton>
-          <AppButton
-            {...destructiveButtonA11yProps(t('groups.invitations.declineA11y'))}
-            background="#b00020"
-            color="white"
+      {onAccept && onDecline ? (
+        <View
+          style={{
+            alignItems: 'center',
+            flexDirection: 'row',
+            gap: 12,
+            justifyContent: 'space-between',
+            marginTop: 4,
+          }}
+        >
+          <Pressable
+            {...buttonA11yProps(t('groups.invitations.declineA11y'))}
             disabled={isSubmitting}
             onPress={() => onDecline(invitation.id)}
+            style={{ opacity: isSubmitting ? 0.5 : 1, paddingHorizontal: 8, paddingVertical: 8 }}
           >
-            {t('groups.invitations.decline')}
-          </AppButton>
+            <AppText style={{ color: '#667085', fontSize: 15, fontWeight: '600' }}>
+              {t('groups.invitations.decline')}
+            </AppText>
+          </Pressable>
+          <Pressable
+            {...buttonA11yProps(t('groups.invitations.accept'))}
+            disabled={isSubmitting}
+            onPress={() => onAccept(invitation.id)}
+            style={{
+              backgroundColor: '#1a56db',
+              borderRadius: 8,
+              opacity: isSubmitting ? 0.5 : 1,
+              paddingHorizontal: 16,
+              paddingVertical: 8,
+            }}
+          >
+            <AppText style={{ color: '#ffffff', fontSize: 15, fontWeight: '700' }}>
+              {isSubmitting ? t('groups.invitations.working') : t('groups.invitations.accept')}
+            </AppText>
+          </Pressable>
         </View>
       ) : null}
-    </AppCard>
+    </View>
   )
 }

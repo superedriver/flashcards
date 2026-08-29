@@ -549,6 +549,9 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
   Owner/Member badge, member-initial avatars, chevron
 - Owner rows may show ⋯ for invite / share. No full-width gray action buttons
 - Groups stay view-only; owners add members and share decks
+- Invitations: pending cards only (group name, invited by, member/deck counts)
+- Accept is primary; Decline is secondary. The card leaves the list immediately
+- Empty invitations: envelope, short copy, Back to My Groups
 ```
 
 ## Permissions

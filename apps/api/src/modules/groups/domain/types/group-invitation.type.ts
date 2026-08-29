@@ -12,3 +12,10 @@ export type GroupInvitation = {
   acceptedAt: Date | null;
   declinedAt: Date | null;
 };
+
+export type GroupInvitationPreview = GroupInvitation & {
+  groupName: string;
+  invitedByEmail: string;
+  memberCount: number;
+  sharedDeckCount: number;
+};

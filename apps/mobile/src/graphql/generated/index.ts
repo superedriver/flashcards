@@ -396,8 +396,12 @@ export type GroupInvitation = {
   email: Scalars['String']['output']
   expiresAt: Scalars['DateTime']['output']
   groupId: Scalars['String']['output']
+  groupName?: Maybe<Scalars['String']['output']>
   id: Scalars['String']['output']
+  invitedByEmail?: Maybe<Scalars['String']['output']>
   invitedById: Scalars['String']['output']
+  memberCount?: Maybe<Scalars['Int']['output']>
+  sharedDeckCount?: Maybe<Scalars['Int']['output']>
   status: GroupInvitationStatus
 }
 
@@ -1928,6 +1932,10 @@ export type MyGroupInvitationsQuery = {
     createdAt: any
     acceptedAt?: any | null
     declinedAt?: any | null
+    groupName?: string | null
+    invitedByEmail?: string | null
+    memberCount?: number | null
+    sharedDeckCount?: number | null
   }>
 }
 
@@ -5066,6 +5074,10 @@ export const MyGroupInvitationsDocument = gql`
       createdAt
       acceptedAt
       declinedAt
+      groupName
+      invitedByEmail
+      memberCount
+      sharedDeckCount
     }
   }
 `

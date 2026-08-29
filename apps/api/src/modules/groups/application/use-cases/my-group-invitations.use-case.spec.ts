@@ -1,6 +1,6 @@
 import { ErrorCodes } from '../../../../common/errors';
 import { AuthUser, SafeUser } from '../../../auth/domain/types';
-import { GroupInvitation } from '../../domain/types';
+import { GroupInvitationPreview } from '../../domain/types';
 import { MyGroupInvitationsUseCase } from './my-group-invitations.use-case';
 
 const authUser: AuthUser = {
@@ -19,7 +19,7 @@ const safeUser: SafeUser = {
   updatedAt: new Date('2026-01-01T00:00:00.000Z'),
 };
 
-const invitations: GroupInvitation[] = [
+const invitations: GroupInvitationPreview[] = [
   {
     id: 'invitation-1',
     groupId: 'group-1',
@@ -31,6 +31,10 @@ const invitations: GroupInvitation[] = [
     updatedAt: new Date('2026-01-01T00:00:00.000Z'),
     acceptedAt: null,
     declinedAt: null,
+    groupName: 'Spanish Learners',
+    invitedByEmail: 'owner@example.com',
+    memberCount: 5,
+    sharedDeckCount: 3,
   },
 ];
 

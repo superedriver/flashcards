@@ -122,6 +122,8 @@ Expected state:
     - Fixed in TASK-30.28
 26. My Groups is two full-width buttons plus untitled name cards
     - Fixed in TASK-30.29
+27. Group invitations is a verbose status card with a bare empty line
+    - Fixed in TASK-30.30
 ```
 
 ## Discrepancy Register
@@ -1195,6 +1197,46 @@ seed: extra demo groups and fixture members
 docs: lesson-flow Groups UI
 ```
 
+---
+
+### DISC-027 Group invitations is a verbose status card with a bare empty line
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.30):
+
+```txt
+Product (approved in chat after 30.29):
+  - Pending invitation cards: group name, invited by, member/deck counts
+  - Accept primary, Decline secondary; card leaves the list on either action
+  - Empty: envelope, No invitations, back to My Groups
+  - Do not change invite/accept permission rules
+
+Was wrong:
+  - “Group invitation” + invited-as + status + expiry; confirm dialogs
+  - Empty is only “You have no group invitations.”
+  - Accept navigates to group detail
+```
+
+Action:
+
+```txt
+TASK-30.30 Restyle group invitations into pending cards and a clear empty state
+```
+
+Impact:
+
+```txt
+frontend: invitations screen and cards
+api: myGroupInvitations exposes group name, inviter, counts (no permission change)
+seed: pending invitation fixtures for the demo user
+docs: lesson-flow Groups UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1243,6 +1285,7 @@ docs: lesson-flow Groups UI
 30.27                            restyle Home around Due now and Start review
 30.28                            group Profile into compact autosave settings
 30.29                            restyle My Groups into compact rows and seed demo groups
+30.30                            restyle group invitations into pending cards and empty state
 ```
 
 ## Epic Summary
@@ -1277,6 +1320,7 @@ docs: lesson-flow Groups UI
 - [x] TASK-30.27 Restyle Home around Due now and Start review
 - [x] TASK-30.28 Group Profile into compact autosave settings
 - [x] TASK-30.29 Restyle My Groups into compact rows and seed demo groups
+- [x] TASK-30.30 Restyle group invitations into pending cards and a clear empty state
 ```
 
 ---
@@ -4643,6 +4687,127 @@ None (human: My Groups layout + re-seed).
 
 ```txt
 TASK-30.29 Restyle My Groups into compact rows and seed demo groups
+```
+
+---
+
+# TASK-30.30 Restyle group invitations into pending cards and a clear empty state
+
+## Status
+
+DONE
+
+## Context
+
+DISC-027: Invitations show status/expiry chrome and a one-line empty state. Product wants pending decision cards and a proper empty screen.
+
+## Goal
+
+Group Invitations is a utilitarian pending list. Accept/Decline remove the card. Empty state points back to My Groups.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+docs/domain/permissions.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/api/src/modules/groups/domain/types/group-invitation.type.ts
+apps/api/src/modules/groups/application/ports/group-invitation-repository.port.ts
+apps/api/src/modules/groups/infrastructure/persistence/prisma-group-invitation.repository.ts
+apps/api/src/modules/groups/application/use-cases/my-group-invitations.use-case.ts
+apps/api/src/modules/groups/application/use-cases/my-group-invitations.use-case.spec.ts
+apps/api/src/modules/groups/presentation/graphql/types/group-invitation.type.ts
+apps/api/src/modules/groups/presentation/graphql/resolvers/groups.resolver.ts
+apps/api/prisma/seed.ts
+apps/mobile/src/features/groups/graphql/groups.graphql
+apps/mobile/src/graphql/generated/index.ts
+apps/mobile/src/features/groups/screens/group-invitations-screen.tsx
+apps/mobile/src/features/groups/components/group-invitation-list.tsx
+apps/mobile/src/features/groups/components/group-invitation-list-item.tsx
+apps/mobile/src/i18n/resources/en/groups.ts
+apps/mobile/src/i18n/resources/uk/groups.ts
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Pending cards: group name, invited by, member count, shared-deck count if known.
+2. Accept is primary. Decline is secondary. No confirm dialogs. No status/expiry chrome.
+3. Accept/Decline remove the card. Accept also refreshes My Groups. Do not navigate away.
+4. Empty: envelope, No invitations, short copy, Back to My Groups.
+5. Seed pending invitation(s) for the demo user. Do not change permission rules.
+6. Update live SoT. Do not rewrite docs/tasks/done/*.
+7. Mark TASK-30.30 and DISC-027 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+- Invited-by shows email already stored on the user record.
+```
+
+## Architecture Constraints
+
+```txt
+- Do not change GroupPermissionService or accept/decline rules.
+```
+
+## Implementation Notes
+
+```txt
+- myGroupInvitations already returns pending only; keep that filter.
+```
+
+## Acceptance Criteria
+
+```txt
+- Empty invitations is not a single gray sentence.
+- Accept does not open group detail. The card leaves the list.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/api exec jest --watchman=false src/modules/groups/application/use-cases/my-group-invitations.use-case.spec.ts
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: invitations empty + accept/decline).
+```
+
+## Do Not Do
+
+```txt
+- Do not change who can invite or accept.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.30 Restyle group invitations into pending cards and a clear empty state
 ```
 
 ---

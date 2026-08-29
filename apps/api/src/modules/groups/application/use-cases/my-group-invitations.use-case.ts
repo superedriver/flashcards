@@ -6,7 +6,7 @@ import {
 } from '../../../auth/application/ports/user-repository.port';
 import { AuthUser } from '../../../auth/domain/types';
 import { normalizeGroupEmail } from '../../domain/utils/normalize-group-email';
-import { GroupInvitation } from '../../domain/types';
+import { GroupInvitationPreview } from '../../domain/types';
 import {
   GROUP_INVITATION_REPOSITORY,
   GroupInvitationRepositoryPort,
@@ -16,7 +16,7 @@ export type MyGroupInvitationsUseCaseInput = {
   currentUser: AuthUser;
 };
 
-export type MyGroupInvitationsUseCaseResult = GroupInvitation[];
+export type MyGroupInvitationsUseCaseResult = GroupInvitationPreview[];
 
 @Injectable()
 export class MyGroupInvitationsUseCase {

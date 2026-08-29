@@ -25,6 +25,7 @@ import { ShareDeckWithGroupUseCase } from '../../../application/use-cases/share-
 import {
   DeckGroupShare as DeckGroupShareDomain,
   GroupInvitation as GroupInvitationDomain,
+  GroupInvitationPreview,
   GroupMember as GroupMemberDomain,
   Group as GroupDomain,
   GroupWithMyRole,
@@ -255,8 +256,10 @@ function toGroupType(group: GroupDomain | GroupWithMyRole): GroupType {
 }
 
 function toGroupInvitationType(
-  invitation: GroupInvitationDomain,
+  invitation: GroupInvitationDomain | GroupInvitationPreview,
 ): GroupInvitationType {
+  const preview = invitation as GroupInvitationPreview;
+
   return {
     id: invitation.id,
     groupId: invitation.groupId,
@@ -267,6 +270,10 @@ function toGroupInvitationType(
     createdAt: invitation.createdAt,
     acceptedAt: invitation.acceptedAt,
     declinedAt: invitation.declinedAt,
+    groupName: preview.groupName ?? null,
+    invitedByEmail: preview.invitedByEmail ?? null,
+    memberCount: preview.memberCount ?? null,
+    sharedDeckCount: preview.sharedDeckCount ?? null,
   };
 }
 

@@ -371,6 +371,28 @@ const LAYOUT_GROUPS = [
   },
 ] as const;
 
+const INVITE_GROUPS = [
+  {
+    name: 'Reading Circle',
+    description: 'Weekly reading practice.',
+    ownerEmail: 'jordan.groups@example.com',
+    memberEmails: [
+      'morgan.groups@example.com',
+      'sofia.groups@example.com',
+      'maria.groups@example.com',
+      'alex.groups@example.com',
+    ],
+    sharedDeckTitles: ['Reading Week 1', 'Reading Week 2', 'Reading Week 3'],
+  },
+  {
+    name: 'Book Club',
+    description: 'Shared vocab from current books.',
+    ownerEmail: 'pat.groups@example.com',
+    memberEmails: ['lisa.groups@example.com'],
+    sharedDeckTitles: ['Book Club Words'],
+  },
+] as const;
+
 async function upsertLayoutFixtureUser(
   prisma: PrismaClient,
   input: {
@@ -595,6 +617,163 @@ async function ensureDeckWithCards(
   return deck;
 }
 
+async function ensurePendingDemoInvitations(
+  prisma: PrismaClient,
+  demoUserId: string,
+) {
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+  for (const fixture of INVITE_GROUPS) {
+    const owner = await prisma.user.findUnique({
+      where: { email: fixture.ownerEmail },
+    });
+
+    if (!owner) {
+      throw new Error(`Missing invite group owner ${fixture.ownerEmail}`);
+    }
+
+    let group = await prisma.group.findFirst({
+      where: {
+        name: fixture.name,
+        createdById: owner.id,
+        deletedAt: null,
+      },
+    });
+
+    if (!group) {
+      group = await prisma.group.create({
+        data: {
+          name: fixture.name,
+          description: fixture.description,
+          createdById: owner.id,
+        },
+      });
+    } else {
+      group = await prisma.group.update({
+        where: { id: group.id },
+        data: { description: fixture.description },
+      });
+    }
+
+    await prisma.groupMember.upsert({
+      where: {
+        groupId_userId: {
+          groupId: group.id,
+          userId: owner.id,
+        },
+      },
+      create: {
+        groupId: group.id,
+        userId: owner.id,
+        role: 'OWNER',
+      },
+      update: {
+        role: 'OWNER',
+      },
+    });
+
+    for (const email of fixture.memberEmails) {
+      const member = await prisma.user.findUnique({ where: { email } });
+
+      if (!member || member.id === owner.id) {
+        continue;
+      }
+
+      await prisma.groupMember.upsert({
+        where: {
+          groupId_userId: {
+            groupId: group.id,
+            userId: member.id,
+          },
+        },
+        create: {
+          groupId: group.id,
+          userId: member.id,
+          role: 'MEMBER',
+        },
+        update: {},
+      });
+    }
+
+    for (const title of fixture.sharedDeckTitles) {
+      const deck = await ensureDeckWithCards(prisma, {
+        ownerId: owner.id,
+        title,
+        description: 'Local-only invite-list fixture deck.',
+        visibility: 'PRIVATE',
+        moderationStatus: 'NONE',
+        targetLanguage: TARGET_LANGUAGE,
+        sourceLanguage: SOURCE_LANGUAGE,
+        cards: [{ front: 'hello', back: 'ciao' }],
+      });
+
+      await prisma.deckGroupShare.upsert({
+        where: {
+          deckId_groupId: {
+            deckId: deck.id,
+            groupId: group.id,
+          },
+        },
+        create: {
+          deckId: deck.id,
+          groupId: group.id,
+          createdById: owner.id,
+          permission: 'VIEW',
+        },
+        update: {
+          deletedAt: null,
+        },
+      });
+    }
+
+    const alreadyMember = await prisma.groupMember.findUnique({
+      where: {
+        groupId_userId: {
+          groupId: group.id,
+          userId: demoUserId,
+        },
+      },
+    });
+
+    if (alreadyMember) {
+      continue;
+    }
+
+    const existingInvitation = await prisma.groupInvitation.findFirst({
+      where: {
+        groupId: group.id,
+        email: DEMO_EMAIL,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    if (existingInvitation) {
+      await prisma.groupInvitation.update({
+        where: { id: existingInvitation.id },
+        data: {
+          invitedById: owner.id,
+          status: 'PENDING',
+          acceptedAt: null,
+          declinedAt: null,
+          expiresAt,
+        },
+      });
+    } else {
+      await prisma.groupInvitation.create({
+        data: {
+          groupId: group.id,
+          email: DEMO_EMAIL,
+          invitedById: owner.id,
+          status: 'PENDING',
+          expiresAt,
+        },
+      });
+    }
+  }
+}
+
 async function main() {
   assertSafeToSeed();
 
@@ -692,6 +871,7 @@ async function main() {
     });
 
     await ensureLayoutDemoGroups(prisma, user.id);
+    await ensurePendingDemoInvitations(prisma, user.id);
 
     const catalogPublicDeck = await ensureDeckWithCards(prisma, {
       ownerId: catalogUser.id,
@@ -716,6 +896,9 @@ async function main() {
     console.log(`Group fixture: ${groupDeck.title}`);
     console.log(
       `Layout groups: ${LAYOUT_GROUPS.map((group) => group.name).join(', ')}`,
+    );
+    console.log(
+      `Pending invites: ${INVITE_GROUPS.map((group) => group.name).join(', ')}`,
     );
     console.log(`Public catalog fixture: ${catalogPublicDeck.title}`);
     console.log(
