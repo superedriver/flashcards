@@ -668,11 +668,12 @@ Flow:
 2. Backend creates a study session (or returns empty if nothing is ready).
 3. Backend picks the next showable card (primary vs bounded repeat) and returns it for display.
    Display is not an answer: do not increment showCount; do not freeze gap N.
-4. Frontend shows the prompt side first (from promptDirection).
-5. User taps to reveal the other side.
+4. Frontend shows the prompt side first (from promptDirection) on a centered flashcard.
+5. User taps/clicks the card to reveal the other side (fast flip, ~200ms).
 6. Example sentence is shown if available.
 7. User can press Listen to hear the word.
-8. User answers Know or Don't know.
+8. User answers Know (swipe right or button) or Don't know (swipe left or button).
+   Swipes are disabled until the card is revealed. Compact fallback buttons stay visible.
 9. Backend saves the review, updates learning-steps state, then records that answer on the
    queue (showCount + freeze N at answer time) and returns nextCard, or null.
 10. The review session is completed when nothing is showable now (no countdown).

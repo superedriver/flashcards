@@ -140,6 +140,8 @@ Expected state:
     - Fixed in TASK-30.37
 35. Deck Detail stats icons differ from My Decks
     - Fixed in TASK-30.38
+36. Review is text plus Reveal / Know / Don't know buttons, not a card
+    - Fixed in TASK-30.39
 ```
 
 ## Discrepancy Register
@@ -1537,6 +1539,42 @@ frontend: deck detail stats emojis
 docs: lesson-flow deck detail
 ```
 
+---
+
+### DISC-036 Review is buttons, not a physical flashcard
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.39):
+
+```txt
+Product (approved in chat after 30.38):
+  - Centered flashcard; tap/click to flip (~200ms); no Reveal answer button
+  - After reveal: swipe right Know, swipe left Don't know, short swipe-out
+  - Compact fallback Know / Don't know buttons; Leave review is secondary text
+  - Gestures off until reveal. SRS / submitReview / queue unchanged
+
+Was wrong:
+  - Prompt text plus Reveal answer and two large answer buttons
+```
+
+Action:
+
+```txt
+TASK-30.39 Make review a tap-to-flip card with swipe answers
+```
+
+Impact:
+
+```txt
+frontend: review flashcard, answer actions, review screen
+docs: lesson-flow Review UI, architecture lesson flow
+```
+
 ## Epic Rules
 
 ```txt
@@ -1594,6 +1632,7 @@ docs: lesson-flow deck detail
 30.36                            remove the language pair arrow from deck forms
 30.37                            restyle deck Cards into a header, count, and empty state
 30.38                            align Deck Detail stats icons with My Decks
+30.39                            make review a tap-to-flip card with swipe answers
 ```
 
 ## Epic Summary
@@ -1637,6 +1676,7 @@ docs: lesson-flow deck detail
 - [x] TASK-30.36 Remove the language pair arrow from deck forms
 - [x] TASK-30.37 Restyle deck Cards into a header, count, and empty state
 - [x] TASK-30.38 Align Deck Detail stats icons with My Decks
+- [x] TASK-30.39 Make review a tap-to-flip card with swipe answers
 ```
 
 ---
@@ -5949,6 +5989,111 @@ None (human: Deck Detail stats vs My Decks cards).
 
 ```txt
 TASK-30.38 Align Deck Detail stats icons with My Decks
+```
+
+---
+
+# TASK-30.39 Make review a tap-to-flip card with swipe answers
+
+## Status
+
+DONE
+
+## Context
+
+DISC-036: Review is a text block with Reveal answer and two large buttons. Product wants a physical flashcard: tap to flip, swipe to answer, compact fallback buttons.
+
+## Goal
+
+Centered flashcard; tap/click flips (~200ms). After reveal, swipe right = Know, swipe left = Don't know, with a short swipe-out. Keep compact fallback buttons. Leave review is secondary text. Do not change SRS, submitReview, or the queue.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/components/review-flashcard.tsx
+apps/mobile/src/features/lessons/components/review-answer-actions.tsx
+apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
+apps/mobile/src/i18n/resources/en/lessons.ts
+apps/mobile/src/i18n/resources/uk/lessons.ts
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Center a visual flashcard. No Reveal answer button. Tap/click flips (~200ms, 2D scaleX).
+2. Swipes disabled until revealed. Then right = Know, left = Don't know; swipe-out ~200ms; next card immediately after submit.
+3. Compact fallback Don't know / Know. Leave review is a text action, not a large button.
+4. Short swipe hints after reveal. No heavy 3D.
+5. Do not change submitReview, learning-steps, or queue picker.
+6. Update live SoT. Do not rewrite docs/tasks/done/*.
+7. Mark TASK-30.39 and DISC-036 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Presentation/interaction only. Backend remains SoT for scheduling.
+```
+
+## Implementation Notes
+
+```txt
+- RN Animated + PanResponder for flip/swipe (web mouse + touch). No gesture-handler.
+- Reset flip/position when the current card changes.
+```
+
+## Acceptance Criteria
+
+```txt
+- Reveal is tap/click on the card, not a Reveal answer button.
+- Know / Don't know work via swipe after reveal and via fallback buttons.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: flip, swipe, fallback buttons, Leave review).
+```
+
+## Do Not Do
+
+```txt
+- Do not add react-native-gesture-handler unless required.
+- Do not change SRS intervals or queue rules.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.39 Make review a tap-to-flip card with swipe answers
 ```
 
 ---

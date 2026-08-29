@@ -585,7 +585,7 @@ query {
 
 ```txt
 - Study session is created
-- First review card is shown
+- First review card is shown as a centered flashcard (prompt side)
 - UI says Start review / Почати повторення, not Lesson / Урок
 ```
 
@@ -599,13 +599,16 @@ query {
 
 **Steps:**
 
-1. During an active review session, submit `KNOW` for the current card.
+1. During an active review session, tap/click the card to reveal, then submit `KNOW`
+   (swipe right or the fallback Know button).
 
 **Expected result:**
 
 ```txt
 - Review is accepted
 - App advances to next card or lesson completion state
+- Reveal is tap/click on the card; Know is swipe right or the fallback button
+- There is no Reveal answer button
 ```
 
 **Result:** - [ ] PASS - [ ] FAIL
@@ -619,7 +622,8 @@ query {
 **Steps:**
 
 1. Start or continue a lesson.
-2. Submit `DONT_KNOW` for the current card.
+2. Tap/click the card to reveal, then submit `DONT_KNOW`
+   (swipe left or the fallback Don't know button).
 
 **Expected result:**
 

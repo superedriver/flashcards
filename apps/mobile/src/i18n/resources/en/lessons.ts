@@ -54,7 +54,7 @@ export const lessonsEn = {
     noneDue: 'No cards are due right now. Check back later or add more cards.',
   },
   reviewActions: {
-    revealHint: 'Reveal the answer to rate how well you knew it.',
+    swipeHint: "Swipe left if you don't know · Swipe right if you know",
     dontKnow: "Don't know",
     dontKnowHint: 'Marks this card as not known.',
     know: 'Know',
@@ -63,9 +63,8 @@ export const lessonsEn = {
   flashcard: {
     front: 'Front',
     back: 'Back',
-    recallHint: 'Try to recall the answer, then reveal it.',
+    tapToReveal: 'Tap to reveal',
     revealHint: 'Shows the answer side of the card.',
-    revealAnswer: 'Reveal answer',
     example: 'Example: {{text}}',
     notes: 'Notes: {{text}}',
   },

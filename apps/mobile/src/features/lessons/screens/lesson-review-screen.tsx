@@ -1,10 +1,13 @@
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 
 import { ReviewAnswerActions } from '@/features/lessons/components/review-answer-actions'
-import { ReviewFlashcard } from '@/features/lessons/components/review-flashcard'
+import {
+  ReviewFlashcard,
+  type ReviewFlashcardHandle,
+} from '@/features/lessons/components/review-flashcard'
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
 import { mapGraphQlLessonCard } from '@/features/lessons/utils/map-lesson-card'
 import { confirmAction } from '@/features/decks/utils/confirm-destructive'
@@ -15,8 +18,9 @@ import {
   useCompleteLessonMutation,
   useSubmitReviewMutation,
 } from '@/graphql/generated'
-import { AppButton } from '@/ui/primitives'
+import { AppButton, AppText } from '@/ui/primitives'
 import { ErrorState, PageTitle, Screen } from '@/ui/components'
+import { buttonA11yProps } from '@/ui/utils/accessibility'
 
 export function LessonReviewScreen() {
   const { t } = useTranslation()
@@ -35,12 +39,15 @@ export function LessonReviewScreen() {
   const [completeLesson] = useCompleteLessonMutation()
   const [abandonLesson] = useAbandonLessonMutation()
   const [isRevealed, setIsRevealed] = useState(false)
+  const [isExiting, setIsExiting] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const isSubmittingRef = useRef(false)
+  const flashcardRef = useRef<ReviewFlashcardHandle>(null)
 
   useEffect(() => {
     setIsRevealed(false)
+    setIsExiting(false)
     setErrorMessage(null)
   }, [currentCard?.cardId, currentCard?.promptDirection])
 
@@ -110,6 +117,7 @@ export function LessonReviewScreen() {
 
     if (!summary) {
       setErrorMessage(t('lessons.review.completeError'))
+      setIsExiting(false)
       return
     }
 
@@ -149,11 +157,13 @@ export function LessonReviewScreen() {
 
       if (!payload) {
         setErrorMessage(t('lessons.review.submitError'))
+        setIsExiting(false)
         return
       }
 
       markCardReviewed(currentCard.cardId)
       setIsRevealed(false)
+      setIsExiting(false)
 
       if (payload.nextCard) {
         enqueueNextCard(mapGraphQlLessonCard(payload.nextCard))
@@ -164,6 +174,7 @@ export function LessonReviewScreen() {
       await finishLesson()
     } catch (error) {
       setErrorMessage(getGraphqlErrorMessage(error, t('lessons.review.submitError')))
+      setIsExiting(false)
     } finally {
       isSubmittingRef.current = false
       setIsSubmitting(false)
@@ -171,28 +182,47 @@ export function LessonReviewScreen() {
   }
 
   return (
-    <Screen scrollable>
-      <PageTitle title={t('lessons.review.pageTitle')} />
-      <ReviewFlashcard
-        back={currentCard.back}
-        example={currentCard.example}
-        front={currentCard.front}
-        isRevealed={isRevealed}
-        notes={currentCard.notes}
-        promptDirection={currentCard.promptDirection}
-        onReveal={() => setIsRevealed(true)}
+    <Screen>
+      <PageTitle
+        title={t('lessons.review.pageTitle')}
+        trailing={
+          <Pressable
+            {...buttonA11yProps(t('lessons.review.leaveLesson'))}
+            disabled={isSubmitting}
+            onPress={handleLeaveLesson}
+            style={{ opacity: isSubmitting ? 0.4 : 1, paddingVertical: 4 }}
+          >
+            <AppText style={{ color: '#667085', fontSize: 14, fontWeight: '600' }}>
+              {t('lessons.review.leaveLesson')}
+            </AppText>
+          </Pressable>
+        }
       />
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <ReviewFlashcard
+          ref={flashcardRef}
+          back={currentCard.back}
+          cardId={currentCard.cardId}
+          example={currentCard.example}
+          front={currentCard.front}
+          isExiting={isExiting}
+          isRevealed={isRevealed}
+          key={`${currentCard.cardId}-${currentCard.promptDirection}`}
+          notes={currentCard.notes}
+          promptDirection={currentCard.promptDirection}
+          onAnswer={(answer) => void handleAnswer(answer)}
+          onExitStart={() => setIsExiting(true)}
+          onReveal={() => setIsRevealed(true)}
+        />
+      </View>
       {errorMessage ? <ErrorState message={errorMessage} /> : null}
-      <ReviewAnswerActions
-        disabled={isSubmitting}
-        isRevealed={isRevealed}
-        isSubmitting={isSubmitting}
-        onAnswer={(answer) => void handleAnswer(answer)}
-      />
       <View style={{ marginTop: 16 }}>
-        <AppButton disabled={isSubmitting} onPress={handleLeaveLesson}>
-          {t('lessons.review.leaveLesson')}
-        </AppButton>
+        <ReviewAnswerActions
+          disabled={isSubmitting || isExiting}
+          isRevealed={isRevealed}
+          isSubmitting={isSubmitting}
+          onAnswer={(answer) => flashcardRef.current?.playExit(answer)}
+        />
       </View>
     </Screen>
   )

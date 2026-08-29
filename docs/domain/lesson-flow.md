@@ -219,7 +219,7 @@ These are three distinct steps:
 ```txt
 1. Display — backend returns a card (start or nextCard). The user sees it.
    No answer yet, no new dueAt. Do not increment showCount. Do not freeze gap N.
-2. Answer — user taps Know or Don’t know.
+2. Answer — user answers Know or Don’t know (swipe or fallback button).
 3. Plan the repeat — persist learning-steps, then increment showCount for the answered
    cardId, then freeze N from other cards that are ready AND showable at answer time.
 ```
@@ -568,6 +568,17 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Save changes is a primary blue button, disabled when nothing changed or Front/Back invalid
 - Cancel is a text action. Delete card is a small Danger zone (still confirms)
 - Unsaved changes: confirm before leaving
+```
+
+## Review UI
+
+```txt
+- Centered visual flashcard. Prompt side first (promptDirection). No Reveal answer button
+- Tap/click the card to flip (~200ms). Swipes are off until revealed
+- After reveal: swipe right = Know, swipe left = Don't know; short swipe-out (~200ms)
+- Compact fallback Don't know / Know buttons for web and accessibility
+- Leave review is a secondary text action, not a large primary button
+- SRS, submitReview, and the queue are unchanged
 ```
 
 ## Edit Deck UI
