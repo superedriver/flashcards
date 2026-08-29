@@ -134,7 +134,7 @@ export const decksUk = {
   },
   learningGroup: {
     TO_LEARN: 'Вивчити',
-    PRACTICED: 'У практиці',
+    PRACTICED: 'Практика',
     LEARNED: 'Вивчено',
   },
   learningCounters: {

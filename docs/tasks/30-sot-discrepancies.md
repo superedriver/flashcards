@@ -144,6 +144,8 @@ Expected state:
     - Fixed in TASK-30.39
 37. Review card shows Front/Back, both sides after flip, and too much empty space
     - Fixed in TASK-30.40
+38. Deck card badges say To learn and use 🌱 / 🔁 instead of Learn with 📖 / ✏️ / ✅
+    - Fixed in TASK-30.41
 ```
 
 ## Discrepancy Register
@@ -1614,6 +1616,40 @@ frontend: review flashcard, review screen, swipe-hint storage
 docs: lesson-flow Review UI
 ```
 
+---
+
+### DISC-038 Deck card badges use To learn and the wrong icons
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.41):
+
+```txt
+Product (approved in chat after 30.40):
+  - Deck card-row badges: 📖 Learn, ✏️ Practiced, ✅ Learned
+  - Same icons as My Decks / Deck Detail group stats
+
+Was wrong:
+  - Word-row badges: 🌱 To learn, 🔁 Practiced, ✅ Learned
+```
+
+Action:
+
+```txt
+TASK-30.41 Use Learn / Practiced / Learned icons on deck card badges
+```
+
+Impact:
+
+```txt
+frontend: learning-group badge emojis and labels
+docs: lesson-flow deck card badges
+```
+
 ## Epic Rules
 
 ```txt
@@ -1673,6 +1709,7 @@ docs: lesson-flow Review UI
 30.38                            align Deck Detail stats icons with My Decks
 30.39                            make review a tap-to-flip card with swipe answers
 30.40                            show question/answer only and tighten the review layout
+30.41                            use Learn / Practiced / Learned icons on deck card badges
 ```
 
 ## Epic Summary
@@ -1718,6 +1755,7 @@ docs: lesson-flow Review UI
 - [x] TASK-30.38 Align Deck Detail stats icons with My Decks
 - [x] TASK-30.39 Make review a tap-to-flip card with swipe answers
 - [x] TASK-30.40 Show question/answer only and tighten the review layout
+- [x] TASK-30.41 Use Learn / Practiced / Learned icons on deck card badges
 ```
 
 ---
@@ -6244,6 +6282,100 @@ None (human: both directions, layout on web and mobile, hint hides after a few a
 
 ```txt
 TASK-30.40 Show question/answer only and tighten the review layout
+```
+
+---
+
+# TASK-30.41 Use Learn / Practiced / Learned icons on deck card badges
+
+## Status
+
+DONE
+
+## Context
+
+DISC-038: Deck card rows show 🌱 To learn / 🔁 Practiced. Product wants the same 📖 Learn / ✏️ Practiced / ✅ Learned as group stats.
+
+## Goal
+
+Card-row badges use 📖 / ✏️ / ✅ and Learn / Practiced / Learned. Do not change stats layout or SRS groups.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/utils/learning-group-style.ts
+apps/mobile/src/i18n/resources/en/decks.ts
+apps/mobile/src/i18n/resources/uk/decks.ts
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Word-row badges: 📖 Learn, ✏️ Practiced, ✅ Learned.
+2. Keep badge colors. Do not change stats row layout.
+3. Update live SoT. Do not rewrite docs/tasks/done/*.
+4. Mark TASK-30.41 and DISC-038 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Labels and icons only. learningGroup enum and step mapping stay the same.
+```
+
+## Implementation Notes
+
+```txt
+- LEARNING_GROUP_STYLE.emoji is what the card-row badge renders.
+```
+
+## Acceptance Criteria
+
+```txt
+- Deck card badges show Learn (not To learn) with 📖 / ✏️ / ✅.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: deck detail Cards list).
+```
+
+## Do Not Do
+
+```txt
+- Do not change Home copy or GraphQL learningGroup values.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.41 Use Learn / Practiced / Learned icons on deck card badges
 ```
 
 ---

@@ -133,7 +133,7 @@ export const decksEn = {
     emptyHint: 'Add your first card to this deck',
   },
   learningGroup: {
-    TO_LEARN: 'To learn',
+    TO_LEARN: 'Learn',
     PRACTICED: 'Practiced',
     LEARNED: 'Learned',
   },

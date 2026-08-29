@@ -511,11 +511,11 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Card rows display #{position + 1} (storage stays 0-based). Owner Edit/Delete are
   icons on the right with accessibility labels; delete still confirms.
   Even/odd rows use alternating backgrounds; each row has a border and 8px inner inset.
-  Word group badges show 🌱 / 🔁 / ✅ with the same colors as the stats group cells.
+  Word group badges show 📖 Learn / ✏️ Practiced / ✅ Learned with the same colors as the stats group cells.
 - Deck detail (owner):
   Page title “Deck Detail” + visibility/moderation pills, flags on the right
   Header (deck title, description; filled Start review top-right when due)
-  Stats: two white bordered cards — Total cards | Due now, then To learn | Practiced | Learned
+  Stats: two white bordered cards — Total cards | Due now, then Learn | Practiced | Learned
   (Total / Due now: gray icon chip + count; groups: 📖 / ✏️ / ✅ like My Decks, count in a
   group-colored tile, centered label pills; no Next review)
   Primary: filled #1a56db Start review (white play + label) beside the deck title
