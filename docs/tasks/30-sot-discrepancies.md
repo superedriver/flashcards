@@ -150,6 +150,8 @@ Expected state:
     - Fixed in TASK-30.42
 40. Review complete is three equal buttons plus a card count
     - Fixed in TASK-30.43
+41. Review complete leaves the tab navigator
+    - Fixed in TASK-30.44
 ```
 
 ## Discrepancy Register
@@ -1724,6 +1726,41 @@ frontend: lesson summary screen
 docs: lesson-flow summary UI
 ```
 
+---
+
+### DISC-041 Review complete leaves the tab navigator
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.44):
+
+```txt
+Product (approved in chat after 30.43):
+  - Completion screen shows bottom tabs (Home / Decks / Profile)
+  - URLs stay /lessons/.../summary
+  - Active review still hides the tab bar
+
+Was wrong:
+  - app/lessons is a root stack, so summary has no tab bar
+```
+
+Action:
+
+```txt
+TASK-30.44 Keep bottom tabs visible on review complete
+```
+
+Impact:
+
+```txt
+frontend: lessons routes under (tabs)
+docs: lesson-flow Review complete UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1786,6 +1823,7 @@ docs: lesson-flow summary UI
 30.41                            use Learn / Practiced / Learned icons on deck card badges
 30.42                            refetch learning stats after card create and delete
 30.43                            simplify the review complete screen
+30.44                            keep bottom tabs visible on review complete
 ```
 
 ## Epic Summary
@@ -1834,6 +1872,7 @@ docs: lesson-flow summary UI
 - [x] TASK-30.41 Use Learn / Practiced / Learned icons on deck card badges
 - [x] TASK-30.42 Refetch learning stats after card create and delete
 - [x] TASK-30.43 Simplify the review complete screen
+- [x] TASK-30.44 Keep bottom tabs visible on review complete
 ```
 
 ---
@@ -6659,6 +6698,105 @@ None (human: complete a deck review and a Home review).
 
 ```txt
 TASK-30.43 Simplify the review complete screen
+```
+
+---
+
+# TASK-30.44 Keep bottom tabs visible on review complete
+
+## Status
+
+DONE
+
+## Context
+
+DISC-041: Review complete lives under `app/lessons`, outside the tab navigator, so Home / Decks / Profile disappear. Product wants the completion screen to keep the bottom tabs, like Groups.
+
+## Goal
+
+Move lesson routes under `(tabs)/lessons` as a hidden tab. Completion shows the tab bar. Active review hides it. URLs stay `/lessons/...`.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/app/_layout.tsx
+apps/mobile/app/(tabs)/_layout.tsx
+apps/mobile/app/(tabs)/lessons/_layout.tsx
+apps/mobile/app/(tabs)/lessons/start.tsx
+apps/mobile/app/(tabs)/lessons/[sessionId].tsx
+apps/mobile/app/(tabs)/lessons/[sessionId]/summary.tsx
+apps/mobile/src/features/lessons/hooks/use-lessons-tab-bar.ts
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Move app/lessons into app/(tabs)/lessons. Register a hidden tab (href: null).
+2. Completion shows Home / Decks / Profile. Review and start hide the tab bar.
+3. Keep /lessons/start, /lessons/:id, /lessons/:id/summary.
+4. Update live SoT. Do not rewrite docs/tasks/done/*.
+5. Mark TASK-30.44 and DISC-041 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Same pattern as groups/public/preview hidden tabs.
+```
+
+## Implementation Notes
+
+```txt
+- useLessonsTabBar: show tab bar only when the path ends in /summary.
+```
+
+## Acceptance Criteria
+
+```txt
+- Review complete shows the bottom tabs. Review itself does not.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: finish a review, confirm tabs on summary, hidden during review).
+```
+
+## Do Not Do
+
+```txt
+- Do not add a Lessons tab icon.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.44 Keep bottom tabs visible on review complete
 ```
 
 ---

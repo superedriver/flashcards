@@ -87,6 +87,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="public" options={{ href: null }} />
       <Tabs.Screen name="preview" options={{ href: null }} />
       <Tabs.Screen name="groups" options={{ href: null }} />
+      <Tabs.Screen name="lessons" options={{ headerShown: false, href: null }} />
       <Tabs.Screen
         name="profile"
         options={{

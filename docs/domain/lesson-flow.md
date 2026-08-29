@@ -594,6 +594,8 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Start another review is the only primary button
 - Deck session: Back to deck (text). Home session: Home (text)
 - All decks is a text link
+- Completion stays in the tab navigator; Home / Decks / Profile remain visible
+- Active review hides the tab bar
 ```
 
 ## Edit Deck UI
