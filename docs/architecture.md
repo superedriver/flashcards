@@ -1016,6 +1016,7 @@ Card create/delete/CSV import also refetch DeckLearningStats and HomeLearningPro
 (counts are a separate query from DeckCards). Evict those fields so inactive screens
 do not keep stale counts.
 Delete deck also refetches HomeLearningProgress (and evicts stats cache).
+Complete/abandon review also refetch HomeLearningProgress and DeckLearningStats.
 Add manual cache updates later where needed.
 Use limit/offset pagination for MVP.
 Use cursor pagination later if needed.

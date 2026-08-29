@@ -1,9 +1,10 @@
 import type { ApolloCache } from '@apollo/client'
 
+export const LEARNING_STATS_REFETCH_QUERIES = ['DeckLearningStats', 'HomeLearningProgress'] as const
+
 export const CARD_MUTATION_REFETCH_QUERIES = [
   'DeckCards',
-  'DeckLearningStats',
-  'HomeLearningProgress',
+  ...LEARNING_STATS_REFETCH_QUERIES,
 ] as const
 
 export function evictCardCountCache(cache: ApolloCache<unknown>): void {

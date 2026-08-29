@@ -12,6 +12,10 @@ import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
 import { useReviewSwipeHint } from '@/features/lessons/hooks/use-review-swipe-hint'
 import { getReviewSides } from '@/features/lessons/utils/get-review-sides'
 import { mapGraphQlLessonCard } from '@/features/lessons/utils/map-lesson-card'
+import {
+  evictCardCountCache,
+  LEARNING_STATS_REFETCH_QUERIES,
+} from '@/features/decks/utils/card-mutation-cache'
 import { confirmAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import {
@@ -38,8 +42,16 @@ export function LessonReviewScreen() {
     setCompletion,
   } = useActiveLesson(sessionId)
   const [submitReview] = useSubmitReviewMutation()
-  const [completeLesson] = useCompleteLessonMutation()
-  const [abandonLesson] = useAbandonLessonMutation()
+  const [completeLesson] = useCompleteLessonMutation({
+    awaitRefetchQueries: true,
+    refetchQueries: [...LEARNING_STATS_REFETCH_QUERIES],
+    update: evictCardCountCache,
+  })
+  const [abandonLesson] = useAbandonLessonMutation({
+    awaitRefetchQueries: true,
+    refetchQueries: [...LEARNING_STATS_REFETCH_QUERIES],
+    update: evictCardCountCache,
+  })
   const [isRevealed, setIsRevealed] = useState(false)
   const [isExiting, setIsExiting] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)

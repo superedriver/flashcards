@@ -154,6 +154,8 @@ Expected state:
     - Fixed in TASK-30.44
 42. Deleting a deck does not refresh Home counts
     - Fixed in TASK-30.45
+43. Finishing a review does not refresh Home or My Decks counts
+    - Fixed in TASK-30.46
 ```
 
 ## Discrepancy Register
@@ -1797,6 +1799,41 @@ frontend: delete deck cache refetch
 docs: lesson-flow Deck UI, architecture Apollo notes
 ```
 
+---
+
+### DISC-043 Review session does not refresh Home or My Decks counts
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.46):
+
+```txt
+Product:
+  - After a review session, Home Due now / Learn / Practiced / Learned and
+    My Decks deck stats update without reload
+
+Was wrong:
+  - completeLesson and abandonLesson did not refetch HomeLearningProgress
+    or DeckLearningStats
+```
+
+Action:
+
+```txt
+TASK-30.46 Refetch Home and My Decks stats after a review session
+```
+
+Impact:
+
+```txt
+frontend: complete/abandon lesson cache refetch
+docs: lesson-flow Deck UI, architecture Apollo notes
+```
+
 ## Epic Rules
 
 ```txt
@@ -1861,6 +1898,7 @@ docs: lesson-flow Deck UI, architecture Apollo notes
 30.43                            simplify the review complete screen
 30.44                            keep bottom tabs visible on review complete
 30.45                            refetch Home stats after deleting a deck
+30.46                            refetch Home and My Decks stats after a review session
 ```
 
 ## Epic Summary
@@ -1911,6 +1949,7 @@ docs: lesson-flow Deck UI, architecture Apollo notes
 - [x] TASK-30.43 Simplify the review complete screen
 - [x] TASK-30.44 Keep bottom tabs visible on review complete
 - [x] TASK-30.45 Refetch Home stats after deleting a deck
+- [x] TASK-30.46 Refetch Home and My Decks stats after a review session
 ```
 
 ---
@@ -6929,6 +6968,103 @@ None (human: delete a deck, check Home).
 
 ```txt
 TASK-30.45 Refetch Home stats after deleting a deck
+```
+
+---
+
+# TASK-30.46 Refetch Home and My Decks stats after a review session
+
+## Status
+
+DONE
+
+## Context
+
+DISC-043: completeLesson and abandonLesson do not refetch HomeLearningProgress or DeckLearningStats, so Home and My Decks counters stay stale until reload.
+
+## Goal
+
+After complete or abandon review, refetch Home and deck learning stats and evict cached counts so those screens update without a full reload.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
+apps/mobile/src/features/decks/utils/card-mutation-cache.ts
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. completeLesson and abandonLesson refetchQueries include HomeLearningProgress
+   and DeckLearningStats.
+2. Evict cached homeLearningProgress / deckLearningStats (reuse evictCardCountCache).
+3. Update live SoT. Do not rewrite docs/tasks/done/*.
+4. Mark TASK-30.46 and DISC-043 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Follow architecture: refetchQueries after create/update/delete in MVP.
+- Do not change SRS, submitReview payload, or the queue.
+```
+
+## Implementation Notes
+
+```txt
+- Reuse LEARNING_STATS_REFETCH_QUERIES from card-mutation-cache.
+```
+
+## Acceptance Criteria
+
+```txt
+- Finish or leave a review, open Home and My Decks: counts match without reload.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: finish a review, check Home and My Decks).
+```
+
+## Do Not Do
+
+```txt
+- Do not change submitReview, learning-steps, or queue picker.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.46 Refetch Home and My Decks stats after a review session
 ```
 
 ---
