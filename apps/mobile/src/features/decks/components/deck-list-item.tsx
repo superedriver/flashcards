@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router'
 import { useTranslation } from 'react-i18next'
-import { Pressable, useWindowDimensions, View } from 'react-native'
+import { Platform, Pressable, useWindowDimensions, View } from 'react-native'
 
 import { DeckOrigin, type DecksPageQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
@@ -63,6 +63,7 @@ function CardBadge({
 
   return (
     <DeckStatusBadge
+      compact
       hideApproved
       moderationStatus={deck.moderationStatus}
       visibility={deck.visibility}
@@ -70,18 +71,37 @@ function CardBadge({
   )
 }
 
+const TITLE_SLOT_HEIGHT = 48
+const TITLE_LINE_HEIGHT = 24
+
 function OwnFooter({ deckId }: { deckId: string }) {
   const { t } = useTranslation()
   const dueCount = useDeckDueCount(deckId)
 
   return (
-    <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+    <View
+      style={{
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        minHeight: 28,
+      }}
+    >
       {dueCount > 0 ? (
-        <AppText style={{ color: '#1a56db', flex: 1, fontSize: 12, fontWeight: '600' }}>
-          {t('decks.learningCounters.due', { count: dueCount })}
-        </AppText>
+        <View
+          style={{
+            backgroundColor: '#e8f0fe',
+            borderRadius: 6,
+            paddingHorizontal: 8,
+            paddingVertical: 3,
+          }}
+        >
+          <AppText style={{ color: '#1a56db', fontSize: 11, fontWeight: '600' }}>
+            {t('decks.learningCounters.due', { count: dueCount })}
+          </AppText>
+        </View>
       ) : (
-        <View style={{ flex: 1 }} />
+        <View />
       )}
       <DeckStartPlayButton deckId={deckId} />
     </View>
@@ -113,7 +133,11 @@ export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckLis
     <View
       style={isRail ? getDeckSectionGridItemStyle(width) : { position: 'relative', width: '100%' }}
     >
-      <Pressable accessibilityRole="button" onPress={() => router.push(href)}>
+      <Pressable
+        accessibilityRole="button"
+        style={isRail ? { flex: 1 } : undefined}
+        onPress={() => router.push(href)}
+      >
         <View
           style={{
             backgroundColor: '#ffffff',
@@ -122,9 +146,10 @@ export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckLis
             borderWidth: 1,
             boxShadow: '0 1px 3px rgba(16, 24, 40, 0.08)',
             elevation: 2,
+            flex: isRail ? 1 : undefined,
             minHeight: isRail ? undefined : 180,
             overflow: 'hidden',
-            padding: 12,
+            padding: section === 'own' ? 10 : 12,
           }}
         >
           <View
@@ -133,7 +158,7 @@ export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckLis
               flexDirection: 'row',
               gap: 8,
               justifyContent: 'space-between',
-              marginBottom: 8,
+              marginBottom: section === 'own' ? 4 : 8,
             }}
           >
             <View
@@ -165,25 +190,29 @@ export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckLis
             <CardBadge deck={deck} section={section} />
           </View>
 
-          <AppText
-            ellipsizeMode="tail"
-            numberOfLines={2}
+          <View
             style={{
-              fontSize: 20,
-              fontWeight: '700',
-              lineHeight: 24,
-              marginBottom: section === 'own' ? 12 : 10,
+              height: TITLE_SLOT_HEIGHT,
+              justifyContent: 'flex-start',
+              marginBottom: section === 'own' ? 8 : 10,
             }}
           >
-            {deck.title}
-          </AppText>
+            <AppText
+              ellipsizeMode="tail"
+              numberOfLines={2}
+              title={Platform.OS === 'web' ? deck.title : undefined}
+              style={{ fontSize: 20, fontWeight: '700', lineHeight: TITLE_LINE_HEIGHT }}
+            >
+              {deck.title}
+            </AppText>
+          </View>
 
           {section !== 'own' ? (
             <View style={{ backgroundColor: '#e4e7ec', height: 1, marginBottom: 10 }} />
           ) : null}
 
           {section === 'own' ? (
-            <View style={{ gap: 12 }}>
+            <View style={{ gap: 8 }}>
               <DeckLearningStatsCompact deckId={deck.id} />
               <OwnFooter deckId={deck.id} />
             </View>

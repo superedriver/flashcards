@@ -11,6 +11,7 @@ import { View } from 'react-native'
 import { getModerationLabel, getVisibilityLabel } from '@/features/decks/utils/format-deck-status'
 
 type DeckStatusBadgeProps = {
+  compact?: boolean
   hideApproved?: boolean
   isOfficial?: boolean
   moderationStatus: DeckModerationStatus
@@ -25,7 +26,13 @@ type PillStyle = {
   icon: keyof typeof Ionicons.glyphMap
 }
 
-function getVisibilityStyle(visibility: DeckVisibility): PillStyle {
+function getVisibilityStyle(visibility: DeckVisibility, compact = false): PillStyle {
+  if (compact) {
+    return visibility === Visibility.Public
+      ? { background: '#f2f4f7', border: '#e4e7ec', color: '#667085', icon: 'globe-outline' }
+      : { background: '#f2f4f7', border: '#e4e7ec', color: '#667085', icon: 'lock-closed-outline' }
+  }
+
   if (visibility === Visibility.Public) {
     return { background: '#eff4ff', border: '#b2ccff', color: '#1565c0', icon: 'globe-outline' }
   }
@@ -63,7 +70,14 @@ function getModerationStyle(moderationStatus: DeckModerationStatus): PillStyle |
   }
 }
 
-function StatusPill({ background, border, color, icon, label }: PillStyle & { label: string }) {
+function StatusPill({
+  background,
+  border,
+  color,
+  compact = false,
+  icon,
+  label,
+}: PillStyle & { compact?: boolean; label: string }) {
   return (
     <View
       style={{
@@ -71,21 +85,24 @@ function StatusPill({ background, border, color, icon, label }: PillStyle & { la
         alignSelf: 'flex-start',
         backgroundColor: background,
         borderColor: border,
-        borderRadius: 8,
+        borderRadius: compact ? 6 : 8,
         borderWidth: 1,
         flexDirection: 'row',
-        gap: 4,
-        paddingHorizontal: 8,
-        paddingVertical: 3,
+        gap: compact ? 3 : 4,
+        paddingHorizontal: compact ? 6 : 8,
+        paddingVertical: compact ? 1 : 3,
       }}
     >
-      <Ionicons color={color} name={icon} size={13} />
-      <AppText style={{ color, fontSize: 11, fontWeight: '600' }}>{label}</AppText>
+      <Ionicons color={color} name={icon} size={compact ? 11 : 13} />
+      <AppText style={{ color, fontSize: compact ? 10 : 11, fontWeight: compact ? '500' : '600' }}>
+        {label}
+      </AppText>
     </View>
   )
 }
 
 export function DeckStatusBadge({
+  compact = false,
   hideApproved = false,
   isOfficial = false,
   moderationStatus,
@@ -100,6 +117,7 @@ export function DeckStatusBadge({
         background="#e8f0fe"
         border="#b2ccff"
         color="#1a56db"
+        compact={compact}
         icon="people-outline"
         label={t('decks.sections.shared')}
       />
@@ -113,6 +131,7 @@ export function DeckStatusBadge({
           background="#ecfdf3"
           border="#abefc6"
           color="#067647"
+          compact={compact}
           icon="star-outline"
           label={t('decks.status.official')}
         />
@@ -121,24 +140,32 @@ export function DeckStatusBadge({
 
     return (
       <StatusPill
-        {...getVisibilityStyle(Visibility.Public)}
+        {...getVisibilityStyle(Visibility.Public, compact)}
+        compact={compact}
         label={getVisibilityLabel(Visibility.Public)}
       />
     )
   }
 
   const moderationLabel = getModerationLabel(moderationStatus)
-  const visibilityStyle = getVisibilityStyle(visibility)
+  const visibilityStyle = getVisibilityStyle(visibility, compact)
   const moderationStyle = getModerationStyle(moderationStatus)
   const showModeration =
     Boolean(moderationLabel && moderationStyle) &&
     !(hideApproved && moderationStatus === ModerationStatus.Approved)
 
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'flex-end' }}>
-      <StatusPill {...visibilityStyle} label={getVisibilityLabel(visibility)} />
+    <View
+      style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: compact ? 4 : 8,
+        justifyContent: 'flex-end',
+      }}
+    >
+      <StatusPill {...visibilityStyle} compact={compact} label={getVisibilityLabel(visibility)} />
       {showModeration && moderationLabel && moderationStyle ? (
-        <StatusPill {...moderationStyle} label={moderationLabel} />
+        <StatusPill {...moderationStyle} compact={compact} label={moderationLabel} />
       ) : null}
     </View>
   )

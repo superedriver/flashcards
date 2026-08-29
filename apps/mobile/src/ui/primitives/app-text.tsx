@@ -2,7 +2,10 @@ import type { ComponentProps, ReactNode } from 'react'
 import { Platform, Text as RNText, type TextProps, type TextStyle } from 'react-native'
 import { Text } from 'tamagui'
 
-type AppTextProps = ComponentProps<typeof Text> & Pick<TextProps, 'ellipsizeMode' | 'numberOfLines'>
+type AppTextProps = ComponentProps<typeof Text> &
+  Pick<TextProps, 'ellipsizeMode' | 'numberOfLines'> & {
+    title?: string
+  }
 
 const webTextStyle = {
   flexShrink: 1,
@@ -22,19 +25,23 @@ export function AppText({
   ellipsizeMode,
   numberOfLines,
   style,
+  title,
   ...props
 }: AppTextProps) {
   if (Platform.OS === 'web') {
     return (
       <RNText
-        accessibilityRole={accessibilityRole}
-        aria-live={accessibilityLiveRegion === 'polite' ? 'polite' : undefined}
-        ellipsizeMode={ellipsizeMode}
-        numberOfLines={numberOfLines}
-        style={[
-          numberOfLines != null ? webClampedTextStyle : webTextStyle,
-          style as ComponentProps<typeof RNText>['style'],
-        ]}
+        {...({
+          accessibilityRole,
+          'aria-live': accessibilityLiveRegion === 'polite' ? 'polite' : undefined,
+          ellipsizeMode,
+          numberOfLines,
+          style: [
+            numberOfLines != null ? webClampedTextStyle : webTextStyle,
+            style as ComponentProps<typeof RNText>['style'],
+          ],
+          title,
+        } as TextProps)}
       >
         {children as ReactNode}
       </RNText>

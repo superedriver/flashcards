@@ -117,6 +117,7 @@ export function getDeckSectionColumnCount(windowWidth: number): number {
 
 export function getDeckSectionGridStyle(): ViewStyle {
   return {
+    alignItems: 'stretch',
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: DECK_SECTION_GRID_GAP,
@@ -134,6 +135,7 @@ export function getDeckSectionGridItemStyle(windowWidth: number): ViewStyle {
   const gapTotal = DECK_SECTION_GRID_GAP * (columns - 1)
 
   return {
+    alignSelf: 'stretch',
     maxWidth: '100%',
     width: `calc((100% - ${gapTotal}px) / ${columns})`,
   } as unknown as ViewStyle

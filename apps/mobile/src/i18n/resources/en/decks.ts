@@ -38,6 +38,7 @@ export const decksEn = {
     learn: 'Learn',
     practiced: 'Practiced',
     learned: 'Learned',
+    review: 'Review',
   },
   deckDetail: {
     title: 'Deck Detail',

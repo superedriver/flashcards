@@ -23,7 +23,7 @@ const CARD_STAT_LABEL: Record<LearningGroup, 'learn' | 'practiced' | 'learned'> 
 
 const STAT_DIVIDER = {
   backgroundColor: '#e4e7ec',
-  marginVertical: 8,
+  marginVertical: 6,
   width: 1,
 }
 
@@ -36,11 +36,13 @@ function GroupColumn({ count, group }: { count: number; group: LearningGroup }) 
     <View
       accessible
       accessibilityLabel={t(`decks.learningCounters.${counterKey(group)}`, { count })}
-      style={{ alignItems: 'center', flex: 1, gap: 2, minWidth: 0, paddingVertical: 8 }}
+      style={{ alignItems: 'center', flex: 1, gap: 1, minWidth: 0, paddingVertical: 6 }}
     >
-      <AppText style={{ fontSize: 16 }}>{CARD_STAT_EMOJI[group]}</AppText>
-      <AppText style={{ color: style.color, fontSize: 20, fontWeight: '700' }}>{count}</AppText>
-      <AppText numberOfLines={1} style={{ color: '#667085', fontSize: 10, fontWeight: '600' }}>
+      <AppText style={{ fontSize: 13 }}>{CARD_STAT_EMOJI[group]}</AppText>
+      <AppText style={{ color: style.color, fontSize: 24, fontWeight: '700', lineHeight: 28 }}>
+        {count}
+      </AppText>
+      <AppText numberOfLines={1} style={{ color: '#667085', fontSize: 10, fontWeight: '500' }}>
         {t(`decks.cardStats.${labelKey}`)}
       </AppText>
     </View>
@@ -66,7 +68,7 @@ export function DeckLearningStatsCompact({ deckId }: DeckLearningStatsCompactPro
   })
 
   if (loading && !data?.deckLearningStats) {
-    return <View style={{ height: 72 }} />
+    return <View style={{ height: 64 }} />
   }
 
   if (error || !data?.deckLearningStats) {

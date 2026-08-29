@@ -31,15 +31,15 @@ export function DeckStartPlayButton({ deckId }: DeckStartPlayButtonProps) {
         flexDirection: 'row',
         flexShrink: 0,
         gap: 4,
-        paddingHorizontal: 10,
-        paddingVertical: 8,
+        paddingHorizontal: 8,
+        paddingVertical: 5,
       }}
       onPress={() => router.push(`/lessons/start?deckId=${deckId}`)}
     >
-      <AppText style={{ color: '#ffffff', fontSize: 12, fontWeight: '700' }}>
-        {t('decks.deckDetail.startLesson')}
+      <AppText style={{ color: '#ffffff', fontSize: 11, fontWeight: '700' }}>
+        {t('decks.cardStats.review')}
       </AppText>
-      <Ionicons color="#ffffff" name="chevron-forward" size={14} />
+      <Ionicons color="#ffffff" name="chevron-forward" size={12} />
     </Pressable>
   )
 }

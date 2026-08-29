@@ -112,6 +112,8 @@ Expected state:
     - Fixed in TASK-30.23
 21. Own compact stats use per-group color tiles instead of one bordered row
     - Fixed in TASK-30.24
+22. Own cards are tall, badges loud, titles shift stats, CTA says Start review
+    - Fixed in TASK-30.25
 ```
 
 ## Discrepancy Register
@@ -998,6 +1000,44 @@ docs: lesson-flow Deck UI
 backend / Prisma / GraphQL: unchanged
 ```
 
+---
+
+### DISC-022 Own cards need tighter chrome and a locked title slot
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.25):
+
+```txt
+Product (approved in chat after 30.24):
+  - Tighter vertical padding; muted compact Private/Public
+  - Stats stay one bordered 3-col row; larger counts, smaller emoji; gray labels
+  - Due chip left, Review → right when dueCount > 0
+  - Title max 2 lines, ellipsis, fixed 2-line height; web tooltip; full title on detail
+  - Equal card size in the grid. UI only
+
+Was wrong:
+  - Large gaps, accented badge, Start review label, title height followed content
+```
+
+Action:
+
+```txt
+TASK-30.25 Compact Own cards and lock the title slot
+```
+
+Impact:
+
+```txt
+frontend: Own card chrome, compact badge, Review CTA, title slot, web tooltip
+docs: lesson-flow Deck UI
+backend / Prisma / GraphQL: unchanged
+```
+
 ## Epic Rules
 
 ```txt
@@ -1041,6 +1081,7 @@ backend / Prisma / GraphQL: unchanged
 30.22                            stretch My Decks cards to fill the row
 30.23                            restyle Own compact stats tiles
 30.24                            restyle Own card stats into one bordered row
+30.25                            compact Own cards and lock the title slot
 ```
 
 ## Epic Summary
@@ -1070,6 +1111,7 @@ backend / Prisma / GraphQL: unchanged
 - [x] TASK-30.22 Stretch My Decks cards to fill the row
 - [x] TASK-30.23 Restyle Own compact stats tiles
 - [x] TASK-30.24 Restyle Own card stats into one bordered row
+- [x] TASK-30.25 Compact Own cards and lock the title slot
 ```
 
 ---
@@ -3859,6 +3901,119 @@ None (human: My Decks Own cards vs mock).
 
 ```txt
 TASK-30.24 Restyle Own card stats into one bordered row
+```
+
+---
+
+# TASK-30.25 Compact Own cards and lock the title slot
+
+## Status
+
+DONE
+
+## Context
+
+DISC-022: Own cards are still tall, the visibility pill is loud, Start review is long, and a one-line title shortens the card so stats/footer jump.
+
+## Goal
+
+Own My Decks cards are compact, equal height in a row, with a 2-line title slot, Due chip, and Review →. Presentation only.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/security/security-checklist.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+apps/mobile/src/features/decks/components/deck-learning-stats-compact.tsx
+apps/mobile/src/features/decks/components/deck-status-badge.tsx
+apps/mobile/src/features/decks/components/deck-start-play-button.tsx
+apps/mobile/src/ui/primitives/app-text.tsx
+apps/mobile/src/ui/utils/responsive.ts
+apps/mobile/src/i18n/resources/en/decks.ts
+apps/mobile/src/i18n/resources/uk/decks.ts
+docs/domain/lesson-flow.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Tighten Own vertical padding/gaps. Compact muted Private/Public on list cards.
+2. Keep one bordered 3-col stats box. Larger counts, smaller emoji, gray labels.
+3. Due as a compact chip left; Review → right only when dueCount > 0.
+   A11y label stays Start review. Deck detail CTA unchanged.
+4. Title: max 2 lines, ellipsis, fixed 2-line slot height. Web tooltip with full
+   title. No dynamic font shrink, no horizontal scroll. Full title on detail.
+5. Stretch grid items so cards in a row share height.
+6. Update live SoT. Do not rewrite docs/tasks/done/*.
+7. Mark TASK-30.25 and DISC-022 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. Do not change Prisma, GraphQL, or use cases.
+```
+
+## Implementation Notes
+
+```txt
+- Reserve footer min-height so missing Review does not shrink the card.
+```
+
+## Acceptance Criteria
+
+```txt
+- Own cards in a row are the same size; long titles ellipsize at 2 lines.
+- Web hover shows the full title. Review → only when dueCount > 0.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: My Decks Own compact cards + long title).
+```
+
+## Do Not Do
+
+```txt
+- Do not change deck-detail Start review label or stats.
+- Do not change Prisma, GraphQL, or queue logic.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.25 Compact Own cards and lock the title slot
 ```
 
 ---

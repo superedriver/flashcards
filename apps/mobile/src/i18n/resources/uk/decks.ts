@@ -38,6 +38,7 @@ export const decksUk = {
     learn: 'Вивчити',
     practiced: 'Практика',
     learned: 'Вивчено',
+    review: 'Повторити',
   },
   deckDetail: {
     title: 'Деталі колоди',
