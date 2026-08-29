@@ -531,6 +531,8 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Deck detail Start review only for the owner when dueCount > 0
 - After create/delete card or CSV import, refetch DeckCards, DeckLearningStats, and
   HomeLearningProgress so deck detail, My Decks, and Home counts update without reload
+- After delete deck, refetch MyDecks, DecksPage, HomeLearningProgress, and DeckLearningStats
+  so Home counts update without reload
 - Non-owners must copy public/group decks before studying
 ```
 

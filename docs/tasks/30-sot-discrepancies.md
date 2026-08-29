@@ -152,6 +152,8 @@ Expected state:
     - Fixed in TASK-30.43
 41. Review complete leaves the tab navigator
     - Fixed in TASK-30.44
+42. Deleting a deck does not refresh Home counts
+    - Fixed in TASK-30.45
 ```
 
 ## Discrepancy Register
@@ -1761,6 +1763,40 @@ frontend: lessons routes under (tabs)
 docs: lesson-flow Review complete UI
 ```
 
+---
+
+### DISC-042 Delete deck does not refresh Home counts
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.45):
+
+```txt
+Product:
+  - After delete deck, Home Due now / Learn / Practiced / Learned update without reload
+
+Was wrong:
+  - deleteDeck only refetchQueries MyDecks and DecksPage
+  - HomeLearningProgress stayed cached
+```
+
+Action:
+
+```txt
+TASK-30.45 Refetch Home stats after deleting a deck
+```
+
+Impact:
+
+```txt
+frontend: delete deck cache refetch
+docs: lesson-flow Deck UI, architecture Apollo notes
+```
+
 ## Epic Rules
 
 ```txt
@@ -1824,6 +1860,7 @@ docs: lesson-flow Review complete UI
 30.42                            refetch learning stats after card create and delete
 30.43                            simplify the review complete screen
 30.44                            keep bottom tabs visible on review complete
+30.45                            refetch Home stats after deleting a deck
 ```
 
 ## Epic Summary
@@ -1873,6 +1910,7 @@ docs: lesson-flow Review complete UI
 - [x] TASK-30.42 Refetch learning stats after card create and delete
 - [x] TASK-30.43 Simplify the review complete screen
 - [x] TASK-30.44 Keep bottom tabs visible on review complete
+- [x] TASK-30.45 Refetch Home stats after deleting a deck
 ```
 
 ---
@@ -6797,6 +6835,100 @@ None (human: finish a review, confirm tabs on summary, hidden during review).
 
 ```txt
 TASK-30.44 Keep bottom tabs visible on review complete
+```
+
+---
+
+# TASK-30.45 Refetch Home stats after deleting a deck
+
+## Status
+
+DONE
+
+## Context
+
+DISC-042: Delete deck refetches My Decks but not HomeLearningProgress, so Home counters stay stale until reload.
+
+## Goal
+
+After delete deck, refetch HomeLearningProgress (and related deck stats) and evict cached counts so Home updates without a full reload.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/deck-actions.tsx
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. deleteDeck refetchQueries include HomeLearningProgress and DeckLearningStats.
+2. Evict cached homeLearningProgress / deckLearningStats (reuse evictCardCountCache).
+3. Update live SoT. Do not rewrite docs/tasks/done/*.
+4. Mark TASK-30.45 and DISC-042 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Follow architecture: refetchQueries after create/update/delete in MVP.
+```
+
+## Implementation Notes
+
+```txt
+- Keep MyDecks and DecksPage in the refetch list.
+```
+
+## Acceptance Criteria
+
+```txt
+- Delete a deck, open Home: Due now / group counts match without reload.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: delete a deck, check Home).
+```
+
+## Do Not Do
+
+```txt
+- Do not change deleteDeck permissions or API.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.45 Refetch Home stats after deleting a deck
 ```
 
 ---

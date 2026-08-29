@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
 
 import { DeckMoreMenu } from '@/features/decks/components/deck-more-menu'
+import { evictCardCountCache } from '@/features/decks/utils/card-mutation-cache'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import { deckNeedsLanguageAssignment } from '@/features/decks/utils/deck-language-gate'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
@@ -33,7 +34,9 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
   const [actionError, setActionError] = useState<string | null>(null)
 
   const [deleteDeck, { loading: isDeleting }] = useDeleteDeckMutation({
-    refetchQueries: ['MyDecks', 'DecksPage'],
+    awaitRefetchQueries: true,
+    refetchQueries: ['MyDecks', 'DecksPage', 'HomeLearningProgress', 'DeckLearningStats'],
+    update: evictCardCountCache,
   })
 
   const needsLanguages = deckNeedsLanguageAssignment(deck)
