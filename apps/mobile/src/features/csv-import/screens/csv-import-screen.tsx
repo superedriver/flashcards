@@ -6,6 +6,10 @@ import { View } from 'react-native'
 import { CsvImportSummary } from '@/features/csv-import/components/csv-import-summary'
 import { CsvInputForm } from '@/features/csv-import/components/csv-input-form'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
+import {
+  CARD_MUTATION_REFETCH_QUERIES,
+  evictCardCountCache,
+} from '@/features/decks/utils/card-mutation-cache'
 import { deckNeedsLanguageAssignment } from '@/features/decks/utils/deck-language-gate'
 import type { PreviewCsvImportMutation } from '@/graphql/generated'
 import {
@@ -48,7 +52,9 @@ export function CsvImportScreen() {
 
   const [previewCsvImport, { loading: isPreviewing }] = usePreviewCsvImportMutation()
   const [confirmCsvImport, { loading: isConfirming }] = useConfirmCsvImportMutation({
-    refetchQueries: ['DeckCards'],
+    awaitRefetchQueries: true,
+    refetchQueries: [...CARD_MUTATION_REFETCH_QUERIES],
+    update: evictCardCountCache,
   })
 
   if (deckQuery.loading) {

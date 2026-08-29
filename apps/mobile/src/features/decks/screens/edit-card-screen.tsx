@@ -6,6 +6,10 @@ import { View } from 'react-native'
 import { CardForm } from '@/features/decks/components/card-form'
 import { getGraphqlErrorMessage, optionalText } from '@/features/decks/utils/deck-form-utils'
 import {
+  CARD_MUTATION_REFETCH_QUERIES,
+  evictCardCountCache,
+} from '@/features/decks/utils/card-mutation-cache'
+import {
   useDeckCardsQuery,
   useDeleteCardMutation,
   useUpdateCardMutation,
@@ -32,7 +36,9 @@ export function EditCardScreen() {
     refetchQueries: ['DeckCards'],
   })
   const [deleteCard, { loading: isDeleting }] = useDeleteCardMutation({
-    refetchQueries: ['DeckCards'],
+    awaitRefetchQueries: true,
+    refetchQueries: [...CARD_MUTATION_REFETCH_QUERIES],
+    update: evictCardCountCache,
   })
 
   if (loading) {

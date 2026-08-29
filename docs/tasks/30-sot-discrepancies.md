@@ -146,6 +146,8 @@ Expected state:
     - Fixed in TASK-30.40
 38. Deck card badges say To learn and use 🌱 / 🔁 instead of Learn with 📖 / ✏️ / ✅
     - Fixed in TASK-30.41
+39. Adding a card does not update deck/My Decks counts until reload
+    - Fixed in TASK-30.42
 ```
 
 ## Discrepancy Register
@@ -1650,6 +1652,41 @@ frontend: learning-group badge emojis and labels
 docs: lesson-flow deck card badges
 ```
 
+---
+
+### DISC-039 Card create does not refresh learning-stats counts
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.42):
+
+```txt
+Product:
+  - After add/delete card (and CSV import), deck detail Total/Due/groups and
+    My Decks compact counts update without a full reload
+
+Was wrong:
+  - createCard/deleteCard/CSV only refetchQueries DeckCards
+  - DeckLearningStats (detail + My Decks) stayed cached until reload
+```
+
+Action:
+
+```txt
+TASK-30.42 Refetch learning stats after card create and delete
+```
+
+Impact:
+
+```txt
+frontend: create/delete/CSV card cache refetch
+docs: lesson-flow Deck UI, architecture Apollo notes
+```
+
 ## Epic Rules
 
 ```txt
@@ -1710,6 +1747,7 @@ docs: lesson-flow deck card badges
 30.39                            make review a tap-to-flip card with swipe answers
 30.40                            show question/answer only and tighten the review layout
 30.41                            use Learn / Practiced / Learned icons on deck card badges
+30.42                            refetch learning stats after card create and delete
 ```
 
 ## Epic Summary
@@ -1756,6 +1794,7 @@ docs: lesson-flow deck card badges
 - [x] TASK-30.39 Make review a tap-to-flip card with swipe answers
 - [x] TASK-30.40 Show question/answer only and tighten the review layout
 - [x] TASK-30.41 Use Learn / Practiced / Learned icons on deck card badges
+- [x] TASK-30.42 Refetch learning stats after card create and delete
 ```
 
 ---
@@ -6376,6 +6415,107 @@ None (human: deck detail Cards list).
 
 ```txt
 TASK-30.41 Use Learn / Practiced / Learned icons on deck card badges
+```
+
+---
+
+# TASK-30.42 Refetch learning stats after card create and delete
+
+## Status
+
+DONE
+
+## Context
+
+DISC-039: After adding a card, DeckCards updates but Total cards / Due now / Learn counts on deck detail and My Decks stay stale until reload. Those counts come from DeckLearningStats, which was not refetched.
+
+## Goal
+
+Create, delete, and CSV import refetch DeckCards, DeckLearningStats, and HomeLearningProgress so counts update without a full reload.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/utils/card-mutation-cache.ts
+apps/mobile/src/features/decks/screens/create-card-screen.tsx
+apps/mobile/src/features/decks/screens/edit-card-screen.tsx
+apps/mobile/src/features/decks/screens/deck-detail-screen.tsx
+apps/mobile/src/features/csv-import/screens/csv-import-screen.tsx
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. After create/delete card and CSV import: refetch DeckCards, DeckLearningStats, HomeLearningProgress.
+2. Evict cached stats so inactive My Decks / Home queries do not stay stale.
+3. Do not change GraphQL schema or how stats are calculated.
+4. Update live SoT. Do not rewrite docs/tasks/done/*.
+5. Mark TASK-30.42 and DISC-039 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Follow architecture: refetchQueries after create/update/delete in MVP.
+```
+
+## Implementation Notes
+
+```txt
+- Shared CARD_MUTATION_REFETCH_QUERIES + evictCardCountCache.
+- Update-card text does not change counts; leave its refetch as DeckCards only.
+```
+
+## Acceptance Criteria
+
+```txt
+- Add a card, return to deck detail: Total cards and Learn counts match the list.
+- My Decks compact counts update without a full reload.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: add card, check deck detail + My Decks counts).
+```
+
+## Do Not Do
+
+```txt
+- Do not add optimistic UI.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.42 Refetch learning stats after card create and delete
 ```
 
 ---

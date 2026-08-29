@@ -10,6 +10,10 @@ import { DeckStartReviewButton } from '@/features/decks/components/deck-start-re
 import { DeckStatusBadge } from '@/features/decks/components/deck-status-badge'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import {
+  CARD_MUTATION_REFETCH_QUERIES,
+  evictCardCountCache,
+} from '@/features/decks/utils/card-mutation-cache'
+import {
   deckNeedsLanguageAssignment,
   promptAssignLanguages,
 } from '@/features/decks/utils/deck-language-gate'
@@ -38,7 +42,9 @@ export function DeckDetailScreen() {
     variables: { deckId: deckId ?? '' },
   })
   const [deleteCard] = useDeleteCardMutation({
-    refetchQueries: ['DeckCards'],
+    awaitRefetchQueries: true,
+    refetchQueries: [...CARD_MUTATION_REFETCH_QUERIES],
+    update: evictCardCountCache,
   })
 
   const loading = deckQuery.loading || cardsQuery.loading

@@ -5,6 +5,10 @@ import { View } from 'react-native'
 
 import { CardForm } from '@/features/decks/components/card-form'
 import { getGraphqlErrorMessage, optionalText } from '@/features/decks/utils/deck-form-utils'
+import {
+  CARD_MUTATION_REFETCH_QUERIES,
+  evictCardCountCache,
+} from '@/features/decks/utils/card-mutation-cache'
 import { useCreateCardMutation } from '@/graphql/generated'
 import { PageTitle, Screen } from '@/ui/components'
 
@@ -13,7 +17,9 @@ export function CreateCardScreen() {
   const router = useRouter()
   const { deckId } = useLocalSearchParams<{ deckId: string }>()
   const [createCard, { loading }] = useCreateCardMutation({
-    refetchQueries: ['DeckCards'],
+    awaitRefetchQueries: true,
+    refetchQueries: [...CARD_MUTATION_REFETCH_QUERIES],
+    update: evictCardCountCache,
   })
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
