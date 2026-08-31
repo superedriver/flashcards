@@ -156,6 +156,8 @@ Expected state:
     - Fixed in TASK-30.45
 43. Finishing a review does not refresh Home or My Decks counts
     - Fixed in TASK-30.46
+44. Review does not speak the target-language side
+    - Fixed in TASK-30.47
 ```
 
 ## Discrepancy Register
@@ -1834,6 +1836,45 @@ frontend: complete/abandon lesson cache refetch
 docs: lesson-flow Deck UI, architecture Apollo notes
 ```
 
+---
+
+### DISC-044 Review does not speak the target-language side
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.47):
+
+```txt
+Product:
+  - Speak only the language being learned (card front / targetLanguage)
+  - Auto-speak when that side is visible; 🔊 only on that side
+  - After flip, speak only if the target-language side opened
+  - expo-speech on iOS, Android, and Web; stop previous speech first
+
+Architecture:
+  - User can press Listen to hear the word
+
+Was wrong:
+  - Review had no TTS
+```
+
+Action:
+
+```txt
+TASK-30.47 Speak only the target-language side in review
+```
+
+Impact:
+
+```txt
+frontend: expo-speech on review flashcard
+docs: lesson-flow Review UI, architecture review flow
+```
+
 ## Epic Rules
 
 ```txt
@@ -1899,6 +1940,7 @@ docs: lesson-flow Deck UI, architecture Apollo notes
 30.44                            keep bottom tabs visible on review complete
 30.45                            refetch Home stats after deleting a deck
 30.46                            refetch Home and My Decks stats after a review session
+30.47                            speak only the target-language side in review
 ```
 
 ## Epic Summary
@@ -1950,6 +1992,7 @@ docs: lesson-flow Deck UI, architecture Apollo notes
 - [x] TASK-30.44 Keep bottom tabs visible on review complete
 - [x] TASK-30.45 Refetch Home stats after deleting a deck
 - [x] TASK-30.46 Refetch Home and My Decks stats after a review session
+- [x] TASK-30.47 Speak only the target-language side in review
 ```
 
 ---
@@ -7065,6 +7108,120 @@ None (human: finish a review, check Home and My Decks).
 
 ```txt
 TASK-30.46 Refetch Home and My Decks stats after a review session
+```
+
+---
+
+# TASK-30.47 Speak only the target-language side in review
+
+## Status
+
+DONE
+
+## Context
+
+DISC-044: Architecture mentions Listen, but review has no TTS. Speak only the language being learned (card front / targetLanguage), not the source side.
+
+## Goal
+
+Add expo-speech on iOS, Android, and Web. Auto-speak and show 🔊 only when the target-language side is visible. Stop previous speech before a new utterance.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/algorithms/learning-steps.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/package.json
+apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
+apps/mobile/src/features/lessons/components/review-flashcard.tsx
+apps/mobile/src/features/lessons/utils/get-review-sides.ts
+apps/mobile/src/i18n/resources/en/lessons.ts
+apps/mobile/src/i18n/resources/uk/lessons.ts
+docs/domain/lesson-flow.md
+docs/architecture.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Files to Create
+
+```txt
+apps/mobile/src/features/lessons/hooks/use-review-speech.ts
+apps/mobile/src/features/lessons/utils/tts-language.ts
+```
+
+## Requirements
+
+```txt
+1. Use expo-speech for iOS, Android, and Web.
+2. Speak only the target-language side (card front). Source side stays silent.
+3. Auto-speak when the target-language side is showing, including after flip.
+4. Show 🔊 only on the target-language side; tap replays.
+5. Stop previous speech before a new utterance, and on unmount / leaving the side.
+6. TTS language comes from targetLanguage.
+7. Update live SoT. Do not rewrite docs/tasks/done/*.
+8. Mark TASK-30.47 and DISC-044 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Do not change SRS, promptDirection, the lesson queue, or submitReview.
+```
+
+## Implementation Notes
+
+```txt
+- FRONT_TO_BACK shows front first (speak); BACK_TO_FRONT shows back first (silent).
+- Front is target language; back is source language.
+```
+
+## Acceptance Criteria
+
+```txt
+- Target-language side auto-speaks and shows 🔊; source side does not.
+- Flip to target speaks; flip to source does not.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: review FRONT_TO_BACK and BACK_TO_FRONT on iOS/Android/Web).
+```
+
+## Do Not Do
+
+```txt
+- Do not change submitReview, learning-steps, or queue picker.
+- Do not speak example or notes.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.47 Speak only the target-language side in review
 ```
 
 ---

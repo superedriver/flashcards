@@ -672,7 +672,9 @@ Flow:
    Do not label Front/Back.
 5. User taps/clicks the card to reveal the answer side only (fast flip, ~200ms).
 6. Example sentence is shown on the answer side if available.
-7. User can press Listen to hear the word.
+7. If the visible side is the target language (card front), auto-speak it and show 🔊.
+   Do not speak the source-language side. Stop previous speech before a new utterance.
+   TTS uses expo-speech with the deck targetLanguage (iOS, Android, Web).
 8. User answers Know (swipe right or button) or Don't know (swipe left or button).
    Swipes are disabled until the card is revealed. Compact fallback buttons stay visible.
 9. Backend saves the review, updates learning-steps state, then records that answer on the

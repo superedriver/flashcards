@@ -586,6 +586,9 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Question first from promptDirection; after flip, only the answer side
 - Tap to reveal only on the question side. Example/notes only on the answer side if present
 - After reveal: swipe right = Know, swipe left = Don't know; compact fallback buttons
+- Speak only the target-language side (card front). Auto-speak when that side is visible;
+  show 🔊 only then. Do not speak the source-language side. Stop previous speech first.
+  TTS language is targetLanguage via expo-speech (iOS, Android, Web)
 - Swipe hint under the card after reveal; hide after the first few answers
 - Leave review is a secondary text action. SRS, submitReview, and the queue are unchanged
 ```

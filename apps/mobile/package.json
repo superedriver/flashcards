@@ -29,6 +29,7 @@
     "expo-notifications": "^0.31.5",
     "expo-router": "~5.1.11",
     "expo-secure-store": "~14.2.4",
+    "expo-speech": "~13.1.7",
     "expo-status-bar": "~2.2.3",
     "graphql": "^16.11.0",
     "i18next": "^26.3.5",

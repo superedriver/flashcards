@@ -58,6 +58,8 @@ export const lessonsEn = {
   flashcard: {
     tapToReveal: 'Tap to reveal',
     revealHint: 'Shows the answer side of the card.',
+    speak: 'Speak',
+    speakHint: 'Plays this word in the language you are learning.',
     example: 'Example: {{text}}',
     notes: 'Notes: {{text}}',
   },

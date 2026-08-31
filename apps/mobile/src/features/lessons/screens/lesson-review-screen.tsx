@@ -3,25 +3,31 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
 
-import { ReviewAnswerActions } from '@/features/lessons/components/review-answer-actions'
-import {
-  ReviewFlashcard,
-  type ReviewFlashcardHandle,
-} from '@/features/lessons/components/review-flashcard'
-import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
-import { useReviewSwipeHint } from '@/features/lessons/hooks/use-review-swipe-hint'
-import { getReviewSides } from '@/features/lessons/utils/get-review-sides'
-import { mapGraphQlLessonCard } from '@/features/lessons/utils/map-lesson-card'
 import {
   evictCardCountCache,
   LEARNING_STATS_REFETCH_QUERIES,
 } from '@/features/decks/utils/card-mutation-cache'
 import { confirmAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
+import { ReviewAnswerActions } from '@/features/lessons/components/review-answer-actions'
+import {
+  ReviewFlashcard,
+  type ReviewFlashcardHandle,
+} from '@/features/lessons/components/review-flashcard'
+import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
+import { useReviewSpeech } from '@/features/lessons/hooks/use-review-speech'
+import { useReviewSwipeHint } from '@/features/lessons/hooks/use-review-swipe-hint'
+import {
+  getReviewSides,
+  isTargetLanguageSideVisible,
+} from '@/features/lessons/utils/get-review-sides'
+import { mapGraphQlLessonCard } from '@/features/lessons/utils/map-lesson-card'
+import { useStudyLanguageContext } from '@/features/study-languages/hooks/use-study-language-context'
 import {
   ReviewAnswer,
   useAbandonLessonMutation,
   useCompleteLessonMutation,
+  useDeckQuery,
   useSubmitReviewMutation,
 } from '@/graphql/generated'
 import { AppButton, AppText } from '@/ui/primitives'
@@ -59,6 +65,29 @@ export function LessonReviewScreen() {
   const isSubmittingRef = useRef(false)
   const flashcardRef = useRef<ReviewFlashcardHandle>(null)
   const { recordAnswer, showSwipeHint } = useReviewSwipeHint()
+  const { activeTargetLanguage } = useStudyLanguageContext()
+  const reviewDeckId = deckId ?? lesson?.deckId ?? currentCard?.deckId
+  const { data: deckData } = useDeckQuery({
+    skip: !reviewDeckId,
+    variables: { id: reviewDeckId ?? '' },
+  })
+  const targetLanguage = deckData?.deck?.targetLanguage ?? activeTargetLanguage
+  const showSpeakButton = Boolean(
+    currentCard &&
+    targetLanguage &&
+    isTargetLanguageSideVisible({
+      isRevealed,
+      promptDirection: currentCard.promptDirection,
+    }),
+  )
+  const { speak } = useReviewSpeech({
+    enabled: showSpeakButton && !isExiting,
+    languageCode: targetLanguage,
+    text: currentCard?.front ?? '',
+    utteranceKey: currentCard
+      ? `${currentCard.cardId}-${currentCard.promptDirection}-${isRevealed}`
+      : '',
+  })
 
   useEffect(() => {
     setIsRevealed(false)
@@ -227,9 +256,11 @@ export function LessonReviewScreen() {
           key={`${currentCard.cardId}-${currentCard.promptDirection}`}
           notes={currentCard.notes}
           prompt={reviewSides.prompt}
+          showSpeakButton={showSpeakButton}
           onAnswer={(answer) => void handleAnswer(answer)}
           onExitStart={() => setIsExiting(true)}
           onReveal={() => setIsRevealed(true)}
+          onSpeak={speak}
         />
         {errorMessage ? <ErrorState message={errorMessage} /> : null}
         <ReviewAnswerActions

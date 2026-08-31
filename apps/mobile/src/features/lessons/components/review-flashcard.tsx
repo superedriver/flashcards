@@ -30,7 +30,9 @@ export type ReviewFlashcardProps = {
   onAnswer: (answer: ReviewAnswer) => void
   onExitStart: () => void
   onReveal: () => void
+  onSpeak?: () => void
   prompt: string
+  showSpeakButton?: boolean
 }
 
 export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcardProps>(
@@ -45,7 +47,9 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
       onAnswer,
       onExitStart,
       onReveal,
+      onSpeak,
       prompt,
+      showSpeakButton = false,
     },
     ref,
   ) {
@@ -220,6 +224,7 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
             borderRadius: 16,
             borderWidth: 1,
             height: cardHeight,
+            overflow: 'hidden',
             transform: [{ translateX }, { rotate }, { scaleX }],
           }}
         >
@@ -301,6 +306,23 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
               </AppText>
             ) : null}
           </Pressable>
+          {showSpeakButton ? (
+            <Pressable
+              {...buttonA11yProps(t('lessons.flashcard.speak'), t('lessons.flashcard.speakHint'))}
+              disabled={isExiting}
+              onPress={onSpeak}
+              style={{
+                opacity: isExiting ? 0.4 : 1,
+                padding: 8,
+                position: 'absolute',
+                right: 8,
+                top: 8,
+                zIndex: 2,
+              }}
+            >
+              <AppText style={{ fontSize: 22 }}>🔊</AppText>
+            </Pressable>
+          ) : null}
         </Animated.View>
       </View>
     )

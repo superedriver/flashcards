@@ -59,6 +59,8 @@ export const lessonsUk = {
   flashcard: {
     tapToReveal: 'Натисніть, щоб відкрити',
     revealHint: 'Показує сторону з відповіддю.',
+    speak: 'Озвучити',
+    speakHint: 'Озвучує слово мовою, яку ви вивчаєте.',
     example: 'Приклад: {{text}}',
     notes: 'Нотатки: {{text}}',
   },

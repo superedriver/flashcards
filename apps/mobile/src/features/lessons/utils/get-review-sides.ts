@@ -11,3 +11,10 @@ export function getReviewSides(input: {
 
   return { answer: input.back, prompt: input.front }
 }
+
+export function isTargetLanguageSideVisible(input: {
+  isRevealed: boolean
+  promptDirection: PromptDirection
+}): boolean {
+  return input.promptDirection === 'FRONT_TO_BACK' ? !input.isRevealed : input.isRevealed
+}
