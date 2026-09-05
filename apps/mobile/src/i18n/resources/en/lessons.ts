@@ -5,8 +5,11 @@ export const lessonsEn = {
     backToDecks: 'Back to decks',
     startError: 'Could not start review. Please try again.',
     preparing: 'Preparing your review...',
-    empty: 'No cards are due for review right now. Come back later or add more cards to this deck.',
+    emptyTitle: 'No cards due',
+    emptyLead: "You're all caught up.",
+    empty: 'There are no cards ready for review in this deck right now.',
     backToDeck: 'Back to deck',
+    allDecks: 'All decks',
   },
   review: {
     title: 'Review',

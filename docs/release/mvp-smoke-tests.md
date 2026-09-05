@@ -654,6 +654,7 @@ query {
 - Title is "Review complete" / "Повторення завершено"
 - Primary action is Start another review; no Cards in this review count
 - Session is no longer active
+- Start another with dueCount 0: No cards due empty state, Back to deck primary, All decks text
 ```
 
 **Result:** - [ ] PASS - [ ] FAIL

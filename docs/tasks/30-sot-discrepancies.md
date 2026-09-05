@@ -158,6 +158,8 @@ Expected state:
     - Fixed in TASK-30.46
 44. Review does not speak the target-language side
     - Fixed in TASK-30.47
+45. Empty start review is a Start review page with two equal gray buttons
+    - Fixed in TASK-30.48
 ```
 
 ## Discrepancy Register
@@ -1875,6 +1877,44 @@ frontend: expo-speech on review flashcard
 docs: lesson-flow Review UI, architecture review flow
 ```
 
+---
+
+### DISC-045 Empty start review is a page with two equal buttons
+
+Status:
+
+```txt
+DONE
+```
+
+Conflicting sources (as found; fixed in TASK-30.48):
+
+```txt
+Product (approved in chat after 30.47):
+  - Empty start is a caught-up empty state, not a Start review page
+  - Title: No cards due. Lead: You're all caught up.
+  - Body: There are no cards ready for review in this deck right now.
+  - Primary Back to deck; All decks is a text link
+  - Checkmark icon; narrow centered column like Review complete
+
+Was wrong:
+  - Page title Start review with one dry EmptyState line
+  - Two equal full-width gray buttons (Back to deck, Back to decks)
+```
+
+Action:
+
+```txt
+TASK-30.48 Restyle empty start review into a caught-up empty state
+```
+
+Impact:
+
+```txt
+frontend: start lesson empty branch, lessons i18n
+docs: lesson-flow empty start UI
+```
+
 ## Epic Rules
 
 ```txt
@@ -1941,6 +1981,7 @@ docs: lesson-flow Review UI, architecture review flow
 30.45                            refetch Home stats after deleting a deck
 30.46                            refetch Home and My Decks stats after a review session
 30.47                            speak only the target-language side in review
+30.48                            restyle empty start review into a caught-up empty state
 ```
 
 ## Epic Summary
@@ -1993,6 +2034,7 @@ docs: lesson-flow Review UI, architecture review flow
 - [x] TASK-30.45 Refetch Home stats after deleting a deck
 - [x] TASK-30.46 Refetch Home and My Decks stats after a review session
 - [x] TASK-30.47 Speak only the target-language side in review
+- [x] TASK-30.48 Restyle empty start review into a caught-up empty state
 ```
 
 ---
@@ -7222,6 +7264,108 @@ None (human: review FRONT_TO_BACK and BACK_TO_FRONT on iOS/Android/Web).
 
 ```txt
 TASK-30.47 Speak only the target-language side in review
+```
+
+---
+
+# TASK-30.48 Restyle empty start review into a caught-up empty state
+
+## Status
+
+DONE
+
+## Context
+
+DISC-045: Empty `/lessons/start` still uses the Start review page title and two equal gray buttons. Product wants a caught-up empty state with one primary and a text link.
+
+## Goal
+
+When startLesson returns no cards, show a narrow centered empty state: checkmark, No cards due, You're all caught up, deck body copy, primary Back to deck, All decks text. Loading and error stay as they are.
+
+## Related Documents
+
+```txt
+docs/tasks/30-sot-discrepancies.md
+docs/domain/lesson-flow.md
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/screens/start-lesson-screen.tsx
+apps/mobile/src/i18n/resources/en/lessons.ts
+apps/mobile/src/i18n/resources/uk/lessons.ts
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/smoke/lesson-queue.md
+docs/tasks/30-sot-discrepancies.md
+```
+
+## Requirements
+
+```txt
+1. Empty branch only: no Start review title. Centered column ~480px.
+2. Checkmark icon, title No cards due, lead You're all caught up,
+   body There are no cards ready for review in this deck right now.
+3. Primary #1a56db Back to deck. All decks is a text link, not a second gray button.
+4. en/uk i18n. Do not change the shared EmptyState component.
+5. Update live SoT. Do not rewrite docs/tasks/done/*.
+6. Mark TASK-30.48 and DISC-045 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- UI only. startLesson empty payload and routing stay the same.
+```
+
+## Implementation Notes
+
+```txt
+- Match Review complete chrome (icon, type, primary, text link).
+- Keep Preparing your review and error+retry on this route.
+- Missing deckId still uses Back to decks.
+```
+
+## Acceptance Criteria
+
+```txt
+- Empty start: No cards due, not Start review; one primary; All decks text.
+- Mobile typecheck, format:check, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+None (human: Start another on a deck with dueCount 0).
+```
+
+## Do Not Do
+
+```txt
+- Do not change startLesson, Home empty handling, or the tab-bar rule.
+- Do not restyle loading or error on this screen.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-30.48 Restyle empty start review into a caught-up empty state
 ```
 
 ---

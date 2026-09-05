@@ -324,6 +324,19 @@ Return a successful payload with empty cards / sessionId null.
 Frontend hides the Start button.
 ```
 
+## Empty start review UI
+
+When `/lessons/start` still gets an empty payload (for example Start another after due is 0):
+
+```txt
+- Narrow centered column (~480px), not a Start review page
+- Checkmark icon, title No cards due / Немає карток
+- Lead: You're all caught up. / Усе повторено.
+- Body: There are no cards ready for review in this deck right now.
+- Primary #1a56db Back to deck; All decks is a text link
+- Loading and error on this route stay as they are
+```
+
 ## Starting a review session
 
 ### StartLessonUseCase (deck)
