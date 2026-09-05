@@ -5,7 +5,7 @@ Manual verification for Front paste bulk add, the in-memory queue, and pair dupl
 Related:
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 docs/release/mvp-smoke-tests.md (section 35)
 ```

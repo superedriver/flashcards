@@ -11,7 +11,7 @@ CSV import stays a separate flow. Do not apply these rules to `previewCsvImport`
 Relevant task files:
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/tasks/done/05-decks-cards.md
 docs/tasks/done/08-csv-import.md
 docs/tasks/done/15-frontend-decks-cards.md

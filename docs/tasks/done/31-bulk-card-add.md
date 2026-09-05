@@ -247,7 +247,7 @@ Write `docs/domain/bulk-card-add.md` from Agreed Decisions and point architectur
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/architecture.md
 docs/backend-clean-architecture.md
 docs/domain/permissions.md
@@ -266,7 +266,7 @@ docs/domain/bulk-card-add.md
 ```txt
 docs/architecture.md
 docs/security/security-checklist.md
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -351,7 +351,7 @@ Add a Nest-free parser in the decks domain with table-driven tests.
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 docs/backend-clean-architecture.md
 ```
@@ -368,7 +368,7 @@ apps/api/src/modules/decks/domain/services/normalize-card-pair.spec.ts
 ## Files to Modify
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -456,7 +456,7 @@ Extend CardRepositoryPort with a lookup that returns matching live cards for an 
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 docs/backend-clean-architecture.md
 docs/domain/permissions.md
@@ -473,7 +473,7 @@ None
 ```txt
 apps/api/src/modules/decks/application/ports/card-repository.port.ts
 apps/api/src/modules/decks/infrastructure/persistence/prisma-card.repository.ts
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -560,7 +560,7 @@ Add CheckCardDuplicatesUseCase and tests. No GraphQL in this task.
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 docs/backend-clean-architecture.md
 docs/domain/permissions.md
@@ -578,7 +578,7 @@ apps/api/src/modules/decks/application/use-cases/check-card-duplicates.use-case.
 
 ```txt
 apps/api/src/modules/decks/decks.module.ts
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -669,7 +669,7 @@ Expose checkCardDuplicates and register it on DecksResolver.
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 docs/backend-clean-architecture.md
 docs/security/security-checklist.md
@@ -687,7 +687,7 @@ apps/api/src/modules/decks/presentation/graphql/types/check-card-duplicates-payl
 ```txt
 apps/api/src/modules/decks/presentation/graphql/resolvers/decks.resolver.ts
 docs/security/security-checklist.md
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -772,7 +772,7 @@ Reject a duplicate pair with CARD_DUPLICATE. Map it to GraphQL BAD_USER_INPUT + 
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 docs/backend-clean-architecture.md
 docs/security/security-checklist.md
@@ -791,7 +791,7 @@ apps/api/src/common/errors/error-codes.ts
 apps/api/src/common/errors/map-to-graphql-error.ts
 apps/api/src/modules/decks/application/use-cases/create-card.use-case.ts
 apps/api/src/modules/decks/application/use-cases/create-card.use-case.spec.ts
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -878,7 +878,7 @@ On successful createCard, reset the form and stay on Add Card. No bulk queue yet
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 ```
 
@@ -894,7 +894,7 @@ None
 apps/mobile/src/features/decks/screens/create-card-screen.tsx
 apps/mobile/src/features/decks/components/card-form.tsx
 docs/domain/bulk-card-add.md
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -978,7 +978,7 @@ Before create, call checkCardDuplicates for the one pair. Show this-deck vs othe
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 docs/security/security-checklist.md
 ```
@@ -995,7 +995,7 @@ apps/mobile/src/features/decks/graphql/check-card-duplicates.graphql
 apps/mobile/src/features/decks/screens/create-card-screen.tsx
 apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -1081,7 +1081,7 @@ On paste into Front (Add Card only), parse with the same rules as 31.02. Invalid
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 ```
 
@@ -1098,7 +1098,7 @@ apps/mobile/src/features/decks/components/card-form.tsx
 apps/mobile/src/features/decks/screens/create-card-screen.tsx
 apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -1185,7 +1185,7 @@ On valid paste, call checkCardDuplicates. Any hit → error block, raw text stay
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 ```
 
@@ -1202,7 +1202,7 @@ apps/mobile/src/features/decks/screens/create-card-screen.tsx
 apps/mobile/src/features/decks/components/card-form.tsx
 apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -1289,7 +1289,7 @@ Successful create saves the edited current card, drops it from the queue, clears
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 ```
 
@@ -1307,7 +1307,7 @@ apps/mobile/src/features/decks/components/card-form.tsx
 apps/mobile/src/features/decks/hooks/use-bulk-card-queue.ts
 apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -1394,7 +1394,7 @@ Add the three confirms from SoT. Wire leave to the existing beforeRemove guard w
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 ```
 
@@ -1412,7 +1412,7 @@ apps/mobile/src/features/decks/components/card-form.tsx
 apps/mobile/src/features/decks/hooks/use-unsaved-changes-guard.ts
 apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements
@@ -1496,7 +1496,7 @@ Add a smoke checklist and a short section in MVP smoke tests.
 ## Related Documents
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 docs/domain/bulk-card-add.md
 docs/release/mvp-smoke-tests.md
 ```
@@ -1511,7 +1511,7 @@ docs/smoke/bulk-card-add.md
 
 ```txt
 docs/release/mvp-smoke-tests.md
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 ## Requirements

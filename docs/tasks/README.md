@@ -383,12 +383,13 @@ done/27-learning-steps-bugfixes.md
 done/28-requirements-ambiguities.md
 done/29-lesson-queue.md
 done/30-sot-discrepancies.md
+done/31-bulk-card-add.md
 ```
 
 Active epics:
 
 ```txt
-31-bulk-card-add.md
+None
 ```
 
 ---
@@ -896,7 +897,7 @@ Fix mismatches between live sources of truth and implementation; standing regist
 File:
 
 ```txt
-docs/tasks/31-bulk-card-add.md
+docs/tasks/done/31-bulk-card-add.md
 ```
 
 Purpose:
