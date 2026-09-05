@@ -59,6 +59,7 @@ Use an owned live deck. Duplicate = same Front + Back after trim and case-insens
 - [ ] Skip of the last queued card returns to an empty Add Card with no counter.
 - [ ] Create error (duplicate or network) does not advance, does not shrink N, keeps fields.
 - [ ] After Create Card (bulk or not) the user stays on Add Card (does not go to deck detail).
+- [ ] After Create Card a success line is shown (Card created / Картку створено).
 
 ### Confirms
 
@@ -66,7 +67,7 @@ Use an owned live deck. Duplicate = same Front + Back after trim and case-insens
 - [ ] Confirm replace starts the new queue and does not merge lists.
 - [ ] No queue + dirty Back, Example, or Notes + valid bulk paste asks to clear those fields.
 - [ ] Front-only dirty + valid bulk paste starts the queue with no confirm.
-- [ ] Cancel / Back / gesture while N > 0: “N unsaved cards in the queue. Leave and lose them?”
+- [ ] Return to deck / Back / gesture while N > 0: “N unsaved cards in the queue. Leave and lose them?”
 - [ ] Confirm leave clears the queue and leaves Add Card.
 
 ### CSV unchanged

@@ -41,6 +41,7 @@ export function CreateCardScreen() {
     update: evictCardCountCache,
   })
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [bulkFrontMessages, setBulkFrontMessages] = useState<string[] | null>(null)
   const [bulkFill, setBulkFill] = useState<{
     back: string
@@ -100,6 +101,8 @@ export function CreateCardScreen() {
           skipLabel={t('decks.createCard.skip')}
           submitLabel={t('decks.createCard.submit')}
           submittingLabel={t('decks.createCard.submitting')}
+          successMessage={successMessage}
+          cancelLabel={t('decks.createCard.backToDeck')}
           onCancel={() => router.back()}
           onClearError={() => {
             setErrorMessage(null)
@@ -110,10 +113,12 @@ export function CreateCardScreen() {
             setBulkFill(null)
             setBulkFrontMessages(null)
             setErrorMessage(null)
+            setSuccessMessage(null)
           }}
           queueLength={bulkQueue.length}
           onSkip={async () => {
             const nextPair = bulkQueue.skip()
+            setSuccessMessage(null)
 
             if (!nextPair) {
               setBulkFill(null)
@@ -133,6 +138,7 @@ export function CreateCardScreen() {
             return 'next'
           }}
           onFrontPaste={async (text, dirtySides) => {
+            setSuccessMessage(null)
             const parsed = parseBulkCardLines(text)
 
             if (parsed.formatErrors.length > 0) {
@@ -228,6 +234,7 @@ export function CreateCardScreen() {
             }
 
             setErrorMessage(null)
+            setSuccessMessage(null)
 
             try {
               const remainingQueue = bulkQueue.pairs.slice(1)
@@ -285,6 +292,7 @@ export function CreateCardScreen() {
               }
 
               setBulkFrontMessages(null)
+              setSuccessMessage(t('decks.createCard.success'))
               const nextPair = bulkQueue.length > 0 ? bulkQueue.skip() : null
 
               if (nextPair) {

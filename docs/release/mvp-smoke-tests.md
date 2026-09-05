@@ -398,6 +398,8 @@ query {
 ```txt
 - Card appears in deck card list
 - After Create Card the user stays on Add Card with empty fields (not deck detail)
+- A short success line is shown (Card created / Картку створено)
+- Return to deck leaves to deck detail; confirm if the form is not empty
 - Card detail/edit view shows saved values
 - Empty Cards is a header with count and + Add card; no gray full-width button
 - Bulk Front paste (`Front,Back` list): see section 35
@@ -959,7 +961,7 @@ _(Automated PASS in TASK-29.11 and TASK-30.02–30.03; manual device checklist i
 3. Paste a two-comma line and a 101-card list: error block, no queue, Front not dumped with the raw list.
 4. Paste a pair that exists in this deck, in another owned deck, and twice in the same paste.
 5. Walk a 3-card queue with Create Card; Skip one; confirm stay on Add Card.
-6. Paste again while a queue is active (replace confirm); paste over a dirty Back (clear confirm); Back/Cancel with N > 0 (leave confirm).
+6. Paste again while a queue is active (replace confirm); paste over a dirty Back (clear confirm); Back/Return to deck with N > 0 (leave confirm).
 7. Confirm CSV import still works and is not affected by Front paste.
 
 **Expected result:**

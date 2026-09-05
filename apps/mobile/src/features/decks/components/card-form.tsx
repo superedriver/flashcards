@@ -53,6 +53,7 @@ type CardFormProps = {
   skipLabel?: string
   submitLabel: string
   submittingLabel?: string
+  successMessage?: string | null
 }
 
 export function CardForm({
@@ -77,6 +78,7 @@ export function CardForm({
   skipLabel,
   submitLabel,
   submittingLabel,
+  successMessage,
 }: CardFormProps) {
   const { t } = useTranslation()
   const isSubmittingRef = useRef(false)
@@ -114,6 +116,11 @@ export function CardForm({
 
   const frontValue = useWatch({ control, name: 'front' })
   const backValue = useWatch({ control, name: 'back' })
+  const exampleValue = useWatch({ control, name: 'example' })
+  const notesValue = useWatch({ control, name: 'notes' })
+  const formHasContent = [frontValue, backValue, exampleValue, notesValue].some((value) =>
+    Boolean(value?.trim()),
+  )
   const canSubmit =
     isDirty &&
     Boolean(frontValue?.trim()) &&
@@ -202,7 +209,7 @@ export function CardForm({
       return
     }
 
-    if (!isDirty) {
+    if (!formHasContent) {
       onCancel()
       return
     }
@@ -449,6 +456,11 @@ export function CardForm({
           <FormFieldError message={errors.notes?.message} />
         </View>
 
+        {successMessage ? (
+          <AppText style={{ color: '#2e7d32', fontSize: 14, fontWeight: '600' }}>
+            {successMessage}
+          </AppText>
+        ) : null}
         {errorMessage ? <ErrorState message={errorMessage} /> : null}
       </View>
 

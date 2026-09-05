@@ -56,6 +56,9 @@ Expected state:
    - Nested Decks stack on web: replace('/(tabs)/decks') and navigate('/decks') leave /decks/:deckId
    - awaitRefetchQueries + DeckLearningStats 404s ("Deck not found") so dismissTo never runs
    - Pop with dismissTo('/decks') after a successful delete (do not refetch that deck's stats)
+2. Add Card: Create Card succeeds but only clears the form (no success confirmation)
+   - Cancel goes to the deck but is labeled Cancel
+   - Return to deck; confirm when the form is not empty
 ```
 
 ## Epic Rules
@@ -77,6 +80,7 @@ Expected state:
 
 ```txt
 33.01 Redirect to /decks after deleting a deck
+33.02 Add Card success feedback and return-to-deck
 (+ append new bugs in discovery order)
 ```
 
@@ -84,6 +88,7 @@ Expected state:
 
 ```md
 - [x] TASK-33.01 Redirect to /decks after deleting a deck
+- [x] TASK-33.02 Add Card success feedback and return-to-deck
 ```
 
 ---
@@ -207,4 +212,124 @@ pnpm lint
 
 ```txt
 TASK-33.01 Redirect to /decks after deleting a deck
+```
+
+---
+
+# TASK-33.02 Add Card success feedback and return-to-deck
+
+## Status
+
+DONE
+
+## Context
+
+On Add Card, Create Card succeeds and the form clears, but there is no success confirmation. The secondary action is labeled Cancel even though it returns to the deck.
+
+## Goal
+
+After a successful create, stay on Add Card with an empty form and a short success line. Label the leave action Return to deck / Повернутися до колоди. Confirm before leaving when the form is not empty (or a bulk queue is active).
+
+## Related Documents
+
+```txt
+docs/tasks/33-bugfixes.md
+docs/architecture.md
+docs/domain/bulk-card-add.md
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/smoke/bulk-card-add.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/decks/components/card-form.tsx
+apps/mobile/src/features/decks/screens/create-card-screen.tsx
+apps/mobile/src/i18n/resources/en/decks.ts
+apps/mobile/src/i18n/resources/uk/decks.ts
+docs/architecture.md
+docs/domain/bulk-card-add.md
+docs/domain/lesson-flow.md
+docs/release/mvp-smoke-tests.md
+docs/smoke/bulk-card-add.md
+docs/tasks/33-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. After successful createCard, keep staying on Add Card with a cleared form and show Card created / Картку створено.
+2. Clear the success line on the next submit, error, paste, or skip; Edit Card stays Cancel.
+3. Add Card secondary action is Return to deck / Повернутися до колоди (not Cancel).
+4. Empty form: leave with no confirm. Non-empty form or active bulk queue: confirm (existing unsaved / leave-queue copy).
+5. Update live SoT and smoke expected copy. Mark TASK-33.02 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not change createCard permissions or the API.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Frontend-only UX on Add Card.
+- Keep bulk queue / stay-on-Add-Card behavior from EPIC-31.
+```
+
+## Implementation Notes
+
+```txt
+- Pass cancelLabel from CreateCardScreen. Reuse confirmAction on the leave button.
+- Do not change Edit Card Cancel.
+```
+
+## Acceptance Criteria
+
+```txt
+- Create Card shows a success line and an empty form; URL stays Add Card.
+- Return to deck with empty form goes to the deck with no dialog.
+- Return to deck with typed fields (or a queue) asks to confirm; cancel stays.
+- en/uk copy for success and the leave button.
+- Mobile typecheck, format:check, and lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+1. Add Card → Create Card → success line, empty fields, still on Add Card.
+2. Return to deck on empty form → deck detail, no confirm.
+3. Type Front/Back, Return to deck → confirm; dismiss stays; confirm leaves.
+```
+
+## Do Not Do
+
+```txt
+- Do not navigate to deck detail after create.
+- Do not change Edit Card or delete-card copy.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-33.02 Add Card success feedback and return-to-deck
 ```

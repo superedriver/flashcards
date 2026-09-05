@@ -646,6 +646,16 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - Group screens stay inside the tab navigator; Home / Decks / Profile remain visible
 ```
 
+## Add Card UI
+
+```txt
+- Compact form card like Edit Card; Create Card is primary
+- After success: stay on Add Card, empty fields, short success line
+  (Card created / Картку створено)
+- Return to deck is a text action (not Cancel)
+- Empty form: leave with no confirm. Non-empty form or bulk queue: confirm
+```
+
 ## Edit Card UI
 
 ```txt

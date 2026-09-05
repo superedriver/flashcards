@@ -84,6 +84,8 @@ export const decksUk = {
     titleWithCount: 'Додати картку ({{count}})',
     submit: 'Створити картку',
     submitting: 'Створення картки...',
+    success: 'Картку створено.',
+    backToDeck: 'Повернутися до колоди',
     error: 'Не вдалося створити картку. Спробуйте ще раз.',
     duplicateThisDeck: 'Ця картка вже є в цій колоді.',
     duplicateOtherDeck: 'Ця картка вже є в колоді {{title}}.',

@@ -766,7 +766,7 @@ Owner pastes Front,Back lines into Add Card Front (not Edit Card, not typing).
 2–100 valid rows and no format errors can start an in-memory queue.
 createCard rejects duplicate Front+Back pairs across the owner’s live cards
   in live owned decks (soft-deleted ignored).
-Successful createCard stays on Add Card with an empty form.
+Successful createCard stays on Add Card with an empty form and a short success line.
 checkCardDuplicates is the paste/pre-submit preview; backend remains SoT.
 ```
 

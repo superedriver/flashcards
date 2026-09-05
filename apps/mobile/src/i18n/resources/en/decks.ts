@@ -84,6 +84,8 @@ export const decksEn = {
     titleWithCount: 'Add Card ({{count}})',
     submit: 'Create Card',
     submitting: 'Creating card...',
+    success: 'Card created.',
+    backToDeck: 'Return to deck',
     error: 'Could not create card. Please try again.',
     duplicateThisDeck: 'This card is already in this deck.',
     duplicateOtherDeck: 'This card is already in deck {{title}}.',

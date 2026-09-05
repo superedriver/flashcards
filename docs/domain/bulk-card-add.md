@@ -25,6 +25,7 @@ docs/domain/permissions.md
 User-facing:
   Add Card / Додати картку — the create-card screen.
   Create Card / Створити картку — submit.
+  Return to deck / Повернутися до колоди — leave Add Card for deck detail.
   Skip / Пропустити — drop the current queued card without saving.
 
 Technical:
@@ -133,6 +134,7 @@ Bulk or not:
 
 ```txt
 Stay on Add Card with a cleared form (Front, Back, Example, Notes).
+Show Card created / Картку створено.
 Dirty/unsaved guard resets with the empty form.
 Do not navigate to deck detail.
 ```
@@ -144,8 +146,10 @@ Replace queue: paste while a queue is already active.
   Confirm replaces. Cancel keeps the old queue. Do not merge.
 Dirty form and no queue: confirm only if Back, Example, or Notes is dirty.
   Front-only dirty: paste replaces Front / may start bulk with no confirm.
-Leave (Cancel, Back, gesture, tab change) while queue length > 0:
+Leave (Return to deck, Back, gesture, tab change) while queue length > 0:
   N unsaved cards in the queue. Leave and lose them?
+Leave with a non-empty form and no queue: confirm discard unsaved changes.
+Empty form: Return to deck leaves with no confirm.
 ```
 
 ## Permissions
