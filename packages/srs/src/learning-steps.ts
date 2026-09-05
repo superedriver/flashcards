@@ -99,6 +99,17 @@ export function resolveReviewPresentationMode(input: {
   return input.randomBit === 0 ? 'SOURCE_TEXT' : 'TARGET_AUDIO_ONLY'
 }
 
+export function toEffectivePresentationMode(
+  base: Exclude<ReviewPresentationMode, 'TARGET_TEXT'>,
+  audioOnlyDisabled: boolean,
+): ReviewPresentationMode {
+  if (audioOnlyDisabled && base === 'TARGET_AUDIO_ONLY') {
+    return 'TARGET_TEXT'
+  }
+
+  return base
+}
+
 function applyKnow(input: LearningStepsInput): LearningStepsResult {
   const oldStep = input.previousLearningStep
 

@@ -4,6 +4,7 @@ import {
   learningGroupForStep,
   resolvePromptDirection,
   resolveReviewPresentationMode,
+  toEffectivePresentationMode,
 } from './learning-steps'
 
 const reviewedAt = new Date('2026-01-01T00:00:00.000Z')
@@ -213,4 +214,44 @@ describe('resolveReviewPresentationMode', () => {
       'randomBit must be 0 or 1.',
     )
   })
+})
+
+describe('toEffectivePresentationMode', () => {
+  it.each([
+    {
+      audioOnlyDisabled: false,
+      base: 'TARGET_TEXT_AUDIO' as const,
+      effective: 'TARGET_TEXT_AUDIO',
+    },
+    {
+      audioOnlyDisabled: false,
+      base: 'SOURCE_TEXT' as const,
+      effective: 'SOURCE_TEXT',
+    },
+    {
+      audioOnlyDisabled: false,
+      base: 'TARGET_AUDIO_ONLY' as const,
+      effective: 'TARGET_AUDIO_ONLY',
+    },
+    {
+      audioOnlyDisabled: true,
+      base: 'TARGET_TEXT_AUDIO' as const,
+      effective: 'TARGET_TEXT_AUDIO',
+    },
+    {
+      audioOnlyDisabled: true,
+      base: 'SOURCE_TEXT' as const,
+      effective: 'SOURCE_TEXT',
+    },
+    {
+      audioOnlyDisabled: true,
+      base: 'TARGET_AUDIO_ONLY' as const,
+      effective: 'TARGET_TEXT',
+    },
+  ])(
+    'audioOnlyDisabled=$audioOnlyDisabled $base → $effective',
+    ({ audioOnlyDisabled, base, effective }) => {
+      expect(toEffectivePresentationMode(base, audioOnlyDisabled)).toBe(effective)
+    },
+  )
 })
