@@ -216,7 +216,7 @@ All new UI strings en and uk, added in the task that introduces them.
 - [x] TASK-31.01 Add live bulk-card-add source of truth
 - [x] TASK-31.02 Add bulk Front,Back parser and unit tests
 - [x] TASK-31.03 Add owner duplicate lookup on the card repository
-- [ ] TASK-31.04 Add CheckCardDuplicatesUseCase
+- [x] TASK-31.04 Add CheckCardDuplicatesUseCase
 - [ ] TASK-31.05 Add checkCardDuplicates GraphQL query
 - [ ] TASK-31.06 Reject duplicate cards in CreateCardUseCase
 - [ ] TASK-31.07 Stay on Add Card after a successful create
@@ -547,7 +547,7 @@ TASK-31.03 Add owner duplicate lookup on the card repository
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

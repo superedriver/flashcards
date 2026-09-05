@@ -6,6 +6,7 @@ import { LanguagesModule } from '../languages/languages.module';
 import { LessonsModule } from '../lessons/lessons.module';
 import { CARD_REPOSITORY } from './application/ports/card-repository.port';
 import { DECK_REPOSITORY } from './application/ports/deck-repository.port';
+import { CheckCardDuplicatesUseCase } from './application/use-cases/check-card-duplicates.use-case';
 import { CopyPublicDeckUseCase } from './application/use-cases/copy-public-deck.use-case';
 import { CreateCardUseCase } from './application/use-cases/create-card.use-case';
 import { CreateDeckUseCase } from './application/use-cases/create-deck.use-case';
@@ -50,6 +51,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     UpdateDeckUseCase,
     DeleteDeckUseCase,
     CreateCardUseCase,
+    CheckCardDuplicatesUseCase,
     CopyPublicDeckUseCase,
     DeckCardsUseCase,
     UpdateCardUseCase,
@@ -71,6 +73,7 @@ import { DecksResolver } from './presentation/graphql/resolvers/decks.resolver';
     UpdateDeckUseCase,
     DeleteDeckUseCase,
     CreateCardUseCase,
+    CheckCardDuplicatesUseCase,
     CopyPublicDeckUseCase,
     DeckCardsUseCase,
     UpdateCardUseCase,
