@@ -86,6 +86,13 @@ export const decksEn = {
     error: 'Could not create card. Please try again.',
     duplicateThisDeck: 'This card is already in this deck.',
     duplicateOtherDeck: 'This card is already in deck {{title}}.',
+    bulkErrorTitle: 'Could not add these cards',
+    bulkInvalidFormat: 'Line {{line}}: use Front,Back with exactly one comma.',
+    bulkFrontRequired: 'Line {{line}}: Front is required.',
+    bulkBackRequired: 'Line {{line}}: Back is required.',
+    bulkFrontTooLong: 'Line {{line}}: Front must be at most 2000 characters.',
+    bulkBackTooLong: 'Line {{line}}: Back must be at most 4000 characters.',
+    bulkTooMany: 'Paste at most 100 cards.',
   },
   editCard: {
     title: 'Edit Card',

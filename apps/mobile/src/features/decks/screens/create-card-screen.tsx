@@ -14,6 +14,10 @@ import {
   optionalText,
 } from '@/features/decks/utils/deck-form-utils'
 import {
+  parseBulkCardLines,
+  type BulkCardFormatError,
+} from '@/features/decks/utils/parse-bulk-card-lines'
+import {
   CardDuplicateKind,
   useCheckCardDuplicatesLazyQuery,
   useCreateCardMutation,
@@ -31,12 +35,29 @@ export function CreateCardScreen() {
     update: evictCardCountCache,
   })
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const [bulkFrontMessages, setBulkFrontMessages] = useState<string[] | null>(null)
+
+  const formatBulkError = (error: BulkCardFormatError): string => {
+    switch (error.code) {
+      case 'INVALID_FORMAT':
+        return t('decks.createCard.bulkInvalidFormat', { line: error.lineNumber })
+      case 'FRONT_REQUIRED':
+        return t('decks.createCard.bulkFrontRequired', { line: error.lineNumber })
+      case 'BACK_REQUIRED':
+        return t('decks.createCard.bulkBackRequired', { line: error.lineNumber })
+      case 'FRONT_TOO_LONG':
+        return t('decks.createCard.bulkFrontTooLong', { line: error.lineNumber })
+      case 'BACK_TOO_LONG':
+        return t('decks.createCard.bulkBackTooLong', { line: error.lineNumber })
+    }
+  }
 
   return (
     <Screen scrollable>
       <View style={{ maxWidth: 640, width: '100%' }}>
         <PageTitle title={t('decks.createCard.title')} />
         <CardForm
+          bulkFrontMessages={bulkFrontMessages}
           errorMessage={errorMessage}
           isSubmitting={loading || isCheckingDuplicates}
           resetOnSuccess
@@ -44,6 +65,26 @@ export function CreateCardScreen() {
           submittingLabel={t('decks.createCard.submitting')}
           onCancel={() => router.back()}
           onClearError={() => setErrorMessage(null)}
+          onFrontTextChange={(text, isPaste) => {
+            if (!isPaste) {
+              setBulkFrontMessages(null)
+              return
+            }
+
+            const parsed = parseBulkCardLines(text)
+
+            if (parsed.formatErrors.length > 0) {
+              setBulkFrontMessages(parsed.formatErrors.map(formatBulkError))
+              return
+            }
+
+            if (parsed.tooManyValid) {
+              setBulkFrontMessages([t('decks.createCard.bulkTooMany')])
+              return
+            }
+
+            setBulkFrontMessages(null)
+          }}
           onSubmit={async (values) => {
             if (!deckId) {
               return false
@@ -97,6 +138,7 @@ export function CreateCardScreen() {
                 return false
               }
 
+              setBulkFrontMessages(null)
               return true
             } catch (error) {
               setErrorMessage(

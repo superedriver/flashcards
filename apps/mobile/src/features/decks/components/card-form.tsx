@@ -8,6 +8,7 @@ import { Pressable, View } from 'react-native'
 import { AiExampleGenerator } from '@/features/ai-examples/components/ai-example-generator'
 import { useUnsavedChangesGuard } from '@/features/decks/hooks/use-unsaved-changes-guard'
 import { confirmAction, confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
+import { isLikelyFrontPaste } from '@/features/decks/utils/parse-bulk-card-lines'
 import {
   createCardFormSchema,
   type CardFormValues,
@@ -19,6 +20,7 @@ import { buttonA11yProps, destructiveButtonA11yProps } from '@/ui/utils/accessib
 const CARD_FORM_MAX_WIDTH = 640
 
 type CardFormProps = {
+  bulkFrontMessages?: string[] | null
   cancelLabel?: string
   cardId?: string
   defaultValues?: CardFormValues
@@ -27,6 +29,7 @@ type CardFormProps = {
   onCancel?: () => void
   onClearError?: () => void
   onDelete?: () => Promise<boolean>
+  onFrontTextChange?: (text: string, isPaste: boolean) => void
   onSubmit: (values: CardFormValues) => Promise<boolean>
   resetOnSuccess?: boolean
   showDelete?: boolean
@@ -35,6 +38,7 @@ type CardFormProps = {
 }
 
 export function CardForm({
+  bulkFrontMessages,
   cancelLabel,
   cardId,
   defaultValues,
@@ -43,6 +47,7 @@ export function CardForm({
   onCancel,
   onClearError,
   onDelete,
+  onFrontTextChange,
   onSubmit,
   resetOnSuccess = false,
   showDelete = false,
@@ -81,7 +86,8 @@ export function CardForm({
     !errors.back &&
     !errors.example &&
     !errors.notes &&
-    !isSubmitting
+    !isSubmitting &&
+    !(bulkFrontMessages && bulkFrontMessages.length > 0)
 
   const { allowLeave, resetLeaveGuard } = useUnsavedChangesGuard(
     isDirty,
@@ -205,17 +211,42 @@ export function CardForm({
             render={({ field: { onBlur, onChange, value } }) => (
               <AppInput
                 accessibilityLabel={t('decks.cardForm.front')}
+                multiline={Boolean(onFrontTextChange)}
                 placeholder={t('decks.cardForm.front')}
                 value={value}
                 onBlur={onBlur}
                 onChangeText={(text) => {
                   clearError()
+                  onFrontTextChange?.(text, isLikelyFrontPaste(value, text))
                   onChange(text)
                 }}
               />
             )}
           />
           <FormFieldError message={errors.front?.message} />
+          {bulkFrontMessages && bulkFrontMessages.length > 0 ? (
+            <View
+              accessibilityRole="alert"
+              style={{
+                backgroundColor: '#fef3f2',
+                borderColor: '#fecdca',
+                borderRadius: 8,
+                borderWidth: 1,
+                gap: 4,
+                marginTop: 8,
+                padding: 10,
+              }}
+            >
+              <AppText style={{ color: '#b42318', fontSize: 13, fontWeight: '700' }}>
+                {t('decks.createCard.bulkErrorTitle')}
+              </AppText>
+              {bulkFrontMessages.map((message, index) => (
+                <AppText key={`${index}-${message}`} style={{ color: '#b42318', fontSize: 13 }}>
+                  {message}
+                </AppText>
+              ))}
+            </View>
+          ) : null}
         </View>
 
         <View>
