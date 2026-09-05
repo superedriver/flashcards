@@ -445,6 +445,8 @@ checkCardDuplicates must:
 - not leak other users’ cards or titles
 ```
 
+Exposed as authenticated GraphQL query checkCardDuplicates.
+
 This operation must not create cards. Duplicate enforcement on save remains createCard.
 
 CSV import security in the previous section is unchanged.

@@ -4,6 +4,7 @@ import { AuthUser } from '../../../../auth/domain/types';
 import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/current-user.decorator';
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
 import { OptionalGqlAuthGuard } from '../../../../auth/presentation/graphql/guards/optional-gql-auth.guard';
+import { CheckCardDuplicatesUseCase } from '../../../application/use-cases/check-card-duplicates.use-case';
 import { CopyPublicDeckUseCase } from '../../../application/use-cases/copy-public-deck.use-case';
 import { CreateCardUseCase } from '../../../application/use-cases/create-card.use-case';
 import { CreateDeckUseCase } from '../../../application/use-cases/create-deck.use-case';
@@ -21,6 +22,7 @@ import { UnpublishDeckUseCase } from '../../../application/use-cases/unpublish-d
 import { UpdateDeckUseCase } from '../../../application/use-cases/update-deck.use-case';
 import { UpdateCardUseCase } from '../../../application/use-cases/update-card.use-case';
 import { StartDeckPreviewUseCase } from '../../../../languages/application/use-cases/start-deck-preview.use-case';
+import { CheckCardDuplicatesInput } from '../inputs/check-card-duplicates.input';
 import { CreateDeckInput } from '../inputs/create-deck.input';
 import { CreateCardInput } from '../inputs/create-card.input';
 import { DecksPageInput } from '../inputs/decks-page.input';
@@ -29,6 +31,10 @@ import { StartPublicDeckCopyPreviewInput } from '../inputs/start-public-deck-cop
 import { UpdateDeckInput } from '../inputs/update-deck.input';
 import { UpdateCardInput } from '../inputs/update-card.input';
 import { CardType } from '../types/card.type';
+import {
+  CardDuplicateKind,
+  CheckCardDuplicatesPayloadType,
+} from '../types/check-card-duplicates-payload.type';
 import { LearningGroupGql } from '../../../../lessons/presentation/graphql/types/learning-enums.type';
 import { CreateDeckPayloadType } from '../types/create-deck-payload.type';
 import { DeckLanguageWarningCode } from '../types/deck-language-warning.type';
@@ -81,6 +87,7 @@ export class DecksResolver {
     private readonly updateDeckUseCase: UpdateDeckUseCase,
     private readonly deleteDeckUseCase: DeleteDeckUseCase,
     private readonly createCardUseCase: CreateCardUseCase,
+    private readonly checkCardDuplicatesUseCase: CheckCardDuplicatesUseCase,
     private readonly copyPublicDeckUseCase: CopyPublicDeckUseCase,
     private readonly deckCardsUseCase: DeckCardsUseCase,
     private readonly updateCardUseCase: UpdateCardUseCase,
@@ -263,6 +270,30 @@ export class DecksResolver {
     });
 
     return result.success;
+  }
+
+  @Query(() => CheckCardDuplicatesPayloadType)
+  @UseGuards(GqlAuthGuard)
+  async checkCardDuplicates(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: CheckCardDuplicatesInput,
+  ): Promise<CheckCardDuplicatesPayloadType> {
+    const result = await this.checkCardDuplicatesUseCase.execute({
+      currentUser: user,
+      deckId: input.deckId,
+      pairs: input.pairs.map((pair) => ({
+        front: pair.front,
+        back: pair.back,
+      })),
+    });
+
+    return {
+      hits: result.hits.map((hit) => ({
+        index: hit.index,
+        kind: hit.kind as CardDuplicateKind,
+        deckTitle: hit.deckTitle,
+      })),
+    };
   }
 
   @Mutation(() => CardType)
