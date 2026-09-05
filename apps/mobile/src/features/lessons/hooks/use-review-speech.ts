@@ -1,6 +1,8 @@
 import * as Speech from 'expo-speech'
 import { useCallback, useEffect } from 'react'
 
+import type { ReviewPresentationMode } from '@/features/lessons/types/active-lesson'
+import { shouldSpeakReviewTarget } from '@/features/lessons/utils/get-review-sides'
 import { toTtsLanguageTag } from '@/features/lessons/utils/tts-language'
 
 type UseReviewSpeechInput = {
@@ -8,6 +10,21 @@ type UseReviewSpeechInput = {
   languageCode?: string | null
   text: string
   utteranceKey: string
+}
+
+export function isReviewSpeechActive(input: {
+  isRevealed: boolean
+  languageCode?: string | null
+  presentationMode?: ReviewPresentationMode | null
+}): boolean {
+  if (!input.presentationMode || !input.languageCode?.trim()) {
+    return false
+  }
+
+  return shouldSpeakReviewTarget({
+    isRevealed: input.isRevealed,
+    presentationMode: input.presentationMode,
+  })
 }
 
 function stopSpeech(): void {

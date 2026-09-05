@@ -1,6 +1,10 @@
 export type LearningGroup = 'TO_LEARN' | 'PRACTICED' | 'LEARNED'
 
-export type PromptDirection = 'FRONT_TO_BACK' | 'BACK_TO_FRONT'
+export type ReviewPresentationMode =
+  | 'TARGET_TEXT_AUDIO'
+  | 'SOURCE_TEXT'
+  | 'TARGET_AUDIO_ONLY'
+  | 'TARGET_TEXT'
 
 export type LessonCard = {
   back: string
@@ -12,7 +16,7 @@ export type LessonCard = {
   learningStep: number
   notes?: string | null
   position: number
-  promptDirection: PromptDirection
+  presentationMode: ReviewPresentationMode
 }
 
 export type ActiveLesson = {

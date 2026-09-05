@@ -209,7 +209,7 @@ Can’t listen / Не можу прослухати.
 - [x] TASK-32.03 Add effective presentation-mode mapping
 - [x] TASK-32.04 Add audioOnlyDisabled on StudySession
 - [x] TASK-32.05 Return presentationMode from lesson start and submit
-- [ ] TASK-32.06 Render review cards from presentationMode
+- [x] TASK-32.06 Render review cards from presentationMode
 - [ ] TASK-32.07 Add disableAudioOnly mutation
 - [ ] TASK-32.08 Add audio-only review UI and Can’t listen
 - [ ] TASK-32.09 Add review-presentation smoke checks
@@ -749,7 +749,7 @@ TASK-32.05 Return presentationMode from lesson start and submit
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

@@ -503,7 +503,7 @@ export type LessonCard = {
   learningStep: Scalars['Int']['output']
   notes?: Maybe<Scalars['String']['output']>
   position: Scalars['Int']['output']
-  promptDirection: PromptDirection
+  presentationMode: ReviewPresentationMode
   reviewState: CardReviewState
 }
 
@@ -819,11 +819,6 @@ export type PreviewCsvImportInput = {
   deckId: Scalars['String']['input']
 }
 
-export enum PromptDirection {
-  BackToFront = 'BACK_TO_FRONT',
-  FrontToBack = 'FRONT_TO_BACK',
-}
-
 export type PublicDeckSearchResult = {
   __typename?: 'PublicDeckSearchResult'
   items: Array<Deck>
@@ -958,6 +953,13 @@ export type ResetPasswordInput = {
 export enum ReviewAnswer {
   DontKnow = 'DONT_KNOW',
   Know = 'KNOW',
+}
+
+export enum ReviewPresentationMode {
+  SourceText = 'SOURCE_TEXT',
+  TargetAudioOnly = 'TARGET_AUDIO_ONLY',
+  TargetText = 'TARGET_TEXT',
+  TargetTextAudio = 'TARGET_TEXT_AUDIO',
 }
 
 export type SafeUser = {
@@ -2119,7 +2121,7 @@ export type LessonCardFieldsFragment = {
   position: number
   learningStep: number
   learningGroup: LearningGroup
-  promptDirection: PromptDirection
+  presentationMode: ReviewPresentationMode
   reviewState: {
     __typename?: 'CardReviewState'
     id: string
@@ -2154,7 +2156,7 @@ export type StartLessonMutation = {
       position: number
       learningStep: number
       learningGroup: LearningGroup
-      promptDirection: PromptDirection
+      presentationMode: ReviewPresentationMode
       reviewState: {
         __typename?: 'CardReviewState'
         id: string
@@ -2191,7 +2193,7 @@ export type StartHomeLessonMutation = {
       position: number
       learningStep: number
       learningGroup: LearningGroup
-      promptDirection: PromptDirection
+      presentationMode: ReviewPresentationMode
       reviewState: {
         __typename?: 'CardReviewState'
         id: string
@@ -2234,7 +2236,7 @@ export type SubmitReviewMutation = {
       position: number
       learningStep: number
       learningGroup: LearningGroup
-      promptDirection: PromptDirection
+      presentationMode: ReviewPresentationMode
       reviewState: {
         __typename?: 'CardReviewState'
         id: string
@@ -2862,7 +2864,7 @@ export const LessonCardFieldsFragmentDoc = gql`
     position
     learningStep
     learningGroup
-    promptDirection
+    presentationMode
     reviewState {
       id
       learningStep

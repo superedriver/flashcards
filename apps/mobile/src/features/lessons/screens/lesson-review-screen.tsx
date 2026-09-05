@@ -15,12 +15,9 @@ import {
   type ReviewFlashcardHandle,
 } from '@/features/lessons/components/review-flashcard'
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
-import { useReviewSpeech } from '@/features/lessons/hooks/use-review-speech'
+import { isReviewSpeechActive, useReviewSpeech } from '@/features/lessons/hooks/use-review-speech'
 import { useReviewSwipeHint } from '@/features/lessons/hooks/use-review-swipe-hint'
-import {
-  getReviewSides,
-  isTargetLanguageSideVisible,
-} from '@/features/lessons/utils/get-review-sides'
+import { getReviewSides } from '@/features/lessons/utils/get-review-sides'
 import { mapGraphQlLessonCard } from '@/features/lessons/utils/map-lesson-card'
 import { useStudyLanguageContext } from '@/features/study-languages/hooks/use-study-language-context'
 import {
@@ -72,20 +69,17 @@ export function LessonReviewScreen() {
     variables: { id: reviewDeckId ?? '' },
   })
   const targetLanguage = deckData?.deck?.targetLanguage ?? activeTargetLanguage
-  const showSpeakButton = Boolean(
-    currentCard &&
-    targetLanguage &&
-    isTargetLanguageSideVisible({
-      isRevealed,
-      promptDirection: currentCard.promptDirection,
-    }),
-  )
+  const showSpeakButton = isReviewSpeechActive({
+    isRevealed,
+    languageCode: targetLanguage,
+    presentationMode: currentCard?.presentationMode,
+  })
   const { speak } = useReviewSpeech({
     enabled: showSpeakButton && !isExiting,
     languageCode: targetLanguage,
     text: currentCard?.front ?? '',
     utteranceKey: currentCard
-      ? `${currentCard.cardId}-${currentCard.promptDirection}-${isRevealed}`
+      ? `${currentCard.cardId}-${currentCard.presentationMode}-${isRevealed}`
       : '',
   })
 
@@ -93,7 +87,7 @@ export function LessonReviewScreen() {
     setIsRevealed(false)
     setIsExiting(false)
     setErrorMessage(null)
-  }, [currentCard?.cardId, currentCard?.promptDirection])
+  }, [currentCard?.cardId, currentCard?.presentationMode])
 
   if (!sessionId) {
     return (
@@ -253,7 +247,7 @@ export function LessonReviewScreen() {
           example={currentCard.example}
           isExiting={isExiting}
           isRevealed={isRevealed}
-          key={`${currentCard.cardId}-${currentCard.promptDirection}`}
+          key={`${currentCard.cardId}-${currentCard.presentationMode}`}
           notes={currentCard.notes}
           prompt={reviewSides.prompt}
           showSpeakButton={showSpeakButton}

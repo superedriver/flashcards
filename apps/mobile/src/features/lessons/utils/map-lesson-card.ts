@@ -1,7 +1,7 @@
 import type {
   LearningGroup,
   LessonCard,
-  PromptDirection,
+  ReviewPresentationMode,
 } from '@/features/lessons/types/active-lesson'
 
 type GraphQlLessonCard = {
@@ -14,7 +14,7 @@ type GraphQlLessonCard = {
   learningStep: number
   notes?: string | null
   position: number
-  promptDirection: string
+  presentationMode: string
 }
 
 export function mapGraphQlLessonCard(card: GraphQlLessonCard): LessonCard {
@@ -28,6 +28,6 @@ export function mapGraphQlLessonCard(card: GraphQlLessonCard): LessonCard {
     learningStep: card.learningStep,
     notes: card.notes,
     position: card.position,
-    promptDirection: card.promptDirection as PromptDirection,
+    presentationMode: card.presentationMode as ReviewPresentationMode,
   }
 }

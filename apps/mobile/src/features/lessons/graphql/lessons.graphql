@@ -8,7 +8,7 @@ fragment LessonCardFields on LessonCard {
   position
   learningStep
   learningGroup
-  promptDirection
+  presentationMode
   reviewState {
     id
     learningStep

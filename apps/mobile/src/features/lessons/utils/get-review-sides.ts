@@ -1,20 +1,32 @@
-import type { PromptDirection } from '@/features/lessons/types/active-lesson'
+import type { ReviewPresentationMode } from '@/features/lessons/types/active-lesson'
 
 export function getReviewSides(input: {
   back: string
   front: string
-  promptDirection: PromptDirection
+  presentationMode: ReviewPresentationMode
 }): { answer: string; prompt: string } {
-  if (input.promptDirection === 'BACK_TO_FRONT') {
+  if (input.presentationMode === 'SOURCE_TEXT') {
     return { answer: input.front, prompt: input.back }
+  }
+
+  if (input.presentationMode === 'TARGET_AUDIO_ONLY') {
+    return { answer: input.back, prompt: '' }
   }
 
   return { answer: input.back, prompt: input.front }
 }
 
-export function isTargetLanguageSideVisible(input: {
+export function shouldSpeakReviewTarget(input: {
   isRevealed: boolean
-  promptDirection: PromptDirection
+  presentationMode: ReviewPresentationMode
 }): boolean {
-  return input.promptDirection === 'FRONT_TO_BACK' ? !input.isRevealed : input.isRevealed
+  switch (input.presentationMode) {
+    case 'TARGET_TEXT_AUDIO':
+    case 'TARGET_AUDIO_ONLY':
+      return !input.isRevealed
+    case 'SOURCE_TEXT':
+      return input.isRevealed
+    case 'TARGET_TEXT':
+      return false
+  }
 }
