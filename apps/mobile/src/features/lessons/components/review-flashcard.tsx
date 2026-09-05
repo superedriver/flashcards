@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons'
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Animated, PanResponder, Pressable, View, useWindowDimensions } from 'react-native'
@@ -32,6 +33,7 @@ export type ReviewFlashcardProps = {
   onReveal: () => void
   onSpeak?: () => void
   prompt: string
+  showAudioOnlyPrompt?: boolean
   showSpeakButton?: boolean
 }
 
@@ -49,6 +51,7 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
       onReveal,
       onSpeak,
       prompt,
+      showAudioOnlyPrompt = false,
       showSpeakButton = false,
     },
     ref,
@@ -231,7 +234,9 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
           <Pressable
             {...(!isRevealed
               ? buttonA11yProps(
-                  t('lessons.flashcard.tapToReveal'),
+                  showAudioOnlyPrompt
+                    ? t('lessons.flashcard.audioOnlyPrompt')
+                    : t('lessons.flashcard.tapToReveal'),
                   t('lessons.flashcard.revealHint'),
                 )
               : {})}
@@ -274,11 +279,15 @@ export const ReviewFlashcard = forwardRef<ReviewFlashcardHandle, ReviewFlashcard
               }}
             />
             <View style={{ alignItems: 'center', gap: 12 }}>
-              <AppText
-                style={{ fontSize: 32, fontWeight: '700', lineHeight: 40, textAlign: 'center' }}
-              >
-                {displayedText}
-              </AppText>
+              {!isRevealed && showAudioOnlyPrompt ? (
+                <Ionicons color="#1a56db" name="volume-high" size={72} />
+              ) : (
+                <AppText
+                  style={{ fontSize: 32, fontWeight: '700', lineHeight: 40, textAlign: 'center' }}
+                >
+                  {displayedText}
+                </AppText>
+              )}
               {isRevealed && example ? (
                 <AppText style={{ color: '#667085', fontSize: 16, textAlign: 'center' }}>
                   {t('lessons.flashcard.example', { text: example })}

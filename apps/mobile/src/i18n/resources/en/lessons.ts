@@ -24,6 +24,10 @@ export const lessonsEn = {
     completeError: 'Could not complete review. Please try again.',
     pageTitle: 'Review',
     leaveLesson: 'Leave review',
+    cantListen: "Can't listen",
+    cantListenHint:
+      'Shows the target word as text instead of audio-only for the rest of this review.',
+    cantListenError: 'Could not switch this card to text. Please try again.',
   },
   summary: {
     title: 'Review summary',
@@ -63,6 +67,7 @@ export const lessonsEn = {
     revealHint: 'Shows the answer side of the card.',
     speak: 'Speak',
     speakHint: 'Plays this word in the language you are learning.',
+    audioOnlyPrompt: 'Listen, then tap to reveal',
     example: 'Example: {{text}}',
     notes: 'Notes: {{text}}',
   },

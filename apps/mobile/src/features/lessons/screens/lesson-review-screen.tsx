@@ -25,6 +25,7 @@ import {
   useAbandonLessonMutation,
   useCompleteLessonMutation,
   useDeckQuery,
+  useDisableAudioOnlyMutation,
   useSubmitReviewMutation,
 } from '@/graphql/generated'
 import { AppButton, AppText } from '@/ui/primitives'
@@ -42,9 +43,11 @@ export function LessonReviewScreen() {
     goToNextCard,
     lesson,
     markCardReviewed,
+    setActiveLesson,
     setCompletion,
   } = useActiveLesson(sessionId)
   const [submitReview] = useSubmitReviewMutation()
+  const [disableAudioOnly] = useDisableAudioOnlyMutation()
   const [completeLesson] = useCompleteLessonMutation({
     awaitRefetchQueries: true,
     refetchQueries: [...LEARNING_STATS_REFETCH_QUERIES],
@@ -220,7 +223,54 @@ export function LessonReviewScreen() {
     }
   }
 
+  const handleCantListen = async () => {
+    if (
+      isSubmittingRef.current ||
+      isSubmitting ||
+      isRevealed ||
+      currentCard.presentationMode !== 'TARGET_AUDIO_ONLY'
+    ) {
+      return
+    }
+
+    isSubmittingRef.current = true
+    setIsSubmitting(true)
+    setErrorMessage(null)
+
+    try {
+      const result = await disableAudioOnly({
+        variables: {
+          input: {
+            cardId: currentCard.cardId,
+            sessionId: lesson.sessionId,
+          },
+        },
+      })
+
+      const nextCard = result.data?.disableAudioOnly
+
+      if (!nextCard) {
+        setErrorMessage(t('lessons.review.cantListenError'))
+        return
+      }
+
+      setActiveLesson({
+        ...lesson,
+        cards: lesson.cards.map((card, index) =>
+          index === lesson.currentIndex ? mapGraphQlLessonCard(nextCard) : card,
+        ),
+      })
+    } catch (error) {
+      setErrorMessage(getGraphqlErrorMessage(error, t('lessons.review.cantListenError')))
+    } finally {
+      isSubmittingRef.current = false
+      setIsSubmitting(false)
+    }
+  }
+
   const reviewSides = getReviewSides(currentCard)
+  const showCantListen =
+    currentCard.presentationMode === 'TARGET_AUDIO_ONLY' && !isRevealed && !isExiting
 
   return (
     <Screen>
@@ -250,12 +300,25 @@ export function LessonReviewScreen() {
           key={`${currentCard.cardId}-${currentCard.presentationMode}`}
           notes={currentCard.notes}
           prompt={reviewSides.prompt}
+          showAudioOnlyPrompt={currentCard.presentationMode === 'TARGET_AUDIO_ONLY'}
           showSpeakButton={showSpeakButton}
           onAnswer={(answer) => void handleAnswer(answer)}
           onExitStart={() => setIsExiting(true)}
           onReveal={() => setIsRevealed(true)}
           onSpeak={speak}
         />
+        {showCantListen ? (
+          <Pressable
+            {...buttonA11yProps(t('lessons.review.cantListen'), t('lessons.review.cantListenHint'))}
+            disabled={isSubmitting}
+            onPress={() => void handleCantListen()}
+            style={{ opacity: isSubmitting ? 0.4 : 1, paddingVertical: 4 }}
+          >
+            <AppText style={{ color: '#667085', fontSize: 14, textAlign: 'center' }}>
+              {t('lessons.review.cantListen')}
+            </AppText>
+          </Pressable>
+        ) : null}
         {errorMessage ? <ErrorState message={errorMessage} /> : null}
         <ReviewAnswerActions
           disabled={isSubmitting || isExiting}
