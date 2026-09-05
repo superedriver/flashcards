@@ -668,13 +668,16 @@ Flow:
 2. Backend creates a study session (or returns empty if nothing is ready).
 3. Backend picks the next showable card (primary vs bounded repeat) and returns it for display.
    Display is not an answer: do not increment showCount; do not freeze gap N.
-4. Frontend shows only the question side (from promptDirection) on a flashcard under the header.
-   Do not label Front/Back.
+4. Frontend shows only the question side (from presentationMode) on a flashcard under the header.
+   Do not label Front/Back. Do not infer the mode from learningStep or front/back.
 5. User taps/clicks the card to reveal the answer side only (fast flip, ~200ms).
 6. Example sentence is shown on the answer side if available.
-7. If the visible side is the target language (card front), auto-speak it and show 🔊.
-   Do not speak the source-language side. Stop previous speech before a new utterance.
+7. Speak from presentationMode: TARGET_TEXT_AUDIO and TARGET_AUDIO_ONLY auto-speak on the
+   question; SOURCE_TEXT auto-speaks target after flip; TARGET_TEXT never speaks.
+   Show 🔊 only when that mode allows replay. Stop previous speech before a new utterance.
    TTS uses expo-speech with the deck targetLanguage (iOS, Android, Web).
+   Can’t listen (TARGET_AUDIO_ONLY, question side only) sets session audioOnlyDisabled;
+   it is not an answer.
 8. User answers Know (swipe right or button) or Don't know (swipe left or button).
    Swipes are disabled until the card is revealed. Compact fallback buttons stay visible.
 9. Backend saves the review, updates learning-steps state, then records that answer on the

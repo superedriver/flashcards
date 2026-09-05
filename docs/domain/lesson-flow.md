@@ -6,7 +6,8 @@ This document defines how **review sessions** work in Flashcards.
 
 It is the live source of truth for backend queue logic, frontend review UI, and learning-steps integration.
 
-Scheduling intervals and prompt direction stay in `docs/algorithms/learning-steps.md`.
+Scheduling intervals and **base** presentation mode stay in `docs/algorithms/learning-steps.md`.
+Effective `presentationMode` (including Can’t listen) is defined in this document.
 
 Relevant task files:
 
@@ -14,6 +15,7 @@ Relevant task files:
 docs/tasks/done/30-sot-discrepancies.md
 docs/tasks/done/29-lesson-queue.md
 docs/tasks/done/26-learning-steps.md
+docs/tasks/32-review-presentation-modes.md
 docs/tasks/done/07-srs-lessons.md (historical SM-2 backend)
 docs/tasks/done/16-frontend-lessons.md (historical frontend)
 docs/algorithms/learning-steps.md
@@ -29,8 +31,11 @@ User-facing (UI and live product docs):
   Completion title: "Review complete" / "Повторення завершено".
   Do not say Lesson / Урок in the UI.
 
+  Can’t listen / Не можу прослухати — drop audio-only for the rest of this session.
+
 Technical identifiers (keep in code, GraphQL, Prisma):
-  Lesson, StudySession, lessonSize, startLesson, completeLesson, abandonLesson.
+  Lesson, StudySession, lessonSize, startLesson, completeLesson, abandonLesson,
+  presentationMode, disableAudioOnly, audioOnlyDisabled.
 
 Queue algorithm (keep; not the product name of the session):
   Repeat = 2nd or 3rd answer of the same cardId in this session.
@@ -67,7 +72,7 @@ The backend is the source of truth for:
 - which cards may appear (snapshot vs live membership)
 - queue state (show counts, repeat gaps)
 - review state (learningStep, longReviewSuccessCount, dueAt)
-- prompt direction for each attempt
+- presentationMode for each attempt (effective mode)
 - study session status
 - review-session completion
 ```
@@ -75,14 +80,16 @@ The backend is the source of truth for:
 The frontend is responsible for:
 
 ```txt
-- showing the question side first (from promptDirection; no Front/Back labels)
+- showing the question side first (from presentationMode; no Front/Back labels)
 - flipping to the answer side only
+- speaking only when the effective mode requires it
+- Can’t listen (calls disableAudioOnly; does not answer)
 - collecting user answer
 - calling backend mutations
 - showing summary after COMPLETED
 ```
 
-The frontend must not calculate learning steps, due times, gap, or show limits.
+The frontend must not calculate learning steps, due times, gap, show limits, or presentation mode.
 
 The review UI must not show progress or remaining-card counters.
 
@@ -153,16 +160,75 @@ Frontend must not send quality scores or interval hints.
 
 Scheduling rules: `docs/algorithms/learning-steps.md`.
 
-## Prompt Direction
+## Review presentation mode
 
-Each lesson card payload includes `promptDirection`:
+Each lesson card payload includes **effective** `presentationMode` only. Card `front` is target; `back` is source. The UI switches on `presentationMode`, not on FRONT_TO_BACK / BACK_TO_FRONT.
+
+### Effective modes
 
 ```txt
-FRONT_TO_BACK
-BACK_TO_FRONT
+TARGET_TEXT_AUDIO
+  Question: target text, auto-speak, 🔊 replay.
+  Tap/click card: flip. Answer: source only. No speak on source.
+
+SOURCE_TEXT
+  Question: source text, no speak, no 🔊.
+  Tap/click card: flip. Answer: target text, auto-speak, 🔊 replay.
+
+TARGET_AUDIO_ONLY
+  Question: speaker icon (no target text), auto-speak, 🔊 replay.
+  Tap/click card: flip. Answer: source only.
+  Can’t listen / Не можу прослухати is a separate text action under the card,
+  only while the question side is showing.
+
+TARGET_TEXT
+  Session fallback only. Never produced by the SRS step table.
+  Question: target text, no auto-speak, no 🔊.
+  Tap/click card: flip. Answer: source only.
 ```
 
-Derived from `learningStep` (random 50/50 on steps 3, 4, 8 per attempt). See algorithm doc.
+### Base vs effective
+
+SRS resolves a **base** mode per attempt from `learningStep` + `randomBit` (`docs/algorithms/learning-steps.md`). It never returns `TARGET_TEXT`.
+
+The lesson/session layer maps base → effective using `StudySession.audioOnlyDisabled`. GraphQL sends only the effective mode.
+
+```txt
+audioOnlyDisabled = false
+  TARGET_TEXT_AUDIO → TARGET_TEXT_AUDIO
+  SOURCE_TEXT       → SOURCE_TEXT
+  TARGET_AUDIO_ONLY → TARGET_AUDIO_ONLY
+
+audioOnlyDisabled = true
+  TARGET_TEXT_AUDIO → TARGET_TEXT_AUDIO
+  SOURCE_TEXT       → SOURCE_TEXT
+  TARGET_AUDIO_ONLY → TARGET_TEXT
+```
+
+The flag disables the listening **task**, not pronunciation help. `TARGET_TEXT_AUDIO` and `SOURCE_TEXT` (including speak-after-flip) stay as they are.
+
+### Can’t listen
+
+```txt
+Not an answer. Does not flip. Does not change learning step or queue.
+Current card: question side stays; mode becomes TARGET_TEXT (target text appears).
+Set audioOnlyDisabled = true on this ACTIVE StudySession.
+Later TARGET_AUDIO_ONLY in this session → TARGET_TEXT.
+New session: audioOnlyDisabled defaults to false; audio-only is available again.
+Do not auto-set the flag when TTS/autoplay fails.
+disableAudioOnly(input: { sessionId, cardId }) returns the current LessonCard
+  with effective presentationMode.
+```
+
+### Speak (from effective mode only)
+
+```txt
+Speak only for TARGET_TEXT_AUDIO (question) and TARGET_AUDIO_ONLY (question),
+and for SOURCE_TEXT after flip (target answer).
+TARGET_TEXT: never speak, no 🔊.
+Stop previous speech before a new utterance.
+TTS = expo-speech + deck targetLanguage (iOS, Android, Web).
+```
 
 ## Learning Groups
 
@@ -348,7 +414,7 @@ When `/lessons/start` still gets an empty payload (for example Start another aft
 4. If no ready cards: return empty payload, no session.
 5. Abandon existing ACTIVE session; create StudySession (scope=DECK, deckId set, lessonSize 0,
    empty snapshot, empty showCounts).
-6. Return the first showable card (promptDirection + learning metadata).
+6. Return the first showable card (presentationMode + learning metadata).
    This display does not increment showCount and does not freeze N.
 ```
 
@@ -596,12 +662,12 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 ```txt
 - Header → card → swipe hint → fallback buttons. Do not vertically center the card
 - Taller flashcard (~1.5–1.7 width:height). Word centered. No Front/Back labels
-- Question first from promptDirection; after flip, only the answer side
+- Question first from presentationMode; after flip, only the answer side
 - Tap to reveal only on the question side. Example/notes only on the answer side if present
 - After reveal: swipe right = Know, swipe left = Don't know; compact fallback buttons
-- Speak only the target-language side (card front). Auto-speak when that side is visible;
-  show 🔊 only then. Do not speak the source-language side. Stop previous speech first.
-  TTS language is targetLanguage via expo-speech (iOS, Android, Web)
+- Speak from presentationMode (see Review presentation mode). Stop previous speech first.
+- TARGET_AUDIO_ONLY: large speaker on the question side; 🔊 replays only; Can’t listen
+  is a text action under the card before reveal
 - Swipe hint under the card after reveal; hide after the first few answers
 - Leave review is a secondary text action. SRS, submitReview, and the queue are unchanged
 ```

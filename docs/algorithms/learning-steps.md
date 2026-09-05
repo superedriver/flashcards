@@ -44,8 +44,9 @@ Rules:
 - No database access.
 - No NestJS / Prisma / GraphQL imports.
 - No current time lookup inside the function (caller passes reviewedAt).
-- Same input must always produce same output (except RANDOM prompt direction — see below).
-- Prompt direction for fixed steps is derived from step; for random steps the caller may pass a resolved direction or the package may accept a randomBit.
+- Same input must always produce same output (except RANDOM presentation mode — see below).
+- Base presentation mode for fixed steps is derived from step; for random steps the caller
+  passes randomBit. TARGET_TEXT is never returned by the SRS resolver.
 ```
 
 ## Card Groups
@@ -77,30 +78,64 @@ intervalDays
 repetitions
 ```
 
-## Prompt Direction
+## Review presentation mode (base)
 
-Shown first side of the card, then reveal the other.
+Question/answer layout and speak rules: `docs/domain/lesson-flow.md`.
+
+This package resolves the **base** mode only. It must not apply `audioOnlyDisabled`.
 
 ```txt
-FRONT_TO_BACK  -> show front (target), reveal back (source)
-BACK_TO_FRONT  -> show back (source), reveal front (target)
+TARGET_TEXT_AUDIO
+SOURCE_TEXT
+TARGET_AUDIO_ONLY
 ```
 
-| Step | Direction                           |
+`TARGET_TEXT` exists on the GraphQL enum but is produced only by the session layer
+when `audioOnlyDisabled` maps `TARGET_AUDIO_ONLY` → `TARGET_TEXT`.
+
+| Step | Base mode                           |
 | ---- | ----------------------------------- |
-| 0    | FRONT_TO_BACK                       |
-| 1    | FRONT_TO_BACK                       |
-| 2    | FRONT_TO_BACK                       |
+| 0    | TARGET_TEXT_AUDIO                   |
+| 1    | TARGET_TEXT_AUDIO                   |
+| 2    | TARGET_TEXT_AUDIO                   |
 | 3    | RANDOM 50/50 **per review attempt** |
 | 4    | RANDOM 50/50 **per review attempt** |
-| 5    | BACK_TO_FRONT                       |
-| 6    | BACK_TO_FRONT                       |
-| 7    | BACK_TO_FRONT                       |
+| 5    | RANDOM 50/50 **per review attempt** |
+| 6    | RANDOM 50/50 **per review attempt** |
+| 7    | RANDOM 50/50 **per review attempt** |
 | 8    | RANDOM 50/50 **per review attempt** |
 
-Random means: on each review attempt for that card, independently choose FRONT_TO_BACK or BACK_TO_FRONT with equal probability. Do not persist the choice across attempts.
+Random mapping:
 
-The backend resolves `promptDirection` when building the lesson card payload (and again if the same card is re-queued later in the session).
+```txt
+Steps 3–4:
+  randomBit 0 → TARGET_TEXT_AUDIO
+  randomBit 1 → SOURCE_TEXT
+
+Steps 5–8:
+  randomBit 0 → SOURCE_TEXT
+  randomBit 1 → TARGET_AUDIO_ONLY
+```
+
+Random means: on each review attempt for that card, independently choose with equal probability. Do not persist the choice across attempts.
+
+The backend resolves base mode when building the lesson card payload (and again if the same card is re-queued later in the session), then maps to **effective** mode:
+
+```txt
+audioOnlyDisabled = false
+  TARGET_TEXT_AUDIO → TARGET_TEXT_AUDIO
+  SOURCE_TEXT       → SOURCE_TEXT
+  TARGET_AUDIO_ONLY → TARGET_AUDIO_ONLY
+
+audioOnlyDisabled = true
+  TARGET_TEXT_AUDIO → TARGET_TEXT_AUDIO
+  SOURCE_TEXT       → SOURCE_TEXT
+  TARGET_AUDIO_ONLY → TARGET_TEXT
+```
+
+GraphQL `LessonCard.presentationMode` is the effective mode. There is no `promptDirection`.
+
+`calculateNextLearningState` does not use presentation mode.
 
 ## Know
 
@@ -273,9 +308,10 @@ nextDueAt
 - compute learningStep transitions
 - compute dueAt
 - decide group from local heuristics without server fields
+- decide presentationMode from learningStep or front/back
 ```
 
-Frontend may display `learningGroup` / `promptDirection` returned by the API.
+Frontend may display `learningGroup` / `presentationMode` returned by the API.
 
 ## Related Documents
 

@@ -204,7 +204,7 @@ Can’t listen / Не можу прослухати.
 ## Epic Summary
 
 ```md
-- [ ] TASK-32.01 Add live review-presentation source of truth
+- [x] TASK-32.01 Add live review-presentation source of truth
 - [ ] TASK-32.02 Add resolveReviewPresentationMode in SRS
 - [ ] TASK-32.03 Add effective presentation-mode mapping
 - [ ] TASK-32.04 Add audioOnlyDisabled on StudySession
@@ -221,7 +221,7 @@ Can’t listen / Не можу прослухати.
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
