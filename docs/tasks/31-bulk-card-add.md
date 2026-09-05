@@ -215,7 +215,7 @@ All new UI strings en and uk, added in the task that introduces them.
 ```md
 - [x] TASK-31.01 Add live bulk-card-add source of truth
 - [x] TASK-31.02 Add bulk Front,Back parser and unit tests
-- [ ] TASK-31.03 Add owner duplicate lookup on the card repository
+- [x] TASK-31.03 Add owner duplicate lookup on the card repository
 - [ ] TASK-31.04 Add CheckCardDuplicatesUseCase
 - [ ] TASK-31.05 Add checkCardDuplicates GraphQL query
 - [ ] TASK-31.06 Reject duplicate cards in CreateCardUseCase
@@ -443,7 +443,7 @@ TASK-31.02 Add bulk Front,Back parser and unit tests
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

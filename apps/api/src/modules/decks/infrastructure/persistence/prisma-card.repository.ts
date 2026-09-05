@@ -4,9 +4,12 @@ import {
   CardRepositoryPort,
   CreateCardInput,
   CreateManyCardsInput,
+  FindLiveDuplicatesForOwnerInput,
+  LiveDuplicateCard,
   UpdateCardInput,
 } from '../../application/ports/card-repository.port';
 import { Card } from '../../domain/types';
+import { normalizeCardPair } from '../../domain/services/normalize-card-pair';
 import { toCard } from '../mappers/card.mapper';
 
 @Injectable()
@@ -49,6 +52,55 @@ export class PrismaCardRepository implements CardRepositoryPort {
     });
 
     return cards.map(toCard);
+  }
+
+  async findLiveDuplicatesForOwner(
+    input: FindLiveDuplicatesForOwnerInput,
+  ): Promise<LiveDuplicateCard[]> {
+    if (input.pairs.length === 0) {
+      return [];
+    }
+
+    const wantedKeys = new Set(
+      input.pairs.map((pair) => {
+        const normalized = normalizeCardPair(pair.front, pair.back);
+        return `${normalized.front}\0${normalized.back}`;
+      }),
+    );
+
+    const cards = await this.prisma.card.findMany({
+      select: {
+        back: true,
+        deck: {
+          select: {
+            title: true,
+          },
+        },
+        deckId: true,
+        front: true,
+        id: true,
+      },
+      where: {
+        deletedAt: null,
+        deck: {
+          deletedAt: null,
+          ownerId: input.ownerId,
+        },
+      },
+    });
+
+    return cards
+      .filter((card) => {
+        const normalized = normalizeCardPair(card.front, card.back);
+        return wantedKeys.has(`${normalized.front}\0${normalized.back}`);
+      })
+      .map((card) => ({
+        back: card.back,
+        deckId: card.deckId,
+        deckTitle: card.deck.title,
+        front: card.front,
+        id: card.id,
+      }));
   }
 
   async update(input: UpdateCardInput): Promise<Card> {
