@@ -4,6 +4,7 @@ export const lessonsEn = {
     deckIdMissing: 'Deck id is missing.',
     backToDecks: 'Back to decks',
     startError: 'Could not start review. Please try again.',
+    errorTitle: 'Could not start review',
     preparing: 'Preparing your review...',
     emptyTitle: 'No cards due',
     emptyLead: "You're all caught up.",

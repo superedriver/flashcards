@@ -9,8 +9,8 @@ import { deckNeedsLanguageAssignment } from '@/features/decks/utils/deck-languag
 import { useActiveLesson } from '@/features/lessons/hooks/use-active-lesson'
 import { mapGraphQlLessonCard } from '@/features/lessons/utils/map-lesson-card'
 import { useDeckQuery, useStartLessonMutation } from '@/graphql/generated'
-import { AppButton, AppText } from '@/ui/primitives'
-import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
+import { AppText } from '@/ui/primitives'
+import { LoadingState, PageTitle, Screen } from '@/ui/components'
 import { buttonA11yProps } from '@/ui/utils/accessibility'
 
 type StartLessonScreenProps = {
@@ -44,7 +44,7 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
 
     if (!deck) {
       if (deckQuery.error) {
-        setErrorMessage(getGraphqlErrorMessage(deckQuery.error, t('lessons.start.startError')))
+        setErrorMessage(toStartErrorMessage(deckQuery.error, t('lessons.start.startError')))
         setIsStarting(false)
       }
       return
@@ -94,7 +94,7 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
         )
       })
       .catch((error) => {
-        setErrorMessage(getGraphqlErrorMessage(error, t('lessons.start.startError')))
+        setErrorMessage(toStartErrorMessage(error, t('lessons.start.startError')))
       })
       .finally(() => {
         setIsStarting(false)
@@ -122,12 +122,45 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
   if (!deckId) {
     return (
       <Screen>
-        <PageTitle title={t('lessons.start.title')} />
-        <ErrorState message={t('lessons.start.deckIdMissing')} />
-        <View style={{ gap: 12, marginTop: 16 }}>
-          <AppButton onPress={() => router.replace('/(tabs)/decks')}>
-            {t('lessons.start.backToDecks')}
-          </AppButton>
+        <View style={{ alignSelf: 'center', maxWidth: EMPTY_MAX_WIDTH, width: '100%' }}>
+          <View style={{ alignItems: 'center', marginBottom: 36, marginTop: 28 }}>
+            <Ionicons color="#b42318" name="alert-circle" size={40} />
+            <AppText
+              accessibilityRole="header"
+              style={{
+                fontSize: 24,
+                fontWeight: '700',
+                marginTop: 16,
+                textAlign: 'center',
+              }}
+            >
+              {t('lessons.start.errorTitle')}
+            </AppText>
+            <AppText
+              style={{
+                color: '#667085',
+                fontSize: 15,
+                marginTop: 6,
+                textAlign: 'center',
+              }}
+            >
+              {t('lessons.start.deckIdMissing')}
+            </AppText>
+          </View>
+          <Pressable
+            {...buttonA11yProps(t('lessons.start.allDecks'))}
+            onPress={() => router.replace('/(tabs)/decks')}
+            style={{
+              alignItems: 'center',
+              backgroundColor: '#1a56db',
+              borderRadius: 10,
+              paddingVertical: 12,
+            }}
+          >
+            <AppText style={{ color: '#ffffff', fontSize: 15, fontWeight: '700' }}>
+              {t('lessons.start.allDecks')}
+            </AppText>
+          </Pressable>
         </View>
       </Screen>
     )
@@ -201,13 +234,76 @@ export function StartLessonScreen({ deckId }: StartLessonScreenProps) {
     )
   }
 
+  if (errorMessage) {
+    return (
+      <Screen>
+        <View style={{ alignSelf: 'center', maxWidth: EMPTY_MAX_WIDTH, width: '100%' }}>
+          <View style={{ alignItems: 'center', marginBottom: 36, marginTop: 28 }}>
+            <Ionicons color="#b42318" name="alert-circle" size={40} />
+            <AppText
+              accessibilityRole="header"
+              style={{
+                fontSize: 24,
+                fontWeight: '700',
+                marginTop: 16,
+                textAlign: 'center',
+              }}
+            >
+              {t('lessons.start.errorTitle')}
+            </AppText>
+            <AppText
+              style={{
+                color: '#667085',
+                fontSize: 15,
+                marginTop: 6,
+                textAlign: 'center',
+              }}
+            >
+              {errorMessage}
+            </AppText>
+          </View>
+          <View style={{ gap: 4 }}>
+            <Pressable
+              {...buttonA11yProps(t('common.retry'))}
+              onPress={handleRetry}
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#1a56db',
+                borderRadius: 10,
+                paddingVertical: 12,
+              }}
+            >
+              <AppText style={{ color: '#ffffff', fontSize: 15, fontWeight: '700' }}>
+                {t('common.retry')}
+              </AppText>
+            </Pressable>
+            <Pressable
+              {...buttonA11yProps(t('lessons.start.backToDeck'))}
+              onPress={() => router.replace(`/decks/${deckId}`)}
+              style={{ alignItems: 'center', paddingVertical: 6 }}
+            >
+              <AppText style={{ color: '#667085', fontSize: 14 }}>
+                {t('lessons.start.backToDeck')}
+              </AppText>
+            </Pressable>
+          </View>
+        </View>
+      </Screen>
+    )
+  }
+
   return (
     <Screen>
       <PageTitle title={t('lessons.start.title')} />
       {isStarting || deckQuery.loading ? (
         <LoadingState message={t('lessons.start.preparing')} />
       ) : null}
-      {errorMessage ? <ErrorState message={errorMessage} onRetry={handleRetry} /> : null}
     </Screen>
   )
+}
+
+function toStartErrorMessage(error: unknown, fallback: string): string {
+  const message = getGraphqlErrorMessage(error, fallback)
+
+  return message === 'Internal server error' ? fallback : message
 }

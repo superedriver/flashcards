@@ -400,7 +400,9 @@ When `/lessons/start` still gets an empty payload (for example Start another aft
 - Lead: You're all caught up. / Усе повторено.
 - Body: There are no cards ready for review in this deck right now.
 - Primary #1a56db Back to deck; All decks is a text link
-- Loading and error on this route stay as they are
+- Loading: Start review title + preparing copy
+- Error: same column as empty; alert icon; Could not start review; body; primary Retry;
+  Back to deck is a text link. Do not show Internal server error.
 ```
 
 ## Starting a review session

@@ -59,6 +59,8 @@ Expected state:
 2. Add Card: Create Card succeeds but only clears the form (no success confirmation)
    - Cancel goes to the deck but is labeled Cancel
    - Return to deck; confirm when the form is not empty
+3. Start review shows Internal server error (StudySession.audioOnlyDisabled missing)
+   - Error UI is the old Start review + gray Retry page
 ```
 
 ## Epic Rules
@@ -81,6 +83,7 @@ Expected state:
 ```txt
 33.01 Redirect to /decks after deleting a deck
 33.02 Add Card success feedback and return-to-deck
+33.03 Fix start review 500 and restyle the error screen
 (+ append new bugs in discovery order)
 ```
 
@@ -89,6 +92,7 @@ Expected state:
 ```md
 - [x] TASK-33.01 Redirect to /decks after deleting a deck
 - [x] TASK-33.02 Add Card success feedback and return-to-deck
+- [x] TASK-33.03 Fix start review 500 and restyle the error screen
 ```
 
 ---
@@ -332,4 +336,113 @@ pnpm docs:lint
 
 ```txt
 TASK-33.02 Add Card success feedback and return-to-deck
+```
+
+---
+
+# TASK-33.03 Fix start review 500 and restyle the error screen
+
+## Status
+
+DONE
+
+## Context
+
+Start review (`/lessons/start?deckId=`) returns GraphQL "Internal server error" because `StudySession.audioOnlyDisabled` from EPIC-32 is in Prisma but was not migrated on local Postgres. The error UI is still the old Start review title plus a gray Retry, unlike empty/complete review screens.
+
+## Goal
+
+Start review can create a session. Failed start uses the same centered empty-state layout (icon, title, message, primary Retry, Back to deck text). Do not show a Start review page chrome for errors.
+
+## Related Documents
+
+```txt
+docs/tasks/33-bugfixes.md
+docs/domain/lesson-flow.md
+docs/smoke/review-presentation.md
+docs/tasks/done/32-review-presentation-modes.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/screens/start-lesson-screen.tsx
+apps/mobile/src/i18n/resources/en/lessons.ts
+apps/mobile/src/i18n/resources/uk/lessons.ts
+docs/domain/lesson-flow.md
+docs/tasks/33-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Apply the local StudySession.audioOnlyDisabled migration so startLesson no longer 500s.
+2. Restyle start-review error (and missing deckId) like empty start review: ~480px column, icon, title, body, primary action, text leave action.
+3. Do not surface raw Internal server error; use Could not start review copy.
+4. Keep empty and loading behavior. Update live SoT. Mark TASK-33.03 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not leak Prisma/stack traces to the client.
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Frontend error layout only; the 500 is a missing DB column, not a use-case change.
+- Do not change startLesson GraphQL contract.
+```
+
+## Implementation Notes
+
+```txt
+- Reuse empty-state spacing and #1a56db primary.
+- Error: Retry primary, Back to deck text. Missing deckId: All decks primary.
+```
+
+## Acceptance Criteria
+
+```txt
+- Start review on a due deck opens the review card (no Internal server error).
+- If start fails, the screen matches empty/complete layout (not Start review + gray Retry).
+- Mobile typecheck, format:check, lint, and docs:lint pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+1. Start review on a deck with due cards → review screen, target spoken.
+2. Error layout: icon, title, Retry, Back to deck (no Start review heading).
+```
+
+## Do Not Do
+
+```txt
+- Do not restyle global ErrorState.
+- Do not change SRS or presentationMode mapping.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-33.03 Fix start review 500 and restyle the error screen
 ```

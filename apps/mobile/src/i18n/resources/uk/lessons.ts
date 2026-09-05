@@ -4,6 +4,7 @@ export const lessonsUk = {
     deckIdMissing: 'Відсутній ідентифікатор колоди.',
     backToDecks: 'Назад до колод',
     startError: 'Не вдалося почати повторення. Спробуйте ще раз.',
+    errorTitle: 'Не вдалося почати повторення',
     preparing: 'Підготовка повторення...',
     emptyTitle: 'Немає карток',
     emptyLead: 'Усе повторено.',
