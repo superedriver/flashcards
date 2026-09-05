@@ -15,7 +15,7 @@ Relevant task files:
 docs/tasks/done/30-sot-discrepancies.md
 docs/tasks/done/29-lesson-queue.md
 docs/tasks/done/26-learning-steps.md
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 docs/tasks/done/07-srs-lessons.md (historical SM-2 backend)
 docs/tasks/done/16-frontend-lessons.md (historical frontend)
 docs/algorithms/learning-steps.md

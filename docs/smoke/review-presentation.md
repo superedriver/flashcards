@@ -5,7 +5,7 @@ Manual verification for step-based review presentation modes, speak/🔊, and Ca
 Related:
 
 ```txt
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 docs/domain/lesson-flow.md
 docs/algorithms/learning-steps.md
 docs/release/mvp-smoke-tests.md (section 36)

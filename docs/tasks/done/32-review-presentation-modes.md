@@ -234,7 +234,7 @@ Replace the Prompt Direction sections in live SoT with presentation modes. Point
 ## Related Documents
 
 ```txt
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 docs/domain/lesson-flow.md
 docs/algorithms/learning-steps.md
 docs/architecture.md
@@ -252,7 +252,7 @@ None
 docs/domain/lesson-flow.md
 docs/algorithms/learning-steps.md
 docs/architecture.md
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 ```
 
 ## Requirements
@@ -337,7 +337,7 @@ Add `resolveReviewPresentationMode({ learningStep, randomBit })` and tests. Keep
 ## Related Documents
 
 ```txt
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 docs/algorithms/learning-steps.md
 docs/backend-clean-architecture.md
 ```
@@ -354,7 +354,7 @@ None
 packages/srs/src/types.ts
 packages/srs/src/learning-steps.ts
 packages/srs/src/learning-steps.test.ts
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 ```
 
 ## Requirements
@@ -439,7 +439,7 @@ Add `toEffectivePresentationMode(base, audioOnlyDisabled)` next to the SRS resol
 ## Related Documents
 
 ```txt
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 docs/algorithms/learning-steps.md
 ```
 
@@ -455,7 +455,7 @@ None
 packages/srs/src/learning-steps.ts
 packages/srs/src/learning-steps.test.ts
 packages/srs/src/index.ts
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 ```
 
 ## Requirements
@@ -538,7 +538,7 @@ Add `audioOnlyDisabled Boolean @default(false)` on StudySession and thread it th
 ## Related Documents
 
 ```txt
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 docs/backend-clean-architecture.md
 docs/domain/lesson-flow.md
 ```
@@ -558,7 +558,7 @@ apps/api/src/modules/lessons/infrastructure/mappers/study-session.mapper.ts
 apps/api/src/modules/lessons/infrastructure/mappers/study-session.mapper.spec.ts
 apps/api/src/modules/lessons/application/ports/study-session-repository.port.ts
 apps/api/src/modules/lessons/infrastructure/persistence/prisma-study-session.repository.ts
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 ```
 
 ## Requirements
@@ -643,7 +643,7 @@ Resolve base mode, apply toEffectivePresentationMode with the session flag, retu
 ## Related Documents
 
 ```txt
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 docs/domain/lesson-flow.md
 docs/backend-clean-architecture.md
 docs/security/security-checklist.md
@@ -670,7 +670,7 @@ apps/api/src/modules/lessons/application/use-cases/submit-review.use-case.spec.t
 apps/api/src/modules/lessons/presentation/graphql/types/learning-enums.type.ts
 apps/api/src/modules/lessons/presentation/graphql/types/lesson-card.type.ts
 apps/api/src/modules/lessons/presentation/graphql/resolvers/lessons.resolver.ts
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 ```
 
 ## Requirements
@@ -762,7 +762,7 @@ Codegen, replace promptDirection on the client, and render question/answer/speak
 ## Related Documents
 
 ```txt
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 docs/domain/lesson-flow.md
 ```
 
@@ -782,7 +782,7 @@ apps/mobile/src/features/lessons/utils/get-review-sides.ts
 apps/mobile/src/features/lessons/hooks/use-review-speech.ts
 apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
 apps/mobile/src/graphql/generated/index.ts
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 ```
 
 ## Requirements
@@ -869,7 +869,7 @@ Add authenticated `disableAudioOnly(input: { sessionId, cardId })` that sets the
 ## Related Documents
 
 ```txt
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 docs/backend-clean-architecture.md
@@ -890,7 +890,7 @@ apps/api/src/modules/lessons/lessons.module.ts
 apps/api/src/modules/lessons/presentation/graphql/resolvers/lessons.resolver.ts
 docs/security/security-checklist.md
 apps/mobile/src/features/lessons/graphql/lessons.graphql
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 ```
 
 ## Requirements
@@ -982,7 +982,7 @@ Audio-only question layout; Can’t listen; after success, replace the current c
 ## Related Documents
 
 ```txt
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 docs/domain/lesson-flow.md
 ```
 
@@ -999,7 +999,7 @@ apps/mobile/src/features/lessons/components/review-flashcard.tsx
 apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
 apps/mobile/src/i18n/resources/en/lessons.ts
 apps/mobile/src/i18n/resources/uk/lessons.ts
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 ```
 
 ## Requirements
@@ -1086,7 +1086,7 @@ Add a smoke checklist and a short MVP smoke section. Mark the epic DONE.
 ## Related Documents
 
 ```txt
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
 docs/smoke/learning-steps.md
@@ -1103,7 +1103,7 @@ docs/smoke/review-presentation.md
 ```txt
 docs/release/mvp-smoke-tests.md
 docs/smoke/learning-steps.md
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 ```
 
 ## Requirements

@@ -384,12 +384,13 @@ done/28-requirements-ambiguities.md
 done/29-lesson-queue.md
 done/30-sot-discrepancies.md
 done/31-bulk-card-add.md
+done/32-review-presentation-modes.md
 ```
 
 Active epics:
 
 ```txt
-32-review-presentation-modes.md
+None
 ```
 
 ---
@@ -913,7 +914,7 @@ Paste Front,Back lines into Add Card Front; in-memory queue; backend pair duplic
 File:
 
 ```txt
-docs/tasks/32-review-presentation-modes.md
+docs/tasks/done/32-review-presentation-modes.md
 ```
 
 Purpose:
