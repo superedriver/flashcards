@@ -11,7 +11,7 @@ Scheduling intervals and prompt direction stay in `docs/algorithms/learning-step
 Relevant task files:
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/tasks/done/29-lesson-queue.md
 docs/tasks/done/26-learning-steps.md
 docs/tasks/done/07-srs-lessons.md (historical SM-2 backend)
@@ -644,7 +644,7 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 
 ```txt
 docs/algorithms/learning-steps.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/tasks/done/29-lesson-queue.md
 docs/tasks/done/26-learning-steps.md
 docs/architecture.md

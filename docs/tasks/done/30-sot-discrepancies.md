@@ -2056,7 +2056,7 @@ A reader of live SoT cannot conclude that displaying a card increments showCount
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 docs/backend-clean-architecture.md
@@ -2077,7 +2077,7 @@ docs/domain/lesson-flow.md
 docs/architecture.md
 docs/backend-clean-architecture.md
 docs/smoke/lesson-queue.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -2178,7 +2178,7 @@ Picker unit tests treat `recordLessonCardShowing` as an answer event and cover l
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/backend-clean-architecture.md
 ```
@@ -2302,7 +2302,7 @@ Queue state advances only when a card is answered. Displaying the first or next 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/algorithms/learning-steps.md
 docs/security/security-checklist.md
@@ -2323,7 +2323,7 @@ apps/api/src/modules/lessons/application/use-cases/start-home-lesson.use-case.ts
 apps/api/src/modules/lessons/application/use-cases/start-home-lesson.use-case.spec.ts
 apps/api/src/modules/lessons/application/use-cases/submit-review.use-case.ts
 apps/api/src/modules/lessons/application/use-cases/submit-review.use-case.spec.ts
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -2443,7 +2443,7 @@ User-facing copy and live SoT say review session / Повторення. Code id
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 docs/domain/permissions.md
@@ -2473,7 +2473,7 @@ docs/backend-clean-architecture.md
 docs/domain/permissions.md
 docs/smoke/lesson-queue.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -2568,7 +2568,7 @@ This is a local fixture follow-up, not a SoT discrepancy. Keep it in this epic s
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/smoke/lesson-queue.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
@@ -2584,7 +2584,7 @@ None
 
 ```txt
 apps/api/prisma/seed.ts
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -2680,7 +2680,7 @@ Review complete shows title, Nice work, completedAt, and Cards in this review: N
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 docs/smoke/lesson-queue.md
@@ -2703,7 +2703,7 @@ docs/domain/lesson-flow.md
 docs/architecture.md
 docs/smoke/lesson-queue.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -2804,7 +2804,7 @@ Own deck cards with dueCount > 0 show a Play control that starts `/lessons/start
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 docs/algorithms/learning-steps.md
@@ -2826,7 +2826,7 @@ docs/domain/lesson-flow.md
 docs/architecture.md
 docs/algorithms/learning-steps.md
 docs/smoke/lesson-queue.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -2924,7 +2924,7 @@ Owner deck detail: Header + More, stats, Start review, Edit / Add card, Danger z
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/domain/permissions.md
 docs/security/security-checklist.md
@@ -2946,7 +2946,7 @@ apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
 apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -3045,7 +3045,7 @@ Owner (and public) card rows display #{position + 1}. Owner actions are edit/del
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -3063,7 +3063,7 @@ apps/mobile/src/features/decks/components/card-list.tsx
 apps/mobile/src/features/decks/components/card-list-item.tsx
 apps/mobile/src/features/public-decks/screens/public-deck-detail-screen.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -3155,7 +3155,7 @@ Owner deck detail: compact stats (Total | Due now; three learning groups in one 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -3175,7 +3175,7 @@ apps/mobile/src/features/decks/screens/deck-detail-screen.tsx
 apps/mobile/src/i18n/resources/en/lessons.ts
 apps/mobile/src/i18n/resources/uk/lessons.ts
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -3277,7 +3277,7 @@ Owner deck detail: no Next review line; flags beside “Deck Detail”; Danger z
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -3301,7 +3301,7 @@ apps/mobile/src/ui/components/page-title.tsx
 apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -3396,7 +3396,7 @@ Owner deck detail: large Play icon to start (when due); Delete as a real button 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -3414,7 +3414,7 @@ apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
 apps/mobile/src/features/decks/components/deck-actions.tsx
 apps/mobile/src/features/decks/components/card-list.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -3506,7 +3506,7 @@ Owner deck detail stats match the two-card tile layout. Play is a circled icon w
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -3525,7 +3525,7 @@ apps/mobile/src/features/decks/components/card-list-item.tsx
 apps/mobile/src/i18n/resources/en/lessons.ts
 apps/mobile/src/i18n/resources/uk/lessons.ts
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -3618,7 +3618,7 @@ Owner deck detail: white centered stats tiles; Play circle only is the control; 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -3636,7 +3636,7 @@ apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
 apps/mobile/src/features/decks/components/card-list-item.tsx
 apps/mobile/src/features/decks/components/deck-status-badge.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -3732,7 +3732,7 @@ Word rows use 8px inset. To learn / Practiced / Learned share emoji + colors bet
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -3751,7 +3751,7 @@ apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
 apps/mobile/src/features/decks/components/deck-status-badge.tsx
 apps/mobile/src/features/decks/components/card-list-item.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -3845,7 +3845,7 @@ Deck detail title row is “Deck Detail” + status pills + flags. Stats group l
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -3866,7 +3866,7 @@ apps/mobile/src/features/decks/components/learning-group-badge.tsx
 apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
 apps/mobile/src/features/decks/components/deck-more-menu.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -3959,7 +3959,7 @@ Owner deck detail shows group emoji+count tiles, a filled Start review on the he
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -3978,7 +3978,7 @@ apps/mobile/src/features/decks/screens/deck-detail-screen.tsx
 apps/mobile/src/features/decks/components/deck-header.tsx
 apps/mobile/src/features/decks/components/deck-status-badge.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -4073,7 +4073,7 @@ Stats group pills are centered. My Decks Own counters use group chrome. Rail car
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -4093,7 +4093,7 @@ apps/mobile/src/features/decks/components/deck-learning-stats-compact.tsx
 apps/mobile/src/features/decks/components/deck-list-item.tsx
 apps/mobile/src/features/decks/screens/my-decks-screen.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -4189,7 +4189,7 @@ My Decks list cards follow variant A. Demo seed shows a Group card and a Public 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/smoke/lesson-queue.md
 docs/security/security-checklist.md
@@ -4215,7 +4215,7 @@ apps/mobile/src/i18n/resources/uk/decks.ts
 apps/api/prisma/seed.ts
 docs/domain/lesson-flow.md
 docs/smoke/lesson-queue.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -4323,7 +4323,7 @@ Three rail cards fit fully in the default content column. Inner fonts and contro
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -4339,7 +4339,7 @@ None
 ```txt
 apps/mobile/src/features/decks/components/deck-list-item.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -4424,7 +4424,7 @@ My Decks section cards wrap to the next row. Card width and inner sizes stay as 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -4441,7 +4441,7 @@ None
 apps/mobile/src/features/decks/components/decks-page-sections.tsx
 apps/mobile/src/features/decks/components/deck-list-item.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -4528,7 +4528,7 @@ Each My Decks section row uses the full content width. Cards in a row share that
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -4546,7 +4546,7 @@ apps/mobile/src/ui/utils/responsive.ts
 apps/mobile/src/features/decks/components/decks-page-sections.tsx
 apps/mobile/src/features/decks/components/deck-list-item.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -4633,7 +4633,7 @@ Own My Decks compact stats match the approved tile chrome. Deck detail and word 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -4651,7 +4651,7 @@ apps/mobile/src/features/decks/components/deck-learning-stats-compact.tsx
 apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -4737,7 +4737,7 @@ Own My Decks cards match the mock: flags + title + badge, one 3-column stats con
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -4754,7 +4754,7 @@ None
 apps/mobile/src/features/decks/components/deck-learning-stats-compact.tsx
 apps/mobile/src/features/decks/components/deck-list-item.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -4845,7 +4845,7 @@ Own My Decks cards are compact, equal height in a row, with a 2-line title slot,
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -4868,7 +4868,7 @@ apps/mobile/src/ui/utils/responsive.ts
 apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -4958,7 +4958,7 @@ Own card footer is one nowrap row: Due left, Review → right. Gap above the foo
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -4974,7 +4974,7 @@ None
 ```txt
 apps/mobile/src/features/decks/components/deck-list-item.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -5059,7 +5059,7 @@ Home shows a compact review block: hero dueCount, 3-col stats, primary Start rev
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 docs/smoke/lesson-queue.md
@@ -5085,7 +5085,7 @@ docs/domain/lesson-flow.md
 docs/architecture.md
 docs/smoke/lesson-queue.md
 docs/smoke/learning-steps.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -5175,7 +5175,7 @@ Profile is grouped settings: identity card, nav rows, preferences, reminders, se
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -5206,7 +5206,7 @@ apps/mobile/src/i18n/resources/en/settings.ts
 apps/mobile/src/i18n/resources/uk/settings.ts
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -5293,7 +5293,7 @@ My Groups matches the compact list mock. Local seed has several groups with mixe
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 docs/domain/permissions.md
@@ -5331,7 +5331,7 @@ apps/mobile/src/i18n/resources/en/groups.ts
 apps/mobile/src/i18n/resources/uk/groups.ts
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -5422,7 +5422,7 @@ Group Invitations is a utilitarian pending list. Accept/Decline remove the card.
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 docs/domain/permissions.md
@@ -5454,7 +5454,7 @@ apps/mobile/src/i18n/resources/en/groups.ts
 apps/mobile/src/i18n/resources/uk/groups.ts
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -5543,7 +5543,7 @@ Create Group is a narrow bordered form: primary Create, text Cancel, limits, loa
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/security/security-checklist.md
 ```
@@ -5566,7 +5566,7 @@ apps/api/src/modules/groups/application/use-cases/create-group.use-case.ts
 apps/api/src/modules/groups/application/use-cases/create-group.use-case.spec.ts
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -5654,7 +5654,7 @@ Group list, invitations, create, detail, and share-deck stay inside `(tabs)` so 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/tasks/done/25-bugfixes.md
 ```
@@ -5677,7 +5677,7 @@ apps/mobile/app/_layout.tsx
 apps/mobile/app/(tabs)/_layout.tsx
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -5763,7 +5763,7 @@ Compact Edit Card: main fields in a card, Generate next to Example, AI suggestio
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 docs/domain/permissions.md
@@ -5787,7 +5787,7 @@ apps/mobile/src/i18n/resources/uk/decks.ts
 docs/domain/lesson-flow.md
 docs/architecture.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -5881,7 +5881,7 @@ Profile Groups and Invitations rows stay visible but do not navigate.
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 ```
 
@@ -5892,7 +5892,7 @@ apps/mobile/src/features/settings/components/settings-nav-row.tsx
 apps/mobile/src/features/profile/screens/profile-screen.tsx
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -5976,7 +5976,7 @@ Compact Edit Deck card like Edit Card: textarea description, Languages as a Targ
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 ```
 
@@ -5991,7 +5991,7 @@ apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -6082,7 +6082,7 @@ Languages block shows Target and Source side by side with no arrow.
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 ```
 
@@ -6092,7 +6092,7 @@ docs/domain/lesson-flow.md
 apps/mobile/src/features/decks/components/deck-form.tsx
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -6175,7 +6175,7 @@ Cards is a section header with a count and + Add card on the right. Empty state 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 ```
 
@@ -6189,7 +6189,7 @@ apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -6274,7 +6274,7 @@ To learn / Practiced / Learned on Deck Detail use the same icons as My Decks. Wo
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 ```
 
@@ -6285,7 +6285,7 @@ apps/mobile/src/features/decks/utils/learning-group-style.ts
 apps/mobile/src/features/decks/components/learning-group-stats-row.tsx
 apps/mobile/src/features/lessons/components/deck-learning-stats-card.tsx
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -6368,7 +6368,7 @@ Centered flashcard; tap/click flips (~200ms). After reveal, swipe right = Know, 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 ```
@@ -6384,7 +6384,7 @@ apps/mobile/src/i18n/resources/uk/lessons.ts
 docs/domain/lesson-flow.md
 docs/architecture.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -6473,7 +6473,7 @@ Show only the prompt side, then only the answer side, using promptDirection as q
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 ```
@@ -6493,7 +6493,7 @@ apps/mobile/src/ui/utils/responsive.ts
 docs/domain/lesson-flow.md
 docs/architecture.md
 docs/release/mvp-smoke-tests.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -6582,7 +6582,7 @@ Card-row badges use 📖 / ✏️ / ✅ and Learn / Practiced / Learned. Do not 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 ```
 
@@ -6593,7 +6593,7 @@ apps/mobile/src/features/decks/utils/learning-group-style.ts
 apps/mobile/src/i18n/resources/en/decks.ts
 apps/mobile/src/i18n/resources/uk/decks.ts
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -6676,7 +6676,7 @@ Create, delete, and CSV import refetch DeckCards, DeckLearningStats, and HomeLea
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 ```
@@ -6691,7 +6691,7 @@ apps/mobile/src/features/decks/screens/deck-detail-screen.tsx
 apps/mobile/src/features/csv-import/screens/csv-import-screen.tsx
 docs/domain/lesson-flow.md
 docs/architecture.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -6777,7 +6777,7 @@ Narrow centered completion with an icon, muted date, primary Start another revie
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 ```
@@ -6795,7 +6795,7 @@ docs/domain/lesson-flow.md
 docs/architecture.md
 docs/release/mvp-smoke-tests.md
 docs/smoke/lesson-queue.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -6881,7 +6881,7 @@ Move lesson routes under `(tabs)/lessons` as a hidden tab. Completion shows the 
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 ```
 
@@ -6896,7 +6896,7 @@ apps/mobile/app/(tabs)/lessons/[sessionId].tsx
 apps/mobile/app/(tabs)/lessons/[sessionId]/summary.tsx
 apps/mobile/src/features/lessons/hooks/use-lessons-tab-bar.ts
 docs/domain/lesson-flow.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -6980,7 +6980,7 @@ After delete deck, refetch HomeLearningProgress (and related deck stats) and evi
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 ```
@@ -6991,7 +6991,7 @@ docs/architecture.md
 apps/mobile/src/features/decks/components/deck-actions.tsx
 docs/domain/lesson-flow.md
 docs/architecture.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -7074,7 +7074,7 @@ After complete or abandon review, refetch Home and deck learning stats and evict
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 ```
@@ -7086,7 +7086,7 @@ apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
 apps/mobile/src/features/decks/utils/card-mutation-cache.ts
 docs/domain/lesson-flow.md
 docs/architecture.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements
@@ -7171,7 +7171,7 @@ Add expo-speech on iOS, Android, and Web. Auto-speak and show 🔊 only when the
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/architecture.md
 docs/algorithms/learning-steps.md
@@ -7188,7 +7188,7 @@ apps/mobile/src/i18n/resources/en/lessons.ts
 apps/mobile/src/i18n/resources/uk/lessons.ts
 docs/domain/lesson-flow.md
 docs/architecture.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Files to Create
@@ -7285,7 +7285,7 @@ When startLesson returns no cards, show a narrow centered empty state: checkmark
 ## Related Documents
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 ```
 
@@ -7298,7 +7298,7 @@ apps/mobile/src/i18n/resources/uk/lessons.ts
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
 docs/smoke/lesson-queue.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 ## Requirements

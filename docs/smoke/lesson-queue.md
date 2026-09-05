@@ -6,7 +6,7 @@ Related:
 
 ```txt
 docs/tasks/done/29-lesson-queue.md
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 docs/domain/lesson-flow.md
 docs/release/mvp-smoke-tests.md
 ```

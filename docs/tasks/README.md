@@ -382,12 +382,13 @@ done/26-learning-steps.md
 done/27-learning-steps-bugfixes.md
 done/28-requirements-ambiguities.md
 done/29-lesson-queue.md
+done/30-sot-discrepancies.md
 ```
 
 Active epics:
 
 ```txt
-30-sot-discrepancies.md
+None
 ```
 
 ---
@@ -879,7 +880,7 @@ Replace shared lessonSize caps with Home unique-card snapshot and Deck live read
 File:
 
 ```txt
-docs/tasks/30-sot-discrepancies.md
+docs/tasks/done/30-sot-discrepancies.md
 ```
 
 Purpose:
