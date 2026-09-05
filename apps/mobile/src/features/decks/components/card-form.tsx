@@ -22,6 +22,12 @@ import { buttonA11yProps, destructiveButtonA11yProps } from '@/ui/utils/accessib
 
 const CARD_FORM_MAX_WIDTH = 640
 
+export type FrontPasteDirtyFields = {
+  back: boolean
+  example: boolean
+  notes: boolean
+}
+
 type CardFormProps = {
   bulkFill?: { back: string; front: string; key: number } | null
   bulkFrontMessages?: string[] | null
@@ -33,9 +39,14 @@ type CardFormProps = {
   onCancel?: () => void
   onClearError?: () => void
   onDelete?: () => Promise<boolean>
-  onFrontPaste?: (text: string) => Promise<'apply-text' | 'handled'>
+  onDiscardQueue?: () => void
+  onFrontPaste?: (
+    text: string,
+    dirtyFields: FrontPasteDirtyFields,
+  ) => Promise<'apply-text' | 'handled'>
   onSkip?: () => Promise<'next' | 'empty'>
   onSubmit: (values: CardFormValues) => Promise<boolean>
+  queueLength?: number
   resetOnSuccess?: boolean
   showDelete?: boolean
   showSkip?: boolean
@@ -55,9 +66,11 @@ export function CardForm({
   onCancel,
   onClearError,
   onDelete,
+  onDiscardQueue,
   onFrontPaste,
   onSkip,
   onSubmit,
+  queueLength = 0,
   resetOnSuccess = false,
   showDelete = false,
   showSkip = false,
@@ -73,7 +86,7 @@ export function CardForm({
 
   const {
     control,
-    formState: { errors, isDirty },
+    formState: { dirtyFields, errors, isDirty },
     handleSubmit,
     reset,
     setValue,
@@ -112,10 +125,27 @@ export function CardForm({
     !isSubmitting &&
     !(bulkFrontMessages && bulkFrontMessages.length > 0)
 
+  const protectedDirtyFields: FrontPasteDirtyFields = {
+    back: Boolean(dirtyFields.back),
+    example: Boolean(dirtyFields.example),
+    notes: Boolean(dirtyFields.notes),
+  }
+  const protectedDirtyFieldsRef = useRef(protectedDirtyFields)
+  protectedDirtyFieldsRef.current = protectedDirtyFields
+
+  const hasQueue = queueLength > 0
+  const leaveTitle = hasQueue
+    ? t('decks.createCard.leaveQueueTitle')
+    : t('decks.cardForm.unsavedTitle')
+  const leaveMessage = hasQueue
+    ? t('decks.createCard.leaveQueueMessage', { count: queueLength })
+    : t('decks.cardForm.unsavedMessage')
+
   const { allowLeave, resetLeaveGuard } = useUnsavedChangesGuard(
-    isDirty,
-    t('decks.cardForm.unsavedTitle'),
-    t('decks.cardForm.unsavedMessage'),
+    isDirty || hasQueue,
+    leaveTitle,
+    leaveMessage,
+    hasQueue ? onDiscardQueue : undefined,
   )
 
   const handleFormSubmit = handleSubmit(async (values) => {
@@ -159,15 +189,25 @@ export function CardForm({
       return
     }
 
+    const leave = () => {
+      allowLeave()
+      if (hasQueue) {
+        onDiscardQueue?.()
+      }
+      onCancel()
+    }
+
+    if (hasQueue) {
+      confirmAction(leaveTitle, leaveMessage, leave)
+      return
+    }
+
     if (!isDirty) {
       onCancel()
       return
     }
 
-    confirmAction(t('decks.cardForm.unsavedTitle'), t('decks.cardForm.unsavedMessage'), () => {
-      allowLeave()
-      onCancel()
-    })
+    confirmAction(t('decks.cardForm.unsavedTitle'), t('decks.cardForm.unsavedMessage'), leave)
   }
 
   const handleSkip = () => {
@@ -264,7 +304,7 @@ export function CardForm({
 
                   if (onFrontPaste && isLikelyFrontPaste(value, text)) {
                     skipFrontChangeUntilRef.current = Date.now() + 50
-                    void onFrontPaste(text).then((outcome) => {
+                    void onFrontPaste(text, protectedDirtyFieldsRef.current).then((outcome) => {
                       if (outcome === 'apply-text') {
                         onChange(text)
                       } else {
@@ -288,11 +328,13 @@ export function CardForm({
                         event.preventDefault()
                         skipFrontChangeUntilRef.current = Date.now() + 50
                         clearError()
-                        void onFrontPaste(pasted).then((outcome) => {
-                          if (outcome === 'apply-text') {
-                            onChange(pasted)
-                          }
-                        })
+                        void onFrontPaste(pasted, protectedDirtyFieldsRef.current).then(
+                          (outcome) => {
+                            if (outcome === 'apply-text') {
+                              onChange(pasted)
+                            }
+                          },
+                        )
                       }
                     : undefined
                 }

@@ -34,3 +34,22 @@ export function confirmAction(title: string, message: string, onConfirm: () => v
     { onPress: onConfirm, text: i18n.t('common.confirm') },
   ])
 }
+
+export function confirmActionAsync(title: string, message: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    if (Platform.OS === 'web') {
+      resolve(globalThis.confirm(`${title}\n\n${message}`))
+      return
+    }
+
+    Alert.alert(
+      title,
+      message,
+      [
+        { onPress: () => resolve(false), style: 'cancel', text: i18n.t('common.cancel') },
+        { onPress: () => resolve(true), text: i18n.t('common.confirm') },
+      ],
+      { cancelable: true, onDismiss: () => resolve(false) },
+    )
+  })
+}

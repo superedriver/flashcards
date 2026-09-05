@@ -98,6 +98,12 @@ export const decksEn = {
     bulkDuplicateOtherDeck: 'Line {{line}}: This card is already in deck {{title}}.',
     bulkDuplicateInBatch: 'Line {{line}}: This card is duplicated earlier in the paste.',
     skip: 'Skip',
+    replaceQueueTitle: 'Replace the card queue?',
+    replaceQueueMessage: 'This will discard the {{count}} unsaved cards currently in the queue.',
+    dirtyPasteTitle: 'Clear Back, Example, and Notes?',
+    dirtyPasteMessage: 'Starting this list will clear Back, Example, and Notes.',
+    leaveQueueTitle: 'Leave with unsaved cards?',
+    leaveQueueMessage: '{{count}} unsaved cards in the queue. Leave and lose them?',
   },
   editCard: {
     title: 'Edit Card',

@@ -10,17 +10,20 @@ type NavigationLeaveEvent = {
 }
 
 export function useUnsavedChangesGuard(
-  isDirty: boolean,
+  shouldBlock: boolean,
   title: string,
   message: string,
+  onLeaveConfirmed?: () => void,
 ): {
   allowLeave: () => void
   resetLeaveGuard: () => void
 } {
   const navigation = useNavigation()
   const skipRef = useRef(false)
-  const isDirtyRef = useRef(isDirty)
-  isDirtyRef.current = isDirty
+  const shouldBlockRef = useRef(shouldBlock)
+  const onLeaveConfirmedRef = useRef(onLeaveConfirmed)
+  shouldBlockRef.current = shouldBlock
+  onLeaveConfirmedRef.current = onLeaveConfirmed
 
   const allowLeave = () => {
     skipRef.current = true
@@ -32,13 +35,14 @@ export function useUnsavedChangesGuard(
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', (event: NavigationLeaveEvent) => {
-      if (skipRef.current || !isDirtyRef.current) {
+      if (skipRef.current || !shouldBlockRef.current) {
         return
       }
 
       event.preventDefault()
       confirmAction(title, message, () => {
         skipRef.current = true
+        onLeaveConfirmedRef.current?.()
         navigation.dispatch(event.data.action as never)
       })
     })
@@ -52,7 +56,7 @@ export function useUnsavedChangesGuard(
     }
 
     const onBeforeUnload = (event: BeforeUnloadEvent) => {
-      if (skipRef.current || !isDirtyRef.current) {
+      if (skipRef.current || !shouldBlockRef.current) {
         return
       }
 

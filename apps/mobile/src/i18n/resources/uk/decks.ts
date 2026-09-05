@@ -99,6 +99,12 @@ export const decksUk = {
     bulkDuplicateOtherDeck: 'Рядок {{line}}: ця картка вже є в колоді {{title}}.',
     bulkDuplicateInBatch: 'Рядок {{line}}: ця картка дублюється раніше у вставці.',
     skip: 'Пропустити',
+    replaceQueueTitle: 'Замінити чергу карток?',
+    replaceQueueMessage: 'Незбережені картки в черзі ({{count}}) буде втрачено.',
+    dirtyPasteTitle: 'Очистити зворотний бік, приклад і нотатки?',
+    dirtyPasteMessage: 'Новий список очистить зворотний бік, приклад і нотатки.',
+    leaveQueueTitle: 'Вийти з незбереженими картками?',
+    leaveQueueMessage: 'У черзі {{count}} незбережених карток. Вийти і втратити їх?',
   },
   editCard: {
     title: 'Редагувати картку',

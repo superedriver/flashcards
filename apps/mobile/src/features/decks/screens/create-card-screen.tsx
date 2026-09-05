@@ -9,6 +9,7 @@ import {
   CARD_MUTATION_REFETCH_QUERIES,
   evictCardCountCache,
 } from '@/features/decks/utils/card-mutation-cache'
+import { confirmActionAsync } from '@/features/decks/utils/confirm-destructive'
 import {
   getGraphqlAppCode,
   getGraphqlErrorMessage,
@@ -104,6 +105,13 @@ export function CreateCardScreen() {
             setErrorMessage(null)
             setBulkFrontMessages(null)
           }}
+          onDiscardQueue={() => {
+            bulkQueue.clear()
+            setBulkFill(null)
+            setBulkFrontMessages(null)
+            setErrorMessage(null)
+          }}
+          queueLength={bulkQueue.length}
           onSkip={async () => {
             const nextPair = bulkQueue.skip()
 
@@ -124,11 +132,7 @@ export function CreateCardScreen() {
             setErrorMessage(null)
             return 'next'
           }}
-          onFrontPaste={async (text) => {
-            if (bulkQueue.length > 0) {
-              return 'handled'
-            }
-
+          onFrontPaste={async (text, dirtySides) => {
             const parsed = parseBulkCardLines(text)
 
             if (parsed.formatErrors.length > 0) {
@@ -176,6 +180,26 @@ export function CreateCardScreen() {
               if (hits.length > 0) {
                 setBulkFrontMessages(hits.map((hit) => formatDuplicateHit(hit, parsed.validPairs)))
                 return 'handled'
+              }
+
+              if (bulkQueue.length > 0) {
+                const shouldReplace = await confirmActionAsync(
+                  t('decks.createCard.replaceQueueTitle'),
+                  t('decks.createCard.replaceQueueMessage', { count: bulkQueue.length }),
+                )
+
+                if (!shouldReplace) {
+                  return 'handled'
+                }
+              } else if (dirtySides.back || dirtySides.example || dirtySides.notes) {
+                const shouldClear = await confirmActionAsync(
+                  t('decks.createCard.dirtyPasteTitle'),
+                  t('decks.createCard.dirtyPasteMessage'),
+                )
+
+                if (!shouldClear) {
+                  return 'handled'
+                }
               }
 
               const firstPair = parsed.validPairs[0]
