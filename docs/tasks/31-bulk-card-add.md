@@ -213,7 +213,7 @@ All new UI strings en and uk, added in the task that introduces them.
 ## Epic Summary
 
 ```md
-- [ ] TASK-31.01 Add live bulk-card-add source of truth
+- [x] TASK-31.01 Add live bulk-card-add source of truth
 - [ ] TASK-31.02 Add bulk Front,Back parser and unit tests
 - [ ] TASK-31.03 Add owner duplicate lookup on the card repository
 - [ ] TASK-31.04 Add CheckCardDuplicatesUseCase
@@ -234,7 +234,7 @@ All new UI strings en and uk, added in the task that introduces them.
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

@@ -748,7 +748,28 @@ AI examples must not be generated during CSV import.
 
 ---
 
-## 16. AI Examples
+## 16. Bulk Card Add via Front Paste
+
+Live source of truth:
+
+```txt
+docs/domain/bulk-card-add.md
+```
+
+Bulk paste is not CSV import. CSV preview/confirm, headers, example/notes, and duplicate-in-target-deck rules in section 15 stay unchanged.
+
+```txt
+Owner pastes Front,Back lines into Add Card Front (not Edit Card, not typing).
+2–100 valid rows and no format errors can start an in-memory queue.
+createCard rejects duplicate Front+Back pairs across the owner’s live cards
+  in live owned decks (soft-deleted ignored).
+Successful createCard stays on Add Card with an empty form.
+checkCardDuplicates is the paste/pre-submit preview; backend remains SoT.
+```
+
+---
+
+## 17. AI Examples
 
 AI examples are generated only during manual card creation or editing.
 
@@ -786,7 +807,7 @@ Support future usage limits and premium restrictions.
 
 ---
 
-## 17. Groups and Sharing
+## 18. Groups and Sharing
 
 A user can create groups.
 
@@ -836,7 +857,7 @@ Group members cannot edit the original deck unless they own it.
 
 ---
 
-## 18. Notifications
+## 19. Notifications
 
 Notifications are disabled by default.
 
@@ -869,7 +890,7 @@ Do not implement Web Push in MVP.
 
 ---
 
-## 19. Admin Panel
+## 20. Admin Panel
 
 MVP admin panel can be implemented inside Expo Web.
 
@@ -902,7 +923,7 @@ RolesGuard(ADMIN)
 
 ---
 
-## 20. Analytics
+## 21. Analytics
 
 MVP analytics are stored internally in PostgreSQL.
 
@@ -945,7 +966,7 @@ BigQuery
 
 ---
 
-## 21. Security Requirements
+## 22. Security Requirements
 
 MVP security checklist:
 
@@ -992,7 +1013,7 @@ Web Application Firewall
 
 ---
 
-## 22. Apollo Client Notes
+## 23. Apollo Client Notes
 
 The frontend uses Apollo Client.
 
@@ -1036,7 +1057,7 @@ StudySession
 
 ---
 
-## 23. MVP Scope
+## 24. MVP Scope
 
 MVP includes:
 
@@ -1062,6 +1083,7 @@ Basic stats
 Text-to-speech in lessons
 AI example generation for manual cards
 CSV import with preview/confirm
+Bulk Front paste on Add Card
 Groups
 Group invitations by email
 Deck sharing with groups
@@ -1091,7 +1113,7 @@ Complex moderation workflow
 
 ---
 
-## 24. Development Order
+## 25. Development Order
 
 Recommended development order:
 
@@ -1120,7 +1142,7 @@ Recommended development order:
 
 ---
 
-## 25. First Milestone
+## 26. First Milestone
 
 The first milestone should be:
 

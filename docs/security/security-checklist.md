@@ -314,6 +314,7 @@ createDeck
 updateDeck
 deleteDeck
 createCard
+checkCardDuplicates
 updateCard
 deleteCard
 startLesson
@@ -430,6 +431,23 @@ CSV import must not:
 - execute CSV contents
 - allow formula injection in exported files if export is added later
 ```
+
+## Bulk Card Add Security
+
+checkCardDuplicates must:
+
+```txt
+- require authentication
+- reject blocked users
+- require canCreateCard on the target deck (owner)
+- accept at most 100 pairs
+- search only the caller’s live owned decks
+- not leak other users’ cards or titles
+```
+
+This operation must not create cards. Duplicate enforcement on save remains createCard.
+
+CSV import security in the previous section is unchanged.
 
 ## AI Security
 
