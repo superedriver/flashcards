@@ -84,6 +84,8 @@ export const decksUk = {
     submit: 'Створити картку',
     submitting: 'Створення картки...',
     error: 'Не вдалося створити картку. Спробуйте ще раз.',
+    duplicateThisDeck: 'Ця картка вже є в цій колоді.',
+    duplicateOtherDeck: 'Ця картка вже є в колоді {{title}}.',
   },
   editCard: {
     title: 'Редагувати картку',

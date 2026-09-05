@@ -1,0 +1,9 @@
+query CheckCardDuplicates($input: CheckCardDuplicatesInput!) {
+  checkCardDuplicates(input: $input) {
+    hits {
+      index
+      kind
+      deckTitle
+    }
+  }
+}

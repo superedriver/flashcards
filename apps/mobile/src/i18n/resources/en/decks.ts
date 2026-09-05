@@ -84,6 +84,8 @@ export const decksEn = {
     submit: 'Create Card',
     submitting: 'Creating card...',
     error: 'Could not create card. Please try again.',
+    duplicateThisDeck: 'This card is already in this deck.',
+    duplicateOtherDeck: 'This card is already in deck {{title}}.',
   },
   editCard: {
     title: 'Edit Card',

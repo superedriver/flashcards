@@ -94,6 +94,12 @@ export type Card = {
   updatedAt: Scalars['DateTime']['output']
 }
 
+export enum CardDuplicateKind {
+  CurrentDeck = 'CURRENT_DECK',
+  InBatch = 'IN_BATCH',
+  OtherDeck = 'OTHER_DECK',
+}
+
 export type CardReviewState = {
   __typename?: 'CardReviewState'
   dueAt: Scalars['DateTime']['output']
@@ -103,6 +109,28 @@ export type CardReviewState = {
   longReviewSuccessCount: Scalars['Int']['output']
 }
 
+export type CheckCardDuplicateHit = {
+  __typename?: 'CheckCardDuplicateHit'
+  deckTitle?: Maybe<Scalars['String']['output']>
+  index: Scalars['Int']['output']
+  kind: CardDuplicateKind
+}
+
+export type CheckCardDuplicatesInput = {
+  deckId: Scalars['String']['input']
+  pairs: Array<CheckCardDuplicatesPairInput>
+}
+
+export type CheckCardDuplicatesPairInput = {
+  back: Scalars['String']['input']
+  front: Scalars['String']['input']
+}
+
+export type CheckCardDuplicatesPayload = {
+  __typename?: 'CheckCardDuplicatesPayload'
+  hits: Array<CheckCardDuplicateHit>
+}
+
 export type CompleteLessonInput = {
   sessionId: Scalars['String']['input']
 }
@@ -110,7 +138,7 @@ export type CompleteLessonInput = {
 export type CompleteLessonPayload = {
   __typename?: 'CompleteLessonPayload'
   completedAt: Scalars['DateTime']['output']
-  deckId: Scalars['String']['output']
+  deckId?: Maybe<Scalars['String']['output']>
   dontKnowCount: Scalars['Int']['output']
   knownCount: Scalars['Int']['output']
   reviewedCards: Scalars['Int']['output']
@@ -816,6 +844,7 @@ export type Query = {
   adminSearchUsers: AdminUserSearchResult
   /** GraphQL transport health check. */
   apiStatus: Scalars['String']['output']
+  checkCardDuplicates: CheckCardDuplicatesPayload
   deck: Deck
   deckCards: Array<Card>
   deckLearningStats: DeckLearningStats
@@ -839,6 +868,10 @@ export type Query = {
 
 export type QueryAdminSearchUsersArgs = {
   input?: InputMaybe<AdminSearchUsersInput>
+}
+
+export type QueryCheckCardDuplicatesArgs = {
+  input: CheckCardDuplicatesInput
 }
 
 export type QueryDeckArgs = {
@@ -1545,6 +1578,23 @@ export type ConfirmCsvImportMutation = {
   }
 }
 
+export type CheckCardDuplicatesQueryVariables = Exact<{
+  input: CheckCardDuplicatesInput
+}>
+
+export type CheckCardDuplicatesQuery = {
+  __typename?: 'Query'
+  checkCardDuplicates: {
+    __typename?: 'CheckCardDuplicatesPayload'
+    hits: Array<{
+      __typename?: 'CheckCardDuplicateHit'
+      index: number
+      kind: CardDuplicateKind
+      deckTitle?: string | null
+    }>
+  }
+}
+
 export type MyDecksQueryVariables = Exact<{ [key: string]: never }>
 
 export type MyDecksQuery = {
@@ -1855,11 +1905,7 @@ export type MyGroupsQuery = {
     updatedAt: any
     myRole?: GroupRole | null
     memberCount?: number | null
-    membersPreview: Array<{
-      __typename?: 'GroupMemberPreview'
-      userId: string
-      initials: string
-    }>
+    membersPreview: Array<{ __typename?: 'GroupMemberPreview'; userId: string; initials: string }>
   }>
 }
 
@@ -2210,7 +2256,7 @@ export type CompleteLessonMutation = {
   completeLesson: {
     __typename?: 'CompleteLessonPayload'
     sessionId: string
-    deckId: string
+    deckId?: string | null
     totalCards: number
     reviewedCards: number
     knownCount: number
@@ -2225,10 +2271,7 @@ export type AbandonLessonMutationVariables = Exact<{
 
 export type AbandonLessonMutation = {
   __typename?: 'Mutation'
-  abandonLesson: {
-    __typename?: 'AbandonLessonPayload'
-    success: boolean
-  }
+  abandonLesson: { __typename?: 'AbandonLessonPayload'; success: boolean }
 }
 
 export type DeckLearningStatsQueryVariables = Exact<{
@@ -4087,6 +4130,97 @@ export type ConfirmCsvImportMutationResult = Apollo.MutationResult<ConfirmCsvImp
 export type ConfirmCsvImportMutationOptions = Apollo.BaseMutationOptions<
   ConfirmCsvImportMutation,
   ConfirmCsvImportMutationVariables
+>
+export const CheckCardDuplicatesDocument = gql`
+  query CheckCardDuplicates($input: CheckCardDuplicatesInput!) {
+    checkCardDuplicates(input: $input) {
+      hits {
+        index
+        kind
+        deckTitle
+      }
+    }
+  }
+`
+
+/**
+ * __useCheckCardDuplicatesQuery__
+ *
+ * To run a query within a React component, call `useCheckCardDuplicatesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckCardDuplicatesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckCardDuplicatesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCheckCardDuplicatesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    CheckCardDuplicatesQuery,
+    CheckCardDuplicatesQueryVariables
+  > &
+    ({ variables: CheckCardDuplicatesQueryVariables; skip?: boolean } | { skip: boolean }),
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<CheckCardDuplicatesQuery, CheckCardDuplicatesQueryVariables>(
+    CheckCardDuplicatesDocument,
+    options,
+  )
+}
+export function useCheckCardDuplicatesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CheckCardDuplicatesQuery,
+    CheckCardDuplicatesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<CheckCardDuplicatesQuery, CheckCardDuplicatesQueryVariables>(
+    CheckCardDuplicatesDocument,
+    options,
+  )
+}
+// @ts-ignore
+export function useCheckCardDuplicatesSuspenseQuery(
+  baseOptions?: Apollo.SuspenseQueryHookOptions<
+    CheckCardDuplicatesQuery,
+    CheckCardDuplicatesQueryVariables
+  >,
+): Apollo.UseSuspenseQueryResult<CheckCardDuplicatesQuery, CheckCardDuplicatesQueryVariables>
+export function useCheckCardDuplicatesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<CheckCardDuplicatesQuery, CheckCardDuplicatesQueryVariables>,
+): Apollo.UseSuspenseQueryResult<
+  CheckCardDuplicatesQuery | undefined,
+  CheckCardDuplicatesQueryVariables
+>
+export function useCheckCardDuplicatesSuspenseQuery(
+  baseOptions?:
+    | Apollo.SkipToken
+    | Apollo.SuspenseQueryHookOptions<CheckCardDuplicatesQuery, CheckCardDuplicatesQueryVariables>,
+) {
+  const options =
+    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
+  return Apollo.useSuspenseQuery<CheckCardDuplicatesQuery, CheckCardDuplicatesQueryVariables>(
+    CheckCardDuplicatesDocument,
+    options,
+  )
+}
+export type CheckCardDuplicatesQueryHookResult = ReturnType<typeof useCheckCardDuplicatesQuery>
+export type CheckCardDuplicatesLazyQueryHookResult = ReturnType<
+  typeof useCheckCardDuplicatesLazyQuery
+>
+export type CheckCardDuplicatesSuspenseQueryHookResult = ReturnType<
+  typeof useCheckCardDuplicatesSuspenseQuery
+>
+export type CheckCardDuplicatesQueryResult = Apollo.QueryResult<
+  CheckCardDuplicatesQuery,
+  CheckCardDuplicatesQueryVariables
 >
 export const MyDecksDocument = gql`
   query MyDecks {

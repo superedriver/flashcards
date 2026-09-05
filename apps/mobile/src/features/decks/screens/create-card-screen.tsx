@@ -4,18 +4,27 @@ import { useTranslation } from 'react-i18next'
 import { View } from 'react-native'
 
 import { CardForm } from '@/features/decks/components/card-form'
-import { getGraphqlErrorMessage, optionalText } from '@/features/decks/utils/deck-form-utils'
 import {
   CARD_MUTATION_REFETCH_QUERIES,
   evictCardCountCache,
 } from '@/features/decks/utils/card-mutation-cache'
-import { useCreateCardMutation } from '@/graphql/generated'
+import {
+  getGraphqlAppCode,
+  getGraphqlErrorMessage,
+  optionalText,
+} from '@/features/decks/utils/deck-form-utils'
+import {
+  CardDuplicateKind,
+  useCheckCardDuplicatesLazyQuery,
+  useCreateCardMutation,
+} from '@/graphql/generated'
 import { PageTitle, Screen } from '@/ui/components'
 
 export function CreateCardScreen() {
   const { t } = useTranslation()
   const router = useRouter()
   const { deckId } = useLocalSearchParams<{ deckId: string }>()
+  const [checkCardDuplicates, { loading: isCheckingDuplicates }] = useCheckCardDuplicatesLazyQuery()
   const [createCard, { loading }] = useCreateCardMutation({
     awaitRefetchQueries: true,
     refetchQueries: [...CARD_MUTATION_REFETCH_QUERIES],
@@ -29,7 +38,7 @@ export function CreateCardScreen() {
         <PageTitle title={t('decks.createCard.title')} />
         <CardForm
           errorMessage={errorMessage}
-          isSubmitting={loading}
+          isSubmitting={loading || isCheckingDuplicates}
           resetOnSuccess
           submitLabel={t('decks.createCard.submit')}
           submittingLabel={t('decks.createCard.submitting')}
@@ -43,6 +52,34 @@ export function CreateCardScreen() {
             setErrorMessage(null)
 
             try {
+              const duplicateResult = await checkCardDuplicates({
+                fetchPolicy: 'network-only',
+                variables: {
+                  input: {
+                    deckId,
+                    pairs: [{ back: values.back, front: values.front }],
+                  },
+                },
+              })
+
+              if (duplicateResult.error) {
+                setErrorMessage(
+                  getGraphqlErrorMessage(duplicateResult.error, t('decks.createCard.error')),
+                )
+                return false
+              }
+
+              const hit = duplicateResult.data?.checkCardDuplicates.hits[0]
+
+              if (hit) {
+                setErrorMessage(
+                  hit.kind === CardDuplicateKind.OtherDeck && hit.deckTitle
+                    ? t('decks.createCard.duplicateOtherDeck', { title: hit.deckTitle })
+                    : t('decks.createCard.duplicateThisDeck'),
+                )
+                return false
+              }
+
               const result = await createCard({
                 variables: {
                   input: {
@@ -62,7 +99,11 @@ export function CreateCardScreen() {
 
               return true
             } catch (error) {
-              setErrorMessage(getGraphqlErrorMessage(error, t('decks.createCard.error')))
+              setErrorMessage(
+                getGraphqlAppCode(error) === 'CARD_DUPLICATE'
+                  ? t('decks.createCard.duplicateThisDeck')
+                  : getGraphqlErrorMessage(error, t('decks.createCard.error')),
+              )
               return false
             }
           }}
