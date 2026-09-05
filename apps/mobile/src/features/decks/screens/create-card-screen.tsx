@@ -30,6 +30,7 @@ export function CreateCardScreen() {
         <CardForm
           errorMessage={errorMessage}
           isSubmitting={loading}
+          resetOnSuccess
           submitLabel={t('decks.createCard.submit')}
           submittingLabel={t('decks.createCard.submitting')}
           onCancel={() => router.back()}
@@ -59,7 +60,6 @@ export function CreateCardScreen() {
                 return false
               }
 
-              router.replace(`/decks/${deckId}`)
               return true
             } catch (error) {
               setErrorMessage(getGraphqlErrorMessage(error, t('decks.createCard.error')))

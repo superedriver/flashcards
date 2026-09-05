@@ -132,7 +132,8 @@ Create error: do not advance, do not shrink N, keep fields, keep the queue.
 Bulk or not:
 
 ```txt
-Stay on Add Card with a cleared form.
+Stay on Add Card with a cleared form (Front, Back, Example, Notes).
+Dirty/unsaved guard resets with the empty form.
 Do not navigate to deck detail.
 ```
 

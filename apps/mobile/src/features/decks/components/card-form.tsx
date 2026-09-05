@@ -28,6 +28,7 @@ type CardFormProps = {
   onClearError?: () => void
   onDelete?: () => Promise<boolean>
   onSubmit: (values: CardFormValues) => Promise<boolean>
+  resetOnSuccess?: boolean
   showDelete?: boolean
   submitLabel: string
   submittingLabel?: string
@@ -43,6 +44,7 @@ export function CardForm({
   onClearError,
   onDelete,
   onSubmit,
+  resetOnSuccess = false,
   showDelete = false,
   submitLabel,
   submittingLabel,
@@ -56,6 +58,7 @@ export function CardForm({
     control,
     formState: { errors, isDirty },
     handleSubmit,
+    reset,
     setValue,
   } = useForm<CardFormValues>({
     defaultValues: defaultValues ?? {
@@ -98,6 +101,17 @@ export function CardForm({
       const didSave = await onSubmit(values)
 
       if (!didSave) {
+        resetLeaveGuard()
+        return
+      }
+
+      if (resetOnSuccess) {
+        reset({
+          back: '',
+          example: '',
+          front: '',
+          notes: '',
+        })
         resetLeaveGuard()
       }
     } catch {
