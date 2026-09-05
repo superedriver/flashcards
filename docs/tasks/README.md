@@ -388,7 +388,7 @@ done/30-sot-discrepancies.md
 Active epics:
 
 ```txt
-None
+31-bulk-card-add.md
 ```
 
 ---
@@ -887,6 +887,22 @@ Purpose:
 
 ```txt
 Fix mismatches between live sources of truth and implementation; standing register for later drift (starting with repeat gap frozen at display vs after answer).
+```
+
+---
+
+### 31 Bulk Card Add via Front Paste
+
+File:
+
+```txt
+docs/tasks/31-bulk-card-add.md
+```
+
+Purpose:
+
+```txt
+Paste Front,Back lines into Add Card Front; in-memory queue; backend pair duplicates across owned live decks.
 ```
 
 ---
