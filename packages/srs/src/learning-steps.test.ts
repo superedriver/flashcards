@@ -3,6 +3,7 @@ import {
   calculateNextLearningState,
   learningGroupForStep,
   resolvePromptDirection,
+  resolveReviewPresentationMode,
 } from './learning-steps'
 
 const reviewedAt = new Date('2026-01-01T00:00:00.000Z')
@@ -163,5 +164,53 @@ describe('resolvePromptDirection', () => {
 
   it.each([3, 4, 8])('random steps use randomBit 1 as BACK_TO_FRONT (step %s)', (learningStep) => {
     expect(resolvePromptDirection({ learningStep, randomBit: 1 })).toBe('BACK_TO_FRONT')
+  })
+})
+
+describe('resolveReviewPresentationMode', () => {
+  it.each([0, 1, 2])('steps 0–2 are TARGET_TEXT_AUDIO (step %s)', (learningStep) => {
+    expect(resolveReviewPresentationMode({ learningStep, randomBit: 0 })).toBe('TARGET_TEXT_AUDIO')
+    expect(resolveReviewPresentationMode({ learningStep, randomBit: 1 })).toBe('TARGET_TEXT_AUDIO')
+  })
+
+  it.each([3, 4])('steps 3–4 use randomBit 0 as TARGET_TEXT_AUDIO (step %s)', (learningStep) => {
+    expect(resolveReviewPresentationMode({ learningStep, randomBit: 0 })).toBe('TARGET_TEXT_AUDIO')
+  })
+
+  it.each([3, 4])('steps 3–4 use randomBit 1 as SOURCE_TEXT (step %s)', (learningStep) => {
+    expect(resolveReviewPresentationMode({ learningStep, randomBit: 1 })).toBe('SOURCE_TEXT')
+  })
+
+  it.each([5, 6, 7, 8])('steps 5–8 use randomBit 0 as SOURCE_TEXT (step %s)', (learningStep) => {
+    expect(resolveReviewPresentationMode({ learningStep, randomBit: 0 })).toBe('SOURCE_TEXT')
+  })
+
+  it.each([5, 6, 7, 8])(
+    'steps 5–8 use randomBit 1 as TARGET_AUDIO_ONLY (step %s)',
+    (learningStep) => {
+      expect(resolveReviewPresentationMode({ learningStep, randomBit: 1 })).toBe(
+        'TARGET_AUDIO_ONLY',
+      )
+    },
+  )
+
+  it('never returns TARGET_TEXT', () => {
+    for (const learningStep of [0, 1, 2, 3, 4, 5, 6, 7, 8]) {
+      for (const randomBit of [0, 1] as const) {
+        expect(resolveReviewPresentationMode({ learningStep, randomBit })).not.toBe('TARGET_TEXT')
+      }
+    }
+  })
+
+  it.each([-1, 9, 1.5])('rejects invalid learningStep %s', (learningStep) => {
+    expect(() => resolveReviewPresentationMode({ learningStep, randomBit: 0 })).toThrow(
+      'learningStep must be an integer from 0 to 8.',
+    )
+  })
+
+  it('rejects invalid randomBit', () => {
+    expect(() => resolveReviewPresentationMode({ learningStep: 3, randomBit: 2 as 0 | 1 })).toThrow(
+      'randomBit must be 0 or 1.',
+    )
   })
 })

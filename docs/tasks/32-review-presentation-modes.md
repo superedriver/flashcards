@@ -205,7 +205,7 @@ Can’t listen / Не можу прослухати.
 
 ```md
 - [x] TASK-32.01 Add live review-presentation source of truth
-- [ ] TASK-32.02 Add resolveReviewPresentationMode in SRS
+- [x] TASK-32.02 Add resolveReviewPresentationMode in SRS
 - [ ] TASK-32.03 Add effective presentation-mode mapping
 - [ ] TASK-32.04 Add audioOnlyDisabled on StudySession
 - [ ] TASK-32.05 Return presentationMode from lesson start and submit
@@ -324,7 +324,7 @@ TASK-32.01 Add live review-presentation source of truth
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

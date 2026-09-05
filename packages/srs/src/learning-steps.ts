@@ -1,4 +1,10 @@
-import { LearningGroup, LearningStepsInput, LearningStepsResult, PromptDirection } from './types'
+import {
+  LearningGroup,
+  LearningStepsInput,
+  LearningStepsResult,
+  PromptDirection,
+  ReviewPresentationMode,
+} from './types'
 
 const MS_PER_SECOND = 1000
 const MS_PER_MINUTE = 60 * MS_PER_SECOND
@@ -70,6 +76,27 @@ export function resolvePromptDirection(input: {
   }
 
   return input.randomBit === 0 ? 'FRONT_TO_BACK' : 'BACK_TO_FRONT'
+}
+
+export function resolveReviewPresentationMode(input: {
+  learningStep: number
+  randomBit: 0 | 1
+}): Exclude<ReviewPresentationMode, 'TARGET_TEXT'> {
+  assertLearningStep(input.learningStep)
+
+  if (input.randomBit !== 0 && input.randomBit !== 1) {
+    throw new Error('randomBit must be 0 or 1.')
+  }
+
+  if (input.learningStep <= 2) {
+    return 'TARGET_TEXT_AUDIO'
+  }
+
+  if (input.learningStep <= 4) {
+    return input.randomBit === 0 ? 'TARGET_TEXT_AUDIO' : 'SOURCE_TEXT'
+  }
+
+  return input.randomBit === 0 ? 'SOURCE_TEXT' : 'TARGET_AUDIO_ONLY'
 }
 
 function applyKnow(input: LearningStepsInput): LearningStepsResult {

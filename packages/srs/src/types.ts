@@ -4,6 +4,12 @@ export type LearningGroup = 'TO_LEARN' | 'PRACTICED' | 'LEARNED'
 
 export type PromptDirection = 'FRONT_TO_BACK' | 'BACK_TO_FRONT'
 
+export type ReviewPresentationMode =
+  | 'TARGET_TEXT_AUDIO'
+  | 'SOURCE_TEXT'
+  | 'TARGET_AUDIO_ONLY'
+  | 'TARGET_TEXT'
+
 export type LearningStepsInput = {
   answer: ReviewAnswer
   previousLearningStep: number
