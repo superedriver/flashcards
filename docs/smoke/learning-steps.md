@@ -51,11 +51,13 @@ Run against local or staging API after learning-steps migration.
 - [ ] Deck detail **Start lesson** still starts a single-deck session.
 - [ ] Know / Don't know update step and dueAt per algorithm (spot-check 0→1 = +90s).
 
-### Prompt direction
+### Presentation mode
 
-- [ ] Steps 0–2: front first.
-- [ ] Steps 5–7: back first.
-- [ ] Steps 3 / 4 / 8: direction can differ across attempts (random).
+- [ ] Steps 0–2: `TARGET_TEXT_AUDIO` (target text, auto-speak, 🔊).
+- [ ] Steps 3–4: mix of `TARGET_TEXT_AUDIO` and `SOURCE_TEXT` across attempts.
+- [ ] Steps 5–8: mix of `SOURCE_TEXT` and `TARGET_AUDIO_ONLY` across attempts.
+- [ ] Full presentation-mode, speak, and Can’t listen checklist:
+      [docs/smoke/review-presentation.md](./review-presentation.md).
 
 ### Re-queue
 

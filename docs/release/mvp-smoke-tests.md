@@ -880,7 +880,7 @@ curl -fsS -X POST "$INTERNAL_JOB_URL" \
 
 ## 33. Learning Steps
 
-**Goal:** Verify learning-steps scheduling (replaces SM-2), Home multi-deck START, group counters/badges, and prompt direction.
+**Goal:** Verify learning-steps scheduling (replaces SM-2), Home multi-deck START, group counters/badges, and review presentation modes.
 
 **Detailed checklist:** [docs/smoke/learning-steps.md](../smoke/learning-steps.md)
 
@@ -893,7 +893,7 @@ curl -fsS -X POST "$INTERNAL_JOB_URL" \
 3. START a Home lesson with due cards from more than one own deck of the active target.
 4. Spot-check Know 0→1 schedules ~90s; Don't know on early steps keeps/requeues per algorithm.
 5. Confirm deck detail Start lesson remains single-deck; card rows show group badges.
-6. Confirm prompt side: front-first on early steps, back-first on 5–7; random on 3/4/8 across attempts.
+6. Confirm presentation mode: `TARGET_TEXT_AUDIO` on steps 0–2; mix of text+audio and source recall on 3–4; mix of source recall and audio-only on 5–8. Full checklist: [docs/smoke/review-presentation.md](../smoke/review-presentation.md).
 7. Confirm en/uk strings for groups and Home empty CTAs.
 
 **Expected result:**
@@ -974,6 +974,38 @@ _(Automated PASS in TASK-29.11 and TASK-30.02–30.03; manual device checklist i
 **Result:** - [ ] PASS - [ ] FAIL - [ ] N/A
 
 _(Implementation PASS in TASK-31.13; manual device checklist in `docs/smoke/bulk-card-add.md` remains for QA.)_
+
+---
+
+## 36. Review Presentation Modes
+
+**Goal:** Verify step-based `presentationMode`, speak/🔊 rules, audio-only layout, and Can’t listen.
+
+**Detailed checklist:** [docs/smoke/review-presentation.md](../smoke/review-presentation.md)
+
+**Prerequisite:** EPIC-32 implemented and `StudySession.audioOnlyDisabled` migration applied.
+
+**Steps (web + native):**
+
+1. Review cards at steps 0–2: target text, auto-speak, 🔊; flip shows source only.
+2. Review cards at steps 3–4 and 5–8: confirm the mix of source-text and (on 5–8) audio-only.
+3. Audio-only: large speaker, no target text; 🔊 replays only; tap still flips to source.
+4. Can’t listen: stays on the question; target text appears (`TARGET_TEXT`); Know/Don’t know is not submitted.
+5. After Can’t listen, a later audio-only card in the same session shows as target text; `TARGET_TEXT_AUDIO` / `SOURCE_TEXT` still speak as before.
+6. Start a new session and confirm audio-only can appear again.
+
+**Expected result:**
+
+```txt
+- UI renders presentationMode only (no FRONT_TO_BACK / BACK_TO_FRONT)
+- Speak/🔊 match docs/domain/lesson-flow.md
+- Can’t listen is not an answer; new session resets audio-only
+- Queue and learning-step scheduling are unchanged
+```
+
+**Result:** - [ ] PASS - [ ] FAIL - [ ] N/A
+
+_(Implementation PASS in TASK-32.09; manual device checklist in `docs/smoke/review-presentation.md` remains for QA.)_
 
 ---
 
