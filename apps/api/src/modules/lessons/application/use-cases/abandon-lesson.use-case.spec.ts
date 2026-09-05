@@ -28,6 +28,7 @@ const activeSession: StudySession = {
   lessonSize: 20,
   snapshotCardIds: [],
   queueState: null,
+  audioOnlyDisabled: false,
   startedAt: new Date('2026-06-01T00:00:00.000Z'),
   completedAt: null,
   abandonedAt: null,
@@ -73,6 +74,7 @@ function createUseCase(options?: {
       countReviewsByAnswer: jest.fn(),
       complete: jest.fn(),
       abandon,
+      updateAudioOnlyDisabled: jest.fn(),
     },
   );
 

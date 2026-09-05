@@ -60,4 +60,8 @@ export type StudySessionRepositoryPort = {
   }): Promise<number>;
   complete(sessionId: string, completedAt: Date): Promise<StudySession>;
   abandon(sessionId: string, abandonedAt: Date): Promise<StudySession>;
+  updateAudioOnlyDisabled(input: {
+    sessionId: string;
+    audioOnlyDisabled: boolean;
+  }): Promise<StudySession>;
 };

@@ -59,6 +59,7 @@ export class PrismaStudySessionRepository implements StudySessionRepositoryPort 
         lessonSize: input.lessonSize,
         snapshotCardIds: input.snapshotCardIds ?? [],
         queueState: toPrismaQueueState(input.queueState),
+        audioOnlyDisabled: false,
       },
     });
 
@@ -171,6 +172,22 @@ export class PrismaStudySessionRepository implements StudySessionRepositoryPort 
       data: {
         status: 'ABANDONED',
         abandonedAt,
+      },
+    });
+
+    return toStudySession(record);
+  }
+
+  async updateAudioOnlyDisabled(input: {
+    sessionId: string;
+    audioOnlyDisabled: boolean;
+  }): Promise<StudySession> {
+    const record = await this.prisma.studySession.update({
+      where: {
+        id: input.sessionId,
+      },
+      data: {
+        audioOnlyDisabled: input.audioOnlyDisabled,
       },
     });
 

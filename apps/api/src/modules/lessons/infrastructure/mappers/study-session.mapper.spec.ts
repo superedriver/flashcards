@@ -16,6 +16,7 @@ const prismaRecord = {
   lessonSize: 20,
   snapshotCardIds: ['card-1'],
   queueState,
+  audioOnlyDisabled: false,
   startedAt: new Date('2026-06-01T00:00:00.000Z'),
   completedAt: null,
   abandonedAt: null,
@@ -34,6 +35,7 @@ describe('study-session.mapper', () => {
       lessonSize: 20,
       snapshotCardIds: ['card-1'],
       queueState,
+      audioOnlyDisabled: false,
       startedAt: prismaRecord.startedAt,
       completedAt: null,
       abandonedAt: null,
@@ -59,6 +61,15 @@ describe('study-session.mapper', () => {
     expect(mapped.snapshotCardIds).toEqual([]);
     expect(mapped.queueState).toBeNull();
     expect(mapped.completedAt).toEqual(new Date('2026-06-01T12:00:00.000Z'));
+  });
+
+  it('toStudySession maps audioOnlyDisabled', () => {
+    const mapped = toStudySession({
+      ...prismaRecord,
+      audioOnlyDisabled: true,
+    });
+
+    expect(mapped.audioOnlyDisabled).toBe(true);
   });
 
   it('toStudySession maps invalid queueState to null', () => {

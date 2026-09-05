@@ -207,7 +207,7 @@ Can’t listen / Не можу прослухати.
 - [x] TASK-32.01 Add live review-presentation source of truth
 - [x] TASK-32.02 Add resolveReviewPresentationMode in SRS
 - [x] TASK-32.03 Add effective presentation-mode mapping
-- [ ] TASK-32.04 Add audioOnlyDisabled on StudySession
+- [x] TASK-32.04 Add audioOnlyDisabled on StudySession
 - [ ] TASK-32.05 Return presentationMode from lesson start and submit
 - [ ] TASK-32.06 Render review cards from presentationMode
 - [ ] TASK-32.07 Add disableAudioOnly mutation
@@ -525,7 +525,7 @@ TASK-32.03 Add effective presentation-mode mapping
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

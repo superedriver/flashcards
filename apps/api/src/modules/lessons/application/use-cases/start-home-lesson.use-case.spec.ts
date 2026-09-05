@@ -130,6 +130,7 @@ function createUseCase(options?: {
     lessonSize: 20,
     snapshotCardIds: ['card-1'],
     queueState: null,
+    audioOnlyDisabled: false,
     startedAt: new Date('2026-06-01T00:00:00.000Z'),
     completedAt: null,
     abandonedAt: null,
@@ -207,6 +208,7 @@ function createUseCase(options?: {
       countReviewsByAnswer: jest.fn(),
       complete: jest.fn(),
       abandon: jest.fn(),
+      updateAudioOnlyDisabled: jest.fn(),
     },
     {
       findByUserId: jest

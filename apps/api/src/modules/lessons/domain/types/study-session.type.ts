@@ -11,6 +11,7 @@ export type StudySession = {
   lessonSize: number;
   snapshotCardIds: string[];
   queueState: LessonQueueState | null;
+  audioOnlyDisabled: boolean;
   startedAt: Date;
   completedAt: Date | null;
   abandonedAt: Date | null;

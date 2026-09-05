@@ -321,6 +321,7 @@ model StudySession {
   lessonSize       Int
   snapshotCardIds  String[]          @default([])
   queueState       Json?
+  audioOnlyDisabled Boolean          @default(false)
   startedAt        DateTime          @default(now())
   completedAt      DateTime?
   abandonedAt      DateTime?

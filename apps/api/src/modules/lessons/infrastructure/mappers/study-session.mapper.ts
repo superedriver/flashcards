@@ -15,6 +15,7 @@ type PrismaStudySessionRecord = {
   lessonSize: number;
   snapshotCardIds: string[];
   queueState: unknown;
+  audioOnlyDisabled: boolean;
   startedAt: Date;
   completedAt: Date | null;
   abandonedAt: Date | null;
@@ -32,6 +33,7 @@ export function toStudySession(record: PrismaStudySessionRecord): StudySession {
     lessonSize: record.lessonSize,
     snapshotCardIds: record.snapshotCardIds,
     queueState: parseLessonQueueState(record.queueState),
+    audioOnlyDisabled: record.audioOnlyDisabled,
     startedAt: record.startedAt,
     completedAt: record.completedAt,
     abandonedAt: record.abandonedAt,
