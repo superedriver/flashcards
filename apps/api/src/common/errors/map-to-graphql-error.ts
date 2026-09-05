@@ -23,6 +23,7 @@ const ERROR_CODE_TO_GRAPHQL: Record<ErrorCode, GraphQLErrorCode> = {
   [ErrorCodes.GROUP_INVITATION_NOT_FOUND]: GraphQLErrorCodes.NOT_FOUND,
 
   [ErrorCodes.VALIDATION_ERROR]: GraphQLErrorCodes.BAD_USER_INPUT,
+  [ErrorCodes.CARD_DUPLICATE]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.INVALID_REVIEW_ANSWER]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.GROUP_INVITATION_INVALID]: GraphQLErrorCodes.BAD_USER_INPUT,
   [ErrorCodes.LANGUAGE_NOT_FOUND]: GraphQLErrorCodes.BAD_USER_INPUT,

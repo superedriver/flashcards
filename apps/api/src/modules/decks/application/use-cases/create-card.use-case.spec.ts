@@ -1,7 +1,10 @@
 import { ErrorCodes } from '../../../../common/errors';
 import { AuthUser } from '../../../auth/domain/types';
 import { Card, Deck } from '../../domain/types';
-import { CreateCardInput } from '../ports/card-repository.port';
+import {
+  CreateCardInput,
+  LiveDuplicateCard,
+} from '../ports/card-repository.port';
 import { CreateCardUseCase } from './create-card.use-case';
 
 const owner: AuthUser = {
@@ -48,8 +51,14 @@ const card: Card = {
   deletedAt: null,
 };
 
-function createUseCase(deck: Deck | null) {
+function createUseCase(
+  deck: Deck | null,
+  options?: { liveDuplicates?: LiveDuplicateCard[] },
+) {
   const countByDeckId = jest.fn().mockResolvedValue(2);
+  const findLiveDuplicatesForOwner = jest
+    .fn()
+    .mockResolvedValue(options?.liveDuplicates ?? []);
   const create = jest
     .fn<Promise<Card>, [CreateCardInput]>()
     .mockImplementation((input) =>
@@ -90,6 +99,7 @@ function createUseCase(deck: Deck | null) {
       create,
       findById: jest.fn(),
       findByDeckId: jest.fn(),
+      findLiveDuplicatesForOwner,
       update: jest.fn(),
       softDelete: jest.fn(),
       softDeleteByDeckId: jest.fn(),
@@ -115,7 +125,13 @@ function createUseCase(deck: Deck | null) {
     },
   );
 
-  return { useCase, create, countByDeckId, createInitialIfMissing };
+  return {
+    useCase,
+    create,
+    countByDeckId,
+    createInitialIfMissing,
+    findLiveDuplicatesForOwner,
+  };
 }
 
 describe('CreateCardUseCase', () => {
@@ -277,6 +293,95 @@ describe('CreateCardUseCase', () => {
     expect(createInitialIfMissing).toHaveBeenCalledWith({
       userId: 'owner-1',
       cardId: 'card-1',
+    });
+  });
+
+  it('throws CARD_DUPLICATE when the pair is already in this deck', async () => {
+    const { useCase, create } = createUseCase(createDeck(), {
+      liveDuplicates: [
+        {
+          id: 'card-2',
+          deckId: 'deck-1',
+          deckTitle: 'Test Deck',
+          front: 'hola',
+          back: 'hello',
+        },
+      ],
+    });
+
+    await expect(
+      useCase.execute({
+        currentUser: owner,
+        deckId: 'deck-1',
+        front: 'hola',
+        back: 'hello',
+      }),
+    ).rejects.toMatchObject({
+      code: ErrorCodes.CARD_DUPLICATE,
+      message: 'This card is already in this deck.',
+    });
+
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it('throws CARD_DUPLICATE when the pair is in another owned deck', async () => {
+    const { useCase, create } = createUseCase(createDeck(), {
+      liveDuplicates: [
+        {
+          id: 'card-2',
+          deckId: 'deck-2',
+          deckTitle: 'Travel',
+          front: 'hola',
+          back: 'hello',
+        },
+      ],
+    });
+
+    await expect(
+      useCase.execute({
+        currentUser: owner,
+        deckId: 'deck-1',
+        front: 'hola',
+        back: 'hello',
+      }),
+    ).rejects.toMatchObject({
+      code: ErrorCodes.CARD_DUPLICATE,
+      message: 'This card is already in deck Travel.',
+    });
+
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it('prefers the current-deck CARD_DUPLICATE message', async () => {
+    const { useCase } = createUseCase(createDeck(), {
+      liveDuplicates: [
+        {
+          id: 'card-2',
+          deckId: 'deck-2',
+          deckTitle: 'Travel',
+          front: 'hola',
+          back: 'hello',
+        },
+        {
+          id: 'card-3',
+          deckId: 'deck-1',
+          deckTitle: 'Test Deck',
+          front: 'hola',
+          back: 'hello',
+        },
+      ],
+    });
+
+    await expect(
+      useCase.execute({
+        currentUser: owner,
+        deckId: 'deck-1',
+        front: 'hola',
+        back: 'hello',
+      }),
+    ).rejects.toMatchObject({
+      code: ErrorCodes.CARD_DUPLICATE,
+      message: 'This card is already in this deck.',
     });
   });
 });

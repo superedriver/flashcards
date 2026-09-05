@@ -218,7 +218,7 @@ All new UI strings en and uk, added in the task that introduces them.
 - [x] TASK-31.03 Add owner duplicate lookup on the card repository
 - [x] TASK-31.04 Add CheckCardDuplicatesUseCase
 - [x] TASK-31.05 Add checkCardDuplicates GraphQL query
-- [ ] TASK-31.06 Reject duplicate cards in CreateCardUseCase
+- [x] TASK-31.06 Reject duplicate cards in CreateCardUseCase
 - [ ] TASK-31.07 Stay on Add Card after a successful create
 - [ ] TASK-31.08 Show duplicate errors on Create Card
 - [ ] TASK-31.09 Parse Front paste into bulk rows or field errors
@@ -759,7 +759,7 @@ TASK-31.05 Add checkCardDuplicates GraphQL query
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

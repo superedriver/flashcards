@@ -95,6 +95,31 @@ export class CreateCardUseCase {
       );
     }
 
+    const duplicates = await this.cardRepository.findLiveDuplicatesForOwner({
+      ownerId: input.currentUser.id,
+      pairs: [{ front, back }],
+    });
+
+    const firstDuplicate = duplicates[0];
+
+    if (firstDuplicate) {
+      const inCurrentDeck = duplicates.some(
+        (duplicate) => duplicate.deckId === input.deckId,
+      );
+
+      if (inCurrentDeck) {
+        throw new ApplicationError(
+          ErrorCodes.CARD_DUPLICATE,
+          'This card is already in this deck.',
+        );
+      }
+
+      throw new ApplicationError(
+        ErrorCodes.CARD_DUPLICATE,
+        `This card is already in deck ${firstDuplicate.deckTitle}.`,
+      );
+    }
+
     let example: string | null | undefined;
     if (input.example !== undefined) {
       example = input.example === null ? null : input.example.trim() || null;
