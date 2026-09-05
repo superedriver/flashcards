@@ -390,7 +390,7 @@ done/32-review-presentation-modes.md
 Active epics:
 
 ```txt
-None
+33-bugfixes.md
 ```
 
 ---
@@ -921,6 +921,22 @@ Purpose:
 
 ```txt
 Step-based review presentation (text+audio, source recall, audio-only) with a session Can't listen fallback.
+```
+
+---
+
+### 33 Bugfixes (post–EPIC-32 smoke)
+
+File:
+
+```txt
+docs/tasks/33-bugfixes.md
+```
+
+Purpose:
+
+```txt
+Fix bugs found during local smoke after EPIC-32 (navigation, review UI); append one task per bug.
 ```
 
 ---
