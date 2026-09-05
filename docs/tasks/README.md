@@ -389,7 +389,7 @@ done/31-bulk-card-add.md
 Active epics:
 
 ```txt
-None
+32-review-presentation-modes.md
 ```
 
 ---
@@ -904,6 +904,22 @@ Purpose:
 
 ```txt
 Paste Front,Back lines into Add Card Front; in-memory queue; backend pair duplicates across owned live decks.
+```
+
+---
+
+### 32 Review Presentation Modes
+
+File:
+
+```txt
+docs/tasks/32-review-presentation-modes.md
+```
+
+Purpose:
+
+```txt
+Step-based review presentation (text+audio, source recall, audio-only) with a session Can't listen fallback.
 ```
 
 ---
