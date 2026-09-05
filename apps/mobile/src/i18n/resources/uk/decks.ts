@@ -98,6 +98,7 @@ export const decksUk = {
     bulkDuplicateThisDeck: 'Рядок {{line}}: ця картка вже є в цій колоді.',
     bulkDuplicateOtherDeck: 'Рядок {{line}}: ця картка вже є в колоді {{title}}.',
     bulkDuplicateInBatch: 'Рядок {{line}}: ця картка дублюється раніше у вставці.',
+    skip: 'Пропустити',
   },
   editCard: {
     title: 'Редагувати картку',

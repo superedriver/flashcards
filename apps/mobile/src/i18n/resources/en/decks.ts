@@ -97,6 +97,7 @@ export const decksEn = {
     bulkDuplicateThisDeck: 'Line {{line}}: This card is already in this deck.',
     bulkDuplicateOtherDeck: 'Line {{line}}: This card is already in deck {{title}}.',
     bulkDuplicateInBatch: 'Line {{line}}: This card is duplicated earlier in the paste.',
+    skip: 'Skip',
   },
   editCard: {
     title: 'Edit Card',

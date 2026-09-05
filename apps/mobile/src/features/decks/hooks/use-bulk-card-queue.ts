@@ -13,11 +13,18 @@ export function useBulkCardQueue() {
     setPairs([])
   }, [])
 
+  const skip = useCallback(() => {
+    const rest = pairs.slice(1)
+    setPairs(rest)
+    return rest[0] ?? null
+  }, [pairs])
+
   return {
     clear,
     current: pairs[0] ?? null,
     length: pairs.length,
     pairs,
+    skip,
     start,
   }
 }

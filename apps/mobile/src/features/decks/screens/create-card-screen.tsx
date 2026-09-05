@@ -95,12 +95,34 @@ export function CreateCardScreen() {
           errorMessage={errorMessage}
           isSubmitting={loading || isCheckingDuplicates}
           resetOnSuccess
+          showSkip={bulkQueue.length > 0}
+          skipLabel={t('decks.createCard.skip')}
           submitLabel={t('decks.createCard.submit')}
           submittingLabel={t('decks.createCard.submitting')}
           onCancel={() => router.back()}
           onClearError={() => {
             setErrorMessage(null)
             setBulkFrontMessages(null)
+          }}
+          onSkip={async () => {
+            const nextPair = bulkQueue.skip()
+
+            if (!nextPair) {
+              setBulkFill(null)
+              setBulkFrontMessages(null)
+              setErrorMessage(null)
+              return 'empty'
+            }
+
+            bulkFillKeyRef.current += 1
+            setBulkFill({
+              back: nextPair.back,
+              front: nextPair.front,
+              key: bulkFillKeyRef.current,
+            })
+            setBulkFrontMessages(null)
+            setErrorMessage(null)
+            return 'next'
           }}
           onFrontPaste={async (text) => {
             if (bulkQueue.length > 0) {
@@ -184,12 +206,19 @@ export function CreateCardScreen() {
             setErrorMessage(null)
 
             try {
+              const remainingQueue = bulkQueue.pairs.slice(1)
               const duplicateResult = await checkCardDuplicates({
                 fetchPolicy: 'network-only',
                 variables: {
                   input: {
                     deckId,
-                    pairs: [{ back: values.back, front: values.front }],
+                    pairs: [
+                      { back: values.back, front: values.front },
+                      ...remainingQueue.map((pair) => ({
+                        back: pair.back,
+                        front: pair.front,
+                      })),
+                    ],
                   },
                 },
               })
@@ -201,7 +230,9 @@ export function CreateCardScreen() {
                 return false
               }
 
-              const hit = duplicateResult.data?.checkCardDuplicates.hits[0]
+              const hit = (duplicateResult.data?.checkCardDuplicates.hits ?? []).find(
+                (item) => item.index === 0,
+              )
 
               if (hit) {
                 setErrorMessage(
@@ -230,8 +261,20 @@ export function CreateCardScreen() {
               }
 
               setBulkFrontMessages(null)
-              bulkQueue.clear()
-              setBulkFill(null)
+              const nextPair = bulkQueue.length > 0 ? bulkQueue.skip() : null
+
+              if (nextPair) {
+                bulkFillKeyRef.current += 1
+                setBulkFill({
+                  back: nextPair.back,
+                  front: nextPair.front,
+                  key: bulkFillKeyRef.current,
+                })
+              } else {
+                bulkQueue.clear()
+                setBulkFill(null)
+              }
+
               return true
             } catch (error) {
               setErrorMessage(

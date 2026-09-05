@@ -34,9 +34,12 @@ type CardFormProps = {
   onClearError?: () => void
   onDelete?: () => Promise<boolean>
   onFrontPaste?: (text: string) => Promise<'apply-text' | 'handled'>
+  onSkip?: () => Promise<'next' | 'empty'>
   onSubmit: (values: CardFormValues) => Promise<boolean>
   resetOnSuccess?: boolean
   showDelete?: boolean
+  showSkip?: boolean
+  skipLabel?: string
   submitLabel: string
   submittingLabel?: string
 }
@@ -53,9 +56,12 @@ export function CardForm({
   onClearError,
   onDelete,
   onFrontPaste,
+  onSkip,
   onSubmit,
   resetOnSuccess = false,
   showDelete = false,
+  showSkip = false,
+  skipLabel,
   submitLabel,
   submittingLabel,
 }: CardFormProps) {
@@ -161,6 +167,24 @@ export function CardForm({
     confirmAction(t('decks.cardForm.unsavedTitle'), t('decks.cardForm.unsavedMessage'), () => {
       allowLeave()
       onCancel()
+    })
+  }
+
+  const handleSkip = () => {
+    if (!onSkip || isSubmitting) {
+      return
+    }
+
+    void onSkip().then((outcome) => {
+      if (outcome === 'empty') {
+        reset({
+          back: '',
+          example: '',
+          front: '',
+          notes: '',
+        })
+        resetLeaveGuard()
+      }
     })
   }
 
@@ -402,6 +426,19 @@ export function CardForm({
           {isSubmitting ? (submittingLabel ?? `${submitLabel}...`) : submitLabel}
         </AppText>
       </Pressable>
+
+      {showSkip && onSkip ? (
+        <Pressable
+          {...buttonA11yProps(skipLabel ?? t('decks.createCard.skip'))}
+          disabled={isSubmitting}
+          onPress={handleSkip}
+          style={{ alignSelf: 'flex-start', opacity: isSubmitting ? 0.5 : 1, paddingVertical: 4 }}
+        >
+          <AppText style={{ color: '#667085', fontSize: 15, fontWeight: '600' }}>
+            {skipLabel ?? t('decks.createCard.skip')}
+          </AppText>
+        </Pressable>
+      ) : null}
 
       {onCancel ? (
         <Pressable
