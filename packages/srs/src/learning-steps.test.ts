@@ -81,7 +81,7 @@ describe('calculateNextLearningState — KNOW', () => {
 })
 
 describe('calculateNextLearningState — DONT_KNOW', () => {
-  it.each([0, 1])('keeps step %s and schedules +2m', (step) => {
+  it.each([0, 1])('keeps step %s and schedules due now', (step) => {
     const result = calculateNextLearningState({
       answer: 'DONT_KNOW',
       previousLearningStep: step,
@@ -92,7 +92,7 @@ describe('calculateNextLearningState — DONT_KNOW', () => {
     expect(result).toEqual({
       learningStep: step,
       longReviewSuccessCount: 0,
-      dueAt: dueAfter(2 * MS_PER_MINUTE),
+      dueAt: reviewedAt,
     })
   })
 

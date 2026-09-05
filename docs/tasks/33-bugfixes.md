@@ -61,6 +61,8 @@ Expected state:
    - Return to deck; confirm when the form is not empty
 3. Start review shows Internal server error (StudySession.audioOnlyDisabled missing)
    - Error UI is the old Start review + gray Retry page
+4. Don't know on steps 0–1 waits 2 minutes before the card is due again
+   - Product: dueAt = reviewedAt so it can repeat in the same session (gap unchanged)
 ```
 
 ## Epic Rules
@@ -84,6 +86,7 @@ Expected state:
 33.01 Redirect to /decks after deleting a deck
 33.02 Add Card success feedback and return-to-deck
 33.03 Fix start review 500 and restyle the error screen
+33.04 Don't know on steps 0–1 is due immediately
 (+ append new bugs in discovery order)
 ```
 
@@ -93,6 +96,7 @@ Expected state:
 - [x] TASK-33.01 Redirect to /decks after deleting a deck
 - [x] TASK-33.02 Add Card success feedback and return-to-deck
 - [x] TASK-33.03 Fix start review 500 and restyle the error screen
+- [x] TASK-33.04 Don't know on steps 0–1 is due immediately
 ```
 
 ---
@@ -445,4 +449,117 @@ pnpm docs:lint
 
 ```txt
 TASK-33.03 Fix start review 500 and restyle the error screen
+```
+
+---
+
+# TASK-33.04 Don't know on steps 0–1 is due immediately
+
+## Status
+
+DONE
+
+## Context
+
+Don't know on learning steps 0–1 set `dueAt = reviewedAt + 2 minutes`. The in-session queue only repeats cards that are already due, so the same card did not come back until two minutes later.
+
+Product: `dueAt = reviewedAt`. Queue gap is unchanged (other due cards can still fill N first). Steps 2–5 (+15m) and 6–8 (+12h) stay as they are.
+
+## Goal
+
+Don't know on steps 0–1 keeps the step and schedules the card as due now so it can reappear in the same session.
+
+## Related Documents
+
+```txt
+docs/tasks/33-bugfixes.md
+docs/algorithms/learning-steps.md
+docs/domain/lesson-flow.md
+docs/smoke/learning-steps.md
+packages/srs/src/learning-steps.ts
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+packages/srs/src/learning-steps.ts
+packages/srs/src/learning-steps.test.ts
+docs/algorithms/learning-steps.md
+docs/smoke/learning-steps.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/33-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Don't know on steps 0–1: learningStep unchanged, dueAt = reviewedAt, count unchanged.
+2. Update SRS unit tests. Do not change Know intervals or Don't know 2–8.
+3. Update live SoT (learning-steps.md) and smoke copy. Do not rewrite docs/tasks/done/*.
+4. Mark TASK-33.04 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Change only packages/srs learning-steps. Queue picker and gap stay in lessons domain.
+```
+
+## Implementation Notes
+
+```txt
+- Rebuild @flashcards/srs so the running API can pick up dist.
+```
+
+## Acceptance Criteria
+
+```txt
+- SRS tests: Don't know 0 and 1 → dueAt equals reviewedAt.
+- Don't know 2–8 intervals unchanged.
+- Mobile/API typecheck and srs tests pass.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/srs test
+pnpm --filter @flashcards/srs build
+pnpm --filter @flashcards/api test -- start-lesson.use-case.spec.ts submit-review.use-case.spec.ts
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+1. New card, Don't know: next card can be the same one if no other due cards (or after the gap).
+2. Don't know on a practiced card still uses +15m / +12h.
+```
+
+## Do Not Do
+
+```txt
+- Do not change the queue gap or max-3-answers.
+- Do not change Know intervals.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-33.04 Don't know on steps 0–1 is due immediately
 ```

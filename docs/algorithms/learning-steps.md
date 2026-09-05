@@ -196,7 +196,7 @@ else:
 
 ```txt
 learningStep unchanged (0 or 1)
-dueAt = reviewedAt + 2 minutes
+dueAt = reviewedAt
 longReviewSuccessCount unchanged
 ```
 

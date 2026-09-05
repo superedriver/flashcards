@@ -61,7 +61,8 @@ Run against local or staging API after learning-steps migration.
 
 ### Re-queue
 
-- [ ] After a short-interval Know, the same card can reappear later in the same session once due (no countdown UI).
+- [ ] After Don't know on steps 0–1, the card is due immediately and can reappear
+      in the same session (after the queue gap if other due cards exist).
 - [ ] When nothing is due, lesson completes / shows empty without waiting.
 
 ### i18n

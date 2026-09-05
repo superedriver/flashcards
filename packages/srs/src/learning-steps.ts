@@ -131,7 +131,7 @@ function applyDontKnow(input: LearningStepsInput): LearningStepsResult {
     return {
       learningStep: oldStep,
       longReviewSuccessCount: input.previousLongReviewSuccessCount,
-      dueAt: addMs(input.reviewedAt, 2 * MS_PER_MINUTE),
+      dueAt: new Date(input.reviewedAt.getTime()),
     }
   }
 

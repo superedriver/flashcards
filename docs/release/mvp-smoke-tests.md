@@ -893,7 +893,7 @@ curl -fsS -X POST "$INTERNAL_JOB_URL" \
 1. After migrate, confirm existing review states reset to step 0 / due now.
 2. Open Home: aggregate To learn / Practiced / Learned + START (no deck list).
 3. START a Home lesson with due cards from more than one own deck of the active target.
-4. Spot-check Know 0→1 schedules ~90s; Don't know on early steps keeps/requeues per algorithm.
+4. Spot-check Know 0→1 schedules ~90s; Don't know on steps 0–1 is due now and can requeue in-session.
 5. Confirm deck detail Start lesson remains single-deck; card rows show group badges.
 6. Confirm presentation mode: `TARGET_TEXT_AUDIO` on steps 0–2; mix of text+audio and source recall on 3–4; mix of source recall and audio-only on 5–8. Full checklist: [docs/smoke/review-presentation.md](../smoke/review-presentation.md).
 7. Confirm en/uk strings for groups and Home empty CTAs.
