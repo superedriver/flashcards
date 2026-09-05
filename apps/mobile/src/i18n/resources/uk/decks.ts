@@ -81,6 +81,7 @@ export const decksUk = {
   },
   createCard: {
     title: 'Додати картку',
+    titleWithCount: 'Додати картку ({{count}})',
     submit: 'Створити картку',
     submitting: 'Створення картки...',
     error: 'Не вдалося створити картку. Спробуйте ще раз.',
@@ -94,6 +95,9 @@ export const decksUk = {
     bulkFrontTooLong: 'Рядок {{line}}: лицьова сторона має бути не довше 2000 символів.',
     bulkBackTooLong: 'Рядок {{line}}: зворотна сторона має бути не довше 4000 символів.',
     bulkTooMany: 'Можна вставити щонайбільше 100 карток.',
+    bulkDuplicateThisDeck: 'Рядок {{line}}: ця картка вже є в цій колоді.',
+    bulkDuplicateOtherDeck: 'Рядок {{line}}: ця картка вже є в колоді {{title}}.',
+    bulkDuplicateInBatch: 'Рядок {{line}}: ця картка дублюється раніше у вставці.',
   },
   editCard: {
     title: 'Редагувати картку',

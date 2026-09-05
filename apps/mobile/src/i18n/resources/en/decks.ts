@@ -81,6 +81,7 @@ export const decksEn = {
   },
   createCard: {
     title: 'Add Card',
+    titleWithCount: 'Add Card ({{count}})',
     submit: 'Create Card',
     submitting: 'Creating card...',
     error: 'Could not create card. Please try again.',
@@ -93,6 +94,9 @@ export const decksEn = {
     bulkFrontTooLong: 'Line {{line}}: Front must be at most 2000 characters.',
     bulkBackTooLong: 'Line {{line}}: Back must be at most 4000 characters.',
     bulkTooMany: 'Paste at most 100 cards.',
+    bulkDuplicateThisDeck: 'Line {{line}}: This card is already in this deck.',
+    bulkDuplicateOtherDeck: 'Line {{line}}: This card is already in deck {{title}}.',
+    bulkDuplicateInBatch: 'Line {{line}}: This card is duplicated earlier in the paste.',
   },
   editCard: {
     title: 'Edit Card',

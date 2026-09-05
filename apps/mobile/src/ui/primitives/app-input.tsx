@@ -2,7 +2,13 @@ import type { ComponentProps } from 'react'
 import { Platform, TextInput as RNTextInput } from 'react-native'
 import { Input } from 'tamagui'
 
-type AppInputProps = ComponentProps<typeof Input>
+type AppInputProps = ComponentProps<typeof Input> & {
+  onPaste?: (event: {
+    clipboardData?: { getData: (type: string) => string }
+    nativeEvent?: { clipboardData?: { getData: (type: string) => string } }
+    preventDefault: () => void
+  }) => void
+}
 
 const webPasswordInputStyle = {
   backgroundColor: 'hsla(0, 0%, 95%, 1)',

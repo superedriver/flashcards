@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
@@ -8,7 +8,10 @@ import { Pressable, View } from 'react-native'
 import { AiExampleGenerator } from '@/features/ai-examples/components/ai-example-generator'
 import { useUnsavedChangesGuard } from '@/features/decks/hooks/use-unsaved-changes-guard'
 import { confirmAction, confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
-import { isLikelyFrontPaste } from '@/features/decks/utils/parse-bulk-card-lines'
+import {
+  getClipboardTextFromPasteEvent,
+  isLikelyFrontPaste,
+} from '@/features/decks/utils/parse-bulk-card-lines'
 import {
   createCardFormSchema,
   type CardFormValues,
@@ -20,6 +23,7 @@ import { buttonA11yProps, destructiveButtonA11yProps } from '@/ui/utils/accessib
 const CARD_FORM_MAX_WIDTH = 640
 
 type CardFormProps = {
+  bulkFill?: { back: string; front: string; key: number } | null
   bulkFrontMessages?: string[] | null
   cancelLabel?: string
   cardId?: string
@@ -29,7 +33,7 @@ type CardFormProps = {
   onCancel?: () => void
   onClearError?: () => void
   onDelete?: () => Promise<boolean>
-  onFrontTextChange?: (text: string, isPaste: boolean) => void
+  onFrontPaste?: (text: string) => Promise<'apply-text' | 'handled'>
   onSubmit: (values: CardFormValues) => Promise<boolean>
   resetOnSuccess?: boolean
   showDelete?: boolean
@@ -38,6 +42,7 @@ type CardFormProps = {
 }
 
 export function CardForm({
+  bulkFill,
   bulkFrontMessages,
   cancelLabel,
   cardId,
@@ -47,7 +52,7 @@ export function CardForm({
   onCancel,
   onClearError,
   onDelete,
-  onFrontTextChange,
+  onFrontPaste,
   onSubmit,
   resetOnSuccess = false,
   showDelete = false,
@@ -56,6 +61,7 @@ export function CardForm({
 }: CardFormProps) {
   const { t } = useTranslation()
   const isSubmittingRef = useRef(false)
+  const skipFrontChangeUntilRef = useRef(0)
   const cardFormSchema = useMemo(() => createCardFormSchema(t), [t])
   const resolvedCancelLabel = cancelLabel ?? t('common.cancel')
 
@@ -75,6 +81,17 @@ export function CardForm({
     mode: 'onChange',
     resolver: zodResolver(cardFormSchema),
   })
+
+  useEffect(() => {
+    if (!bulkFill) {
+      return
+    }
+
+    setValue('front', bulkFill.front, { shouldDirty: true, shouldValidate: true })
+    setValue('back', bulkFill.back, { shouldDirty: true, shouldValidate: true })
+    setValue('example', '', { shouldDirty: true, shouldValidate: true })
+    setValue('notes', '', { shouldDirty: true, shouldValidate: true })
+  }, [bulkFill, setValue])
 
   const frontValue = useWatch({ control, name: 'front' })
   const backValue = useWatch({ control, name: 'back' })
@@ -211,15 +228,50 @@ export function CardForm({
             render={({ field: { onBlur, onChange, value } }) => (
               <AppInput
                 accessibilityLabel={t('decks.cardForm.front')}
-                multiline={Boolean(onFrontTextChange)}
                 placeholder={t('decks.cardForm.front')}
                 value={value}
                 onBlur={onBlur}
                 onChangeText={(text) => {
+                  if (Date.now() < skipFrontChangeUntilRef.current) {
+                    return
+                  }
+
                   clearError()
-                  onFrontTextChange?.(text, isLikelyFrontPaste(value, text))
+
+                  if (onFrontPaste && isLikelyFrontPaste(value, text)) {
+                    skipFrontChangeUntilRef.current = Date.now() + 50
+                    void onFrontPaste(text).then((outcome) => {
+                      if (outcome === 'apply-text') {
+                        onChange(text)
+                      } else {
+                        onChange(value)
+                      }
+                    })
+                    return
+                  }
+
                   onChange(text)
                 }}
+                onPaste={
+                  onFrontPaste
+                    ? (event) => {
+                        const pasted = getClipboardTextFromPasteEvent(event)
+
+                        if (pasted == null) {
+                          return
+                        }
+
+                        event.preventDefault()
+                        skipFrontChangeUntilRef.current = Date.now() + 50
+                        clearError()
+                        void onFrontPaste(pasted).then((outcome) => {
+                          if (outcome === 'apply-text') {
+                            onChange(pasted)
+                          }
+                        })
+                      }
+                    : undefined
+                }
               />
             )}
           />

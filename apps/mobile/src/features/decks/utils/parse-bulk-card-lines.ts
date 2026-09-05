@@ -125,3 +125,22 @@ export function isLikelyFrontPaste(previous: string, next: string): boolean {
 
   return /[\n\r,]/.test(inserted)
 }
+
+type PasteClipboardData = {
+  getData?: (type: string) => string
+}
+
+export function getClipboardTextFromPasteEvent(event: unknown): string | null {
+  if (!event || typeof event !== 'object') {
+    return null
+  }
+
+  const pasteEvent = event as {
+    clipboardData?: PasteClipboardData
+    nativeEvent?: { clipboardData?: PasteClipboardData }
+  }
+  const clipboardData = pasteEvent.clipboardData ?? pasteEvent.nativeEvent?.clipboardData
+  const text = clipboardData?.getData?.('text/plain') || clipboardData?.getData?.('text')
+
+  return typeof text === 'string' ? text : null
+}
