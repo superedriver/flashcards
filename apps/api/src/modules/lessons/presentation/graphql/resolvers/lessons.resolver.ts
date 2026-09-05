@@ -6,6 +6,7 @@ import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-a
 import { AbandonLessonUseCase } from '../../../application/use-cases/abandon-lesson.use-case';
 import { CompleteLessonUseCase } from '../../../application/use-cases/complete-lesson.use-case';
 import { DeckLearningStatsUseCase } from '../../../application/use-cases/deck-learning-stats.use-case';
+import { DisableAudioOnlyUseCase } from '../../../application/use-cases/disable-audio-only.use-case';
 import { HomeLearningProgressUseCase } from '../../../application/use-cases/home-learning-progress.use-case';
 import { LessonCard } from '../../../application/use-cases/start-lesson.use-case';
 import { StartHomeLessonUseCase } from '../../../application/use-cases/start-home-lesson.use-case';
@@ -14,6 +15,7 @@ import { SubmitReviewUseCase } from '../../../application/use-cases/submit-revie
 import { CardReviewState } from '../../../domain/types';
 import { AbandonLessonInput } from '../inputs/abandon-lesson.input';
 import { CompleteLessonInput } from '../inputs/complete-lesson.input';
+import { DisableAudioOnlyInput } from '../inputs/disable-audio-only.input';
 import { StartHomeLessonInput } from '../inputs/start-home-lesson.input';
 import { StartLessonInput } from '../inputs/start-lesson.input';
 import { SubmitReviewInput } from '../inputs/submit-review.input';
@@ -39,6 +41,7 @@ export class LessonsResolver {
     private readonly startLessonUseCase: StartLessonUseCase,
     private readonly startHomeLessonUseCase: StartHomeLessonUseCase,
     private readonly submitReviewUseCase: SubmitReviewUseCase,
+    private readonly disableAudioOnlyUseCase: DisableAudioOnlyUseCase,
     private readonly completeLessonUseCase: CompleteLessonUseCase,
     private readonly abandonLessonUseCase: AbandonLessonUseCase,
     private readonly deckLearningStatsUseCase: DeckLearningStatsUseCase,
@@ -130,6 +133,21 @@ export class LessonsResolver {
       reviewedCards: result.reviewedCards,
       nextCard: result.nextCard ? toLessonCardType(result.nextCard) : null,
     };
+  }
+
+  @Mutation(() => LessonCardType)
+  @UseGuards(GqlAuthGuard)
+  async disableAudioOnly(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: DisableAudioOnlyInput,
+  ): Promise<LessonCardType> {
+    const card = await this.disableAudioOnlyUseCase.execute({
+      currentUser: user,
+      sessionId: input.sessionId,
+      cardId: input.cardId,
+    });
+
+    return toLessonCardType(card);
   }
 
   @Mutation(() => CompleteLessonPayloadType)

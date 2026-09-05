@@ -387,6 +387,11 @@ export type DecksPageResult = {
   publicDecks: Array<DecksPageDeck>
 }
 
+export type DisableAudioOnlyInput = {
+  cardId: Scalars['String']['input']
+  sessionId: Scalars['String']['input']
+}
+
 export type GenerateCardExamplesInput = {
   cardId: Scalars['String']['input']
   locale?: InputMaybe<Scalars['String']['input']>
@@ -564,6 +569,7 @@ export type Mutation = {
   declineGroupInvitation: GroupInvitation
   deleteCard: Scalars['Boolean']['output']
   deleteDeck: Scalars['Boolean']['output']
+  disableAudioOnly: LessonCard
   generateCardExamples: GenerateCardExamplesPayload
   hideDeck: ModerationDeck
   inviteUserToGroup: GroupInvitation
@@ -670,6 +676,10 @@ export type MutationDeleteCardArgs = {
 
 export type MutationDeleteDeckArgs = {
   deckId: Scalars['String']['input']
+}
+
+export type MutationDisableAudioOnlyArgs = {
+  input: DisableAudioOnlyInput
 }
 
 export type MutationGenerateCardExamplesArgs = {
@@ -2246,6 +2256,35 @@ export type SubmitReviewMutation = {
         lastReviewedAt?: any | null
       }
     } | null
+  }
+}
+
+export type DisableAudioOnlyMutationVariables = Exact<{
+  input: DisableAudioOnlyInput
+}>
+
+export type DisableAudioOnlyMutation = {
+  __typename?: 'Mutation'
+  disableAudioOnly: {
+    __typename?: 'LessonCard'
+    cardId: string
+    deckId: string
+    front: string
+    back: string
+    example?: string | null
+    notes?: string | null
+    position: number
+    learningStep: number
+    learningGroup: LearningGroup
+    presentationMode: ReviewPresentationMode
+    reviewState: {
+      __typename?: 'CardReviewState'
+      id: string
+      learningStep: number
+      longReviewSuccessCount: number
+      dueAt: any
+      lastReviewedAt?: any | null
+    }
   }
 }
 
@@ -5780,6 +5819,54 @@ export type SubmitReviewMutationResult = Apollo.MutationResult<SubmitReviewMutat
 export type SubmitReviewMutationOptions = Apollo.BaseMutationOptions<
   SubmitReviewMutation,
   SubmitReviewMutationVariables
+>
+export const DisableAudioOnlyDocument = gql`
+  mutation DisableAudioOnly($input: DisableAudioOnlyInput!) {
+    disableAudioOnly(input: $input) {
+      ...LessonCardFields
+    }
+  }
+  ${LessonCardFieldsFragmentDoc}
+`
+export type DisableAudioOnlyMutationFn = Apollo.MutationFunction<
+  DisableAudioOnlyMutation,
+  DisableAudioOnlyMutationVariables
+>
+
+/**
+ * __useDisableAudioOnlyMutation__
+ *
+ * To run a mutation, you first call `useDisableAudioOnlyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDisableAudioOnlyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [disableAudioOnlyMutation, { data, loading, error }] = useDisableAudioOnlyMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDisableAudioOnlyMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DisableAudioOnlyMutation,
+    DisableAudioOnlyMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DisableAudioOnlyMutation, DisableAudioOnlyMutationVariables>(
+    DisableAudioOnlyDocument,
+    options,
+  )
+}
+export type DisableAudioOnlyMutationHookResult = ReturnType<typeof useDisableAudioOnlyMutation>
+export type DisableAudioOnlyMutationResult = Apollo.MutationResult<DisableAudioOnlyMutation>
+export type DisableAudioOnlyMutationOptions = Apollo.BaseMutationOptions<
+  DisableAudioOnlyMutation,
+  DisableAudioOnlyMutationVariables
 >
 export const CompleteLessonDocument = gql`
   mutation CompleteLesson($input: CompleteLessonInput!) {

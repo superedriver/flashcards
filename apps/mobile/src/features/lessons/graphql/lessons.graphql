@@ -62,6 +62,12 @@ mutation SubmitReview($input: SubmitReviewInput!) {
   }
 }
 
+mutation DisableAudioOnly($input: DisableAudioOnlyInput!) {
+  disableAudioOnly(input: $input) {
+    ...LessonCardFields
+  }
+}
+
 mutation CompleteLesson($input: CompleteLessonInput!) {
   completeLesson(input: $input) {
     sessionId

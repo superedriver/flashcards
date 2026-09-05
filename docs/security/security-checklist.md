@@ -319,6 +319,7 @@ updateCard
 deleteCard
 startLesson
 submitReview
+disableAudioOnly
 completeLesson
 createGroup
 admin operations
