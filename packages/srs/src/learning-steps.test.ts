@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest'
 import {
   calculateNextLearningState,
   learningGroupForStep,
-  resolvePromptDirection,
   resolveReviewPresentationMode,
   toEffectivePresentationMode,
 } from './learning-steps'
@@ -147,24 +146,6 @@ describe('learningGroupForStep', () => {
     { step: 8, group: 'LEARNED' },
   ] as const)('step $step → $group', ({ step, group }) => {
     expect(learningGroupForStep(step)).toBe(group)
-  })
-})
-
-describe('resolvePromptDirection', () => {
-  it.each([0, 1, 2])('steps 0–2 are FRONT_TO_BACK (step %s)', (learningStep) => {
-    expect(resolvePromptDirection({ learningStep, randomBit: 1 })).toBe('FRONT_TO_BACK')
-  })
-
-  it.each([5, 6, 7])('steps 5–7 are BACK_TO_FRONT (step %s)', (learningStep) => {
-    expect(resolvePromptDirection({ learningStep, randomBit: 0 })).toBe('BACK_TO_FRONT')
-  })
-
-  it.each([3, 4, 8])('random steps use randomBit 0 as FRONT_TO_BACK (step %s)', (learningStep) => {
-    expect(resolvePromptDirection({ learningStep, randomBit: 0 })).toBe('FRONT_TO_BACK')
-  })
-
-  it.each([3, 4, 8])('random steps use randomBit 1 as BACK_TO_FRONT (step %s)', (learningStep) => {
-    expect(resolvePromptDirection({ learningStep, randomBit: 1 })).toBe('BACK_TO_FRONT')
   })
 })
 

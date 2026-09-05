@@ -1,6 +1,9 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { CardReviewStateType } from './card-review-state.type';
-import { LearningGroupGql, PromptDirectionGql } from './learning-enums.type';
+import {
+  LearningGroupGql,
+  ReviewPresentationModeGql,
+} from './learning-enums.type';
 
 @ObjectType('LessonCard')
 export class LessonCardType {
@@ -31,8 +34,8 @@ export class LessonCardType {
   @Field(() => LearningGroupGql)
   learningGroup: LearningGroupGql;
 
-  @Field(() => PromptDirectionGql)
-  promptDirection: PromptDirectionGql;
+  @Field(() => ReviewPresentationModeGql)
+  presentationMode: ReviewPresentationModeGql;
 
   @Field(() => CardReviewStateType)
   reviewState: CardReviewStateType;

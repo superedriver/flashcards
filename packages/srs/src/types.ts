@@ -2,8 +2,6 @@ export type ReviewAnswer = 'KNOW' | 'DONT_KNOW'
 
 export type LearningGroup = 'TO_LEARN' | 'PRACTICED' | 'LEARNED'
 
-export type PromptDirection = 'FRONT_TO_BACK' | 'BACK_TO_FRONT'
-
 export type ReviewPresentationMode =
   | 'TARGET_TEXT_AUDIO'
   | 'SOURCE_TEXT'

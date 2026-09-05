@@ -10,11 +10,13 @@ registerEnumType(LearningGroupGql, {
   name: 'LearningGroup',
 });
 
-export enum PromptDirectionGql {
-  FRONT_TO_BACK = 'FRONT_TO_BACK',
-  BACK_TO_FRONT = 'BACK_TO_FRONT',
+export enum ReviewPresentationModeGql {
+  TARGET_TEXT_AUDIO = 'TARGET_TEXT_AUDIO',
+  SOURCE_TEXT = 'SOURCE_TEXT',
+  TARGET_AUDIO_ONLY = 'TARGET_AUDIO_ONLY',
+  TARGET_TEXT = 'TARGET_TEXT',
 }
 
-registerEnumType(PromptDirectionGql, {
-  name: 'PromptDirection',
+registerEnumType(ReviewPresentationModeGql, {
+  name: 'ReviewPresentationMode',
 });

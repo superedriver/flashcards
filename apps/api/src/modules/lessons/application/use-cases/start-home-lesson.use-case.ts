@@ -1,5 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { learningGroupForStep, resolvePromptDirection } from '@flashcards/srs';
+import {
+  learningGroupForStep,
+  resolveReviewPresentationMode,
+  toEffectivePresentationMode,
+} from '@flashcards/srs';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import {
   USER_SETTINGS_REPOSITORY,
@@ -210,7 +214,7 @@ export class StartHomeLessonUseCase {
       sessionId: session.id,
       deckId: null,
       scope: 'HOME_ACTIVE_TARGET',
-      cards: [this.toLessonCard(card, reviewState)],
+      cards: [this.toLessonCard(card, reviewState, false)],
       lessonSize,
       totalCards,
     };
@@ -259,9 +263,14 @@ export class StartHomeLessonUseCase {
     });
   }
 
-  private toLessonCard(card: Card, reviewState: CardReviewState): LessonCard {
+  private toLessonCard(
+    card: Card,
+    reviewState: CardReviewState,
+    audioOnlyDisabled: boolean,
+  ): LessonCard {
     const learningStep = reviewState.learningStep;
     const randomBit = this.promptDirectionRandomBitService.nextBit();
+    const baseMode = resolveReviewPresentationMode({ learningStep, randomBit });
 
     return {
       cardId: card.id,
@@ -273,7 +282,10 @@ export class StartHomeLessonUseCase {
       position: card.position,
       learningStep,
       learningGroup: learningGroupForStep(learningStep),
-      promptDirection: resolvePromptDirection({ learningStep, randomBit }),
+      presentationMode: toEffectivePresentationMode(
+        baseMode,
+        audioOnlyDisabled,
+      ),
       reviewState,
     };
   }

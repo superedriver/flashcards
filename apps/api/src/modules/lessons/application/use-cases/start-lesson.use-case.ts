@@ -2,8 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   learningGroupForStep,
   LearningGroup,
-  PromptDirection,
-  resolvePromptDirection,
+  resolveReviewPresentationMode,
+  ReviewPresentationMode,
+  toEffectivePresentationMode,
 } from '@flashcards/srs';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import {
@@ -47,7 +48,7 @@ export type LessonCard = {
   position: number;
   learningStep: number;
   learningGroup: LearningGroup;
-  promptDirection: PromptDirection;
+  presentationMode: ReviewPresentationMode;
   reviewState: CardReviewState;
 };
 
@@ -210,14 +211,19 @@ export class StartLessonUseCase {
     }
 
     return {
-      card: this.toLessonCard(card, reviewState),
+      card: this.toLessonCard(card, reviewState, false),
       queueState: initialState,
     };
   }
 
-  private toLessonCard(card: Card, reviewState: CardReviewState): LessonCard {
+  private toLessonCard(
+    card: Card,
+    reviewState: CardReviewState,
+    audioOnlyDisabled: boolean,
+  ): LessonCard {
     const learningStep = reviewState.learningStep;
     const randomBit = this.promptDirectionRandomBitService.nextBit();
+    const baseMode = resolveReviewPresentationMode({ learningStep, randomBit });
 
     return {
       cardId: card.id,
@@ -229,7 +235,10 @@ export class StartLessonUseCase {
       position: card.position,
       learningStep,
       learningGroup: learningGroupForStep(learningStep),
-      promptDirection: resolvePromptDirection({ learningStep, randomBit }),
+      presentationMode: toEffectivePresentationMode(
+        baseMode,
+        audioOnlyDisabled,
+      ),
       reviewState,
     };
   }

@@ -2,7 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   calculateNextLearningState,
   learningGroupForStep,
-  resolvePromptDirection,
+  resolveReviewPresentationMode,
+  toEffectivePresentationMode,
 } from '@flashcards/srs';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import {
@@ -261,7 +262,11 @@ export class SubmitReviewUseCase {
 
     await this.persistQueueState(input.session.id, queueState);
 
-    return this.toLessonCard(nextCard, reviewState);
+    return this.toLessonCard(
+      nextCard,
+      reviewState,
+      input.session.audioOnlyDisabled,
+    );
   }
 
   private async loadAccessibleCandidates(input: {
@@ -387,9 +392,14 @@ export class SubmitReviewUseCase {
     });
   }
 
-  private toLessonCard(card: Card, reviewState: CardReviewState): LessonCard {
+  private toLessonCard(
+    card: Card,
+    reviewState: CardReviewState,
+    audioOnlyDisabled: boolean,
+  ): LessonCard {
     const learningStep = reviewState.learningStep;
     const randomBit = this.promptDirectionRandomBitService.nextBit();
+    const baseMode = resolveReviewPresentationMode({ learningStep, randomBit });
 
     return {
       cardId: card.id,
@@ -401,7 +411,10 @@ export class SubmitReviewUseCase {
       position: card.position,
       learningStep,
       learningGroup: learningGroupForStep(learningStep),
-      promptDirection: resolvePromptDirection({ learningStep, randomBit }),
+      presentationMode: toEffectivePresentationMode(
+        baseMode,
+        audioOnlyDisabled,
+      ),
       reviewState,
     };
   }

@@ -176,6 +176,7 @@ function createUseCase(options?: {
       softDeleteByDeckId: jest.fn(),
       countByDeckId: jest.fn(),
       createMany: jest.fn(),
+      findLiveDuplicatesForOwner: jest.fn(),
     },
     {
       findByUserAndCard: jest.fn((_userId: string, cardId: string) =>

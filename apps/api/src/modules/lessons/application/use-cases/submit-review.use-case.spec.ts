@@ -15,11 +15,16 @@ import {
 import { UpdateStudySessionInput } from '../ports/study-session-repository.port';
 import { SubmitReviewUseCase } from './submit-review.use-case';
 
-jest.mock('@flashcards/srs', () => ({
-  calculateNextLearningState: jest.fn(),
-  learningGroupForStep: jest.fn().mockReturnValue('TO_LEARN'),
-  resolvePromptDirection: jest.fn().mockReturnValue('FRONT_TO_BACK'),
-}));
+jest.mock('@flashcards/srs', () => {
+  const actual: typeof import('@flashcards/srs') =
+    jest.requireActual('@flashcards/srs');
+
+  return {
+    ...actual,
+    calculateNextLearningState: jest.fn(),
+    learningGroupForStep: jest.fn().mockReturnValue('TO_LEARN'),
+  };
+});
 
 const mockedCalculateNextLearningState =
   calculateNextLearningState as jest.MockedFunction<
@@ -151,6 +156,8 @@ function createUseCase(options?: {
   dueCandidates?: LessonQueueCandidate[];
   homeDueCandidates?: LessonQueueCandidate[];
   reviewedCount?: number;
+  nextBit?: 0 | 1;
+  nextCardLearningStep?: number;
 }) {
   const cardsById: Record<string, Card | null> = {
     'card-1': options?.card === undefined ? card : options.card,
@@ -206,7 +213,7 @@ function createUseCase(options?: {
       ...initialReviewState,
       id: `review-${cardId}`,
       cardId,
-      learningStep: 0,
+      learningStep: options?.nextCardLearningStep ?? 0,
     }),
   );
   const updateSession: jest.MockedFunction<
@@ -230,6 +237,7 @@ function createUseCase(options?: {
       softDelete: jest.fn(),
       softDeleteByDeckId: jest.fn(),
       createMany: jest.fn(),
+      findLiveDuplicatesForOwner: jest.fn(),
     },
     {
       create: jest.fn(),
@@ -284,7 +292,7 @@ function createUseCase(options?: {
       findWithNotificationsEnabled: jest.fn(),
     },
     {
-      nextBit: jest.fn().mockReturnValue(0 as const),
+      nextBit: jest.fn().mockReturnValue(options?.nextBit ?? 0),
     },
   );
 
@@ -493,7 +501,42 @@ describe('SubmitReviewUseCase', () => {
 
     expect(findDueCandidatesForDeck).toHaveBeenCalled();
     expect(result.nextCard?.cardId).toBe('card-2');
-    expect(result.nextCard?.promptDirection).toBe('FRONT_TO_BACK');
+    expect(result.nextCard?.presentationMode).toBe('TARGET_TEXT_AUDIO');
+  });
+
+  it('returns TARGET_AUDIO_ONLY for step 6 when randomBit is 1', async () => {
+    const { useCase } = createUseCase({
+      dueCandidates: [createCandidate(nextCardEntity)],
+      nextBit: 1,
+      nextCardLearningStep: 6,
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+      cardId: 'card-1',
+      answer: 'KNOW',
+    });
+
+    expect(result.nextCard?.presentationMode).toBe('TARGET_AUDIO_ONLY');
+  });
+
+  it('maps TARGET_AUDIO_ONLY to TARGET_TEXT when audioOnlyDisabled', async () => {
+    const { useCase } = createUseCase({
+      dueCandidates: [createCandidate(nextCardEntity)],
+      nextBit: 1,
+      nextCardLearningStep: 6,
+      session: { ...activeSession, audioOnlyDisabled: true },
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      sessionId: 'session-1',
+      cardId: 'card-1',
+      answer: 'KNOW',
+    });
+
+    expect(result.nextCard?.presentationMode).toBe('TARGET_TEXT');
   });
 
   it('lets a newly ready deck card join the live queue', async () => {

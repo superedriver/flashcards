@@ -2,7 +2,6 @@ import {
   LearningGroup,
   LearningStepsInput,
   LearningStepsResult,
-  PromptDirection,
   ReviewPresentationMode,
 } from './types'
 
@@ -55,27 +54,6 @@ export function learningGroupForStep(step: number): LearningGroup {
   }
 
   return 'LEARNED'
-}
-
-export function resolvePromptDirection(input: {
-  learningStep: number
-  randomBit: 0 | 1
-}): PromptDirection {
-  assertLearningStep(input.learningStep)
-
-  if (input.randomBit !== 0 && input.randomBit !== 1) {
-    throw new Error('randomBit must be 0 or 1.')
-  }
-
-  if (input.learningStep <= 2) {
-    return 'FRONT_TO_BACK'
-  }
-
-  if (input.learningStep >= 5 && input.learningStep <= 7) {
-    return 'BACK_TO_FRONT'
-  }
-
-  return input.randomBit === 0 ? 'FRONT_TO_BACK' : 'BACK_TO_FRONT'
 }
 
 export function resolveReviewPresentationMode(input: {

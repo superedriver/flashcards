@@ -189,6 +189,7 @@ function createUseCase(options?: {
       softDelete: jest.fn(),
       softDeleteByDeckId: jest.fn(),
       createMany: jest.fn(),
+      findLiveDuplicatesForOwner: jest.fn(),
     },
     {
       findByUserAndCard,
@@ -451,6 +452,25 @@ describe('StartLessonUseCase', () => {
     expect(result.cards[0]?.reviewState).toEqual(dueState);
     expect(result.cards[0]?.learningStep).toBe(1);
     expect(result.cards[0]?.learningGroup).toBe('TO_LEARN');
-    expect(result.cards[0]?.promptDirection).toBe('FRONT_TO_BACK');
+    expect(result.cards[0]?.presentationMode).toBe('TARGET_TEXT_AUDIO');
+  });
+
+  it('uses TARGET_TEXT_AUDIO for step 0', async () => {
+    const dueState = { ...createReviewState('card-due'), learningStep: 0 };
+    const dueCard = createCard('card-due', 1);
+    const { useCase } = createUseCase({
+      cards: [dueCard],
+      dueCandidates: [createCandidate(dueCard)],
+      reviewStatesByCardId: {
+        'card-due': dueState,
+      },
+    });
+
+    const result = await useCase.execute({
+      currentUser: authUser,
+      deckId: 'deck-1',
+    });
+
+    expect(result.cards[0]?.presentationMode).toBe('TARGET_TEXT_AUDIO');
   });
 });

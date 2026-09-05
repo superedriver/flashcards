@@ -24,7 +24,7 @@ import { DeckLearningStatsType } from '../types/deck-learning-stats.type';
 import { HomeLearningProgressType } from '../types/home-learning-progress.type';
 import {
   LearningGroupGql,
-  PromptDirectionGql,
+  ReviewPresentationModeGql,
 } from '../types/learning-enums.type';
 import { LessonCardType } from '../types/lesson-card.type';
 import {
@@ -180,7 +180,7 @@ function toLessonCardType(card: LessonCard): LessonCardType {
     position: card.position,
     learningStep: card.learningStep,
     learningGroup: card.learningGroup as LearningGroupGql,
-    promptDirection: card.promptDirection as PromptDirectionGql,
+    presentationMode: card.presentationMode as ReviewPresentationModeGql,
     reviewState: toCardReviewStateType(card.reviewState),
   };
 }
