@@ -53,9 +53,9 @@ Expected state:
 
 ```txt
 1. After deleting a deck, the user is not sent to /decks
-   - DeckActions handleDelete calls router.replace('/(tabs)/decks')
-   - Nested Decks stack on web can leave the user on /decks/:deckId
-   - Decks tab already uses router.navigate('/decks') to open the list
+   - Nested Decks stack on web: replace('/(tabs)/decks') and navigate('/decks') leave /decks/:deckId
+   - awaitRefetchQueries + DeckLearningStats 404s ("Deck not found") so dismissTo never runs
+   - Pop with dismissTo('/decks') after a successful delete (do not refetch that deck's stats)
 ```
 
 ## Epic Rules
@@ -83,7 +83,7 @@ Expected state:
 ## Epic Summary
 
 ```md
-- [ ] TASK-33.01 Redirect to /decks after deleting a deck
+- [x] TASK-33.01 Redirect to /decks after deleting a deck
 ```
 
 ---
@@ -92,13 +92,17 @@ Expected state:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
 After confirming Delete Deck on deck detail, the mutation succeeds but the web user can stay on `/decks/:deckId` (empty/error for a deleted deck) instead of the decks list.
 
-`DeckActions` already calls `router.replace('/(tabs)/decks')`. The Decks tab uses `router.navigate('/decks')` so nested detail does not stay on the stack.
+`DeckActions` used `router.replace('/(tabs)/decks')`, then `router.navigate('/decks')`. Both leave the nested `[deckId]` screen on web, so the URL stays `/decks/:deckId`.
+
+A later attempt used `dismissTo('/decks')`, but `awaitRefetchQueries` still refetched `DeckLearningStats` for the deleted deck. The API returns "Deck not found", Apollo rejects the mutation, the catch path shows that error (and the stats card shows "Could not load learning stats"), and `dismissTo` never runs.
+
+`dismissTo('/decks')` pops the decks stack until the list after a successful delete. Do not refetch `DeckLearningStats` for the removed deck.
 
 ## Goal
 
@@ -108,6 +112,8 @@ After a successful delete, land on the decks list at `/decks`. Failed delete mus
 
 ```txt
 docs/tasks/33-bugfixes.md
+docs/architecture.md
+docs/domain/lesson-flow.md
 docs/tasks/done/15-frontend-decks-cards.md
 docs/tasks/done/27-learning-steps-bugfixes.md
 apps/mobile/src/features/decks/components/deck-actions.tsx
@@ -124,16 +130,19 @@ None
 
 ```txt
 apps/mobile/src/features/decks/components/deck-actions.tsx
+docs/architecture.md
+docs/domain/lesson-flow.md
 docs/tasks/33-bugfixes.md
 ```
 
 ## Requirements
 
 ```txt
-1. On successful deleteDeck, navigate to the decks list (`/decks`).
-2. Match the Decks tab pattern (navigate('/decks')), not replace('/(tabs)/decks').
-3. Do not navigate away when the mutation fails or returns false.
-4. Mark TASK-33.01 DONE.
+1. On successful deleteDeck, land on the decks list (`/decks`) and drop `/decks/:deckId` from the stack.
+2. Use `router.dismissTo('/decks')` (not navigate/replace to `/(tabs)/decks`).
+3. Do not refetch DeckLearningStats after delete (404 blocks the mutation promise).
+4. Do not navigate away when the mutation fails or returns false.
+5. Mark TASK-33.01 DONE.
 ```
 
 ## Security Requirements
@@ -154,7 +163,8 @@ docs/tasks/33-bugfixes.md
 ## Implementation Notes
 
 ```txt
-- Smallest change: replace the post-success router.replace call.
+- Use dismissTo('/decks') so nested detail is popped on web.
+- Keep HomeLearningProgress / MyDecks / DecksPage refetch; skip DeckLearningStats.
 - Do not change confirm copy or danger-zone layout.
 ```
 
@@ -163,6 +173,7 @@ docs/tasks/33-bugfixes.md
 ```txt
 - After Delete → confirm → success, URL and screen are the decks list (`/decks`).
 - Deleted deck is gone from the list.
+- Success must not leave the user on detail with "Deck not found" / stats load errors.
 - Failed delete stays on detail with the existing error.
 - Mobile typecheck, format:check, and lint pass.
 ```

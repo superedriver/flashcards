@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
 
 import { DeckMoreMenu } from '@/features/decks/components/deck-more-menu'
-import { evictCardCountCache } from '@/features/decks/utils/card-mutation-cache'
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import { deckNeedsLanguageAssignment } from '@/features/decks/utils/deck-language-gate'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
@@ -35,8 +34,13 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
 
   const [deleteDeck, { loading: isDeleting }] = useDeleteDeckMutation({
     awaitRefetchQueries: true,
-    refetchQueries: ['MyDecks', 'DecksPage', 'HomeLearningProgress', 'DeckLearningStats'],
-    update: evictCardCountCache,
+    // Do not refetch DeckLearningStats: the deleted deck 404s while detail is still mounted,
+    // Apollo rejects the mutation, and dismissTo never runs.
+    refetchQueries: ['MyDecks', 'DecksPage', 'HomeLearningProgress'],
+    update: (cache) => {
+      cache.evict({ fieldName: 'homeLearningProgress' })
+      cache.gc()
+    },
   })
 
   const needsLanguages = deckNeedsLanguageAssignment(deck)
@@ -67,7 +71,7 @@ export function DeckActions({ deck, isOwner }: DeckActionsProps) {
               return
             }
 
-            router.replace('/(tabs)/decks')
+            router.dismissTo('/decks')
           } catch (error) {
             setActionError(getGraphqlErrorMessage(error, t('decks.actions.deleteDeckError')))
           }
