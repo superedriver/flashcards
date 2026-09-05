@@ -397,8 +397,10 @@ query {
 
 ```txt
 - Card appears in deck card list
+- After Create Card the user stays on Add Card with empty fields (not deck detail)
 - Card detail/edit view shows saved values
 - Empty Cards is a header with count and + Add card; no gray full-width button
+- Bulk Front paste (`Front,Back` list): see section 35
 ```
 
 **Result:** - [ ] PASS - [ ] FAIL
@@ -939,6 +941,39 @@ _(Automated PASS in TASK-26.20; manual device checklist in `docs/smoke/learning-
 **Result:** - [x] PASS - [ ] FAIL - [ ] N/A
 
 _(Automated PASS in TASK-29.11 and TASK-30.02–30.03; manual device checklist in `docs/smoke/lesson-queue.md` remains for QA.)_
+
+---
+
+## 35. Bulk Card Add via Front Paste
+
+**Goal:** Verify Add Card Front paste starts an in-memory queue, duplicate checks, Skip, stay-on-Add-Card, leave/replace confirms, and that CSV import is unchanged.
+
+**Detailed checklist:** [docs/smoke/bulk-card-add.md](../smoke/bulk-card-add.md)
+
+**Prerequisite:** EPIC-31 implemented.
+
+**Steps (web + native paste):**
+
+1. Paste one `Front,Back` line into Add Card Front: stays as normal Front text.
+2. Paste two unique lines: title Add Card (2), first pair in Front/Back, rest in RAM.
+3. Paste a two-comma line and a 101-card list: error block, no queue, Front not dumped with the raw list.
+4. Paste a pair that exists in this deck, in another owned deck, and twice in the same paste.
+5. Walk a 3-card queue with Create Card; Skip one; confirm stay on Add Card.
+6. Paste again while a queue is active (replace confirm); paste over a dirty Back (clear confirm); Back/Cancel with N > 0 (leave confirm).
+7. Confirm CSV import still works and is not affected by Front paste.
+
+**Expected result:**
+
+```txt
+- Bulk starts only on paste of 2–100 valid unique Front,Back rows into Add Card Front
+- Duplicates use this-deck / other-deck / in-batch copy; createCard stays on Add Card
+- Queue counter, Skip, replace/dirty/leave confirms match docs/domain/bulk-card-add.md
+- CSV import remains a separate flow
+```
+
+**Result:** - [ ] PASS - [ ] FAIL - [ ] N/A
+
+_(Implementation PASS in TASK-31.13; manual device checklist in `docs/smoke/bulk-card-add.md` remains for QA.)_
 
 ---
 

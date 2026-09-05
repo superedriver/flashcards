@@ -32,7 +32,7 @@ This epic does **not** include:
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -225,7 +225,7 @@ All new UI strings en and uk, added in the task that introduces them.
 - [x] TASK-31.10 Start an in-memory bulk queue after a valid paste
 - [x] TASK-31.11 Advance the bulk queue after create and skip
 - [x] TASK-31.12 Confirm replace, dirty paste, and leave with a bulk queue
-- [ ] TASK-31.13 Add bulk-card-add smoke checks
+- [x] TASK-31.13 Add bulk-card-add smoke checks
 ```
 
 ---
@@ -1483,7 +1483,7 @@ TASK-31.12 Confirm replace, dirty paste, and leave with a bulk queue
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
