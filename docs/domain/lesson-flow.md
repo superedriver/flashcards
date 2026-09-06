@@ -404,6 +404,18 @@ When `/lessons/start` still gets an empty payload (for example Start another aft
   Back to deck is a text link. Do not show Internal server error.
 ```
 
+## Lost review UI
+
+When in-memory review state is missing (refresh, HMR) but the session URL is still open:
+
+```txt
+- Same ~480px column as empty / start-error / Review complete
+- Alert icon; title Review unavailable / Повторення недоступне; short body
+- Deck session: primary Start review again; Back to deck text; All decks text
+- Home session: primary Home; All decks text
+- Do not use three equal gray buttons or a page title plus ErrorState
+```
+
 ## Starting a review session
 
 ### StartLessonUseCase (deck)

@@ -65,6 +65,8 @@ Expected state:
    - Product: dueAt = reviewedAt so it can repeat in the same session (gap unchanged)
 5. SOURCE_TEXT auto-speaks the target after flip
    - Product: SOURCE_TEXT never speaks and never shows 🔊 (question or answer)
+6. Lost-review screen is a red ErrorState plus three equal gray buttons
+   - Product: same ~480px column as empty/complete/start-error (icon, title, body, one primary, text links)
 ```
 
 ## Epic Rules
@@ -90,6 +92,7 @@ Expected state:
 33.03 Fix start review 500 and restyle the error screen
 33.04 Don't know on steps 0–1 is due immediately
 33.05 Don't auto-speak SOURCE_TEXT after flip
+33.06 Restyle lost-review screen like empty/complete
 (+ append new bugs in discovery order)
 ```
 
@@ -101,6 +104,7 @@ Expected state:
 - [x] TASK-33.03 Fix start review 500 and restyle the error screen
 - [x] TASK-33.04 Don't know on steps 0–1 is due immediately
 - [x] TASK-33.05 Don't auto-speak SOURCE_TEXT after flip
+- [x] TASK-33.06 Restyle lost-review screen like empty/complete
 ```
 
 ---
@@ -674,4 +678,108 @@ pnpm docs:lint
 
 ```txt
 TASK-33.05 Don't auto-speak SOURCE_TEXT after flip
+```
+
+---
+
+# TASK-33.06 Restyle lost-review screen like empty/complete
+
+## Status
+
+DONE
+
+## Context
+
+After a refresh or HMR, `/lessons/:sessionId` can lose in-memory review state. The screen used the old ErrorState plus three equal gray buttons (Start review again, Back to deck, Back to decks), unlike empty start review, start error, and Review complete.
+
+## Goal
+
+Restyle lost-review and missing-session screens to the same ~480px outcome column: alert icon, title, body, one primary action, text links.
+
+## Related Documents
+
+```txt
+docs/tasks/33-bugfixes.md
+docs/domain/lesson-flow.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
+apps/mobile/src/i18n/resources/en/lessons.ts
+apps/mobile/src/i18n/resources/uk/lessons.ts
+docs/domain/lesson-flow.md
+docs/tasks/33-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Lost and missing-session screens: icon, Review unavailable title, body, no PageTitle + ErrorState stack.
+2. Deck session: primary Start review again; Back to deck and All decks as text.
+3. Home session: primary Home; All decks as text.
+4. Do not restyle global ErrorState (inline submit errors stay).
+5. Update live SoT. Mark TASK-33.06 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Layout only. Do not persist review state across refresh.
+```
+
+## Implementation Notes
+
+```txt
+- Reuse empty/complete spacing and #1a56db primary.
+```
+
+## Acceptance Criteria
+
+```txt
+- Lost-review looks like start-error / complete, not three gray buttons.
+- Start review again still goes to /lessons/start?deckId= when deckId is present.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+1. Open a deck review, refresh or lose in-memory state: icon, title, blue Start review again, text Back to deck and All decks.
+2. Start review again resumes a session from that deck.
+```
+
+## Do Not Do
+
+```txt
+- Do not restyle global ErrorState.
+- Do not change queue or SRS.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-33.06 Restyle lost-review screen like empty/complete
 ```

@@ -14,11 +14,11 @@ export const lessonsEn = {
   },
   review: {
     title: 'Review',
+    lostTitle: 'Review unavailable',
     sessionMissing: 'Review session is missing.',
-    stateLost: 'Review state was lost. Please start the review again.',
+    stateLost: 'This review is no longer available. Start again from the deck.',
     startAgain: 'Start review again',
     backToDeck: 'Back to deck',
-    backToDecks: 'Back to decks',
     leaveTitle: 'Leave review?',
     leaveMessage: 'Your progress in this session will not be saved.',
     submitError: 'Could not submit review. Please try again.',

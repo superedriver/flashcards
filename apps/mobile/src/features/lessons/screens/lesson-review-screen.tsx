@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -28,9 +29,11 @@ import {
   useDisableAudioOnlyMutation,
   useSubmitReviewMutation,
 } from '@/graphql/generated'
-import { AppButton, AppText } from '@/ui/primitives'
+import { AppText } from '@/ui/primitives'
 import { ErrorState, PageTitle, Screen } from '@/ui/components'
 import { buttonA11yProps } from '@/ui/utils/accessibility'
+
+const OUTCOME_MAX_WIDTH = 480
 
 export function LessonReviewScreen() {
   const { t } = useTranslation()
@@ -94,34 +97,21 @@ export function LessonReviewScreen() {
 
   if (!sessionId) {
     return (
-      <Screen>
-        <PageTitle title={t('lessons.review.title')} />
-        <ErrorState message={t('lessons.review.sessionMissing')} />
-      </Screen>
+      <ReviewUnavailableScreen
+        body={t('lessons.review.sessionMissing')}
+        deckId={deckId}
+        title={t('lessons.review.lostTitle')}
+      />
     )
   }
 
   if (!lesson || !currentCard) {
     return (
-      <Screen>
-        <PageTitle title={t('lessons.review.title')} />
-        <ErrorState message={t('lessons.review.stateLost')} />
-        <View style={{ gap: 12, marginTop: 16 }}>
-          {deckId ? (
-            <AppButton onPress={() => router.replace(`/lessons/start?deckId=${deckId}`)}>
-              {t('lessons.review.startAgain')}
-            </AppButton>
-          ) : null}
-          {deckId ? (
-            <AppButton onPress={() => router.replace(`/decks/${deckId}`)}>
-              {t('lessons.review.backToDeck')}
-            </AppButton>
-          ) : null}
-          <AppButton onPress={() => router.replace(deckId ? '/(tabs)/decks' : '/(tabs)')}>
-            {t('lessons.review.backToDecks')}
-          </AppButton>
-        </View>
-      </Screen>
+      <ReviewUnavailableScreen
+        body={t('lessons.review.stateLost')}
+        deckId={deckId}
+        title={t('lessons.review.lostTitle')}
+      />
     )
   }
 
@@ -327,6 +317,104 @@ export function LessonReviewScreen() {
           showSwipeHint={showSwipeHint}
           onAnswer={(answer) => flashcardRef.current?.playExit(answer)}
         />
+      </View>
+    </Screen>
+  )
+}
+
+function ReviewUnavailableScreen({
+  body,
+  deckId,
+  title,
+}: {
+  body: string
+  deckId?: string
+  title: string
+}) {
+  const { t } = useTranslation()
+  const router = useRouter()
+  const isDeckReview = Boolean(deckId)
+
+  return (
+    <Screen>
+      <View style={{ alignSelf: 'center', maxWidth: OUTCOME_MAX_WIDTH, width: '100%' }}>
+        <View style={{ alignItems: 'center', marginBottom: 36, marginTop: 28 }}>
+          <Ionicons color="#b42318" name="alert-circle" size={40} />
+          <AppText
+            accessibilityRole="header"
+            style={{
+              fontSize: 24,
+              fontWeight: '700',
+              marginTop: 16,
+              textAlign: 'center',
+            }}
+          >
+            {title}
+          </AppText>
+          <AppText
+            style={{
+              color: '#667085',
+              fontSize: 15,
+              marginTop: 6,
+              textAlign: 'center',
+            }}
+          >
+            {body}
+          </AppText>
+        </View>
+        <View style={{ gap: 4 }}>
+          {isDeckReview ? (
+            <Pressable
+              {...buttonA11yProps(t('lessons.review.startAgain'))}
+              onPress={() => router.replace(`/lessons/start?deckId=${deckId}`)}
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#1a56db',
+                borderRadius: 10,
+                paddingVertical: 12,
+              }}
+            >
+              <AppText style={{ color: '#ffffff', fontSize: 15, fontWeight: '700' }}>
+                {t('lessons.review.startAgain')}
+              </AppText>
+            </Pressable>
+          ) : (
+            <Pressable
+              {...buttonA11yProps(t('common.tabs.home'))}
+              onPress={() => router.replace('/(tabs)')}
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#1a56db',
+                borderRadius: 10,
+                paddingVertical: 12,
+              }}
+            >
+              <AppText style={{ color: '#ffffff', fontSize: 15, fontWeight: '700' }}>
+                {t('common.tabs.home')}
+              </AppText>
+            </Pressable>
+          )}
+          {isDeckReview ? (
+            <Pressable
+              {...buttonA11yProps(t('lessons.review.backToDeck'))}
+              onPress={() => router.replace(`/decks/${deckId}`)}
+              style={{ alignItems: 'center', paddingVertical: 10 }}
+            >
+              <AppText style={{ color: '#344054', fontSize: 15, fontWeight: '600' }}>
+                {t('lessons.review.backToDeck')}
+              </AppText>
+            </Pressable>
+          ) : null}
+          <Pressable
+            {...buttonA11yProps(t('lessons.start.allDecks'))}
+            onPress={() => router.replace('/(tabs)/decks')}
+            style={{ alignItems: 'center', paddingVertical: 6 }}
+          >
+            <AppText style={{ color: '#667085', fontSize: 14 }}>
+              {t('lessons.start.allDecks')}
+            </AppText>
+          </Pressable>
+        </View>
       </View>
     </Screen>
   )
