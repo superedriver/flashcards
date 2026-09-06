@@ -6,8 +6,8 @@ import { Pressable, View } from 'react-native'
 
 import { useUnsavedChangesGuard } from '@/features/decks/hooks/use-unsaved-changes-guard'
 import {
+  CARD_MUTATION_REFETCH_QUERIES,
   evictCardCountCache,
-  LEARNING_STATS_REFETCH_QUERIES,
 } from '@/features/decks/utils/card-mutation-cache'
 import { confirmAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
@@ -54,12 +54,12 @@ export function LessonReviewScreen() {
   const [disableAudioOnly] = useDisableAudioOnlyMutation()
   const [completeLesson] = useCompleteLessonMutation({
     awaitRefetchQueries: true,
-    refetchQueries: [...LEARNING_STATS_REFETCH_QUERIES],
+    refetchQueries: [...CARD_MUTATION_REFETCH_QUERIES],
     update: evictCardCountCache,
   })
   const [abandonLesson] = useAbandonLessonMutation({
     awaitRefetchQueries: true,
-    refetchQueries: [...LEARNING_STATS_REFETCH_QUERIES],
+    refetchQueries: [...CARD_MUTATION_REFETCH_QUERIES],
     update: evictCardCountCache,
   })
   const [isRevealed, setIsRevealed] = useState(false)

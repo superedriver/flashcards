@@ -69,6 +69,8 @@ Expected state:
    - Product: same ~480px column as empty/complete/start-error (icon, title, body, one primary, text links)
 7. F5 / tab change during review has no leave confirmation
    - Product: same guard as unsaved Add Card (web beforeunload + in-app beforeRemove)
+8. After review, deck stats and card-row badges disagree
+   - complete/abandon refetch stats but not DeckCards, so Learn/Practiced/Learned on rows stay stale
 ```
 
 ## Epic Rules
@@ -96,6 +98,7 @@ Expected state:
 33.05 Don't auto-speak SOURCE_TEXT after flip
 33.06 Restyle lost-review screen like empty/complete
 33.07 Confirm before leaving review on F5
+33.08 Refetch DeckCards after complete/abandon review
 (+ append new bugs in discovery order)
 ```
 
@@ -109,6 +112,7 @@ Expected state:
 - [x] TASK-33.05 Don't auto-speak SOURCE_TEXT after flip
 - [x] TASK-33.06 Restyle lost-review screen like empty/complete
 - [x] TASK-33.07 Confirm before leaving review on F5
+- [x] TASK-33.08 Refetch DeckCards after complete/abandon review
 ```
 
 ---
@@ -891,4 +895,107 @@ pnpm docs:lint
 
 ```txt
 TASK-33.07 Confirm before leaving review on F5
+```
+
+---
+
+# TASK-33.08 Refetch DeckCards after complete/abandon review
+
+## Status
+
+DONE
+
+## Context
+
+After a review session, deck-detail stats (DeckLearningStats) updated but card-row Learn/Practiced/Learned badges stayed on the pre-session DeckCards cache. completeLesson and abandonLesson only refetched DeckLearningStats and HomeLearningProgress.
+
+## Goal
+
+Refetch DeckCards together with the learning-stats queries after complete or abandon so the list badges match the stats card.
+
+## Related Documents
+
+```txt
+docs/tasks/33-bugfixes.md
+docs/architecture.md
+docs/domain/lesson-flow.md
+docs/smoke/lesson-queue.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
+docs/architecture.md
+docs/domain/lesson-flow.md
+docs/smoke/lesson-queue.md
+docs/tasks/33-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. completeLesson and abandonLesson refetchQueries use CARD_MUTATION_REFETCH_QUERIES (DeckCards + stats).
+2. Update live SoT and smoke. Do not rewrite docs/tasks/done/*.
+3. Mark TASK-33.08 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- RefetchQueries only. Do not change SRS grouping or GraphQL stats.
+```
+
+## Implementation Notes
+
+```txt
+- Same refetch set as create/delete card.
+```
+
+## Acceptance Criteria
+
+```txt
+- After Review complete → Back to deck, stats totals match row badges.
+- Leave review → deck: same.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+1. Review a deck, complete, Back to deck: Learn/Practiced/Learned in the stats card equal the badge counts on the rows.
+2. Pull to refresh is not required.
+```
+
+## Do Not Do
+
+```txt
+- Do not change learningGroupForStep bands.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-33.08 Refetch DeckCards after complete/abandon review
 ```

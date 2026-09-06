@@ -629,8 +629,8 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - After delete deck, refetch MyDecks, DecksPage, and HomeLearningProgress so Home and My
   Decks update without reload. Do not refetch DeckLearningStats after delete: the detail
   query 404s for the removed deck and blocks leaving the page
-- After complete or abandon review, refetch HomeLearningProgress and DeckLearningStats
-  so Home and My Decks counts update without reload
+- After complete or abandon review, refetch HomeLearningProgress, DeckLearningStats,
+  and DeckCards so Home, My Decks, and deck-detail card badges match without reload
 - Non-owners must copy public/group decks before studying
 ```
 

@@ -1043,7 +1043,7 @@ Card create/delete/CSV import also refetch DeckLearningStats and HomeLearningPro
 do not keep stale counts.
 Delete deck also refetches HomeLearningProgress (and evicts home stats cache).
 Do not refetch DeckLearningStats after delete; that query 404s for the removed deck.
-Complete/abandon review also refetch HomeLearningProgress and DeckLearningStats.
+Complete/abandon review also refetch HomeLearningProgress, DeckLearningStats, and DeckCards.
 Add manual cache updates later where needed.
 Use limit/offset pagination for MVP.
 Use cursor pagination later if needed.
