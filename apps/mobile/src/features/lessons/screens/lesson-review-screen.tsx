@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
 
+import { useUnsavedChangesGuard } from '@/features/decks/hooks/use-unsaved-changes-guard'
 import {
   evictCardCountCache,
   LEARNING_STATS_REFETCH_QUERIES,
@@ -88,6 +89,24 @@ export function LessonReviewScreen() {
       ? `${currentCard.cardId}-${currentCard.presentationMode}-${isRevealed}`
       : '',
   })
+  const { allowLeave } = useUnsavedChangesGuard(
+    Boolean(sessionId && lesson && currentCard),
+    t('lessons.review.leaveTitle'),
+    t('lessons.review.leaveMessage'),
+    () => {
+      const activeSessionId = lesson?.sessionId
+
+      if (activeSessionId) {
+        void abandonLesson({
+          variables: { input: { sessionId: activeSessionId } },
+        }).catch(() => {
+          // Next Start still abandons leftover ACTIVE sessions.
+        })
+      }
+
+      clearActiveLesson()
+    },
+  )
 
   useEffect(() => {
     setIsRevealed(false)
@@ -120,6 +139,7 @@ export function LessonReviewScreen() {
     const activeSessionId = lesson.sessionId
 
     confirmAction(t('lessons.review.leaveTitle'), t('lessons.review.leaveMessage'), () => {
+      allowLeave()
       void (async () => {
         try {
           await abandonLesson({
@@ -158,6 +178,7 @@ export function LessonReviewScreen() {
       scope: lesson.scope ?? 'DECK',
       sessionId: summary.sessionId,
     })
+    allowLeave()
     clearActiveLesson()
     router.replace(
       `/lessons/${sessionId}/summary${summary.deckId ? `?deckId=${summary.deckId}` : ''}`,

@@ -561,7 +561,10 @@ If the user leaves while cards remain:
 - next Start always creates a new session
 ```
 
-Frontend must call `abandonLesson` on confirmed leave.
+Frontend must call `abandonLesson` on confirmed in-app leave.
+
+Web F5 / close uses the browser leave-site dialog (text is not customizable). Unload
+cannot reliably call `abandonLesson`; the next Start still abandons leftover ACTIVE.
 
 Backend also abandons previous ACTIVE sessions when starting a new review session.
 
@@ -693,7 +696,9 @@ Backend also abandons previous ACTIVE sessions when starting a new review sessio
 - TARGET_AUDIO_ONLY: large speaker on the question side; 🔊 replays only; Can’t listen
   is a text action under the card before reveal
 - Swipe hint under the card after reveal; hide after the first few answers
-- Leave review is a secondary text action. SRS, submitReview, and the queue are unchanged
+- Leave review is a secondary text action. Confirm before leaving an active review
+  (Leave review, tab change, web F5/close). Web F5/close uses the browser leave-site dialog.
+  SRS, submitReview, and the queue are unchanged
 ```
 
 ## Review complete UI

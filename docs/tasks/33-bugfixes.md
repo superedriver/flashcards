@@ -67,6 +67,8 @@ Expected state:
    - Product: SOURCE_TEXT never speaks and never shows 🔊 (question or answer)
 6. Lost-review screen is a red ErrorState plus three equal gray buttons
    - Product: same ~480px column as empty/complete/start-error (icon, title, body, one primary, text links)
+7. F5 / tab change during review has no leave confirmation
+   - Product: same guard as unsaved Add Card (web beforeunload + in-app beforeRemove)
 ```
 
 ## Epic Rules
@@ -93,6 +95,7 @@ Expected state:
 33.04 Don't know on steps 0–1 is due immediately
 33.05 Don't auto-speak SOURCE_TEXT after flip
 33.06 Restyle lost-review screen like empty/complete
+33.07 Confirm before leaving review on F5
 (+ append new bugs in discovery order)
 ```
 
@@ -105,6 +108,7 @@ Expected state:
 - [x] TASK-33.04 Don't know on steps 0–1 is due immediately
 - [x] TASK-33.05 Don't auto-speak SOURCE_TEXT after flip
 - [x] TASK-33.06 Restyle lost-review screen like empty/complete
+- [x] TASK-33.07 Confirm before leaving review on F5
 ```
 
 ---
@@ -782,4 +786,109 @@ pnpm docs:lint
 
 ```txt
 TASK-33.06 Restyle lost-review screen like empty/complete
+```
+
+---
+
+# TASK-33.07 Confirm before leaving review on F5
+
+## Status
+
+DONE
+
+## Context
+
+Leave review already confirms. F5 / close during an active review reloaded with no prompt, so the in-memory session disappeared (Review unavailable) without a leave confirmation. Tab changes could also leave without confirm.
+
+## Goal
+
+Block leaving an active review the same way unsaved Add Card does: in-app `beforeRemove` confirm, web `beforeunload` leave-site dialog.
+
+## Related Documents
+
+```txt
+docs/tasks/33-bugfixes.md
+docs/domain/lesson-flow.md
+docs/smoke/lesson-queue.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/screens/lesson-review-screen.tsx
+docs/domain/lesson-flow.md
+docs/smoke/lesson-queue.md
+docs/tasks/33-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. Reuse useUnsavedChangesGuard while sessionId, lesson, and currentCard are present.
+2. Leave review and complete still call allowLeave so they are not double-prompted.
+3. In-app leave after confirm still calls abandonLesson. F5 cannot reliably mutate; next Start abandons leftover ACTIVE.
+4. Update live SoT and smoke. Mark TASK-33.07 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Reuse the existing unsaved-changes guard. Do not persist review state across refresh.
+```
+
+## Implementation Notes
+
+```txt
+- Browser leave-site copy is not customizable.
+```
+
+## Acceptance Criteria
+
+```txt
+- F5 during an active review shows the browser leave dialog; cancel stays on the card.
+- Leave review still confirms once, then returns to the deck.
+- Completing a review still opens summary without a leave prompt.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+1. Start review, F5: browser leave dialog. Cancel stays on the card.
+2. Leave review: one Leave review? confirm, then deck (not summary).
+3. Finish a session: Review complete, no leave dialog.
+```
+
+## Do Not Do
+
+```txt
+- Do not persist the in-memory lesson across F5.
+- Do not try to customize the browser beforeunload string.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-33.07 Confirm before leaving review on F5
 ```

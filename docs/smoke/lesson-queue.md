@@ -57,6 +57,7 @@ Apply `StudySession` snapshot/queueState migration first. Use own decks only; do
 ### Leave and summary
 
 - [ ] Confirmed leave calls `abandonLesson`, does not open summary, and next Start is a new session.
+- [ ] Web F5/close during an active review shows the browser leave-site dialog.
 - [ ] Completing when nothing is showable opens summary; no Cards in this review / Know / Don't know / Known % on that screen.
 - [ ] Empty `/lessons/start` (dueCount 0) shows No cards due, not Start review; Back to deck primary; All decks text.
 
