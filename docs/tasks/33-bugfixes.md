@@ -63,6 +63,8 @@ Expected state:
    - Error UI is the old Start review + gray Retry page
 4. Don't know on steps 0–1 waits 2 minutes before the card is due again
    - Product: dueAt = reviewedAt so it can repeat in the same session (gap unchanged)
+5. SOURCE_TEXT auto-speaks the target after flip
+   - Product: SOURCE_TEXT never speaks and never shows 🔊 (question or answer)
 ```
 
 ## Epic Rules
@@ -87,6 +89,7 @@ Expected state:
 33.02 Add Card success feedback and return-to-deck
 33.03 Fix start review 500 and restyle the error screen
 33.04 Don't know on steps 0–1 is due immediately
+33.05 Don't auto-speak SOURCE_TEXT after flip
 (+ append new bugs in discovery order)
 ```
 
@@ -97,6 +100,7 @@ Expected state:
 - [x] TASK-33.02 Add Card success feedback and return-to-deck
 - [x] TASK-33.03 Fix start review 500 and restyle the error screen
 - [x] TASK-33.04 Don't know on steps 0–1 is due immediately
+- [x] TASK-33.05 Don't auto-speak SOURCE_TEXT after flip
 ```
 
 ---
@@ -562,4 +566,112 @@ pnpm docs:lint
 
 ```txt
 TASK-33.04 Don't know on steps 0–1 is due immediately
+```
+
+---
+
+# TASK-33.05 Don't auto-speak SOURCE_TEXT after flip
+
+## Status
+
+DONE
+
+## Context
+
+`SOURCE_TEXT` showed the source on the question (no TTS) and auto-spoke the target after flip, with 🔊. During smoke the target TTS on the answer side was unwanted: the card is a translation prompt, not a listening task.
+
+## Goal
+
+`SOURCE_TEXT` never auto-speaks and never shows 🔊, on the question or after flip.
+
+## Related Documents
+
+```txt
+docs/tasks/33-bugfixes.md
+docs/architecture.md
+docs/domain/lesson-flow.md
+docs/smoke/review-presentation.md
+docs/release/mvp-smoke-tests.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/lessons/utils/get-review-sides.ts
+docs/architecture.md
+docs/domain/lesson-flow.md
+docs/smoke/review-presentation.md
+docs/release/mvp-smoke-tests.md
+docs/tasks/33-bugfixes.md
+```
+
+## Requirements
+
+```txt
+1. shouldSpeakReviewTarget returns false for SOURCE_TEXT whether revealed or not (same as TARGET_TEXT).
+2. TARGET_TEXT_AUDIO and TARGET_AUDIO_ONLY still auto-speak on the question; 🔊 still shows there.
+3. Update live SoT and smoke. Do not rewrite docs/tasks/done/*.
+4. Mark TASK-33.05 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- Speak stays a client render of presentationMode. Do not change SRS or GraphQL.
+```
+
+## Implementation Notes
+
+```txt
+- 🔊 uses the same helper as auto-speak, so it is hidden for SOURCE_TEXT too.
+```
+
+## Acceptance Criteria
+
+```txt
+- SOURCE_TEXT question: source text, no TTS, no 🔊.
+- SOURCE_TEXT after flip: target text, no TTS, no 🔊.
+- TARGET_TEXT_AUDIO / TARGET_AUDIO_ONLY speak behavior unchanged.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm format:check
+pnpm lint
+pnpm docs:lint
+```
+
+## Manual Checks
+
+```txt
+1. SOURCE_TEXT card: English (source) on the question is silent, no 🔊.
+2. Flip: Spanish (target) appears, no auto-speak, no 🔊.
+```
+
+## Do Not Do
+
+```txt
+- Do not change TARGET_TEXT_AUDIO or TARGET_AUDIO_ONLY speak rules.
+- Do not change presentation-mode mapping or Can’t listen.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-33.05 Don't auto-speak SOURCE_TEXT after flip
 ```

@@ -25,7 +25,6 @@ export function shouldSpeakReviewTarget(input: {
     case 'TARGET_AUDIO_ONLY':
       return !input.isRevealed
     case 'SOURCE_TEXT':
-      return input.isRevealed
     case 'TARGET_TEXT':
       return false
   }

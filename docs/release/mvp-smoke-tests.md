@@ -993,7 +993,7 @@ _(Implementation PASS in TASK-31.13; manual device checklist in `docs/smoke/bulk
 2. Review cards at steps 3–4 and 5–8: confirm the mix of source-text and (on 5–8) audio-only.
 3. Audio-only: large speaker, no target text; 🔊 replays only; tap still flips to source.
 4. Can’t listen: stays on the question; target text appears (`TARGET_TEXT`); Know/Don’t know is not submitted.
-5. After Can’t listen, a later audio-only card in the same session shows as target text; `TARGET_TEXT_AUDIO` / `SOURCE_TEXT` still speak as before.
+5. After Can’t listen, a later audio-only card in the same session shows as target text; `TARGET_TEXT_AUDIO` still speaks on the question; `SOURCE_TEXT` still does not speak.
 6. Start a new session and confirm audio-only can appear again.
 
 **Expected result:**

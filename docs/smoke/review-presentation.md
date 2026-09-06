@@ -45,7 +45,7 @@ Apply the `StudySession.audioOnlyDisabled` migration first. Use an owned deck wi
 ### Speak and 🔊
 
 - [ ] `TARGET_TEXT_AUDIO`: auto-speaks the target on the question; 🔊 replays; no speak after flip.
-- [ ] `SOURCE_TEXT`: no speak/🔊 on the question; after flip, auto-speaks the target and 🔊 appears.
+- [ ] `SOURCE_TEXT`: no speak/🔊 on the question; after flip, target text with no speak and no 🔊.
 - [ ] `TARGET_AUDIO_ONLY`: auto-speaks on the question; 🔊 replays only (does not flip); no speak after flip.
 - [ ] `TARGET_TEXT`: never auto-speaks and never shows 🔊.
 - [ ] A new utterance stops the previous one.
@@ -61,7 +61,7 @@ Apply the `StudySession.audioOnlyDisabled` migration first. Use an owned deck wi
 - [ ] It does not flip, does not submit Know/Don’t know, and does not change learning step or queue.
 - [ ] After success, the same card stays unrevealed and becomes `TARGET_TEXT` (target text appears).
 - [ ] Later `TARGET_AUDIO_ONLY` in this session is returned as `TARGET_TEXT`.
-- [ ] `TARGET_TEXT_AUDIO` and `SOURCE_TEXT` (including speak-after-flip) stay unchanged after the flag is set.
+- [ ] `TARGET_TEXT_AUDIO` still speaks on the question after the flag is set; `SOURCE_TEXT` still never speaks.
 - [ ] A new review session can show audio-only again (`audioOnlyDisabled` defaults false).
 - [ ] TTS/autoplay failure does not auto-call Can’t listen.
 

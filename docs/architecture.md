@@ -673,7 +673,7 @@ Flow:
 5. User taps/clicks the card to reveal the answer side only (fast flip, ~200ms).
 6. Example sentence is shown on the answer side if available.
 7. Speak from presentationMode: TARGET_TEXT_AUDIO and TARGET_AUDIO_ONLY auto-speak on the
-   question; SOURCE_TEXT auto-speaks target after flip; TARGET_TEXT never speaks.
+   question; SOURCE_TEXT and TARGET_TEXT never speak.
    Show 🔊 only when that mode allows replay. Stop previous speech before a new utterance.
    TTS uses expo-speech with the deck targetLanguage (iOS, Android, Web).
    Can’t listen (TARGET_AUDIO_ONLY, question side only) sets session audioOnlyDisabled;

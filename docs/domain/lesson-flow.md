@@ -173,7 +173,7 @@ TARGET_TEXT_AUDIO
 
 SOURCE_TEXT
   Question: source text, no speak, no 🔊.
-  Tap/click card: flip. Answer: target text, auto-speak, 🔊 replay.
+  Tap/click card: flip. Answer: target text, no speak, no 🔊.
 
 TARGET_AUDIO_ONLY
   Question: speaker icon (no target text), auto-speak, 🔊 replay.
@@ -205,7 +205,7 @@ audioOnlyDisabled = true
   TARGET_AUDIO_ONLY → TARGET_TEXT
 ```
 
-The flag disables the listening **task**, not pronunciation help. `TARGET_TEXT_AUDIO` and `SOURCE_TEXT` (including speak-after-flip) stay as they are.
+The flag disables the listening **task**, not pronunciation help. `TARGET_TEXT_AUDIO` still auto-speaks on the question. `SOURCE_TEXT` never speaks (question or answer).
 
 ### Can’t listen
 
@@ -223,9 +223,8 @@ disableAudioOnly(input: { sessionId, cardId }) returns the current LessonCard
 ### Speak (from effective mode only)
 
 ```txt
-Speak only for TARGET_TEXT_AUDIO (question) and TARGET_AUDIO_ONLY (question),
-and for SOURCE_TEXT after flip (target answer).
-TARGET_TEXT: never speak, no 🔊.
+Speak only for TARGET_TEXT_AUDIO (question) and TARGET_AUDIO_ONLY (question).
+SOURCE_TEXT and TARGET_TEXT: never speak, no 🔊.
 Stop previous speech before a new utterance.
 TTS = expo-speech + deck targetLanguage (iOS, Android, Web).
 ```
