@@ -385,12 +385,13 @@ done/29-lesson-queue.md
 done/30-sot-discrepancies.md
 done/31-bulk-card-add.md
 done/32-review-presentation-modes.md
+done/33-bugfixes.md
 ```
 
 Active epics:
 
 ```txt
-33-bugfixes.md
+None
 ```
 
 ---
@@ -930,7 +931,7 @@ Step-based review presentation (text+audio, source recall, audio-only) with a se
 File:
 
 ```txt
-docs/tasks/33-bugfixes.md
+docs/tasks/done/33-bugfixes.md
 ```
 
 Purpose:

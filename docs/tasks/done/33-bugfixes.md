@@ -17,7 +17,7 @@ New bugs found during smoke should be appended here as new TASK-33.XX items (one
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -46,7 +46,7 @@ Expected state:
 ```txt
 - Review presentation modes are on local main
 - Local stack: Postgres + API (:3000) + mobile web (:8081)
-- Manual smoke in progress or blocked by known bugs below
+- TASK-33.01–33.08 done; web smoke after EPIC-32 can proceed
 ```
 
 ## Known Bugs (backlog source)
