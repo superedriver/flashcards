@@ -1011,6 +1011,38 @@ _(Implementation PASS in TASK-32.09; manual device checklist in `docs/smoke/revi
 
 ---
 
+## 37. Account Deletion
+
+**Goal:** Verify Profile Danger zone hard-deletes the account, copies/groups behave as specified, re-register is empty, and `/account-deletion` is explainer-only.
+
+**Detailed checklist:** [docs/smoke/account-deletion.md](../smoke/account-deletion.md)
+
+**Prerequisite:** EPIC-34 implemented. Use a disposable local user, not a shared seed account.
+
+**Steps (web):**
+
+1. On Profile Account, confirm Delete account sits in Danger zone below Log out.
+2. Cancel confirm 1 and confirm 2: stay signed in; account intact.
+3. Complete both confirms: Alert Account deleted, then sign-in.
+4. Register the same email again: new empty account.
+5. After deleting a user who owned a public deck that another user copied: the copy remains; the owner’s group is gone.
+6. Logged out, open `/account-deletion`: read copy, tap CTA → sign-in (no deletion).
+
+**Expected result:**
+
+```txt
+- Two confirms; nothing deleted until deleteAccount succeeds
+- Failure stays signed in; success Alert then local teardown and sign-in
+- Copies owned by others survive; owner groups cascade
+- Public page does not call deleteAccount
+```
+
+**Result:** - [ ] PASS - [ ] FAIL - [ ] N/A
+
+_(Implementation PASS in TASK-34.07; manual web checklist in `docs/smoke/account-deletion.md` remains for QA.)_
+
+---
+
 ## Final Sign-Off
 
 ```txt
