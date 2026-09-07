@@ -40,4 +40,18 @@ export const profileEn = {
   accountDeleted: 'Account deleted',
   deleteAccountError: "Couldn't delete your account. Please try again.",
   deletingAccount: 'Deleting...',
+  accountDeletion: {
+    title: 'Account deletion',
+    intro:
+      'To delete your Flashcards account, you must sign in. This page does not delete anything.',
+    howTitle: 'How to delete',
+    howBody:
+      'Sign in, open Profile, then Account. Tap Delete account. Confirm twice. Nothing is deleted until the second confirm succeeds.',
+    removedTitle: 'What is deleted',
+    removedBody:
+      'Your account, decks, cards, learning progress, groups you created, and history are permanently removed. Copies of your public decks owned by other people stay.',
+    irreversible:
+      'This cannot be undone. The same email can register later as a new empty account.',
+    cta: 'Sign in',
+  },
 } as const
