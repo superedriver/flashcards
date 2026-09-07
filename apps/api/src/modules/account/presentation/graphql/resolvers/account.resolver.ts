@@ -5,6 +5,7 @@ import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/cu
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
 import { UserRole } from '../../../../auth/presentation/graphql/types/user-role.type';
 import { GetMyAccountUseCase } from '../../../application/use-cases/get-my-account.use-case';
+import { DeleteAccountUseCase } from '../../../application/use-cases/delete-account.use-case';
 import { UpdateProfileUseCase } from '../../../application/use-cases/update-profile.use-case';
 import { UpdateSettingsUseCase } from '../../../application/use-cases/update-settings.use-case';
 import { UpdateProfileInput } from '../inputs/update-profile.input';
@@ -20,6 +21,7 @@ export class AccountResolver {
     private readonly getMyAccountUseCase: GetMyAccountUseCase,
     private readonly updateProfileUseCase: UpdateProfileUseCase,
     private readonly updateSettingsUseCase: UpdateSettingsUseCase,
+    private readonly deleteAccountUseCase: DeleteAccountUseCase,
   ) {}
 
   @Query(() => MyAccountType)
@@ -77,5 +79,13 @@ export class AccountResolver {
       ...settings,
       themePreference: settings.themePreference as ThemePreference,
     };
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async deleteAccount(@CurrentUser() user: AuthUser): Promise<boolean> {
+    await this.deleteAccountUseCase.execute({ userId: user.id });
+
+    return true;
   }
 }

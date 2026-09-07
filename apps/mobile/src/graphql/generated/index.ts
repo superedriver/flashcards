@@ -567,6 +567,7 @@ export type Mutation = {
   createDeck: CreateDeckPayload
   createGroup: Group
   declineGroupInvitation: GroupInvitation
+  deleteAccount: Scalars['Boolean']['output']
   deleteCard: Scalars['Boolean']['output']
   deleteDeck: Scalars['Boolean']['output']
   disableAudioOnly: LessonCard
@@ -2378,6 +2379,10 @@ export type ProfileMeQuery = {
     updatedAt: any
   }
 }
+
+export type DeleteAccountMutationVariables = Exact<{ [key: string]: never }>
+
+export type DeleteAccountMutation = { __typename?: 'Mutation'; deleteAccount: boolean }
 
 export type PublicDecksQueryVariables = Exact<{
   input?: InputMaybe<PublicDecksInput>
@@ -6304,6 +6309,47 @@ export type ProfileMeQueryHookResult = ReturnType<typeof useProfileMeQuery>
 export type ProfileMeLazyQueryHookResult = ReturnType<typeof useProfileMeLazyQuery>
 export type ProfileMeSuspenseQueryHookResult = ReturnType<typeof useProfileMeSuspenseQuery>
 export type ProfileMeQueryResult = Apollo.QueryResult<ProfileMeQuery, ProfileMeQueryVariables>
+export const DeleteAccountDocument = gql`
+  mutation DeleteAccount {
+    deleteAccount
+  }
+`
+export type DeleteAccountMutationFn = Apollo.MutationFunction<
+  DeleteAccountMutation,
+  DeleteAccountMutationVariables
+>
+
+/**
+ * __useDeleteAccountMutation__
+ *
+ * To run a mutation, you first call `useDeleteAccountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAccountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAccountMutation, { data, loading, error }] = useDeleteAccountMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDeleteAccountMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteAccountMutation, DeleteAccountMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeleteAccountMutation, DeleteAccountMutationVariables>(
+    DeleteAccountDocument,
+    options,
+  )
+}
+export type DeleteAccountMutationHookResult = ReturnType<typeof useDeleteAccountMutation>
+export type DeleteAccountMutationResult = Apollo.MutationResult<DeleteAccountMutation>
+export type DeleteAccountMutationOptions = Apollo.BaseMutationOptions<
+  DeleteAccountMutation,
+  DeleteAccountMutationVariables
+>
 export const PublicDecksDocument = gql`
   query PublicDecks($input: PublicDecksInput) {
     publicDecks(input: $input) {

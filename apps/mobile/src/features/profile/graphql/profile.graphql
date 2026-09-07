@@ -9,3 +9,7 @@ query ProfileMe {
     updatedAt
   }
 }
+
+mutation DeleteAccount {
+  deleteAccount
+}
