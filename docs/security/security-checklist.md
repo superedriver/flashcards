@@ -322,6 +322,7 @@ submitReview
 disableAudioOnly
 completeLesson
 createGroup
+deleteAccount
 admin operations
 ```
 
@@ -451,6 +452,31 @@ Exposed as authenticated GraphQL query checkCardDuplicates.
 This operation must not create cards. Duplicate enforcement on save remains createCard.
 
 CSV import security in the previous section is unchanged.
+
+## Account Deletion Security
+
+Live source of truth:
+
+```txt
+docs/domain/account-deletion.md
+docs/domain/permissions.md
+```
+
+deleteAccount must:
+
+```txt
+- require authentication
+- reject blocked users
+- delete only the authenticated caller (currentUser.id)
+- not accept a password
+- not accept an OAuth token
+- not require typing DELETE
+- not log access tokens, refresh tokens, or password hashes
+```
+
+Hard-delete is the end state (no User row). Do not treat User.deletedAt as deleted.
+
+Do not send a deletion email. Failed mutation must not log the user out.
 
 ## AI Security
 
@@ -820,6 +846,9 @@ Security-related tests should cover:
 - USER cannot access admin operations
 - MODERATOR cannot block users
 - internal job rejects invalid secret
+- deleteAccount requires authentication
+- blocked user cannot deleteAccount
+- deleteAccount does not accept a password
 ```
 
 ## Cursor Implementation Rules
@@ -837,6 +866,7 @@ admin features
 CSV import
 AI examples
 notifications
+account deletion
 deployment
 GitHub Actions
 release checklist

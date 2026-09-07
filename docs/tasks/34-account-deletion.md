@@ -216,7 +216,7 @@ All new UI strings en and uk, in the task that introduces them.
 ## Epic Summary
 
 ```md
-- [ ] TASK-34.01 Add live account-deletion source of truth
+- [x] TASK-34.01 Add live account-deletion source of truth
 - [ ] TASK-34.02 Add DeleteAccountUseCase
 - [ ] TASK-34.03 Add deleteAccount GraphQL mutation
 - [ ] TASK-34.04 No-op due-card reminders when the user is gone
@@ -231,7 +231,7 @@ All new UI strings en and uk, in the task that introduces them.
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

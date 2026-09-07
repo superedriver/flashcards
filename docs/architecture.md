@@ -554,6 +554,9 @@ When a user copies a public or group-shared deck:
   - future changes to the source deck do not update the copy
 ```
 
+If the source-deck owner deletes their account, copies owned by other users stay.
+`sourceDeckId` is a string, not an FK; do not null or rewrite it. See section 23.
+
 ---
 
 ## 12. Permission Model
@@ -1008,7 +1011,6 @@ Future security improvements:
 Admin 2FA
 User session management
 Account export
-Account deletion
 Deck report workflow
 Advanced abuse detection
 Web Application Firewall
@@ -1016,7 +1018,28 @@ Web Application Firewall
 
 ---
 
-## 23. Apollo Client Notes
+## 23. Account Deletion
+
+Live source of truth:
+
+```txt
+docs/domain/account-deletion.md
+```
+
+```txt
+Delete account is a Profile Account Danger zone below Log out.
+No separate Settings screen.
+Two confirms, then authenticated deleteAccount.
+Hard-delete the User row; owned rows and owner groups cascade.
+Copies owned by other users survive; do not rewrite sourceDeckId.
+No OAuth revoke or file-store cleanup jobs in v1.
+Success: Alert "Account deleted", then local logout teardown, then sign-in.
+Failure: stay logged in; "Couldn't delete your account. Please try again."
+```
+
+---
+
+## 24. Apollo Client Notes
 
 The frontend uses Apollo Client.
 
@@ -1061,7 +1084,7 @@ StudySession
 
 ---
 
-## 24. MVP Scope
+## 25. MVP Scope
 
 MVP includes:
 
@@ -1117,7 +1140,7 @@ Complex moderation workflow
 
 ---
 
-## 25. Development Order
+## 26. Development Order
 
 Recommended development order:
 
@@ -1146,7 +1169,7 @@ Recommended development order:
 
 ---
 
-## 26. First Milestone
+## 27. First Milestone
 
 The first milestone should be:
 

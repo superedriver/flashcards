@@ -21,6 +21,8 @@ docs/tasks/done/12-admin-analytics.md
 docs/tasks/done/15-frontend-decks-cards.md
 docs/tasks/done/16-frontend-lessons.md
 docs/tasks/done/19-frontend-groups-admin.md
+docs/tasks/34-account-deletion.md
+docs/domain/account-deletion.md
 ```
 
 ## Core Principles
@@ -60,6 +62,7 @@ Can:
 - browse group-shared decks (copy required to study)
 - create groups
 - accept/decline own group invitations
+- delete own account
 ```
 
 Cannot:
@@ -153,6 +156,7 @@ Blocked users must not be able to:
 - study decks
 - create groups
 - accept invitations
+- delete their account
 ```
 
 If a user is blocked while already logged in:
@@ -162,6 +166,37 @@ If a user is blocked while already logged in:
 - protected operations should reject when user is loaded
 - existing access token may expire naturally if no DB check is performed per request
 ```
+
+## Account Deletion Permissions
+
+Source of truth: `docs/domain/account-deletion.md`.
+
+`deleteAccount` is an authenticated GraphQL mutation.
+
+Who can call it:
+
+```txt
+Any valid authenticated session, including ADMIN and MODERATOR deleting themselves.
+The operation always deletes currentUser.id only.
+```
+
+Who cannot:
+
+```txt
+Unauthenticated callers
+Blocked users (existing auth rejects protected operations)
+```
+
+The mutation must not:
+
+```txt
+- accept a password
+- accept an OAuth token
+- require typing DELETE
+- delete a different user id than the authenticated caller
+```
+
+Frontend Delete account visibility is UX only. Backend is the source of truth.
 
 ## Deck Permissions
 
@@ -823,6 +858,9 @@ Permission tests should cover:
 - MODERATOR can moderate deck
 - MODERATOR cannot set official deck
 - USER cannot access admin operations
+- authenticated user can delete own account
+- unauthenticated cannot deleteAccount
+- blocked user cannot deleteAccount
 ```
 
 ## Cursor Implementation Rules
@@ -837,6 +875,7 @@ CSV import permissions
 AI example permissions
 group permissions
 admin permissions
+account deletion permissions
 frontend role visibility
 ```
 
