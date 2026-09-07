@@ -217,7 +217,7 @@ All new UI strings en and uk, in the task that introduces them.
 
 ```md
 - [x] TASK-34.01 Add live account-deletion source of truth
-- [ ] TASK-34.02 Add DeleteAccountUseCase
+- [x] TASK-34.02 Add DeleteAccountUseCase
 - [ ] TASK-34.03 Add deleteAccount GraphQL mutation
 - [ ] TASK-34.04 No-op due-card reminders when the user is gone
 - [ ] TASK-34.05 Add Profile delete-account Danger zone
@@ -338,7 +338,7 @@ TASK-34.01 Add live account-deletion source of truth
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

@@ -55,4 +55,10 @@ export class PrismaUserRepository implements UserRepositoryPort {
       data: { passwordHash },
     });
   }
+
+  async deleteById(userId: string): Promise<void> {
+    await this.prisma.user.delete({
+      where: { id: userId },
+    });
+  }
 }

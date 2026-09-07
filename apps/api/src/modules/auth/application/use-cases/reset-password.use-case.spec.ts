@@ -36,6 +36,7 @@ function createUseCase(options?: { resetToken?: typeof resetToken | null }) {
       create: jest.fn(),
       markEmailVerified: jest.fn(),
       updatePasswordHash,
+      deleteById: jest.fn(),
     },
     { hash: hashPassword, verify: jest.fn() },
     {

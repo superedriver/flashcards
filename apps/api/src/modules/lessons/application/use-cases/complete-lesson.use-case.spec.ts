@@ -82,6 +82,7 @@ function createUseCase(options?: {
       create: jest.fn(),
       markEmailVerified: jest.fn(),
       updatePasswordHash: jest.fn(),
+      deleteById: jest.fn(),
     },
     {
       findById: jest.fn(),

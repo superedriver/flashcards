@@ -65,6 +65,7 @@ function createUseCase(options?: { user?: SafeUser | null }) {
       create: jest.fn(),
       markEmailVerified: jest.fn(),
       updatePasswordHash: jest.fn(),
+      deleteById: jest.fn(),
     },
     {
       moderationQueue,

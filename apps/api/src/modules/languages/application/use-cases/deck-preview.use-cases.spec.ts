@@ -92,6 +92,7 @@ describe('Deck preview use cases lifecycle', () => {
         create: jest.fn(),
         markEmailVerified: jest.fn(),
         updatePasswordHash: jest.fn(),
+        deleteById: jest.fn(),
       },
       {
         create: jest.fn(),
@@ -181,6 +182,7 @@ describe('Deck preview use cases lifecycle', () => {
         create: jest.fn(),
         markEmailVerified: jest.fn(),
         updatePasswordHash: jest.fn(),
+        deleteById: jest.fn(),
       },
       {
         create: jest.fn(),
@@ -261,6 +263,7 @@ describe('Deck preview use cases lifecycle', () => {
         create: jest.fn(),
         markEmailVerified: jest.fn(),
         updatePasswordHash: jest.fn(),
+        deleteById: jest.fn(),
       },
       {
         create: jest.fn(),
@@ -328,6 +331,7 @@ describe('Deck preview use cases lifecycle', () => {
         create: jest.fn(),
         markEmailVerified: jest.fn(),
         updatePasswordHash: jest.fn(),
+        deleteById: jest.fn(),
       },
       {
         create: jest.fn(),
@@ -425,6 +429,7 @@ describe('Deck preview use cases lifecycle', () => {
         create: jest.fn(),
         markEmailVerified: jest.fn(),
         updatePasswordHash: jest.fn(),
+        deleteById: jest.fn(),
       },
       {
         create: jest.fn(),
@@ -515,6 +520,7 @@ describe('Deck preview use cases lifecycle', () => {
         create: jest.fn(),
         markEmailVerified: jest.fn(),
         updatePasswordHash: jest.fn(),
+        deleteById: jest.fn(),
       },
       {
         create: jest.fn(),
@@ -534,6 +540,7 @@ describe('Deck preview use cases lifecycle', () => {
         create: jest.fn(),
         markEmailVerified: jest.fn(),
         updatePasswordHash: jest.fn(),
+        deleteById: jest.fn(),
       },
       {
         create: jest.fn(),

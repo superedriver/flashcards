@@ -49,6 +49,7 @@ function createUseCase(options?: {
       create: jest.fn(),
       markEmailVerified,
       updatePasswordHash: jest.fn(),
+      deleteById: jest.fn(),
     },
   );
 

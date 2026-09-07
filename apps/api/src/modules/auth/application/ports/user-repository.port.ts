@@ -17,4 +17,5 @@ export type UserRepositoryPort = {
   create(input: CreateUserInput): Promise<SafeUser>;
   markEmailVerified(userId: string, verifiedAt: Date): Promise<SafeUser>;
   updatePasswordHash(userId: string, passwordHash: string): Promise<void>;
+  deleteById(userId: string): Promise<void>;
 };
