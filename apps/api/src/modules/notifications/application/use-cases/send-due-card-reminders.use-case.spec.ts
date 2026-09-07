@@ -1,4 +1,5 @@
 import { UserSettings } from '../../../account/domain/types';
+import { SafeUser } from '../../../auth/domain/types';
 import { PushToken } from '../../domain/types';
 import { SendDueCardRemindersUseCase } from './send-due-card-reminders.use-case';
 
@@ -49,6 +50,7 @@ function createPushToken(
 
 function createUseCase(options?: {
   settings?: UserSettings[];
+  missingUserIds?: string[];
   dueCounts?: Record<string, number>;
   pushTokens?: PushToken[];
   sendResult?: {
@@ -60,6 +62,24 @@ function createUseCase(options?: {
   const findWithNotificationsEnabled = jest
     .fn()
     .mockResolvedValue(options?.settings ?? []);
+  const missingUserIds = new Set(options?.missingUserIds ?? []);
+  const findById = jest.fn().mockImplementation((userId: string) => {
+    if (missingUserIds.has(userId)) {
+      return Promise.resolve(null);
+    }
+
+    const user: SafeUser = {
+      id: userId,
+      email: `${userId}@example.com`,
+      role: 'USER',
+      emailVerifiedAt: null,
+      blockedAt: null,
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+    };
+
+    return Promise.resolve(user);
+  });
   const countDueForUser = jest
     .fn()
     .mockImplementation(({ userId }: { userId: string }) =>
@@ -79,6 +99,14 @@ function createUseCase(options?: {
   );
 
   const useCase = new SendDueCardRemindersUseCase(
+    {
+      findById,
+      findByEmail: jest.fn(),
+      create: jest.fn(),
+      markEmailVerified: jest.fn(),
+      updatePasswordHash: jest.fn(),
+      deleteById: jest.fn(),
+    },
     {
       findByUserId: jest.fn(),
       createForUser: jest.fn(),
@@ -322,5 +350,44 @@ describe('SendDueCardRemindersUseCase', () => {
       sentMessages: 0,
       failedMessages: 1,
     });
+  });
+
+  it('skips missing users and still completes the job', async () => {
+    const existingToken = createPushToken({ userId: 'user-1' });
+    const goneToken = createPushToken({ userId: 'user-gone' });
+    const { useCase, send, countDueForUser, findActiveForUsers } =
+      createUseCase({
+        settings: [
+          createUserSettings({ userId: 'user-1' }),
+          createUserSettings({ userId: 'user-gone' }),
+        ],
+        missingUserIds: ['user-gone'],
+        dueCounts: { 'user-1': 2, 'user-gone': 4 },
+        pushTokens: [existingToken, goneToken],
+        sendResult: { successCount: 1, failureCount: 0, invalidTokens: [] },
+      });
+
+    const result = await useCase.execute({ now });
+
+    expect(result).toEqual({
+      checkedUsers: 2,
+      notifiedUsers: 1,
+      sentMessages: 1,
+      failedMessages: 0,
+    });
+    expect(countDueForUser).toHaveBeenCalledTimes(1);
+    expect(countDueForUser).toHaveBeenCalledWith({
+      userId: 'user-1',
+      now,
+    });
+    expect(findActiveForUsers).toHaveBeenCalledWith(['user-1']);
+    expect(send).toHaveBeenCalledWith([
+      {
+        to: existingToken.token,
+        title: 'Time to review',
+        body: 'You have cards due for review.',
+        data: { type: 'DUE_CARDS_REMINDER' },
+      },
+    ]);
   });
 });

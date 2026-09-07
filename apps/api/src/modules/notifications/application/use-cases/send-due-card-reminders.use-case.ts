@@ -5,6 +5,10 @@ import {
 } from '../../../account/application/ports/user-settings-repository.port';
 import { UserSettings } from '../../../account/domain/types';
 import {
+  USER_REPOSITORY,
+  UserRepositoryPort,
+} from '../../../auth/application/ports/user-repository.port';
+import {
   CARD_REVIEW_STATE_REPOSITORY,
   CardReviewStateRepositoryPort,
 } from '../../../lessons/application/ports/card-review-state-repository.port';
@@ -33,6 +37,8 @@ export type SendDueCardRemindersUseCaseResult = {
 @Injectable()
 export class SendDueCardRemindersUseCase {
   constructor(
+    @Inject(USER_REPOSITORY)
+    private readonly userRepository: UserRepositoryPort,
     @Inject(USER_SETTINGS_REPOSITORY)
     private readonly userSettingsRepository: UserSettingsRepositoryPort,
     @Inject(CARD_REVIEW_STATE_REPOSITORY)
@@ -59,6 +65,12 @@ export class SendDueCardRemindersUseCase {
     const userIdsToNotify: string[] = [];
 
     for (const setting of reminderSettings) {
+      const user = await this.userRepository.findById(setting.userId);
+
+      if (!user) {
+        continue;
+      }
+
       const dueCount = await this.cardReviewStateRepository.countDueForUser({
         userId: setting.userId,
         now: input.now,
