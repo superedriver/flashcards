@@ -391,7 +391,7 @@ done/33-bugfixes.md
 Active epics:
 
 ```txt
-None
+34-account-deletion.md
 ```
 
 ---
@@ -938,6 +938,22 @@ Purpose:
 
 ```txt
 Fix bugs found during local smoke after EPIC-32 (navigation, review UI); append one task per bug.
+```
+
+---
+
+### 34 Account Deletion
+
+File:
+
+```txt
+docs/tasks/34-account-deletion.md
+```
+
+Purpose:
+
+```txt
+Immediate irreversible self-serve account deletion from Profile; hard-delete User; public explainer page.
 ```
 
 ---
