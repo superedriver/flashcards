@@ -29,4 +29,16 @@ export const profileUk = {
   userManagement: 'Керування користувачами',
   moderationQueue: 'Черга модерації',
   logOut: 'Вийти',
+  dangerZone: 'Небезпечна зона',
+  deleteAccount: 'Видалити акаунт',
+  deleteAccountConfirmTitle: 'Видалити акаунт?',
+  deleteAccountConfirmMessage: 'Ви впевнені, що хочете видалити акаунт?',
+  deleteAccountContinue: 'Продовжити',
+  deleteAccountPermanentTitle: 'Видалити акаунт назавжди?',
+  deleteAccountPermanentMessage:
+    'Ваш акаунт, колоди, картки, прогрес навчання, групи та історія будуть видалені назавжди. Цю дію не можна скасувати.',
+  deleteAccountPermanentAction: 'Видалити акаунт назавжди',
+  accountDeleted: 'Акаунт видалено',
+  deleteAccountError: 'Не вдалося видалити акаунт. Спробуйте ще раз.',
+  deletingAccount: 'Видалення...',
 } as const

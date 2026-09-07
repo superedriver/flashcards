@@ -1,1 +1,1 @@
-export {}
+export { useDeleteAccount } from './use-delete-account'

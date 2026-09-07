@@ -220,7 +220,7 @@ All new UI strings en and uk, in the task that introduces them.
 - [x] TASK-34.02 Add DeleteAccountUseCase
 - [x] TASK-34.03 Add deleteAccount GraphQL mutation
 - [x] TASK-34.04 No-op due-card reminders when the user is gone
-- [ ] TASK-34.05 Add Profile delete-account Danger zone
+- [x] TASK-34.05 Add Profile delete-account Danger zone
 - [ ] TASK-34.06 Add public account-deletion page
 - [ ] TASK-34.07 Add account-deletion smoke checks
 ```
@@ -662,7 +662,7 @@ TASK-34.04 No-op due-card reminders when the user is gone
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

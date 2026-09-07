@@ -28,4 +28,16 @@ export const profileEn = {
   userManagement: 'User Management',
   moderationQueue: 'Moderation Queue',
   logOut: 'Log out',
+  dangerZone: 'Danger zone',
+  deleteAccount: 'Delete account',
+  deleteAccountConfirmTitle: 'Delete account?',
+  deleteAccountConfirmMessage: 'Are you sure you want to delete your account?',
+  deleteAccountContinue: 'Continue',
+  deleteAccountPermanentTitle: 'Delete account permanently?',
+  deleteAccountPermanentMessage:
+    'Your account, decks, cards, learning progress, groups, and history will be permanently deleted. This action cannot be undone.',
+  deleteAccountPermanentAction: 'Delete account permanently',
+  accountDeleted: 'Account deleted',
+  deleteAccountError: "Couldn't delete your account. Please try again.",
+  deletingAccount: 'Deleting...',
 } as const

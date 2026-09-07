@@ -6,11 +6,13 @@ import { useAuth } from '@/features/auth/hooks/use-auth'
 import { useLogout } from '@/features/auth/hooks/use-logout'
 import { NotificationSettingsCard } from '@/features/notifications/components/notification-settings-card'
 import { ProfileCard } from '@/features/profile/components/profile-card'
+import { useDeleteAccount } from '@/features/profile/hooks/use-delete-account'
 import { SettingsNavRow } from '@/features/settings/components/settings-nav-row'
 import { UserSettingsForm } from '@/features/settings/components/user-settings-form'
 import { useProfileMeQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
+import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
 
 const PROFILE_GROUPS_ENABLED = false
 
@@ -18,6 +20,11 @@ export function ProfileScreen() {
   const { t } = useTranslation()
   const router = useRouter()
   const logout = useLogout()
+  const {
+    error: deleteAccountError,
+    loading: isDeletingAccount,
+    requestDelete,
+  } = useDeleteAccount()
   const { user: authUser } = useAuth()
   const { data, error, loading, refetch } = useProfileMeQuery()
 
@@ -87,6 +94,49 @@ export function ProfileScreen() {
                 {t('profile.logOut')}
               </AppText>
             </Pressable>
+            <View
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#fdecea',
+                borderColor: '#f5c2c7',
+                borderRadius: 8,
+                borderWidth: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingHorizontal: 12,
+                paddingVertical: 10,
+              }}
+            >
+              <AppText
+                style={{
+                  color: '#b00020',
+                  flex: 1,
+                  fontSize: 14,
+                  fontWeight: '600',
+                  paddingRight: 8,
+                }}
+              >
+                {t('profile.dangerZone')}
+              </AppText>
+              <Pressable
+                {...destructiveButtonA11yProps(t('profile.deleteAccount'))}
+                disabled={isDeletingAccount}
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: '#b00020',
+                  borderRadius: 8,
+                  opacity: isDeletingAccount ? 0.6 : 1,
+                  paddingHorizontal: 12,
+                  paddingVertical: 8,
+                }}
+                onPress={() => void requestDelete()}
+              >
+                <AppText style={{ color: '#ffffff', fontSize: 14, fontWeight: '600' }}>
+                  {isDeletingAccount ? t('profile.deletingAccount') : t('profile.deleteAccount')}
+                </AppText>
+              </Pressable>
+            </View>
+            {deleteAccountError ? <ErrorState message={deleteAccountError} /> : null}
           </View>
         </View>
       ) : null}
