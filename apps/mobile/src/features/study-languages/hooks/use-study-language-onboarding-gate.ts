@@ -11,14 +11,23 @@ export type StudyLanguageOnboardingGateResult =
 export function useStudyLanguageOnboardingGate(
   mode: 'protected' | 'onboarding' = 'protected',
 ): StudyLanguageOnboardingGateResult {
-  const { isAuthenticated, isBootstrapping } = useAuth()
+  const { isAuthenticated, isBootstrapping, user } = useAuth()
   const { loading, needsStudyLanguageOnboarding } = useStudyLanguageContext()
+  const isBlocked = Boolean(user?.blockedAt)
 
-  if (isBootstrapping || (isAuthenticated && loading)) {
+  if (isBootstrapping || (isAuthenticated && loading && !isBlocked)) {
     return { status: 'loading' }
   }
 
   if (!isAuthenticated) {
+    return { status: 'ready' }
+  }
+
+  if (isBlocked) {
+    if (mode === 'onboarding') {
+      return { status: 'redirect', href: '/(tabs)/profile' }
+    }
+
     return { status: 'ready' }
   }
 

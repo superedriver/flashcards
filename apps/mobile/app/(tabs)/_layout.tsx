@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { Redirect, Tabs, router } from 'expo-router'
 import { useTranslation } from 'react-i18next'
 
+import { useAuth } from '@/features/auth/hooks/use-auth'
 import { useAuthGate } from '@/features/auth/hooks/use-auth-gate'
 import { StudyLanguageSelector } from '@/features/study-languages/components/study-language-selector'
 import { useStudyLanguageOnboardingGate } from '@/features/study-languages/hooks/use-study-language-onboarding-gate'
@@ -29,8 +30,10 @@ function TabBarIcon({
 
 export default function TabsLayout() {
   const { t } = useTranslation()
+  const { user } = useAuth()
   const gate = useAuthGate('protected')
   const onboardingGate = useStudyLanguageOnboardingGate('protected')
+  const isBlocked = Boolean(user?.blockedAt)
 
   if (gate.status === 'loading' || onboardingGate.status === 'loading') {
     return (
@@ -53,7 +56,7 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: true,
         headerTitleAlign: 'center',
-        headerTitle: () => <StudyLanguageSelector />,
+        headerTitle: isBlocked ? t('common.tabs.profile') : () => <StudyLanguageSelector />,
         tabBarActiveTintColor: '#1976d2',
         tabBarInactiveTintColor: '#666666',
       }}
@@ -62,6 +65,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           headerShown: false,
+          href: isBlocked ? null : undefined,
           title: t('common.tabs.home'),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="home" outlineName="home-outline" />
@@ -78,6 +82,7 @@ export default function TabsLayout() {
           },
         }}
         options={{
+          href: isBlocked ? null : undefined,
           title: t('common.tabs.decks'),
           tabBarIcon: ({ focused }) => (
             <TabBarIcon focused={focused} name="albums" outlineName="albums-outline" />

@@ -1,5 +1,11 @@
 import type { AuthUser } from '@/features/auth/types/auth-user'
 
-export function getPostAuthRedirectHref(user: AuthUser): '/(auth)/verify-email-prompt' | '/(tabs)' {
+export function getPostAuthRedirectHref(
+  user: AuthUser,
+): '/(auth)/verify-email-prompt' | '/(tabs)' | '/(tabs)/profile' {
+  if (user.blockedAt) {
+    return '/(tabs)/profile'
+  }
+
   return user.emailVerifiedAt ? '/(tabs)' : '/(auth)/verify-email-prompt'
 }

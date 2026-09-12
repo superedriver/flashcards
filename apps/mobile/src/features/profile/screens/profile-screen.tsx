@@ -29,8 +29,9 @@ export function ProfileScreen() {
   const { data, error, loading, refetch } = useProfileMeQuery()
 
   const user = data?.me
-  const isAdmin = authUser?.role === 'ADMIN'
-  const isModerator = authUser?.role === 'MODERATOR'
+  const isBlocked = Boolean(user?.blockedAt ?? authUser?.blockedAt)
+  const isAdmin = !isBlocked && authUser?.role === 'ADMIN'
+  const isModerator = !isBlocked && authUser?.role === 'MODERATOR'
 
   return (
     <Screen scrollable>
@@ -45,22 +46,24 @@ export function ProfileScreen() {
         <View style={{ gap: 20 }}>
           <ProfileCard user={user} />
 
-          <View style={{ flexDirection: 'row', gap: 12 }}>
-            <View style={{ flex: 1, minWidth: 0 }}>
-              <SettingsNavRow
-                disabled={!PROFILE_GROUPS_ENABLED}
-                label={t('profile.myGroups')}
-                onPress={() => router.push('/groups')}
-              />
+          {isBlocked ? null : (
+            <View style={{ flexDirection: 'row', gap: 12 }}>
+              <View style={{ flex: 1, minWidth: 0 }}>
+                <SettingsNavRow
+                  disabled={!PROFILE_GROUPS_ENABLED}
+                  label={t('profile.myGroups')}
+                  onPress={() => router.push('/groups')}
+                />
+              </View>
+              <View style={{ flex: 1, minWidth: 0 }}>
+                <SettingsNavRow
+                  disabled={!PROFILE_GROUPS_ENABLED}
+                  label={t('profile.groupInvitations')}
+                  onPress={() => router.push('/groups/invitations')}
+                />
+              </View>
             </View>
-            <View style={{ flex: 1, minWidth: 0 }}>
-              <SettingsNavRow
-                disabled={!PROFILE_GROUPS_ENABLED}
-                label={t('profile.groupInvitations')}
-                onPress={() => router.push('/groups/invitations')}
-              />
-            </View>
-          </View>
+          )}
 
           {(isAdmin || isModerator) && (
             <View style={{ gap: 8 }}>
@@ -83,7 +86,7 @@ export function ProfileScreen() {
             </View>
           )}
 
-          <UserSettingsForm notificationsSlot={<NotificationSettingsCard />} />
+          {isBlocked ? null : <UserSettingsForm notificationsSlot={<NotificationSettingsCard />} />}
 
           <View style={{ gap: 8 }}>
             <AppText accessibilityRole="header" style={{ fontSize: 18, fontWeight: '700' }}>

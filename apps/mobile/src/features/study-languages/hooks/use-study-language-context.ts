@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { useAuth } from '@/features/auth/hooks/use-auth'
 import {
   useMyStudyLanguagesQuery,
   useSetActiveTargetLanguageMutation,
@@ -12,12 +13,15 @@ import {
 } from '../storage/active-target-language-storage'
 
 export function useStudyLanguageContext() {
+  const { user } = useAuth()
+  const skipStudyLanguages = Boolean(user?.blockedAt)
+
   const {
     data: studyLanguagesData,
     loading: studyLanguagesLoading,
     error: studyLanguagesError,
     refetch: refetchStudyLanguages,
-  } = useMyStudyLanguagesQuery()
+  } = useMyStudyLanguagesQuery({ skip: skipStudyLanguages })
 
   const {
     data: bootstrapData,
@@ -100,7 +104,8 @@ export function useStudyLanguageContext() {
     activeLanguage,
     activeTargetLanguage,
     error: studyLanguagesError ?? bootstrapError ?? null,
-    loading: studyLanguagesLoading || bootstrapLoading || !persistedReady,
+    loading:
+      (skipStudyLanguages ? false : studyLanguagesLoading) || bootstrapLoading || !persistedReady,
     nativeLanguage,
     needsStudyLanguageOnboarding,
     refetch,

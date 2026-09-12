@@ -1,4 +1,5 @@
 import type { Href } from 'expo-router'
+import { usePathname } from 'expo-router'
 
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import { getPostAuthRedirectHref } from '@/features/auth/utils/get-post-auth-redirect'
@@ -12,6 +13,7 @@ export type AuthGateResult =
 
 export function useAuthGate(mode: AuthGateMode): AuthGateResult {
   const { isAuthenticated, isBootstrapping, user } = useAuth()
+  const pathname = usePathname()
 
   if (isBootstrapping) {
     return { status: 'loading' }
@@ -37,5 +39,13 @@ export function useAuthGate(mode: AuthGateMode): AuthGateResult {
     return { status: 'redirect', href: '/(auth)/sign-in' }
   }
 
+  if (user?.blockedAt && !isProfilePath(pathname)) {
+    return { status: 'redirect', href: '/(tabs)/profile' }
+  }
+
   return { status: 'ready' }
+}
+
+function isProfilePath(pathname: string): boolean {
+  return /(^|\/)profile\/?$/.test(pathname)
 }
