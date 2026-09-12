@@ -188,7 +188,7 @@ export class PrismaDeckRepository implements DeckRepositoryPort {
     const deck = await this.prisma.deck.create({
       data: {
         ownerId: input.ownerId,
-        sourceDeckId: input.sourceDeckId,
+        sourceDeckId: null,
         title: input.title,
         description: input.description ?? null,
         targetLanguage: input.targetLanguage ?? null,

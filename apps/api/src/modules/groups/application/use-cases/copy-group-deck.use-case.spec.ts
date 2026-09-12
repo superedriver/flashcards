@@ -59,7 +59,7 @@ function createUseCase(options?: {
     ...sourceDeck,
     id: 'copied-1',
     ownerId: currentUser.id,
-    sourceDeckId: sourceDeck.id,
+    sourceDeckId: null,
   });
   const createMany = jest.fn().mockResolvedValue([
     {
@@ -107,6 +107,7 @@ function createUseCase(options?: {
       softDelete: jest.fn(),
       softDeleteByDeckId: jest.fn(),
       countByDeckId: jest.fn(),
+      findLiveDuplicatesForOwner: jest.fn(),
       createMany,
     },
     {
@@ -160,7 +161,6 @@ describe('CopyGroupDeckUseCase', () => {
 
     expect(createCopiedDeck).toHaveBeenCalledWith({
       ownerId: 'user-1',
-      sourceDeckId: 'deck-1',
       title: 'Shared Spanish',
       description: null,
       targetLanguage: 'es',

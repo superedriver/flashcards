@@ -215,7 +215,7 @@ All new UI strings en and uk, in the task that introduces them.
 - [x] TASK-35.06 Reject access tokens whose user no longer exists
 - [x] TASK-35.07 Limit blocked users to Profile and delete
 - [x] TASK-35.08 Clear cookie, push token, and treat lost delete as success
-- [ ] TASK-35.09 Stop storing sourceDeckId on finalized copies
+- [x] TASK-35.09 Stop storing sourceDeckId on finalized copies
 - [ ] TASK-35.10 Update account-deletion smoke checks
 ```
 
@@ -1079,7 +1079,7 @@ TASK-35.08 Clear cookie, push token, and treat lost delete as success
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

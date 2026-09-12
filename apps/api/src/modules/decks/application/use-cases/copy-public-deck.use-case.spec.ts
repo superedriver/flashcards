@@ -77,7 +77,7 @@ function createUseCase(options?: {
     visibility: 'PRIVATE',
     moderationStatus: 'NONE',
     isOfficial: false,
-    sourceDeckId: sourceDeck.id,
+    sourceDeckId: null,
     targetLanguage: null,
     sourceLanguage: null,
     createdAt: new Date('2026-01-02T00:00:00.000Z'),
@@ -91,7 +91,7 @@ function createUseCase(options?: {
       Promise.resolve({
         ...copiedDeck,
         ownerId: input.ownerId,
-        sourceDeckId: input.sourceDeckId,
+        sourceDeckId: null,
         targetLanguage: null,
         sourceLanguage: null,
         title: input.title,
@@ -158,6 +158,7 @@ function createUseCase(options?: {
       softDelete: jest.fn(),
       softDeleteByDeckId: jest.fn(),
       countByDeckId: jest.fn(),
+      findLiveDuplicatesForOwner: jest.fn(),
       createMany,
     },
     {
@@ -216,7 +217,6 @@ describe('CopyPublicDeckUseCase', () => {
 
     expect(createCopiedDeck).toHaveBeenCalledWith({
       ownerId: currentUser.id,
-      sourceDeckId: sourceDeck.id,
       title: sourceDeck.title,
       description: sourceDeck.description,
       targetLanguage: 'es',

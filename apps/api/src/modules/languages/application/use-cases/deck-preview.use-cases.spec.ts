@@ -115,6 +115,7 @@ describe('Deck preview use cases lifecycle', () => {
         softDelete: jest.fn(),
         softDeleteByDeckId: jest.fn(),
         countByDeckId: jest.fn(),
+        findLiveDuplicatesForOwner: jest.fn(),
         createMany: jest.fn(),
       },
       {
@@ -205,6 +206,7 @@ describe('Deck preview use cases lifecycle', () => {
         softDelete: jest.fn(),
         softDeleteByDeckId: jest.fn(),
         countByDeckId: jest.fn(),
+        findLiveDuplicatesForOwner: jest.fn(),
         createMany: jest.fn(),
       },
       {
@@ -300,7 +302,7 @@ describe('Deck preview use cases lifecycle', () => {
       visibility: 'PRIVATE',
       moderationStatus: 'NONE',
       isOfficial: false,
-      sourceDeckId: 'deck-1',
+      sourceDeckId: null,
       targetLanguage: null,
       sourceLanguage: null,
     };
@@ -354,6 +356,7 @@ describe('Deck preview use cases lifecycle', () => {
         softDelete: jest.fn(),
         softDeleteByDeckId: jest.fn(),
         countByDeckId: jest.fn(),
+        findLiveDuplicatesForOwner: jest.fn(),
         createMany,
       },
       {
@@ -396,7 +399,11 @@ describe('Deck preview use cases lifecycle', () => {
       now,
     });
 
-    expect(createCopiedDeck).toHaveBeenCalled();
+    expect(createCopiedDeck).toHaveBeenCalledWith({
+      ownerId: 'user-1',
+      title: sourceDeck.title,
+      description: sourceDeck.description,
+    });
     expect(createMany).toHaveBeenCalled();
     expect(upsert).toHaveBeenCalledWith('user-1', 'es');
     expect(deleteSession).toHaveBeenCalledWith('session-1');
@@ -455,6 +462,7 @@ describe('Deck preview use cases lifecycle', () => {
         softDelete: jest.fn(),
         softDeleteByDeckId: jest.fn(),
         countByDeckId: jest.fn(),
+        findLiveDuplicatesForOwner: jest.fn(),
         createMany: jest.fn(),
       },
       {

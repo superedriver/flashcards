@@ -42,7 +42,6 @@ export type UnpublishDeckInput = {
 
 export type CreateCopiedDeckInput = {
   ownerId: string;
-  sourceDeckId: string;
   title: string;
   description?: string | null;
   targetLanguage?: string | null;

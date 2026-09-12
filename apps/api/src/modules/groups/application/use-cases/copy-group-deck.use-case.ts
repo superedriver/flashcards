@@ -80,7 +80,6 @@ export class CopyGroupDeckUseCase {
 
     const copiedDeck = await this.deckRepository.createCopiedDeck({
       ownerId: input.currentUser.id,
-      sourceDeckId: sourceDeck.id,
       title: sourceDeck.title,
       description: sourceDeck.description,
       targetLanguage: sourceDeck.targetLanguage,

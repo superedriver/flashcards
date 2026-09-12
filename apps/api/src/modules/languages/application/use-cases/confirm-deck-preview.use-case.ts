@@ -120,7 +120,6 @@ export class ConfirmDeckPreviewUseCase {
 
     const copiedDeck = await this.deckRepository.createCopiedDeck({
       ownerId: currentUser.id,
-      sourceDeckId: sourceDeck.id,
       title: sourceDeck.title,
       description: sourceDeck.description,
     });
