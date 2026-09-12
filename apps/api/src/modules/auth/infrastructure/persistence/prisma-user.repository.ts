@@ -57,8 +57,21 @@ export class PrismaUserRepository implements UserRepositoryPort {
   }
 
   async deleteById(userId: string): Promise<void> {
-    await this.prisma.user.delete({
-      where: { id: userId },
+    await this.prisma.$transaction(async (tx) => {
+      const user = await tx.user.findUnique({
+        where: { id: userId },
+        select: { email: true },
+      });
+
+      if (user) {
+        await tx.groupInvitation.deleteMany({
+          where: { email: user.email.trim().toLowerCase() },
+        });
+      }
+
+      await tx.user.delete({
+        where: { id: userId },
+      });
     });
   }
 }
