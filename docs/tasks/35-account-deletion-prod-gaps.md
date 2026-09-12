@@ -32,7 +32,7 @@ This epic does **not** include:
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -216,7 +216,7 @@ All new UI strings en and uk, in the task that introduces them.
 - [x] TASK-35.07 Limit blocked users to Profile and delete
 - [x] TASK-35.08 Clear cookie, push token, and treat lost delete as success
 - [x] TASK-35.09 Stop storing sourceDeckId on finalized copies
-- [ ] TASK-35.10 Update account-deletion smoke checks
+- [x] TASK-35.10 Update account-deletion smoke checks
 ```
 
 ---
@@ -1185,7 +1185,7 @@ TASK-35.09 Stop storing sourceDeckId on finalized copies
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

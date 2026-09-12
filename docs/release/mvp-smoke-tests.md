@@ -1013,33 +1013,41 @@ _(Implementation PASS in TASK-32.09; manual device checklist in `docs/smoke/revi
 
 ## 37. Account Deletion
 
-**Goal:** Verify Profile Danger zone hard-deletes the account, copies/groups behave as specified, re-register is empty, and `/account-deletion` is explainer-only.
+**Goal:** Verify Profile Danger zone hard-deletes the account, invitations and banned email behave as specified, blocked users only reach Profile + delete, copies have no sourceDeckId, and `/account-deletion` is explainer-only.
 
 **Detailed checklist:** [docs/smoke/account-deletion.md](../smoke/account-deletion.md)
 
-**Prerequisite:** EPIC-34 implemented. Use a disposable local user, not a shared seed account.
+**Prerequisite:** EPIC-35 implemented. Use disposable local users, not a shared seed account.
 
 **Steps (web):**
 
 1. On Profile Account, confirm Delete account sits in Danger zone below Log out.
 2. Cancel confirm 1 and confirm 2: stay signed in; account intact.
 3. Complete both confirms: Alert Account deleted, then sign-in.
-4. Register the same email again: new empty account.
-5. After deleting a user who owned a public deck that another user copied: the copy remains; the owner’s group is gone.
-6. Logged out, open `/account-deletion`: read copy, tap CTA → sign-in (no deletion).
+4. Register the same email again if the user was **not** blocked: new empty account.
+5. After deleting a **blocked** user: register with that email returns the same already-exists copy as a live duplicate.
+6. After deleting a user who had an incoming group invitation: that invitation is gone.
+7. Blocked (still live) user signs in: Profile only; can delete; Home/Decks hidden.
+8. After delete, leftover JWT / `me` is unauthorized.
+9. After deleting a user who owned a public deck that another user copied: the copy remains with `sourceDeckId` null; the owner’s group is gone.
+10. Logged out, open `/account-deletion`: read copy, tap CTA → sign-in (no deletion).
 
 **Expected result:**
 
 ```txt
 - Two confirms; nothing deleted until deleteAccount succeeds
-- Failure stays signed in; success Alert then local teardown and sign-in
-- Copies owned by others survive; owner groups cascade
+- Failure (except lost-response unauthenticated) stays signed in
+- Success Alert then cookie/session teardown and sign-in
+- Incoming invitations deleted with the user
+- Banned email cannot register; unblocked deleted email can
+- Blocked users: Profile + delete only
+- Copies owned by others survive without sourceDeckId; owner groups cascade
 - Public page does not call deleteAccount
 ```
 
 **Result:** - [ ] PASS - [ ] FAIL - [ ] N/A
 
-_(Implementation PASS in TASK-34.07; manual web checklist in `docs/smoke/account-deletion.md` remains for QA.)_
+_(Implementation PASS in TASK-35.10; manual web checklist in `docs/smoke/account-deletion.md` remains for QA.)_
 
 ---
 
