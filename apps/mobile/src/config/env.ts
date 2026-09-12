@@ -1,9 +1,5 @@
-import { validateApiUrl } from './validate-api-url'
-
-const apiUrl = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:3000/graphql'
-
-validateApiUrl(apiUrl)
+import { resolveApiUrl } from './validate-api-url'
 
 export const env = {
-  apiUrl,
+  apiUrl: resolveApiUrl(process.env.EXPO_PUBLIC_API_URL, __DEV__),
 } as const

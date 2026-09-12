@@ -163,7 +163,8 @@ Rules:
 
 ```txt
 - Production API and web app must use HTTPS (TLS).
-- EXPO_PUBLIC_API_URL must use https:// in production web builds (except localhost development).
+- EXPO_PUBLIC_API_URL is required in production builds and must use https://.
+- Production builds must not fall back to http://localhost.
 - Browser DevTools may show request bodies to the user on their own device; that is not the same as sending credentials unencrypted over the network.
 - Passwords must never be logged server-side, even in error paths.
 - Do not use client-side password hashing as a substitute for TLS.

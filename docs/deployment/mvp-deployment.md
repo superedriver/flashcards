@@ -159,9 +159,10 @@ EXPO_PUBLIC_API_URL=https://<render-api-host>/graphql
 HTTPS requirements:
 
 ```txt
-- EXPO_PUBLIC_API_URL must use https:// in production.
+- EXPO_PUBLIC_API_URL is required in production builds and must use https://.
 - Do not use http:// API URLs in Vercel production environment variables.
-- http://localhost is allowed for local development only.
+- Production builds must fail if EXPO_PUBLIC_API_URL is missing or not https://.
+- http://localhost is allowed for local development only (`expo start` / `__DEV__`).
 - Auth credentials and refresh token cookies require HTTPS in production.
 - Vercel serves the web app over HTTPS by default.
 ```
