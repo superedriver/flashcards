@@ -10,6 +10,10 @@ import {
   ACCESS_TOKEN_SERVICE,
   AccessTokenServicePort,
 } from '../../../application/ports/access-token-service.port';
+import {
+  USER_REPOSITORY,
+  UserRepositoryPort,
+} from '../../../application/ports/user-repository.port';
 import { AuthUser } from '../../../domain/types';
 
 type GraphqlRequest = {
@@ -24,6 +28,8 @@ export class OptionalGqlAuthGuard implements CanActivate {
   constructor(
     @Inject(ACCESS_TOKEN_SERVICE)
     private readonly accessTokenService: AccessTokenServicePort,
+    @Inject(USER_REPOSITORY)
+    private readonly userRepository: UserRepositoryPort,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -35,12 +41,22 @@ export class OptionalGqlAuthGuard implements CanActivate {
       return true;
     }
 
+    let authUser: AuthUser;
+
     try {
-      req.authUser = await this.accessTokenService.verify(token);
-      return true;
+      authUser = await this.accessTokenService.verify(token);
     } catch {
       throw new ApplicationError(ErrorCodes.UNAUTHORIZED, 'Unauthorized');
     }
+
+    const user = await this.userRepository.findById(authUser.id);
+
+    if (!user) {
+      return true;
+    }
+
+    req.authUser = authUser;
+    return true;
   }
 
   private extractBearerToken(
