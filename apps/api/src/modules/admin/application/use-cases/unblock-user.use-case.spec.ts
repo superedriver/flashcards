@@ -55,6 +55,7 @@ function createUseCase(options?: {
     );
   const unblockUser = jest.fn().mockResolvedValue(unblockedSummary);
   const revokeAllForUser = jest.fn();
+  const deleteByEmail = jest.fn().mockResolvedValue(undefined);
 
   const useCase = new UnblockUserUseCase(
     {
@@ -71,9 +72,14 @@ function createUseCase(options?: {
       blockUser: jest.fn(),
       unblockUser,
     },
+    {
+      upsertByEmail: jest.fn(),
+      existsByEmail: jest.fn(),
+      deleteByEmail,
+    },
   );
 
-  return { useCase, unblockUser, revokeAllForUser };
+  return { useCase, unblockUser, revokeAllForUser, deleteByEmail };
 }
 
 describe('UnblockUserUseCase', () => {
@@ -123,8 +129,9 @@ describe('UnblockUserUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.NOT_FOUND });
   });
 
-  it('unblocks target user and does not revoke refresh tokens', async () => {
-    const { useCase, unblockUser, revokeAllForUser } = createUseCase();
+  it('unblocks target user, removes blocked identity, and does not revoke refresh tokens', async () => {
+    const { useCase, unblockUser, revokeAllForUser, deleteByEmail } =
+      createUseCase();
 
     const result = await useCase.execute({
       currentUser: adminUser,
@@ -132,6 +139,7 @@ describe('UnblockUserUseCase', () => {
     });
 
     expect(unblockUser).toHaveBeenCalledWith('target-1');
+    expect(deleteByEmail).toHaveBeenCalledWith('target@example.com');
     expect(revokeAllForUser).not.toHaveBeenCalled();
     expect(result).toEqual(unblockedSummary);
   });

@@ -152,6 +152,12 @@ model User {
   @@index([blockedAt])
 }
 
+model BlockedIdentity {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
 model UserProfile {
   id          String   @id @default(uuid())
   userId      String   @unique

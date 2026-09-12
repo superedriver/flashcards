@@ -11,11 +11,13 @@ import { REFRESH_TOKEN_REPOSITORY } from './application/ports/refresh-token-repo
 import { EMAIL_VERIFICATION_TOKEN_REPOSITORY } from './application/ports/email-verification-token-repository.port';
 import { PASSWORD_RESET_TOKEN_REPOSITORY } from './application/ports/password-reset-token-repository.port';
 import { USER_REPOSITORY } from './application/ports/user-repository.port';
+import { BLOCKED_IDENTITY_REPOSITORY } from './application/ports/blocked-identity-repository.port';
 import { Argon2PasswordHasher } from './infrastructure/crypto/argon2-password-hasher';
 import { NodeTokenGenerator } from './infrastructure/crypto/node-token-generator';
 import { Sha256TokenHasher } from './infrastructure/crypto/sha256-token-hasher';
 import { JwtAccessTokenService } from './infrastructure/jwt/jwt-access-token.service';
 import { PrismaUserRepository } from './infrastructure/persistence/prisma-user.repository';
+import { PrismaBlockedIdentityRepository } from './infrastructure/persistence/prisma-blocked-identity.repository';
 import { PrismaRefreshTokenRepository } from './infrastructure/persistence/prisma-refresh-token.repository';
 import { PrismaEmailVerificationTokenRepository } from './infrastructure/persistence/prisma-email-verification-token.repository';
 import { PrismaPasswordResetTokenRepository } from './infrastructure/persistence/prisma-password-reset-token.repository';
@@ -68,6 +70,10 @@ import { OptionalGqlAuthGuard } from './presentation/graphql/guards/optional-gql
       useClass: PrismaUserRepository,
     },
     {
+      provide: BLOCKED_IDENTITY_REPOSITORY,
+      useClass: PrismaBlockedIdentityRepository,
+    },
+    {
       provide: REFRESH_TOKEN_REPOSITORY,
       useClass: PrismaRefreshTokenRepository,
     },
@@ -100,6 +106,7 @@ import { OptionalGqlAuthGuard } from './presentation/graphql/guards/optional-gql
     TOKEN_HASHER,
     ACCESS_TOKEN_SERVICE,
     USER_REPOSITORY,
+    BLOCKED_IDENTITY_REPOSITORY,
     REFRESH_TOKEN_REPOSITORY,
     EMAIL_VERIFICATION_TOKEN_REPOSITORY,
     PASSWORD_RESET_TOKEN_REPOSITORY,

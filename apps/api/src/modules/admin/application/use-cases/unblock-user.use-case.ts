@@ -1,6 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ApplicationError, ErrorCodes } from '../../../../common/errors';
 import {
+  BLOCKED_IDENTITY_REPOSITORY,
+  BlockedIdentityRepositoryPort,
+} from '../../../auth/application/ports/blocked-identity-repository.port';
+import {
   USER_REPOSITORY,
   UserRepositoryPort,
 } from '../../../auth/application/ports/user-repository.port';
@@ -28,6 +32,8 @@ export class UnblockUserUseCase {
     private readonly userRepository: UserRepositoryPort,
     @Inject(ADMIN_USER_REPOSITORY)
     private readonly adminUserRepository: AdminUserRepositoryPort,
+    @Inject(BLOCKED_IDENTITY_REPOSITORY)
+    private readonly blockedIdentityRepository: BlockedIdentityRepositoryPort,
   ) {}
 
   async execute(
@@ -53,6 +59,12 @@ export class UnblockUserUseCase {
       throw new ApplicationError(ErrorCodes.NOT_FOUND, 'User not found');
     }
 
-    return this.adminUserRepository.unblockUser(input.userId);
+    const unblockedUser = await this.adminUserRepository.unblockUser(
+      input.userId,
+    );
+
+    await this.blockedIdentityRepository.deleteByEmail(targetUser.email);
+
+    return unblockedUser;
   }
 }

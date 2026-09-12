@@ -55,6 +55,7 @@ function createUseCase(options?: {
     );
   const blockUser = jest.fn().mockResolvedValue(blockedSummary);
   const revokeAllForUser = jest.fn().mockResolvedValue(undefined);
+  const upsertByEmail = jest.fn().mockResolvedValue(undefined);
 
   const useCase = new BlockUserUseCase(
     {
@@ -77,9 +78,14 @@ function createUseCase(options?: {
       revokeById: jest.fn(),
       revokeAllForUser,
     },
+    {
+      upsertByEmail,
+      existsByEmail: jest.fn(),
+      deleteByEmail: jest.fn(),
+    },
   );
 
-  return { useCase, blockUser, revokeAllForUser, adminFindById };
+  return { useCase, blockUser, revokeAllForUser, adminFindById, upsertByEmail };
 }
 
 describe('BlockUserUseCase', () => {
@@ -92,13 +98,14 @@ describe('BlockUserUseCase', () => {
   });
 
   it('throws USER_BLOCKED when user is blocked', async () => {
-    const { useCase } = createUseCase({
+    const { useCase, upsertByEmail } = createUseCase({
       user: { ...safeAdmin, blockedAt: new Date('2026-06-01T00:00:00.000Z') },
     });
 
     await expect(
       useCase.execute({ currentUser: adminUser, userId: 'target-1' }),
     ).rejects.toMatchObject({ code: ErrorCodes.USER_BLOCKED });
+    expect(upsertByEmail).not.toHaveBeenCalled();
   });
 
   it('throws FORBIDDEN for MODERATOR', async () => {
@@ -137,8 +144,9 @@ describe('BlockUserUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.NOT_FOUND });
   });
 
-  it('blocks target user and revokes refresh tokens', async () => {
-    const { useCase, blockUser, revokeAllForUser } = createUseCase();
+  it('blocks target user, revokes refresh tokens, and upserts blocked identity', async () => {
+    const { useCase, blockUser, revokeAllForUser, upsertByEmail } =
+      createUseCase();
 
     const result = await useCase.execute({
       currentUser: adminUser,
@@ -147,6 +155,7 @@ describe('BlockUserUseCase', () => {
 
     expect(blockUser).toHaveBeenCalledWith('target-1', expect.any(Date));
     expect(revokeAllForUser).toHaveBeenCalledWith('target-1');
+    expect(upsertByEmail).toHaveBeenCalledWith('target@example.com');
     expect(result).toEqual(blockedSummary);
     expect(result).not.toHaveProperty('passwordHash');
   });

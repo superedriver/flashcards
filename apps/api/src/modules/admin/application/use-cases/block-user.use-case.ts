@@ -5,6 +5,10 @@ import {
   RefreshTokenRepositoryPort,
 } from '../../../auth/application/ports/refresh-token-repository.port';
 import {
+  BLOCKED_IDENTITY_REPOSITORY,
+  BlockedIdentityRepositoryPort,
+} from '../../../auth/application/ports/blocked-identity-repository.port';
+import {
   USER_REPOSITORY,
   UserRepositoryPort,
 } from '../../../auth/application/ports/user-repository.port';
@@ -34,6 +38,8 @@ export class BlockUserUseCase {
     private readonly adminUserRepository: AdminUserRepositoryPort,
     @Inject(REFRESH_TOKEN_REPOSITORY)
     private readonly refreshTokenRepository: RefreshTokenRepositoryPort,
+    @Inject(BLOCKED_IDENTITY_REPOSITORY)
+    private readonly blockedIdentityRepository: BlockedIdentityRepositoryPort,
   ) {}
 
   async execute(input: BlockUserUseCaseInput): Promise<BlockUserUseCaseResult> {
@@ -70,6 +76,7 @@ export class BlockUserUseCase {
     );
 
     await this.refreshTokenRepository.revokeAllForUser(input.userId);
+    await this.blockedIdentityRepository.upsertByEmail(blockedUser.email);
 
     return blockedUser;
   }
