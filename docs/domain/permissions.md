@@ -146,26 +146,29 @@ updatedAt
 
 If `user.blockedAt` is not null, the user is blocked.
 
-Blocked users must not be able to:
+Blocked users may:
 
 ```txt
 - log in
 - refresh tokens
-- access protected GraphQL operations
+- call me
+- call deleteAccount
+```
+
+Blocked users must not:
+
+```txt
+- use the rest of the product (decks, lessons, groups, settings mutations, admin)
 - create decks
 - study decks
 - create groups
 - accept invitations
-- delete their account
 ```
 
-If a user is blocked while already logged in:
+Frontend shows only Profile (status, Log out, Delete account). That is UX only.
 
-```txt
-- refresh token must fail
-- protected operations should reject when user is loaded
-- existing access token may expire naturally if no DB check is performed per request
-```
+A banned email (BlockedIdentity) must not register again. Register uses the same
+error as a live duplicate email (USER_ALREADY_EXISTS). Do not say the identity is banned.
 
 ## Account Deletion Permissions
 
@@ -177,6 +180,7 @@ Who can call it:
 
 ```txt
 Any valid authenticated session, including ADMIN and MODERATOR deleting themselves.
+Blocked users may call deleteAccount (and me / login / refresh).
 The operation always deletes currentUser.id only.
 ```
 
@@ -184,7 +188,6 @@ Who cannot:
 
 ```txt
 Unauthenticated callers
-Blocked users (existing auth rejects protected operations)
 ```
 
 The mutation must not:
@@ -860,7 +863,9 @@ Permission tests should cover:
 - USER cannot access admin operations
 - authenticated user can delete own account
 - unauthenticated cannot deleteAccount
-- blocked user cannot deleteAccount
+- blocked user can deleteAccount
+- blocked user cannot create decks
+- banned email register looks like already exists
 ```
 
 ## Cursor Implementation Rules

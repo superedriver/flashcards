@@ -185,7 +185,8 @@ Database rules:
 - tokenHash should be unique.
 - revokedAt null means token is active.
 - expiresAt must be checked.
-- deleted/blocked users cannot refresh.
+- deleted users cannot refresh.
+- blocked users may refresh.
 ```
 
 ## Mobile Token Storage
@@ -425,20 +426,30 @@ This policy must be explicit in backend code and tests.
 
 ## Blocked User Interaction
 
-Blocked users must not be able to:
+Blocked users may:
 
 ```txt
 - log in
 - refresh token
-- access protected GraphQL operations
+- call me and deleteAccount
 ```
 
-If a user is blocked while already logged in:
+Blocked users must not use other protected product operations (use cases check blockedAt).
+
+GqlAuthGuard:
 
 ```txt
-- existing access token may work until expiry
-- refresh must fail
-- protected operations should check blockedAt if current user is loaded from database
+- verify the access JWT
+- load User by id
+- missing user → UNAUTHORIZED (same as bad/expired token)
+- do not reject blocked users in the guard (they must reach me and deleteAccount)
+```
+
+OptionalGqlAuthGuard:
+
+```txt
+- if a token is present but the user is gone, do not attach authUser
+- do not 401 public operations
 ```
 
 ## Apollo Client Rules
@@ -507,8 +518,8 @@ Backend tests should cover:
 - old refresh token cannot be reused
 - logout revokes token
 - password reset revokes all refresh tokens
-- blocked user cannot log in
-- blocked user cannot refresh
+- blocked user can log in
+- blocked user can refresh
 - GraphQL me requires access token
 - GraphQL me never returns sensitive fields
 ```

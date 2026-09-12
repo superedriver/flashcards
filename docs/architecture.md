@@ -473,6 +473,7 @@ push_tokens
 notification_logs
 analytics_events
 admin_audit_logs
+blocked_identities
 ```
 
 Important database conventions:
@@ -548,14 +549,15 @@ Deck copying behavior:
 ```txt
 When a user copies a public or group-shared deck:
   - a new private deck is created
-  - source_deck_id points to the original deck
+  - source_deck_id is not stored on the finalized copy
   - all current cards are copied
   - the copy is independent
   - future changes to the source deck do not update the copy
 ```
 
+`DeckPreviewSession.sourceDeckId` still points at the source for preview only.
 If the source-deck owner deletes their account, copies owned by other users stay.
-`sourceDeckId` is a string, not an FK; do not null or rewrite it. See section 23.
+See section 23.
 
 ---
 
@@ -1030,10 +1032,16 @@ docs/domain/account-deletion.md
 Delete account is a Profile Account Danger zone below Log out.
 No separate Settings screen.
 Two confirms, then authenticated deleteAccount.
-Hard-delete the User row; owned rows and owner groups cascade.
-Copies owned by other users survive; do not rewrite sourceDeckId.
+Hard-delete the User row in one transaction with incoming invitations.
+Owned rows and owner groups cascade.
+Blocked users may log in / me / deleteAccount only; Profile-only UI.
+BlockedIdentity keeps a banned email after blocked self-delete.
+Normal delete frees the email; banned register looks like already exists.
+GqlAuthGuard: valid JWT and User still exists.
+Copies have no Deck.sourceDeckId; preview sessions still do.
 No OAuth revoke or file-store cleanup jobs in v1.
-Success: Alert "Account deleted", then local logout teardown, then sign-in.
+Success: Alert "Account deleted", cookie + push memory + local teardown, then sign-in.
+Lost UNAUTHENTICATED after commit is treated as success.
 Failure: stay logged in; "Couldn't delete your account. Please try again."
 ```
 

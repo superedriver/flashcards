@@ -354,7 +354,7 @@ Backend use cases must validate:
 - user can view the resource
 - user has correct role
 - user is group member where required
-- user is not blocked
+- user is not blocked (except login, refresh, me, deleteAccount)
 ```
 
 Frontend role checks are UX only.
@@ -365,14 +365,16 @@ Backend must reject unauthorized operations even if frontend hides buttons.
 
 If `blockedAt` is not null, user is blocked.
 
+Blocked users may log in, refresh, call me, and deleteAccount.
+
 Blocked users must not:
 
 ```txt
-- log in
-- refresh token
-- access protected operations
-- create or modify resources
+- create or modify product resources (decks, lessons, groups, settings, admin)
 ```
+
+After User.delete, a previously valid access JWT must not authenticate:
+GqlAuthGuard requires the User row to still exist.
 
 Admin block action should not expose sensitive data.
 
@@ -465,18 +467,23 @@ docs/domain/permissions.md
 deleteAccount must:
 
 ```txt
-- require authentication
-- reject blocked users
+- require authentication (valid JWT and User still exists)
+- allow blocked users
 - delete only the authenticated caller (currentUser.id)
+- delete incoming GroupInvitation rows for that email in the same transaction
+- upsert BlockedIdentity when the caller is blocked
 - not accept a password
 - not accept an OAuth token
 - not require typing DELETE
 - not log access tokens, refresh tokens, or password hashes
+- clear the HttpOnly refresh cookie after success
 ```
 
 Hard-delete is the end state (no User row). Do not treat User.deletedAt as deleted.
 
-Do not send a deletion email. Failed mutation must not log the user out.
+Banned email register must return the same error as a live duplicate email.
+
+Do not send a deletion email. Failed mutation (except lost-response UNAUTHENTICATED) must not log the user out.
 
 ## AI Security
 
@@ -838,7 +845,7 @@ Security-related tests should cover:
 - reused refresh token fails
 - logout revokes refresh token
 - password reset revokes refresh tokens
-- blocked user cannot refresh
+- blocked user can refresh
 - private deck forbidden for non-owner
 - public rejected deck hidden
 - group member can view shared deck
@@ -847,7 +854,9 @@ Security-related tests should cover:
 - MODERATOR cannot block users
 - internal job rejects invalid secret
 - deleteAccount requires authentication
-- blocked user cannot deleteAccount
+- blocked user can deleteAccount
+- missing user JWT is unauthorized
+- banned email register looks like already exists
 - deleteAccount does not accept a password
 ```
 
