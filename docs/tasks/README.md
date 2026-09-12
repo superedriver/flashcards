@@ -386,12 +386,13 @@ done/30-sot-discrepancies.md
 done/31-bulk-card-add.md
 done/32-review-presentation-modes.md
 done/33-bugfixes.md
+done/34-account-deletion.md
 ```
 
 Active epics:
 
 ```txt
-34-account-deletion.md
+35-account-deletion-prod-gaps.md
 ```
 
 ---
@@ -947,13 +948,29 @@ Fix bugs found during local smoke after EPIC-32 (navigation, review UI); append 
 File:
 
 ```txt
-docs/tasks/34-account-deletion.md
+docs/tasks/done/34-account-deletion.md
 ```
 
 Purpose:
 
 ```txt
 Immediate irreversible self-serve account deletion from Profile; hard-delete User; public explainer page.
+```
+
+---
+
+### 35 Account Deletion Prod Gaps
+
+File:
+
+```txt
+docs/tasks/35-account-deletion-prod-gaps.md
+```
+
+Purpose:
+
+```txt
+Close post-34 deletion gaps: invitations, blocked identity, blocked profile-only access, stale JWTs, session leftovers, copy provenance.
 ```
 
 ---
