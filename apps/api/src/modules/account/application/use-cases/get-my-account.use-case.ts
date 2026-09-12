@@ -40,10 +40,6 @@ export class GetMyAccountUseCase {
       throw new ApplicationError(ErrorCodes.UNAUTHORIZED, 'Unauthorized');
     }
 
-    if (user.blockedAt !== null) {
-      throw new ApplicationError(ErrorCodes.USER_BLOCKED, 'User is blocked');
-    }
-
     let profile = await this.userProfileRepository.findByUserId(input.userId);
     if (!profile) {
       profile = await this.userProfileRepository.createForUser(input.userId);
@@ -52,6 +48,16 @@ export class GetMyAccountUseCase {
     let settings = await this.userSettingsRepository.findByUserId(input.userId);
     if (!settings) {
       settings = await this.userSettingsRepository.createForUser(input.userId);
+    }
+
+    if (user.blockedAt !== null) {
+      return {
+        user,
+        profile,
+        settings,
+        studyLanguages: [],
+        needsStudyLanguageOnboarding: false,
+      };
     }
 
     const studyLanguages = await this.myStudyLanguagesUseCase.execute({

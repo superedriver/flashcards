@@ -63,10 +63,6 @@ export class RefreshTokenUseCase {
       throw new ApplicationError(ErrorCodes.UNAUTHORIZED, UNAUTHORIZED_MESSAGE);
     }
 
-    if (user.blockedAt !== null) {
-      throw new ApplicationError(ErrorCodes.USER_BLOCKED, 'User is blocked');
-    }
-
     await this.refreshTokenRepository.revokeById(activeToken.id);
 
     const refreshToken = this.tokenGenerator.generateRefreshToken();

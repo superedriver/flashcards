@@ -101,19 +101,30 @@ describe('LoginUseCase', () => {
     });
   });
 
-  it('rejects blocked user with USER_BLOCKED', async () => {
-    const { useCase } = createUseCase({
+  it('issues tokens for a blocked user', async () => {
+    const blockedAt = new Date('2026-01-02T00:00:00.000Z');
+    const { useCase, createRefreshToken } = createUseCase({
       userRecord: {
         passwordHash: 'hashed-password',
-        blockedAt: new Date('2026-01-02T00:00:00.000Z'),
+        blockedAt,
       },
     });
 
-    await expect(
-      useCase.execute({ email: 'test@example.com', password: 'password123' }),
-    ).rejects.toMatchObject({
-      code: ErrorCodes.USER_BLOCKED,
+    const result = await useCase.execute({
+      email: 'test@example.com',
+      password: 'password123',
     });
+
+    expect(createRefreshToken).toHaveBeenCalledWith(
+      expect.objectContaining({
+        userId: safeUser.id,
+        tokenHash: 'token-hash',
+      }),
+    );
+    expect(result.accessToken).toBe('access-token');
+    expect(result.refreshToken).toBe('raw-refresh-token');
+    expect(result.user.blockedAt).toEqual(blockedAt);
+    expect(result.user).not.toHaveProperty('passwordHash');
   });
 
   it('rejects invalid password with INVALID_CREDENTIALS', async () => {

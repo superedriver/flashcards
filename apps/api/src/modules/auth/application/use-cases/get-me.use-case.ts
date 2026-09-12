@@ -20,10 +20,6 @@ export class GetMeUseCase {
       throw new ApplicationError(ErrorCodes.UNAUTHORIZED, 'Unauthorized');
     }
 
-    if (user.blockedAt !== null) {
-      throw new ApplicationError(ErrorCodes.USER_BLOCKED, 'User is blocked');
-    }
-
     return user;
   }
 }

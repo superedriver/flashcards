@@ -105,13 +105,22 @@ describe('GetMyAccountUseCase', () => {
     });
   });
 
-  it('rejects blocked user with USER_BLOCKED', async () => {
-    const { useCase } = createUseCase({
-      user: { ...safeUser, blockedAt: new Date() },
+  it('returns account for a blocked user without loading study languages', async () => {
+    const blockedAt = new Date('2026-06-01T00:00:00.000Z');
+    const blockedUser = { ...safeUser, blockedAt };
+    const { useCase, myStudyLanguagesExecute } = createUseCase({
+      user: blockedUser,
     });
 
-    await expect(useCase.execute({ userId: 'user-1' })).rejects.toMatchObject({
-      code: ErrorCodes.USER_BLOCKED,
+    const result = await useCase.execute({ userId: 'user-1' });
+
+    expect(myStudyLanguagesExecute).not.toHaveBeenCalled();
+    expect(result).toEqual({
+      user: blockedUser,
+      profile,
+      settings,
+      studyLanguages: [],
+      needsStudyLanguageOnboarding: false,
     });
   });
 

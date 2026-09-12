@@ -105,19 +105,26 @@ describe('RefreshTokenUseCase', () => {
     });
   });
 
-  it('rejects blocked user', async () => {
-    const { useCase } = createUseCase({
-      user: {
-        ...safeUser,
-        blockedAt: new Date('2026-01-02T00:00:00.000Z'),
-      },
+  it('issues rotated tokens for a blocked user', async () => {
+    const blockedAt = new Date('2026-01-02T00:00:00.000Z');
+    const blockedUser = { ...safeUser, blockedAt };
+    const { useCase, revokeById, createRefreshToken } = createUseCase({
+      user: blockedUser,
     });
 
-    await expect(
-      useCase.execute({ refreshToken: 'raw-refresh-token' }),
-    ).rejects.toMatchObject({
-      code: ErrorCodes.USER_BLOCKED,
-    });
+    const result = await useCase.execute({ refreshToken: 'raw-refresh-token' });
+
+    expect(revokeById).toHaveBeenCalledWith('refresh-1');
+    expect(createRefreshToken).toHaveBeenCalledWith(
+      expect.objectContaining({
+        userId: safeUser.id,
+        tokenHash: 'new-token-hash',
+        rotatedFromTokenId: 'refresh-1',
+      }),
+    );
+    expect(result.user.blockedAt).toEqual(blockedAt);
+    expect(result.accessToken).toBe('new-access-token');
+    expect(result.refreshToken).toBe('new-raw-refresh-token');
   });
 
   it('revokes old token and stores rotated refresh token hash', async () => {

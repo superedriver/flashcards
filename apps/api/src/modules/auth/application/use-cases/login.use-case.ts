@@ -74,10 +74,6 @@ export class LoginUseCase {
       );
     }
 
-    if (userRecord.blockedAt !== null) {
-      throw new ApplicationError(ErrorCodes.USER_BLOCKED, 'User is blocked');
-    }
-
     const passwordValid = await this.passwordHasher.verify(
       userRecord.passwordHash,
       input.password,

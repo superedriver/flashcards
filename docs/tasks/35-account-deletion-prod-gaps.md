@@ -210,7 +210,7 @@ All new UI strings en and uk, in the task that introduces them.
 - [x] TASK-35.01 Update account-deletion source of truth
 - [x] TASK-35.02 Persist blocked email identity
 - [x] TASK-35.03 Reject banned email on register like already exists
-- [ ] TASK-35.04 Allow blocked users to log in and load me
+- [x] TASK-35.04 Allow blocked users to log in and load me
 - [ ] TASK-35.05 Delete invitations with the user and allow blocked self-delete
 - [ ] TASK-35.06 Reject access tokens whose user no longer exists
 - [ ] TASK-35.07 Limit blocked users to Profile and delete
@@ -554,7 +554,7 @@ TASK-35.03 Reject banned email on register like already exists
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
