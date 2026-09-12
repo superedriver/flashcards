@@ -209,7 +209,7 @@ All new UI strings en and uk, in the task that introduces them.
 ```md
 - [x] TASK-35.01 Update account-deletion source of truth
 - [x] TASK-35.02 Persist blocked email identity
-- [ ] TASK-35.03 Reject banned email on register like already exists
+- [x] TASK-35.03 Reject banned email on register like already exists
 - [ ] TASK-35.04 Allow blocked users to log in and load me
 - [ ] TASK-35.05 Delete invitations with the user and allow blocked self-delete
 - [ ] TASK-35.06 Reject access tokens whose user no longer exists
@@ -453,7 +453,7 @@ TASK-35.02 Persist blocked email identity
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

@@ -20,6 +20,10 @@ import {
 } from '../ports/token-generator.port';
 import { TOKEN_HASHER, TokenHasherPort } from '../ports/token-hasher.port';
 import {
+  BLOCKED_IDENTITY_REPOSITORY,
+  BlockedIdentityRepositoryPort,
+} from '../ports/blocked-identity-repository.port';
+import {
   USER_REPOSITORY,
   UserRepositoryPort,
 } from '../ports/user-repository.port';
@@ -50,6 +54,8 @@ export class RegisterUserUseCase {
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: UserRepositoryPort,
+    @Inject(BLOCKED_IDENTITY_REPOSITORY)
+    private readonly blockedIdentityRepository: BlockedIdentityRepositoryPort,
     @Inject(PASSWORD_HASHER)
     private readonly passwordHasher: PasswordHasherPort,
     @Inject(TOKEN_GENERATOR)
@@ -84,7 +90,9 @@ export class RegisterUserUseCase {
     }
 
     const existingUser = await this.userRepository.findByEmail(email);
-    if (existingUser) {
+    const bannedEmail =
+      await this.blockedIdentityRepository.existsByEmail(email);
+    if (existingUser || bannedEmail) {
       throw new ApplicationError(
         ErrorCodes.USER_ALREADY_EXISTS,
         'User with this email already exists',

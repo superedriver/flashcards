@@ -15,6 +15,7 @@ const safeUser: SafeUser = {
 
 function createUseCase(options?: {
   existingUser?: boolean;
+  bannedEmail?: boolean;
   createdUser?: SafeUser;
   verificationEmailError?: Error;
 }) {
@@ -26,6 +27,9 @@ function createUseCase(options?: {
         : null,
     );
   const create = jest.fn().mockResolvedValue(options?.createdUser ?? safeUser);
+  const existsByEmail = jest
+    .fn()
+    .mockResolvedValue(options?.bannedEmail ?? false);
   const hash = jest.fn().mockResolvedValue('hashed-password');
   const generateRefreshToken = jest.fn().mockReturnValue('raw-refresh-token');
   const hashToken = jest.fn().mockReturnValue('token-hash');
@@ -55,6 +59,11 @@ function createUseCase(options?: {
       updatePasswordHash: jest.fn(),
       deleteById: jest.fn(),
     },
+    {
+      upsertByEmail: jest.fn(),
+      existsByEmail,
+      deleteByEmail: jest.fn(),
+    },
     { hash, verify: jest.fn() },
     { generateRefreshToken },
     { hash: hashToken },
@@ -73,6 +82,7 @@ function createUseCase(options?: {
   return {
     useCase,
     findByEmail,
+    existsByEmail,
     create,
     hash,
     hashToken,
@@ -83,7 +93,8 @@ function createUseCase(options?: {
 
 describe('RegisterUserUseCase', () => {
   it('normalizes email before checking and creating user', async () => {
-    const { useCase, findByEmail, create, hash } = createUseCase();
+    const { useCase, findByEmail, existsByEmail, create, hash } =
+      createUseCase();
 
     await useCase.execute({
       email: '  Test@Example.COM  ',
@@ -91,6 +102,7 @@ describe('RegisterUserUseCase', () => {
     });
 
     expect(findByEmail).toHaveBeenCalledWith('test@example.com');
+    expect(existsByEmail).toHaveBeenCalledWith('test@example.com');
     expect(hash).toHaveBeenCalledWith('password123');
     expect(create).toHaveBeenCalledWith({
       email: 'test@example.com',
@@ -132,13 +144,27 @@ describe('RegisterUserUseCase', () => {
   });
 
   it('rejects existing email with USER_ALREADY_EXISTS', async () => {
-    const { useCase } = createUseCase({ existingUser: true });
+    const { useCase, create } = createUseCase({ existingUser: true });
 
     await expect(
       useCase.execute({ email: 'test@example.com', password: 'password123' }),
     ).rejects.toMatchObject({
       code: ErrorCodes.USER_ALREADY_EXISTS,
+      message: 'User with this email already exists',
     });
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it('rejects banned email with USER_ALREADY_EXISTS like a live duplicate', async () => {
+    const { useCase, create } = createUseCase({ bannedEmail: true });
+
+    await expect(
+      useCase.execute({ email: 'test@example.com', password: 'password123' }),
+    ).rejects.toMatchObject({
+      code: ErrorCodes.USER_ALREADY_EXISTS,
+      message: 'User with this email already exists',
+    });
+    expect(create).not.toHaveBeenCalled();
   });
 
   it('stores refresh token hash and returns safe auth payload', async () => {
