@@ -122,6 +122,7 @@ import { OptionalGqlAuthGuard } from './presentation/graphql/guards/optional-gql
     ResetPasswordUseCase,
     GqlAuthGuard,
     OptionalGqlAuthGuard,
+    RefreshTokenCookieService,
   ],
 })
 export class AuthModule {}

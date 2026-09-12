@@ -214,7 +214,7 @@ All new UI strings en and uk, in the task that introduces them.
 - [x] TASK-35.05 Delete invitations with the user and allow blocked self-delete
 - [x] TASK-35.06 Reject access tokens whose user no longer exists
 - [x] TASK-35.07 Limit blocked users to Profile and delete
-- [ ] TASK-35.08 Clear cookie, push token, and treat lost delete as success
+- [x] TASK-35.08 Clear cookie, push token, and treat lost delete as success
 - [ ] TASK-35.09 Stop storing sourceDeckId on finalized copies
 - [ ] TASK-35.10 Update account-deletion smoke checks
 ```
@@ -977,7 +977,7 @@ TASK-35.07 Limit blocked users to Profile and delete
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
