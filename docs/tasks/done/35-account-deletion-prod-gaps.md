@@ -32,7 +32,7 @@ This epic does **not** include:
 
 ## Epic Status
 
-DONE (tasks 35.01–35.10); 35.11 pending
+DONE
 
 ## Related Documents
 
@@ -218,7 +218,7 @@ All new UI strings en and uk, in the task that introduces them.
 - [x] TASK-35.08 Clear cookie, push token, and treat lost delete as success
 - [x] TASK-35.09 Stop storing sourceDeckId on finalized copies
 - [x] TASK-35.10 Update account-deletion smoke checks
-- [ ] TASK-35.11 Commit tsconfig cleanup
+- [x] TASK-35.11 Commit tsconfig cleanup
 ```
 
 ---
@@ -1285,7 +1285,7 @@ TASK-35.10 Update account-deletion smoke checks
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
