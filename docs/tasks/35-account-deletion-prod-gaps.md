@@ -32,7 +32,7 @@ This epic does **not** include:
 
 ## Epic Status
 
-DONE
+DONE (tasks 35.01–35.10); 35.11 pending
 
 ## Related Documents
 
@@ -202,6 +202,7 @@ All new UI strings en and uk, in the task that introduces them.
 35.08                            cookie, push memory, retry-as-success
 35.09                            copy provenance + migration
 35.10                            smoke
+35.11                            commit tsconfig cleanup
 ```
 
 ## Epic Summary
@@ -217,6 +218,7 @@ All new UI strings en and uk, in the task that introduces them.
 - [x] TASK-35.08 Clear cookie, push token, and treat lost delete as success
 - [x] TASK-35.09 Stop storing sourceDeckId on finalized copies
 - [x] TASK-35.10 Update account-deletion smoke checks
+- [ ] TASK-35.11 Commit tsconfig cleanup
 ```
 
 ---
@@ -1275,4 +1277,104 @@ None (the smoke file is the checklist)
 
 ```txt
 TASK-35.10 Update account-deletion smoke checks
+```
+
+---
+
+# TASK-35.11 Commit tsconfig cleanup
+
+## Status
+
+TODO
+
+## Context
+
+After EPIC-35, `apps/mobile/expo-env.d.ts` was deleted from disk but never staged.
+`apps/mobile/tsconfig.json` has a matching unstaged change that removes `expo-env.d.ts`
+from the `include` array. Both changes are correct but uncommitted.
+
+## Goal
+
+Stage and commit the two unstaged changes so the working tree is clean before release.
+
+## Related Documents
+
+```txt
+docs/tasks/35-account-deletion-prod-gaps.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/tsconfig.json  (already modified, just needs to be staged)
+apps/mobile/expo-env.d.ts  (deleted, needs to be staged with git rm)
+```
+
+## Requirements
+
+```txt
+1. Stage apps/mobile/expo-env.d.ts deletion (git rm).
+2. Stage apps/mobile/tsconfig.json.
+3. Verify pnpm --filter @flashcards/mobile typecheck passes.
+4. Commit with the expected commit message.
+5. Mark TASK-35.11 DONE.
+```
+
+## Security Requirements
+
+```txt
+- Do not commit secrets.
+```
+
+## Architecture Constraints
+
+```txt
+- This task is a housekeeping commit only.
+- Do not change any application code.
+```
+
+## Implementation Notes
+
+```txt
+- expo-env.d.ts is a Expo-generated type declaration file. Its deletion is intentional.
+- The tsconfig.json change only removes the now-deleted file from the include array.
+```
+
+## Acceptance Criteria
+
+```txt
+- Working tree is clean after commit (git status shows nothing to commit).
+- pnpm --filter @flashcards/mobile typecheck passes.
+```
+
+## Commands to Run
+
+```bash
+pnpm --filter @flashcards/mobile typecheck
+pnpm lint
+```
+
+## Manual Checks
+
+```txt
+None
+```
+
+## Do Not Do
+
+```txt
+- Do not change any source files beyond the two listed.
+- Do not push.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-35.11 Commit tsconfig cleanup
 ```
