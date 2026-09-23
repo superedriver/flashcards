@@ -1,7 +1,10 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { GqlThrottlerGuard } from './common/guards/gql-throttler.guard';
 import {
   aiConfig,
   appConfig,
@@ -40,6 +43,7 @@ import { PrismaModule } from './infrastructure/prisma';
         pushConfig,
       ],
     }),
+    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 60 }]),
     PrismaModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -63,7 +67,11 @@ import { PrismaModule } from './infrastructure/prisma';
     EmailModule,
   ],
   controllers: [],
-  providers: [RootResolver, HstsMiddleware],
+  providers: [
+    RootResolver,
+    HstsMiddleware,
+    { provide: APP_GUARD, useClass: GqlThrottlerGuard },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

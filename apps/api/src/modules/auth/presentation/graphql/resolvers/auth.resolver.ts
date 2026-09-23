@@ -1,4 +1,5 @@
 import { UseGuards } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ApplicationError, ErrorCodes } from '../../../../../common/errors';
 import { GetMeUseCase } from '../../../application/use-cases/get-me.use-case';
@@ -46,6 +47,7 @@ export class AuthResolver {
     private readonly refreshTokenCookieService: RefreshTokenCookieService,
   ) {}
 
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
   @Mutation(() => AuthPayloadType)
   async register(
     @Args('input') input: RegisterInput,
@@ -68,6 +70,7 @@ export class AuthResolver {
     };
   }
 
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
   @Mutation(() => AuthPayloadType)
   async login(
     @Args('input') input: LoginInput,
@@ -149,6 +152,7 @@ export class AuthResolver {
     };
   }
 
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
   @Mutation(() => Boolean)
   async requestPasswordReset(
     @Args('input') input: RequestPasswordResetInput,
