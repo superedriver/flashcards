@@ -1,7 +1,7 @@
 import { CombinedGraphQLErrors } from '@apollo/client/errors'
 import { setContext } from '@apollo/client/link/context'
 import { onError } from '@apollo/client/link/error'
-import { Observable } from 'rxjs'
+import { Observable } from '@apollo/client/utilities'
 
 import { handleSessionExpired } from './handle-session-expired'
 import { authTokenService } from './auth-token-service'
