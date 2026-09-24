@@ -125,3 +125,41 @@ apps/mobile/src/ui/primitives/app-input.tsx
 ```txt
 TASK-38.02 Fix app-input: destructure accessibilityLabel/accessibilityHint to prevent DOM leak
 ```
+
+---
+
+# TASK-38.03 Redesign study language onboarding screen
+
+## Status
+
+DONE
+
+## Context
+
+The onboarding screen used generic labels ("My native language", "target language"), a plain bordered
+pressable with no visual affordance, and a long description. The user requested a cleaner UI:
+human labels, card-style selectors with flag + chevron, a language pair preview, and a primary blue
+Continue button that is disabled until both languages are selected.
+
+## What Was Done
+
+- Changed `nativeLabel` from "My native language" → "I speak" (en) / "Я розмовляю" (uk)
+- Shortened description to one sentence in both locales
+- Replaced plain `Pressable` selectors with `LanguageRow` component: flag, name, english name, chevron
+- Added language pair preview row (`🇬🇧 → 🇪🇸 English → Spanish`) when both selected
+- Continue button: primary blue `#1976d2` when enabled, grey when disabled
+- Wrapped content in `maxWidth: 480` for compact layout
+
+## Files Modified
+
+```txt
+apps/mobile/src/features/study-languages/screens/study-language-onboarding-screen.tsx
+apps/mobile/src/i18n/resources/en/study-languages.ts
+apps/mobile/src/i18n/resources/uk/study-languages.ts
+```
+
+## Commit
+
+```txt
+TASK-38.03 Redesign study language onboarding screen
+```

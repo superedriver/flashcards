@@ -21,6 +21,50 @@ type SelectedLanguage = {
   flag: string
 }
 
+function LanguageRow({
+  language,
+  placeholder,
+  onPress,
+}: {
+  language: SelectedLanguage | null
+  placeholder: string
+  onPress: () => void
+}) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      onPress={onPress}
+      style={({ pressed }) => ({
+        alignItems: 'center',
+        backgroundColor: pressed ? '#f5f5f5' : '#ffffff',
+        borderColor: '#e0e0e0',
+        borderRadius: 10,
+        borderWidth: 1,
+        flexDirection: 'row',
+        paddingHorizontal: 14,
+        paddingVertical: 14,
+      })}
+    >
+      {language ? (
+        <>
+          <AppText style={{ fontSize: 24, marginRight: 12 }}>{language.flag}</AppText>
+          <AppText style={{ flex: 1, fontSize: 16, fontWeight: '500' }}>
+            {language.nativeName}
+          </AppText>
+          <AppText style={{ color: '#999999', fontSize: 13 }}>{language.englishName}</AppText>
+          <AppText style={{ color: '#bbbbbb', fontSize: 18, marginLeft: 8 }}>›</AppText>
+        </>
+      ) : (
+        <>
+          <AppText style={{ color: '#cccccc', fontSize: 24, marginRight: 12 }}>🌐</AppText>
+          <AppText style={{ color: '#aaaaaa', flex: 1, fontSize: 16 }}>{placeholder}</AppText>
+          <AppText style={{ color: '#bbbbbb', fontSize: 18 }}>›</AppText>
+        </>
+      )}
+    </Pressable>
+  )
+}
+
 export function StudyLanguageOnboardingScreen() {
   const { t } = useTranslation()
   const router = useRouter()
@@ -81,75 +125,95 @@ export function StudyLanguageOnboardingScreen() {
     }
   }
 
+  const bothSelected = targetLanguage !== null && nativeLanguage !== null
+
   return (
     <Screen scrollable>
-      <PageTitle title={t('studyLanguages.onboarding.title')} />
-      <AppText style={{ color: '#666666', marginBottom: 24 }}>
-        {t('studyLanguages.onboarding.description')}
-      </AppText>
+      <View style={{ maxWidth: 480, width: '100%' }}>
+        <PageTitle title={t('studyLanguages.onboarding.title')} />
+        <AppText style={{ color: '#888888', marginBottom: 28 }}>
+          {t('studyLanguages.onboarding.description')}
+        </AppText>
 
-      <View style={{ gap: 16 }}>
-        <View style={{ gap: 8 }}>
-          <AppText style={{ fontWeight: '600' }}>
-            {t('studyLanguages.onboarding.targetLabel')}
-          </AppText>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => setPicker('target')}
+        <View style={{ gap: 20 }}>
+          <View style={{ gap: 8 }}>
+            <AppText
+              style={{
+                color: '#444444',
+                fontSize: 13,
+                fontWeight: '600',
+                letterSpacing: 0.3,
+                textTransform: 'uppercase',
+              }}
+            >
+              {t('studyLanguages.onboarding.targetLabel')}
+            </AppText>
+            <LanguageRow
+              language={targetLanguage}
+              placeholder={t('studyLanguages.onboarding.targetPlaceholder')}
+              onPress={() => setPicker('target')}
+            />
+          </View>
+
+          <View style={{ gap: 8 }}>
+            <AppText
+              style={{
+                color: '#444444',
+                fontSize: 13,
+                fontWeight: '600',
+                letterSpacing: 0.3,
+                textTransform: 'uppercase',
+              }}
+            >
+              {t('studyLanguages.onboarding.nativeLabel')}
+            </AppText>
+            <LanguageRow
+              language={nativeLanguage}
+              placeholder={t('studyLanguages.onboarding.nativePlaceholder')}
+              onPress={() => setPicker('native')}
+            />
+          </View>
+
+          {bothSelected ? (
+            <View
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#f0f4ff',
+                borderRadius: 10,
+                flexDirection: 'row',
+                gap: 8,
+                justifyContent: 'center',
+                paddingVertical: 12,
+              }}
+            >
+              <AppText style={{ fontSize: 22 }}>{nativeLanguage.flag}</AppText>
+              <AppText style={{ color: '#1976d2', fontSize: 16, fontWeight: '600' }}>→</AppText>
+              <AppText style={{ fontSize: 22 }}>{targetLanguage.flag}</AppText>
+              <AppText style={{ color: '#444444', fontSize: 14, marginLeft: 4 }}>
+                {nativeLanguage.englishName} → {targetLanguage.englishName}
+              </AppText>
+            </View>
+          ) : null}
+
+          {errorMessage ? <AppText style={{ color: '#c62828' }}>{errorMessage}</AppText> : null}
+
+          <AppButton
+            disabled={!bothSelected || loading}
+            onPress={() => void handleSubmit()}
             style={{
-              borderColor: '#cccccc',
-              borderRadius: 8,
-              borderWidth: 1,
-              paddingHorizontal: 12,
-              paddingVertical: 12,
+              backgroundColor: bothSelected ? '#1976d2' : '#cccccc',
+              borderColor: bothSelected ? '#1976d2' : '#cccccc',
+              borderRadius: 10,
+              height: 48,
             }}
           >
-            {targetLanguage ? (
-              <AppText>
-                {targetLanguage.flag} {targetLanguage.nativeName} ({targetLanguage.englishName})
-              </AppText>
-            ) : (
-              <AppText style={{ color: '#888888' }}>
-                {t('studyLanguages.onboarding.targetPlaceholder')}
-              </AppText>
-            )}
-          </Pressable>
+            <AppText style={{ color: '#ffffff', fontSize: 16, fontWeight: '600' }}>
+              {loading
+                ? t('studyLanguages.onboarding.submitting')
+                : t('studyLanguages.onboarding.submit')}
+            </AppText>
+          </AppButton>
         </View>
-
-        <View style={{ gap: 8 }}>
-          <AppText style={{ fontWeight: '600' }}>
-            {t('studyLanguages.onboarding.nativeLabel')}
-          </AppText>
-          <Pressable
-            accessibilityRole="button"
-            onPress={() => setPicker('native')}
-            style={{
-              borderColor: '#cccccc',
-              borderRadius: 8,
-              borderWidth: 1,
-              paddingHorizontal: 12,
-              paddingVertical: 12,
-            }}
-          >
-            {nativeLanguage ? (
-              <AppText>
-                {nativeLanguage.flag} {nativeLanguage.nativeName} ({nativeLanguage.englishName})
-              </AppText>
-            ) : (
-              <AppText style={{ color: '#888888' }}>
-                {t('studyLanguages.onboarding.nativePlaceholder')}
-              </AppText>
-            )}
-          </Pressable>
-        </View>
-
-        {errorMessage ? <AppText style={{ color: '#c62828' }}>{errorMessage}</AppText> : null}
-
-        <AppButton disabled={loading} onPress={() => void handleSubmit()}>
-          {loading
-            ? t('studyLanguages.onboarding.submitting')
-            : t('studyLanguages.onboarding.submit')}
-        </AppButton>
       </View>
 
       <LanguageCatalogModal
