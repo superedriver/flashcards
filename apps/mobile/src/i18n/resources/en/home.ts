@@ -16,7 +16,8 @@ export const homeEn = {
   },
   start: 'Start review',
   addCards: {
-    message: 'Add cards for learning.',
+    title: 'No cards to study yet',
+    message: 'Create a deck or add cards to get started.',
     action: 'Go to decks',
   },
   noReviewNow: {

@@ -110,54 +110,87 @@ export function HomeScreen() {
           />
         ) : (
           <>
-            <HomeLearningCounters
-              dueCount={progress.dueCount}
-              learnedCount={progress.learnedCount}
-              practicedCount={progress.practicedCount}
-              toLearnCount={progress.toLearnCount}
-            />
-
-            {canStart ? (
-              <Pressable
-                {...buttonA11yProps(t('home.start'))}
-                disabled={isStarting}
-                style={{
-                  alignItems: 'center',
-                  backgroundColor: '#1a56db',
-                  borderRadius: 8,
-                  flexDirection: 'row',
-                  gap: 6,
-                  justifyContent: 'center',
-                  opacity: isStarting ? 0.7 : 1,
-                  paddingVertical: 12,
-                  width: '100%',
-                }}
-                onPress={() => void handleStart()}
-              >
-                <AppText style={{ color: '#ffffff', fontSize: 16, fontWeight: '700' }}>
-                  {isStarting ? t('home.starting') : t('home.start')}
-                </AppText>
-                {isStarting ? null : <Ionicons color="#ffffff" name="chevron-forward" size={18} />}
-              </Pressable>
-            ) : null}
-
             {!hasCards ? (
-              <EmptyState
-                actionLabel={t('home.addCards.action')}
-                message={t('home.addCards.message')}
-                onAction={() => router.push('/(tabs)/decks')}
-              />
-            ) : null}
+              <View style={{ alignItems: 'center', paddingTop: 16 }}>
+                <AppText
+                  style={{ fontSize: 18, fontWeight: '700', marginBottom: 8, textAlign: 'center' }}
+                >
+                  {t('home.addCards.title')}
+                </AppText>
+                <AppText
+                  style={{
+                    color: '#666666',
+                    fontSize: 15,
+                    marginBottom: 24,
+                    textAlign: 'center',
+                  }}
+                >
+                  {t('home.addCards.message')}
+                </AppText>
+                <Pressable
+                  {...buttonA11yProps(t('home.addCards.action'))}
+                  onPress={() => router.push('/(tabs)/decks')}
+                  style={({ pressed }) => ({
+                    alignItems: 'center',
+                    backgroundColor: '#1a56db',
+                    borderRadius: 10,
+                    height: 48,
+                    justifyContent: 'center',
+                    opacity: pressed ? 0.85 : 1,
+                    width: '100%',
+                  })}
+                >
+                  <AppText style={{ color: '#ffffff', fontSize: 15, fontWeight: '600' }}>
+                    {t('home.addCards.action')}
+                  </AppText>
+                </Pressable>
+              </View>
+            ) : (
+              <>
+                <HomeLearningCounters
+                  dueCount={progress.dueCount}
+                  learnedCount={progress.learnedCount}
+                  practicedCount={progress.practicedCount}
+                  toLearnCount={progress.toLearnCount}
+                />
 
-            {hasCards && !hasDue ? (
-              <EmptyState
-                actionLabel={t('home.noReviewNow.action')}
-                message={t('home.noReviewNow.message')}
-                onAction={() => router.push('/(tabs)/decks')}
-              />
-            ) : null}
+                {canStart ? (
+                  <Pressable
+                    {...buttonA11yProps(t('home.start'))}
+                    disabled={isStarting}
+                    style={{
+                      alignItems: 'center',
+                      backgroundColor: '#1a56db',
+                      borderRadius: 8,
+                      flexDirection: 'row',
+                      gap: 6,
+                      justifyContent: 'center',
+                      opacity: isStarting ? 0.7 : 1,
+                      paddingVertical: 12,
+                      width: '100%',
+                    }}
+                    onPress={() => void handleStart()}
+                  >
+                    <AppText style={{ color: '#ffffff', fontSize: 16, fontWeight: '700' }}>
+                      {isStarting ? t('home.starting') : t('home.start')}
+                    </AppText>
+                    {isStarting ? null : (
+                      <Ionicons color="#ffffff" name="chevron-forward" size={18} />
+                    )}
+                  </Pressable>
+                ) : null}
 
-            {startError ? <ErrorState message={startError} /> : null}
+                {!hasDue ? (
+                  <EmptyState
+                    actionLabel={t('home.noReviewNow.action')}
+                    message={t('home.noReviewNow.message')}
+                    onAction={() => router.push('/(tabs)/decks')}
+                  />
+                ) : null}
+
+                {startError ? <ErrorState message={startError} /> : null}
+              </>
+            )}
           </>
         )}
       </View>

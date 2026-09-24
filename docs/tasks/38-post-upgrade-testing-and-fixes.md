@@ -231,3 +231,38 @@ apps/mobile/src/features/decks/components/decks-page-sections.tsx
 ```txt
 TASK-38.05 Remove duplicate Create Deck CTA from decks page empty state
 ```
+
+---
+
+# TASK-38.06 Redesign home screen empty state when no cards exist
+
+## Status
+
+DONE
+
+## Context
+
+When a user has no cards, the Home screen showed the stats block (due count = 0, all counters = 0)
+plus a grey "Add cards for learning." EmptyState with a secondary button. The zero stats block
+added noise with no value, and the CTA had no visual weight.
+
+## What Was Done
+
+- When `!hasCards`: hide `HomeLearningCounters` entirely, show full empty state with title +
+  subtitle + primary blue "Go to decks" button
+- When `hasCards && !hasDue`: keep counters, show secondary EmptyState as before
+- Added `title` key to `addCards` in en and uk translations
+
+## Files Modified
+
+```txt
+apps/mobile/src/features/home/screens/home-screen.tsx
+apps/mobile/src/i18n/resources/en/home.ts
+apps/mobile/src/i18n/resources/uk/home.ts
+```
+
+## Commit
+
+```txt
+TASK-38.06 Redesign home screen empty state when no cards exist
+```
