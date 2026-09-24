@@ -80,6 +80,7 @@ EPIC-36 is complete (in `docs/tasks/done/`).
 - [x] TASK-37.07 Upgrade Expo to v57
 - [x] TASK-37.08 Fix codegen: split generated output to resolve Babel duplicate identifier error
 - [x] TASK-37.09 Fix apollo-auth-links: rxjs not bundled — import Observable from @apollo/client/utilities
+- [x] TASK-37.10 Fix react-native-screens/safe-area-context/@expo/vector-icons: align to Expo 57 expected versions
 ```
 
 ---
@@ -928,4 +929,39 @@ Apollo v4 re-exports `Observable` from rxjs through `@apollo/client/utilities`, 
 
 ```txt
 Fix apollo-auth-links: import Observable from @apollo/client/utilities instead of rxjs
+```
+
+---
+
+# TASK-37.10 Fix react-native-screens/safe-area-context/@expo/vector-icons: align to Expo 57 expected versions
+
+## Status
+
+DONE
+
+## Context
+
+After upgrading to Expo 57, the web bundled app threw at runtime:
+
+```txt
+TypeError: Cannot read properties of undefined (reading 'experiment')
+  at screensFeatureFlags.js:22
+```
+
+`react-native-screens` v4.11 called `featureFlags.experiment` which does not exist in that version. Expo 57 expects `react-native-screens ~4.26.0`, `react-native-safe-area-context ~5.7.0`, and `@expo/vector-icons ^15.0.2` — these were not updated in TASK-37.07.
+
+## What Was Done
+
+```txt
+Ran: npx expo install --fix (inside apps/mobile)
+Updated:
+  react-native-screens          4.11.1 → 4.26.2
+  react-native-safe-area-context 5.4.0 → 5.7.0
+  @expo/vector-icons            14.1.0 → 15.1.1
+```
+
+## Commit
+
+```txt
+TASK-37.10 Fix react-native-screens/safe-area-context/@expo/vector-icons: align to Expo 57 expected versions
 ```
