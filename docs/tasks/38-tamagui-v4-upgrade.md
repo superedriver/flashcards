@@ -95,3 +95,33 @@ apps/mobile/src/ui/primitives/app-input.tsx
 ```txt
 TASK-38.01 Fix Tamagui primitives: filter RN accessibility props on web
 ```
+
+---
+
+# TASK-38.02 Fix app-input: destructure accessibilityLabel/accessibilityHint to prevent DOM leak
+
+## Status
+
+DONE
+
+## Context
+
+After TASK-38.01, `app-input.tsx` still leaked `accessibilityLabel` to the DOM via `...props` spread
+on the web branch. The original destructure only removed `accessibilityRole`.
+
+## What Was Done
+
+Destructured `accessibilityHint` and `accessibilityLabel` from `AppInput` props. On the web branch,
+mapped `accessibilityLabel` to `aria-label` on `<Input>`.
+
+## Files Modified
+
+```txt
+apps/mobile/src/ui/primitives/app-input.tsx
+```
+
+## Commit
+
+```txt
+TASK-38.02 Fix app-input: destructure accessibilityLabel/accessibilityHint to prevent DOM leak
+```

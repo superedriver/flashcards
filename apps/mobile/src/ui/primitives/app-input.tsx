@@ -26,6 +26,8 @@ const webPasswordInputStyle = {
 } as const
 
 export function AppInput({
+  accessibilityHint,
+  accessibilityLabel,
   accessibilityRole = 'text',
   secureTextEntry,
   style,
@@ -46,7 +48,14 @@ export function AppInput({
   }
 
   if (Platform.OS === 'web') {
-    return <Input secureTextEntry={secureTextEntry} style={style} {...props} />
+    return (
+      <Input
+        aria-label={accessibilityLabel}
+        secureTextEntry={secureTextEntry}
+        style={style}
+        {...props}
+      />
+    )
   }
 
   return (
