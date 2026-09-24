@@ -77,7 +77,7 @@ EPIC-36 is complete (in `docs/tasks/done/`).
 - [x] TASK-37.04 Upgrade @react-native-async-storage to v3
 - [x] TASK-37.05 Upgrade Apollo Client to v4
 - [x] TASK-37.06 Upgrade graphql-codegen to v7
-- [ ] TASK-37.07 Upgrade Expo to v57
+- [x] TASK-37.07 Upgrade Expo to v57
 ```
 
 ---
