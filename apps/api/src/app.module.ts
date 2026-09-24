@@ -5,6 +5,9 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { GqlThrottlerGuard } from './common/guards/gql-throttler.guard';
+import depthLimit from 'graphql-depth-limit';
+
+const GRAPHQL_MAX_DEPTH = 7;
 import {
   aiConfig,
   appConfig,
@@ -51,6 +54,7 @@ import { PrismaModule } from './infrastructure/prisma';
       sortSchema: true,
       playground: process.env.NODE_ENV !== 'production',
       formatError: formatGraphQLError,
+      validationRules: [depthLimit(GRAPHQL_MAX_DEPTH)],
       context: ({ req, res }: { req: unknown; res: unknown }) => ({ req, res }),
     }),
     HealthModule,
