@@ -34,7 +34,9 @@ export function CreateCardScreen() {
   const { deckId } = useLocalSearchParams<{ deckId: string }>()
   const bulkQueue = useBulkCardQueue()
   const bulkFillKeyRef = useRef(0)
-  const [checkCardDuplicates, { loading: isCheckingDuplicates }] = useCheckCardDuplicatesLazyQuery()
+  const [checkCardDuplicates, { loading: isCheckingDuplicates }] = useCheckCardDuplicatesLazyQuery({
+    fetchPolicy: 'network-only',
+  })
   const [createCard, { loading }] = useCreateCardMutation({
     awaitRefetchQueries: true,
     refetchQueries: [...CARD_MUTATION_REFETCH_QUERIES],
@@ -162,7 +164,6 @@ export function CreateCardScreen() {
 
             try {
               const duplicateResult = await checkCardDuplicates({
-                fetchPolicy: 'network-only',
                 variables: {
                   input: {
                     deckId,
@@ -239,7 +240,6 @@ export function CreateCardScreen() {
             try {
               const remainingQueue = bulkQueue.pairs.slice(1)
               const duplicateResult = await checkCardDuplicates({
-                fetchPolicy: 'network-only',
                 variables: {
                   input: {
                     deckId,

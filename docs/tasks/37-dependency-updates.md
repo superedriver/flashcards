@@ -78,6 +78,8 @@ EPIC-36 is complete (in `docs/tasks/done/`).
 - [x] TASK-37.05 Upgrade Apollo Client to v4
 - [x] TASK-37.06 Upgrade graphql-codegen to v7
 - [x] TASK-37.07 Upgrade Expo to v57
+- [x] TASK-37.08 Fix codegen: split generated output to resolve Babel duplicate identifier error
+- [x] TASK-37.09 Fix apollo-auth-links: rxjs not bundled — import Observable from @apollo/client/utilities
 ```
 
 ---
@@ -837,4 +839,93 @@ pnpm lint
 
 ```txt
 TASK-37.07 Upgrade Expo to v57
+```
+
+---
+
+# TASK-37.08 Fix codegen: split generated output to resolve Babel duplicate identifier error
+
+## Status
+
+DONE
+
+## Context
+
+After upgrading graphql-codegen to v7 and Apollo Client to v4, running `pnpm mobile:web` produced a Babel parse error:
+
+```txt
+SyntaxError: Identifier 'AbandonLessonInput' has already been declared.
+```
+
+Root cause: the `typescript` plugin generates Input types from the GraphQL schema, and the `typescript-operations` plugin (v6) independently re-generates the same Input types inline for mutation variables. Both blocks ended up in the same `generated/index.ts` file. TypeScript's `// @ts-nocheck` suppresses TS errors but Babel still parses the file and hard-fails on the duplicate `export type` declarations.
+
+Additionally, `typescript-react-apollo` v5 generates `import * as Apollo from '@apollo/client'` but in Apollo v4 hooks (`useQuery`, `useMutation`) moved to `@apollo/client/react`. This caused further TS errors in the generated hooks.
+
+`fetchPolicy` passed to `useLazyQuery`'s exec function was also removed in Apollo v4 — it must now be set at hook initialisation.
+
+## Goal
+
+Fix the generated file structure so Babel can bundle the app without errors, and TypeScript passes.
+
+## Files Modified
+
+```txt
+apps/mobile/codegen.ts
+apps/mobile/src/graphql/generated/index.ts   (barrel re-export only)
+apps/mobile/src/graphql/generated/schema.ts  (new — schema types from `typescript` plugin)
+apps/mobile/src/graphql/generated/operations.ts (new — hooks from `typescript-operations` + `typescript-react-apollo`)
+apps/mobile/src/features/decks/screens/create-card-screen.tsx
+apps/mobile/src/features/study-languages/components/study-languages-list-modal.tsx
+```
+
+## What Was Done
+
+```txt
+1. Split codegen output into two files:
+   - schema.ts  → typescript plugin only (GraphQL schema types, enums, scalars)
+   - operations.ts → typescript-operations + typescript-react-apollo (hooks, query/mutation types)
+2. Set importSchemaTypesFrom: 'src/graphql/generated/schema' so operations.ts
+   imports SchemaTypes from schema.ts instead of re-generating them.
+3. Added // @ts-nocheck to operations.ts only — typescript-react-apollo v5 is not
+   fully Apollo v4 compatible (references removed types like MutationFunction).
+4. Set apolloReactHooksImportFrom: '@apollo/client/react' so generated hooks
+   import useQuery/useMutation from the correct Apollo v4 sub-path.
+5. Set scalars: { DateTime: 'string' } to fix `unknown` type errors on date fields.
+6. Created generated/index.ts as a barrel that re-exports both files — all existing
+   import paths (@/graphql/generated) continue to work unchanged.
+7. Moved fetchPolicy: 'network-only' from useLazyQuery exec call to hook init
+   (Apollo v4 removed fetchPolicy from the exec function options).
+```
+
+## Commit
+
+```txt
+Fix codegen: split schema/operations to eliminate Babel duplicate identifier error
+```
+
+---
+
+# TASK-37.09 Fix apollo-auth-links: rxjs not bundled
+
+## Status
+
+DONE
+
+## Context
+
+After Apollo Client v4 upgrade, `apollo-auth-links.ts` imported `Observable` directly from `rxjs`. While rxjs is a peer dependency of `@apollo/client`, it is not listed as a direct dependency of the mobile workspace — Metro bundler could not resolve it at build time.
+
+## What Was Done
+
+```txt
+Changed: import { Observable } from 'rxjs'
+To:      import { Observable } from '@apollo/client/utilities'
+```
+
+Apollo v4 re-exports `Observable` from rxjs through `@apollo/client/utilities`, which is always resolvable since it is part of the `@apollo/client` package itself.
+
+## Commit
+
+```txt
+Fix apollo-auth-links: import Observable from @apollo/client/utilities instead of rxjs
 ```

@@ -34,7 +34,7 @@ export function StudyLanguagesListModal({ onClose, visible }: StudyLanguagesList
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [removingCode, setRemovingCode] = useState<string | null>(null)
 
-  const [fetchImpact] = useStudyLanguageRemovalImpactLazyQuery()
+  const [fetchImpact] = useStudyLanguageRemovalImpactLazyQuery({ fetchPolicy: 'network-only' })
   const [removeStudyLanguage] = useRemoveStudyLanguageMutation({
     refetchQueries: ['MyStudyLanguages', 'StudyLanguageBootstrap'],
   })
@@ -71,7 +71,6 @@ export function StudyLanguagesListModal({ onClose, visible }: StudyLanguagesList
     try {
       const impactResult = await fetchImpact({
         variables: { languageCode },
-        fetchPolicy: 'network-only',
       })
       const affectedDeckCount = impactResult.data?.studyLanguageRemovalImpact.affectedDeckCount ?? 0
 
