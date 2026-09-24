@@ -535,6 +535,25 @@ Frontend tests/manual checks should cover:
 - access token is not in localStorage
 ```
 
+## Role freshness
+
+```txt
+Current behavior: GqlAuthGuard reads the user's role from the JWT payload,
+not from the DB row. The DB row is read only to confirm the user still exists.
+
+Trade-off: if an admin's role is changed in the DB while their access token is
+still valid, the guard sees the stale role until the token expires (default
+access token TTL) or the user re-logs in.
+
+Acceptable for MVP: the admin surface is small and role changes are rare
+manual operations.
+
+When to revisit: if admin operations expand significantly, or if role changes
+must take effect immediately without waiting for token expiry, read the role
+from the DB row inside GqlAuthGuard (the findById call already happens there —
+it would be a one-line addition to use user.role instead of authUser.role).
+```
+
 ## Cursor Implementation Rules
 
 Cursor must read this document before implementing or modifying:

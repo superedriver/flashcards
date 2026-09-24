@@ -55,6 +55,8 @@ export class GqlAuthGuard implements CanActivate {
       throw new ApplicationError(ErrorCodes.UNAUTHORIZED, 'Unauthorized');
     }
 
+    // role is read from the JWT payload, not the DB row; a role change takes
+    // effect only after the current token expires or the user re-logs in.
     req.authUser = authUser;
     return true;
   }
