@@ -1,12 +1,10 @@
-# EPIC-38 Tamagui Web Accessibility Fix
+# EPIC-38 Post-upgrade Testing and Fixes
 
 ## Epic Goal
 
-Fix React 19 DOM accessibility prop warnings in Tamagui UI primitives on web.
+Test the app after EPIC-37 dependency upgrades and fix issues found during testing.
 
-Tamagui v2 (latest stable) passes React Native accessibility props (`accessibilityRole`, `accessibilityLabel`, `accessibilityHint`) directly to DOM elements on web. React 19.2 (introduced via Expo 57 / EPIC-37) warns about unknown DOM attributes for these props, producing console errors on every render.
-
-Tamagui v3 is in beta and not yet stable. The fix is to intercept RN accessibility props in UI primitives and either drop them or map them to ARIA equivalents on web.
+Covers web runtime fixes, accessibility prop warnings introduced by React 19.2 and react-native-web 0.21, and UI improvements discovered during manual testing.
 
 ## Scope
 
