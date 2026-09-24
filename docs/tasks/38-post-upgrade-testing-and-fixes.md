@@ -161,3 +161,41 @@ apps/mobile/src/i18n/resources/uk/study-languages.ts
 ```txt
 TASK-38.03 Redesign study language onboarding screen
 ```
+
+---
+
+# TASK-38.04 Redesign verify email prompt screen
+
+## Status
+
+DONE
+
+## Context
+
+The verify email prompt had two identical grey buttons with no visual hierarchy. Redesign to a
+confirmation state with icon, accented email line, outlined primary Resend button with cooldown,
+and a text-only Continue link.
+
+## What Was Done
+
+- Centered layout with `maxWidth: 400`, icon ✉️ at top
+- `promptBody` split into label + accented email line (bold)
+- `Resend email` → outlined primary button (`#1976d2` border), disabled + grey during cooldown
+- Cooldown: 45s timer after successful resend, shows "Resend in Xs"
+- Feedback "Verification email sent." shown after successful resend
+- `Continue to app` → plain text pressable (`#888888`)
+- Added `resendCooldown` i18n key in en and uk
+
+## Files Modified
+
+```txt
+apps/mobile/src/features/auth/components/verify-email-prompt.tsx
+apps/mobile/src/i18n/resources/en/auth.ts
+apps/mobile/src/i18n/resources/uk/auth.ts
+```
+
+## Commit
+
+```txt
+TASK-38.04 Redesign verify email prompt screen
+```
