@@ -1,12 +1,12 @@
-# EPIC-38 Tamagui v4 Upgrade
+# EPIC-38 Tamagui Web Accessibility Fix
 
 ## Epic Goal
 
-Upgrade Tamagui from v2.7.7 to v4.x across the mobile app.
+Fix React 19 DOM accessibility prop warnings in Tamagui UI primitives on web.
 
-Tamagui v2 passes React Native accessibility props (`accessibilityRole`, `accessibilityLabel`, `accessibilityHint`) directly to DOM elements on web. React 19.2 (introduced via Expo 57 / EPIC-37) now warns about unknown DOM attributes for these props, producing console errors on every render.
+Tamagui v2 (latest stable) passes React Native accessibility props (`accessibilityRole`, `accessibilityLabel`, `accessibilityHint`) directly to DOM elements on web. React 19.2 (introduced via Expo 57 / EPIC-37) warns about unknown DOM attributes for these props, producing console errors on every render.
 
-Tamagui v4 has native React 19 and `react-native-web` 0.21 support and resolves these warnings.
+Tamagui v3 is in beta and not yet stable. The fix is to intercept RN accessibility props in UI primitives and either drop them or map them to ARIA equivalents on web.
 
 ## Scope
 
@@ -60,62 +60,38 @@ EPIC-37 is complete (in `docs/tasks/done/`).
 
 ---
 
-# TASK-38.01 Upgrade Tamagui packages from v2 to v4
+# TASK-38.01 Fix Tamagui primitives: filter RN accessibility props on web
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
-Tamagui v2.7.7 is incompatible with React 19.2 and react-native-web 0.21 (both introduced in EPIC-37). Console errors appear on every render in the web app because v2 passes RN accessibility props to raw DOM elements.
+Tamagui v2.7.7 passes `accessibilityRole`, `accessibilityLabel`, `accessibilityHint` directly to DOM
+elements on web. React 19.2 warns about unknown DOM attributes for these props on every render.
+Tamagui v3 is still in beta — no stable upgrade path exists.
 
-Tamagui v4 officially supports React 19 and react-native-web 0.21.
+## What Was Done
 
-## Goal
+In `app-button.tsx` and `app-card.tsx`: destructured `accessibilityRole`, `accessibilityLabel`,
+`accessibilityHint` from props. On web, passed `aria-label` instead; on native, passed original RN props.
 
-Upgrade all Tamagui packages in `apps/mobile` to v4.x and fix any breaking changes in the 5 affected primitive files.
+In `app-input.tsx`: added `Platform.OS === 'web'` branch that renders `<Input>` without
+`accessibilityRole` (already had a web branch for `secureTextEntry`).
 
-## Files to Modify
+`app-text.tsx` was already correct — web branch uses `RNText`, not Tamagui.
+
+## Files Modified
 
 ```txt
-apps/mobile/package.json
-apps/mobile/src/ui/tamagui-provider.tsx
 apps/mobile/src/ui/primitives/app-button.tsx
 apps/mobile/src/ui/primitives/app-card.tsx
 apps/mobile/src/ui/primitives/app-input.tsx
-apps/mobile/src/ui/primitives/app-text.tsx
-apps/mobile/tamagui.config.ts (if config API changed)
-pnpm-lock.yaml
 ```
 
-## Commands to Run
-
-```bash
-pnpm --filter @flashcards/mobile typecheck
-pnpm format:check
-pnpm lint
-```
-
-## Manual Checks
+## Commit
 
 ```txt
-- Start pnpm mobile:web
-- Open http://localhost:8081 in browser
-- Confirm sign-in form renders without console errors
-- Confirm accessibilityRole/accessibilityLabel/accessibilityHint warnings are gone
-```
-
-## Do Not Do
-
-```txt
-- Do not change screens or business logic
-- Do not change design tokens unless the upgrade requires it
-- Do not add new UI components
-```
-
-## Expected Commit Message
-
-```txt
-TASK-38.01 Upgrade Tamagui packages from v2 to v4
+TASK-38.01 Fix Tamagui primitives: filter RN accessibility props on web
 ```

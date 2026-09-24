@@ -45,6 +45,10 @@ export function AppInput({
     )
   }
 
+  if (Platform.OS === 'web') {
+    return <Input secureTextEntry={secureTextEntry} style={style} {...props} />
+  }
+
   return (
     <Input
       accessibilityRole={accessibilityRole}
