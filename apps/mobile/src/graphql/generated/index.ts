@@ -1,15 +1,14 @@
+/* eslint-disable */
+// @ts-nocheck
+/** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
+/** Internal type. DO NOT USE DIRECTLY. */
+export type Incremental<T> =
+  T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
 import { gql } from '@apollo/client'
 import * as Apollo from '@apollo/client'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
-  [_ in K]?: never
-}
-export type Incremental<T> =
-  T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
 const defaultOptions = {} as const
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -18,7 +17,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean }
   Int: { input: number; output: number }
   Float: { input: number; output: number }
-  DateTime: { input: any; output: any }
+  DateTime: { input: string; output: string }
 }
 
 export type AbandonLessonInput = {
@@ -1162,12 +1161,255 @@ export type VerifyEmailInput = {
   token: Scalars['String']['input']
 }
 
+export type AbandonLessonInput = {
+  sessionId: string
+}
+
+export type AdminSearchUsersInput = {
+  limit?: number | null | undefined
+  offset?: number | null | undefined
+  query?: string | null | undefined
+}
+
+export type CardDuplicateKind = 'CURRENT_DECK' | 'IN_BATCH' | 'OTHER_DECK'
+
+export type CheckCardDuplicatesInput = {
+  deckId: string
+  pairs: Array<CheckCardDuplicatesPairInput>
+}
+
+export type CheckCardDuplicatesPairInput = {
+  back: string
+  front: string
+}
+
+export type CompleteLessonInput = {
+  sessionId: string
+}
+
+export type CompleteStudyLanguageOnboardingInput = {
+  nativeLanguage: string
+  targetLanguage: string
+}
+
+export type ConfirmCsvImportInput = {
+  importId: string
+}
+
+export type CreateCardInput = {
+  back: string
+  deckId: string
+  example?: string | null | undefined
+  front: string
+  notes?: string | null | undefined
+  position?: number | null | undefined
+}
+
+export type CreateDeckInput = {
+  description?: string | null | undefined
+  sourceLanguage?: string | null | undefined
+  targetLanguage: string
+  title: string
+}
+
+export type CreateGroupInput = {
+  description?: string | null | undefined
+  name: string
+}
+
+export type CsvImportStatus = 'CANCELLED' | 'CONFIRMED' | 'EXPIRED' | 'PENDING'
+
+export type DeckGroupSharePermission = 'VIEW'
+
+export type DeckLanguageWarningCode = 'SOURCE_TARGET_SAME'
+
+export type DeckModerationStatus = 'APPROVED' | 'HIDDEN' | 'NONE' | 'PENDING' | 'REJECTED'
+
+export type DeckOrigin = 'GROUP' | 'OWN' | 'PUBLIC'
+
+export type DeckPreviewSessionStatus = 'EXPIRED' | 'GENERATING' | 'READY'
+
+export type DeckPreviewSessionType = 'COPY_GROUP' | 'COPY_PUBLIC' | 'REGENERATE_DECK'
+
+export type DeckVisibility = 'PRIVATE' | 'PUBLIC'
+
+export type DecksPageInput = {
+  activeTargetLanguage: string
+}
+
+export type DisableAudioOnlyInput = {
+  cardId: string
+  sessionId: string
+}
+
+export type GenerateCardExamplesInput = {
+  cardId: string
+  locale?: string | null | undefined
+}
+
+export type GroupInvitationStatus = 'ACCEPTED' | 'CANCELLED' | 'DECLINED' | 'EXPIRED' | 'PENDING'
+
+export type GroupRole = 'ADMIN' | 'MEMBER' | 'OWNER'
+
+export type InviteUserToGroupInput = {
+  email: string
+  groupId: string
+}
+
+export type LearningGroup = 'LEARNED' | 'PRACTICED' | 'TO_LEARN'
+
+export type LoginInput = {
+  email: string
+  password: string
+}
+
+export type LogoutInput = {
+  refreshToken?: string | null | undefined
+}
+
+export type ModerationQueueInput = {
+  limit?: number | null | undefined
+  offset?: number | null | undefined
+  status?: DeckModerationStatus | null | undefined
+}
+
+export type PreviewCsvImportInput = {
+  csvText: string
+  deckId: string
+}
+
+export type PublicDecksInput = {
+  limit?: number | null | undefined
+  offset?: number | null | undefined
+  query?: string | null | undefined
+  targetLanguage?: string | null | undefined
+}
+
+export type RefreshTokenInput = {
+  refreshToken?: string | null | undefined
+}
+
+export type RegisterInput = {
+  email: string
+  password: string
+}
+
+export type RegisterPushTokenInput = {
+  deviceId?: string | null | undefined
+  platform?: string | null | undefined
+  token: string
+}
+
+export type RemovePushTokenInput = {
+  token: string
+}
+
+export type RequestPasswordResetInput = {
+  email: string
+}
+
+export type ResetPasswordInput = {
+  newPassword: string
+  token: string
+}
+
+export type ReviewAnswer = 'DONT_KNOW' | 'KNOW'
+
+export type ReviewPresentationMode =
+  'SOURCE_TEXT' | 'TARGET_AUDIO_ONLY' | 'TARGET_TEXT' | 'TARGET_TEXT_AUDIO'
+
+export type SaveGeneratedCardExampleInput = {
+  cardId: string
+  exampleText: string
+}
+
+export type ShareDeckWithGroupInput = {
+  deckId: string
+  groupId: string
+}
+
+export type StartDeckRegeneratePreviewInput = {
+  chosenSourceLanguage: string
+  discardActive?: boolean | null | undefined
+  sourceDeckId: string
+}
+
+export type StartGroupDeckCopyPreviewInput = {
+  chosenSourceLanguage: string
+  discardActive?: boolean | null | undefined
+  sourceDeckId: string
+}
+
+export type StartHomeLessonInput = {
+  lessonSize?: number | null | undefined
+}
+
+export type StartLessonInput = {
+  deckId: string
+  lessonSize?: number | null | undefined
+}
+
+export type StartPublicDeckCopyPreviewInput = {
+  chosenSourceLanguage: string
+  discardActive?: boolean | null | undefined
+  sourceDeckId: string
+}
+
+export type StudySessionScope = 'DECK' | 'HOME_ACTIVE_TARGET'
+
+export type SubmitReviewInput = {
+  answer: ReviewAnswer
+  cardId: string
+  sessionId: string
+}
+
+export type ThemePreference = 'DARK' | 'LIGHT' | 'SYSTEM'
+
+export type UpdateCardInput = {
+  back?: string | null | undefined
+  cardId: string
+  example?: string | null | undefined
+  front?: string | null | undefined
+  notes?: string | null | undefined
+  position?: number | null | undefined
+}
+
+export type UpdateDeckInput = {
+  deckId: string
+  description?: string | null | undefined
+  sourceLanguage?: string | null | undefined
+  targetLanguage?: string | null | undefined
+  title?: string | null | undefined
+}
+
+export type UpdateDeckPreviewCardInput = {
+  back?: string | null | undefined
+  cardIndex: number
+  example?: string | null | undefined
+  sessionId: string
+}
+
+export type UpdateSettingsInput = {
+  audioAutoplayEnabled?: boolean | null | undefined
+  interfaceLocale?: string | null | undefined
+  lessonSize?: number | null | undefined
+  nativeLanguage?: string | null | undefined
+  notificationsEnabled?: boolean | null | undefined
+  reminderTime?: string | null | undefined
+  themePreference?: ThemePreference | null | undefined
+  timezone?: string | null | undefined
+}
+
+export type UserRole = 'ADMIN' | 'MODERATOR' | 'USER'
+
+export type VerifyEmailInput = {
+  token: string
+}
+
 export type AdminDashboardStatsQueryVariables = Exact<{ [key: string]: never }>
 
 export type AdminDashboardStatsQuery = {
-  __typename?: 'Query'
   adminDashboardStats: {
-    __typename?: 'AdminDashboardStats'
     totalUsers: number
     totalDecks: number
     totalPublicDecks: number
@@ -1181,180 +1423,162 @@ export type AdminDashboardStatsQuery = {
 }
 
 export type AdminSearchUsersQueryVariables = Exact<{
-  input?: InputMaybe<AdminSearchUsersInput>
+  input?: AdminSearchUsersInput | null | undefined
 }>
 
 export type AdminSearchUsersQuery = {
-  __typename?: 'Query'
   adminSearchUsers: {
-    __typename?: 'AdminUserSearchResult'
     total: number
     items: Array<{
-      __typename?: 'AdminUserSummary'
       id: string
       email: string
       role: UserRole
-      emailVerifiedAt?: any | null
-      blockedAt?: any | null
-      createdAt: any
-      updatedAt: any
+      emailVerifiedAt: string | null
+      blockedAt: string | null
+      createdAt: string
+      updatedAt: string
     }>
   }
 }
 
 export type BlockUserMutationVariables = Exact<{
-  userId: Scalars['ID']['input']
+  userId: string | number
 }>
 
 export type BlockUserMutation = {
-  __typename?: 'Mutation'
   blockUser: {
-    __typename?: 'AdminUserSummary'
     id: string
     email: string
     role: UserRole
-    emailVerifiedAt?: any | null
-    blockedAt?: any | null
-    createdAt: any
-    updatedAt: any
+    emailVerifiedAt: string | null
+    blockedAt: string | null
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type UnblockUserMutationVariables = Exact<{
-  userId: Scalars['ID']['input']
+  userId: string | number
 }>
 
 export type UnblockUserMutation = {
-  __typename?: 'Mutation'
   unblockUser: {
-    __typename?: 'AdminUserSummary'
     id: string
     email: string
     role: UserRole
-    emailVerifiedAt?: any | null
-    blockedAt?: any | null
-    createdAt: any
-    updatedAt: any
+    emailVerifiedAt: string | null
+    blockedAt: string | null
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type ModerationQueueQueryVariables = Exact<{
-  input?: InputMaybe<ModerationQueueInput>
+  input?: ModerationQueueInput | null | undefined
 }>
 
 export type ModerationQueueQuery = {
-  __typename?: 'Query'
   moderationQueue: {
-    __typename?: 'ModerationQueueResult'
     total: number
     items: Array<{
-      __typename?: 'ModerationDeck'
       id: string
       ownerId: string
       ownerEmail: string
       title: string
-      description?: string | null
+      description: string | null
       visibility: DeckVisibility
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
-      sourceDeckId?: string | null
+      sourceDeckId: string | null
       cardCount: number
-      createdAt: any
-      updatedAt: any
+      createdAt: string
+      updatedAt: string
     }>
   }
 }
 
 export type ApproveDeckMutationVariables = Exact<{
-  deckId: Scalars['ID']['input']
+  deckId: string | number
 }>
 
 export type ApproveDeckMutation = {
-  __typename?: 'Mutation'
   approveDeck: {
-    __typename?: 'ModerationDeck'
     id: string
     ownerId: string
     ownerEmail: string
     title: string
-    description?: string | null
+    description: string | null
     visibility: DeckVisibility
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
-    sourceDeckId?: string | null
+    sourceDeckId: string | null
     cardCount: number
-    createdAt: any
-    updatedAt: any
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type RejectDeckMutationVariables = Exact<{
-  deckId: Scalars['ID']['input']
+  deckId: string | number
 }>
 
 export type RejectDeckMutation = {
-  __typename?: 'Mutation'
   rejectDeck: {
-    __typename?: 'ModerationDeck'
     id: string
     ownerId: string
     ownerEmail: string
     title: string
-    description?: string | null
+    description: string | null
     visibility: DeckVisibility
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
-    sourceDeckId?: string | null
+    sourceDeckId: string | null
     cardCount: number
-    createdAt: any
-    updatedAt: any
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type HideDeckMutationVariables = Exact<{
-  deckId: Scalars['ID']['input']
+  deckId: string | number
 }>
 
 export type HideDeckMutation = {
-  __typename?: 'Mutation'
   hideDeck: {
-    __typename?: 'ModerationDeck'
     id: string
     ownerId: string
     ownerEmail: string
     title: string
-    description?: string | null
+    description: string | null
     visibility: DeckVisibility
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
-    sourceDeckId?: string | null
+    sourceDeckId: string | null
     cardCount: number
-    createdAt: any
-    updatedAt: any
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type SetOfficialDeckMutationVariables = Exact<{
-  deckId: Scalars['ID']['input']
-  isOfficial: Scalars['Boolean']['input']
+  deckId: string | number
+  isOfficial: boolean
 }>
 
 export type SetOfficialDeckMutation = {
-  __typename?: 'Mutation'
   setOfficialDeck: {
-    __typename?: 'ModerationDeck'
     id: string
     ownerId: string
     ownerEmail: string
     title: string
-    description?: string | null
+    description: string | null
     visibility: DeckVisibility
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
-    sourceDeckId?: string | null
+    sourceDeckId: string | null
     cardCount: number
-    createdAt: any
-    updatedAt: any
+    createdAt: string
+    updatedAt: string
   }
 }
 
@@ -1363,12 +1587,7 @@ export type GenerateCardExamplesMutationVariables = Exact<{
 }>
 
 export type GenerateCardExamplesMutation = {
-  __typename?: 'Mutation'
-  generateCardExamples: {
-    __typename?: 'GenerateCardExamplesPayload'
-    cardId: string
-    examples: Array<{ __typename?: 'GeneratedCardExample'; text: string }>
-  }
+  generateCardExamples: { cardId: string; examples: Array<{ text: string }> }
 }
 
 export type SaveGeneratedCardExampleMutationVariables = Exact<{
@@ -1376,20 +1595,17 @@ export type SaveGeneratedCardExampleMutationVariables = Exact<{
 }>
 
 export type SaveGeneratedCardExampleMutation = {
-  __typename?: 'Mutation'
   saveGeneratedCardExample: {
-    __typename?: 'SaveGeneratedCardExamplePayload'
     card: {
-      __typename?: 'Card'
       id: string
       deckId: string
       front: string
       back: string
-      example?: string | null
-      notes?: string | null
+      example: string | null
+      notes: string | null
       position: number
-      createdAt: any
-      updatedAt: any
+      createdAt: string
+      updatedAt: string
     }
   }
 }
@@ -1399,20 +1615,17 @@ export type RegisterMutationVariables = Exact<{
 }>
 
 export type RegisterMutation = {
-  __typename?: 'Mutation'
   register: {
-    __typename?: 'AuthPayloadType'
     accessToken: string
-    refreshToken?: string | null
+    refreshToken: string | null
     user: {
-      __typename?: 'SafeUser'
       id: string
       email: string
       role: UserRole
-      emailVerifiedAt?: any | null
-      blockedAt?: any | null
-      createdAt: any
-      updatedAt: any
+      emailVerifiedAt: string | null
+      blockedAt: string | null
+      createdAt: string
+      updatedAt: string
     }
   }
 }
@@ -1422,20 +1635,17 @@ export type LoginMutationVariables = Exact<{
 }>
 
 export type LoginMutation = {
-  __typename?: 'Mutation'
   login: {
-    __typename?: 'AuthPayloadType'
     accessToken: string
-    refreshToken?: string | null
+    refreshToken: string | null
     user: {
-      __typename?: 'SafeUser'
       id: string
       email: string
       role: UserRole
-      emailVerifiedAt?: any | null
-      blockedAt?: any | null
-      createdAt: any
-      updatedAt: any
+      emailVerifiedAt: string | null
+      blockedAt: string | null
+      createdAt: string
+      updatedAt: string
     }
   }
 }
@@ -1445,20 +1655,17 @@ export type RefreshTokenMutationVariables = Exact<{
 }>
 
 export type RefreshTokenMutation = {
-  __typename?: 'Mutation'
   refreshToken: {
-    __typename?: 'AuthPayloadType'
     accessToken: string
-    refreshToken?: string | null
+    refreshToken: string | null
     user: {
-      __typename?: 'SafeUser'
       id: string
       email: string
       role: UserRole
-      emailVerifiedAt?: any | null
-      blockedAt?: any | null
-      createdAt: any
-      updatedAt: any
+      emailVerifiedAt: string | null
+      blockedAt: string | null
+      createdAt: string
+      updatedAt: string
     }
   }
 }
@@ -1467,21 +1674,19 @@ export type LogoutMutationVariables = Exact<{
   input: LogoutInput
 }>
 
-export type LogoutMutation = { __typename?: 'Mutation'; logout: boolean }
+export type LogoutMutation = { logout: boolean }
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>
 
 export type MeQuery = {
-  __typename?: 'Query'
   me: {
-    __typename?: 'SafeUser'
     id: string
     email: string
     role: UserRole
-    emailVerifiedAt?: any | null
-    blockedAt?: any | null
-    createdAt: any
-    updatedAt: any
+    emailVerifiedAt: string | null
+    blockedAt: string | null
+    createdAt: string
+    updatedAt: string
   }
 }
 
@@ -1490,79 +1695,58 @@ export type VerifyEmailMutationVariables = Exact<{
 }>
 
 export type VerifyEmailMutation = {
-  __typename?: 'Mutation'
   verifyEmail: {
-    __typename?: 'SafeUser'
     id: string
     email: string
     role: UserRole
-    emailVerifiedAt?: any | null
-    blockedAt?: any | null
-    createdAt: any
-    updatedAt: any
+    emailVerifiedAt: string | null
+    blockedAt: string | null
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type ResendVerificationEmailMutationVariables = Exact<{ [key: string]: never }>
 
-export type ResendVerificationEmailMutation = {
-  __typename?: 'Mutation'
-  resendVerificationEmail: boolean
-}
+export type ResendVerificationEmailMutation = { resendVerificationEmail: boolean }
 
 export type RequestPasswordResetMutationVariables = Exact<{
   input: RequestPasswordResetInput
 }>
 
-export type RequestPasswordResetMutation = {
-  __typename?: 'Mutation'
-  requestPasswordReset: boolean
-}
+export type RequestPasswordResetMutation = { requestPasswordReset: boolean }
 
 export type ResetPasswordMutationVariables = Exact<{
   input: ResetPasswordInput
 }>
 
-export type ResetPasswordMutation = { __typename?: 'Mutation'; resetPassword: boolean }
+export type ResetPasswordMutation = { resetPassword: boolean }
 
 export type PreviewCsvImportMutationVariables = Exact<{
   input: PreviewCsvImportInput
 }>
 
 export type PreviewCsvImportMutation = {
-  __typename?: 'Mutation'
   previewCsvImport: {
-    __typename?: 'CsvImport'
     id: string
     deckId: string
     status: CsvImportStatus
     totalRows: number
     validRows: number
     invalidRows: number
-    createdAt: any
-    confirmedAt?: any | null
-    expiresAt: any
+    createdAt: string
+    confirmedAt: string | null
+    expiresAt: string
     previewRows: Array<{
-      __typename?: 'CsvImportPreviewRow'
       rowNumber: number
       front: string
       back: string
-      example?: string | null
-      notes?: string | null
+      example: string | null
+      notes: string | null
       isValid: boolean
-      errors: Array<{
-        __typename?: 'CsvImportRowError'
-        rowNumber: number
-        field: string
-        message: string
-      }>
+      errors: Array<{ rowNumber: number; field: string; message: string }>
     }>
-    errors: Array<{
-      __typename?: 'CsvImportRowError'
-      rowNumber: number
-      field: string
-      message: string
-    }>
+    errors: Array<{ rowNumber: number; field: string; message: string }>
   }
 }
 
@@ -1571,21 +1755,18 @@ export type ConfirmCsvImportMutationVariables = Exact<{
 }>
 
 export type ConfirmCsvImportMutation = {
-  __typename?: 'Mutation'
   confirmCsvImport: {
-    __typename?: 'ConfirmCsvImportPayload'
     createdCardsCount: number
     import: {
-      __typename?: 'CsvImport'
       id: string
       deckId: string
       status: CsvImportStatus
       totalRows: number
       validRows: number
       invalidRows: number
-      createdAt: any
-      confirmedAt?: any | null
-      expiresAt: any
+      createdAt: string
+      confirmedAt: string | null
+      expiresAt: string
     }
   }
 }
@@ -1595,36 +1776,27 @@ export type CheckCardDuplicatesQueryVariables = Exact<{
 }>
 
 export type CheckCardDuplicatesQuery = {
-  __typename?: 'Query'
   checkCardDuplicates: {
-    __typename?: 'CheckCardDuplicatesPayload'
-    hits: Array<{
-      __typename?: 'CheckCardDuplicateHit'
-      index: number
-      kind: CardDuplicateKind
-      deckTitle?: string | null
-    }>
+    hits: Array<{ index: number; kind: CardDuplicateKind; deckTitle: string | null }>
   }
 }
 
 export type MyDecksQueryVariables = Exact<{ [key: string]: never }>
 
 export type MyDecksQuery = {
-  __typename?: 'Query'
   myDecks: Array<{
-    __typename?: 'Deck'
     id: string
     ownerId: string
     title: string
-    description?: string | null
+    description: string | null
     visibility: DeckVisibility
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
-    sourceDeckId?: string | null
-    targetLanguage?: string | null
-    sourceLanguage?: string | null
-    createdAt: any
-    updatedAt: any
+    sourceDeckId: string | null
+    targetLanguage: string | null
+    sourceLanguage: string | null
+    createdAt: string
+    updatedAt: string
   }>
 }
 
@@ -1633,117 +1805,107 @@ export type DecksPageQueryVariables = Exact<{
 }>
 
 export type DecksPageQuery = {
-  __typename?: 'Query'
   decksPage: {
-    __typename?: 'DecksPageResult'
     ownDecks: Array<{
-      __typename?: 'DecksPageDeck'
       id: string
       ownerId: string
       title: string
-      description?: string | null
+      description: string | null
       visibility: DeckVisibility
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
-      sourceDeckId?: string | null
-      targetLanguage?: string | null
-      sourceLanguage?: string | null
+      sourceDeckId: string | null
+      targetLanguage: string | null
+      sourceLanguage: string | null
       origin: DeckOrigin
-      createdAt: any
-      updatedAt: any
+      createdAt: string
+      updatedAt: string
     }>
     groupDecks: Array<{
-      __typename?: 'DecksPageDeck'
       id: string
       ownerId: string
       title: string
-      description?: string | null
+      description: string | null
       visibility: DeckVisibility
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
-      sourceDeckId?: string | null
-      targetLanguage?: string | null
-      sourceLanguage?: string | null
+      sourceDeckId: string | null
+      targetLanguage: string | null
+      sourceLanguage: string | null
       origin: DeckOrigin
-      createdAt: any
-      updatedAt: any
+      createdAt: string
+      updatedAt: string
     }>
     publicDecks: Array<{
-      __typename?: 'DecksPageDeck'
       id: string
       ownerId: string
       title: string
-      description?: string | null
+      description: string | null
       visibility: DeckVisibility
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
-      sourceDeckId?: string | null
-      targetLanguage?: string | null
-      sourceLanguage?: string | null
+      sourceDeckId: string | null
+      targetLanguage: string | null
+      sourceLanguage: string | null
       origin: DeckOrigin
-      createdAt: any
-      updatedAt: any
+      createdAt: string
+      updatedAt: string
     }>
     noLanguageDecks: Array<{
-      __typename?: 'DecksPageDeck'
       id: string
       ownerId: string
       title: string
-      description?: string | null
+      description: string | null
       visibility: DeckVisibility
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
-      sourceDeckId?: string | null
-      targetLanguage?: string | null
-      sourceLanguage?: string | null
+      sourceDeckId: string | null
+      targetLanguage: string | null
+      sourceLanguage: string | null
       origin: DeckOrigin
-      createdAt: any
-      updatedAt: any
+      createdAt: string
+      updatedAt: string
     }>
   }
 }
 
 export type DeckQueryVariables = Exact<{
-  id: Scalars['String']['input']
+  id: string
 }>
 
 export type DeckQuery = {
-  __typename?: 'Query'
   deck: {
-    __typename?: 'Deck'
     id: string
     ownerId: string
     title: string
-    description?: string | null
+    description: string | null
     visibility: DeckVisibility
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
-    sourceDeckId?: string | null
-    targetLanguage?: string | null
-    sourceLanguage?: string | null
-    createdAt: any
-    updatedAt: any
+    sourceDeckId: string | null
+    targetLanguage: string | null
+    sourceLanguage: string | null
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type DeckCardsQueryVariables = Exact<{
-  deckId: Scalars['String']['input']
+  deckId: string
 }>
 
 export type DeckCardsQuery = {
-  __typename?: 'Query'
   deckCards: Array<{
-    __typename?: 'Card'
     id: string
     deckId: string
     front: string
     back: string
-    example?: string | null
-    notes?: string | null
+    example: string | null
+    notes: string | null
     position: number
-    learningGroup?: LearningGroup | null
-    createdAt: any
-    updatedAt: any
+    learningGroup: LearningGroup | null
+    createdAt: string
+    updatedAt: string
   }>
 }
 
@@ -1752,29 +1914,22 @@ export type CreateDeckMutationVariables = Exact<{
 }>
 
 export type CreateDeckMutation = {
-  __typename?: 'Mutation'
   createDeck: {
-    __typename?: 'CreateDeckPayload'
     deck: {
-      __typename?: 'Deck'
       id: string
       ownerId: string
       title: string
-      description?: string | null
+      description: string | null
       visibility: DeckVisibility
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
-      sourceDeckId?: string | null
-      targetLanguage?: string | null
-      sourceLanguage?: string | null
-      createdAt: any
-      updatedAt: any
+      sourceDeckId: string | null
+      targetLanguage: string | null
+      sourceLanguage: string | null
+      createdAt: string
+      updatedAt: string
     }
-    warnings: Array<{
-      __typename?: 'DeckLanguageWarning'
-      code: DeckLanguageWarningCode
-      message: string
-    }>
+    warnings: Array<{ code: DeckLanguageWarningCode; message: string }>
   }
 }
 
@@ -1783,55 +1938,46 @@ export type UpdateDeckMutationVariables = Exact<{
 }>
 
 export type UpdateDeckMutation = {
-  __typename?: 'Mutation'
   updateDeck: {
-    __typename?: 'UpdateDeckPayload'
     deck: {
-      __typename?: 'Deck'
       id: string
       ownerId: string
       title: string
-      description?: string | null
+      description: string | null
       visibility: DeckVisibility
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
-      sourceDeckId?: string | null
-      targetLanguage?: string | null
-      sourceLanguage?: string | null
-      createdAt: any
-      updatedAt: any
+      sourceDeckId: string | null
+      targetLanguage: string | null
+      sourceLanguage: string | null
+      createdAt: string
+      updatedAt: string
     }
-    warnings: Array<{
-      __typename?: 'DeckLanguageWarning'
-      code: DeckLanguageWarningCode
-      message: string
-    }>
+    warnings: Array<{ code: DeckLanguageWarningCode; message: string }>
   }
 }
 
 export type DeleteDeckMutationVariables = Exact<{
-  deckId: Scalars['String']['input']
+  deckId: string
 }>
 
-export type DeleteDeckMutation = { __typename?: 'Mutation'; deleteDeck: boolean }
+export type DeleteDeckMutation = { deleteDeck: boolean }
 
 export type CreateCardMutationVariables = Exact<{
   input: CreateCardInput
 }>
 
 export type CreateCardMutation = {
-  __typename?: 'Mutation'
   createCard: {
-    __typename?: 'Card'
     id: string
     deckId: string
     front: string
     back: string
-    example?: string | null
-    notes?: string | null
+    example: string | null
+    notes: string | null
     position: number
-    createdAt: any
-    updatedAt: any
+    createdAt: string
+    updatedAt: string
   }
 }
 
@@ -1840,101 +1986,91 @@ export type UpdateCardMutationVariables = Exact<{
 }>
 
 export type UpdateCardMutation = {
-  __typename?: 'Mutation'
   updateCard: {
-    __typename?: 'Card'
     id: string
     deckId: string
     front: string
     back: string
-    example?: string | null
-    notes?: string | null
+    example: string | null
+    notes: string | null
     position: number
-    createdAt: any
-    updatedAt: any
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type DeleteCardMutationVariables = Exact<{
-  cardId: Scalars['String']['input']
+  cardId: string
 }>
 
-export type DeleteCardMutation = { __typename?: 'Mutation'; deleteCard: boolean }
+export type DeleteCardMutation = { deleteCard: boolean }
 
 export type PublishDeckMutationVariables = Exact<{
-  deckId: Scalars['String']['input']
+  deckId: string
 }>
 
 export type PublishDeckMutation = {
-  __typename?: 'Mutation'
   publishDeck: {
-    __typename?: 'Deck'
     id: string
     ownerId: string
     title: string
-    description?: string | null
+    description: string | null
     visibility: DeckVisibility
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
-    sourceDeckId?: string | null
-    createdAt: any
-    updatedAt: any
+    sourceDeckId: string | null
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type UnpublishDeckMutationVariables = Exact<{
-  deckId: Scalars['String']['input']
+  deckId: string
 }>
 
 export type UnpublishDeckMutation = {
-  __typename?: 'Mutation'
   unpublishDeck: {
-    __typename?: 'Deck'
     id: string
     ownerId: string
     title: string
-    description?: string | null
+    description: string | null
     visibility: DeckVisibility
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
-    sourceDeckId?: string | null
-    createdAt: any
-    updatedAt: any
+    sourceDeckId: string | null
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type MyGroupsQueryVariables = Exact<{ [key: string]: never }>
 
 export type MyGroupsQuery = {
-  __typename?: 'Query'
   myGroups: Array<{
-    __typename?: 'Group'
     id: string
     name: string
-    description?: string | null
+    description: string | null
     createdById: string
-    createdAt: any
-    updatedAt: any
-    myRole?: GroupRole | null
-    memberCount?: number | null
-    membersPreview: Array<{ __typename?: 'GroupMemberPreview'; userId: string; initials: string }>
+    createdAt: string
+    updatedAt: string
+    myRole: GroupRole | null
+    memberCount: number | null
+    membersPreview: Array<{ userId: string; initials: string }>
   }>
 }
 
 export type GroupQueryVariables = Exact<{
-  id: Scalars['String']['input']
+  id: string
 }>
 
 export type GroupQuery = {
-  __typename?: 'Query'
   group: {
-    __typename?: 'Group'
     id: string
     name: string
-    description?: string | null
+    description: string | null
     createdById: string
-    createdAt: any
-    updatedAt: any
+    createdAt: string
+    updatedAt: string
   }
 }
 
@@ -1943,15 +2079,13 @@ export type CreateGroupMutationVariables = Exact<{
 }>
 
 export type CreateGroupMutation = {
-  __typename?: 'Mutation'
   createGroup: {
-    __typename?: 'Group'
     id: string
     name: string
-    description?: string | null
+    description: string | null
     createdById: string
-    createdAt: any
-    updatedAt: any
+    createdAt: string
+    updatedAt: string
   }
 }
 
@@ -1960,83 +2094,67 @@ export type InviteUserToGroupMutationVariables = Exact<{
 }>
 
 export type InviteUserToGroupMutation = {
-  __typename?: 'Mutation'
   inviteUserToGroup: {
-    __typename?: 'GroupInvitation'
     id: string
     groupId: string
     email: string
     invitedById: string
     status: GroupInvitationStatus
-    expiresAt: any
-    createdAt: any
-    acceptedAt?: any | null
-    declinedAt?: any | null
+    expiresAt: string
+    createdAt: string
+    acceptedAt: string | null
+    declinedAt: string | null
   }
 }
 
 export type MyGroupInvitationsQueryVariables = Exact<{ [key: string]: never }>
 
 export type MyGroupInvitationsQuery = {
-  __typename?: 'Query'
   myGroupInvitations: Array<{
-    __typename?: 'GroupInvitation'
     id: string
     groupId: string
     email: string
     invitedById: string
     status: GroupInvitationStatus
-    expiresAt: any
-    createdAt: any
-    acceptedAt?: any | null
-    declinedAt?: any | null
-    groupName?: string | null
-    invitedByEmail?: string | null
-    memberCount?: number | null
-    sharedDeckCount?: number | null
+    expiresAt: string
+    createdAt: string
+    acceptedAt: string | null
+    declinedAt: string | null
+    groupName: string | null
+    invitedByEmail: string | null
+    memberCount: number | null
+    sharedDeckCount: number | null
   }>
 }
 
 export type AcceptGroupInvitationMutationVariables = Exact<{
-  invitationId: Scalars['String']['input']
+  invitationId: string
 }>
 
 export type AcceptGroupInvitationMutation = {
-  __typename?: 'Mutation'
   acceptGroupInvitation: {
-    __typename?: 'AcceptGroupInvitationPayload'
     invitation: {
-      __typename?: 'GroupInvitation'
       id: string
       groupId: string
       email: string
       status: GroupInvitationStatus
-      acceptedAt?: any | null
+      acceptedAt: string | null
     }
-    member: {
-      __typename?: 'GroupMember'
-      id: string
-      groupId: string
-      userId: string
-      role: GroupRole
-      createdAt: any
-    }
+    member: { id: string; groupId: string; userId: string; role: GroupRole; createdAt: string }
   }
 }
 
 export type DeclineGroupInvitationMutationVariables = Exact<{
-  invitationId: Scalars['String']['input']
+  invitationId: string
 }>
 
 export type DeclineGroupInvitationMutation = {
-  __typename?: 'Mutation'
   declineGroupInvitation: {
-    __typename?: 'GroupInvitation'
     id: string
     groupId: string
     email: string
     status: GroupInvitationStatus
-    declinedAt?: any | null
+    declinedAt: string | null
   }
 }
 
@@ -2045,100 +2163,89 @@ export type ShareDeckWithGroupMutationVariables = Exact<{
 }>
 
 export type ShareDeckWithGroupMutation = {
-  __typename?: 'Mutation'
   shareDeckWithGroup: {
-    __typename?: 'ShareDeckWithGroupPayload'
     share: {
-      __typename?: 'DeckGroupShare'
       id: string
       deckId: string
       groupId: string
       permission: DeckGroupSharePermission
       createdById: string
-      createdAt: any
+      createdAt: string
     }
   }
 }
 
 export type GroupSharedDecksQueryVariables = Exact<{
-  groupId: Scalars['String']['input']
+  groupId: string
 }>
 
 export type GroupSharedDecksQuery = {
-  __typename?: 'Query'
   groupSharedDecks: Array<{
-    __typename?: 'Deck'
     id: string
     ownerId: string
     title: string
-    description?: string | null
+    description: string | null
     visibility: DeckVisibility
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
-    sourceDeckId?: string | null
-    targetLanguage?: string | null
-    sourceLanguage?: string | null
-    createdAt: any
-    updatedAt: any
+    sourceDeckId: string | null
+    targetLanguage: string | null
+    sourceLanguage: string | null
+    createdAt: string
+    updatedAt: string
   }>
 }
 
 export type CopyGroupDeckMutationVariables = Exact<{
-  sourceDeckId: Scalars['String']['input']
+  sourceDeckId: string
 }>
 
 export type CopyGroupDeckMutation = {
-  __typename?: 'Mutation'
   copyGroupDeck: {
-    __typename?: 'CopyGroupDeckPayload'
     deck: {
-      __typename?: 'Deck'
       id: string
       ownerId: string
       title: string
-      description?: string | null
+      description: string | null
       visibility: DeckVisibility
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
-      sourceDeckId?: string | null
-      targetLanguage?: string | null
-      sourceLanguage?: string | null
-      createdAt: any
-      updatedAt: any
+      sourceDeckId: string | null
+      targetLanguage: string | null
+      sourceLanguage: string | null
+      createdAt: string
+      updatedAt: string
     }
     cards: Array<{
-      __typename?: 'Card'
       id: string
       deckId: string
       front: string
       back: string
-      example?: string | null
-      notes?: string | null
-      createdAt: any
-      updatedAt: any
+      example: string | null
+      notes: string | null
+      createdAt: string
+      updatedAt: string
     }>
   }
 }
 
 export type LessonCardFieldsFragment = {
-  __typename?: 'LessonCard'
   cardId: string
   deckId: string
   front: string
   back: string
-  example?: string | null
-  notes?: string | null
+  example: string | null
+  notes: string | null
   position: number
   learningStep: number
   learningGroup: LearningGroup
   presentationMode: ReviewPresentationMode
   reviewState: {
-    __typename?: 'CardReviewState'
     id: string
     learningStep: number
     longReviewSuccessCount: number
-    dueAt: any
-    lastReviewedAt?: any | null
+    dueAt: string
+    lastReviewedAt: string | null
   }
 }
 
@@ -2147,33 +2254,29 @@ export type StartLessonMutationVariables = Exact<{
 }>
 
 export type StartLessonMutation = {
-  __typename?: 'Mutation'
   startLesson: {
-    __typename?: 'StartLessonPayload'
-    sessionId?: string | null
-    deckId?: string | null
+    sessionId: string | null
+    deckId: string | null
     scope: StudySessionScope
     lessonSize: number
     totalCards: number
     cards: Array<{
-      __typename?: 'LessonCard'
       cardId: string
       deckId: string
       front: string
       back: string
-      example?: string | null
-      notes?: string | null
+      example: string | null
+      notes: string | null
       position: number
       learningStep: number
       learningGroup: LearningGroup
       presentationMode: ReviewPresentationMode
       reviewState: {
-        __typename?: 'CardReviewState'
         id: string
         learningStep: number
         longReviewSuccessCount: number
-        dueAt: any
-        lastReviewedAt?: any | null
+        dueAt: string
+        lastReviewedAt: string | null
       }
     }>
   }
@@ -2184,33 +2287,29 @@ export type StartHomeLessonMutationVariables = Exact<{
 }>
 
 export type StartHomeLessonMutation = {
-  __typename?: 'Mutation'
   startHomeLesson: {
-    __typename?: 'StartLessonPayload'
-    sessionId?: string | null
-    deckId?: string | null
+    sessionId: string | null
+    deckId: string | null
     scope: StudySessionScope
     lessonSize: number
     totalCards: number
     cards: Array<{
-      __typename?: 'LessonCard'
       cardId: string
       deckId: string
       front: string
       back: string
-      example?: string | null
-      notes?: string | null
+      example: string | null
+      notes: string | null
       position: number
       learningStep: number
       learningGroup: LearningGroup
       presentationMode: ReviewPresentationMode
       reviewState: {
-        __typename?: 'CardReviewState'
         id: string
         learningStep: number
         longReviewSuccessCount: number
-        dueAt: any
-        lastReviewedAt?: any | null
+        dueAt: string
+        lastReviewedAt: string | null
       }
     }>
   }
@@ -2221,39 +2320,34 @@ export type SubmitReviewMutationVariables = Exact<{
 }>
 
 export type SubmitReviewMutation = {
-  __typename?: 'Mutation'
   submitReview: {
-    __typename?: 'SubmitReviewPayload'
     sessionId: string
     cardId: string
     reviewedCards: number
     reviewState: {
-      __typename?: 'CardReviewState'
       id: string
       learningStep: number
       longReviewSuccessCount: number
-      dueAt: any
-      lastReviewedAt?: any | null
+      dueAt: string
+      lastReviewedAt: string | null
     }
-    nextCard?: {
-      __typename?: 'LessonCard'
+    nextCard: {
       cardId: string
       deckId: string
       front: string
       back: string
-      example?: string | null
-      notes?: string | null
+      example: string | null
+      notes: string | null
       position: number
       learningStep: number
       learningGroup: LearningGroup
       presentationMode: ReviewPresentationMode
       reviewState: {
-        __typename?: 'CardReviewState'
         id: string
         learningStep: number
         longReviewSuccessCount: number
-        dueAt: any
-        lastReviewedAt?: any | null
+        dueAt: string
+        lastReviewedAt: string | null
       }
     } | null
   }
@@ -2264,26 +2358,23 @@ export type DisableAudioOnlyMutationVariables = Exact<{
 }>
 
 export type DisableAudioOnlyMutation = {
-  __typename?: 'Mutation'
   disableAudioOnly: {
-    __typename?: 'LessonCard'
     cardId: string
     deckId: string
     front: string
     back: string
-    example?: string | null
-    notes?: string | null
+    example: string | null
+    notes: string | null
     position: number
     learningStep: number
     learningGroup: LearningGroup
     presentationMode: ReviewPresentationMode
     reviewState: {
-      __typename?: 'CardReviewState'
       id: string
       learningStep: number
       longReviewSuccessCount: number
-      dueAt: any
-      lastReviewedAt?: any | null
+      dueAt: string
+      lastReviewedAt: string | null
     }
   }
 }
@@ -2293,16 +2384,14 @@ export type CompleteLessonMutationVariables = Exact<{
 }>
 
 export type CompleteLessonMutation = {
-  __typename?: 'Mutation'
   completeLesson: {
-    __typename?: 'CompleteLessonPayload'
     sessionId: string
-    deckId?: string | null
+    deckId: string | null
     totalCards: number
     reviewedCards: number
     knownCount: number
     dontKnowCount: number
-    completedAt: any
+    completedAt: string
   }
 }
 
@@ -2310,36 +2399,29 @@ export type AbandonLessonMutationVariables = Exact<{
   input: AbandonLessonInput
 }>
 
-export type AbandonLessonMutation = {
-  __typename?: 'Mutation'
-  abandonLesson: { __typename?: 'AbandonLessonPayload'; success: boolean }
-}
+export type AbandonLessonMutation = { abandonLesson: { success: boolean } }
 
 export type DeckLearningStatsQueryVariables = Exact<{
-  deckId: Scalars['String']['input']
+  deckId: string
 }>
 
 export type DeckLearningStatsQuery = {
-  __typename?: 'Query'
   deckLearningStats: {
-    __typename?: 'DeckLearningStats'
     deckId: string
     totalCards: number
     toLearnCount: number
     practicedCount: number
     learnedCount: number
     dueCount: number
-    nextDueAt?: any | null
+    nextDueAt: string | null
   }
 }
 
 export type HomeLearningProgressQueryVariables = Exact<{ [key: string]: never }>
 
 export type HomeLearningProgressQuery = {
-  __typename?: 'Query'
   homeLearningProgress: {
-    __typename?: 'HomeLearningProgress'
-    activeTargetLanguage?: string | null
+    activeTargetLanguage: string | null
     toLearnCount: number
     practicedCount: number
     learnedCount: number
@@ -2352,139 +2434,123 @@ export type RegisterPushTokenMutationVariables = Exact<{
   input: RegisterPushTokenInput
 }>
 
-export type RegisterPushTokenMutation = {
-  __typename?: 'Mutation'
-  registerPushToken: { __typename?: 'RegisterPushTokenPayloadType'; success: boolean }
-}
+export type RegisterPushTokenMutation = { registerPushToken: { success: boolean } }
 
 export type RemovePushTokenMutationVariables = Exact<{
   input: RemovePushTokenInput
 }>
 
-export type RemovePushTokenMutation = { __typename?: 'Mutation'; removePushToken: boolean }
+export type RemovePushTokenMutation = { removePushToken: boolean }
 
 export type ProfileMeQueryVariables = Exact<{ [key: string]: never }>
 
 export type ProfileMeQuery = {
-  __typename?: 'Query'
   me: {
-    __typename?: 'SafeUser'
     id: string
     email: string
     role: UserRole
-    emailVerifiedAt?: any | null
-    blockedAt?: any | null
-    createdAt: any
-    updatedAt: any
+    emailVerifiedAt: string | null
+    blockedAt: string | null
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type DeleteAccountMutationVariables = Exact<{ [key: string]: never }>
 
-export type DeleteAccountMutation = { __typename?: 'Mutation'; deleteAccount: boolean }
+export type DeleteAccountMutation = { deleteAccount: boolean }
 
 export type PublicDecksQueryVariables = Exact<{
-  input?: InputMaybe<PublicDecksInput>
+  input?: PublicDecksInput | null | undefined
 }>
 
 export type PublicDecksQuery = {
-  __typename?: 'Query'
   publicDecks: {
-    __typename?: 'PublicDeckSearchResult'
     total: number
     items: Array<{
-      __typename?: 'Deck'
       id: string
       ownerId: string
       title: string
-      description?: string | null
+      description: string | null
       visibility: DeckVisibility
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
-      sourceDeckId?: string | null
-      targetLanguage?: string | null
-      sourceLanguage?: string | null
-      createdAt: any
-      updatedAt: any
+      sourceDeckId: string | null
+      targetLanguage: string | null
+      sourceLanguage: string | null
+      createdAt: string
+      updatedAt: string
     }>
   }
 }
 
 export type PublicDeckQueryVariables = Exact<{
-  deckId: Scalars['String']['input']
+  deckId: string
 }>
 
 export type PublicDeckQuery = {
-  __typename?: 'Query'
   publicDeck: {
-    __typename?: 'Deck'
     id: string
     ownerId: string
     title: string
-    description?: string | null
+    description: string | null
     visibility: DeckVisibility
     moderationStatus: DeckModerationStatus
     isOfficial: boolean
-    sourceDeckId?: string | null
-    targetLanguage?: string | null
-    sourceLanguage?: string | null
-    createdAt: any
-    updatedAt: any
+    sourceDeckId: string | null
+    targetLanguage: string | null
+    sourceLanguage: string | null
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type PublicDeckCardsQueryVariables = Exact<{
-  deckId: Scalars['String']['input']
+  deckId: string
 }>
 
 export type PublicDeckCardsQuery = {
-  __typename?: 'Query'
   publicDeckCards: Array<{
-    __typename?: 'Card'
     id: string
     deckId: string
     front: string
     back: string
-    example?: string | null
-    notes?: string | null
+    example: string | null
+    notes: string | null
     position: number
-    createdAt: any
-    updatedAt: any
+    createdAt: string
+    updatedAt: string
   }>
 }
 
 export type CopyPublicDeckMutationVariables = Exact<{
-  sourceDeckId: Scalars['String']['input']
+  sourceDeckId: string
 }>
 
 export type CopyPublicDeckMutation = {
-  __typename?: 'Mutation'
   copyPublicDeck: {
-    __typename?: 'CopyPublicDeckPayload'
     deck: {
-      __typename?: 'Deck'
       id: string
       ownerId: string
       title: string
-      description?: string | null
+      description: string | null
       visibility: DeckVisibility
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
-      sourceDeckId?: string | null
-      createdAt: any
-      updatedAt: any
+      sourceDeckId: string | null
+      createdAt: string
+      updatedAt: string
     }
     cards: Array<{
-      __typename?: 'Card'
       id: string
       deckId: string
       front: string
       back: string
-      example?: string | null
-      notes?: string | null
+      example: string | null
+      notes: string | null
       position: number
-      createdAt: any
-      updatedAt: any
+      createdAt: string
+      updatedAt: string
     }>
   }
 }
@@ -2492,11 +2558,8 @@ export type CopyPublicDeckMutation = {
 export type MySettingsQueryVariables = Exact<{ [key: string]: never }>
 
 export type MySettingsQuery = {
-  __typename?: 'Query'
   myAccount: {
-    __typename?: 'MyAccount'
     settings: {
-      __typename?: 'UserSettings'
       userId: string
       interfaceLocale: string
       lessonSize: number
@@ -2504,8 +2567,8 @@ export type MySettingsQuery = {
       reminderTime: string
       timezone: string
       nativeLanguage: string
-      createdAt: any
-      updatedAt: any
+      createdAt: string
+      updatedAt: string
     }
   }
 }
@@ -2515,9 +2578,7 @@ export type UpdateMySettingsMutationVariables = Exact<{
 }>
 
 export type UpdateMySettingsMutation = {
-  __typename?: 'Mutation'
   updateSettings: {
-    __typename?: 'UserSettings'
     userId: string
     interfaceLocale: string
     lessonSize: number
@@ -2525,43 +2586,38 @@ export type UpdateMySettingsMutation = {
     reminderTime: string
     timezone: string
     nativeLanguage: string
-    createdAt: any
-    updatedAt: any
+    createdAt: string
+    updatedAt: string
   }
 }
 
 export type LanguagesQueryVariables = Exact<{
-  search?: InputMaybe<Scalars['String']['input']>
+  search?: string | null | undefined
 }>
 
 export type LanguagesQuery = {
-  __typename?: 'Query'
   languages: Array<{
-    __typename?: 'Language'
     code: string
     englishName: string
     nativeName: string
     flag: string
-    popularSortOrder?: number | null
+    popularSortOrder: number | null
   }>
 }
 
 export type MyStudyLanguagesQueryVariables = Exact<{ [key: string]: never }>
 
 export type MyStudyLanguagesQuery = {
-  __typename?: 'Query'
   myStudyLanguages: Array<{
-    __typename?: 'UserStudyLanguage'
     languageCode: string
     isActive: boolean
-    createdAt: any
+    createdAt: string
     language: {
-      __typename?: 'Language'
       code: string
       englishName: string
       nativeName: string
       flag: string
-      popularSortOrder?: number | null
+      popularSortOrder: number | null
     }
   }>
 }
@@ -2569,106 +2625,85 @@ export type MyStudyLanguagesQuery = {
 export type StudyLanguageBootstrapQueryVariables = Exact<{ [key: string]: never }>
 
 export type StudyLanguageBootstrapQuery = {
-  __typename?: 'Query'
   myAccount: {
-    __typename?: 'MyAccount'
     needsStudyLanguageOnboarding: boolean
-    settings: {
-      __typename?: 'UserSettings'
-      activeTargetLanguage?: string | null
-      nativeLanguage: string
-    }
+    settings: { activeTargetLanguage: string | null; nativeLanguage: string }
     studyLanguages: Array<{
-      __typename?: 'UserStudyLanguage'
       languageCode: string
       isActive: boolean
-      createdAt: any
+      createdAt: string
       language: {
-        __typename?: 'Language'
         code: string
         englishName: string
         nativeName: string
         flag: string
-        popularSortOrder?: number | null
+        popularSortOrder: number | null
       }
     }>
   }
 }
 
 export type StudyLanguageRemovalImpactQueryVariables = Exact<{
-  languageCode: Scalars['String']['input']
+  languageCode: string
 }>
 
 export type StudyLanguageRemovalImpactQuery = {
-  __typename?: 'Query'
-  studyLanguageRemovalImpact: {
-    __typename?: 'StudyLanguageRemovalImpact'
-    affectedDeckCount: number
-  }
+  studyLanguageRemovalImpact: { affectedDeckCount: number }
 }
 
 export type AddStudyLanguageMutationVariables = Exact<{
-  languageCode: Scalars['String']['input']
+  languageCode: string
 }>
 
 export type AddStudyLanguageMutation = {
-  __typename?: 'Mutation'
   addStudyLanguage: {
-    __typename?: 'UserStudyLanguage'
     languageCode: string
     isActive: boolean
-    createdAt: any
+    createdAt: string
     language: {
-      __typename?: 'Language'
       code: string
       englishName: string
       nativeName: string
       flag: string
-      popularSortOrder?: number | null
+      popularSortOrder: number | null
     }
   }
 }
 
 export type RemoveStudyLanguageMutationVariables = Exact<{
-  languageCode: Scalars['String']['input']
+  languageCode: string
 }>
 
 export type RemoveStudyLanguageMutation = {
-  __typename?: 'Mutation'
   removeStudyLanguage: Array<{
-    __typename?: 'UserStudyLanguage'
     languageCode: string
     isActive: boolean
-    createdAt: any
+    createdAt: string
     language: {
-      __typename?: 'Language'
       code: string
       englishName: string
       nativeName: string
       flag: string
-      popularSortOrder?: number | null
+      popularSortOrder: number | null
     }
   }>
 }
 
 export type SetActiveTargetLanguageMutationVariables = Exact<{
-  languageCode: Scalars['String']['input']
+  languageCode: string
 }>
 
 export type SetActiveTargetLanguageMutation = {
-  __typename?: 'Mutation'
   setActiveTargetLanguage: Array<{
-    __typename?: 'UserStudyLanguage'
     languageCode: string
     isActive: boolean
-    createdAt: any
+    createdAt: string
     language: {
-      __typename?: 'Language'
       code: string
       englishName: string
       nativeName: string
       flag: string
-      popularSortOrder?: number | null
+      popularSortOrder: number | null
     }
   }>
 }
@@ -2678,22 +2713,18 @@ export type CompleteStudyLanguageOnboardingMutationVariables = Exact<{
 }>
 
 export type CompleteStudyLanguageOnboardingMutation = {
-  __typename?: 'Mutation'
   completeStudyLanguageOnboarding: {
-    __typename?: 'CompleteStudyLanguageOnboardingPayload'
     needsStudyLanguageOnboarding: boolean
     studyLanguages: Array<{
-      __typename?: 'UserStudyLanguage'
       languageCode: string
       isActive: boolean
-      createdAt: any
+      createdAt: string
       language: {
-        __typename?: 'Language'
         code: string
         englishName: string
         nativeName: string
         flag: string
-        popularSortOrder?: number | null
+        popularSortOrder: number | null
       }
     }>
   }
@@ -2704,26 +2735,23 @@ export type StartPublicDeckCopyPreviewMutationVariables = Exact<{
 }>
 
 export type StartPublicDeckCopyPreviewMutation = {
-  __typename?: 'Mutation'
   startPublicDeckCopyPreview: {
-    __typename?: 'DeckPreviewSession'
     id: string
     type: DeckPreviewSessionType
     status: DeckPreviewSessionStatus
-    sourceDeckId?: string | null
+    sourceDeckId: string | null
     targetLanguage: string
     chosenSourceLanguage: string
-    expiresAt: any
-    createdAt: any
-    updatedAt: any
+    expiresAt: string
+    createdAt: string
+    updatedAt: string
     cards: Array<{
-      __typename?: 'DeckPreviewSessionCard'
-      sourceCardId?: string | null
+      sourceCardId: string | null
       front: string
       back: string
-      example?: string | null
-      backError?: string | null
-      exampleError?: string | null
+      example: string | null
+      backError: string | null
+      exampleError: string | null
     }>
   }
 }
@@ -2733,26 +2761,23 @@ export type StartGroupDeckCopyPreviewMutationVariables = Exact<{
 }>
 
 export type StartGroupDeckCopyPreviewMutation = {
-  __typename?: 'Mutation'
   startGroupDeckCopyPreview: {
-    __typename?: 'DeckPreviewSession'
     id: string
     type: DeckPreviewSessionType
     status: DeckPreviewSessionStatus
-    sourceDeckId?: string | null
+    sourceDeckId: string | null
     targetLanguage: string
     chosenSourceLanguage: string
-    expiresAt: any
-    createdAt: any
-    updatedAt: any
+    expiresAt: string
+    createdAt: string
+    updatedAt: string
     cards: Array<{
-      __typename?: 'DeckPreviewSessionCard'
-      sourceCardId?: string | null
+      sourceCardId: string | null
       front: string
       back: string
-      example?: string | null
-      backError?: string | null
-      exampleError?: string | null
+      example: string | null
+      backError: string | null
+      exampleError: string | null
     }>
   }
 }
@@ -2760,26 +2785,23 @@ export type StartGroupDeckCopyPreviewMutation = {
 export type ActiveDeckPreviewQueryVariables = Exact<{ [key: string]: never }>
 
 export type ActiveDeckPreviewQuery = {
-  __typename?: 'Query'
-  activeDeckPreview?: {
-    __typename?: 'DeckPreviewSession'
+  activeDeckPreview: {
     id: string
     type: DeckPreviewSessionType
     status: DeckPreviewSessionStatus
-    sourceDeckId?: string | null
+    sourceDeckId: string | null
     targetLanguage: string
     chosenSourceLanguage: string
-    expiresAt: any
-    createdAt: any
-    updatedAt: any
+    expiresAt: string
+    createdAt: string
+    updatedAt: string
     cards: Array<{
-      __typename?: 'DeckPreviewSessionCard'
-      sourceCardId?: string | null
+      sourceCardId: string | null
       front: string
       back: string
-      example?: string | null
-      backError?: string | null
-      exampleError?: string | null
+      example: string | null
+      backError: string | null
+      exampleError: string | null
     }>
   } | null
 }
@@ -2789,112 +2811,96 @@ export type UpdateDeckPreviewCardMutationVariables = Exact<{
 }>
 
 export type UpdateDeckPreviewCardMutation = {
-  __typename?: 'Mutation'
   updateDeckPreviewCard: {
-    __typename?: 'DeckPreviewSession'
     id: string
     type: DeckPreviewSessionType
     status: DeckPreviewSessionStatus
-    sourceDeckId?: string | null
+    sourceDeckId: string | null
     targetLanguage: string
     chosenSourceLanguage: string
-    expiresAt: any
-    createdAt: any
-    updatedAt: any
+    expiresAt: string
+    createdAt: string
+    updatedAt: string
     cards: Array<{
-      __typename?: 'DeckPreviewSessionCard'
-      sourceCardId?: string | null
+      sourceCardId: string | null
       front: string
       back: string
-      example?: string | null
-      backError?: string | null
-      exampleError?: string | null
+      example: string | null
+      backError: string | null
+      exampleError: string | null
     }>
   }
 }
 
 export type ConfirmDeckPreviewMutationVariables = Exact<{
-  sessionId: Scalars['String']['input']
+  sessionId: string
 }>
 
 export type ConfirmDeckPreviewMutation = {
-  __typename?: 'Mutation'
   confirmDeckPreview: {
-    __typename?: 'ConfirmDeckPreviewPayload'
     deck: {
-      __typename?: 'Deck'
       id: string
       ownerId: string
       title: string
-      description?: string | null
+      description: string | null
       visibility: DeckVisibility
       moderationStatus: DeckModerationStatus
       isOfficial: boolean
-      sourceDeckId?: string | null
-      targetLanguage?: string | null
-      sourceLanguage?: string | null
-      createdAt: any
-      updatedAt: any
+      sourceDeckId: string | null
+      targetLanguage: string | null
+      sourceLanguage: string | null
+      createdAt: string
+      updatedAt: string
     }
     cards: Array<{
-      __typename?: 'Card'
       id: string
       deckId: string
       front: string
       back: string
-      example?: string | null
-      notes?: string | null
+      example: string | null
+      notes: string | null
       position: number
-      createdAt: any
-      updatedAt: any
+      createdAt: string
+      updatedAt: string
     }>
   }
 }
 
 export type CancelDeckPreviewMutationVariables = Exact<{
-  sessionId: Scalars['String']['input']
+  sessionId: string
 }>
 
-export type CancelDeckPreviewMutation = { __typename?: 'Mutation'; cancelDeckPreview: boolean }
+export type CancelDeckPreviewMutation = { cancelDeckPreview: boolean }
 
 export type StartDeckRegeneratePreviewMutationVariables = Exact<{
   input: StartDeckRegeneratePreviewInput
 }>
 
 export type StartDeckRegeneratePreviewMutation = {
-  __typename?: 'Mutation'
   startDeckRegeneratePreview: {
-    __typename?: 'DeckPreviewSession'
     id: string
     type: DeckPreviewSessionType
     status: DeckPreviewSessionStatus
-    sourceDeckId?: string | null
+    sourceDeckId: string | null
     targetLanguage: string
     chosenSourceLanguage: string
-    expiresAt: any
-    createdAt: any
-    updatedAt: any
+    expiresAt: string
+    createdAt: string
+    updatedAt: string
     cards: Array<{
-      __typename?: 'DeckPreviewSessionCard'
-      sourceCardId?: string | null
+      sourceCardId: string | null
       front: string
       back: string
-      example?: string | null
-      backError?: string | null
-      exampleError?: string | null
+      example: string | null
+      backError: string | null
+      exampleError: string | null
     }>
   }
 }
 
 export type AccountLocaleQueryVariables = Exact<{ [key: string]: never }>
 
-export type AccountLocaleQuery = {
-  __typename?: 'Query'
-  myAccount: {
-    __typename?: 'MyAccount'
-    settings: { __typename?: 'UserSettings'; interfaceLocale: string }
-  }
-}
+export type AccountLocaleQuery = { myAccount: { settings: { interfaceLocale: string } } }
 
 export const LessonCardFieldsFragmentDoc = gql`
   fragment LessonCardFields on LessonCard {

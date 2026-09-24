@@ -30,7 +30,7 @@ export async function syncLocaleFromBackend(): Promise<AppLocale | null> {
       fetchPolicy: 'network-only',
     })
 
-    const interfaceLocale = result.data.myAccount?.settings?.interfaceLocale
+    const interfaceLocale = result.data?.myAccount?.settings?.interfaceLocale
 
     if (!interfaceLocale) {
       return null

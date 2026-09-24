@@ -15,7 +15,7 @@ import {
 import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 
-function removeInvitationFromCache(cache: ApolloCache<unknown>, invitationId: string) {
+function removeInvitationFromCache(cache: ApolloCache, invitationId: string) {
   const existing = cache.readQuery<MyGroupInvitationsQuery>({ query: MyGroupInvitationsDocument })
 
   if (!existing) {

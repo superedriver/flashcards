@@ -7,7 +7,7 @@ export const CARD_MUTATION_REFETCH_QUERIES = [
   ...LEARNING_STATS_REFETCH_QUERIES,
 ] as const
 
-export function evictCardCountCache(cache: ApolloCache<unknown>): void {
+export function evictCardCountCache(cache: ApolloCache): void {
   cache.evict({ fieldName: 'deckLearningStats' })
   cache.evict({ fieldName: 'homeLearningProgress' })
   cache.gc()

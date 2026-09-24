@@ -1,4 +1,4 @@
-import type { ApolloError } from '@apollo/client'
+import { CombinedGraphQLErrors } from '@apollo/client/errors'
 
 const INTERNAL_PATTERNS = [
   /\n\s+at\s+/,
@@ -23,18 +23,11 @@ function isUserFriendlyMessage(message: string): boolean {
 }
 
 export function getSafeUserErrorMessage(error: unknown, fallback: string): string {
-  if (error instanceof Error && 'graphQLErrors' in error) {
-    const apolloError = error as ApolloError
-    const graphQlMessage = apolloError.graphQLErrors[0]?.message?.trim()
+  if (CombinedGraphQLErrors.is(error)) {
+    const graphQlMessage = error.errors[0]?.message?.trim()
 
     if (graphQlMessage && isUserFriendlyMessage(graphQlMessage)) {
       return graphQlMessage
-    }
-
-    const networkMessage = apolloError.networkError?.message?.trim()
-
-    if (networkMessage && isUserFriendlyMessage(networkMessage)) {
-      return networkMessage
     }
 
     return fallback

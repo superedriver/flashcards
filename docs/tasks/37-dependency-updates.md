@@ -71,12 +71,12 @@ EPIC-36 is complete (in `docs/tasks/done/`).
 ## Epic Summary
 
 ```md
-- [ ] TASK-37.01 Update patch/minor dependencies
-- [ ] TASK-37.02 Upgrade NestJS to v12
-- [ ] TASK-37.03 Upgrade Tamagui to v2.7
-- [ ] TASK-37.04 Upgrade @react-native-async-storage to v3
-- [ ] TASK-37.05 Upgrade Apollo Client to v4
-- [ ] TASK-37.06 Upgrade graphql-codegen to v7
+- [x] TASK-37.01 Update patch/minor dependencies
+- [x] TASK-37.02 Upgrade NestJS to v12
+- [x] TASK-37.03 Upgrade Tamagui to v2.7
+- [x] TASK-37.04 Upgrade @react-native-async-storage to v3
+- [x] TASK-37.05 Upgrade Apollo Client to v4
+- [x] TASK-37.06 Upgrade graphql-codegen to v7
 - [ ] TASK-37.07 Upgrade Expo to v57
 ```
 
