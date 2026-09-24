@@ -1,6 +1,2 @@
 export type GroupInvitationStatus =
-  | 'PENDING'
-  | 'ACCEPTED'
-  | 'DECLINED'
-  | 'CANCELLED'
-  | 'EXPIRED';
+  'PENDING' | 'ACCEPTED' | 'DECLINED' | 'CANCELLED' | 'EXPIRED';

@@ -1,7 +1,5 @@
 export type DeckPreviewSessionType =
-  | 'COPY_PUBLIC'
-  | 'COPY_GROUP'
-  | 'REGENERATE_DECK';
+  'COPY_PUBLIC' | 'COPY_GROUP' | 'REGENERATE_DECK';
 
 export type DeckPreviewSessionStatus = 'GENERATING' | 'READY' | 'EXPIRED';
 

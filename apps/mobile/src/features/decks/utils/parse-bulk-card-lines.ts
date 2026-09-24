@@ -3,11 +3,7 @@ export const BULK_FRONT_MAX_LENGTH = 2000
 export const BULK_BACK_MAX_LENGTH = 4000
 
 export type BulkCardFormatErrorCode =
-  | 'INVALID_FORMAT'
-  | 'FRONT_REQUIRED'
-  | 'BACK_REQUIRED'
-  | 'FRONT_TOO_LONG'
-  | 'BACK_TOO_LONG'
+  'INVALID_FORMAT' | 'FRONT_REQUIRED' | 'BACK_REQUIRED' | 'FRONT_TOO_LONG' | 'BACK_TOO_LONG'
 
 export type BulkCardFormatError = {
   code: BulkCardFormatErrorCode

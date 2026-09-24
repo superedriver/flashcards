@@ -7,9 +7,7 @@ import { getPostAuthRedirectHref } from '@/features/auth/utils/get-post-auth-red
 export type AuthGateMode = 'guestOnly' | 'protected' | 'publicRoot'
 
 export type AuthGateResult =
-  | { status: 'loading' }
-  | { href: Href; status: 'redirect' }
-  | { status: 'ready' }
+  { status: 'loading' } | { href: Href; status: 'redirect' } | { status: 'ready' }
 
 export function useAuthGate(mode: AuthGateMode): AuthGateResult {
   const { isAuthenticated, isBootstrapping, user } = useAuth()

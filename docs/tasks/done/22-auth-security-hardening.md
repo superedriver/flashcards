@@ -992,9 +992,7 @@ Example return shape:
 
 ```ts
 type AuthGateResult =
-  | { status: 'loading' }
-  | { status: 'redirect'; href: string }
-  | { status: 'ready' }
+  { status: 'loading' } | { status: 'redirect'; href: string } | { status: 'ready' }
 ```
 
 ## Security Requirements

@@ -1,10 +1,7 @@
 export type LearningGroup = 'TO_LEARN' | 'PRACTICED' | 'LEARNED'
 
 export type ReviewPresentationMode =
-  | 'TARGET_TEXT_AUDIO'
-  | 'SOURCE_TEXT'
-  | 'TARGET_AUDIO_ONLY'
-  | 'TARGET_TEXT'
+  'TARGET_TEXT_AUDIO' | 'SOURCE_TEXT' | 'TARGET_AUDIO_ONLY' | 'TARGET_TEXT'
 
 export type LessonCard = {
   back: string

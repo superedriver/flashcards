@@ -9,8 +9,7 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
   [_ in K]?: never
 }
 export type Incremental<T> =
-  | T
-  | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
+  T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
 const defaultOptions = {} as const
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -4320,13 +4319,11 @@ export function useMyDecksSuspenseQuery(
 ): Apollo.UseSuspenseQueryResult<MyDecksQuery, MyDecksQueryVariables>
 export function useMyDecksSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<MyDecksQuery, MyDecksQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<MyDecksQuery, MyDecksQueryVariables>,
 ): Apollo.UseSuspenseQueryResult<MyDecksQuery | undefined, MyDecksQueryVariables>
 export function useMyDecksSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<MyDecksQuery, MyDecksQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<MyDecksQuery, MyDecksQueryVariables>,
 ) {
   const options =
     baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
@@ -4438,13 +4435,11 @@ export function useDecksPageSuspenseQuery(
 ): Apollo.UseSuspenseQueryResult<DecksPageQuery, DecksPageQueryVariables>
 export function useDecksPageSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<DecksPageQuery, DecksPageQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<DecksPageQuery, DecksPageQueryVariables>,
 ): Apollo.UseSuspenseQueryResult<DecksPageQuery | undefined, DecksPageQueryVariables>
 export function useDecksPageSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<DecksPageQuery, DecksPageQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<DecksPageQuery, DecksPageQueryVariables>,
 ) {
   const options =
     baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
@@ -4575,13 +4570,11 @@ export function useDeckCardsSuspenseQuery(
 ): Apollo.UseSuspenseQueryResult<DeckCardsQuery, DeckCardsQueryVariables>
 export function useDeckCardsSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<DeckCardsQuery, DeckCardsQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<DeckCardsQuery, DeckCardsQueryVariables>,
 ): Apollo.UseSuspenseQueryResult<DeckCardsQuery | undefined, DeckCardsQueryVariables>
 export function useDeckCardsSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<DeckCardsQuery, DeckCardsQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<DeckCardsQuery, DeckCardsQueryVariables>,
 ) {
   const options =
     baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
@@ -5062,13 +5055,11 @@ export function useMyGroupsSuspenseQuery(
 ): Apollo.UseSuspenseQueryResult<MyGroupsQuery, MyGroupsQueryVariables>
 export function useMyGroupsSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<MyGroupsQuery, MyGroupsQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<MyGroupsQuery, MyGroupsQueryVariables>,
 ): Apollo.UseSuspenseQueryResult<MyGroupsQuery | undefined, MyGroupsQueryVariables>
 export function useMyGroupsSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<MyGroupsQuery, MyGroupsQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<MyGroupsQuery, MyGroupsQueryVariables>,
 ) {
   const options =
     baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
@@ -6290,13 +6281,11 @@ export function useProfileMeSuspenseQuery(
 ): Apollo.UseSuspenseQueryResult<ProfileMeQuery, ProfileMeQueryVariables>
 export function useProfileMeSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<ProfileMeQuery, ProfileMeQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ProfileMeQuery, ProfileMeQueryVariables>,
 ): Apollo.UseSuspenseQueryResult<ProfileMeQuery | undefined, ProfileMeQueryVariables>
 export function useProfileMeSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<ProfileMeQuery, ProfileMeQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<ProfileMeQuery, ProfileMeQueryVariables>,
 ) {
   const options =
     baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
@@ -6409,13 +6398,11 @@ export function usePublicDecksSuspenseQuery(
 ): Apollo.UseSuspenseQueryResult<PublicDecksQuery, PublicDecksQueryVariables>
 export function usePublicDecksSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<PublicDecksQuery, PublicDecksQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PublicDecksQuery, PublicDecksQueryVariables>,
 ): Apollo.UseSuspenseQueryResult<PublicDecksQuery | undefined, PublicDecksQueryVariables>
 export function usePublicDecksSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<PublicDecksQuery, PublicDecksQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PublicDecksQuery, PublicDecksQueryVariables>,
 ) {
   const options =
     baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
@@ -6482,13 +6469,11 @@ export function usePublicDeckSuspenseQuery(
 ): Apollo.UseSuspenseQueryResult<PublicDeckQuery, PublicDeckQueryVariables>
 export function usePublicDeckSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<PublicDeckQuery, PublicDeckQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PublicDeckQuery, PublicDeckQueryVariables>,
 ): Apollo.UseSuspenseQueryResult<PublicDeckQuery | undefined, PublicDeckQueryVariables>
 export function usePublicDeckSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<PublicDeckQuery, PublicDeckQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<PublicDeckQuery, PublicDeckQueryVariables>,
 ) {
   const options =
     baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
@@ -6702,13 +6687,11 @@ export function useMySettingsSuspenseQuery(
 ): Apollo.UseSuspenseQueryResult<MySettingsQuery, MySettingsQueryVariables>
 export function useMySettingsSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<MySettingsQuery, MySettingsQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<MySettingsQuery, MySettingsQueryVariables>,
 ): Apollo.UseSuspenseQueryResult<MySettingsQuery | undefined, MySettingsQueryVariables>
 export function useMySettingsSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<MySettingsQuery, MySettingsQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<MySettingsQuery, MySettingsQueryVariables>,
 ) {
   const options =
     baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }
@@ -6822,13 +6805,11 @@ export function useLanguagesSuspenseQuery(
 ): Apollo.UseSuspenseQueryResult<LanguagesQuery, LanguagesQueryVariables>
 export function useLanguagesSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<LanguagesQuery, LanguagesQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<LanguagesQuery, LanguagesQueryVariables>,
 ): Apollo.UseSuspenseQueryResult<LanguagesQuery | undefined, LanguagesQueryVariables>
 export function useLanguagesSuspenseQuery(
   baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<LanguagesQuery, LanguagesQueryVariables>,
+    Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<LanguagesQuery, LanguagesQueryVariables>,
 ) {
   const options =
     baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions }

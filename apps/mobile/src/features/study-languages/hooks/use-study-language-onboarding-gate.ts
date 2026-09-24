@@ -4,9 +4,7 @@ import { useAuth } from '@/features/auth/hooks/use-auth'
 import { useStudyLanguageContext } from '@/features/study-languages/hooks/use-study-language-context'
 
 export type StudyLanguageOnboardingGateResult =
-  | { status: 'loading' }
-  | { status: 'redirect'; href: Href }
-  | { status: 'ready' }
+  { status: 'loading' } | { status: 'redirect'; href: Href } | { status: 'ready' }
 
 export function useStudyLanguageOnboardingGate(
   mode: 'protected' | 'onboarding' = 'protected',

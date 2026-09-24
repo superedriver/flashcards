@@ -16,7 +16,7 @@
   "dependencies": {
     "@apollo/client": "^3.13.8",
     "@expo/vector-icons": "14.1.0",
-    "@hookform/resolvers": "^5.0.1",
+    "@hookform/resolvers": "^5.9.1",
     "@react-native-async-storage/async-storage": "^2.1.2",
     "@tamagui/babel-plugin": "^2.4.0",
     "@tamagui/config": "^2.4.0",
@@ -32,12 +32,12 @@
     "expo-speech": "~13.1.7",
     "expo-status-bar": "~2.2.3",
     "graphql": "^16.11.0",
-    "i18next": "^26.3.5",
+    "i18next": "^26.4.2",
     "pretty-format": "29.7.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-hook-form": "^7.56.4",
-    "react-i18next": "^17.0.8",
+    "react-hook-form": "^7.88.0",
+    "react-i18next": "^17.0.15",
     "react-native": "0.79.6",
     "react-native-reanimated": "^3.17.5",
     "react-native-safe-area-context": "5.4.0",
@@ -45,7 +45,7 @@
     "react-native-web": "~0.20.0",
     "tamagui": "^2.4.0",
     "zod": "^3.25.28",
-    "zustand": "^5.0.5"
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.7",
