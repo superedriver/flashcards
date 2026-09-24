@@ -24,7 +24,7 @@ This epic does **not** include:
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -79,9 +79,9 @@ Expected state:
 ## Epic Summary
 
 ```md
-- [ ] TASK-36.01 Add rate limiting to auth endpoints
-- [ ] TASK-36.02 Add GraphQL query depth limit
-- [ ] TASK-36.03 Document admin role freshness in GqlAuthGuard
+- [x] TASK-36.01 Add rate limiting to auth endpoints
+- [x] TASK-36.02 Add GraphQL query depth limit
+- [x] TASK-36.03 Document admin role freshness in GqlAuthGuard
 ```
 
 ---
@@ -90,7 +90,7 @@ Expected state:
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -215,7 +215,7 @@ TASK-36.01 Add rate limiting to auth endpoints
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
@@ -330,7 +330,7 @@ TASK-36.02 Add GraphQL query depth limit
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
