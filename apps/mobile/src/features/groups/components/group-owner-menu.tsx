@@ -34,7 +34,6 @@ export function GroupOwnerMenu({ groupId }: GroupOwnerMenuProps) {
 
       <Modal animationType="fade" transparent visible={open} onRequestClose={() => setOpen(false)}>
         <Pressable
-          accessibilityRole="button"
           onPress={() => setOpen(false)}
           style={{
             backgroundColor: 'rgba(0,0,0,0.4)',

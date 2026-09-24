@@ -223,7 +223,6 @@ export function DeckMoreMenu({ deck }: DeckMoreMenuProps) {
 
       <Modal transparent animationType="fade" visible={open} onRequestClose={() => setOpen(false)}>
         <Pressable
-          accessibilityRole="button"
           style={{
             backgroundColor: 'rgba(0,0,0,0.4)',
             flex: 1,

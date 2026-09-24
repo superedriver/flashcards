@@ -151,37 +151,67 @@ export function StudyLanguagesListModal({ onClose, visible }: StudyLanguagesList
             <FlatList
               data={ordered}
               keyExtractor={(item) => item.languageCode}
-              renderItem={({ item }) => (
-                <LanguageListRow
-                  disabled={settingActive || removingCode === item.languageCode}
-                  language={item.language}
-                  onPress={() => void handleSelect(item.languageCode, item.isActive)}
-                  selected={item.isActive}
-                  rightAccessory={
-                    <View style={{ alignItems: 'flex-end', gap: 6 }}>
+              renderItem={({ item }) => {
+                const isDisabled = settingActive || removingCode === item.languageCode
+
+                return (
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      backgroundColor: item.isActive ? '#e3f2fd' : '#ffffff',
+                      borderBottomColor: '#eeeeee',
+                      borderBottomWidth: 1,
+                      flexDirection: 'row',
+                      opacity: isDisabled ? 0.5 : 1,
+                    }}
+                  >
+                    <Pressable
+                      accessibilityLabel={item.language.nativeName}
+                      accessibilityRole="button"
+                      disabled={isDisabled}
+                      style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 12,
+                        paddingHorizontal: 16,
+                        paddingVertical: 12,
+                      }}
+                      onPress={() => void handleSelect(item.languageCode, item.isActive)}
+                    >
+                      <AppText style={{ fontSize: 28 }}>{item.language.flag}</AppText>
+                      <View style={{ flex: 1, gap: 2 }}>
+                        <AppText style={{ fontSize: 16, fontWeight: '600' }}>
+                          {item.language.nativeName}
+                        </AppText>
+                        <AppText style={{ color: '#666666', fontSize: 14 }}>
+                          {item.language.englishName}
+                        </AppText>
+                      </View>
                       {item.isActive ? (
                         <AppText style={{ color: '#1976d2', fontSize: 12, fontWeight: '700' }}>
                           {t('studyLanguages.studyList.active')}
                         </AppText>
                       ) : null}
-                      <Pressable
-                        accessibilityRole="button"
-                        disabled={removingCode === item.languageCode}
-                        hitSlop={8}
-                        onPress={() => void handleRemove(item.languageCode)}
-                      >
-                        {removingCode === item.languageCode ? (
-                          <ActivityIndicator size="small" />
-                        ) : (
-                          <AppText style={{ color: '#c62828', fontSize: 13, fontWeight: '600' }}>
-                            {t('studyLanguages.studyList.remove')}
-                          </AppText>
-                        )}
-                      </Pressable>
-                    </View>
-                  }
-                />
-              )}
+                    </Pressable>
+                    <Pressable
+                      accessibilityRole="button"
+                      disabled={removingCode === item.languageCode}
+                      hitSlop={8}
+                      style={{ paddingHorizontal: 16, paddingVertical: 12 }}
+                      onPress={() => void handleRemove(item.languageCode)}
+                    >
+                      {removingCode === item.languageCode ? (
+                        <ActivityIndicator size="small" />
+                      ) : (
+                        <AppText style={{ color: '#c62828', fontSize: 13, fontWeight: '600' }}>
+                          {t('studyLanguages.studyList.remove')}
+                        </AppText>
+                      )}
+                    </Pressable>
+                  </View>
+                )
+              }}
             />
           )}
         </SafeAreaView>

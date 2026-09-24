@@ -266,3 +266,53 @@ apps/mobile/src/i18n/resources/uk/home.ts
 ```txt
 TASK-38.06 Redesign home screen empty state when no cards exist
 ```
+
+---
+
+# TASK-38.07 Fix nested button HTML violations on web
+
+## Status
+
+DONE
+
+## Context
+
+On web, `Pressable` with `accessibilityRole="button"` renders as a `<button>` element.
+Nesting interactive elements inside a `<button>` is invalid HTML and causes browser warnings.
+Four locations were found during web testing.
+
+## What Was Done
+
+**study-languages-list-modal.tsx** — `LanguageListRow` with `onPress` rendered as `<button>`,
+and its `rightAccessory` contained another `<Pressable accessibilityRole="button">` (Remove button).
+Fix: stopped using `LanguageListRow` for these rows; replaced with a flat `View` containing two
+sibling `Pressable` elements — one for selecting the language, one for removing it.
+
+**deck-list-item.tsx** — outer `<Pressable accessibilityRole="button">` (card navigation) wrapped
+`DeckStartPlayButton` (another `Pressable`). Fix: moved card content into a `<View>` wrapper;
+`Pressable` now covers only the non-interactive content. `DeckStartPlayButton` moved outside
+the `Pressable` as an absolutely positioned sibling (`position: 'absolute'`, `pointerEvents: 'box-none'`).
+`OwnFooter` now shows only the due-count badge.
+
+**deck-more-menu.tsx** — backdrop `<Pressable accessibilityRole="button">` wrapping a panel
+`<Pressable>` wrapping menu item `<Pressable accessibilityRole="button">` elements (triple nesting).
+Fix: removed `accessibilityRole="button"` from backdrop and panel Pressables — they render as
+`<div>` on web; menu items remain as `<button>`.
+
+**group-owner-menu.tsx** — same triple nesting pattern as `deck-more-menu.tsx`.
+Fix: removed `accessibilityRole="button"` from backdrop Pressable.
+
+## Files Modified
+
+```txt
+apps/mobile/src/features/study-languages/components/study-languages-list-modal.tsx
+apps/mobile/src/features/decks/components/deck-list-item.tsx
+apps/mobile/src/features/decks/components/deck-more-menu.tsx
+apps/mobile/src/features/groups/components/group-owner-menu.tsx
+```
+
+## Commit
+
+```txt
+TASK-38.07 Fix nested button HTML violations on web
+```

@@ -106,7 +106,6 @@ function OwnFooter({ deckId }: { deckId: string }) {
       ) : (
         <View />
       )}
-      <DeckStartPlayButton deckId={deckId} />
     </View>
   )
 }
@@ -136,13 +135,9 @@ export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckLis
     <View
       style={isRail ? getDeckSectionGridItemStyle(width) : { position: 'relative', width: '100%' }}
     >
-      <Pressable
-        accessibilityRole="button"
-        style={isRail ? { flex: 1 } : undefined}
-        onPress={() => router.push(href)}
-      >
-        <View
-          style={{
+      <View
+        style={[
+          {
             backgroundColor: '#ffffff',
             borderColor: '#e4e7ec',
             borderRadius: 12,
@@ -153,8 +148,11 @@ export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckLis
             minHeight: isRail ? undefined : 180,
             overflow: 'hidden',
             padding: section === 'own' ? 10 : 12,
-          }}
-        >
+          },
+          isRail ? { flex: 1 } : undefined,
+        ]}
+      >
+        <Pressable accessibilityRole="button" style={{ flex: 1 }} onPress={() => router.push(href)}>
           <View
             style={{
               alignItems: 'center',
@@ -240,8 +238,22 @@ export function DeckListItem({ deck, layout = 'rail', section = 'own' }: DeckLis
               <ViewFooter />
             </View>
           ) : null}
-        </View>
-      </Pressable>
+        </Pressable>
+
+        {section === 'own' ? (
+          <View
+            style={{
+              alignItems: 'flex-end',
+              bottom: 10,
+              pointerEvents: 'box-none',
+              position: 'absolute',
+              right: 10,
+            }}
+          >
+            <DeckStartPlayButton deckId={deck.id} />
+          </View>
+        ) : null}
+      </View>
     </View>
   )
 }
