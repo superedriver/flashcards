@@ -199,3 +199,35 @@ apps/mobile/src/i18n/resources/uk/auth.ts
 ```txt
 TASK-38.04 Redesign verify email prompt screen
 ```
+
+---
+
+# TASK-38.05 Remove duplicate Create Deck CTA from decks page empty state
+
+## Status
+
+DONE
+
+## Context
+
+The decks page had two identical "Create Deck" actions: one in the page header (+ Create Deck button)
+and one in the empty state of the "My Decks" section ("Create your first deck"). Two equal CTAs
+with no hierarchy.
+
+## What Was Done
+
+Removed `emptyActionLabel` and `onEmptyAction` from the "My Decks" `DeckSection` in
+`DecksPageSections`. The header button remains as the single primary CTA. Empty state now shows
+text only.
+
+## Files Modified
+
+```txt
+apps/mobile/src/features/decks/components/decks-page-sections.tsx
+```
+
+## Commit
+
+```txt
+TASK-38.05 Remove duplicate Create Deck CTA from decks page empty state
+```

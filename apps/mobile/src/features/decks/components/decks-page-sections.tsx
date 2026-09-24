@@ -62,11 +62,9 @@ export function DecksPageSections({ listHeader, onCreateDeck, page }: DecksPageS
       {listHeader}
       <DeckSection
         decks={page.ownDecks}
-        emptyActionLabel={onCreateDeck ? t('decks.myDecks.emptyAction') : undefined}
         emptyMessage={t('decks.sections.own.empty')}
         section="own"
         title={t('decks.sections.own.title')}
-        onEmptyAction={onCreateDeck}
       />
       <DeckSection
         decks={page.groupDecks}
