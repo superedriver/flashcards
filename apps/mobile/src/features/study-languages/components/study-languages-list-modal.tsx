@@ -13,7 +13,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { confirmDestructiveAction } from '@/features/decks/utils/confirm-destructive'
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
-import { LanguageListRow } from '@/features/study-languages/components/language-list-row'
 import { useStudyLanguageContext } from '@/features/study-languages/hooks/use-study-language-context'
 import {
   useRemoveStudyLanguageMutation,
