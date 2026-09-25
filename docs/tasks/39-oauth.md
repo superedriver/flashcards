@@ -335,3 +335,38 @@ apps/mobile/src/features/auth/services/google-auth.service.ts
 ```txt
 TASK-39.07 Mobile: fix Google auth crash when client ID env var is not set
 ```
+
+---
+
+# TASK-39.08 Mobile: fix useMutation crash — unify Apollo Client imports
+
+## Status
+
+DONE
+
+## Context
+
+`useMutation is not a function` crashed sign-in on web. Root cause: `ApolloProvider` was imported
+from `@apollo/client/react` while `useMutation`/`useQuery` hooks were imported from `@apollo/client`.
+In Apollo Client 4.x these are separate entry points with separate React contexts, so hooks
+couldn't find the provider.
+
+## What Was Done
+
+- Changed `apollo-provider.tsx` to import `ApolloProvider` from `@apollo/client` (not `/react`)
+- Changed `codegen.ts` `apolloReactHooksImportFrom` to `@apollo/client`
+- Updated the generated `operations.ts` import to match (so it stays consistent until next codegen run)
+
+## Files Modified
+
+```txt
+apps/mobile/src/graphql/apollo-provider.tsx
+apps/mobile/src/graphql/generated/operations.ts
+apps/mobile/codegen.ts
+```
+
+## Commit
+
+```txt
+TASK-39.08 Mobile: fix useMutation crash — unify Apollo Client imports
+```

@@ -9,7 +9,7 @@ import type * as SchemaTypes from './schema'
 
 import { gql } from '@apollo/client'
 import * as Apollo from '@apollo/client'
-import * as ApolloReactHooks from '@apollo/client/react'
+import * as ApolloReactHooks from '@apollo/client'
 const defaultOptions = {} as const
 export type AdminDashboardStatsQueryVariables = Exact<{ [key: string]: never }>
 
