@@ -353,13 +353,20 @@ couldn't find the provider.
 
 ## What Was Done
 
-- Changed `apollo-provider.tsx` to import `ApolloProvider` from `@apollo/client` (not `/react`)
-- Changed `codegen.ts` `apolloReactHooksImportFrom` to `@apollo/client`
-- Updated the generated `operations.ts` import to match (so it stays consistent until next codegen run)
+- `ApolloProvider` lives in `@apollo/client/react`; `useMutation` also lives there. Using
+  `@apollo/client` for hooks gives `undefined` because the React-specific exports are only in
+  the `/react` entry point.
+- Changed `google-login-button`, `apple-login-button`, and `linked-accounts-card` to import
+  `useMutation` from `@apollo/client/react` (kept `gql` from `@apollo/client` as it's not React-specific).
+- Reverted `apollo-provider.tsx` back to `@apollo/client/react` (correct).
+- Reverted `codegen.ts` and `generated/operations.ts` back to `@apollo/client/react`.
 
 ## Files Modified
 
 ```txt
+apps/mobile/src/features/auth/components/google-login-button.tsx
+apps/mobile/src/features/auth/components/apple-login-button.tsx
+apps/mobile/src/features/auth/components/linked-accounts-card.tsx
 apps/mobile/src/graphql/apollo-provider.tsx
 apps/mobile/src/graphql/generated/operations.ts
 apps/mobile/codegen.ts

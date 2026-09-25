@@ -28,7 +28,7 @@ const config: CodegenConfig = {
         dedupeFragments: true,
         namespacedImportName: 'SchemaTypes',
         importSchemaTypesFrom: 'src/graphql/generated/schema',
-        apolloReactHooksImportFrom: '@apollo/client',
+        apolloReactHooksImportFrom: '@apollo/client/react',
       },
     },
   },
