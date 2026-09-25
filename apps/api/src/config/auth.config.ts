@@ -10,4 +10,5 @@ export const authConfig = registerAs('auth', () => ({
     'JWT_REFRESH_SECRET',
     'replace-with-dev-refresh-secret',
   ),
+  googleClientId: process.env.GOOGLE_CLIENT_ID ?? '',
 }));

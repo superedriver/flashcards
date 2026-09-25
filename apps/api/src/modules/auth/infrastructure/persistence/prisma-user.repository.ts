@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../infrastructure/prisma';
 import {
+  CreateOAuthUserInput,
   CreateUserInput,
   UserRepositoryPort,
   UserWithPassword,
@@ -29,6 +30,19 @@ export class PrismaUserRepository implements UserRepositoryPort {
       data: {
         email: input.email,
         passwordHash: input.passwordHash,
+        profile: { create: {} },
+        settings: { create: {} },
+      },
+    });
+
+    return toSafeUser(user);
+  }
+
+  async createOAuthUser(input: CreateOAuthUserInput): Promise<SafeUser> {
+    const user = await this.prisma.user.create({
+      data: {
+        email: input.email,
+        emailVerifiedAt: new Date(),
         profile: { create: {} },
         settings: { create: {} },
       },

@@ -46,6 +46,7 @@
     "argon2": "^0.44.0",
     "csv-parse": "^7.0.0",
     "expo-server-sdk": "^6.1.0",
+    "google-auth-library": "^11.1.0",
     "graphql": "^16.14.2",
     "graphql-depth-limit": "^1.1.0",
     "pg": "^8.22.0",

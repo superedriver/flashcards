@@ -12,17 +12,20 @@ import { EMAIL_VERIFICATION_TOKEN_REPOSITORY } from './application/ports/email-v
 import { PASSWORD_RESET_TOKEN_REPOSITORY } from './application/ports/password-reset-token-repository.port';
 import { USER_REPOSITORY } from './application/ports/user-repository.port';
 import { BLOCKED_IDENTITY_REPOSITORY } from './application/ports/blocked-identity-repository.port';
+import { OAUTH_ACCOUNT_REPOSITORY } from './application/ports/oauth-account-repository.port';
 import { Argon2PasswordHasher } from './infrastructure/crypto/argon2-password-hasher';
 import { NodeTokenGenerator } from './infrastructure/crypto/node-token-generator';
 import { Sha256TokenHasher } from './infrastructure/crypto/sha256-token-hasher';
 import { JwtAccessTokenService } from './infrastructure/jwt/jwt-access-token.service';
 import { PrismaUserRepository } from './infrastructure/persistence/prisma-user.repository';
 import { PrismaBlockedIdentityRepository } from './infrastructure/persistence/prisma-blocked-identity.repository';
+import { PrismaOAuthAccountRepository } from './infrastructure/persistence/prisma-oauth-account.repository';
 import { PrismaRefreshTokenRepository } from './infrastructure/persistence/prisma-refresh-token.repository';
 import { PrismaEmailVerificationTokenRepository } from './infrastructure/persistence/prisma-email-verification-token.repository';
 import { PrismaPasswordResetTokenRepository } from './infrastructure/persistence/prisma-password-reset-token.repository';
 import { RegisterUserUseCase } from './application/use-cases/register-user.use-case';
 import { LoginUseCase } from './application/use-cases/login.use-case';
+import { GoogleOAuthUseCase } from './application/use-cases/google-oauth.use-case';
 import { GetMeUseCase } from './application/use-cases/get-me.use-case';
 import { RefreshTokenUseCase } from './application/use-cases/refresh-token.use-case';
 import { LogoutUseCase } from './application/use-cases/logout.use-case';
@@ -85,8 +88,13 @@ import { OptionalGqlAuthGuard } from './presentation/graphql/guards/optional-gql
       provide: PASSWORD_RESET_TOKEN_REPOSITORY,
       useClass: PrismaPasswordResetTokenRepository,
     },
+    {
+      provide: OAUTH_ACCOUNT_REPOSITORY,
+      useClass: PrismaOAuthAccountRepository,
+    },
     RegisterUserUseCase,
     LoginUseCase,
+    GoogleOAuthUseCase,
     GetMeUseCase,
     RefreshTokenUseCase,
     LogoutUseCase,
@@ -110,8 +118,10 @@ import { OptionalGqlAuthGuard } from './presentation/graphql/guards/optional-gql
     REFRESH_TOKEN_REPOSITORY,
     EMAIL_VERIFICATION_TOKEN_REPOSITORY,
     PASSWORD_RESET_TOKEN_REPOSITORY,
+    OAUTH_ACCOUNT_REPOSITORY,
     RegisterUserUseCase,
     LoginUseCase,
+    GoogleOAuthUseCase,
     GetMeUseCase,
     RefreshTokenUseCase,
     LogoutUseCase,

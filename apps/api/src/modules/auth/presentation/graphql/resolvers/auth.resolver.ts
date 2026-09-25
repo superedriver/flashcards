@@ -3,6 +3,7 @@ import { Throttle } from '@nestjs/throttler';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ApplicationError, ErrorCodes } from '../../../../../common/errors';
 import { GetMeUseCase } from '../../../application/use-cases/get-me.use-case';
+import { GoogleOAuthUseCase } from '../../../application/use-cases/google-oauth.use-case';
 import { LoginUseCase } from '../../../application/use-cases/login.use-case';
 import { LogoutUseCase } from '../../../application/use-cases/logout.use-case';
 import { RefreshTokenUseCase } from '../../../application/use-cases/refresh-token.use-case';
@@ -13,6 +14,7 @@ import { RequestPasswordResetUseCase } from '../../../application/use-cases/requ
 import { ResetPasswordUseCase } from '../../../application/use-cases/reset-password.use-case';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { GqlAuthGuard } from '../guards/gql-auth.guard';
+import { GoogleOAuthInput } from '../inputs/google-oauth.input';
 import { LoginInput } from '../inputs/login.input';
 import { LogoutInput } from '../inputs/logout.input';
 import { RefreshTokenInput } from '../inputs/refresh-token.input';
@@ -37,6 +39,7 @@ export class AuthResolver {
   constructor(
     private readonly registerUserUseCase: RegisterUserUseCase,
     private readonly loginUseCase: LoginUseCase,
+    private readonly googleOAuthUseCase: GoogleOAuthUseCase,
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
     private readonly logoutUseCase: LogoutUseCase,
     private readonly getMeUseCase: GetMeUseCase,
@@ -77,6 +80,33 @@ export class AuthResolver {
     @Context() context: AuthGraphqlContext,
   ): Promise<AuthPayloadType> {
     const result = await this.loginUseCase.execute(input);
+
+    this.refreshTokenCookieService.setRefreshTokenCookie(
+      context.res,
+      result.refreshToken,
+    );
+
+    return {
+      accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
+      user: {
+        ...result.user,
+        role: result.user.role as UserRole,
+      },
+    };
+  }
+
+  @Throttle({ default: { limit: 10, ttl: 60_000 } })
+  @Mutation(() => AuthPayloadType)
+  async googleAuth(
+    @Args('input') input: GoogleOAuthInput,
+    @Context() context: AuthGraphqlContext,
+  ): Promise<AuthPayloadType> {
+    const result = await this.googleOAuthUseCase.execute({
+      idToken: input.idToken,
+      userAgent: context.req.headers['user-agent'] ?? null,
+      ipAddress: context.req.ip ?? null,
+    });
 
     this.refreshTokenCookieService.setRefreshTokenCookie(
       context.res,

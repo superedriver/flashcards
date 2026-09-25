@@ -11,10 +11,15 @@ export type CreateUserInput = {
   passwordHash: string;
 };
 
+export type CreateOAuthUserInput = {
+  email: string;
+};
+
 export type UserRepositoryPort = {
   findById(id: string): Promise<SafeUser | null>;
   findByEmail(email: string): Promise<UserWithPassword | null>;
   create(input: CreateUserInput): Promise<SafeUser>;
+  createOAuthUser(input: CreateOAuthUserInput): Promise<SafeUser>;
   markEmailVerified(userId: string, verifiedAt: Date): Promise<SafeUser>;
   updatePasswordHash(userId: string, passwordHash: string): Promise<void>;
   deleteById(userId: string): Promise<void>;
