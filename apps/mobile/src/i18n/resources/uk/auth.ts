@@ -69,7 +69,9 @@ export const authUk = {
     continueToApp: 'Перейти до застосунку',
   },
   google: {
-    label: 'Продовжити з Google (незабаром)',
-    hint: 'Вхід через Google ще недоступний.',
+    label: 'Продовжити з Google',
+    hint: 'Увійти за допомогою акаунту Google.',
+    loading: 'Вхід через Google...',
+    failed: 'Не вдалося увійти через Google. Спробуйте ще раз.',
   },
 } as const

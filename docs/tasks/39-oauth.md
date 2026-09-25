@@ -185,7 +185,41 @@ TASK-39.03 API: OAuth account linking (connect to existing email account)
 
 ## Status
 
-TODO
+DONE
+
+## Context
+
+The `GoogleLoginButton` was a disabled placeholder. Needed a real OAuth flow that works on both
+web and native (Expo Go + builds) using `expo-auth-session`.
+
+## What Was Done
+
+- Added `EXPO_PUBLIC_GOOGLE_CLIENT_ID` to `env.ts`
+- Rewrote `google-auth.service.ts`: exports `useGoogleAuth()` hook using
+  `expo-auth-session/providers/google` PKCE flow. Returns `{ signIn, isConfigured }`.
+  Button is hidden when `EXPO_PUBLIC_GOOGLE_CLIENT_ID` is not set.
+- Added `GoogleAuth` and `LinkOAuthAccount` mutations to `auth.graphql`
+- Rewrote `GoogleLoginButton`: calls `useGoogleAuth()` hook, on success sends `googleAuth`
+  mutation to API with the `id_token`, applies auth payload and navigates.
+- Updated `auth.google` i18n keys in en and uk (removed "coming soon")
+- Installed `expo-auth-session` and `expo-web-browser`
+
+## Files Modified
+
+```txt
+apps/mobile/src/config/env.ts
+apps/mobile/src/features/auth/services/google-auth.service.ts
+apps/mobile/src/features/auth/components/google-login-button.tsx
+apps/mobile/src/features/auth/graphql/auth.graphql
+apps/mobile/src/i18n/resources/en/auth.ts
+apps/mobile/src/i18n/resources/uk/auth.ts
+```
+
+## Commit
+
+```txt
+TASK-39.04 Mobile: Google Sign-In button and flow (web + native)
+```
 
 ---
 

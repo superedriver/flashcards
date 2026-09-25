@@ -85,3 +85,39 @@ mutation RequestPasswordReset($input: RequestPasswordResetInput!) {
 mutation ResetPassword($input: ResetPasswordInput!) {
   resetPassword(input: $input)
 }
+
+mutation GoogleAuth($input: GoogleOAuthInput!) {
+  googleAuth(input: $input) {
+    accessToken
+    refreshToken
+    user {
+      id
+      email
+      role
+      emailVerifiedAt
+      blockedAt
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation AppleAuth($input: AppleOAuthInput!) {
+  appleAuth(input: $input) {
+    accessToken
+    refreshToken
+    user {
+      id
+      email
+      role
+      emailVerifiedAt
+      blockedAt
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+mutation LinkOAuthAccount($input: LinkOAuthAccountInput!) {
+  linkOAuthAccount(input: $input)
+}

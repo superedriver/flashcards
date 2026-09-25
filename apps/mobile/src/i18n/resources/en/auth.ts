@@ -68,7 +68,9 @@ export const authEn = {
     continueToApp: 'Continue to app',
   },
   google: {
-    label: 'Continue with Google (Coming soon)',
-    hint: 'Google sign-in is not available yet.',
+    label: 'Continue with Google',
+    hint: 'Sign in with your Google account.',
+    loading: 'Signing in with Google...',
+    failed: 'Google sign-in failed. Please try again.',
   },
 } as const
