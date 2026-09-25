@@ -107,7 +107,40 @@ TASK-39.01 API: Google OAuth — exchange id_token for user
 
 ## Status
 
-TODO
+DONE
+
+## Context
+
+Apple Sign In is required by App Store rules when any other social login is present. The mobile
+app sends an Apple `identityToken` (JWT); the API verifies it via Apple's public keys and returns
+auth tokens. Apple only sends the email on the **first** sign-in — subsequent sign-ins omit it,
+so the `OAuthAccount` row from the first sign-in is used to look up the user.
+
+## What Was Done
+
+- Added `appleClientId` to `auth.config.ts`
+- Added `AppleOAuthUseCase`: verifies `identityToken` via `apple-signin-auth`, finds or creates
+  `OAuthAccount` + `User`. On first sign-in Apple provides the email; on subsequent sign-ins the
+  existing `OAuthAccount` row is used to find the user without needing the email.
+- Added `AppleOAuthInput` GraphQL input and `appleAuth` mutation in `AuthResolver`
+- Registered `AppleOAuthUseCase` in `AuthModule`
+- Installed `apple-signin-auth` package
+
+## Files Modified
+
+```txt
+apps/api/src/config/auth.config.ts
+apps/api/src/modules/auth/application/use-cases/apple-oauth.use-case.ts (new)
+apps/api/src/modules/auth/auth.module.ts
+apps/api/src/modules/auth/presentation/graphql/inputs/apple-oauth.input.ts (new)
+apps/api/src/modules/auth/presentation/graphql/resolvers/auth.resolver.ts
+```
+
+## Commit
+
+```txt
+TASK-39.02 API: Apple Sign In — exchange identity token for user
+```
 
 ---
 

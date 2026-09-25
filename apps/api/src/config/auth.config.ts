@@ -11,4 +11,5 @@ export const authConfig = registerAs('auth', () => ({
     'replace-with-dev-refresh-secret',
   ),
   googleClientId: process.env.GOOGLE_CLIENT_ID ?? '',
+  appleClientId: process.env.APPLE_CLIENT_ID ?? '',
 }));
