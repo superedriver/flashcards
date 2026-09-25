@@ -7,6 +7,12 @@
     "orientation": "portrait",
     "newArchEnabled": true,
     "jsEngine": "hermes",
-    "plugins": ["expo-router", "expo-secure-store", "expo-notifications", "expo-localization"]
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-notifications",
+      "expo-localization",
+      "expo-apple-authentication"
+    ]
   }
 }

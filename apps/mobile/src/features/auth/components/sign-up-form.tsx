@@ -19,6 +19,7 @@ import { useRegisterMutation } from '@/graphql/generated'
 import { FieldLabel } from '@/ui/components'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
 
+import { AppleLoginButton } from './apple-login-button'
 import { GoogleLoginButton } from './google-login-button'
 
 export function SignUpForm() {
@@ -149,6 +150,7 @@ export function SignUpForm() {
       </AppButton>
 
       <GoogleLoginButton />
+      <AppleLoginButton />
 
       <Link href="/(auth)/sign-in">
         <AppText>{t('auth.signUp.hasAccount')}</AppText>

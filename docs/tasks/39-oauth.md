@@ -227,7 +227,41 @@ TASK-39.04 Mobile: Google Sign-In button and flow (web + native)
 
 ## Status
 
-TODO
+DONE
+
+## Context
+
+Apple Sign In is required by App Store rules when any other social login is present. Available
+only on iOS (native). The button hides itself on Android and web.
+
+## What Was Done
+
+- Added `expo-apple-authentication` package and plugin to `app.json`
+- Created `apple-auth.service.ts`: `signInWithApple()` calls the native Apple credential API
+  and returns the `identityToken`. `isAppleAuthAvailable()` checks availability at runtime.
+- Created `AppleLoginButton`: checks availability on mount, hides if not available. On press
+  calls `signInWithApple()`, sends `appleAuth` mutation, applies auth payload and navigates.
+  User cancellation (`ERR_REQUEST_CANCELED`) is silently ignored.
+- Added `AppleLoginButton` to `sign-in-form.tsx` and `sign-up-form.tsx`
+- Added `auth.apple` i18n keys in en and uk
+
+## Files Modified
+
+```txt
+apps/mobile/app.json
+apps/mobile/src/features/auth/services/apple-auth.service.ts (new)
+apps/mobile/src/features/auth/components/apple-login-button.tsx (new)
+apps/mobile/src/features/auth/components/sign-in-form.tsx
+apps/mobile/src/features/auth/components/sign-up-form.tsx
+apps/mobile/src/i18n/resources/en/auth.ts
+apps/mobile/src/i18n/resources/uk/auth.ts
+```
+
+## Commit
+
+```txt
+TASK-39.05 Mobile: Apple Sign In button and flow (web + native)
+```
 
 ---
 

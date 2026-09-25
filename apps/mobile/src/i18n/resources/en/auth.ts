@@ -73,4 +73,10 @@ export const authEn = {
     loading: 'Signing in with Google...',
     failed: 'Google sign-in failed. Please try again.',
   },
+  apple: {
+    label: 'Continue with Apple',
+    hint: 'Sign in with your Apple ID.',
+    loading: 'Signing in with Apple...',
+    failed: 'Apple sign-in failed. Please try again.',
+  },
 } as const

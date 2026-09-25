@@ -19,6 +19,7 @@ import { useLoginMutation } from '@/graphql/generated'
 import { FieldLabel } from '@/ui/components'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
 
+import { AppleLoginButton } from './apple-login-button'
 import { GoogleLoginButton } from './google-login-button'
 
 export function SignInForm() {
@@ -127,6 +128,7 @@ export function SignInForm() {
       </AppButton>
 
       <GoogleLoginButton />
+      <AppleLoginButton />
 
       <View style={{ gap: 8, marginTop: 8 }}>
         <Link href="/(auth)/sign-up">

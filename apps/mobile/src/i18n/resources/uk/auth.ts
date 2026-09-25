@@ -74,4 +74,10 @@ export const authUk = {
     loading: 'Вхід через Google...',
     failed: 'Не вдалося увійти через Google. Спробуйте ще раз.',
   },
+  apple: {
+    label: 'Продовжити з Apple',
+    hint: 'Увійти за допомогою Apple ID.',
+    loading: 'Вхід через Apple...',
+    failed: 'Не вдалося увійти через Apple. Спробуйте ще раз.',
+  },
 } as const
