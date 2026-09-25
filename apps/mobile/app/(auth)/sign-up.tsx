@@ -1,15 +1,17 @@
 import { Redirect } from 'expo-router'
 import { useTranslation } from 'react-i18next'
+import { View } from 'react-native'
 
 import { SignUpForm } from '@/features/auth/components/sign-up-form'
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import { useAuthGate } from '@/features/auth/hooks/use-auth-gate'
-import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
+import { LoadingState, Screen } from '@/ui/components'
 
 export default function SignUpScreen() {
   const { t } = useTranslation()
-  const { error } = useAuth()
   const gate = useAuthGate('guestOnly')
+
+  useAuth()
 
   if (gate.status === 'loading') {
     return (
@@ -25,9 +27,9 @@ export default function SignUpScreen() {
 
   return (
     <Screen scrollable variant="narrow">
-      <PageTitle title={t('auth.signUp.title')} />
-      {error ? <ErrorState message={error} /> : null}
-      <SignUpForm />
+      <View style={{ flex: 1, justifyContent: 'center', minHeight: 560 }}>
+        <SignUpForm />
+      </View>
     </Screen>
   )
 }

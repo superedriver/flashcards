@@ -29,10 +29,17 @@ export const authUk = {
   },
   signUp: {
     title: 'Реєстрація',
+    welcomeTitle: 'Створити акаунт',
+    subtitle: 'Почніть вивчати слова за кілька хвилин',
     submit: 'Зареєструватися',
     submitting: 'Створення облікового запису...',
     failed: 'Не вдалося зареєструватися. Спробуйте ще раз.',
-    hasAccount: 'Уже маєте обліковий запис? Увійти',
+    hasAccount: 'Уже маєте акаунт?',
+    signIn: 'Увійти',
+    showPassword: 'Показати пароль',
+    hidePassword: 'Сховати пароль',
+    showConfirmPassword: 'Показати підтвердження пароля',
+    hideConfirmPassword: 'Сховати підтвердження пароля',
   },
   forgotPassword: {
     title: 'Забули пароль',
