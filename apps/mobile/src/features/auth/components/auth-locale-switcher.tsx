@@ -16,7 +16,8 @@ export function AuthLocaleSwitcher() {
   }
 
   return (
-    <View style={{ alignItems: 'center', flexDirection: 'row', gap: 4, paddingRight: 8 }}>
+    <View style={{ alignItems: 'center', flexDirection: 'row', gap: 4, paddingRight: 16 }}>
+      <AppText style={{ color: '#667085', fontSize: 15, marginRight: 2 }}>🌐</AppText>
       {SUPPORTED_LOCALES.map((locale, idx) => (
         <View key={locale} style={{ alignItems: 'center', flexDirection: 'row' }}>
           {idx > 0 ? <AppText style={{ color: '#d0d5dd', marginRight: 4 }}>|</AppText> : null}

@@ -557,3 +557,32 @@ block them from indexing or reading secret files.
 ```txt
 TASK-39.13 Add .claudeignore and .cursorignore to protect secrets
 ```
+
+---
+
+# TASK-39.15 Mobile: add globe icon and right padding to locale switcher
+
+## Status
+
+DONE
+
+## Context
+
+`AuthLocaleSwitcher` had no visual icon, and the text was too close to the screen edge.
+
+## What Was Done
+
+- Added `🌐` icon before EN | UK labels
+- Increased `paddingRight` from 8 to 16
+
+## Files Modified
+
+```txt
+apps/mobile/src/features/auth/components/auth-locale-switcher.tsx
+```
+
+## Commit
+
+```txt
+TASK-39.15 Mobile: add globe icon and right padding to locale switcher
+```
