@@ -18,8 +18,8 @@ import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
 import { useLoginMutation } from '@/graphql/generated'
 import { AppButton, AppInput, AppText } from '@/ui/primitives'
 
-import { AppleLoginButton } from './apple-login-button'
-import { GoogleLoginButton } from './google-login-button'
+import { OAuthButtons } from './oauth-buttons'
+import { OrDivider } from './or-divider'
 
 export function SignInForm() {
   const { t } = useTranslation()
@@ -87,6 +87,12 @@ export function SignInForm() {
         </AppText>
         <AppText style={{ color: '#667085', fontSize: 15 }}>{t('auth.signIn.subtitle')}</AppText>
       </View>
+
+      {/* OAuth */}
+      <OAuthButtons />
+
+      {/* Divider */}
+      <OrDivider />
 
       {/* Fields */}
       <View style={{ gap: 16 }}>
@@ -182,10 +188,6 @@ export function SignInForm() {
       >
         {isLoading ? t('auth.signIn.submitting') : t('auth.signIn.submit')}
       </AppButton>
-
-      {/* OAuth */}
-      <GoogleLoginButton />
-      <AppleLoginButton />
 
       {/* Footer link */}
       <View

@@ -79,6 +79,7 @@ export const authEn = {
     resendFailed: 'Could not resend verification email. Try again later.',
     continueToApp: 'Continue to app',
   },
+  orContinueWith: 'or continue with email',
   google: {
     label: 'Continue with Google',
     hint: 'Sign in with your Google account.',

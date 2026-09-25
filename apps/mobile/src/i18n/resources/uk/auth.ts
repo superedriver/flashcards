@@ -80,6 +80,7 @@ export const authUk = {
     resendFailed: 'Не вдалося надіслати лист підтвердження. Спробуйте пізніше.',
     continueToApp: 'Перейти до застосунку',
   },
+  orContinueWith: 'або продовжити з email',
   google: {
     label: 'Продовжити з Google',
     hint: 'Увійти за допомогою акаунту Google.',
