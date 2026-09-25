@@ -586,3 +586,34 @@ apps/mobile/src/features/auth/components/auth-locale-switcher.tsx
 ```txt
 TASK-39.15 Mobile: add globe icon and right padding to locale switcher
 ```
+
+---
+
+# TASK-39.16 Add OAuth env vars to .env.example files
+
+## Status
+
+DONE
+
+## Context
+
+`EXPO_PUBLIC_GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_ID`, and `APPLE_CLIENT_ID` were missing from
+`.env.example` files, so new developers had no indication these vars are required for OAuth.
+
+## What Was Done
+
+- Added `EXPO_PUBLIC_GOOGLE_CLIENT_ID=""` to `apps/mobile/.env.example`
+- Added `GOOGLE_CLIENT_ID=""` and `APPLE_CLIENT_ID=""` to `apps/api/.env.example`
+
+## Files Modified
+
+```txt
+apps/mobile/.env.example
+apps/api/.env.example
+```
+
+## Commit
+
+```txt
+TASK-39.16 Add OAuth env vars to .env.example files
+```
