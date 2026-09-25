@@ -303,3 +303,35 @@ apps/mobile/src/i18n/resources/uk/profile.ts
 ```txt
 TASK-39.06 Mobile: account linking UI (connect OAuth in profile settings)
 ```
+
+---
+
+# TASK-39.07 Mobile: fix Google auth crash when EXPO_PUBLIC_GOOGLE_CLIENT_ID is not set
+
+## Status
+
+DONE
+
+## Context
+
+On web, `Google.useIdTokenAuthRequest` from `expo-auth-session` requires `webClientId` to be a
+non-empty string. Passing `undefined` (when `EXPO_PUBLIC_GOOGLE_CLIENT_ID` is missing) caused a
+runtime crash on the sign-in screen even before the button was pressed.
+
+## What Was Done
+
+- In `useGoogleAuth()`, fall back to the placeholder string `'unconfigured'` when
+  `env.googleClientId` is empty. The hook is always called with a valid string; the `isConfigured`
+  flag stays `false`, so the button remains hidden and `signIn()` throws before `promptAsync`.
+
+## Files Modified
+
+```txt
+apps/mobile/src/features/auth/services/google-auth.service.ts
+```
+
+## Commit
+
+```txt
+TASK-39.07 Mobile: fix Google auth crash when client ID env var is not set
+```

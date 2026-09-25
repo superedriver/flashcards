@@ -20,8 +20,9 @@ export function useGoogleAuth(): {
   signIn: () => Promise<GoogleAuthResult>
   isConfigured: boolean
 } {
+  const clientId = env.googleClientId || 'unconfigured'
   const [, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: env.googleClientId || undefined,
+    clientId,
     // On web the redirect URI is handled automatically by expo-auth-session
     ...(Platform.OS !== 'web' && {
       redirectUri: `flashcards://`,
