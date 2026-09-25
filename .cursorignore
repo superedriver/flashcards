@@ -1,0 +1,4 @@
+# Secrets — Cursor should not index these
+.env
+.env.*
+!.env.example

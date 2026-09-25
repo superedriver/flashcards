@@ -1,0 +1,4 @@
+# Secrets — Claude should not read these
+.env
+.env.*
+!.env.example
