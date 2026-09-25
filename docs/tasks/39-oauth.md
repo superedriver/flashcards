@@ -148,7 +148,36 @@ TASK-39.02 API: Apple Sign In — exchange identity token for user
 
 ## Status
 
-TODO
+DONE
+
+## Context
+
+A user who registered with email/password needs to be able to link Google or Apple to their
+account from profile settings. This avoids creating duplicate accounts.
+
+## What Was Done
+
+- Added `LinkOAuthAccountUseCase`: verifies the provider token, checks the `providerUid` is not
+  already linked to a different user, and creates an `OAuthAccount` for the current user.
+  If the `providerUid` is already linked to the same user, it is a no-op (idempotent).
+- Added `LinkOAuthAccountInput` GraphQL input (provider + token)
+- Added `linkOAuthAccount` mutation in `AuthResolver` — requires `GqlAuthGuard`
+- Registered `LinkOAuthAccountUseCase` in `AuthModule`
+
+## Files Modified
+
+```txt
+apps/api/src/modules/auth/application/use-cases/link-oauth-account.use-case.ts (new)
+apps/api/src/modules/auth/auth.module.ts
+apps/api/src/modules/auth/presentation/graphql/inputs/link-oauth-account.input.ts (new)
+apps/api/src/modules/auth/presentation/graphql/resolvers/auth.resolver.ts
+```
+
+## Commit
+
+```txt
+TASK-39.03 API: OAuth account linking (connect to existing email account)
+```
 
 ---
 

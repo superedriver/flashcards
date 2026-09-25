@@ -27,6 +27,7 @@ import { RegisterUserUseCase } from './application/use-cases/register-user.use-c
 import { LoginUseCase } from './application/use-cases/login.use-case';
 import { GoogleOAuthUseCase } from './application/use-cases/google-oauth.use-case';
 import { AppleOAuthUseCase } from './application/use-cases/apple-oauth.use-case';
+import { LinkOAuthAccountUseCase } from './application/use-cases/link-oauth-account.use-case';
 import { GetMeUseCase } from './application/use-cases/get-me.use-case';
 import { RefreshTokenUseCase } from './application/use-cases/refresh-token.use-case';
 import { LogoutUseCase } from './application/use-cases/logout.use-case';
@@ -96,6 +97,8 @@ import { OptionalGqlAuthGuard } from './presentation/graphql/guards/optional-gql
     RegisterUserUseCase,
     LoginUseCase,
     GoogleOAuthUseCase,
+    AppleOAuthUseCase,
+    LinkOAuthAccountUseCase,
     GetMeUseCase,
     RefreshTokenUseCase,
     LogoutUseCase,

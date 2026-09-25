@@ -5,6 +5,7 @@ import { ApplicationError, ErrorCodes } from '../../../../../common/errors';
 import { AppleOAuthUseCase } from '../../../application/use-cases/apple-oauth.use-case';
 import { GetMeUseCase } from '../../../application/use-cases/get-me.use-case';
 import { GoogleOAuthUseCase } from '../../../application/use-cases/google-oauth.use-case';
+import { LinkOAuthAccountUseCase } from '../../../application/use-cases/link-oauth-account.use-case';
 import { LoginUseCase } from '../../../application/use-cases/login.use-case';
 import { LogoutUseCase } from '../../../application/use-cases/logout.use-case';
 import { RefreshTokenUseCase } from '../../../application/use-cases/refresh-token.use-case';
@@ -17,6 +18,7 @@ import { CurrentUser } from '../decorators/current-user.decorator';
 import { GqlAuthGuard } from '../guards/gql-auth.guard';
 import { AppleOAuthInput } from '../inputs/apple-oauth.input';
 import { GoogleOAuthInput } from '../inputs/google-oauth.input';
+import { LinkOAuthAccountInput } from '../inputs/link-oauth-account.input';
 import { LoginInput } from '../inputs/login.input';
 import { LogoutInput } from '../inputs/logout.input';
 import { RefreshTokenInput } from '../inputs/refresh-token.input';
@@ -43,6 +45,7 @@ export class AuthResolver {
     private readonly loginUseCase: LoginUseCase,
     private readonly googleOAuthUseCase: GoogleOAuthUseCase,
     private readonly appleOAuthUseCase: AppleOAuthUseCase,
+    private readonly linkOAuthAccountUseCase: LinkOAuthAccountUseCase,
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
     private readonly logoutUseCase: LogoutUseCase,
     private readonly getMeUseCase: GetMeUseCase,
@@ -151,6 +154,30 @@ export class AuthResolver {
         role: result.user.role as UserRole,
       },
     };
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async linkOAuthAccount(
+    @Args('input') input: LinkOAuthAccountInput,
+    @CurrentUser() user: AuthUser,
+  ): Promise<boolean> {
+    const provider = input.provider as 'google' | 'apple';
+
+    if (provider !== 'google' && provider !== 'apple') {
+      throw new ApplicationError(
+        ErrorCodes.VALIDATION_ERROR,
+        'Unsupported provider. Use "google" or "apple".',
+      );
+    }
+
+    await this.linkOAuthAccountUseCase.execute({
+      userId: user.id,
+      provider,
+      token: input.token,
+    });
+
+    return true;
   }
 
   @Mutation(() => AuthPayloadType)
