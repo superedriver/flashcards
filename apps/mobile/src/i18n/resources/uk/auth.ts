@@ -16,11 +16,16 @@ export const authUk = {
   },
   signIn: {
     title: 'Увійти',
+    welcomeBack: 'З поверненням',
+    subtitle: 'Увійдіть, щоб продовжити навчання',
     submit: 'Увійти',
     submitting: 'Вхід...',
     failed: 'Не вдалося увійти. Перевірте електронну пошту та пароль.',
-    createAccount: 'Створити обліковий запис',
+    createAccount: 'Створити акаунт',
+    newHere: 'Вперше тут?',
     forgotPassword: 'Забули пароль?',
+    showPassword: 'Показати пароль',
+    hidePassword: 'Сховати пароль',
   },
   signUp: {
     title: 'Реєстрація',

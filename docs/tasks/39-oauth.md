@@ -375,5 +375,185 @@ apps/mobile/codegen.ts
 ## Commit
 
 ```txt
-TASK-39.08 Mobile: fix useMutation crash — unify Apollo Client imports
+TASK-39.08 Mobile: fix useMutation crash — import hooks from @apollo/client/react
+```
+
+---
+
+# TASK-39.09 Mobile: redesign sign-in screen
+
+## Status
+
+DONE
+
+## Context
+
+The sign-in screen looked like a generic app page — duplicated "Sign In" header, form aligned
+right, too much empty space, primary button styled as disabled grey.
+
+## What Was Done
+
+- Removed `PageTitle` from `sign-in.tsx`; form is vertically centered in viewport
+- Rewrote `SignInForm`: "Welcome back" heading + subtitle inside the form, password show/hide
+  toggle (👁/🙈), "Forgot password?" moved inline next to the Password label, primary blue
+  `#2563eb` Sign in button, "New here? Create account" footer link
+- Added i18n keys: `welcomeBack`, `subtitle`, `newHere`, `showPassword`, `hidePassword`,
+  `createAccount` (split from old combined string) in en and uk
+
+## Files Modified
+
+```txt
+apps/mobile/app/(auth)/sign-in.tsx
+apps/mobile/src/features/auth/components/sign-in-form.tsx
+apps/mobile/src/i18n/resources/en/auth.ts
+apps/mobile/src/i18n/resources/uk/auth.ts
+```
+
+## Commit
+
+```txt
+TASK-39.09 Mobile: redesign sign-in screen
+```
+
+---
+
+# TASK-39.10 Mobile: language switcher on all unauthenticated screens
+
+## Status
+
+DONE
+
+## Context
+
+Users needed to change the interface language before signing in, so auth screens show in the
+right language from the start.
+
+## What Was Done
+
+- Created `AuthLocaleSwitcher` component: `🌐 EN | UK` pill shown in the header `headerRight`
+  of all auth screens. Tapping a locale calls `setAppLocale` + `persistLocale` immediately.
+- Added `AuthLocaleSwitcher` to `(auth)/_layout.tsx` via `screenOptions.headerRight`
+- Fixed `bootstrap-locale.ts`: guest locale now respects the persisted locale (previously always
+  forced English). Fallback order: persisted → device locale → EN.
+
+## Files Modified
+
+```txt
+apps/mobile/app/(auth)/_layout.tsx
+apps/mobile/src/features/auth/components/auth-locale-switcher.tsx (new)
+apps/mobile/src/i18n/bootstrap-locale.ts
+```
+
+## Commit
+
+```txt
+TASK-39.10 Mobile: language switcher on all unauthenticated screens
+```
+
+---
+
+# TASK-39.11 Mobile: redesign sign-up screen
+
+## Status
+
+DONE
+
+## Context
+
+Sign-up screen was inconsistent with the redesigned sign-in — had a duplicated header, no
+centring, no show/hide password, and a plain combined "Already have an account? Sign in" string.
+
+## What Was Done
+
+- Removed `PageTitle` and `ErrorState` from `sign-up.tsx`; form vertically centered
+- Rewrote `SignUpForm`: "Create account" heading + subtitle, show/hide toggle on both Password
+  and Confirm password fields, compact password hint shown only when field is focused or has
+  an error, primary blue Sign up button, "Already have an account? Sign in" as footer link
+- Added i18n keys: `welcomeTitle`, `subtitle`, `hasAccount`, `signIn`, `showPassword`,
+  `hidePassword`, `showConfirmPassword`, `hideConfirmPassword` in en and uk
+
+## Files Modified
+
+```txt
+apps/mobile/app/(auth)/sign-up.tsx
+apps/mobile/src/features/auth/components/sign-up-form.tsx
+apps/mobile/src/i18n/resources/en/auth.ts
+apps/mobile/src/i18n/resources/uk/auth.ts
+```
+
+## Commit
+
+```txt
+TASK-39.11 Mobile: redesign sign-up screen
+```
+
+---
+
+# TASK-39.12 Mobile: move OAuth buttons above email form with or-divider
+
+## Status
+
+DONE
+
+## Context
+
+OAuth buttons (Google, Apple) were rendered below the email/password form. They should appear
+above it so users see the faster sign-in options first.
+
+## What Was Done
+
+- Created `OAuthButtons` component: unified Google + Apple outlined buttons with error display.
+  Replaces separate `GoogleLoginButton` / `AppleLoginButton` in the auth forms (those components
+  are kept for `LinkedAccountsCard`). Fixed bug: error was rendered as `{error ? null : null}`.
+- Created `OrDivider` component: horizontal rule with "or continue with email" label.
+- Updated `SignInForm` and `SignUpForm`: `OAuthButtons` + `OrDivider` above the fields,
+  old individual buttons removed from below.
+- Added `orContinueWith` i18n key in en and uk.
+
+## Files Modified
+
+```txt
+apps/mobile/src/features/auth/components/oauth-buttons.tsx (new)
+apps/mobile/src/features/auth/components/or-divider.tsx (new)
+apps/mobile/src/features/auth/components/sign-in-form.tsx
+apps/mobile/src/features/auth/components/sign-up-form.tsx
+apps/mobile/src/i18n/resources/en/auth.ts
+apps/mobile/src/i18n/resources/uk/auth.ts
+```
+
+## Commit
+
+```txt
+TASK-39.12 Mobile: move OAuth buttons above email form with or-divider
+```
+
+---
+
+# TASK-39.13 Add .claudeignore and .cursorignore to protect secrets
+
+## Status
+
+DONE
+
+## Context
+
+AI tools (Claude Code, Cursor) can read `.env` files which contain secrets. Need to explicitly
+block them from indexing or reading secret files.
+
+## What Was Done
+
+- Created `.claudeignore`: blocks `.env` and `.env.*` from Claude Code, allows `.env.example`
+- Created `.cursorignore`: same rules for Cursor
+
+## Files Modified
+
+```txt
+.claudeignore (new)
+.cursorignore (new)
+```
+
+## Commit
+
+```txt
+TASK-39.13 Add .claudeignore and .cursorignore to protect secrets
 ```

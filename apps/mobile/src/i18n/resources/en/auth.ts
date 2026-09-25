@@ -16,11 +16,16 @@ export const authEn = {
   },
   signIn: {
     title: 'Sign In',
-    submit: 'Sign In',
+    welcomeBack: 'Welcome back',
+    subtitle: 'Sign in to continue learning',
+    submit: 'Sign in',
     submitting: 'Signing in...',
     failed: 'Sign in failed. Check your email and password.',
-    createAccount: 'Create an account',
+    createAccount: 'Create account',
+    newHere: 'New here?',
     forgotPassword: 'Forgot password?',
+    showPassword: 'Show password',
+    hidePassword: 'Hide password',
   },
   signUp: {
     title: 'Sign Up',
