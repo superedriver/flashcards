@@ -24,7 +24,7 @@ Apple Sign In is required by App Store rules when any other social login is pres
 
 ## Epic Status
 
-TODO
+DONE
 
 ## Related Documents
 
@@ -269,4 +269,37 @@ TASK-39.05 Mobile: Apple Sign In button and flow (web + native)
 
 ## Status
 
-TODO
+DONE
+
+## Context
+
+A user who registered with email/password can link Google or Apple from their profile settings.
+This avoids the need to sign in with social accounts separately.
+
+## What Was Done
+
+- Created `LinkedAccountsCard` component: shows Link Google and/or Link Apple buttons in the
+  Account section of the profile. Uses the existing `useGoogleAuth()` hook and `signInWithApple()`
+  service to obtain provider tokens, then calls the `linkOAuthAccount` mutation.
+  - Google button hidden when `EXPO_PUBLIC_GOOGLE_CLIENT_ID` is not set
+  - Apple button hidden when not on iOS or Apple Sign In is unavailable
+  - The whole card returns `null` if neither provider is available
+  - Shows inline success message after linking; shows error on failure (cancellations are silent)
+- Added `linkedAccounts` i18n keys to `en/profile.ts` and `uk/profile.ts`
+- Imported and rendered `LinkedAccountsCard` in `profile-screen.tsx` inside the Account section,
+  before the Log out button
+
+## Files Modified
+
+```txt
+apps/mobile/src/features/auth/components/linked-accounts-card.tsx (new)
+apps/mobile/src/features/profile/screens/profile-screen.tsx
+apps/mobile/src/i18n/resources/en/profile.ts
+apps/mobile/src/i18n/resources/uk/profile.ts
+```
+
+## Commit
+
+```txt
+TASK-39.06 Mobile: account linking UI (connect OAuth in profile settings)
+```

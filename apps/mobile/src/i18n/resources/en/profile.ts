@@ -40,6 +40,15 @@ export const profileEn = {
   accountDeleted: 'Account deleted',
   deleteAccountError: "Couldn't delete your account. Please try again.",
   deletingAccount: 'Deleting...',
+  linkedAccounts: {
+    title: 'Linked accounts',
+    linkGoogle: 'Link Google account',
+    linkApple: 'Link Apple ID',
+    linking: 'Linking...',
+    googleLinked: 'Google account linked.',
+    appleLinked: 'Apple ID linked.',
+    linkFailed: 'Failed to link account. Please try again.',
+  },
   accountDeletion: {
     title: 'Account deletion',
     intro:

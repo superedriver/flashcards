@@ -41,6 +41,15 @@ export const profileUk = {
   accountDeleted: 'Акаунт видалено',
   deleteAccountError: 'Не вдалося видалити акаунт. Спробуйте ще раз.',
   deletingAccount: 'Видалення...',
+  linkedAccounts: {
+    title: 'Підключені акаунти',
+    linkGoogle: 'Підключити Google',
+    linkApple: 'Підключити Apple ID',
+    linking: 'Підключення...',
+    googleLinked: 'Google-акаунт підключено.',
+    appleLinked: 'Apple ID підключено.',
+    linkFailed: 'Не вдалося підключити акаунт. Спробуйте ще раз.',
+  },
   accountDeletion: {
     title: 'Видалення акаунта',
     intro: 'Щоб видалити акаунт Flashcards, потрібно увійти. Ця сторінка нічого не видаляє.',

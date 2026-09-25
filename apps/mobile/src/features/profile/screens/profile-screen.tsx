@@ -4,6 +4,7 @@ import { Pressable, View } from 'react-native'
 
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import { useLogout } from '@/features/auth/hooks/use-logout'
+import { LinkedAccountsCard } from '@/features/auth/components/linked-accounts-card'
 import { NotificationSettingsCard } from '@/features/notifications/components/notification-settings-card'
 import { ProfileCard } from '@/features/profile/components/profile-card'
 import { useDeleteAccount } from '@/features/profile/hooks/use-delete-account'
@@ -92,6 +93,7 @@ export function ProfileScreen() {
             <AppText accessibilityRole="header" style={{ fontSize: 18, fontWeight: '700' }}>
               {t('profile.account')}
             </AppText>
+            <LinkedAccountsCard />
             <Pressable accessibilityRole="button" onPress={() => void logout()}>
               <AppText style={{ color: '#667085', fontSize: 16, fontWeight: '600' }}>
                 {t('profile.logOut')}
