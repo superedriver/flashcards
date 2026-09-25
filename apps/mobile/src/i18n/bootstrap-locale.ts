@@ -1,12 +1,13 @@
-import { DEFAULT_LOCALE, type AppLocale } from './types'
-import { normalizeAppLocale, setAppLocale } from './init'
-import { persistLocale } from './locale-storage'
+import { type AppLocale } from './types'
+import { resolveDeviceLocale, setAppLocale } from './init'
+import { getPersistedLocale, persistLocale } from './locale-storage'
 
-/** Logged-out / guest UI is always English. */
 export async function applyGuestLocale(): Promise<AppLocale> {
-  await setAppLocale(DEFAULT_LOCALE)
-  await persistLocale(DEFAULT_LOCALE)
-  return DEFAULT_LOCALE
+  const persisted = await getPersistedLocale()
+  const locale = persisted ?? resolveDeviceLocale()
+  await setAppLocale(locale)
+  await persistLocale(locale)
+  return locale
 }
 
 export async function bootstrapLocale(): Promise<AppLocale> {
