@@ -955,3 +955,32 @@ pnpm-lock.yaml
 ```txt
 TASK-39.27 Upgrade react-native to 0.87.1
 ```
+
+---
+
+# TASK-39.28 Fix api tsconfig: revert module to commonjs after TS6 upgrade
+
+## Status
+
+DONE
+
+## Context
+
+TASK-39.20 changed `moduleResolution: node` to `node16` and `module` to `node16` to satisfy
+TS6 requirements. But `module: node16` tells TypeScript the files are ESM, which breaks
+NestJS packages (all CommonJS) — TS1479 errors on every `@nestjs/*` import.
+Fix: `module: commonjs` + `moduleResolution: bundler` — NestJS builds as CommonJS,
+bundler resolution handles the rest.
+
+## Files Modified
+
+```txt
+apps/api/tsconfig.json
+packages/srs/tsconfig.build.json
+```
+
+## Commit
+
+```txt
+TASK-39.28 Fix api tsconfig: revert module to commonjs after TS6 upgrade
+```
