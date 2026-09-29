@@ -735,7 +735,7 @@ TASK-39.19 Bump patch/minor dependencies across monorepo
 
 ---
 
-# TASK-39.20 Upgrade TypeScript to v7
+# TASK-39.20 Upgrade TypeScript to v6, fix tsconfig for TS6 strict mode
 
 ## Status
 
@@ -743,12 +743,15 @@ DONE
 
 ## Context
 
-TypeScript 7.0.2 removed `baseUrl` and `moduleResolution: node` (node10). Required fixes:
+TypeScript 6 deprecated `baseUrl` and `moduleResolution: node` (node10). Required fixes:
 
-- Remove `baseUrl` from all tsconfigs (TS7 no longer supports it)
+- Remove `baseUrl` from all tsconfigs (deprecated in TS6, removed in TS7)
 - Change `moduleResolution: node` → `node16` with matching `module: node16` in api and srs build
 - Remove monorepo `paths` aliases from `tsconfig.base.json` — api resolves `@flashcards/srs`
   from `dist/` via pnpm workspace symlink (build order already handles this)
+
+Note: TypeScript 7.0 was attempted but reverted — `typescript-eslint` 8.71 does not yet
+support TS 7.0 (tracked in typescript-eslint#10940). Will upgrade once support lands.
 
 ## Files Modified
 
@@ -759,12 +762,40 @@ apps/mobile/tsconfig.json
 packages/srs/tsconfig.build.json
 apps/api/package.json
 apps/mobile/package.json
-packages/srs/package.json (version bump)
 pnpm-lock.yaml
 ```
 
 ## Commit
 
 ```txt
-TASK-39.20 Upgrade TypeScript to v7
+TASK-39.20 Upgrade TypeScript to v6, fix tsconfig for TS6 strict mode
+```
+
+---
+
+# TASK-39.21 Upgrade zod to v4
+
+## Status
+
+DONE
+
+## Context
+
+zod 4 removed `invalid_type_error`/`errorMap` params — replaced with `error`. Also changed
+`z.coerce.number()` inference from `number` to `unknown` (ZodPipe input type). Fixed by
+switching `lessonSize` from `z.coerce.number` to `z.number` — react-hook-form already passes
+a number from the controlled input. Also updated `@hookform/resolvers` to latest for zod 4 compat.
+
+## Files Modified
+
+```txt
+apps/mobile/package.json
+apps/mobile/src/features/settings/validation/settings-form.schema.ts
+pnpm-lock.yaml
+```
+
+## Commit
+
+```txt
+TASK-39.21 Upgrade zod to v4
 ```

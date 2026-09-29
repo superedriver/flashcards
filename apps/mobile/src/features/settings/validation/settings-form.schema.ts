@@ -4,12 +4,10 @@ import { z } from 'zod'
 export function createSettingsFormSchema(t: TFunction) {
   return z.object({
     interfaceLocale: z.enum(['en', 'uk'], {
-      errorMap: () => ({ message: t('settings.validation.interfaceLocale') }),
+      error: t('settings.validation.interfaceLocale'),
     }),
-    lessonSize: z.coerce
-      .number({
-        invalid_type_error: t('settings.validation.lessonSizeNumber'),
-      })
+    lessonSize: z
+      .number({ error: t('settings.validation.lessonSizeNumber') })
       .int(t('settings.validation.lessonSizeWhole'))
       .min(5, t('settings.validation.lessonSizeMin'))
       .max(100, t('settings.validation.lessonSizeMax')),
