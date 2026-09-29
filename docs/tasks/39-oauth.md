@@ -902,3 +902,29 @@ pnpm-lock.yaml
 ```txt
 TASK-39.25 Upgrade expo-server-sdk to v7
 ```
+
+---
+
+# TASK-39.26 Upgrade @react-native-async-storage to v3
+
+## Status
+
+DONE
+
+## Context
+
+async-storage 3 — no breaking changes in existing usage (getItem/setItem/removeItem).
+Typecheck passes without errors.
+
+## Files Modified
+
+```txt
+apps/mobile/package.json
+pnpm-lock.yaml
+```
+
+## Commit
+
+```txt
+TASK-39.26 Upgrade @react-native-async-storage to v3
+```
