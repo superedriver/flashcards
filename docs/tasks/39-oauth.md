@@ -877,3 +877,28 @@ pnpm-lock.yaml
 ```txt
 TASK-39.24 Upgrade dotenv to v18
 ```
+
+---
+
+# TASK-39.25 Upgrade expo-server-sdk to v7
+
+## Status
+
+DONE
+
+## Context
+
+expo-server-sdk 7 — no breaking changes in api push notification code. Build passes without errors.
+
+## Files Modified
+
+```txt
+apps/api/package.json
+pnpm-lock.yaml
+```
+
+## Commit
+
+```txt
+TASK-39.25 Upgrade expo-server-sdk to v7
+```
