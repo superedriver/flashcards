@@ -48,7 +48,7 @@
     "csv-parse": "^7.0.3",
     "expo-server-sdk": "^6.1.0",
     "google-auth-library": "^11.1.0",
-    "graphql": "^16.14.2",
+    "graphql": "^17.0.2",
     "graphql-depth-limit": "^1.1.0",
     "pg": "^8.23.0",
     "reflect-metadata": "^0.2.2",

@@ -799,3 +799,30 @@ pnpm-lock.yaml
 ```txt
 TASK-39.21 Upgrade zod to v4
 ```
+
+---
+
+# TASK-39.22 Upgrade graphql to v17
+
+## Status
+
+DONE
+
+## Context
+
+graphql 17 — no breaking changes in the code, all existing usages in api and mobile
+compiled without errors after the upgrade.
+
+## Files Modified
+
+```txt
+apps/api/package.json
+apps/mobile/package.json
+pnpm-lock.yaml
+```
+
+## Commit
+
+```txt
+TASK-39.22 Upgrade graphql to v17
+```
