@@ -732,3 +732,39 @@ pnpm-lock.yaml
 ```txt
 TASK-39.19 Bump patch/minor dependencies across monorepo
 ```
+
+---
+
+# TASK-39.20 Upgrade TypeScript to v7
+
+## Status
+
+DONE
+
+## Context
+
+TypeScript 7.0.2 removed `baseUrl` and `moduleResolution: node` (node10). Required fixes:
+
+- Remove `baseUrl` from all tsconfigs (TS7 no longer supports it)
+- Change `moduleResolution: node` → `node16` with matching `module: node16` in api and srs build
+- Remove monorepo `paths` aliases from `tsconfig.base.json` — api resolves `@flashcards/srs`
+  from `dist/` via pnpm workspace symlink (build order already handles this)
+
+## Files Modified
+
+```txt
+tsconfig.base.json
+apps/api/tsconfig.json
+apps/mobile/tsconfig.json
+packages/srs/tsconfig.build.json
+apps/api/package.json
+apps/mobile/package.json
+packages/srs/package.json (version bump)
+pnpm-lock.yaml
+```
+
+## Commit
+
+```txt
+TASK-39.20 Upgrade TypeScript to v7
+```

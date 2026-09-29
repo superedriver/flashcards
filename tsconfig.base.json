@@ -11,13 +11,6 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "baseUrl": ".",
-    "paths": {
-      "@flashcards/shared": ["packages/shared/src/index.ts"],
-      "@flashcards/srs": ["packages/srs/src/index.ts"],
-      "@flashcards/validation": ["packages/validation/src/index.ts"],
-      "@flashcards/graphql": ["packages/graphql/src/index.ts"]
-    }
+    "noImplicitOverride": true
   }
 }
