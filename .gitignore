@@ -22,3 +22,8 @@ apps/*/dist/
 apps/*/build/
 apps/*/src/generated/
 packages/*/dist/
+
+apps/mobile/android/.gradle/
+apps/mobile/android/.kotlin/
+apps/mobile/android/app/build/
+apps/mobile/android/build/

@@ -617,3 +617,41 @@ apps/api/.env.example
 ```txt
 TASK-39.16 Add OAuth env vars to .env.example files
 ```
+
+---
+
+# TASK-39.17 Add android/ to repo, ignore build artifacts
+
+## Status
+
+TODO
+
+## Context
+
+`expo run:android` generates the `apps/mobile/android/` native project directory. Without it
+in the repo, every developer must regenerate it before building (requires Android SDK, ~5 min).
+EAS Build is not configured, so local builds need the native directory checked in.
+Build artifact directories (`.gradle/`, `.kotlin/`, `app/build/`, `build/`) must be gitignored
+to avoid committing generated files.
+
+## What To Do
+
+- Add `apps/mobile/android/` to the repo (do not gitignore the directory itself)
+- Add build artifact paths to `.gitignore`:
+  - `apps/mobile/android/.gradle/`
+  - `apps/mobile/android/.kotlin/`
+  - `apps/mobile/android/app/build/`
+  - `apps/mobile/android/build/`
+
+## Files Modified
+
+```txt
+.gitignore
+apps/mobile/android/ (new — tracked)
+```
+
+## Commit
+
+```txt
+TASK-39.17 Add android/ to repo, ignore build artifacts
+```
