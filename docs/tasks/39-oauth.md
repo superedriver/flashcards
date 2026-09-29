@@ -826,3 +826,29 @@ pnpm-lock.yaml
 ```txt
 TASK-39.22 Upgrade graphql to v17
 ```
+
+---
+
+# TASK-39.23 Upgrade vitest to v5
+
+## Status
+
+DONE
+
+## Context
+
+vitest 5 — no breaking changes in srs tests. All 53 tests pass after the upgrade.
+
+## Files Modified
+
+```txt
+package.json
+packages/srs/package.json
+pnpm-lock.yaml
+```
+
+## Commit
+
+```txt
+TASK-39.23 Upgrade vitest to v5
+```
