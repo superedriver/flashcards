@@ -928,3 +928,30 @@ pnpm-lock.yaml
 ```txt
 TASK-39.26 Upgrade @react-native-async-storage to v3
 ```
+
+---
+
+# TASK-39.27 Upgrade react-native to 0.87.1
+
+## Status
+
+DONE
+
+## Context
+
+react-native 0.87.1 — typecheck passes without errors. Peer dep warning from
+`react-native-worklets` (indirect dep of `react-native-reanimated`) is a known issue
+and does not affect the build.
+
+## Files Modified
+
+```txt
+apps/mobile/package.json
+pnpm-lock.yaml
+```
+
+## Commit
+
+```txt
+TASK-39.27 Upgrade react-native to 0.87.1
+```
