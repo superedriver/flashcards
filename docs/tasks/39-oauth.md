@@ -852,3 +852,28 @@ pnpm-lock.yaml
 ```txt
 TASK-39.23 Upgrade vitest to v5
 ```
+
+---
+
+# TASK-39.24 Upgrade dotenv to v18
+
+## Status
+
+DONE
+
+## Context
+
+dotenv 18 — no breaking changes in api. Build passes without errors.
+
+## Files Modified
+
+```txt
+apps/api/package.json
+pnpm-lock.yaml
+```
+
+## Commit
+
+```txt
+TASK-39.24 Upgrade dotenv to v18
+```
