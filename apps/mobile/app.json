@@ -13,6 +13,9 @@
       "expo-notifications",
       "expo-localization",
       "expo-apple-authentication"
-    ]
+    ],
+    "android": {
+      "package": "com.anonymous.flashcards"
+    }
   }
 }

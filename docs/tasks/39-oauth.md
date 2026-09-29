@@ -655,3 +655,36 @@ apps/mobile/android/ (new — tracked)
 ```txt
 TASK-39.17 Add android/ to repo, ignore build artifacts
 ```
+
+---
+
+# TASK-39.18 Mobile: upgrade packages and add nitro-google-signin
+
+## Status
+
+DONE
+
+## Context
+
+Switched from `expo start --android/ios` to `expo run:android/ios` for native builds.
+Added `react-native-nitro-google-signin` and `react-native-nitro-modules` for native Google
+Sign-In on Android (PKCE flow gives 400 on Android simulator without SHA-1 setup).
+Added `expo-dev-client` required for custom native modules in development builds.
+Bumped patch versions: `expo` 57.0.25→57.0.26, `expo-constants` 57.0.19→57.0.20,
+`expo-router` 57.0.23→57.0.24, `csv-parse` 7.0.0→7.0.3.
+Added `android.package` to `app.json` required for Android builds.
+
+## Files Modified
+
+```txt
+apps/mobile/package.json
+apps/mobile/app.json
+apps/api/package.json
+pnpm-lock.yaml
+```
+
+## Commit
+
+```txt
+TASK-39.18 Mobile: upgrade packages and add nitro-google-signin
+```

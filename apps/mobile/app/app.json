@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Flashcards",
+    "slug": "flashcards",
+    "scheme": "flashcards",
+    "android": {
+      "package": "com.superedriver.flashcards.dev"
+    }
+  }
+}
