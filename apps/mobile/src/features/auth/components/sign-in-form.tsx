@@ -180,10 +180,9 @@ export function SignInForm() {
 
       {/* Primary action */}
       <AppButton
-        backgroundColor="#2563eb"
+        style={{ backgroundColor: '#2563eb', opacity: isLoading ? 0.6 : 1 }}
         color="#ffffff"
         disabled={isLoading}
-        opacity={isLoading ? 0.6 : 1}
         onPress={() => void onSubmit()}
       >
         {isLoading ? t('auth.signIn.submitting') : t('auth.signIn.submit')}

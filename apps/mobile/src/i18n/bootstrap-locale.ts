@@ -1,5 +1,5 @@
 import { type AppLocale } from './types'
-import { resolveDeviceLocale, setAppLocale } from './init'
+import { normalizeAppLocale, resolveDeviceLocale, setAppLocale } from './init'
 import { getPersistedLocale, persistLocale } from './locale-storage'
 
 export async function applyGuestLocale(): Promise<AppLocale> {

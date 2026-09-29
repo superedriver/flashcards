@@ -688,3 +688,47 @@ pnpm-lock.yaml
 ```txt
 TASK-39.18 Mobile: upgrade packages and add nitro-google-signin
 ```
+
+---
+
+# TASK-39.19 Bump patch/minor dependencies across monorepo
+
+## Status
+
+DONE
+
+## Context
+
+Routine patch/minor version bumps across api and mobile. Fixed TypeScript errors that surfaced
+after `@types/react` 19.3.0 tightened prop types for Tamagui `Button` (moved `backgroundColor`
+to `style`), added missing `normalizeAppLocale` import in `bootstrap-locale.ts`, added
+`load-reanimated.d.ts` to silence TS2882 side-effect import error introduced by TypeScript 6.x.
+
+## What Was Done
+
+- Bumped patch/minor: `@nestjs/*` 12.1.0→12.1.1, `@prisma/client+adapter` 7.8→7.10,
+  `tsx` 4.23.0→4.23.15, `typescript-eslint` 8.61→8.71, `prettier` 3.8→3.9,
+  `react-native-reanimated` 4.5→4.7, `react-hook-form` 7.88→7.89, and others
+- Added `"ignoreDeprecations": "6.0"` to mobile `tsconfig.json` for `baseUrl` deprecation
+- Fixed missing import of `normalizeAppLocale` in `bootstrap-locale.ts`
+- Fixed `backgroundColor` prop on `AppButton` — moved to `style` prop (TypeScript 19.3.0 compat)
+- Added `load-reanimated.d.ts` to fix TS2882 side-effect import error
+
+## Files Modified
+
+```txt
+apps/api/package.json
+apps/mobile/package.json
+apps/mobile/tsconfig.json
+apps/mobile/src/i18n/bootstrap-locale.ts
+apps/mobile/src/features/auth/components/sign-in-form.tsx
+apps/mobile/src/features/auth/components/sign-up-form.tsx
+apps/mobile/src/providers/load-reanimated.d.ts (new)
+pnpm-lock.yaml
+```
+
+## Commit
+
+```txt
+TASK-39.19 Bump patch/minor dependencies across monorepo
+```
