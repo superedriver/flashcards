@@ -1044,3 +1044,33 @@ TASK-39.29 Fix mobile web bundling: downgrade RN to 0.86.3, align SDK 57 deps
 ```txt
 TASK-39.30 Wire react-native-nitro-google-signin for native Android/iOS
 ```
+
+---
+
+# TASK-39.31 Fix Android Google Sign-In: use Web client ID, add google-services.json to gitignore
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `.env`: changed `EXPO_PUBLIC_GOOGLE_CLIENT_ID` from Android client ID to Web client ID
+  (`328552196530-91vh...`) — Google Credential Manager requires the Web client ID in
+  `configure({ webClientId })`, not the Android client ID
+- `.gitignore`: added `apps/mobile/android/app/google-services.json` (was missing from
+  previous commit)
+- `google-auth.service.ts`: removed debug `console.log` statements
+- Firebase project `flashcards-dev` created; Google Authentication provider enabled
+- `google-services.json` downloaded and placed at `apps/mobile/android/app/google-services.json`
+  (not committed — gitignored; backup at `~/keys/flashcards-dev-google-services.json`)
+
+## Result
+
+Google Sign-In on Android now returns a valid `idToken`.
+
+## Commit
+
+```txt
+TASK-39.31 Fix Android Google Sign-In: use Web client ID, add google-services.json to gitignore
+```
