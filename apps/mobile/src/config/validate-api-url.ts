@@ -1,9 +1,15 @@
+import { Platform } from 'react-native'
+
 const LOCAL_DEV_FALLBACK = 'http://localhost:3000/graphql'
 
 export function resolveApiUrl(rawUrl: string | undefined, isDev: boolean): string {
-  const apiUrl = rawUrl?.trim()
+  let apiUrl = rawUrl?.trim()
 
   if (isDev) {
+    // Android emulator uses 10.0.2.2 to reach host, but web runs on the host directly
+    if (Platform.OS === 'web' && apiUrl?.includes('10.0.2.2')) {
+      apiUrl = apiUrl.replace('10.0.2.2', 'localhost')
+    }
     return apiUrl || LOCAL_DEV_FALLBACK
   }
 

@@ -1074,3 +1074,25 @@ Google Sign-In on Android now returns a valid `idToken`.
 ```txt
 TASK-39.31 Fix Android Google Sign-In: use Web client ID, add google-services.json to gitignore
 ```
+
+---
+
+# TASK-39.32 Fix web dev: replace 10.0.2.2 with localhost for web platform
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `validate-api-url.ts`: in dev mode, if platform is `web` and `EXPO_PUBLIC_API_URL` contains
+  `10.0.2.2` (Android emulator host), replace it with `localhost` automatically.
+  This allows a single `.env` value (`10.0.2.2`) to work for both Android emulator and web dev server.
+  The replacement is dev-only — production always requires `https://` via `validateApiUrl`.
+- Added `http://localhost:8081` to Authorized redirect URIs in Google Cloud Console Web client.
+
+## Commit
+
+```txt
+TASK-39.32 Fix web dev: replace 10.0.2.2 with localhost for web platform
+```
