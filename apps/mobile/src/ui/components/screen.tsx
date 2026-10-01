@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { ScrollView, View, useWindowDimensions, type ViewProps } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import {
   type ScreenVariant,
@@ -21,6 +22,7 @@ export function Screen({
   ...rest
 }: ScreenProps) {
   const { width } = useWindowDimensions()
+  const insets = useSafeAreaInsets()
   const padding = getScreenPadding(width)
   const contentContainerStyle = getScreenContentContainerStyle(width, variant)
   const content = <View style={[contentContainerStyle, { flex: 1 }]}>{children}</View>
@@ -28,7 +30,7 @@ export function Screen({
   if (scrollable) {
     return (
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, padding }}
+        contentContainerStyle={{ flexGrow: 1, padding, paddingTop: Math.max(padding, insets.top) }}
         style={[{ flex: 1 }, style]}
         {...rest}
       >
@@ -38,7 +40,10 @@ export function Screen({
   }
 
   return (
-    <View style={[{ flex: 1, padding }, style]} {...rest}>
+    <View
+      style={[{ flex: 1, padding, paddingTop: Math.max(padding, insets.top) }, style]}
+      {...rest}
+    >
       {content}
     </View>
   )

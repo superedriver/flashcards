@@ -43,3 +43,21 @@ docs/tasks/cursor-task-template.md
 ```
 
 ---
+
+# TASK-40.01 Fix Screen component: respect safe area insets on screens with hidden header
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `screen.tsx`: added `useSafeAreaInsets` from `react-native-safe-area-context`.
+  `paddingTop` is now `Math.max(padding, insets.top)` for both scrollable and non-scrollable variants.
+  Fixes title overlap with camera notch on screens where `headerShown: false` (e.g. onboarding).
+
+## Commit
+
+```txt
+TASK-40.01 Fix Screen component: respect safe area insets on screens with hidden header
+```
