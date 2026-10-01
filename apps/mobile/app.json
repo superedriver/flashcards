@@ -12,10 +12,16 @@
       "expo-secure-store",
       "expo-notifications",
       "expo-localization",
-      "expo-apple-authentication"
+      "expo-apple-authentication",
+      [
+        "react-native-nitro-google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.328552196530-i4gn6h9auldg5flt1mclutnt3v989pvv"
+        }
+      ]
     ],
     "android": {
-      "package": "com.anonymous.flashcards"
+      "package": "com.superedriver.flashcards.dev"
     }
   }
 }

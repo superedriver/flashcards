@@ -1019,3 +1019,28 @@ Metro starts cleanly, web bundles successfully at `http://localhost:8081`.
 ```txt
 TASK-39.29 Fix mobile web bundling: downgrade RN to 0.86.3, align SDK 57 deps
 ```
+
+# TASK-39.30 Wire react-native-nitro-google-signin for native Android/iOS
+
+## Changes
+
+- `google-auth.service.ts`: replaced `expo-auth-session` native path with
+  `GoogleOneTapSignIn.presentExplicitSignIn()` from `react-native-nitro-google-signin`.
+  Web platform still uses `expo-auth-session`. Both hooks called unconditionally
+  (Rules of Hooks), platform selected at return.
+- `app.json`: added `react-native-nitro-google-signin` plugin with `iosUrlScheme`
+  (reversed iOS OAuth client ID). Fixed Android package from `com.anonymous.flashcards`
+  to `com.superedriver.flashcards.dev`.
+- Ran `expo prebuild --platform android --clean` to apply new package name and plugin.
+  Old `com/anonymous/flashcards/` Java files replaced with `com/superedriver/flashcards/dev/`.
+
+## Google Console setup
+
+- Created iOS OAuth client: `com.superedriver.flashcards.dev`
+- Updated Android OAuth client SHA-1 to match `apps/mobile/android/app/debug.keystore`
+
+## Commit
+
+```txt
+TASK-39.30 Wire react-native-nitro-google-signin for native Android/iOS
+```

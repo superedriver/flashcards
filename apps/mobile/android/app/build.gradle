@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.anonymous.flashcards'
+    namespace 'com.superedriver.flashcards.dev'
     defaultConfig {
-        applicationId 'com.anonymous.flashcards'
+        applicationId 'com.superedriver.flashcards.dev'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

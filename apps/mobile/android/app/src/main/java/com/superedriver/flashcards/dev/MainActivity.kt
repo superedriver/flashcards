@@ -1,4 +1,4 @@
-package com.anonymous.flashcards
+package com.superedriver.flashcards.dev
 
 import android.os.Build
 import android.os.Bundle

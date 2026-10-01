@@ -1,6 +1,11 @@
 import * as Google from 'expo-auth-session/providers/google'
 import * as WebBrowser from 'expo-web-browser'
 import { Platform } from 'react-native'
+import {
+  GoogleOneTapSignIn,
+  isCancelledResponse,
+  isSuccessResponse,
+} from 'react-native-nitro-google-signin'
 import { env } from '@/config/env'
 
 WebBrowser.maybeCompleteAuthSession()
@@ -13,21 +18,41 @@ export type GoogleAuthService = {
   signIn(): Promise<GoogleAuthResult>
 }
 
-// Expo Go / web use the web client ID; native builds use the iOS/Android client ID.
-// For simplicity we use a single client ID for all platforms from env.
-// The API verifies the token with the same client ID.
-export function useGoogleAuth(): {
+function useGoogleAuthNative(): {
+  signIn: () => Promise<GoogleAuthResult>
+  isConfigured: boolean
+} {
+  const isConfigured = Boolean(env.googleClientId)
+
+  const signIn = async (): Promise<GoogleAuthResult> => {
+    if (!isConfigured) {
+      throw new Error('Google Sign In is not configured')
+    }
+
+    GoogleOneTapSignIn.configure({ webClientId: env.googleClientId })
+
+    const response = await GoogleOneTapSignIn.presentExplicitSignIn()
+
+    if (isCancelledResponse(response)) {
+      throw new Error('Google Sign In was cancelled')
+    }
+
+    if (isSuccessResponse(response) && response.data?.idToken) {
+      return { idToken: response.data.idToken }
+    }
+
+    throw new Error('Google Sign In failed')
+  }
+
+  return { signIn, isConfigured }
+}
+
+function useGoogleAuthWeb(): {
   signIn: () => Promise<GoogleAuthResult>
   isConfigured: boolean
 } {
   const clientId = env.googleClientId || 'unconfigured'
-  const [, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId,
-    // On web the redirect URI is handled automatically by expo-auth-session
-    ...(Platform.OS !== 'web' && {
-      redirectUri: `flashcards://`,
-    }),
-  })
+  const [, response, promptAsync] = Google.useIdTokenAuthRequest({ clientId })
 
   const isConfigured = Boolean(env.googleClientId)
 
@@ -49,10 +74,21 @@ export function useGoogleAuth(): {
     throw new Error('Google Sign In failed')
   }
 
-  // Keep reference to response for side-effects (handled by WebBrowser.maybeCompleteAuthSession)
   void response
 
   return { signIn, isConfigured }
+}
+
+export function useGoogleAuth(): {
+  signIn: () => Promise<GoogleAuthResult>
+  isConfigured: boolean
+} {
+  // Rules of Hooks: both hooks are always called unconditionally.
+  // Only the result from the correct platform is used.
+  const native = useGoogleAuthNative()
+  const web = useGoogleAuthWeb()
+
+  return Platform.OS === 'web' ? web : native
 }
 
 // Legacy placeholder kept for non-hook call sites
