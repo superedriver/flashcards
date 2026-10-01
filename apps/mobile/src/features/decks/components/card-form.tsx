@@ -307,7 +307,7 @@ export function CardForm({
             render={({ field: { onBlur, onChange, value } }) => (
               <AppInput
                 accessibilityLabel={t('decks.cardForm.frontLabel')}
-                placeholder={frontPlaceholder ?? t('decks.cardForm.front')}
+                placeholder={frontPlaceholder ?? (frontFlag ? '' : t('decks.cardForm.front'))}
                 value={value}
                 onBlur={onBlur}
                 onChangeText={(text) => {
@@ -390,7 +390,7 @@ export function CardForm({
             render={({ field: { onBlur, onChange, value } }) => (
               <AppInput
                 accessibilityLabel={t('decks.cardForm.backLabel')}
-                placeholder={backPlaceholder ?? t('decks.cardForm.back')}
+                placeholder={backPlaceholder ?? (backFlag ? '' : t('decks.cardForm.back'))}
                 value={value}
                 onBlur={onBlur}
                 onChangeText={(text) => {

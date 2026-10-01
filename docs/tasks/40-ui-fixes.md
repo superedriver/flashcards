@@ -89,3 +89,24 @@ DONE
 ```txt
 TASK-40.02 Card form: show language flags and localized field labels
 ```
+
+---
+
+# TASK-40.03 Card form: fix placeholder fallback for unknown languages, expand example words
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `card-form.tsx`: when flag is known but no example word exists, placeholder is now empty string
+  instead of falling back to "Лицьова сторона" / "Зворотна сторона"
+- `language-examples.ts`: replaced "house" examples with "water" across all languages;
+  expanded map to 58 languages (added African, Caucasian, Central Asian, Southeast Asian languages)
+
+## Commit
+
+```txt
+TASK-40.03 Card form: fix placeholder fallback for unknown languages, expand example words
+```
