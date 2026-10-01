@@ -984,3 +984,38 @@ packages/srs/tsconfig.build.json
 ```txt
 TASK-39.28 Fix api tsconfig: revert module to commonjs after TS6 upgrade
 ```
+
+# TASK-39.29 Fix mobile web bundling: downgrade RN to 0.86.3, align SDK 57 deps
+
+## Problem
+
+After upgrading react-native to 0.87.1 (TASK-39.27), mobile web bundling failed:
+
+1. `Cannot find module 'react-native-worklets/plugin'` — reanimated@4.7.0 requires
+   `worklets@0.13.x` which wasn't installed
+2. `Package subpath './rn-get-polyfills' is not defined` — react-native 0.87.1 removed
+   `rn-get-polyfills.js`, but @expo/cli@57.0.27 (SDK 57) still requires it
+
+SDK 57 officially supports react-native 0.86.x. React-native 0.87.x is only supported
+in Expo SDK 58 (currently `next`).
+
+## Solution
+
+- Downgraded `react-native` to `0.86.3` (official SDK 57 target)
+- Aligned all native deps to SDK 57 compatible versions via `expo install --check`:
+  - `react-native-reanimated`: `^4.7.0` → `4.5.1`
+  - `react-native-worklets`: `0.13.0` → `0.10.1`
+  - `@react-native-async-storage/async-storage`: `^3.1.1` → `^2.2.0`
+- Added `@react-native/metro-config: 0.86.3` pnpm override in root `package.json`
+- Added native-only module exclusions for web in `metro.config.js`
+  (`react-native-nitro-google-signin`, `react-native-nitro-modules` → `{ type: 'empty' }`)
+
+## Result
+
+Metro starts cleanly, web bundles successfully at `http://localhost:8081`.
+
+## Commit
+
+```txt
+TASK-39.29 Fix mobile web bundling: downgrade RN to 0.86.3, align SDK 57 deps
+```

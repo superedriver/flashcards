@@ -15,8 +15,14 @@ config.resolver.nodeModulesPaths = [
 
 const defaultResolveRequest = config.resolver.resolveRequest
 
+const NATIVE_ONLY_MODULES = ['react-native-nitro-google-signin', 'react-native-nitro-modules']
+
 config.resolver.resolveRequest = (context, moduleName, platform) => {
   if (platform === 'web') {
+    if (NATIVE_ONLY_MODULES.some((m) => moduleName === m || moduleName.startsWith(m + '/'))) {
+      return { type: 'empty' }
+    }
+
     if (defaultResolveRequest) {
       return defaultResolveRequest(context, moduleName, platform)
     }
