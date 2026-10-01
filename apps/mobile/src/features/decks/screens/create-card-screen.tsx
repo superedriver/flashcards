@@ -24,14 +24,36 @@ import {
   CardDuplicateKind,
   useCheckCardDuplicatesLazyQuery,
   useCreateCardMutation,
+  useDeckQuery,
+  useLanguagesQuery,
   type CheckCardDuplicateHit,
 } from '@/graphql/generated'
+import { getLanguageExample } from '@/features/decks/utils/language-examples'
 import { PageTitle, Screen } from '@/ui/components'
 
 export function CreateCardScreen() {
   const { t } = useTranslation()
   const router = useRouter()
   const { deckId } = useLocalSearchParams<{ deckId: string }>()
+
+  const { data: deckData } = useDeckQuery({ skip: !deckId, variables: { id: deckId ?? '' } })
+  const { data: languagesData } = useLanguagesQuery()
+
+  const flagByCode = new Map(languagesData?.languages.map((l) => [l.code, l.flag]) ?? [])
+
+  const targetCode = deckData?.deck?.targetLanguage ?? null
+  const sourceCode = deckData?.deck?.sourceLanguage ?? null
+  const frontFlag = targetCode ? (flagByCode.get(targetCode) ?? undefined) : undefined
+  const backFlag = sourceCode ? (flagByCode.get(sourceCode) ?? undefined) : undefined
+
+  const frontExample = targetCode ? getLanguageExample(targetCode) : null
+  const backExample = sourceCode ? getLanguageExample(sourceCode) : null
+  const frontPlaceholder = frontExample
+    ? t('decks.cardForm.frontPlaceholderWithExample', { example: frontExample })
+    : undefined
+  const backPlaceholder = backExample
+    ? t('decks.cardForm.backPlaceholderWithExample', { example: backExample })
+    : undefined
   const bulkQueue = useBulkCardQueue()
   const bulkFillKeyRef = useRef(0)
   const [checkCardDuplicates, { loading: isCheckingDuplicates }] = useCheckCardDuplicatesLazyQuery({
@@ -94,9 +116,13 @@ export function CreateCardScreen() {
           }
         />
         <CardForm
+          backFlag={backFlag}
+          backPlaceholder={backPlaceholder}
           bulkFill={bulkFill}
           bulkFrontMessages={bulkFrontMessages}
           errorMessage={errorMessage}
+          frontFlag={frontFlag}
+          frontPlaceholder={frontPlaceholder}
           isSubmitting={loading || isCheckingDuplicates}
           resetOnSuccess
           showSkip={bulkQueue.length > 0}

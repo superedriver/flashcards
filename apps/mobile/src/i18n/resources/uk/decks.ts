@@ -169,6 +169,10 @@ export const decksUk = {
   cardForm: {
     front: 'Лицьова сторона',
     back: 'Зворотна сторона',
+    frontLabel: 'Слово / фраза',
+    backLabel: 'Переклад',
+    frontPlaceholderWithExample: 'Наприклад: {{example}}',
+    backPlaceholderWithExample: 'Наприклад: {{example}}',
     example: 'Приклад',
     exampleOptional: 'Приклад (необовʼязково)',
     notes: 'Нотатки',

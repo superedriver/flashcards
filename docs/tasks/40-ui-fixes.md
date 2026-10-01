@@ -61,3 +61,31 @@ DONE
 ```txt
 TASK-40.01 Fix Screen component: respect safe area insets on screens with hidden header
 ```
+
+---
+
+# TASK-40.02 Card form: show language flags and localized field labels
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `field-label.tsx`: added optional `flag` prop — renders flag emoji next to label text
+- `card-form.tsx`: replaced hardcoded `front`/`back` i18n keys with `frontFlag`/`backFlag` props
+  and `frontPlaceholder`/`backPlaceholder` props; labels use new `frontLabel`/`backLabel` i18n keys
+- `language-examples.ts`: new static map of language code → example word (30 languages)
+- `create-card-screen.tsx` and `edit-card-screen.tsx`: load deck languages via `useDeckQuery` and
+  flags via `useLanguagesQuery`; compute `frontFlag`, `backFlag`, `frontPlaceholder`, `backPlaceholder`
+  and pass to `CardForm`
+- i18n `uk` and `en`: added `frontLabel`, `backLabel`, `frontPlaceholderWithExample`,
+  `backPlaceholderWithExample` keys
+- `apollo-client.ts`: added `typePolicies` for `MyAccount` and `UserSettings` (keyFields: []) to fix
+  Apollo cache merge warning for singleton types without `id`
+
+## Commit
+
+```txt
+TASK-40.02 Card form: show language flags and localized field labels
+```

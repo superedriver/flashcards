@@ -1,0 +1,36 @@
+const EXAMPLES: Record<string, string> = {
+  es: 'casa',
+  en: 'house',
+  uk: 'дім',
+  de: 'Haus',
+  fr: 'maison',
+  it: 'casa',
+  pt: 'casa',
+  pl: 'dom',
+  nl: 'huis',
+  ru: 'дом',
+  ja: '家',
+  zh: '家',
+  ko: '집',
+  ar: 'بيت',
+  tr: 'ev',
+  sv: 'hus',
+  da: 'hus',
+  no: 'hus',
+  fi: 'talo',
+  cs: 'dům',
+  sk: 'dom',
+  hu: 'ház',
+  ro: 'casă',
+  bg: 'дом',
+  hr: 'kuća',
+  he: 'בית',
+  hi: 'घर',
+  id: 'rumah',
+  vi: 'nhà',
+  th: 'บ้าน',
+}
+
+export function getLanguageExample(code: string): string | null {
+  return EXAMPLES[code] ?? null
+}

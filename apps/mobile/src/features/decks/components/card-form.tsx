@@ -29,12 +29,16 @@ export type FrontPasteDirtyFields = {
 }
 
 type CardFormProps = {
+  backFlag?: string
+  backPlaceholder?: string
   bulkFill?: { back: string; front: string; key: number } | null
   bulkFrontMessages?: string[] | null
   cancelLabel?: string
   cardId?: string
   defaultValues?: CardFormValues
   errorMessage?: string | null
+  frontFlag?: string
+  frontPlaceholder?: string
   isSubmitting?: boolean
   onCancel?: () => void
   onClearError?: () => void
@@ -57,12 +61,16 @@ type CardFormProps = {
 }
 
 export function CardForm({
+  backFlag,
+  backPlaceholder,
   bulkFill,
   bulkFrontMessages,
   cancelLabel,
   cardId,
   defaultValues,
   errorMessage,
+  frontFlag,
+  frontPlaceholder,
   isSubmitting = false,
   onCancel,
   onClearError,
@@ -292,14 +300,14 @@ export function CardForm({
         }}
       >
         <View>
-          <FieldLabel>{t('decks.cardForm.front')}</FieldLabel>
+          <FieldLabel flag={frontFlag}>{t('decks.cardForm.frontLabel')}</FieldLabel>
           <Controller
             control={control}
             name="front"
             render={({ field: { onBlur, onChange, value } }) => (
               <AppInput
-                accessibilityLabel={t('decks.cardForm.front')}
-                placeholder={t('decks.cardForm.front')}
+                accessibilityLabel={t('decks.cardForm.frontLabel')}
+                placeholder={frontPlaceholder ?? t('decks.cardForm.front')}
                 value={value}
                 onBlur={onBlur}
                 onChangeText={(text) => {
@@ -375,14 +383,14 @@ export function CardForm({
         </View>
 
         <View>
-          <FieldLabel>{t('decks.cardForm.back')}</FieldLabel>
+          <FieldLabel flag={backFlag}>{t('decks.cardForm.backLabel')}</FieldLabel>
           <Controller
             control={control}
             name="back"
             render={({ field: { onBlur, onChange, value } }) => (
               <AppInput
-                accessibilityLabel={t('decks.cardForm.back')}
-                placeholder={t('decks.cardForm.back')}
+                accessibilityLabel={t('decks.cardForm.backLabel')}
+                placeholder={backPlaceholder ?? t('decks.cardForm.back')}
                 value={value}
                 onBlur={onBlur}
                 onChangeText={(text) => {

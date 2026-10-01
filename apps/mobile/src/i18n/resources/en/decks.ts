@@ -168,6 +168,10 @@ export const decksEn = {
   cardForm: {
     front: 'Front',
     back: 'Back',
+    frontLabel: 'Word / phrase',
+    backLabel: 'Translation',
+    frontPlaceholderWithExample: 'For example: {{example}}',
+    backPlaceholderWithExample: 'For example: {{example}}',
     example: 'Example',
     exampleOptional: 'Example (optional)',
     notes: 'Notes',

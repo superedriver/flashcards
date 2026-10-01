@@ -13,6 +13,12 @@ const httpLink = new HttpLink({
 })
 
 export const apolloClient = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      // MyAccount has no id — it is always the current user's account
+      MyAccount: { keyFields: [] },
+      UserSettings: { keyFields: [] },
+    },
+  }),
   link: ApolloLink.from([authErrorLink, authLink, httpLink]),
 })
