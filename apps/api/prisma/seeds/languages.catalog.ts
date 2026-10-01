@@ -156,7 +156,7 @@ export const LANGUAGE_CATALOG: LanguageCatalogEntry[] = [
     englishName: 'English',
     nativeName: 'English',
     flag: '🇬🇧',
-    popularSortOrder: 1,
+    popularSortOrder: 2,
   },
   {
     code: 'eo',
@@ -191,7 +191,7 @@ export const LANGUAGE_CATALOG: LanguageCatalogEntry[] = [
     englishName: 'French',
     nativeName: 'Français',
     flag: '🇫🇷',
-    popularSortOrder: 3,
+    popularSortOrder: 4,
   },
   {
     code: 'fy',
@@ -219,7 +219,7 @@ export const LANGUAGE_CATALOG: LanguageCatalogEntry[] = [
     englishName: 'German',
     nativeName: 'Deutsch',
     flag: '🇩🇪',
-    popularSortOrder: 4,
+    popularSortOrder: 5,
   },
   {
     code: 'el',
@@ -317,7 +317,7 @@ export const LANGUAGE_CATALOG: LanguageCatalogEntry[] = [
     englishName: 'Italian',
     nativeName: 'Italiano',
     flag: '🇮🇹',
-    popularSortOrder: 6,
+    popularSortOrder: 7,
   },
   {
     code: 'ja',
@@ -527,7 +527,7 @@ export const LANGUAGE_CATALOG: LanguageCatalogEntry[] = [
     englishName: 'Portuguese',
     nativeName: 'Português',
     flag: '🇵🇹',
-    popularSortOrder: 5,
+    popularSortOrder: 6,
   },
   {
     code: 'pa',
@@ -625,7 +625,7 @@ export const LANGUAGE_CATALOG: LanguageCatalogEntry[] = [
     englishName: 'Spanish',
     nativeName: 'Español',
     flag: '🇪🇸',
-    popularSortOrder: 2,
+    popularSortOrder: 3,
   },
   {
     code: 'su',
@@ -702,7 +702,7 @@ export const LANGUAGE_CATALOG: LanguageCatalogEntry[] = [
     englishName: 'Ukrainian',
     nativeName: 'Українська',
     flag: '🇺🇦',
-    popularSortOrder: null,
+    popularSortOrder: 1,
   },
   {
     code: 'ur',

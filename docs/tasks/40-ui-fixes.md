@@ -110,3 +110,23 @@ DONE
 ```txt
 TASK-40.03 Card form: fix placeholder fallback for unknown languages, expand example words
 ```
+
+---
+
+# TASK-40.04 Languages: put Ukrainian first in all language lists
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `languages.catalog.ts`: set `popularSortOrder: 1` for Ukrainian (was `null`);
+  shifted English 1→2, Spanish 2→3, French 3→4, German 4→5, Portuguese 5→6, Italian 6→7
+- Re-ran `db:seed` to apply changes to the database
+
+## Commit
+
+```txt
+TASK-40.04 Languages: put Ukrainian first in all language lists
+```
