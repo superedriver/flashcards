@@ -22,6 +22,9 @@
     ],
     "android": {
       "package": "com.superedriver.flashcards.dev"
+    },
+    "ios": {
+      "bundleIdentifier": "com.superedriver.flashcards.dev"
     }
   }
 }
