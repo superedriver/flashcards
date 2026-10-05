@@ -19,3 +19,19 @@ services:
     buildCommand: pnpm install --frozen-lockfile && pnpm --filter @flashcards/api db:generate && pnpm --filter @flashcards/api build
     startCommand: pnpm --filter @flashcards/api db:migrate:deploy && pnpm --filter @flashcards/api start:prod
     healthCheckPath: /health
+
+envVars:
+  - key: NODE_ENV
+    value: production
+
+  - key: DATABASE_URL
+    sync: false
+
+  - key: JWT_ACCESS_SECRET
+    generateValue: true
+
+  - key: JWT_REFRESH_SECRET
+    generateValue: true
+
+  - key: INTERNAL_JOB_SECRET
+    generateValue: true
