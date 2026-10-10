@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react'
-import { Platform, TextInput as RNTextInput } from 'react-native'
+import { Platform } from 'react-native'
 import { Input } from 'tamagui'
 
 type AppInputProps = ComponentProps<typeof Input> & {
@@ -10,48 +10,20 @@ type AppInputProps = ComponentProps<typeof Input> & {
   }) => void
 }
 
-const webPasswordInputStyle = {
-  backgroundColor: 'hsla(0, 0%, 95%, 1)',
-  borderColor: 'hsla(0, 0%, 91%, 1)',
-  borderRadius: 8,
-  borderWidth: 1,
-  color: 'hsla(0, 0%, 9%, 1)',
-  fontSize: 16,
-  lineHeight: 22,
-  minHeight: 44,
-  paddingHorizontal: 12,
-  paddingVertical: 10,
-  placeholderTextColor: 'hsla(0, 0%, 56%, 1)',
-  width: '100%',
-} as const
-
 export function AppInput({
-  accessibilityHint,
+  accessibilityHint: _accessibilityHint,
   accessibilityLabel,
   accessibilityRole = 'text',
   secureTextEntry,
   style,
   ...props
 }: AppInputProps) {
-  if (Platform.OS === 'web' && secureTextEntry) {
-    const { placeholderTextColor, ...layoutStyle } = webPasswordInputStyle
-
-    return (
-      <RNTextInput
-        accessibilityRole={accessibilityRole}
-        placeholderTextColor={placeholderTextColor}
-        secureTextEntry
-        style={[layoutStyle, style as ComponentProps<typeof RNTextInput>['style']]}
-        {...(props as ComponentProps<typeof RNTextInput>)}
-      />
-    )
-  }
-
   if (Platform.OS === 'web') {
     return (
       <Input
         aria-label={accessibilityLabel}
-        secureTextEntry={secureTextEntry}
+        // @ts-expect-error — web-only HTML attribute for password masking
+        type={secureTextEntry ? 'password' : undefined}
         style={style}
         {...props}
       />

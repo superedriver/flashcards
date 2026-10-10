@@ -208,3 +208,23 @@ DONE
 ```txt
 TASK-40.08 Fix API build: move prisma and @nestjs/cli to dependencies
 ```
+
+---
+
+# TASK-40.09 Fix password input on web: use Tamagui Input with type="password"
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `app-input.tsx`: removed the `RNTextInput` fallback for `secureTextEntry` on web — it rendered without
+  Tamagui styles (no border, wrong width). Replaced with Tamagui `Input` and `type="password"` HTML
+  attribute so the password field looks identical to the email field on web.
+
+## Commit
+
+```txt
+TASK-40.09 Fix password input on web: use Tamagui Input with type="password"
+```
