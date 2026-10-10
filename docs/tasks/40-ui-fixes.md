@@ -189,3 +189,22 @@ DONE
 ```txt
 TASK-40.07 Fix API build: use pnpm exec for prisma and nest commands
 ```
+
+---
+
+# TASK-40.08 Fix API build: move prisma and @nestjs/cli to dependencies
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `apps/api/package.json`: moved `prisma` and `@nestjs/cli` from `devDependencies` to `dependencies`
+  so they are available on Render where devDependencies are skipped in production builds
+
+## Commit
+
+```txt
+TASK-40.08 Fix API build: move prisma and @nestjs/cli to dependencies
+```
