@@ -130,3 +130,22 @@ DONE
 ```txt
 TASK-40.04 Languages: put Ukrainian first in all language lists
 ```
+
+---
+
+# TASK-40.05 Fix prepare script: skip husky in production
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `package.json`: changed `prepare` script to skip husky when `NODE_ENV=production`,
+  fixes build failure on Render where devDependencies are not installed
+
+## Commit
+
+```txt
+TASK-40.05 Fix prepare script: skip husky in production
+```
