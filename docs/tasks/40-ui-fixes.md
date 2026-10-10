@@ -149,3 +149,23 @@ DONE
 ```txt
 TASK-40.05 Fix prepare script: skip husky in production
 ```
+
+---
+
+# TASK-40.06 Remove ios/ from git tracking
+
+## Status
+
+DONE
+
+## What Was Done
+
+- Added `apps/mobile/ios/` to `.gitignore`
+- Removed `ios/` from git tracking via `git rm --cached`
+- Folder stays on disk locally, regenerated via `expo prebuild` when needed
+
+## Commit
+
+```txt
+TASK-40.06 Remove ios/ from git tracking
+```
