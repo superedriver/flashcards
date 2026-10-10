@@ -169,3 +169,23 @@ DONE
 ```txt
 TASK-40.06 Remove ios/ from git tracking
 ```
+
+---
+
+# TASK-40.07 Fix API build: use pnpm exec for prisma and nest commands
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `apps/api/package.json`: replaced direct `prisma` and `nest` calls with `pnpm exec prisma` / `pnpm exec nest`
+  in `build`, `db:generate`, `db:validate`, `db:migrate:deploy` scripts —
+  fixes "prisma: not found" on Render where devDependencies are not on PATH
+
+## Commit
+
+```txt
+TASK-40.07 Fix API build: use pnpm exec for prisma and nest commands
+```
