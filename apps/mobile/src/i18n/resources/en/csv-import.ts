@@ -34,8 +34,8 @@ export const csvImportEn = {
   preview: {
     rowValid: 'Row {{number}} (valid)',
     rowInvalid: 'Row {{number}} (invalid)',
-    front: 'Front: {{value}}',
-    back: 'Back: {{value}}',
+    front: 'Word: {{value}}',
+    back: 'Translation: {{value}}',
     example: 'Example: {{value}}',
     notes: 'Notes: {{value}}',
     missing: '—',

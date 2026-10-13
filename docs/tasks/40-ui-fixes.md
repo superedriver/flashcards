@@ -228,3 +228,24 @@ DONE
 ```txt
 TASK-40.09 Fix password input on web: use Tamagui Input with type="password"
 ```
+
+---
+
+# TASK-40.10 Replace "Лицьова/Зворотна сторона" with "Слово/Переклад" in i18n
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `uk/decks.ts`: replaced `front`/`back` placeholder keys and `frontRequired`/`frontTooLong`/`backRequired`/`backTooLong` validation messages — "Лицьова сторона" → "Слово / фраза", "Зворотна сторона" → "Переклад"
+- `en/decks.ts`: same replacements in English — "Front" → "Word / phrase", "Back" → "Translation", validation messages updated accordingly
+- `uk/csv-import.ts`: `front`/`back` preview keys updated — "Лицьова сторона: {{value}}" → "Слово: {{value}}", "Зворотна сторона: {{value}}" → "Переклад: {{value}}"
+- `en/csv-import.ts`: same in English
+
+## Commit
+
+```txt
+TASK-40.10 Replace front/back labels with Word/Translation in i18n
+```

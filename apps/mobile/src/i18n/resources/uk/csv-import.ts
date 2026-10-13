@@ -38,8 +38,8 @@ export const csvImportUk = {
   preview: {
     rowValid: 'Рядок {{number}} (валідний)',
     rowInvalid: 'Рядок {{number}} (невалідний)',
-    front: 'Лицьова сторона: {{value}}',
-    back: 'Зворотна сторона: {{value}}',
+    front: 'Слово: {{value}}',
+    back: 'Переклад: {{value}}',
     example: 'Приклад: {{value}}',
     notes: 'Нотатки: {{value}}',
     missing: '—',
