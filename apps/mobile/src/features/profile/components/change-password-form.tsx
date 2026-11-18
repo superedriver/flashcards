@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'expo-router'
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
@@ -33,6 +33,13 @@ export function ChangePasswordForm() {
   const [newPasswordValue, setNewPasswordValue] = useState('')
   const [confirmValue, setConfirmValue] = useState('')
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
+
+  useEffect(() => {
+    if (!success) return
+    const timer = setTimeout(() => router.back(), 2000)
+    return () => clearTimeout(timer)
+  }, [success, router])
 
   const {
     control,
@@ -66,7 +73,7 @@ export function ChangePasswordForm() {
       })
 
       if (result.data?.changePassword) {
-        router.back()
+        setSuccess(true)
       } else {
         setSubmitError(t('profile.changePassword.wrongCurrentPassword'))
       }
@@ -80,6 +87,16 @@ export function ChangePasswordForm() {
   const showChecklist = newPasswordFocused || newPasswordValue.length > 0
   const allRulesMet = passwordMeetsAllRules(newPasswordValue)
   const passwordsMatch = newPasswordValue === confirmValue && confirmValue.length > 0
+
+  if (success) {
+    return (
+      <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center', padding: 24 }}>
+        <AppText style={{ color: '#16a34a', fontSize: 16, fontWeight: '600', textAlign: 'center' }}>
+          {t('profile.changePassword.success')}
+        </AppText>
+      </View>
+    )
+  }
 
   return (
     <View style={{ gap: 24 }}>

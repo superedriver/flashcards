@@ -731,3 +731,29 @@ pnpm lint
 ```txt
 TASK-41.06 Frontend: show password-match indicator under confirm-password field
 ```
+
+---
+
+# TASK-41.07 Frontend: show success message after password change
+
+## Status
+
+DONE
+
+## Context
+
+After a successful password change the form just navigated back silently. The user had no feedback that the action succeeded.
+
+## Goal
+
+After `changePassword` mutation returns `true`, show a green success message in place of the form for 2 seconds, then call `router.back()`.
+
+## Changes
+
+- `apps/mobile/src/features/profile/components/change-password-form.tsx` — add `success` state; render success view when true; `useEffect` navigates back after 2000ms
+
+## Expected Commit Message
+
+```txt
+TASK-41.07 Frontend: show success message after password change
+```
