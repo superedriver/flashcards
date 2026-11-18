@@ -55,6 +55,7 @@ function createUseCase(options?: {
       findById: jest.fn(),
       findByEmail,
       create,
+      createOAuthUser: jest.fn(),
       markEmailVerified: jest.fn(),
       updatePasswordHash: jest.fn(),
       deleteById: jest.fn(),
@@ -98,7 +99,7 @@ describe('RegisterUserUseCase', () => {
 
     await useCase.execute({
       email: '  Test@Example.COM  ',
-      password: 'password123',
+      password: 'Password123',
     });
 
     expect(findByEmail).toHaveBeenCalledWith('test@example.com');
@@ -143,6 +144,30 @@ describe('RegisterUserUseCase', () => {
     });
   });
 
+  it('rejects password without uppercase letter with VALIDATION_ERROR', async () => {
+    const { useCase } = createUseCase();
+
+    await expect(
+      useCase.execute({ email: 'test@example.com', password: 'password1' }),
+    ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
+  });
+
+  it('rejects password without lowercase letter with VALIDATION_ERROR', async () => {
+    const { useCase } = createUseCase();
+
+    await expect(
+      useCase.execute({ email: 'test@example.com', password: 'PASSWORD1' }),
+    ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
+  });
+
+  it('rejects password without digit with VALIDATION_ERROR', async () => {
+    const { useCase } = createUseCase();
+
+    await expect(
+      useCase.execute({ email: 'test@example.com', password: 'Password' }),
+    ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
+  });
+
   it('rejects existing email with USER_ALREADY_EXISTS', async () => {
     const { useCase, create } = createUseCase({ existingUser: true });
 
@@ -177,7 +202,7 @@ describe('RegisterUserUseCase', () => {
 
     const result = await useCase.execute({
       email: 'test@example.com',
-      password: 'password123',
+      password: 'Password123',
     });
 
     expect(hashToken).toHaveBeenCalledWith('raw-refresh-token');
@@ -211,7 +236,7 @@ describe('RegisterUserUseCase', () => {
 
     const result = await useCase.execute({
       email: 'test@example.com',
-      password: 'password123',
+      password: 'Password123',
     });
 
     expect(createEmailVerificationToken).toHaveBeenCalledWith({

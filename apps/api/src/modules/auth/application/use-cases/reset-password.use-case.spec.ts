@@ -34,6 +34,7 @@ function createUseCase(options?: { resetToken?: typeof resetToken | null }) {
       findById: jest.fn(),
       findByEmail: jest.fn(),
       create: jest.fn(),
+      createOAuthUser: jest.fn(),
       markEmailVerified: jest.fn(),
       updatePasswordHash,
       deleteById: jest.fn(),
@@ -78,12 +79,36 @@ describe('ResetPasswordUseCase', () => {
     ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
   });
 
+  it('rejects password without uppercase letter with VALIDATION_ERROR', async () => {
+    const { useCase } = createUseCase();
+
+    await expect(
+      useCase.execute({ token: 'raw-reset-token', newPassword: 'password1' }),
+    ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
+  });
+
+  it('rejects password without lowercase letter with VALIDATION_ERROR', async () => {
+    const { useCase } = createUseCase();
+
+    await expect(
+      useCase.execute({ token: 'raw-reset-token', newPassword: 'PASSWORD1' }),
+    ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
+  });
+
+  it('rejects password without digit with VALIDATION_ERROR', async () => {
+    const { useCase } = createUseCase();
+
+    await expect(
+      useCase.execute({ token: 'raw-reset-token', newPassword: 'Password' }),
+    ).rejects.toMatchObject({ code: ErrorCodes.VALIDATION_ERROR });
+  });
+
   it('hashes raw reset token before lookup', async () => {
     const { useCase, hashToken, findValidByHash } = createUseCase();
 
     await useCase.execute({
       token: 'raw-reset-token',
-      newPassword: 'newpassword123',
+      newPassword: 'Newpassword1',
     });
 
     expect(hashToken).toHaveBeenCalledWith('raw-reset-token');
@@ -109,7 +134,7 @@ describe('ResetPasswordUseCase', () => {
 
     const result = await useCase.execute({
       token: 'raw-reset-token',
-      newPassword: 'newpassword123',
+      newPassword: 'Newpassword1',
     });
 
     expect(hashPassword).toHaveBeenCalledWith('newpassword123');

@@ -45,6 +45,9 @@ export type RegisterUserResult = {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_MIN_LENGTH = 8;
 const PASSWORD_MAX_LENGTH = 128;
+const PASSWORD_UPPERCASE_REGEX = /[A-Z]/;
+const PASSWORD_LOWERCASE_REGEX = /[a-z]/;
+const PASSWORD_DIGIT_REGEX = /[0-9]/;
 const REFRESH_TOKEN_EXPIRY_DAYS = 30;
 
 @Injectable()
@@ -86,6 +89,27 @@ export class RegisterUserUseCase {
       throw new ApplicationError(
         ErrorCodes.VALIDATION_ERROR,
         'Password must be between 8 and 128 characters',
+      );
+    }
+
+    if (!PASSWORD_UPPERCASE_REGEX.test(input.password)) {
+      throw new ApplicationError(
+        ErrorCodes.VALIDATION_ERROR,
+        'Password must contain at least one uppercase letter',
+      );
+    }
+
+    if (!PASSWORD_LOWERCASE_REGEX.test(input.password)) {
+      throw new ApplicationError(
+        ErrorCodes.VALIDATION_ERROR,
+        'Password must contain at least one lowercase letter',
+      );
+    }
+
+    if (!PASSWORD_DIGIT_REGEX.test(input.password)) {
+      throw new ApplicationError(
+        ErrorCodes.VALIDATION_ERROR,
+        'Password must contain at least one digit',
       );
     }
 

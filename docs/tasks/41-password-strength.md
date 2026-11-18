@@ -54,7 +54,7 @@ docs/tasks/cursor-task-template.md
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
