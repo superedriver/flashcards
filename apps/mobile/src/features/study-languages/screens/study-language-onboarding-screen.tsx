@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Alert, Pressable, View } from 'react-native'
 
 import { getGraphqlErrorMessage } from '@/features/decks/utils/deck-form-utils'
+import { AuthLocaleSwitcher } from '@/features/auth/components/auth-locale-switcher'
 import { LanguageCatalogModal } from '@/features/study-languages/components/language-catalog-modal'
 import { persistActiveTargetLanguage } from '@/features/study-languages/storage/active-target-language-storage'
 import {
@@ -129,6 +130,9 @@ export function StudyLanguageOnboardingScreen() {
 
   return (
     <Screen scrollable>
+      <View style={{ alignSelf: 'flex-end', marginBottom: 8 }}>
+        <AuthLocaleSwitcher />
+      </View>
       <View style={{ maxWidth: 480, width: '100%' }}>
         <PageTitle title={t('studyLanguages.onboarding.title')} />
         <AppText style={{ color: '#888888', marginBottom: 28 }}>

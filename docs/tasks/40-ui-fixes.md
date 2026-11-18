@@ -252,6 +252,112 @@ TASK-40.10 Replace front/back labels with Word/Translation in i18n
 
 ---
 
+# TASK-40.12 Add locale switcher to onboarding screen
+
+## Status
+
+TODO
+
+## Context
+
+The auth screens (`(auth)/_layout.tsx`) already show `AuthLocaleSwitcher` in the header via `headerRight`. The onboarding screen (`onboarding/study-languages.tsx`) uses `headerShown: false` (set in `onboarding/_layout.tsx`), so there is no header and no way to switch the interface language before completing onboarding.
+
+## Goal
+
+Add `AuthLocaleSwitcher` to the onboarding screen so the user can switch the interface language (EN / UK) before selecting study languages.
+
+## Related Documents
+
+```txt
+docs/tasks/README.md
+docs/tasks/cursor-task-template.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/study-languages/screens/study-language-onboarding-screen.tsx
+```
+
+## Requirements
+
+```txt
+1. Import AuthLocaleSwitcher into study-language-onboarding-screen.tsx.
+2. Render AuthLocaleSwitcher in the top-right corner of the screen, above the content.
+3. Do not enable the header in the layout — keep headerShown: false.
+4. The switcher must work the same way as on auth screens (tapping EN / UK changes the language immediately).
+```
+
+## Security Requirements
+
+```txt
+- Do not expose backend secrets.
+- Do not store auth tokens in localStorage or sessionStorage.
+```
+
+## Architecture Constraints
+
+```txt
+- Use the existing AuthLocaleSwitcher component — do not duplicate logic.
+- Frontend only — no backend changes.
+```
+
+## Implementation Notes
+
+```txt
+- Place the switcher in the top-right corner using position: absolute or a header row View.
+- Keep the change minimal — only touch study-language-onboarding-screen.tsx.
+```
+
+## Acceptance Criteria
+
+```txt
+- AuthLocaleSwitcher is visible on the onboarding screen.
+- Tapping EN / UK switches the interface language immediately.
+- The rest of the screen layout is unchanged.
+- Mobile typecheck passes.
+```
+
+## Commands to Run
+
+```bash
+pnpm mobile:typecheck
+pnpm format:check
+pnpm lint
+```
+
+## Manual Checks
+
+```txt
+- Open the onboarding screen in the browser (localhost:8081/onboarding/study-languages).
+- Confirm the EN / UK switcher is visible in the top-right area.
+- Tap UK — confirm the screen text switches to Ukrainian.
+- Tap EN — confirm the screen text switches back to English.
+```
+
+## Do Not Do
+
+```txt
+- Do not enable the navigation header.
+- Do not change onboarding/_layout.tsx.
+- Do not modify AuthLocaleSwitcher.
+- Do not add backend changes.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-40.12 Add locale switcher to onboarding screen
+```
+
+---
+
 # TASK-40.11 Improve CLAUDE.md: add dev commands, architecture overview, and task execution rule
 
 ## Status

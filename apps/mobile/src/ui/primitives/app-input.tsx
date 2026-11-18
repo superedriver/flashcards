@@ -22,7 +22,6 @@ export function AppInput({
     return (
       <Input
         aria-label={accessibilityLabel}
-        // @ts-expect-error — web-only HTML attribute for password masking
         type={secureTextEntry ? 'password' : undefined}
         style={style}
         {...props}
