@@ -289,7 +289,7 @@ TASK-41.02 Frontend: add password strength checklist to sign-up form
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 
