@@ -20,7 +20,7 @@ Fix visual and layout issues found during end-to-end testing on Android and web.
 
 ## Epic Status
 
-IN PROGRESS
+DONE
 
 ## Related Documents
 
