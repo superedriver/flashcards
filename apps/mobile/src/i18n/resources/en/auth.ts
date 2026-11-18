@@ -22,6 +22,7 @@ export const authEn = {
     uppercase: 'At least one uppercase letter',
     lowercase: 'At least one lowercase letter',
     digit: 'At least one digit',
+    passwordsMatch: 'Passwords match',
   },
   signIn: {
     title: 'Sign In',

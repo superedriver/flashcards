@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
 
 import { AuthFieldError } from '@/features/auth/components/auth-field-error'
+import { PasswordMatchIndicator } from '@/features/auth/components/password-match-indicator'
 import {
   PasswordStrengthChecklist,
   passwordMeetsAllRules,
@@ -37,6 +38,7 @@ export function SignUpForm() {
   const [passwordFocused, setPasswordFocused] = useState(false)
 
   const [passwordValue, setPasswordValue] = useState('')
+  const [confirmValue, setConfirmValue] = useState('')
 
   const {
     control,
@@ -89,6 +91,7 @@ export function SignUpForm() {
 
   const showChecklist = passwordFocused || passwordValue.length > 0
   const allRulesMet = passwordMeetsAllRules(passwordValue)
+  const passwordsMatch = passwordValue === confirmValue && confirmValue.length > 0
 
   return (
     <View style={{ gap: 24 }}>
@@ -198,6 +201,7 @@ export function SignUpForm() {
                   onBlur={onBlur}
                   onChangeText={(text) => {
                     setError(null)
+                    setConfirmValue(text)
                     onChange(text)
                   }}
                 />
@@ -222,6 +226,9 @@ export function SignUpForm() {
               <AppText style={{ fontSize: 16 }}>{showConfirm ? '🙈' : '👁'}</AppText>
             </Pressable>
           </View>
+          {confirmValue.length > 0 ? (
+            <PasswordMatchIndicator confirmPassword={confirmValue} password={passwordValue} />
+          ) : null}
           <AuthFieldError message={errors.confirmPassword?.message} />
         </View>
       </View>
@@ -235,10 +242,10 @@ export function SignUpForm() {
       <AppButton
         style={{
           backgroundColor: '#2563eb',
-          opacity: isLoading || !allRulesMet ? 0.6 : 1,
+          opacity: isLoading || !allRulesMet || !passwordsMatch ? 0.6 : 1,
         }}
         color="#ffffff"
-        disabled={isLoading || !allRulesMet}
+        disabled={isLoading || !allRulesMet || !passwordsMatch}
         onPress={() => void onSubmit()}
       >
         {isLoading ? t('auth.signUp.submitting') : t('auth.signUp.submit')}

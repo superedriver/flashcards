@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
 
 import { AuthFieldError } from '@/features/auth/components/auth-field-error'
+import { PasswordMatchIndicator } from '@/features/auth/components/password-match-indicator'
 import {
   PasswordStrengthChecklist,
   passwordMeetsAllRules,
@@ -30,6 +31,7 @@ export function ChangePasswordForm() {
   const [showConfirm, setShowConfirm] = useState(false)
   const [newPasswordFocused, setNewPasswordFocused] = useState(false)
   const [newPasswordValue, setNewPasswordValue] = useState('')
+  const [confirmValue, setConfirmValue] = useState('')
   const [submitError, setSubmitError] = useState<string | null>(null)
 
   const {
@@ -77,6 +79,7 @@ export function ChangePasswordForm() {
 
   const showChecklist = newPasswordFocused || newPasswordValue.length > 0
   const allRulesMet = passwordMeetsAllRules(newPasswordValue)
+  const passwordsMatch = newPasswordValue === confirmValue && confirmValue.length > 0
 
   return (
     <View style={{ gap: 24 }}>
@@ -198,6 +201,7 @@ export function ChangePasswordForm() {
                   onBlur={onBlur}
                   onChangeText={(text) => {
                     setSubmitError(null)
+                    setConfirmValue(text)
                     onChange(text)
                   }}
                 />
@@ -222,6 +226,9 @@ export function ChangePasswordForm() {
               <AppText style={{ fontSize: 16 }}>{showConfirm ? '🙈' : '👁'}</AppText>
             </Pressable>
           </View>
+          {confirmValue.length > 0 ? (
+            <PasswordMatchIndicator confirmPassword={confirmValue} password={newPasswordValue} />
+          ) : null}
           <AuthFieldError message={errors.confirmNewPassword?.message} />
         </View>
       </View>
@@ -235,10 +242,10 @@ export function ChangePasswordForm() {
       <AppButton
         style={{
           backgroundColor: '#2563eb',
-          opacity: loading || !allRulesMet ? 0.6 : 1,
+          opacity: loading || !allRulesMet || !passwordsMatch ? 0.6 : 1,
         }}
         color="#ffffff"
-        disabled={loading || !allRulesMet}
+        disabled={loading || !allRulesMet || !passwordsMatch}
         onPress={() => void onSubmit()}
       >
         {loading ? t('profile.changePassword.submitting') : t('profile.changePassword.submit')}

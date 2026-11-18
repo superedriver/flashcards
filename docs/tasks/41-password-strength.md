@@ -24,7 +24,7 @@ Enforce stronger password requirements everywhere a password is set or changed: 
 
 ## Epic Status
 
-DONE
+IN PROGRESS
 
 ## Related Documents
 
@@ -612,4 +612,122 @@ pnpm lint
 
 ```txt
 TASK-41.05 Frontend: add change-password screen to profile
+```
+
+---
+
+# TASK-41.06 Frontend: show password-match indicator under confirm-password field
+
+## Status
+
+TODO
+
+## Context
+
+The sign-up form and change-password form both have a "confirm password" field. Currently the "Passwords must match" error only appears after the user taps Submit. The user has no live feedback while typing whether the passwords already match.
+
+## Goal
+
+Add a `PasswordMatchIndicator` component that appears under the confirm-password field as soon as it has a value. It shows a single rule row (red/green dot + label) — red when passwords differ, green when they match. Apply it to `SignUpForm` and `ChangePasswordForm`.
+
+## Related Documents
+
+```txt
+docs/tasks/cursor-task-template.md
+```
+
+## Files to Create
+
+```txt
+apps/mobile/src/features/auth/components/password-match-indicator.tsx
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/auth/components/sign-up-form.tsx
+apps/mobile/src/features/profile/components/change-password-form.tsx
+apps/mobile/src/i18n/resources/en/auth.ts
+apps/mobile/src/i18n/resources/uk/auth.ts
+```
+
+## Requirements
+
+```txt
+1. Create PasswordMatchIndicator component:
+   - Accepts `password: string` and `confirmPassword: string` props.
+   - Renders a single row: colored dot (red/green) + label.
+   - Green when password === confirmPassword and confirmPassword is not empty.
+   - Red otherwise (when confirmPassword is not empty).
+   - Reuse the same Rule pattern as PasswordStrengthChecklist.
+   - i18n label key: auth.passwordStrength.passwordsMatch
+
+2. In sign-up-form.tsx:
+   - Track confirmPassword value in state (like passwordValue).
+   - Show PasswordMatchIndicator below the confirm-password field when confirmPassword.length > 0.
+   - Keep submit disabled while passwords do not match (add passwordsMatch check alongside allRulesMet).
+
+3. In change-password-form.tsx:
+   - Track confirmNewPassword value in state.
+   - Show PasswordMatchIndicator below the confirm-new-password field when confirmNewPassword.length > 0.
+   - Keep submit disabled while passwords do not match.
+
+4. Add i18n key auth.passwordStrength.passwordsMatch in en and uk.
+```
+
+## Security Requirements
+
+```txt
+- Do not store password values outside React state.
+- Do not log passwords.
+```
+
+## Architecture Constraints
+
+```txt
+- Frontend only — no backend changes.
+- Reuse the Rule visual pattern from PasswordStrengthChecklist.
+- Do not add external libraries.
+```
+
+## Acceptance Criteria
+
+```txt
+- PasswordMatchIndicator does not appear when confirm field is empty.
+- It appears red as soon as the user types something that does not match.
+- It turns green when the passwords match.
+- Submit button stays disabled while passwords do not match.
+- Mobile typecheck passes.
+```
+
+## Commands to Run
+
+```bash
+pnpm mobile:typecheck
+pnpm format:check
+pnpm lint
+```
+
+## Manual Checks
+
+```txt
+- Open sign-up screen.
+- Type a password that meets all rules.
+- Type a different value in confirm — indicator appears red, submit disabled.
+- Fix confirm to match — indicator turns green, submit enabled.
+- Open change-password screen and repeat.
+```
+
+## Do Not Do
+
+```txt
+- Do not change the PasswordStrengthChecklist component.
+- Do not add backend changes.
+- Do not add the indicator to the reset-password form.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-41.06 Frontend: show password-match indicator under confirm-password field
 ```
