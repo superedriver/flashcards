@@ -13,6 +13,15 @@ export const authUk = {
     passwordMax: 'Пароль має містити не більше 128 символів',
     confirmPasswordRequired: 'Підтвердіть пароль',
     passwordsMustMatch: 'Паролі мають збігатися',
+    passwordUppercase: 'Пароль має містити хоча б одну велику літеру',
+    passwordLowercase: 'Пароль має містити хоча б одну малу літеру',
+    passwordDigit: 'Пароль має містити хоча б одну цифру',
+  },
+  passwordStrength: {
+    minLength: 'Щонайменше 8 символів',
+    uppercase: 'Хоча б одна велика літера',
+    lowercase: 'Хоча б одна мала літера',
+    digit: 'Хоча б одна цифра',
   },
   signIn: {
     title: 'Увійти',

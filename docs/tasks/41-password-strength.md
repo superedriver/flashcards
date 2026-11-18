@@ -158,7 +158,7 @@ TASK-41.01 Backend: enforce uppercase, lowercase, digit rules in password valida
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

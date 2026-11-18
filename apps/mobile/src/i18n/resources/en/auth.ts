@@ -13,6 +13,15 @@ export const authEn = {
     passwordMax: 'Password must be at most 128 characters',
     confirmPasswordRequired: 'Confirm your password',
     passwordsMustMatch: 'Passwords must match',
+    passwordUppercase: 'Password must contain at least one uppercase letter',
+    passwordLowercase: 'Password must contain at least one lowercase letter',
+    passwordDigit: 'Password must contain at least one digit',
+  },
+  passwordStrength: {
+    minLength: 'At least 8 characters',
+    uppercase: 'At least one uppercase letter',
+    lowercase: 'At least one lowercase letter',
+    digit: 'At least one digit',
   },
   signIn: {
     title: 'Sign In',

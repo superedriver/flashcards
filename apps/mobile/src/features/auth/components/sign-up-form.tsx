@@ -6,6 +6,10 @@ import { useTranslation } from 'react-i18next'
 import { Pressable, View } from 'react-native'
 
 import { AuthFieldError } from '@/features/auth/components/auth-field-error'
+import {
+  PasswordStrengthChecklist,
+  passwordMeetsAllRules,
+} from '@/features/auth/components/password-strength-checklist'
 import { applyAuthPayload } from '@/features/auth/services/auth-session'
 import { useAuth } from '@/features/auth/hooks/use-auth'
 import { mapSafeUserToAuthUser } from '@/features/auth/state/auth-store'
@@ -31,6 +35,8 @@ export function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [passwordFocused, setPasswordFocused] = useState(false)
+
+  const [passwordValue, setPasswordValue] = useState('')
 
   const {
     control,
@@ -81,7 +87,8 @@ export function SignUpForm() {
     }
   })
 
-  const showPasswordHint = (passwordFocused || Boolean(errors.password)) && !errors.password
+  const showChecklist = passwordFocused || passwordValue.length > 0
+  const allRulesMet = passwordMeetsAllRules(passwordValue)
 
   return (
     <View style={{ gap: 24 }}>
@@ -146,6 +153,7 @@ export function SignUpForm() {
                   }}
                   onChangeText={(text) => {
                     setError(null)
+                    setPasswordValue(text)
                     onChange(text)
                   }}
                   onFocus={() => setPasswordFocused(true)}
@@ -169,11 +177,7 @@ export function SignUpForm() {
               <AppText style={{ fontSize: 16 }}>{showPassword ? '🙈' : '👁'}</AppText>
             </Pressable>
           </View>
-          {showPasswordHint ? (
-            <AppText style={{ color: '#667085', fontSize: 12 }}>
-              {t('auth.validation.passwordMin')}
-            </AppText>
-          ) : null}
+          {showChecklist ? <PasswordStrengthChecklist password={passwordValue} /> : null}
           <AuthFieldError message={errors.password?.message} />
         </View>
 
@@ -229,9 +233,12 @@ export function SignUpForm() {
 
       {/* Primary action */}
       <AppButton
-        style={{ backgroundColor: '#2563eb', opacity: isLoading ? 0.6 : 1 }}
+        style={{
+          backgroundColor: '#2563eb',
+          opacity: isLoading || !allRulesMet ? 0.6 : 1,
+        }}
         color="#ffffff"
-        disabled={isLoading}
+        disabled={isLoading || !allRulesMet}
         onPress={() => void onSubmit()}
       >
         {isLoading ? t('auth.signUp.submitting') : t('auth.signUp.submit')}
