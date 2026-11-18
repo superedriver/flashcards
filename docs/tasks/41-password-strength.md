@@ -384,7 +384,7 @@ TASK-41.03 Frontend: apply stricter password schema to reset-password form
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

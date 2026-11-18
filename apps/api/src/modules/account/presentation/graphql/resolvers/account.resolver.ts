@@ -6,10 +6,12 @@ import { CurrentUser } from '../../../../auth/presentation/graphql/decorators/cu
 import { GqlAuthGuard } from '../../../../auth/presentation/graphql/guards/gql-auth.guard';
 import { UserRole } from '../../../../auth/presentation/graphql/types/user-role.type';
 import { RefreshTokenCookieService } from '../../../../auth/presentation/http/refresh-token-cookie.service';
+import { ChangePasswordUseCase } from '../../../application/use-cases/change-password.use-case';
 import { GetMyAccountUseCase } from '../../../application/use-cases/get-my-account.use-case';
 import { DeleteAccountUseCase } from '../../../application/use-cases/delete-account.use-case';
 import { UpdateProfileUseCase } from '../../../application/use-cases/update-profile.use-case';
 import { UpdateSettingsUseCase } from '../../../application/use-cases/update-settings.use-case';
+import { ChangePasswordInput } from '../inputs/change-password.input';
 import { UpdateProfileInput } from '../inputs/update-profile.input';
 import { UpdateSettingsInput } from '../inputs/update-settings.input';
 import { MyAccountType } from '../types/my-account.type';
@@ -29,6 +31,7 @@ export class AccountResolver {
     private readonly updateProfileUseCase: UpdateProfileUseCase,
     private readonly updateSettingsUseCase: UpdateSettingsUseCase,
     private readonly deleteAccountUseCase: DeleteAccountUseCase,
+    private readonly changePasswordUseCase: ChangePasswordUseCase,
     private readonly refreshTokenCookieService: RefreshTokenCookieService,
   ) {}
 
@@ -87,6 +90,21 @@ export class AccountResolver {
       ...settings,
       themePreference: settings.themePreference as ThemePreference,
     };
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(GqlAuthGuard)
+  async changePassword(
+    @CurrentUser() user: AuthUser,
+    @Args('input') input: ChangePasswordInput,
+  ): Promise<boolean> {
+    await this.changePasswordUseCase.execute({
+      userId: user.id,
+      currentPassword: input.currentPassword,
+      newPassword: input.newPassword,
+    });
+
+    return true;
   }
 
   @Mutation(() => Boolean)

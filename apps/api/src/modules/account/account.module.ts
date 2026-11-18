@@ -3,6 +3,7 @@ import { AuthModule } from '../auth/auth.module';
 import { LanguagesModule } from '../languages/languages.module';
 import { USER_PROFILE_REPOSITORY } from './application/ports/user-profile-repository.port';
 import { USER_SETTINGS_REPOSITORY } from './application/ports/user-settings-repository.port';
+import { ChangePasswordUseCase } from './application/use-cases/change-password.use-case';
 import { DeleteAccountUseCase } from './application/use-cases/delete-account.use-case';
 import { GetMyAccountUseCase } from './application/use-cases/get-my-account.use-case';
 import { UpdateProfileUseCase } from './application/use-cases/update-profile.use-case';
@@ -26,6 +27,7 @@ import { AccountResolver } from './presentation/graphql/resolvers/account.resolv
     UpdateProfileUseCase,
     UpdateSettingsUseCase,
     DeleteAccountUseCase,
+    ChangePasswordUseCase,
     AccountResolver,
   ],
   exports: [
@@ -35,6 +37,7 @@ import { AccountResolver } from './presentation/graphql/resolvers/account.resolv
     UpdateProfileUseCase,
     UpdateSettingsUseCase,
     DeleteAccountUseCase,
+    ChangePasswordUseCase,
   ],
 })
 export class AccountModule {}
