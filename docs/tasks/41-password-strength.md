@@ -24,7 +24,7 @@ Enforce stronger password requirements everywhere a password is set or changed: 
 
 ## Epic Status
 
-IN PROGRESS
+DONE
 
 ## Related Documents
 
@@ -496,7 +496,7 @@ TASK-41.04 Backend: add ChangePasswordUseCase and GraphQL mutation
 
 ## Status
 
-TODO
+DONE
 
 ## Context
 

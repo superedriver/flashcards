@@ -20,4 +20,7 @@ export class MyAccountType {
 
   @Field()
   needsStudyLanguageOnboarding: boolean;
+
+  @Field()
+  hasPassword: boolean;
 }

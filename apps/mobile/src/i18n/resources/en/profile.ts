@@ -49,6 +49,19 @@ export const profileEn = {
     appleLinked: 'Apple ID linked.',
     linkFailed: 'Failed to link account. Please try again.',
   },
+  changePassword: {
+    title: 'Change Password',
+    currentPassword: 'Current password',
+    newPassword: 'New password',
+    confirmNewPassword: 'Confirm new password',
+    submit: 'Change password',
+    submitting: 'Changing...',
+    success: 'Password changed successfully.',
+    wrongCurrentPassword: 'Current password is incorrect.',
+    oauthForbidden: 'Password change is not available for accounts linked with Google or Apple.',
+    showPassword: 'Show password',
+    hidePassword: 'Hide password',
+  },
   accountDeletion: {
     title: 'Account deletion',
     intro:

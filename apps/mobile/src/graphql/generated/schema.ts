@@ -119,6 +119,11 @@ export type CheckCardDuplicatesPayload = {
   hits: Array<CheckCardDuplicateHit>
 }
 
+export type ChangePasswordInput = {
+  currentPassword: Scalars['String']['input']
+  newPassword: Scalars['String']['input']
+}
+
 export type CompleteLessonInput = {
   sessionId: Scalars['String']['input']
 }
@@ -545,6 +550,7 @@ export type Mutation = {
   approveDeck: ModerationDeck
   blockUser: AdminUserSummary
   cancelDeckPreview: Scalars['Boolean']['output']
+  changePassword: Scalars['Boolean']['output']
   completeLesson: CompleteLessonPayload
   completeStudyLanguageOnboarding: CompleteStudyLanguageOnboardingPayload
   confirmCsvImport: ConfirmCsvImportPayload
@@ -806,6 +812,7 @@ export type MutationVerifyEmailArgs = {
 
 export type MyAccount = {
   __typename?: 'MyAccount'
+  hasPassword: Scalars['Boolean']['output']
   needsStudyLanguageOnboarding: Scalars['Boolean']['output']
   profile: UserProfile
   settings: UserSettings

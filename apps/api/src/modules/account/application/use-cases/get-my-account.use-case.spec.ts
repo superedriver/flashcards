@@ -1,9 +1,9 @@
 import { ErrorCodes } from '../../../../common/errors';
-import { SafeUser } from '../../../auth/domain/types';
+import { UserWithPassword } from '../../../auth/application/ports/user-repository.port';
 import { UserProfile, UserSettings } from '../../domain/types';
 import { GetMyAccountUseCase } from './get-my-account.use-case';
 
-const safeUser: SafeUser = {
+const userWithPassword: UserWithPassword = {
   id: 'user-1',
   email: 'test@example.com',
   role: 'USER',
@@ -11,6 +11,17 @@ const safeUser: SafeUser = {
   blockedAt: null,
   createdAt: new Date('2026-01-01T00:00:00.000Z'),
   updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+  passwordHash: 'hashed-password',
+};
+
+const safeUser = {
+  id: userWithPassword.id,
+  email: userWithPassword.email,
+  role: userWithPassword.role,
+  emailVerifiedAt: userWithPassword.emailVerifiedAt,
+  blockedAt: userWithPassword.blockedAt,
+  createdAt: userWithPassword.createdAt,
+  updatedAt: userWithPassword.updatedAt,
 };
 
 const profile: UserProfile = {
@@ -39,13 +50,15 @@ const settings: UserSettings = {
 };
 
 function createUseCase(options?: {
-  user?: SafeUser | null;
+  user?: UserWithPassword | null;
   profile?: UserProfile | null;
   settings?: UserSettings | null;
 }) {
   const findById = jest
     .fn()
-    .mockResolvedValue(options?.user === undefined ? safeUser : options.user);
+    .mockResolvedValue(
+      options?.user === undefined ? userWithPassword : options.user,
+    );
   const findProfileByUserId = jest
     .fn()
     .mockResolvedValue(
@@ -65,6 +78,7 @@ function createUseCase(options?: {
       findById,
       findByEmail: jest.fn(),
       create: jest.fn(),
+      createOAuthUser: jest.fn(),
       markEmailVerified: jest.fn(),
       updatePasswordHash: jest.fn(),
       deleteById: jest.fn(),
@@ -107,7 +121,7 @@ describe('GetMyAccountUseCase', () => {
 
   it('returns account for a blocked user without loading study languages', async () => {
     const blockedAt = new Date('2026-06-01T00:00:00.000Z');
-    const blockedUser = { ...safeUser, blockedAt };
+    const blockedUser = { ...userWithPassword, blockedAt };
     const { useCase, myStudyLanguagesExecute } = createUseCase({
       user: blockedUser,
     });
@@ -116,11 +130,12 @@ describe('GetMyAccountUseCase', () => {
 
     expect(myStudyLanguagesExecute).not.toHaveBeenCalled();
     expect(result).toEqual({
-      user: blockedUser,
+      user: { ...safeUser, blockedAt },
       profile,
       settings,
       studyLanguages: [],
       needsStudyLanguageOnboarding: false,
+      hasPassword: true,
     });
   });
 
@@ -155,6 +170,7 @@ describe('GetMyAccountUseCase', () => {
       settings,
       studyLanguages: [],
       needsStudyLanguageOnboarding: true,
+      hasPassword: true,
     });
     expect(result.user).not.toHaveProperty('passwordHash');
   });

@@ -10,7 +10,7 @@ import { ProfileCard } from '@/features/profile/components/profile-card'
 import { useDeleteAccount } from '@/features/profile/hooks/use-delete-account'
 import { SettingsNavRow } from '@/features/settings/components/settings-nav-row'
 import { UserSettingsForm } from '@/features/settings/components/user-settings-form'
-import { useProfileMeQuery } from '@/graphql/generated'
+import { useProfileAccountQuery, useProfileMeQuery } from '@/graphql/generated'
 import { AppText } from '@/ui/primitives'
 import { ErrorState, LoadingState, PageTitle, Screen } from '@/ui/components'
 import { destructiveButtonA11yProps } from '@/ui/utils/accessibility'
@@ -28,11 +28,13 @@ export function ProfileScreen() {
   } = useDeleteAccount()
   const { user: authUser } = useAuth()
   const { data, error, loading, refetch } = useProfileMeQuery()
+  const { data: accountData } = useProfileAccountQuery()
 
   const user = data?.me
   const isBlocked = Boolean(user?.blockedAt ?? authUser?.blockedAt)
   const isAdmin = !isBlocked && authUser?.role === 'ADMIN'
   const isModerator = !isBlocked && authUser?.role === 'MODERATOR'
+  const hasPassword = accountData?.myAccount.hasPassword ?? false
 
   return (
     <Screen scrollable>
@@ -94,6 +96,12 @@ export function ProfileScreen() {
               {t('profile.account')}
             </AppText>
             <LinkedAccountsCard />
+            {hasPassword ? (
+              <SettingsNavRow
+                label={t('profile.changePassword.title')}
+                onPress={() => router.push('/change-password')}
+              />
+            ) : null}
             <Pressable accessibilityRole="button" onPress={() => void logout()}>
               <AppText style={{ color: '#667085', fontSize: 16, fontWeight: '600' }}>
                 {t('profile.logOut')}

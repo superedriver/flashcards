@@ -10,6 +10,16 @@ query ProfileMe {
   }
 }
 
+query ProfileAccount {
+  myAccount {
+    hasPassword
+  }
+}
+
 mutation DeleteAccount {
   deleteAccount
+}
+
+mutation ChangePassword($input: ChangePasswordInput!) {
+  changePassword(input: $input)
 }

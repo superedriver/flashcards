@@ -9,4 +9,5 @@ export type MyAccount = {
   settings: UserSettings;
   studyLanguages: UserStudyLanguageListItem[];
   needsStudyLanguageOnboarding: boolean;
+  hasPassword: boolean;
 };

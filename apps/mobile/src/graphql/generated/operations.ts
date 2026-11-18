@@ -1067,9 +1067,21 @@ export type ProfileMeQuery = {
   }
 }
 
+export type ProfileAccountQueryVariables = Exact<{ [key: string]: never }>
+
+export type ProfileAccountQuery = {
+  myAccount: { hasPassword: boolean }
+}
+
 export type DeleteAccountMutationVariables = Exact<{ [key: string]: never }>
 
 export type DeleteAccountMutation = { deleteAccount: boolean }
+
+export type ChangePasswordMutationVariables = Exact<{
+  input: SchemaTypes.ChangePasswordInput
+}>
+
+export type ChangePasswordMutation = { changePassword: boolean }
 
 export type PublicDecksQueryVariables = Exact<{
   input?: SchemaTypes.PublicDecksInput | null | undefined
@@ -5125,6 +5137,46 @@ export type ProfileMeQueryHookResult = ReturnType<typeof useProfileMeQuery>
 export type ProfileMeLazyQueryHookResult = ReturnType<typeof useProfileMeLazyQuery>
 export type ProfileMeSuspenseQueryHookResult = ReturnType<typeof useProfileMeSuspenseQuery>
 export type ProfileMeQueryResult = Apollo.QueryResult<ProfileMeQuery, ProfileMeQueryVariables>
+export const ProfileAccountDocument = gql`
+  query ProfileAccount {
+    myAccount {
+      hasPassword
+    }
+  }
+`
+
+/**
+ * __useProfileAccountQuery__
+ *
+ * To run a query within a React component, call `useProfileAccountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProfileAccountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProfileAccountQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProfileAccountQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    ProfileAccountQuery,
+    ProfileAccountQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return ApolloReactHooks.useQuery<ProfileAccountQuery, ProfileAccountQueryVariables>(
+    ProfileAccountDocument,
+    options,
+  )
+}
+export type ProfileAccountQueryHookResult = ReturnType<typeof useProfileAccountQuery>
+export type ProfileAccountQueryResult = Apollo.QueryResult<
+  ProfileAccountQuery,
+  ProfileAccountQueryVariables
+>
 export const DeleteAccountDocument = gql`
   mutation DeleteAccount {
     deleteAccount
@@ -5168,6 +5220,51 @@ export type DeleteAccountMutationResult = Apollo.MutationResult<DeleteAccountMut
 export type DeleteAccountMutationOptions = Apollo.BaseMutationOptions<
   DeleteAccountMutation,
   DeleteAccountMutationVariables
+>
+export const ChangePasswordDocument = gql`
+  mutation ChangePassword($input: ChangePasswordInput!) {
+    changePassword(input: $input)
+  }
+`
+export type ChangePasswordMutationFn = Apollo.MutationFunction<
+  ChangePasswordMutation,
+  ChangePasswordMutationVariables
+>
+
+/**
+ * __useChangePasswordMutation__
+ *
+ * To run a mutation, you first call `useChangePasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangePasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changePasswordMutation, { data, loading, error }] = useChangePasswordMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useChangePasswordMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    ChangePasswordMutation,
+    ChangePasswordMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return ApolloReactHooks.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(
+    ChangePasswordDocument,
+    options,
+  )
+}
+export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>
+export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>
+export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<
+  ChangePasswordMutation,
+  ChangePasswordMutationVariables
 >
 export const PublicDecksDocument = gql`
   query PublicDecks($input: PublicDecksInput) {

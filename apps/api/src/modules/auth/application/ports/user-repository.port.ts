@@ -16,7 +16,7 @@ export type CreateOAuthUserInput = {
 };
 
 export type UserRepositoryPort = {
-  findById(id: string): Promise<SafeUser | null>;
+  findById(id: string): Promise<UserWithPassword | null>;
   findByEmail(email: string): Promise<UserWithPassword | null>;
   create(input: CreateUserInput): Promise<SafeUser>;
   createOAuthUser(input: CreateOAuthUserInput): Promise<SafeUser>;

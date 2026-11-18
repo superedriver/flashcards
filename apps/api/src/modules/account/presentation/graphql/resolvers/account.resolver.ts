@@ -52,6 +52,7 @@ export class AccountResolver {
       },
       studyLanguages: account.studyLanguages,
       needsStudyLanguageOnboarding: account.needsStudyLanguageOnboarding,
+      hasPassword: account.hasPassword,
     };
   }
 

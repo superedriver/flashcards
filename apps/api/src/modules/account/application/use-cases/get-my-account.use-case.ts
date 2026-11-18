@@ -50,13 +50,25 @@ export class GetMyAccountUseCase {
       settings = await this.userSettingsRepository.createForUser(input.userId);
     }
 
+    const hasPassword = user.passwordHash !== null;
+    const safeUser = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      emailVerifiedAt: user.emailVerifiedAt,
+      blockedAt: user.blockedAt,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+
     if (user.blockedAt !== null) {
       return {
-        user,
+        user: safeUser,
         profile,
         settings,
         studyLanguages: [],
         needsStudyLanguageOnboarding: false,
+        hasPassword,
       };
     }
 
@@ -65,11 +77,12 @@ export class GetMyAccountUseCase {
     });
 
     return {
-      user,
+      user: safeUser,
       profile,
       settings,
       studyLanguages,
       needsStudyLanguageOnboarding: studyLanguages.length === 0,
+      hasPassword,
     };
   }
 }

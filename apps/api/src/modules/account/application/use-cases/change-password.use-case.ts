@@ -31,13 +31,7 @@ export class ChangePasswordUseCase {
   ) {}
 
   async execute(input: ChangePasswordInput): Promise<void> {
-    const userBase = await this.userRepository.findById(input.userId);
-
-    if (!userBase) {
-      throw new ApplicationError(ErrorCodes.UNAUTHORIZED, 'Unauthorized');
-    }
-
-    const user = await this.userRepository.findByEmail(userBase.email);
+    const user = await this.userRepository.findById(input.userId);
 
     if (!user) {
       throw new ApplicationError(ErrorCodes.UNAUTHORIZED, 'Unauthorized');

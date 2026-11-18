@@ -94,6 +94,14 @@ export default function TabsLayout() {
       <Tabs.Screen name="groups" options={{ href: null }} />
       <Tabs.Screen name="lessons" options={{ headerShown: false, href: null }} />
       <Tabs.Screen
+        name="change-password"
+        options={{
+          headerShown: true,
+          href: null,
+          title: t('profile.changePassword.title'),
+        }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{
           title: t('common.tabs.profile'),

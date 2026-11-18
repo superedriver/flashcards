@@ -13,10 +13,10 @@ import { toSafeUser, toUserWithPassword } from '../mappers/user.mapper';
 export class PrismaUserRepository implements UserRepositoryPort {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findById(id: string): Promise<SafeUser | null> {
+  async findById(id: string): Promise<UserWithPassword | null> {
     const user = await this.prisma.user.findUnique({ where: { id } });
 
-    return user ? toSafeUser(user) : null;
+    return user ? toUserWithPassword(user) : null;
   }
 
   async findByEmail(email: string): Promise<UserWithPassword | null> {

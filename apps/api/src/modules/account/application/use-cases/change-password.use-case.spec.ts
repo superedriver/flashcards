@@ -1,4 +1,5 @@
 import { ErrorCodes } from '../../../../common/errors';
+import { UserWithPassword } from '../../../auth/application/ports/user-repository.port';
 import { ChangePasswordUseCase } from './change-password.use-case';
 
 const safeUser = {
@@ -11,28 +12,20 @@ const safeUser = {
   updatedAt: new Date('2026-01-01T00:00:00.000Z'),
 };
 
-const userWithPassword = {
+const userWithPassword: UserWithPassword = {
   ...safeUser,
   passwordHash: 'hashed-current-password',
 };
-const oauthUser = { ...safeUser, passwordHash: null };
+const oauthUser: UserWithPassword = { ...safeUser, passwordHash: null };
 
 function createUseCase(options?: {
-  userBase?: typeof safeUser | null;
-  userByEmail?: typeof userWithPassword | null;
+  user?: UserWithPassword | null;
   verifyResult?: boolean;
 }) {
   const findById = jest
     .fn()
     .mockResolvedValue(
-      options?.userBase === undefined ? safeUser : options.userBase,
-    );
-  const findByEmail = jest
-    .fn()
-    .mockResolvedValue(
-      options?.userByEmail === undefined
-        ? userWithPassword
-        : options.userByEmail,
+      options?.user === undefined ? userWithPassword : options.user,
     );
   const updatePasswordHash = jest.fn().mockResolvedValue(undefined);
   const verify = jest
@@ -45,7 +38,7 @@ function createUseCase(options?: {
   const useCase = new ChangePasswordUseCase(
     {
       findById,
-      findByEmail,
+      findByEmail: jest.fn(),
       create: jest.fn(),
       createOAuthUser: jest.fn(),
       markEmailVerified: jest.fn(),
@@ -55,7 +48,7 @@ function createUseCase(options?: {
     { hash, verify },
   );
 
-  return { useCase, findById, findByEmail, updatePasswordHash, verify, hash };
+  return { useCase, findById, updatePasswordHash, verify, hash };
 }
 
 describe('ChangePasswordUseCase', () => {
@@ -76,7 +69,7 @@ describe('ChangePasswordUseCase', () => {
   });
 
   it('rejects when user not found', async () => {
-    const { useCase } = createUseCase({ userBase: null });
+    const { useCase } = createUseCase({ user: null });
 
     await expect(
       useCase.execute({
@@ -88,7 +81,7 @@ describe('ChangePasswordUseCase', () => {
   });
 
   it('rejects OAuth user with FORBIDDEN', async () => {
-    const { useCase } = createUseCase({ userByEmail: oauthUser });
+    const { useCase } = createUseCase({ user: oauthUser });
 
     await expect(
       useCase.execute({
