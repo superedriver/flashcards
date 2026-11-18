@@ -249,3 +249,25 @@ DONE
 ```txt
 TASK-40.10 Replace front/back labels with Word/Translation in i18n
 ```
+
+---
+
+# TASK-40.11 Improve CLAUDE.md: add dev commands, architecture overview, and task execution rule
+
+## Status
+
+DONE
+
+## What Was Done
+
+- `CLAUDE.md`: added Project Overview section with monorepo structure
+- Added Development Commands for API, mobile, SRS, whole-repo checks, and database operations
+- Added Architecture section with Clean Architecture layer table, frontend structure overview, and source-of-truth doc index
+- Added Pre-commit Checks by Task Type section
+- Added Task Execution Rule: one task at a time, do not proceed until current task is complete
+
+## Commit
+
+```txt
+TASK-40.11 Improve CLAUDE.md: add dev commands, architecture overview, and task execution rule
+```
