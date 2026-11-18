@@ -9,14 +9,9 @@ const RED = '#dc2626'
 function Rule({ met, label }: { met: boolean; label: string }) {
   return (
     <View style={{ alignItems: 'center', flexDirection: 'row', gap: 6 }}>
-      <View
-        style={{
-          backgroundColor: met ? GREEN : RED,
-          borderRadius: 4,
-          height: 8,
-          width: 8,
-        }}
-      />
+      <AppText style={{ color: met ? GREEN : RED, fontSize: 12, width: 12 }}>
+        {met ? '✓' : '✗'}
+      </AppText>
       <AppText style={{ color: met ? GREEN : RED, fontSize: 12 }}>{label}</AppText>
     </View>
   )

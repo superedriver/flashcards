@@ -23,6 +23,7 @@ export const authUk = {
     lowercase: 'Хоча б одна мала літера',
     digit: 'Хоча б одна цифра',
     passwordsMatch: 'Паролі збігаються',
+    passwordsMustMatch: 'Паролі мають збігатися',
   },
   signIn: {
     title: 'Увійти',

@@ -18,16 +18,13 @@ export function PasswordMatchIndicator({
 
   return (
     <View style={{ alignItems: 'center', flexDirection: 'row', gap: 6 }}>
-      <View
-        style={{
-          backgroundColor: met ? GREEN : RED,
-          borderRadius: 4,
-          height: 8,
-          width: 8,
-        }}
-      />
+      <AppText style={{ color: met ? GREEN : RED, fontSize: 12, width: 12 }}>
+        {met ? '✓' : '✗'}
+      </AppText>
       <AppText style={{ color: met ? GREEN : RED, fontSize: 12 }}>
-        {t('auth.passwordStrength.passwordsMatch')}
+        {met
+          ? t('auth.passwordStrength.passwordsMatch')
+          : t('auth.passwordStrength.passwordsMustMatch')}
       </AppText>
     </View>
   )
