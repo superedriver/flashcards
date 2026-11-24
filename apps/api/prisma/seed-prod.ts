@@ -6,9 +6,10 @@ import { PrismaClient } from '../src/generated/prisma/client';
 import { seedLanguages } from './seeds/languages.seed';
 
 async function main() {
-  const connectionString =
-    process.env.DATABASE_URL ??
-    'postgresql://user:password@localhost:5432/flashcards?schema=public';
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error('DATABASE_URL environment variable is required');
+  }
   const pool = new Pool({ connectionString });
   const adapter = new PrismaPg(pool);
   const prisma = new PrismaClient({ adapter });
