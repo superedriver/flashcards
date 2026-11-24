@@ -27,12 +27,38 @@ TODO
 
 ## Goal
 
-Make `GqlThrottlerGuard` handle both GraphQL and HTTP execution contexts. For HTTP requests, fall back to the standard Express `req/res` from the HTTP context.
+Make `GqlThrottlerGuard` handle both GraphQL and HTTP execution contexts. For HTTP requests, fall back to the standard Express `req/res` from the HTTP context so `/health` and other HTTP routes return 200.
 
-## Files to Change
+## Related Documents
+
+```txt
+docs/backend-clean-architecture.md
+```
+
+## Files to Create
+
+```txt
+None
+```
+
+## Files to Modify
 
 ```txt
 apps/api/src/common/guards/gql-throttler.guard.ts
+```
+
+## Requirements
+
+```txt
+1. In getRequestResponse, check context.getType() — if 'graphql', use GqlExecutionContext as before.
+2. If 'http', fall back to context.switchToHttp().getRequest() / getResponse().
+```
+
+## Do Not Do
+
+```txt
+- Do not add @SkipThrottle() to HealthController — the guard should handle both contexts generically.
+- Do not change ThrottlerModule config.
 ```
 
 ## Expected Commit Message
