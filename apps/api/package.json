@@ -22,6 +22,7 @@
     "db:validate": "pnpm exec prisma validate",
     "db:migrate:deploy": "pnpm exec prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts",
+    "db:seed:prod": "tsx prisma/seed-prod.ts",
     "prisma:validate": "prisma validate",
     "prisma:generate": "prisma generate",
     "prisma:migrate:dev": "prisma migrate dev",

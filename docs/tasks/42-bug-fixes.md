@@ -15,6 +15,61 @@ docs/backend-clean-architecture.md
 
 ---
 
+# TASK-42.02 Backend: add production seed script for languages
+
+## Status
+
+TODO
+
+## Context
+
+The main `seed.ts` is dev-only — it creates demo users, groups, and decks, and is blocked on production unless `ALLOW_PRODUCTION_SEED=true`. On production there are no languages in the DB because there's no safe way to seed only reference data.
+
+## Goal
+
+Add a separate `seed-prod.ts` that seeds only languages (upsert, idempotent) and a `prisma:seed:prod` script in `apps/api/package.json` to run it.
+
+## Related Documents
+
+```txt
+docs/backend-clean-architecture.md
+```
+
+## Files to Create
+
+```txt
+apps/api/prisma/seed-prod.ts
+```
+
+## Files to Modify
+
+```txt
+apps/api/package.json
+```
+
+## Requirements
+
+```txt
+1. seed-prod.ts imports seedLanguages and runs it — no demo data, no assertSafeToSeed guard.
+2. Add script "prisma:seed:prod": "ts-node --project tsconfig.json -r tsconfig-paths/register prisma/seed-prod.ts" to apps/api/package.json (match the pattern of the existing seed script).
+3. Script must be safe to run multiple times (upsert-based, already handled by seedLanguages).
+```
+
+## Do Not Do
+
+```txt
+- Do not modify the existing seed.ts or seedLanguages function.
+- Do not add demo data to seed-prod.ts.
+```
+
+## Expected Commit Message
+
+```txt
+TASK-42.02 Backend: add production seed script for languages
+```
+
+---
+
 # TASK-42.01 Backend: fix GqlThrottlerGuard crashing HTTP routes
 
 ## Status
