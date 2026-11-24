@@ -102,7 +102,20 @@ export function ProfileScreen() {
                 onPress={() => router.push('/change-password')}
               />
             ) : null}
-            <Pressable accessibilityRole="button" onPress={() => void logout()}>
+            <Pressable
+              accessibilityRole="button"
+              style={({ pressed }) => ({
+                alignItems: 'center',
+                backgroundColor: pressed ? '#f5f5f5' : '#fff',
+                borderColor: '#e0e0e0',
+                borderRadius: 8,
+                borderWidth: 1,
+                justifyContent: 'center',
+                paddingHorizontal: 16,
+                paddingVertical: 14,
+              })}
+              onPress={() => void logout()}
+            >
               <AppText style={{ color: '#667085', fontSize: 16, fontWeight: '600' }}>
                 {t('profile.logOut')}
               </AppText>

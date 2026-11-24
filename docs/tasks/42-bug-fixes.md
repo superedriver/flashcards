@@ -15,6 +15,34 @@ docs/backend-clean-architecture.md
 
 ---
 
+# TASK-42.06 Frontend: make Log out button more visible on profile screen
+
+## Status
+
+DONE
+
+## Context
+
+The Log out button was a plain grey text with no visual affordance — hard to notice and not obviously tappable.
+
+## Goal
+
+Style it as a proper button with border, padding, and press feedback — consistent with other rows on the screen.
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/profile/screens/profile-screen.tsx
+```
+
+## Expected Commit Message
+
+```txt
+TASK-42.06 Frontend: make Log out button more visible on profile screen
+```
+
+---
+
 # TASK-42.05 Frontend: fix sign-in showing "Session expired" on invalid credentials
 
 ## Status
