@@ -136,6 +136,21 @@ Every commit must:
 
 No exceptions — redesigns, bug fixes, tooling, config changes all follow this rule.
 
+## Investigate Before Fix Rule
+
+When the user describes a problem or bug:
+
+1. Investigate first — read logs, find root cause, understand the scope
+2. Report findings and proposed fix to the user
+3. Only implement the fix after the user explicitly confirms
+
+Never start fixing before the user says to proceed.
+
+## Epic Lifecycle Rules
+
+- Only mark an epic DONE when the user explicitly says so. Never do it autonomously after the last task.
+- When closing an epic: move the file from `docs/tasks/` to `docs/tasks/done/` — do not just update the status in place.
+
 ## Git Rebase Rules
 
 Before any rebase:
