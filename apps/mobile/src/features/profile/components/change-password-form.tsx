@@ -78,7 +78,13 @@ export function ChangePasswordForm() {
         setSubmitError(t('profile.changePassword.wrongCurrentPassword'))
       }
     } catch (err) {
-      setSubmitError(getGraphqlErrorMessage(err, t('profile.changePassword.wrongCurrentPassword')))
+      setSubmitError(
+        getGraphqlErrorMessage(err, t('profile.changePassword.wrongCurrentPassword'), t, {
+          INVALID_CREDENTIALS: 'profile.changePassword.wrongCurrentPassword',
+          UNAUTHORIZED: 'profile.changePassword.wrongCurrentPassword',
+          VALIDATION_ERROR: 'profile.changePassword.wrongCurrentPassword',
+        }),
+      )
     } finally {
       isSubmittingRef.current = false
     }

@@ -1,7 +1,12 @@
 import { getSafeUserErrorMessage } from '@/ui/utils/get-safe-user-error-message'
 
-export function getGraphqlErrorMessage(error: unknown, fallback: string): string {
-  return getSafeUserErrorMessage(error, fallback)
+export function getGraphqlErrorMessage(
+  error: unknown,
+  fallback: string,
+  t?: (key: string) => string,
+  appCodeMap?: Record<string, string>,
+): string {
+  return getSafeUserErrorMessage(error, fallback, t, appCodeMap)
 }
 
 export function getGraphqlAppCode(error: unknown): string | null {

@@ -71,7 +71,13 @@ export function SignInForm() {
       await applyAuthPayload(payload)
       router.replace(getPostAuthRedirectHref(mapSafeUserToAuthUser(payload.user)))
     } catch (submitError) {
-      setError(getGraphqlErrorMessage(submitError, t('auth.signIn.failed')))
+      setError(
+        getGraphqlErrorMessage(submitError, t('auth.signIn.failed'), t, {
+          INVALID_CREDENTIALS: 'auth.signIn.failed',
+          USER_BLOCKED: 'auth.signIn.failed',
+          EMAIL_NOT_VERIFIED: 'auth.signIn.failed',
+        }),
+      )
     } finally {
       isSubmittingRef.current = false
       setLoading(false)

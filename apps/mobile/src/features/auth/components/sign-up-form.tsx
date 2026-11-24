@@ -82,7 +82,12 @@ export function SignUpForm() {
       await applyAuthPayload(payload)
       router.replace(getPostAuthRedirectHref(mapSafeUserToAuthUser(payload.user)))
     } catch (submitError) {
-      setError(getGraphqlErrorMessage(submitError, t('auth.signUp.failed')))
+      setError(
+        getGraphqlErrorMessage(submitError, t('auth.signUp.failed'), t, {
+          USER_ALREADY_EXISTS: 'auth.signUp.failed',
+          VALIDATION_ERROR: 'auth.signUp.failed',
+        }),
+      )
     } finally {
       isSubmittingRef.current = false
       setLoading(false)

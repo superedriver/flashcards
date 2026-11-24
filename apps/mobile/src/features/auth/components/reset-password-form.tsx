@@ -70,7 +70,11 @@ export function ResetPasswordForm() {
       })
       setSuccess(true)
     } catch (submitError) {
-      setError(getGraphqlErrorMessage(submitError, t('auth.resetPassword.failed')))
+      setError(
+        getGraphqlErrorMessage(submitError, t('auth.resetPassword.failed'), t, {
+          VALIDATION_ERROR: 'auth.resetPassword.failed',
+        }),
+      )
     } finally {
       isSubmittingRef.current = false
     }

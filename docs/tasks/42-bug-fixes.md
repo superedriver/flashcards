@@ -15,6 +15,39 @@ docs/backend-clean-architecture.md
 
 ---
 
+# TASK-42.07 Frontend: localize GraphQL error messages via appCode mapping
+
+## Status
+
+DONE
+
+## Context
+
+`getSafeUserErrorMessage` returned the raw English message from the backend (e.g. "Invalid credentials") even when the UI was in Ukrainian. The `fallback` i18n string was never used because the backend message passed the "user-friendly" check.
+
+## Goal
+
+Extend `getSafeUserErrorMessage` and `getGraphqlErrorMessage` to accept an optional `appCodeMap` and `t` function. When `appCode` matches a key in the map, return `t(map[appCode])` instead of the backend text. Apply to all auth-related call sites.
+
+## Files to Modify
+
+```txt
+apps/mobile/src/ui/utils/get-safe-user-error-message.ts
+apps/mobile/src/features/decks/utils/deck-form-utils.ts
+apps/mobile/src/features/auth/components/sign-in-form.tsx
+apps/mobile/src/features/auth/components/sign-up-form.tsx
+apps/mobile/src/features/auth/components/reset-password-form.tsx
+apps/mobile/src/features/profile/components/change-password-form.tsx
+```
+
+## Expected Commit Message
+
+```txt
+TASK-42.07 Frontend: localize GraphQL error messages via appCode mapping
+```
+
+---
+
 # TASK-42.06 Frontend: make Log out button more visible on profile screen
 
 ## Status

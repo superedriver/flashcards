@@ -22,12 +22,18 @@ function isUserFriendlyMessage(message: string): boolean {
   return !INTERNAL_PATTERNS.some((pattern) => pattern.test(trimmed))
 }
 
-export function getSafeUserErrorMessage(error: unknown, fallback: string): string {
+export function getSafeUserErrorMessage(
+  error: unknown,
+  fallback: string,
+  t?: (key: string) => string,
+  appCodeMap?: Record<string, string>,
+): string {
   if (CombinedGraphQLErrors.is(error)) {
-    const graphQlMessage = error.errors[0]?.message?.trim()
-
-    if (graphQlMessage && isUserFriendlyMessage(graphQlMessage)) {
-      return graphQlMessage
+    if (t && appCodeMap) {
+      const appCode = error.errors[0]?.extensions?.appCode
+      if (typeof appCode === 'string' && appCodeMap[appCode]) {
+        return t(appCodeMap[appCode])
+      }
     }
 
     return fallback
