@@ -15,6 +15,47 @@ docs/backend-clean-architecture.md
 
 ---
 
+# TASK-42.04 Frontend: add favicon for web
+
+## Status
+
+DONE
+
+## Context
+
+The web version of the app had no favicon — browsers showed a blank tab icon.
+
+## Goal
+
+Add favicon files and wire them up via `app/+html.tsx` and `app.json`.
+
+## Files to Create
+
+```txt
+apps/mobile/web/favicon.ico
+apps/mobile/web/favicon-16x16.png
+apps/mobile/web/favicon-32x32.png
+apps/mobile/web/apple-touch-icon.png
+apps/mobile/web/android-chrome-192x192.png
+apps/mobile/web/android-chrome-512x512.png
+apps/mobile/web/site.webmanifest
+apps/mobile/app/+html.tsx
+```
+
+## Files to Modify
+
+```txt
+apps/mobile/app.json
+```
+
+## Expected Commit Message
+
+```txt
+TASK-42.04 Frontend: add favicon for web
+```
+
+---
+
 # TASK-42.03 CI: fix pnpm version conflict in GitHub Actions
 
 ## Status

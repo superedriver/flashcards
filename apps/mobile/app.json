@@ -25,6 +25,9 @@
     },
     "ios": {
       "bundleIdentifier": "com.superedriver.flashcards.dev"
+    },
+    "web": {
+      "favicon": "./web/favicon.ico"
     }
   }
 }
