@@ -41,6 +41,14 @@ export const authErrorLink = onError(({ error, operation, forward }) => {
     return
   }
 
+  const isInvalidCredentials = error.errors.some(
+    (e) => e.extensions?.appCode === 'INVALID_CREDENTIALS',
+  )
+
+  if (isInvalidCredentials) {
+    return
+  }
+
   const context = operation.getContext() as { alreadyRetriedAuth?: boolean }
 
   if (context.alreadyRetriedAuth) {

@@ -15,6 +15,34 @@ docs/backend-clean-architecture.md
 
 ---
 
+# TASK-42.05 Frontend: fix sign-in showing "Session expired" on invalid credentials
+
+## Status
+
+DONE
+
+## Context
+
+`authErrorLink` intercepts all `UNAUTHENTICATED` GraphQL errors and tries to refresh the token. When login fails with `INVALID_CREDENTIALS` (which also uses `UNAUTHENTICATED` code), the refresh fails and `handleSessionExpired()` is called — showing "Session expired" instead of "Invalid credentials".
+
+## Goal
+
+Skip the token-refresh logic when `appCode === 'INVALID_CREDENTIALS'`. Let the error propagate normally to the form.
+
+## Files to Modify
+
+```txt
+apps/mobile/src/features/auth/services/apollo-auth-links.ts
+```
+
+## Expected Commit Message
+
+```txt
+TASK-42.05 Frontend: fix sign-in showing "Session expired" on invalid credentials
+```
+
+---
+
 # TASK-42.04 Frontend: add favicon for web
 
 ## Status
