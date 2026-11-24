@@ -27,7 +27,7 @@
       "bundleIdentifier": "com.superedriver.flashcards.dev"
     },
     "web": {
-      "favicon": "./web/favicon.ico"
+      "favicon": "./web/favicon-32x32.png"
     }
   }
 }
