@@ -15,6 +15,34 @@ docs/backend-clean-architecture.md
 
 ---
 
+# TASK-42.03 CI: fix pnpm version conflict in GitHub Actions
+
+## Status
+
+DONE
+
+## Context
+
+`pnpm/action-setup@v4` failed with "Multiple versions of pnpm specified" because `version: 9` was set in the workflow AND `"packageManager": "pnpm@9.0.0"` was set in `package.json`. The action requires exactly one source of truth.
+
+## Goal
+
+Remove `version: 9` from `.github/workflows/ci.yml` so the action reads the version from `package.json` automatically.
+
+## Files to Modify
+
+```txt
+.github/workflows/ci.yml
+```
+
+## Expected Commit Message
+
+```txt
+TASK-42.03 CI: fix pnpm version conflict in GitHub Actions
+```
+
+---
+
 # TASK-42.02 Backend: add production seed script for languages
 
 ## Status
